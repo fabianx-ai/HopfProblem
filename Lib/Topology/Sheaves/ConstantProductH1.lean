@@ -13,9 +13,11 @@ public import Mathlib.Topology.Homotopy.Contractible
 /-!
 # Constant-product degree-one adapters
 
-The topology and singular-cohomology statements here are independent of the missing
-constant-sheaf/singular comparison.  They are the generic adapters used by compact-product fibre
-maps.  No product-specific sheaf-cohomology isomorphism is asserted without that comparison.
+Projection from a product `S × X` with `S` contractible is a homotopy equivalence with inverse
+the inclusion of the fibre over a chosen point `s : S`.  The point-set and singular-cohomology
+consequences of this are collected here; the corresponding statement for constant-sheaf
+cohomology is homotopy invariance (Bredon, *Sheaf Theory*, II.11) and needs the comparison with
+singular cohomology.
 -/
 
 @[expose] public section
@@ -55,22 +57,26 @@ def basedFibreInclusion (s : S) : TopCat.of X ⟶ TopCat.of (S × X) :=
   TopCat.ofHom (basedProductHomotopyEquiv S X s).symm.toFun
 
 omit [CompactSpace S] [T2Space S] [CompactSpace X] [T2Space X] in
+/-- The fibre inclusion based at `s` sends `x` to `(s, x)`. -/
 @[simp]
 theorem basedFibreInclusion_apply (s : S) (x : X) :
     basedFibreInclusion S X s x = (s, x) := rfl
 
 omit [CompactSpace S] [T2Space S] [CompactSpace X] [T2Space X] in
+/-- The fibre inclusion based at `s` is injective. -/
 theorem basedFibreInclusion_injective (s : S) :
     Function.Injective (basedFibreInclusion S X s) := by
   intro x y h
   exact congrArg Prod.snd h
 
 omit [CompactSpace S] in
+/-- The fibre inclusion based at `s` is a closed map when the product is compact Hausdorff. -/
 theorem basedFibreInclusion_isClosedMap (s : S) :
     IsClosedMap (basedFibreInclusion S X s) :=
   (basedFibreInclusion S X s).hom.continuous.isClosedMap
 
 omit [CompactSpace S] [T2Space S] [CompactSpace X] [T2Space X] in
+/-- The fibre inclusion based at `s` has finite (indeed at most singleton) fibres. -/
 theorem basedFibreInclusion_finite_fibres (s : S) (p : S × X) :
     ((basedFibreInclusion S X s) ⁻¹' ({p} : Set (S × X))).Finite :=
   Set.Finite.preimage (basedFibreInclusion_injective S X s).injOn
