@@ -20,6 +20,12 @@ This file compares the actual Leray-page coordinates at bidegrees `(0,q+1)` and 
 the generic Postnikov source morphism and target `Ext²` coordinate.  The comparisons keep the
 non-definitional total-degree transports visible, move all homology comparison maps through the
 single-object shift adapters, and introduce no scalar or sign.
+
+There is no textbook counterpart: these are the coordinate changes identifying two constructions
+of the same groups `H⁰(Y, Rᑫ⁺¹f_*F)` and `H²(Y, Rᑫf_*F)`, the resolution-cohomology one of
+`ResolutionTransgression` and the Postnikov-page one of `ResolutionPostnikov`.  They are what the
+computation of the Leray `d₂` as a transgression (Godement II.4.17) needs in order to be stated
+on the `E₂` page.
 -/
 
 @[expose] public section
