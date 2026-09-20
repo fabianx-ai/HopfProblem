@@ -909,11 +909,12 @@ theorem exists_smooth_bigon_neighborhood_extension_of_circle_nullhomotopies {E M
 bigon into `M` whose two edges parametrise the given arcs `a` and `b`, whose interior avoids the
 two sheets `S` and `T`, which is given near the edges by the strip charts `k` and `l`, and which
 extends to a diffeomorphism of a normal disc bundle of fibre dimension `n` onto a neighbourhood
-of the bigon. This is the datum of Milnor's Whitney lemma (h-cobordism theorem, §6).
+of the bigon.  The codimension `n` is an explicit parameter.  This is the datum of Milnor's
+Whitney lemma (h-cobordism theorem, §6).
 -/
 structure TubularBigon {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [TopologicalSpace M] [ChartedSpace E M] (S T : Set M) (a b : ℝ → M) (k l : (ℝ × ℝ) → M)
-    (h : ℝ) (n : ℕ := 4) where
+    (h : ℝ) (n : ℕ) where
   height_pos : 0 < h
   map : C(ℝ × ℝ, M)
   smooth : ContMDiff 𝓘(ℝ, ℝ × ℝ) 𝓘(ℝ, E) ∞ map

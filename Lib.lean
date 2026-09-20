@@ -87,6 +87,8 @@ import Lib.LinearAlgebra.Matrix.TransvectionReduction
 import Lib.Algebra.Module.IntegerPresentation
 import Lib.Combinatorics.IndexDisorder
 import Lib.Geometry.Manifold.Curve.CircleGluing
+import Lib.Combinatorics.IndexDisorder
+import Lib.Geometry.Manifold.Curve.CircleGluing
 import Lib.Geometry.Manifold.Curve.CircleGluing
 import Lib.AlgebraicTopology.Hurewicz.SimplexCube
 import Lib.AlgebraicTopology.Hurewicz.HomotopyExtension

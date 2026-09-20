@@ -82,6 +82,7 @@ import Lib.Geometry.Manifold.Morse.Rearrangement
 import Lib.Geometry.Manifold.Morse.Connection
 import Mathlib
 import Lib.Combinatorics.IndexDisorder
+import Lib.Combinatorics.IndexDisorder
 import Lib.Topology.Homotopy.HandleRetraction
 import Lib.Algebra.Homology.MayerVietorisShortExact
 import Lib.AlgebraicTopology.SingularHomology.Chains

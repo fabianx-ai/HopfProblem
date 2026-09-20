@@ -887,7 +887,7 @@ structure TubularBigon.TangentAdaptedChart {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {S T : Set M} {a b : ℝ → M}
     {k₀ k₁ l₀ l₁ : (ℝ × ℝ) → M} {h : ℝ} {k : CleanStripPatch (E := E) S T a k₀ k₁}
     {l : CleanStripPatch (E := E) T S b l₀ l₁}
-    (tube : TubularBigon (E := E) S T a b k.map l.map h)
+    (tube : TubularBigon (E := E) S T a b k.map l.map h 4)
     (d :
       StripNormalData WhitneyPairModel.Plane (EuclideanSpace ℝ (Fin 3)) (E := E) S
         k.map)
@@ -2316,7 +2316,7 @@ structure TubularBigon.SheetParametrizedChart {E M : Type*} [NormedAddCommGroup 
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {S T : Set M} {a b : ℝ → M}
     {k₀ k₁ l₀ l₁ : (ℝ × ℝ) → M} {h : ℝ} {k : CleanStripPatch (E := E) S T a k₀ k₁}
     {l : CleanStripPatch (E := E) T S b l₀ l₁}
-    (tube : TubularBigon (E := E) S T a b k.map l.map h)
+    (tube : TubularBigon (E := E) S T a b k.map l.map h 4)
     (d :
       StripNormalData WhitneyPairModel.Plane (EuclideanSpace ℝ (Fin 3)) (E := E) S
         k.map)
