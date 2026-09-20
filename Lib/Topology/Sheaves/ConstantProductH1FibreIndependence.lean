@@ -66,17 +66,17 @@ theorem nativePullback_basedFibreInclusion_eq
   let _ : IsIso (HomologicalComplex.homologyMap
       (TopCat.SingularCochainSheaf.globalCochainComparison
         (TopCat.of (S × X)) A) 1) :=
-    TopCat.SingularCochainSheaf.globalCochainComparison_homology_isIso_one
+    TopCat.SingularCochainSheaf.globalCochainComparison_homology_isIso_succ
       (TopCat.of (S × X)) A
       (TopCat.SingularCochainSheaf.hasSmallChainEquivalences_barycentric
-        (TopCat.of (S × X)))
+        (TopCat.of (S × X))) 0
   let _ : IsIso (HomologicalComplex.homologyMap
       (TopCat.SingularCochainSheaf.globalCochainComparison
         (TopCat.of X) A) 1) :=
-    TopCat.SingularCochainSheaf.globalCochainComparison_homology_isIso_one
+    TopCat.SingularCochainSheaf.globalCochainComparison_homology_isIso_succ
       (TopCat.of X) A
       (TopCat.SingularCochainSheaf.hasSmallChainEquivalences_barycentric
-        (TopCat.of X))
+        (TopCat.of X)) 0
   let cX := TopCat.SingularCochainSheaf.h1Comparison (TopCat.of X) A hX
   apply (cancel_mono cX.hom).mp
   rw [TopCat.SingularCochainSheaf.h1Comparison_naturality

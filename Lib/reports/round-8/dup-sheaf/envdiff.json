@@ -1,0 +1,2381 @@
+{
+ "before": "/home/goblin/.claude/jobs/06995e68/tmp/r8-dup-sheaf/dump_base.jsonl",
+ "after": "/home/goblin/.claude/jobs/06995e68/tmp/r8-dup-sheaf/dump_after.jsonl",
+ "prefix": "",
+ "constants": [
+  38593,
+  38558
+ ],
+ "lost": [
+  [
+   "CategoryTheory.Sheaf.Leray.derivedNeighborhoodGerm_eq_germ_of_localRepresentative",
+   3764515504,
+   {
+    "Lib.CategoryTheory.Sites.Leray.SheafificationNeighborhoodGerm": 1
+   }
+  ],
+  [
+   "CategoryTheory.Sheaf.Leray.higherDirectImageResolutionSheafificationIso",
+   4167908408,
+   {
+    "Lib.CategoryTheory.Sites.Leray.HigherDirectImageSheafification": 1
+   }
+  ],
+  [
+   "CategoryTheory.Sheaf.Leray.integralCoyonedaPushforwardHomologyIso",
+   3096589488,
+   {
+    "Lib.CategoryTheory.Sites.Leray.ResolutionAbutment": 1
+   }
+  ],
+  [
+   "CategoryTheory.Sheaf.Leray.integralCoyonedaPushforwardHomologyIso._proof_1",
+   3831817113,
+   {
+    "Lib.CategoryTheory.Sites.Leray.ResolutionAbutment": 1
+   }
+  ],
+  [
+   "CategoryTheory.Sheaf.Leray.integralCoyonedaPushforwardHomologyIso._proof_2",
+   1130280960,
+   {
+    "Lib.CategoryTheory.Sites.Leray.ResolutionAbutment": 1
+   }
+  ],
+  [
+   "CategoryTheory.Sheaf.Leray.integralCoyonedaPushforwardIso",
+   2401227345,
+   {
+    "Lib.CategoryTheory.Sites.Leray.ResolutionAbutment": 1
+   }
+  ],
+  [
+   "CategoryTheory.Sheaf.Leray.integralCoyonedaPushforwardIso._proof_1",
+   3107050878,
+   {
+    "Lib.CategoryTheory.Sites.Leray.ResolutionAbutment": 1
+   }
+  ],
+  [
+   "CategoryTheory.Sheaf.Leray.integralSheaf",
+   1557983184,
+   {
+    "Lib.CategoryTheory.Sites.Leray.ResolutionTransgression": 1
+   }
+  ],
+  [
+   "CategoryTheory.Sheaf.Leray.mapComplexHomologyIso_sheafification_stalk_comp",
+   2638671755,
+   {
+    "Lib.CategoryTheory.Sites.Leray.SheafificationStalkCompatibility": 1
+   }
+  ],
+  [
+   "CategoryTheory.Sheaf.Leray.resolutionCohomologyIso_hom_apply",
+   2652510212,
+   {
+    "Lib.CategoryTheory.Sites.Leray.ResolutionTransgression": 1
+   }
+  ],
+  [
+   "CategoryTheory.Sheaf.Leray.resolutionDerivedHomCohomologyEquiv._proof_1",
+   3483445685,
+   {
+    "Lib.CategoryTheory.Sites.Leray.ResolutionAbutment": 1
+   }
+  ],
+  [
+   "CategoryTheory.Sheaf.Leray.resolutionDerivedHomCohomologyEquiv._proof_3",
+   134598406,
+   {
+    "Lib.CategoryTheory.Sites.Leray.ResolutionAbutment": 1
+   }
+  ],
+  [
+   "CategoryTheory.Sheaf.Leray.resolutionDerivedHomCohomologyEquiv._proof_4",
+   3764450027,
+   {
+    "Lib.CategoryTheory.Sites.Leray.ResolutionAbutment": 1
+   }
+  ],
+  [
+   "CategoryTheory.Sheaf.Leray.resolutionDerivedHomCohomologyEquiv._proof_5",
+   2886335994,
+   {
+    "Lib.CategoryTheory.Sites.Leray.ResolutionAbutment": 1
+   }
+  ],
+  [
+   "CategoryTheory.Sheaf.Leray.resolutionDerivedHomCohomologyEquiv._proof_6",
+   3584089131,
+   {
+    "Lib.CategoryTheory.Sites.Leray.ResolutionAbutment": 1
+   }
+  ],
+  [
+   "CategoryTheory.Sheaf.Leray.resolutionDerivedHomCohomologyEquiv._proof_7",
+   3186772809,
+   {
+    "Lib.CategoryTheory.Sites.Leray.ResolutionAbutment": 1
+   }
+  ],
+  [
+   "CategoryTheory.Sheaf.Leray.resolutionDerivedHomCohomologyEquiv._proof_8",
+   109186275,
+   {
+    "Lib.CategoryTheory.Sites.Leray.ResolutionAbutment": 1
+   }
+  ],
+  [
+   "CategoryTheory.Sheaf.Leray.resolutionDerivedHomCohomologyEquiv._proof_9",
+   3028520964,
+   {
+    "Lib.CategoryTheory.Sites.Leray.ResolutionAbutment": 1
+   }
+  ],
+  [
+   "CategoryTheory.Sheaf.Leray.resolutionExtZeroIso",
+   2998029145,
+   {
+    "Lib.CategoryTheory.Sites.Leray.ResolutionTransgression": 1
+   }
+  ],
+  [
+   "CategoryTheory.Sheaf.Leray.resolutionExtZeroIso._proof_1",
+   3518584317,
+   {
+    "Lib.CategoryTheory.Sites.Leray.ResolutionTransgression": 1
+   }
+  ],
+  [
+   "CategoryTheory.Sheaf.Leray.resolutionExtZeroIso._proof_2",
+   3328052948,
+   {
+    "Lib.CategoryTheory.Sites.Leray.ResolutionTransgression": 1
+   }
+  ],
+  [
+   "CategoryTheory.Sheaf.Leray.resolutionExtZeroIso_hom_apply",
+   51168412,
+   {
+    "Lib.CategoryTheory.Sites.Leray.ResolutionTransgression": 1
+   }
+  ],
+  [
+   "CategoryTheory.Sheaf.Leray.resolutionExtZeroIso_inv_apply",
+   3733740984,
+   {
+    "Lib.CategoryTheory.Sites.Leray.ResolutionTransgression": 1
+   }
+  ],
+  [
+   "CategoryTheory.Sheaf.Leray.resolutionPostnikovE\u2082AddEquiv_source_coordinate",
+   419899754,
+   {
+    "Lib.CategoryTheory.Sites.Leray.ResolutionPostnikovD2Coordinates": 1
+   }
+  ],
+  [
+   "CategoryTheory.Sheaf.Leray.resolutionPostnikovE\u2082AddEquiv_target_coordinate",
+   127510137,
+   {
+    "Lib.CategoryTheory.Sites.Leray.ResolutionPostnikovD2Coordinates": 1
+   }
+  ],
+  [
+   "CategoryTheory.Sheaf.Leray.resolutionPostnikovE\u2082Iso._proof_1",
+   3539651676,
+   {
+    "Lib.CategoryTheory.Sites.Leray.ResolutionPostnikov": 1
+   }
+  ],
+  [
+   "CategoryTheory.Sheaf.Leray.resolutionTransgressionAddOfResolution_apply_eq_connectingTwo",
+   1625996692,
+   {
+    "Lib.CategoryTheory.Sites.Leray.ResolutionTransgression": 1
+   }
+  ],
+  [
+   "CategoryTheory.Sheaf.Leray.resolutionTransgressionAddOfResolution_apply_ne_zero_iff_connectingTwo",
+   1006413209,
+   {
+    "Lib.CategoryTheory.Sites.Leray.ResolutionTransgression": 1
+   }
+  ],
+  [
+   "CategoryTheory.Sheaf.Leray.resolutionTransgressionMorphismOfResolution_eq_connectingTwo",
+   2799106050,
+   {
+    "Lib.CategoryTheory.Sites.Leray.ResolutionTransgression": 1
+   }
+  ],
+  [
+   "CategoryTheory.Sheaf.Leray.resolutionTransgression_apply_ne_zero_iff_connectingTwo",
+   325302880,
+   {
+    "Lib.CategoryTheory.Sites.Leray.ResolutionTransgression": 1
+   }
+  ],
+  [
+   "CategoryTheory.Sheaf.Leray.sheafHomologyIsoSheafification",
+   1342873493,
+   {
+    "Lib.CategoryTheory.Sites.Leray.HigherDirectImageSheafification": 1
+   }
+  ],
+  [
+   "CategoryTheory.Sheaf.Leray.sheafHomologyIsoSheafification._proof_1",
+   541203555,
+   {
+    "Lib.CategoryTheory.Sites.Leray.HigherDirectImageSheafification": 1
+   }
+  ],
+  [
+   "CategoryTheory.Sheaf.Leray.sheafHomologyIsoSheafification._proof_2",
+   1405043457,
+   {
+    "Lib.CategoryTheory.Sites.Leray.HigherDirectImageSheafification": 1
+   }
+  ],
+  [
+   "CategoryTheory.Sheaf.Leray.sheafification",
+   1838849937,
+   {
+    "Lib.CategoryTheory.Sites.Leray.HigherDirectImageSheafification": 1
+   }
+  ],
+  [
+   "CategoryTheory.Sheaf.Leray.sheafification._proof_1",
+   2144169979,
+   {
+    "Lib.CategoryTheory.Sites.Leray.HigherDirectImageSheafification": 1
+   }
+  ],
+  [
+   "CategoryTheory.Sheaf.Leray.sheafificationComplexIso",
+   2324703786,
+   {
+    "Lib.CategoryTheory.Sites.Leray.HigherDirectImageSheafification": 1
+   }
+  ],
+  [
+   "CategoryTheory.Sheaf.Leray.sheafificationComplexIso._proof_1",
+   2825597686,
+   {
+    "Lib.CategoryTheory.Sites.Leray.HigherDirectImageSheafification": 1
+   }
+  ],
+  [
+   "CategoryTheory.Sheaf.Leray.sheafificationComplexIso._proof_2",
+   512578564,
+   {
+    "Lib.CategoryTheory.Sites.Leray.HigherDirectImageSheafification": 1
+   }
+  ],
+  [
+   "CategoryTheory.Sheaf.Leray.sheafificationComplexIso_symm_hom_underlying",
+   1383484719,
+   {
+    "Lib.CategoryTheory.Sites.Leray.SheafificationStalkCompatibility": 1
+   }
+  ],
+  [
+   "CategoryTheory.Sheaf.Leray.sheafificationUnderlyingIso",
+   1051922192,
+   {
+    "Lib.CategoryTheory.Sites.Leray.HigherDirectImageSheafification": 1
+   }
+  ],
+  [
+   "CategoryTheory.Sheaf.Leray.sheafification_additive",
+   1676367609,
+   {
+    "Lib.CategoryTheory.Sites.Leray.HigherDirectImageSheafification": 1
+   }
+  ],
+  [
+   "CategoryTheory.Sheaf.Leray.sheafification_additive._proof_1",
+   3600962422,
+   {
+    "Lib.CategoryTheory.Sites.Leray.HigherDirectImageSheafification": 1
+   }
+  ],
+  [
+   "CategoryTheory.Sheaf.Leray.sheafification_preservesFiniteColimits",
+   829634150,
+   {
+    "Lib.CategoryTheory.Sites.Leray.HigherDirectImageSheafification": 1
+   }
+  ],
+  [
+   "CategoryTheory.Sheaf.Leray.sheafification_preservesFiniteColimits._proof_1",
+   903761576,
+   {
+    "Lib.CategoryTheory.Sites.Leray.HigherDirectImageSheafification": 1
+   }
+  ],
+  [
+   "CategoryTheory.Sheaf.Leray.sheafification_preservesFiniteLimits",
+   1802777974,
+   {
+    "Lib.CategoryTheory.Sites.Leray.HigherDirectImageSheafification": 1
+   }
+  ],
+  [
+   "CategoryTheory.Sheaf.Leray.sheafification_preservesFiniteLimits._proof_1",
+   679327887,
+   {
+    "Lib.CategoryTheory.Sites.Leray.HigherDirectImageSheafification": 1
+   }
+  ],
+  [
+   "CategoryTheory.Sheaf.Leray.stalkHomologyPresheafIso_hom_comp_sheafificationUnit",
+   4172375808,
+   {
+    "Lib.CategoryTheory.Sites.Leray.SheafificationStalkCompatibility": 1
+   }
+  ],
+  [
+   "CategoryTheory.Sheaf.Leray.stalkSheafificationUnitNatTrans",
+   3272293528,
+   {
+    "Lib.CategoryTheory.Sites.Leray.SheafificationStalkCompatibility": 1
+   }
+  ],
+  [
+   "CategoryTheory.Sheaf.Leray.stalkSheafificationUnitNatTrans._proof_1",
+   2933107155,
+   {
+    "Lib.CategoryTheory.Sites.Leray.SheafificationStalkCompatibility": 1
+   }
+  ],
+  [
+   "CategoryTheory.Sheaf.Leray.stalkSheafificationUnitNatTrans_app",
+   3739341126,
+   {
+    "Lib.CategoryTheory.Sites.Leray.SheafificationStalkCompatibility": 1
+   }
+  ],
+  [
+   "TopCat.FiniteClosedPushforward.extZeroForwardMap",
+   2248793300,
+   {
+    "Lib.Topology.Sheaves.FiniteClosedPushforward.AcyclicResolutionH1": 1
+   }
+  ],
+  [
+   "TopCat.FiniteClosedPushforward.extZeroGlobal_forward",
+   2395176281,
+   {
+    "Lib.Topology.Sheaves.FiniteClosedPushforward.AcyclicResolutionH1": 1
+   }
+  ],
+  [
+   "TopCat.FiniteClosedPushforward.h0GlobalIso_mk\u2080",
+   732596855,
+   {
+    "Lib.Topology.Sheaves.FiniteClosedPushforward.AcyclicResolution": 1,
+    "Lib.Topology.Sheaves.FiniteClosedPushforward.AcyclicResolutionH1": 1
+   }
+  ],
+  [
+   "TopCat.FiniteClosedPushforward.h0Global_forward",
+   1029592025,
+   {
+    "Lib.Topology.Sheaves.FiniteClosedPushforward.AcyclicResolution": 1,
+    "Lib.Topology.Sheaves.FiniteClosedPushforward.AcyclicResolutionH1": 1
+   }
+  ],
+  [
+   "TopCat.FiniteClosedPushforward.indexedEvaluatedComplexForwardMap",
+   1175688606,
+   {
+    "Lib.Topology.Sheaves.FiniteClosedPushforward.AcyclicResolution": 1
+   }
+  ],
+  [
+   "TopCat.FiniteClosedPushforward.indexedExtZeroGlobal_forward",
+   1679575516,
+   {
+    "Lib.Topology.Sheaves.FiniteClosedPushforward.AcyclicResolution": 1
+   }
+  ],
+  [
+   "TopCat.FiniteClosedPushforward.indexedGlobalComplexIso._proof_1",
+   2484315133,
+   {
+    "Lib.Topology.Sheaves.FiniteClosedPushforward.AcyclicResolution": 1
+   }
+  ],
+  [
+   "TopCat.FunctionSheaf.extendByZero",
+   2531584362,
+   {
+    "Lib.Topology.Sheaves.FunctionSheaf": 1
+   }
+  ],
+  [
+   "TopCat.FunctionSheaf.extendByZero.eq_1",
+   4019720287,
+   {
+    "Lib.Topology.Sheaves.FunctionSheaf": 1
+   }
+  ],
+  [
+   "TopCat.FunctionSheaf.forgetIso",
+   2080434651,
+   {
+    "Lib.Topology.Sheaves.FunctionSheaf": 1
+   }
+  ],
+  [
+   "TopCat.FunctionSheaf.forgetIso._proof_1",
+   3960687088,
+   {
+    "Lib.Topology.Sheaves.FunctionSheaf": 1
+   }
+  ],
+  [
+   "TopCat.FunctionSheaf.forgetIso._proof_2",
+   2428384668,
+   {
+    "Lib.Topology.Sheaves.FunctionSheaf": 1
+   }
+  ],
+  [
+   "TopCat.FunctionSheaf.forgetIso._proof_3",
+   1599575653,
+   {
+    "Lib.Topology.Sheaves.FunctionSheaf": 1
+   }
+  ],
+  [
+   "TopCat.FunctionSheaf.forgetIso._proof_4",
+   1400488793,
+   {
+    "Lib.Topology.Sheaves.FunctionSheaf": 1
+   }
+  ],
+  [
+   "TopCat.FunctionSheaf.isSheaf",
+   4141145721,
+   {
+    "Lib.Topology.Sheaves.FunctionSheaf": 1
+   }
+  ],
+  [
+   "TopCat.FunctionSheaf.presheaf",
+   36824274,
+   {
+    "Lib.Topology.Sheaves.FunctionSheaf": 1
+   }
+  ],
+  [
+   "TopCat.FunctionSheaf.presheaf._proof_1",
+   2475389299,
+   {
+    "Lib.Topology.Sheaves.FunctionSheaf": 1
+   }
+  ],
+  [
+   "TopCat.FunctionSheaf.presheaf._proof_2",
+   2647745568,
+   {
+    "Lib.Topology.Sheaves.FunctionSheaf": 1
+   }
+  ],
+  [
+   "TopCat.FunctionSheaf.presheaf._proof_3",
+   2115270736,
+   {
+    "Lib.Topology.Sheaves.FunctionSheaf": 1
+   }
+  ],
+  [
+   "TopCat.FunctionSheaf.presheaf._proof_4",
+   3286540274,
+   {
+    "Lib.Topology.Sheaves.FunctionSheaf": 1
+   }
+  ],
+  [
+   "TopCat.FunctionSheaf.presheaf_map_apply",
+   1399231493,
+   {
+    "Lib.Topology.Sheaves.FunctionSheaf": 1
+   }
+  ],
+  [
+   "TopCat.FunctionSheaf.presheaf_obj",
+   924677162,
+   {
+    "Lib.Topology.Sheaves.FunctionSheaf": 1
+   }
+  ],
+  [
+   "TopCat.FunctionSheaf.restrict_extendByZero",
+   2843436543,
+   {
+    "Lib.Topology.Sheaves.FunctionSheaf": 1
+   }
+  ],
+  [
+   "TopCat.FunctionSheaf.sheaf",
+   2822291566,
+   {
+    "Lib.Topology.Sheaves.FunctionSheaf": 1
+   }
+  ],
+  [
+   "TopCat.FunctionSheaf.sheaf_isFlasque",
+   4196938540,
+   {
+    "Lib.Topology.Sheaves.FunctionSheaf": 1
+   }
+  ],
+  [
+   "TopCat.Sheaf.FiniteSupport.globalSectionsIsoOfSkyscraperBiprodIso",
+   1161239245,
+   {
+    "Lib.Topology.Sheaves.FiniteSupport.SkyscraperGlobalSections": 1
+   }
+  ],
+  [
+   "TopCat.Sheaf.FiniteSupport.globalSectionsIsoOfStalkwiseSkyscraperBiprod_hom_comp_fst",
+   4260188900,
+   {
+    "Lib.Topology.Sheaves.FiniteSupport.SkyscraperReconstruction": 1
+   }
+  ],
+  [
+   "TopCat.Sheaf.FiniteSupport.globalSectionsIsoOfStalkwiseSkyscraperBiprod_hom_comp_snd",
+   4130851743,
+   {
+    "Lib.Topology.Sheaves.FiniteSupport.SkyscraperReconstruction": 1
+   }
+  ],
+  [
+   "TopCat.Sheaf.FiniteSupport.sectionsBiprodIso_hom_comp_fst",
+   3951571048,
+   {
+    "Lib.Topology.Sheaves.FiniteSupport.SkyscraperReconstruction": 1
+   }
+  ],
+  [
+   "TopCat.Sheaf.FiniteSupport.sectionsBiprodIso_hom_comp_fst_assoc",
+   2785833711,
+   {
+    "Lib.Topology.Sheaves.FiniteSupport.SkyscraperReconstruction": 1
+   }
+  ],
+  [
+   "TopCat.Sheaf.FiniteSupport.sectionsBiprodIso_hom_comp_snd",
+   4218472078,
+   {
+    "Lib.Topology.Sheaves.FiniteSupport.SkyscraperReconstruction": 1
+   }
+  ],
+  [
+   "TopCat.Sheaf.FiniteSupport.sectionsBiprodIso_hom_comp_snd_assoc",
+   2426422532,
+   {
+    "Lib.Topology.Sheaves.FiniteSupport.SkyscraperReconstruction": 1
+   }
+  ],
+  [
+   "TopCat.Sheaf.FiniteSupport.topEvaluation",
+   2064024592,
+   {
+    "Lib.Topology.Sheaves.FiniteSupport.SkyscraperGlobalSections": 1
+   }
+  ],
+  [
+   "TopCat.Sheaf.OpenRestriction.integralToFreeTop",
+   2788725074,
+   {
+    "Lib.Topology.Sheaves.Cohomology.RepresentedOpenProjectiveDimension": 1
+   }
+  ],
+  [
+   "TopCat.Sheaf.OpenRestriction.integralToFreeTop.eq_1",
+   887194438,
+   {
+    "Lib.Topology.Sheaves.Cohomology.RepresentedOpenProjectiveDimension": 1
+   }
+  ],
+  [
+   "TopCat.Sheaf.OpenRestriction.integralToFreeTop_comp_bijective",
+   729569511,
+   {
+    "Lib.Topology.Sheaves.Cohomology.RepresentedOpenProjectiveDimension": 1
+   }
+  ],
+  [
+   "TopCat.Sheaf.OpenRestriction.unitFreeTopIso",
+   3177395669,
+   {
+    "Lib.Topology.Sheaves.Cohomology.RepresentedOpenProjectiveDimension": 1
+   }
+  ],
+  [
+   "TopCat.Sheaf.OpenRestriction.unitFreeTopIso._proof_1",
+   1478238945,
+   {
+    "Lib.Topology.Sheaves.Cohomology.RepresentedOpenProjectiveDimension": 1
+   }
+  ],
+  [
+   "TopCat.Sheaf.OpenRestriction.unitSheaf_hasProjectiveDimensionLT_iff_freeOpen_top",
+   2032562408,
+   {
+    "Lib.Topology.Sheaves.Cohomology.RepresentedOpenProjectiveDimension": 1
+   }
+  ],
+  [
+   "TopCat.Sheaf.OpenRestriction.unitSheaf_projective_of_discreteTopology",
+   2087664346,
+   {
+    "Lib.Topology.Sheaves.Cohomology.DiscreteProjectiveDimension": 1
+   }
+  ],
+  [
+   "TopCat.Sheaf.higherDirectImage_one_derivedGlobalSections_three_four_isZero_of_homeomorph_sphereTwo",
+   2913938578,
+   {
+    "Lib.Topology.Sheaves.Cohomology.SphereTwo": 1
+   }
+  ],
+  [
+   "TopCat.Sheaf.unitSheafEquivImageIso",
+   252360561,
+   {
+    "Lib.Topology.Sheaves.Cohomology.HomeomorphProjectiveDimension": 1
+   }
+  ],
+  [
+   "TopCat.Sheaf.unitSheafEquivImageIso._proof_1",
+   649609655,
+   {
+    "Lib.Topology.Sheaves.Cohomology.HomeomorphProjectiveDimension": 1
+   }
+  ],
+  [
+   "TopCat.Sheaf.unitSheaf_hasProjectiveDimensionLT_iff_cohomology_subsingleton",
+   2359284705,
+   {
+    "Lib.Topology.Sheaves.Cohomology.ProjectiveDimension": 1
+   }
+  ],
+  [
+   "TopCat.Sheaf.unitSheaf_hasProjectiveDimensionLT_iff_of_iso",
+   218571598,
+   {
+    "Lib.Topology.Sheaves.Cohomology.HomeomorphProjectiveDimension": 1
+   }
+  ],
+  [
+   "TopCat.SheafCohomology.AcyclicResolution.Hom.extIsoGlobalHomology_naturality",
+   669996478,
+   {
+    "Lib.Topology.Sheaves.Cohomology.AcyclicResolution": 1
+   }
+  ],
+  [
+   "TopCat.SheafCohomology.AcyclicResolution.Hom.extZeroGlobalIso_naturality",
+   1225730537,
+   {
+    "Lib.Topology.Sheaves.Cohomology.AcyclicResolution": 1
+   }
+  ],
+  [
+   "TopCat.SheafCohomology.AcyclicResolution.Hom.extZeroGlobalIso_naturality_assoc",
+   3272611532,
+   {
+    "Lib.Topology.Sheaves.Cohomology.AcyclicResolution": 1
+   }
+  ],
+  [
+   "TopCat.SheafCohomology.AcyclicResolution.Hom.globalComplexMap.eq_1",
+   2012025840,
+   {
+    "Lib.Topology.Sheaves.Cohomology.AcyclicResolution": 1
+   }
+  ],
+  [
+   "TopCat.SheafCohomology.AcyclicResolution.extIsoGlobalHomology._proof_1",
+   2814167952,
+   {
+    "Lib.Topology.Sheaves.Cohomology.AcyclicResolution": 1
+   }
+  ],
+  [
+   "TopCat.SheafCohomology.AcyclicResolution.extZeroGlobalIso",
+   3880460268,
+   {
+    "Lib.Topology.Sheaves.Cohomology.AcyclicResolution": 1
+   }
+  ],
+  [
+   "TopCat.SheafCohomology.AcyclicResolution.extZeroGlobalIso._proof_1",
+   2261062143,
+   {
+    "Lib.Topology.Sheaves.Cohomology.AcyclicResolution": 1
+   }
+  ],
+  [
+   "TopCat.SheafCohomology.AcyclicResolution.globalComplex._proof_2",
+   1928014957,
+   {
+    "Lib.Topology.Sheaves.Cohomology.AcyclicResolution": 1
+   }
+  ],
+  [
+   "TopCat.SheafCohomology.AcyclicResolution.isAcyclicFor",
+   4063975546,
+   {
+    "Lib.Topology.Sheaves.Cohomology.AcyclicResolution": 1
+   }
+  ],
+  [
+   "TopCat.SheafCohomology.constantIntegerSheaf",
+   2370880022,
+   {
+    "Lib.Topology.Sheaves.Cohomology.FlasqueAcyclic": 1
+   }
+  ],
+  [
+   "TopCat.SheafH1.AcyclicResolutionH1.Hom.extZeroGlobalIso_naturality",
+   1050629066,
+   {
+    "Lib.Topology.Sheaves.Cohomology.AcyclicResolutionH1Naturality": 1
+   }
+  ],
+  [
+   "TopCat.SheafH1.AcyclicResolutionH1.Hom.globalMap._proof_2",
+   1925473614,
+   {
+    "Lib.Topology.Sheaves.Cohomology.AcyclicResolutionH1Naturality": 1
+   }
+  ],
+  [
+   "TopCat.SheafH1.AcyclicResolutionH1.extZeroGlobalIso",
+   2843068804,
+   {
+    "Lib.Topology.Sheaves.Cohomology.AcyclicResolutionH1": 1
+   }
+  ],
+  [
+   "TopCat.SheafH1.AcyclicResolutionH1.extZeroGlobalIso._proof_4",
+   2298564536,
+   {
+    "Lib.Topology.Sheaves.Cohomology.AcyclicResolutionH1": 1
+   }
+  ],
+  [
+   "TopCat.SheafH1.AcyclicResolutionH1.extZeroGlobalIso._proof_5",
+   780389790,
+   {
+    "Lib.Topology.Sheaves.Cohomology.AcyclicResolutionH1": 1
+   }
+  ],
+  [
+   "TopCat.SheafH1.AcyclicResolutionH1.globalComplex._proof_1",
+   1837853018,
+   {
+    "Lib.Topology.Sheaves.Cohomology.AcyclicResolutionH1": 1
+   }
+  ],
+  [
+   "TopCat.SheafH1.AcyclicResolutionH1.h1GlobalIso._proof_1",
+   1464330289,
+   {
+    "Lib.Topology.Sheaves.Cohomology.AcyclicResolutionH1": 1
+   }
+  ],
+  [
+   "TopCat.SheafH1.constantIntegerSheaf",
+   2370880022,
+   {
+    "Lib.Topology.Sheaves.H1Vanishing.Flasque": 1
+   }
+  ],
+  [
+   "TopCat.SheafH1.constantIntegerSheaf._proof_1",
+   1952722572,
+   {
+    "Lib.Topology.Sheaves.H1Vanishing.Flasque": 1
+   }
+  ],
+  [
+   "TopCat.SheafH1.globalSectionsFunctor",
+   187168328,
+   {
+    "Lib.Topology.Sheaves.Cohomology.AcyclicResolutionH1": 1
+   }
+  ],
+  [
+   "TopCat.SheafH1.globalSectionsFunctor_additive",
+   4029912714,
+   {
+    "Lib.Topology.Sheaves.Cohomology.AcyclicResolutionH1": 1
+   }
+  ],
+  [
+   "TopCat.SheafH1.h0GlobalIso",
+   2762489191,
+   {
+    "Lib.Topology.Sheaves.Cohomology.AcyclicResolutionH1": 1
+   }
+  ],
+  [
+   "TopCat.SheafH1.h0GlobalIso_naturality",
+   2330393054,
+   {
+    "Lib.Topology.Sheaves.Cohomology.AcyclicResolutionH1": 1
+   }
+  ],
+  [
+   "TopCat.SheafH1.hom_surjective_of_global_surjective",
+   4216862448,
+   {
+    "Lib.Topology.Sheaves.H1Vanishing.Flasque": 1
+   }
+  ],
+  [
+   "TopCat.SheafH1.unitSheaf",
+   2370880022,
+   {
+    "Lib.Topology.Sheaves.Cohomology.AcyclicResolutionH1": 1
+   }
+  ],
+  [
+   "TopCat.SheafH1.unitSheaf._proof_1",
+   1952722572,
+   {
+    "Lib.Topology.Sheaves.Cohomology.AcyclicResolutionH1": 1
+   }
+  ],
+  [
+   "TopCat.SheafificationLocal.sheaf._proof_1",
+   982773303,
+   {
+    "Lib.Topology.Sheaves.SheafificationLocal": 1
+   }
+  ],
+  [
+   "TopCat.SheafificationPushforward.liftToPushforward",
+   3331694622,
+   {
+    "Lib.Topology.Sheaves.SheafificationPushforward": 1
+   }
+  ],
+  [
+   "TopCat.SheafificationPushforward.liftToPushforward_hom_ext",
+   1578858348,
+   {
+    "Lib.Topology.Sheaves.SheafificationPushforward": 1
+   }
+  ],
+  [
+   "TopCat.SheafificationPushforward.sheafification",
+   1661868888,
+   {
+    "Lib.Topology.Sheaves.SheafificationPushforward": 1
+   }
+  ],
+  [
+   "TopCat.SheafificationPushforward.sheafification._proof_1",
+   2410260907,
+   {
+    "Lib.Topology.Sheaves.SheafificationPushforward": 1
+   }
+  ],
+  [
+   "TopCat.SheafificationPushforward.sheafifyPullback",
+   1492508023,
+   {
+    "Lib.Topology.Sheaves.SheafificationPushforward": 1
+   }
+  ],
+  [
+   "TopCat.SheafificationPushforward.sheafifyPullback_naturality",
+   2976981377,
+   {
+    "Lib.Topology.Sheaves.SheafificationPushforward": 1
+   }
+  ],
+  [
+   "TopCat.SheafificationPushforward.toSheafify_liftToPushforward",
+   977706729,
+   {
+    "Lib.Topology.Sheaves.SheafificationPushforward": 1
+   }
+  ],
+  [
+   "TopCat.SheafificationPushforward.toSheafify_liftToPushforward_assoc",
+   3337538358,
+   {
+    "Lib.Topology.Sheaves.SheafificationPushforward": 1
+   }
+  ],
+  [
+   "TopCat.SheafificationPushforward.toSheafify_sheafifyPullback",
+   918953869,
+   {
+    "Lib.Topology.Sheaves.SheafificationPushforward": 1
+   }
+  ],
+  [
+   "TopCat.SheafificationPushforward.toSheafify_sheafifyPullback_assoc",
+   1124256608,
+   {
+    "Lib.Topology.Sheaves.SheafificationPushforward": 1
+   }
+  ],
+  [
+   "TopCat.SingularCochainSheaf.SmallKernelGlobal._proof_1",
+   1635492264,
+   {
+    "Lib.Topology.Sheaves.SingularCochainSheaf.GlobalUnitPositive": 1
+   }
+  ],
+  [
+   "TopCat.SingularCochainSheaf.SmallKernelGlobalOne",
+   2853667931,
+   {
+    "Lib.Topology.Sheaves.SingularCochainSheaf.GlobalUnitH1Criterion": 1
+   }
+  ],
+  [
+   "TopCat.SingularCochainSheaf.cochainPullbackComplex",
+   2772279696,
+   {
+    "Lib.Topology.Sheaves.SingularCochainSheaf.Pullback.Sheaf": 1
+   }
+  ],
+  [
+   "TopCat.SingularCochainSheaf.cochainPullbackComplex_f",
+   519947003,
+   {
+    "Lib.Topology.Sheaves.SingularCochainSheaf.Pullback.Sheaf": 1
+   }
+  ],
+  [
+   "TopCat.SingularCochainSheaf.complexSheaf_exactAt_one",
+   4202833314,
+   {
+    "Lib.Topology.Sheaves.SingularCochainSheaf.LocalExactH1": 1
+   }
+  ],
+  [
+   "TopCat.SingularCochainSheaf.constant_sheafifyPullback",
+   1085392853,
+   {
+    "Lib.Topology.Sheaves.SingularCochainSheaf.Pullback.Sheaf": 1
+   }
+  ],
+  [
+   "TopCat.SingularCochainSheaf.exists_restriction_primitive_one",
+   2978944004,
+   {
+    "Lib.Topology.Sheaves.SingularCochainSheaf.LocalExactH1": 1
+   }
+  ],
+  [
+   "TopCat.SingularCochainSheaf.globalCochainComparison_boundary_detect_one",
+   3391271970,
+   {
+    "Lib.Topology.Sheaves.SingularCochainSheaf.GlobalUnitH1Criterion": 1
+   }
+  ],
+  [
+   "TopCat.SingularCochainSheaf.globalCochainComparison_cycle_lift_one",
+   427633943,
+   {
+    "Lib.Topology.Sheaves.SingularCochainSheaf.GlobalUnitH1Criterion": 1
+   }
+  ],
+  [
+   "TopCat.SingularCochainSheaf.globalCochainComparison_homology_isIso_one",
+   1368178130,
+   {
+    "Lib.Topology.Sheaves.SingularCochainSheaf.GlobalUnitH1": 1
+   }
+  ],
+  [
+   "TopCat.SingularCochainSheaf.globalCochainComparison_homology_isIso_one_of_small_chains",
+   1263426664,
+   {
+    "Lib.Topology.Sheaves.SingularCochainSheaf.GlobalUnitH1Criterion": 1
+   }
+  ],
+  [
+   "TopCat.SingularCochainSheaf.globalCochainComplex._proof_3",
+   3204230439,
+   {
+    "Lib.Topology.Sheaves.SingularCochainSheaf.GlobalResolutionH1": 1
+   }
+  ],
+  [
+   "TopCat.SingularCochainSheaf.globalUnitSurjective",
+   2657879278,
+   {
+    "Lib.Topology.Sheaves.SingularCochainSheaf.GlobalUnitH1": 1
+   }
+  ],
+  [
+   "TopCat.SingularCochainSheaf.resolutionGlobalComplexIso._proof_2",
+   1917781910,
+   {
+    "Lib.Topology.Sheaves.SingularCochainSheaf.ResolutionPositive": 1
+   }
+  ],
+  [
+   "TopCat.SingularCochainSheaf.sheafification._proof_1",
+   2410260907,
+   {
+    "Lib.Topology.Sheaves.SingularCochainSheaf.Sheaf": 1
+   }
+  ],
+  [
+   "TopCat.SingularCochainSheaf.sheafification_additive._proof_1",
+   3050004357,
+   {
+    "Lib.Topology.Sheaves.SingularCochainSheaf.Sheaf": 1
+   }
+  ],
+  [
+   "TopCat.SingularCochainSheaf.smallKernelGlobalOne",
+   3425931971,
+   {
+    "Lib.Topology.Sheaves.SingularCochainSheaf.GlobalKernelSmall": 1
+   }
+  ],
+  [
+   "TopCat.SingularCochainSheaf.zeroCochainDirectIsoFunctions",
+   1964677826,
+   {
+    "Lib.Topology.Sheaves.SingularCochainSheaf.DegreeZeroAcyclic": 1
+   }
+  ],
+  [
+   "TopCat.SingularCochainSheaf.zeroCochainEvaluationHom",
+   3526260347,
+   {
+    "Lib.Topology.Sheaves.SingularCochainSheaf.DegreeZeroFunctions": 1
+   }
+  ],
+  [
+   "TopCat.SingularCochainSheaf.zeroCochainEvaluationHom._proof_1",
+   4050084400,
+   {
+    "Lib.Topology.Sheaves.SingularCochainSheaf.DegreeZeroFunctions": 1
+   }
+  ],
+  [
+   "TopCat.SingularCochainSheaf.zeroCochainEvaluationInv",
+   998586415,
+   {
+    "Lib.Topology.Sheaves.SingularCochainSheaf.DegreeZeroFunctions": 1
+   }
+  ],
+  [
+   "TopCat.SingularCochainSheaf.zeroCochainEvaluationInv._proof_1",
+   1451397707,
+   {
+    "Lib.Topology.Sheaves.SingularCochainSheaf.DegreeZeroFunctions": 1
+   }
+  ],
+  [
+   "TopCat.SingularCochainSheaf.zeroCochainPresheafIsoFunctions",
+   1489630579,
+   {
+    "Lib.Topology.Sheaves.SingularCochainSheaf.DegreeZeroFunctions": 1
+   }
+  ],
+  [
+   "TopCat.SingularCochainSheaf.zeroCochainPresheafIsoFunctions._proof_1",
+   1142212129,
+   {
+    "Lib.Topology.Sheaves.SingularCochainSheaf.DegreeZeroFunctions": 1
+   }
+  ],
+  [
+   "TopCat.SingularCochainSheaf.zeroCochainPresheafIsoFunctions._proof_2",
+   1659350532,
+   {
+    "Lib.Topology.Sheaves.SingularCochainSheaf.DegreeZeroFunctions": 1
+   }
+  ],
+  [
+   "TopCat.SingularCochainSheaf.zeroCochainSheafIsoFunctions",
+   1566727463,
+   {
+    "Lib.Topology.Sheaves.SingularCochainSheaf.DegreeZeroAcyclic": 1
+   }
+  ],
+  [
+   "TopologicalSpace.OpenCover.SetOpenCover.cechCohomologyDeltaFunctorZeroIsoGlobalSections",
+   416154755,
+   {
+    "Lib.Topology.Sheaves.Cohomology.Cech.DeltaFunctor": 1
+   }
+  ],
+  [
+   "TopologicalSpace.OpenCover.SetOpenCover.cechCohomologyDeltaFunctor_zeroIsoGlobalSections",
+   3905684751,
+   {
+    "Lib.Topology.Sheaves.Cohomology.Cech.DeltaFunctor": 1
+   }
+  ],
+  [
+   "TopologicalSpace.OpenCover.SetOpenCover.cechCohomologyToExt_app_zero",
+   1694345494,
+   {
+    "Lib.Topology.Sheaves.Cohomology.Cech.Ext": 1
+   }
+  ],
+  [
+   "TopologicalSpace.OpenCover.SetOpenCover.cechDerivedGlobalSectionsHom_app_zero",
+   1959945389,
+   {
+    "Lib.Topology.Sheaves.Cohomology.Cech.DerivedGlobalSections": 1
+   }
+  ],
+  [
+   "TopologicalSpace.OpenCover.SetOpenCover.cechDerivedGlobalSectionsHom_unique",
+   973172723,
+   {
+    "Lib.Topology.Sheaves.Cohomology.Cech.DerivedGlobalSections": 1
+   }
+  ],
+  [
+   "TopologicalSpace.OpenCover.SetOpenCover.cechToDerivedGlobalSections_app_zero",
+   3368289134,
+   {
+    "Lib.Topology.Sheaves.Cohomology.Cech.DerivedGlobalSections": 1
+   }
+  ],
+  [
+   "TopologicalSpace.OpenCover.SetOpenCover.cechToDerivedGlobalSections_unique",
+   4090128,
+   {
+    "Lib.Topology.Sheaves.Cohomology.Cech.DerivedGlobalSections": 1
+   }
+  ],
+  [
+   "TopologicalSpace.OpenCover.SetOpenCover.derivedGlobalSectionsToCech_app_zero",
+   3149092915,
+   {
+    "Lib.Topology.Sheaves.Cohomology.Cech.DerivedGlobalSections": 1
+   }
+  ],
+  [
+   "TopologicalSpace.OpenCover.SetOpenCover.extToCechCohomology_app_zero",
+   2976026162,
+   {
+    "Lib.Topology.Sheaves.Cohomology.Cech.Ext": 1
+   }
+  ],
+  [
+   "TopologicalSpace.OpenCover.SetOpenCover.sheafGlobalSectionsFunctor",
+   2064024592,
+   {
+    "Lib.Topology.Sheaves.Cohomology.Cech.DeltaFunctor": 1
+   }
+  ],
+  [
+   "TopologicalSpace.OpenCover.SetOpenCover.sheafGlobalSectionsFunctor_additive",
+   330052183,
+   {
+    "Lib.Topology.Sheaves.Cohomology.Cech.DeltaFunctor": 1
+   }
+  ]
+ ],
+ "added": [
+  [
+   "CategoryTheory.Sheaf.Leray.derivedNeighborhoodGerm_eq_germ_of_localRepresentative",
+   102349466,
+   {
+    "Lib.CategoryTheory.Sites.Leray.SheafificationNeighborhoodGerm": 1
+   }
+  ],
+  [
+   "CategoryTheory.Sheaf.Leray.higherDirectImageResolutionSheafificationIso",
+   2724329243,
+   {
+    "Lib.CategoryTheory.Sites.Leray.HigherDirectImageSheafification": 1
+   }
+  ],
+  [
+   "CategoryTheory.Sheaf.Leray.integralCoyonedaPushforwardHomologyIso",
+   371112872,
+   {
+    "Lib.CategoryTheory.Sites.Leray.ResolutionAbutment": 1
+   }
+  ],
+  [
+   "CategoryTheory.Sheaf.Leray.integralCoyonedaPushforwardHomologyIso._proof_1",
+   3984544692,
+   {
+    "Lib.CategoryTheory.Sites.Leray.ResolutionAbutment": 1
+   }
+  ],
+  [
+   "CategoryTheory.Sheaf.Leray.integralCoyonedaPushforwardHomologyIso._proof_2",
+   1900112550,
+   {
+    "Lib.CategoryTheory.Sites.Leray.ResolutionAbutment": 1
+   }
+  ],
+  [
+   "CategoryTheory.Sheaf.Leray.integralCoyonedaPushforwardIso",
+   594597067,
+   {
+    "Lib.CategoryTheory.Sites.Leray.ResolutionAbutment": 1
+   }
+  ],
+  [
+   "CategoryTheory.Sheaf.Leray.integralCoyonedaPushforwardIso._proof_1",
+   3699825431,
+   {
+    "Lib.CategoryTheory.Sites.Leray.ResolutionAbutment": 1
+   }
+  ],
+  [
+   "CategoryTheory.Sheaf.Leray.mapComplexHomologyIso_sheafification_stalk_comp",
+   2251597934,
+   {
+    "Lib.CategoryTheory.Sites.Leray.SheafificationStalkCompatibility": 1
+   }
+  ],
+  [
+   "CategoryTheory.Sheaf.Leray.resolutionCohomologyIso_hom_apply",
+   2135849622,
+   {
+    "Lib.CategoryTheory.Sites.Leray.ResolutionTransgression": 1
+   }
+  ],
+  [
+   "CategoryTheory.Sheaf.Leray.resolutionDerivedHomCohomologyEquiv._proof_1",
+   3856643040,
+   {
+    "Lib.CategoryTheory.Sites.Leray.ResolutionAbutment": 1
+   }
+  ],
+  [
+   "CategoryTheory.Sheaf.Leray.resolutionDerivedHomCohomologyEquiv._proof_10",
+   94643780,
+   {
+    "Lib.CategoryTheory.Sites.Leray.ResolutionAbutment": 1
+   }
+  ],
+  [
+   "CategoryTheory.Sheaf.Leray.resolutionDerivedHomCohomologyEquiv._proof_3",
+   2784298037,
+   {
+    "Lib.CategoryTheory.Sites.Leray.ResolutionAbutment": 1
+   }
+  ],
+  [
+   "CategoryTheory.Sheaf.Leray.resolutionDerivedHomCohomologyEquiv._proof_4",
+   1873794006,
+   {
+    "Lib.CategoryTheory.Sites.Leray.ResolutionAbutment": 1
+   }
+  ],
+  [
+   "CategoryTheory.Sheaf.Leray.resolutionDerivedHomCohomologyEquiv._proof_5",
+   1051824068,
+   {
+    "Lib.CategoryTheory.Sites.Leray.ResolutionAbutment": 1
+   }
+  ],
+  [
+   "CategoryTheory.Sheaf.Leray.resolutionDerivedHomCohomologyEquiv._proof_6",
+   2460758440,
+   {
+    "Lib.CategoryTheory.Sites.Leray.ResolutionAbutment": 1
+   }
+  ],
+  [
+   "CategoryTheory.Sheaf.Leray.resolutionDerivedHomCohomologyEquiv._proof_7",
+   3584089131,
+   {
+    "Lib.CategoryTheory.Sites.Leray.ResolutionAbutment": 1
+   }
+  ],
+  [
+   "CategoryTheory.Sheaf.Leray.resolutionDerivedHomCohomologyEquiv._proof_8",
+   3186772809,
+   {
+    "Lib.CategoryTheory.Sites.Leray.ResolutionAbutment": 1
+   }
+  ],
+  [
+   "CategoryTheory.Sheaf.Leray.resolutionDerivedHomCohomologyEquiv._proof_9",
+   109186275,
+   {
+    "Lib.CategoryTheory.Sites.Leray.ResolutionAbutment": 1
+   }
+  ],
+  [
+   "CategoryTheory.Sheaf.Leray.resolutionExtZeroIso",
+   2232048292,
+   {
+    "Lib.CategoryTheory.Sites.Leray.ResolutionTransgression": 1
+   }
+  ],
+  [
+   "CategoryTheory.Sheaf.Leray.resolutionExtZeroIso._proof_1",
+   30923056,
+   {
+    "Lib.CategoryTheory.Sites.Leray.ResolutionTransgression": 1
+   }
+  ],
+  [
+   "CategoryTheory.Sheaf.Leray.resolutionExtZeroIso._proof_2",
+   3890065786,
+   {
+    "Lib.CategoryTheory.Sites.Leray.ResolutionTransgression": 1
+   }
+  ],
+  [
+   "CategoryTheory.Sheaf.Leray.resolutionExtZeroIso._proof_3",
+   4092943275,
+   {
+    "Lib.CategoryTheory.Sites.Leray.ResolutionTransgression": 1
+   }
+  ],
+  [
+   "CategoryTheory.Sheaf.Leray.resolutionExtZeroIso_hom_apply",
+   161801339,
+   {
+    "Lib.CategoryTheory.Sites.Leray.ResolutionTransgression": 1
+   }
+  ],
+  [
+   "CategoryTheory.Sheaf.Leray.resolutionExtZeroIso_inv_apply",
+   2930343941,
+   {
+    "Lib.CategoryTheory.Sites.Leray.ResolutionTransgression": 1
+   }
+  ],
+  [
+   "CategoryTheory.Sheaf.Leray.resolutionPostnikovE\u2082AddEquiv_source_coordinate",
+   2745531423,
+   {
+    "Lib.CategoryTheory.Sites.Leray.ResolutionPostnikovD2Coordinates": 1
+   }
+  ],
+  [
+   "CategoryTheory.Sheaf.Leray.resolutionPostnikovE\u2082AddEquiv_target_coordinate",
+   1857615529,
+   {
+    "Lib.CategoryTheory.Sites.Leray.ResolutionPostnikovD2Coordinates": 1
+   }
+  ],
+  [
+   "CategoryTheory.Sheaf.Leray.resolutionPostnikovE\u2082Iso._proof_1",
+   505307909,
+   {
+    "Lib.CategoryTheory.Sites.Leray.ResolutionPostnikov": 1
+   }
+  ],
+  [
+   "CategoryTheory.Sheaf.Leray.resolutionPostnikovE\u2082Iso._proof_2",
+   3890065786,
+   {
+    "Lib.CategoryTheory.Sites.Leray.ResolutionPostnikov": 1
+   }
+  ],
+  [
+   "CategoryTheory.Sheaf.Leray.resolutionPostnikovE\u2082Iso._proof_3",
+   1521652589,
+   {
+    "Lib.CategoryTheory.Sites.Leray.ResolutionPostnikov": 1
+   }
+  ],
+  [
+   "CategoryTheory.Sheaf.Leray.resolutionTransgressionAddOfResolution_apply_eq_connectingTwo",
+   3986486948,
+   {
+    "Lib.CategoryTheory.Sites.Leray.ResolutionTransgression": 1
+   }
+  ],
+  [
+   "CategoryTheory.Sheaf.Leray.resolutionTransgressionAddOfResolution_apply_ne_zero_iff_connectingTwo",
+   171281638,
+   {
+    "Lib.CategoryTheory.Sites.Leray.ResolutionTransgression": 1
+   }
+  ],
+  [
+   "CategoryTheory.Sheaf.Leray.resolutionTransgressionMorphismOfResolution._proof_2",
+   3518584317,
+   {
+    "Lib.CategoryTheory.Sites.Leray.ResolutionTransgression": 1
+   }
+  ],
+  [
+   "CategoryTheory.Sheaf.Leray.resolutionTransgressionMorphismOfResolution._proof_3",
+   1733991896,
+   {
+    "Lib.CategoryTheory.Sites.Leray.ResolutionTransgression": 1
+   }
+  ],
+  [
+   "CategoryTheory.Sheaf.Leray.resolutionTransgressionMorphismOfResolution_eq_connectingTwo",
+   931581511,
+   {
+    "Lib.CategoryTheory.Sites.Leray.ResolutionTransgression": 1
+   }
+  ],
+  [
+   "CategoryTheory.Sheaf.Leray.resolutionTransgression_apply_ne_zero_iff_connectingTwo",
+   306256542,
+   {
+    "Lib.CategoryTheory.Sites.Leray.ResolutionTransgression": 1
+   }
+  ],
+  [
+   "CategoryTheory.Sheaf.Leray.sheafHomologyIsoSheafification",
+   1873441019,
+   {
+    "Lib.CategoryTheory.Sites.Leray.HigherDirectImageSheafification": 1
+   }
+  ],
+  [
+   "CategoryTheory.Sheaf.Leray.sheafHomologyIsoSheafification._proof_1",
+   2847646233,
+   {
+    "Lib.CategoryTheory.Sites.Leray.HigherDirectImageSheafification": 1
+   }
+  ],
+  [
+   "CategoryTheory.Sheaf.Leray.sheafHomologyIsoSheafification._proof_2",
+   2905142393,
+   {
+    "Lib.CategoryTheory.Sites.Leray.HigherDirectImageSheafification": 1
+   }
+  ],
+  [
+   "CategoryTheory.Sheaf.Leray.sheafificationComplexIso",
+   3730176397,
+   {
+    "Lib.CategoryTheory.Sites.Leray.HigherDirectImageSheafification": 1
+   }
+  ],
+  [
+   "CategoryTheory.Sheaf.Leray.sheafificationComplexIso._proof_1",
+   1911810709,
+   {
+    "Lib.CategoryTheory.Sites.Leray.HigherDirectImageSheafification": 1
+   }
+  ],
+  [
+   "CategoryTheory.Sheaf.Leray.sheafificationComplexIso._proof_2",
+   462847938,
+   {
+    "Lib.CategoryTheory.Sites.Leray.HigherDirectImageSheafification": 1
+   }
+  ],
+  [
+   "CategoryTheory.Sheaf.Leray.sheafificationComplexIso_symm_hom_underlying",
+   3836598717,
+   {
+    "Lib.CategoryTheory.Sites.Leray.SheafificationStalkCompatibility": 1
+   }
+  ],
+  [
+   "CategoryTheory.Sheaf.Leray.sheafificationUnderlyingIso",
+   2574204891,
+   {
+    "Lib.CategoryTheory.Sites.Leray.HigherDirectImageSheafification": 1
+   }
+  ],
+  [
+   "CategoryTheory.Sheaf.Leray.sheafificationUnderlyingIso._proof_1",
+   2144169979,
+   {
+    "Lib.CategoryTheory.Sites.Leray.HigherDirectImageSheafification": 1
+   }
+  ],
+  [
+   "CategoryTheory.Sheaf.Leray.sheafification_preservesFiniteColimits",
+   1426156046,
+   {
+    "Lib.CategoryTheory.Sites.Leray.HigherDirectImageSheafification": 1
+   }
+  ],
+  [
+   "CategoryTheory.Sheaf.Leray.sheafification_preservesFiniteColimits._proof_1",
+   1361586750,
+   {
+    "Lib.CategoryTheory.Sites.Leray.HigherDirectImageSheafification": 1
+   }
+  ],
+  [
+   "CategoryTheory.Sheaf.Leray.sheafification_preservesFiniteLimits",
+   4282815037,
+   {
+    "Lib.CategoryTheory.Sites.Leray.HigherDirectImageSheafification": 1
+   }
+  ],
+  [
+   "CategoryTheory.Sheaf.Leray.sheafification_preservesFiniteLimits._proof_1",
+   3738631015,
+   {
+    "Lib.CategoryTheory.Sites.Leray.HigherDirectImageSheafification": 1
+   }
+  ],
+  [
+   "CategoryTheory.Sheaf.Leray.stalkHomologyPresheafIso_hom_comp_sheafificationUnit",
+   3183834260,
+   {
+    "Lib.CategoryTheory.Sites.Leray.SheafificationStalkCompatibility": 1
+   }
+  ],
+  [
+   "CategoryTheory.Sheaf.Leray.stalkSheafificationUnitNatTrans",
+   2780040683,
+   {
+    "Lib.CategoryTheory.Sites.Leray.SheafificationStalkCompatibility": 1
+   }
+  ],
+  [
+   "CategoryTheory.Sheaf.Leray.stalkSheafificationUnitNatTrans._proof_1",
+   327652226,
+   {
+    "Lib.CategoryTheory.Sites.Leray.SheafificationStalkCompatibility": 1
+   }
+  ],
+  [
+   "CategoryTheory.Sheaf.Leray.stalkSheafificationUnitNatTrans_app",
+   3109918811,
+   {
+    "Lib.CategoryTheory.Sites.Leray.SheafificationStalkCompatibility": 1
+   }
+  ],
+  [
+   "TopCat.FiniteClosedPushforward.extZeroForwardMap",
+   1827256438,
+   {
+    "Lib.Topology.Sheaves.FiniteClosedPushforward.AcyclicResolutionH1": 1
+   }
+  ],
+  [
+   "TopCat.FiniteClosedPushforward.extZeroGlobal_forward",
+   2535945452,
+   {
+    "Lib.Topology.Sheaves.FiniteClosedPushforward.AcyclicResolutionH1": 1
+   }
+  ],
+  [
+   "TopCat.FiniteClosedPushforward.h0GlobalIso_mk\u2080",
+   2054749766,
+   {
+    "Lib.Topology.Sheaves.FiniteClosedPushforward.AcyclicResolution": 1,
+    "Lib.Topology.Sheaves.FiniteClosedPushforward.AcyclicResolutionH1": 1
+   }
+  ],
+  [
+   "TopCat.FiniteClosedPushforward.h0Global_forward",
+   2008392736,
+   {
+    "Lib.Topology.Sheaves.FiniteClosedPushforward.AcyclicResolution": 1,
+    "Lib.Topology.Sheaves.FiniteClosedPushforward.AcyclicResolutionH1": 1
+   }
+  ],
+  [
+   "TopCat.FiniteClosedPushforward.indexedEvaluatedComplexForwardMap",
+   2348723861,
+   {
+    "Lib.Topology.Sheaves.FiniteClosedPushforward.AcyclicResolution": 1
+   }
+  ],
+  [
+   "TopCat.FiniteClosedPushforward.indexedExtZeroGlobal_forward",
+   729033556,
+   {
+    "Lib.Topology.Sheaves.FiniteClosedPushforward.AcyclicResolution": 1
+   }
+  ],
+  [
+   "TopCat.FiniteClosedPushforward.indexedGlobalComplexIso._proof_1",
+   853139237,
+   {
+    "Lib.Topology.Sheaves.FiniteClosedPushforward.AcyclicResolution": 1
+   }
+  ],
+  [
+   "TopCat.Sheaf.FiniteSupport.globalSectionsIsoOfSkyscraperBiprodIso",
+   1775974474,
+   {
+    "Lib.Topology.Sheaves.FiniteSupport.SkyscraperGlobalSections": 1
+   }
+  ],
+  [
+   "TopCat.Sheaf.FiniteSupport.globalSectionsIsoOfStalkwiseSkyscraperBiprod_hom_comp_fst",
+   2338024737,
+   {
+    "Lib.Topology.Sheaves.FiniteSupport.SkyscraperReconstruction": 1
+   }
+  ],
+  [
+   "TopCat.Sheaf.FiniteSupport.globalSectionsIsoOfStalkwiseSkyscraperBiprod_hom_comp_snd",
+   2397560214,
+   {
+    "Lib.Topology.Sheaves.FiniteSupport.SkyscraperReconstruction": 1
+   }
+  ],
+  [
+   "TopCat.Sheaf.FiniteSupport.sectionsBiprodIso_hom_comp_fst",
+   67955458,
+   {
+    "Lib.Topology.Sheaves.FiniteSupport.SkyscraperReconstruction": 1
+   }
+  ],
+  [
+   "TopCat.Sheaf.FiniteSupport.sectionsBiprodIso_hom_comp_fst_assoc",
+   3763296115,
+   {
+    "Lib.Topology.Sheaves.FiniteSupport.SkyscraperReconstruction": 1
+   }
+  ],
+  [
+   "TopCat.Sheaf.FiniteSupport.sectionsBiprodIso_hom_comp_snd",
+   2444850040,
+   {
+    "Lib.Topology.Sheaves.FiniteSupport.SkyscraperReconstruction": 1
+   }
+  ],
+  [
+   "TopCat.Sheaf.FiniteSupport.sectionsBiprodIso_hom_comp_snd_assoc",
+   2357009349,
+   {
+    "Lib.Topology.Sheaves.FiniteSupport.SkyscraperReconstruction": 1
+   }
+  ],
+  [
+   "TopCat.Sheaf.OpenRestriction.integralSheafFreeTopIso._proof_1",
+   2517945938,
+   {
+    "Lib.Topology.Sheaves.Cohomology.RepresentedOpenProjectiveDimension": 1
+   }
+  ],
+  [
+   "TopCat.Sheaf.OpenRestriction.integralToFreeTop",
+   2712732853,
+   {
+    "Lib.Topology.Sheaves.Cohomology.RepresentedOpenProjectiveDimension": 1
+   }
+  ],
+  [
+   "TopCat.Sheaf.OpenRestriction.integralToFreeTop.eq_1",
+   1277948716,
+   {
+    "Lib.Topology.Sheaves.Cohomology.RepresentedOpenProjectiveDimension": 1
+   }
+  ],
+  [
+   "TopCat.Sheaf.OpenRestriction.integralToFreeTop_comp_bijective",
+   2695456243,
+   {
+    "Lib.Topology.Sheaves.Cohomology.RepresentedOpenProjectiveDimension": 1
+   }
+  ],
+  [
+   "TopCat.Sheaf.OpenRestriction.unitFreeTopIso",
+   2924061422,
+   {
+    "Lib.Topology.Sheaves.Cohomology.RepresentedOpenProjectiveDimension": 1
+   }
+  ],
+  [
+   "TopCat.Sheaf.OpenRestriction.unitSheaf_hasProjectiveDimensionLT_iff_freeOpen_top",
+   668766613,
+   {
+    "Lib.Topology.Sheaves.Cohomology.RepresentedOpenProjectiveDimension": 1
+   }
+  ],
+  [
+   "TopCat.Sheaf.OpenRestriction.unitSheaf_projective_of_discreteTopology",
+   2208071912,
+   {
+    "Lib.Topology.Sheaves.Cohomology.DiscreteProjectiveDimension": 1
+   }
+  ],
+  [
+   "TopCat.Sheaf.higherDirectImage_one_derivedGlobalSections_three_four_isZero_of_homeomorph_sphereTwo",
+   3064537048,
+   {
+    "Lib.Topology.Sheaves.Cohomology.SphereTwo": 1
+   }
+  ],
+  [
+   "TopCat.Sheaf.integralSheafEquivImageIso._proof_1",
+   649609655,
+   {
+    "Lib.Topology.Sheaves.Cohomology.HomeomorphProjectiveDimension": 1
+   }
+  ],
+  [
+   "TopCat.Sheaf.sheafification._proof_1",
+   2144169979,
+   {
+    "Lib.Topology.Sheaves.Sheafification": 1
+   }
+  ],
+  [
+   "TopCat.Sheaf.sheafification_additive._proof_1",
+   3050004357,
+   {
+    "Lib.Topology.Sheaves.Sheafification": 1
+   }
+  ],
+  [
+   "TopCat.Sheaf.unitSheafEquivImageIso",
+   1404809685,
+   {
+    "Lib.Topology.Sheaves.Cohomology.HomeomorphProjectiveDimension": 1
+   }
+  ],
+  [
+   "TopCat.Sheaf.unitSheaf_hasProjectiveDimensionLT_iff_cohomology_subsingleton",
+   3825183077,
+   {
+    "Lib.Topology.Sheaves.Cohomology.ProjectiveDimension": 1
+   }
+  ],
+  [
+   "TopCat.Sheaf.unitSheaf_hasProjectiveDimensionLT_iff_of_iso",
+   1187027471,
+   {
+    "Lib.Topology.Sheaves.Cohomology.HomeomorphProjectiveDimension": 1
+   }
+  ],
+  [
+   "TopCat.SheafCohomology.AcyclicResolution.Hom.extIsoGlobalHomology_naturality",
+   1211001228,
+   {
+    "Lib.Topology.Sheaves.Cohomology.AcyclicResolution": 1
+   }
+  ],
+  [
+   "TopCat.SheafCohomology.AcyclicResolution.Hom.extZeroGlobalIso_naturality",
+   2740424028,
+   {
+    "Lib.Topology.Sheaves.Cohomology.AcyclicResolution": 1
+   }
+  ],
+  [
+   "TopCat.SheafCohomology.AcyclicResolution.Hom.extZeroGlobalIso_naturality_assoc",
+   3345072242,
+   {
+    "Lib.Topology.Sheaves.Cohomology.AcyclicResolution": 1
+   }
+  ],
+  [
+   "TopCat.SheafCohomology.AcyclicResolution.Hom.globalComplexMap.eq_1",
+   3947732198,
+   {
+    "Lib.Topology.Sheaves.Cohomology.AcyclicResolution": 1
+   }
+  ],
+  [
+   "TopCat.SheafCohomology.AcyclicResolution.extIsoGlobalHomology._proof_1",
+   1717389977,
+   {
+    "Lib.Topology.Sheaves.Cohomology.AcyclicResolution": 1
+   }
+  ],
+  [
+   "TopCat.SheafCohomology.AcyclicResolution.extZeroGlobalIso",
+   1392945026,
+   {
+    "Lib.Topology.Sheaves.Cohomology.AcyclicResolution": 1
+   }
+  ],
+  [
+   "TopCat.SheafCohomology.AcyclicResolution.extZeroGlobalIso._proof_1",
+   3285375591,
+   {
+    "Lib.Topology.Sheaves.Cohomology.AcyclicResolution": 1
+   }
+  ],
+  [
+   "TopCat.SheafCohomology.AcyclicResolution.globalComplex._proof_2",
+   2379662518,
+   {
+    "Lib.Topology.Sheaves.Cohomology.AcyclicResolution": 1
+   }
+  ],
+  [
+   "TopCat.SheafCohomology.AcyclicResolution.isAcyclicFor",
+   3656070700,
+   {
+    "Lib.Topology.Sheaves.Cohomology.AcyclicResolution": 1
+   }
+  ],
+  [
+   "TopCat.SheafH1.AcyclicResolutionH1.Hom.extZeroGlobalIso_naturality",
+   4095314956,
+   {
+    "Lib.Topology.Sheaves.Cohomology.AcyclicResolutionH1Naturality": 1
+   }
+  ],
+  [
+   "TopCat.SheafH1.AcyclicResolutionH1.Hom.globalMap._proof_2",
+   2735243860,
+   {
+    "Lib.Topology.Sheaves.Cohomology.AcyclicResolutionH1Naturality": 1
+   }
+  ],
+  [
+   "TopCat.SheafH1.AcyclicResolutionH1.extZeroGlobalIso",
+   1284352817,
+   {
+    "Lib.Topology.Sheaves.Cohomology.AcyclicResolutionH1": 1
+   }
+  ],
+  [
+   "TopCat.SheafH1.AcyclicResolutionH1.extZeroGlobalIso._proof_4",
+   1424494458,
+   {
+    "Lib.Topology.Sheaves.Cohomology.AcyclicResolutionH1": 1
+   }
+  ],
+  [
+   "TopCat.SheafH1.AcyclicResolutionH1.extZeroGlobalIso._proof_5",
+   2167159530,
+   {
+    "Lib.Topology.Sheaves.Cohomology.AcyclicResolutionH1": 1
+   }
+  ],
+  [
+   "TopCat.SheafH1.AcyclicResolutionH1.globalComplex._proof_1",
+   232075785,
+   {
+    "Lib.Topology.Sheaves.Cohomology.AcyclicResolutionH1": 1
+   }
+  ],
+  [
+   "TopCat.SheafH1.AcyclicResolutionH1.h1GlobalIso._proof_1",
+   2113544582,
+   {
+    "Lib.Topology.Sheaves.Cohomology.AcyclicResolutionH1": 1
+   }
+  ],
+  [
+   "TopCat.SheafH1.globalSectionsFunctor",
+   2064024592,
+   {
+    "Lib.Topology.Sheaves.GlobalSections": 1
+   }
+  ],
+  [
+   "TopCat.SheafH1.globalSectionsFunctor_additive",
+   1873728019,
+   {
+    "Lib.Topology.Sheaves.GlobalSections": 1
+   }
+  ],
+  [
+   "TopCat.SheafH1.h0GlobalIso",
+   2566011751,
+   {
+    "Lib.Topology.Sheaves.Cohomology.AcyclicResolutionH1": 1
+   }
+  ],
+  [
+   "TopCat.SheafH1.h0GlobalIso_naturality",
+   2676659373,
+   {
+    "Lib.Topology.Sheaves.Cohomology.AcyclicResolutionH1": 1
+   }
+  ],
+  [
+   "TopCat.SheafH1.hom_surjective_of_global_surjective",
+   3579090071,
+   {
+    "Lib.Topology.Sheaves.H1Vanishing.Flasque": 1
+   }
+  ],
+  [
+   "TopCat.SheafificationLocal.unit._proof_1",
+   1952722572,
+   {
+    "Lib.Topology.Sheaves.SheafificationLocal": 1
+   }
+  ],
+  [
+   "TopCat.SheafificationPushforward.liftToPushforward",
+   3792964910,
+   {
+    "Lib.Topology.Sheaves.SheafificationPushforward": 1
+   }
+  ],
+  [
+   "TopCat.SheafificationPushforward.liftToPushforward_hom_ext",
+   1503528319,
+   {
+    "Lib.Topology.Sheaves.SheafificationPushforward": 1
+   }
+  ],
+  [
+   "TopCat.SheafificationPushforward.sheafifyPullback",
+   3919597535,
+   {
+    "Lib.Topology.Sheaves.SheafificationPushforward": 1
+   }
+  ],
+  [
+   "TopCat.SheafificationPushforward.sheafifyPullback._proof_1",
+   2144169979,
+   {
+    "Lib.Topology.Sheaves.SheafificationPushforward": 1
+   }
+  ],
+  [
+   "TopCat.SheafificationPushforward.sheafifyPullback_naturality",
+   694752061,
+   {
+    "Lib.Topology.Sheaves.SheafificationPushforward": 1
+   }
+  ],
+  [
+   "TopCat.SheafificationPushforward.toSheafify_liftToPushforward",
+   356048199,
+   {
+    "Lib.Topology.Sheaves.SheafificationPushforward": 1
+   }
+  ],
+  [
+   "TopCat.SheafificationPushforward.toSheafify_liftToPushforward_assoc",
+   1622066727,
+   {
+    "Lib.Topology.Sheaves.SheafificationPushforward": 1
+   }
+  ],
+  [
+   "TopCat.SheafificationPushforward.toSheafify_sheafifyPullback",
+   2423975784,
+   {
+    "Lib.Topology.Sheaves.SheafificationPushforward": 1
+   }
+  ],
+  [
+   "TopCat.SheafificationPushforward.toSheafify_sheafifyPullback_assoc",
+   968163553,
+   {
+    "Lib.Topology.Sheaves.SheafificationPushforward": 1
+   }
+  ],
+  [
+   "TopCat.SingularCochainSheaf.cochainPullbackComplex",
+   1435257917,
+   {
+    "Lib.Topology.Sheaves.SingularCochainSheaf.Pullback.Sheaf": 1
+   }
+  ],
+  [
+   "TopCat.SingularCochainSheaf.cochainPullbackComplex_f",
+   2873073288,
+   {
+    "Lib.Topology.Sheaves.SingularCochainSheaf.Pullback.Sheaf": 1
+   }
+  ],
+  [
+   "TopCat.SingularCochainSheaf.constant_sheafifyPullback",
+   2131138215,
+   {
+    "Lib.Topology.Sheaves.SingularCochainSheaf.Pullback.Sheaf": 1
+   }
+  ],
+  [
+   "TopCat.SingularCochainSheaf.globalCochainComplex._proof_3",
+   235770945,
+   {
+    "Lib.Topology.Sheaves.SingularCochainSheaf.GlobalResolutionH1": 1
+   }
+  ],
+  [
+   "TopCat.SingularCochainSheaf.resolutionGlobalComplexIso._proof_2",
+   2368379193,
+   {
+    "Lib.Topology.Sheaves.SingularCochainSheaf.ResolutionPositive": 1
+   }
+  ],
+  [
+   "TopCat.SingularCochainSheaf.zeroCochainDirectIsoFunctions",
+   978502934,
+   {
+    "Lib.Topology.Sheaves.SingularCochainSheaf.DegreeZeroAcyclic": 1
+   }
+  ],
+  [
+   "TopCat.SingularCochainSheaf.zeroCochainEvaluationHom",
+   1032876090,
+   {
+    "Lib.Topology.Sheaves.SingularCochainSheaf.DegreeZeroFunctions": 1
+   }
+  ],
+  [
+   "TopCat.SingularCochainSheaf.zeroCochainEvaluationHom._proof_1",
+   2019957736,
+   {
+    "Lib.Topology.Sheaves.SingularCochainSheaf.DegreeZeroFunctions": 1
+   }
+  ],
+  [
+   "TopCat.SingularCochainSheaf.zeroCochainEvaluationInv",
+   3869719555,
+   {
+    "Lib.Topology.Sheaves.SingularCochainSheaf.DegreeZeroFunctions": 1
+   }
+  ],
+  [
+   "TopCat.SingularCochainSheaf.zeroCochainEvaluationInv._proof_1",
+   3052031662,
+   {
+    "Lib.Topology.Sheaves.SingularCochainSheaf.DegreeZeroFunctions": 1
+   }
+  ],
+  [
+   "TopCat.SingularCochainSheaf.zeroCochainPresheafIsoFunctions",
+   2336189747,
+   {
+    "Lib.Topology.Sheaves.SingularCochainSheaf.DegreeZeroFunctions": 1
+   }
+  ],
+  [
+   "TopCat.SingularCochainSheaf.zeroCochainPresheafIsoFunctions._proof_1",
+   2323209885,
+   {
+    "Lib.Topology.Sheaves.SingularCochainSheaf.DegreeZeroFunctions": 1
+   }
+  ],
+  [
+   "TopCat.SingularCochainSheaf.zeroCochainPresheafIsoFunctions._proof_2",
+   2560634114,
+   {
+    "Lib.Topology.Sheaves.SingularCochainSheaf.DegreeZeroFunctions": 1
+   }
+  ],
+  [
+   "TopCat.SingularCochainSheaf.zeroCochainSheafIsoFunctions",
+   519387788,
+   {
+    "Lib.Topology.Sheaves.SingularCochainSheaf.DegreeZeroAcyclic": 1
+   }
+  ],
+  [
+   "TopologicalSpace.OpenCover.SetOpenCover.cechCohomologyDeltaFunctorZeroIsoGlobalSections",
+   2380653803,
+   {
+    "Lib.Topology.Sheaves.Cohomology.Cech.DeltaFunctor": 1
+   }
+  ],
+  [
+   "TopologicalSpace.OpenCover.SetOpenCover.cechCohomologyDeltaFunctor_zeroIsoGlobalSections",
+   796444334,
+   {
+    "Lib.Topology.Sheaves.Cohomology.Cech.DeltaFunctor": 1
+   }
+  ],
+  [
+   "TopologicalSpace.OpenCover.SetOpenCover.cechCohomologyToExt_app_zero",
+   3957513292,
+   {
+    "Lib.Topology.Sheaves.Cohomology.Cech.Ext": 1
+   }
+  ],
+  [
+   "TopologicalSpace.OpenCover.SetOpenCover.cechDerivedGlobalSectionsHom_app_zero",
+   1113738163,
+   {
+    "Lib.Topology.Sheaves.Cohomology.Cech.DerivedGlobalSections": 1
+   }
+  ],
+  [
+   "TopologicalSpace.OpenCover.SetOpenCover.cechDerivedGlobalSectionsHom_unique",
+   444369603,
+   {
+    "Lib.Topology.Sheaves.Cohomology.Cech.DerivedGlobalSections": 1
+   }
+  ],
+  [
+   "TopologicalSpace.OpenCover.SetOpenCover.cechToDerivedGlobalSections_app_zero",
+   1712618044,
+   {
+    "Lib.Topology.Sheaves.Cohomology.Cech.DerivedGlobalSections": 1
+   }
+  ],
+  [
+   "TopologicalSpace.OpenCover.SetOpenCover.cechToDerivedGlobalSections_unique",
+   3347193882,
+   {
+    "Lib.Topology.Sheaves.Cohomology.Cech.DerivedGlobalSections": 1
+   }
+  ],
+  [
+   "TopologicalSpace.OpenCover.SetOpenCover.derivedGlobalSectionsToCech_app_zero",
+   1155426756,
+   {
+    "Lib.Topology.Sheaves.Cohomology.Cech.DerivedGlobalSections": 1
+   }
+  ],
+  [
+   "TopologicalSpace.OpenCover.SetOpenCover.extToCechCohomology_app_zero",
+   3680780038,
+   {
+    "Lib.Topology.Sheaves.Cohomology.Cech.Ext": 1
+   }
+  ]
+ ],
+ "changed_type_source": [
+  "CategoryTheory.Sheaf.Leray.derivedNeighborhoodGerm_eq_germ_of_localRepresentative",
+  "CategoryTheory.Sheaf.Leray.higherDirectImageResolutionSheafificationIso",
+  "CategoryTheory.Sheaf.Leray.integralCoyonedaPushforwardHomologyIso",
+  "CategoryTheory.Sheaf.Leray.integralCoyonedaPushforwardIso",
+  "CategoryTheory.Sheaf.Leray.mapComplexHomologyIso_sheafification_stalk_comp",
+  "CategoryTheory.Sheaf.Leray.resolutionCohomologyIso_hom_apply",
+  "CategoryTheory.Sheaf.Leray.resolutionExtZeroIso",
+  "CategoryTheory.Sheaf.Leray.resolutionExtZeroIso_hom_apply",
+  "CategoryTheory.Sheaf.Leray.resolutionExtZeroIso_inv_apply",
+  "CategoryTheory.Sheaf.Leray.resolutionPostnikovE\u2082AddEquiv_source_coordinate",
+  "CategoryTheory.Sheaf.Leray.resolutionPostnikovE\u2082AddEquiv_target_coordinate",
+  "CategoryTheory.Sheaf.Leray.resolutionTransgressionAddOfResolution_apply_eq_connectingTwo",
+  "CategoryTheory.Sheaf.Leray.resolutionTransgressionAddOfResolution_apply_ne_zero_iff_connectingTwo",
+  "CategoryTheory.Sheaf.Leray.resolutionTransgressionMorphismOfResolution_eq_connectingTwo",
+  "CategoryTheory.Sheaf.Leray.resolutionTransgression_apply_ne_zero_iff_connectingTwo",
+  "CategoryTheory.Sheaf.Leray.sheafHomologyIsoSheafification",
+  "CategoryTheory.Sheaf.Leray.sheafificationComplexIso",
+  "CategoryTheory.Sheaf.Leray.sheafificationComplexIso_symm_hom_underlying",
+  "CategoryTheory.Sheaf.Leray.sheafificationUnderlyingIso",
+  "CategoryTheory.Sheaf.Leray.sheafification_preservesFiniteColimits",
+  "CategoryTheory.Sheaf.Leray.sheafification_preservesFiniteLimits",
+  "CategoryTheory.Sheaf.Leray.stalkHomologyPresheafIso_hom_comp_sheafificationUnit",
+  "CategoryTheory.Sheaf.Leray.stalkSheafificationUnitNatTrans",
+  "CategoryTheory.Sheaf.Leray.stalkSheafificationUnitNatTrans_app",
+  "TopCat.FiniteClosedPushforward.extZeroForwardMap",
+  "TopCat.FiniteClosedPushforward.extZeroGlobal_forward",
+  "TopCat.FiniteClosedPushforward.h0GlobalIso_mk\u2080",
+  "TopCat.FiniteClosedPushforward.h0Global_forward",
+  "TopCat.FiniteClosedPushforward.indexedEvaluatedComplexForwardMap",
+  "TopCat.FiniteClosedPushforward.indexedExtZeroGlobal_forward",
+  "TopCat.Sheaf.FiniteSupport.globalSectionsIsoOfSkyscraperBiprodIso",
+  "TopCat.Sheaf.FiniteSupport.globalSectionsIsoOfStalkwiseSkyscraperBiprod_hom_comp_fst",
+  "TopCat.Sheaf.FiniteSupport.globalSectionsIsoOfStalkwiseSkyscraperBiprod_hom_comp_snd",
+  "TopCat.Sheaf.FiniteSupport.sectionsBiprodIso_hom_comp_fst",
+  "TopCat.Sheaf.FiniteSupport.sectionsBiprodIso_hom_comp_fst_assoc",
+  "TopCat.Sheaf.FiniteSupport.sectionsBiprodIso_hom_comp_snd",
+  "TopCat.Sheaf.FiniteSupport.sectionsBiprodIso_hom_comp_snd_assoc",
+  "TopCat.Sheaf.OpenRestriction.integralToFreeTop",
+  "TopCat.Sheaf.OpenRestriction.integralToFreeTop_comp_bijective",
+  "TopCat.Sheaf.OpenRestriction.unitFreeTopIso",
+  "TopCat.Sheaf.OpenRestriction.unitSheaf_hasProjectiveDimensionLT_iff_freeOpen_top",
+  "TopCat.Sheaf.OpenRestriction.unitSheaf_projective_of_discreteTopology",
+  "TopCat.Sheaf.higherDirectImage_one_derivedGlobalSections_three_four_isZero_of_homeomorph_sphereTwo",
+  "TopCat.Sheaf.unitSheafEquivImageIso",
+  "TopCat.Sheaf.unitSheaf_hasProjectiveDimensionLT_iff_cohomology_subsingleton",
+  "TopCat.Sheaf.unitSheaf_hasProjectiveDimensionLT_iff_of_iso",
+  "TopCat.SheafCohomology.AcyclicResolution.Hom.extIsoGlobalHomology_naturality",
+  "TopCat.SheafCohomology.AcyclicResolution.Hom.extZeroGlobalIso_naturality",
+  "TopCat.SheafCohomology.AcyclicResolution.Hom.extZeroGlobalIso_naturality_assoc",
+  "TopCat.SheafCohomology.AcyclicResolution.extZeroGlobalIso",
+  "TopCat.SheafCohomology.AcyclicResolution.isAcyclicFor",
+  "TopCat.SheafH1.AcyclicResolutionH1.Hom.extZeroGlobalIso_naturality",
+  "TopCat.SheafH1.AcyclicResolutionH1.extZeroGlobalIso",
+  "TopCat.SheafH1.h0GlobalIso_naturality",
+  "TopCat.SheafH1.hom_surjective_of_global_surjective",
+  "TopCat.SheafificationPushforward.liftToPushforward",
+  "TopCat.SheafificationPushforward.liftToPushforward_hom_ext",
+  "TopCat.SheafificationPushforward.sheafifyPullback",
+  "TopCat.SheafificationPushforward.sheafifyPullback_naturality",
+  "TopCat.SheafificationPushforward.toSheafify_liftToPushforward",
+  "TopCat.SheafificationPushforward.toSheafify_liftToPushforward_assoc",
+  "TopCat.SheafificationPushforward.toSheafify_sheafifyPullback",
+  "TopCat.SheafificationPushforward.toSheafify_sheafifyPullback_assoc",
+  "TopCat.SingularCochainSheaf.constant_sheafifyPullback",
+  "TopCat.SingularCochainSheaf.zeroCochainDirectIsoFunctions",
+  "TopCat.SingularCochainSheaf.zeroCochainEvaluationHom",
+  "TopCat.SingularCochainSheaf.zeroCochainEvaluationInv",
+  "TopCat.SingularCochainSheaf.zeroCochainPresheafIsoFunctions",
+  "TopCat.SingularCochainSheaf.zeroCochainSheafIsoFunctions",
+  "TopologicalSpace.OpenCover.SetOpenCover.cechCohomologyDeltaFunctorZeroIsoGlobalSections",
+  "TopologicalSpace.OpenCover.SetOpenCover.cechCohomologyDeltaFunctor_zeroIsoGlobalSections",
+  "TopologicalSpace.OpenCover.SetOpenCover.cechCohomologyToExt_app_zero",
+  "TopologicalSpace.OpenCover.SetOpenCover.cechDerivedGlobalSectionsHom_app_zero",
+  "TopologicalSpace.OpenCover.SetOpenCover.cechDerivedGlobalSectionsHom_unique",
+  "TopologicalSpace.OpenCover.SetOpenCover.cechToDerivedGlobalSections_app_zero",
+  "TopologicalSpace.OpenCover.SetOpenCover.cechToDerivedGlobalSections_unique",
+  "TopologicalSpace.OpenCover.SetOpenCover.derivedGlobalSectionsToCech_app_zero",
+  "TopologicalSpace.OpenCover.SetOpenCover.extToCechCohomology_app_zero"
+ ],
+ "changed_type_proof_naming": [
+  "TopCat.SheafH1.globalSectionsFunctor",
+  "TopCat.SheafH1.globalSectionsFunctor_additive",
+  "TopCat.SheafH1.h0GlobalIso",
+  "TopCat.SingularCochainSheaf.cochainPullbackComplex",
+  "TopCat.SingularCochainSheaf.cochainPullbackComplex_f"
+ ],
+ "changed_type_accepted": [],
+ "added_accepted": [],
+ "accept_without_effect": [],
+ "changed_type_all": [
+  "CategoryTheory.Sheaf.Leray.derivedNeighborhoodGerm_eq_germ_of_localRepresentative",
+  "CategoryTheory.Sheaf.Leray.higherDirectImageResolutionSheafificationIso",
+  "CategoryTheory.Sheaf.Leray.integralCoyonedaPushforwardHomologyIso",
+  "CategoryTheory.Sheaf.Leray.integralCoyonedaPushforwardHomologyIso._proof_1",
+  "CategoryTheory.Sheaf.Leray.integralCoyonedaPushforwardHomologyIso._proof_2",
+  "CategoryTheory.Sheaf.Leray.integralCoyonedaPushforwardIso",
+  "CategoryTheory.Sheaf.Leray.integralCoyonedaPushforwardIso._proof_1",
+  "CategoryTheory.Sheaf.Leray.mapComplexHomologyIso_sheafification_stalk_comp",
+  "CategoryTheory.Sheaf.Leray.resolutionCohomologyIso_hom_apply",
+  "CategoryTheory.Sheaf.Leray.resolutionDerivedHomCohomologyEquiv._proof_1",
+  "CategoryTheory.Sheaf.Leray.resolutionDerivedHomCohomologyEquiv._proof_3",
+  "CategoryTheory.Sheaf.Leray.resolutionDerivedHomCohomologyEquiv._proof_4",
+  "CategoryTheory.Sheaf.Leray.resolutionDerivedHomCohomologyEquiv._proof_5",
+  "CategoryTheory.Sheaf.Leray.resolutionDerivedHomCohomologyEquiv._proof_6",
+  "CategoryTheory.Sheaf.Leray.resolutionDerivedHomCohomologyEquiv._proof_7",
+  "CategoryTheory.Sheaf.Leray.resolutionDerivedHomCohomologyEquiv._proof_8",
+  "CategoryTheory.Sheaf.Leray.resolutionDerivedHomCohomologyEquiv._proof_9",
+  "CategoryTheory.Sheaf.Leray.resolutionExtZeroIso",
+  "CategoryTheory.Sheaf.Leray.resolutionExtZeroIso._proof_1",
+  "CategoryTheory.Sheaf.Leray.resolutionExtZeroIso._proof_2",
+  "CategoryTheory.Sheaf.Leray.resolutionExtZeroIso_hom_apply",
+  "CategoryTheory.Sheaf.Leray.resolutionExtZeroIso_inv_apply",
+  "CategoryTheory.Sheaf.Leray.resolutionPostnikovE\u2082AddEquiv_source_coordinate",
+  "CategoryTheory.Sheaf.Leray.resolutionPostnikovE\u2082AddEquiv_target_coordinate",
+  "CategoryTheory.Sheaf.Leray.resolutionPostnikovE\u2082Iso._proof_1",
+  "CategoryTheory.Sheaf.Leray.resolutionTransgressionAddOfResolution_apply_eq_connectingTwo",
+  "CategoryTheory.Sheaf.Leray.resolutionTransgressionAddOfResolution_apply_ne_zero_iff_connectingTwo",
+  "CategoryTheory.Sheaf.Leray.resolutionTransgressionMorphismOfResolution_eq_connectingTwo",
+  "CategoryTheory.Sheaf.Leray.resolutionTransgression_apply_ne_zero_iff_connectingTwo",
+  "CategoryTheory.Sheaf.Leray.sheafHomologyIsoSheafification",
+  "CategoryTheory.Sheaf.Leray.sheafHomologyIsoSheafification._proof_1",
+  "CategoryTheory.Sheaf.Leray.sheafHomologyIsoSheafification._proof_2",
+  "CategoryTheory.Sheaf.Leray.sheafificationComplexIso",
+  "CategoryTheory.Sheaf.Leray.sheafificationComplexIso._proof_1",
+  "CategoryTheory.Sheaf.Leray.sheafificationComplexIso._proof_2",
+  "CategoryTheory.Sheaf.Leray.sheafificationComplexIso_symm_hom_underlying",
+  "CategoryTheory.Sheaf.Leray.sheafificationUnderlyingIso",
+  "CategoryTheory.Sheaf.Leray.sheafification_preservesFiniteColimits",
+  "CategoryTheory.Sheaf.Leray.sheafification_preservesFiniteColimits._proof_1",
+  "CategoryTheory.Sheaf.Leray.sheafification_preservesFiniteLimits",
+  "CategoryTheory.Sheaf.Leray.sheafification_preservesFiniteLimits._proof_1",
+  "CategoryTheory.Sheaf.Leray.stalkHomologyPresheafIso_hom_comp_sheafificationUnit",
+  "CategoryTheory.Sheaf.Leray.stalkSheafificationUnitNatTrans",
+  "CategoryTheory.Sheaf.Leray.stalkSheafificationUnitNatTrans._proof_1",
+  "CategoryTheory.Sheaf.Leray.stalkSheafificationUnitNatTrans_app",
+  "TopCat.FiniteClosedPushforward.extZeroForwardMap",
+  "TopCat.FiniteClosedPushforward.extZeroGlobal_forward",
+  "TopCat.FiniteClosedPushforward.h0GlobalIso_mk\u2080",
+  "TopCat.FiniteClosedPushforward.h0Global_forward",
+  "TopCat.FiniteClosedPushforward.indexedEvaluatedComplexForwardMap",
+  "TopCat.FiniteClosedPushforward.indexedExtZeroGlobal_forward",
+  "TopCat.FiniteClosedPushforward.indexedGlobalComplexIso._proof_1",
+  "TopCat.Sheaf.FiniteSupport.globalSectionsIsoOfSkyscraperBiprodIso",
+  "TopCat.Sheaf.FiniteSupport.globalSectionsIsoOfStalkwiseSkyscraperBiprod_hom_comp_fst",
+  "TopCat.Sheaf.FiniteSupport.globalSectionsIsoOfStalkwiseSkyscraperBiprod_hom_comp_snd",
+  "TopCat.Sheaf.FiniteSupport.sectionsBiprodIso_hom_comp_fst",
+  "TopCat.Sheaf.FiniteSupport.sectionsBiprodIso_hom_comp_fst_assoc",
+  "TopCat.Sheaf.FiniteSupport.sectionsBiprodIso_hom_comp_snd",
+  "TopCat.Sheaf.FiniteSupport.sectionsBiprodIso_hom_comp_snd_assoc",
+  "TopCat.Sheaf.OpenRestriction.integralToFreeTop",
+  "TopCat.Sheaf.OpenRestriction.integralToFreeTop.eq_1",
+  "TopCat.Sheaf.OpenRestriction.integralToFreeTop_comp_bijective",
+  "TopCat.Sheaf.OpenRestriction.unitFreeTopIso",
+  "TopCat.Sheaf.OpenRestriction.unitSheaf_hasProjectiveDimensionLT_iff_freeOpen_top",
+  "TopCat.Sheaf.OpenRestriction.unitSheaf_projective_of_discreteTopology",
+  "TopCat.Sheaf.higherDirectImage_one_derivedGlobalSections_three_four_isZero_of_homeomorph_sphereTwo",
+  "TopCat.Sheaf.unitSheafEquivImageIso",
+  "TopCat.Sheaf.unitSheaf_hasProjectiveDimensionLT_iff_cohomology_subsingleton",
+  "TopCat.Sheaf.unitSheaf_hasProjectiveDimensionLT_iff_of_iso",
+  "TopCat.SheafCohomology.AcyclicResolution.Hom.extIsoGlobalHomology_naturality",
+  "TopCat.SheafCohomology.AcyclicResolution.Hom.extZeroGlobalIso_naturality",
+  "TopCat.SheafCohomology.AcyclicResolution.Hom.extZeroGlobalIso_naturality_assoc",
+  "TopCat.SheafCohomology.AcyclicResolution.Hom.globalComplexMap.eq_1",
+  "TopCat.SheafCohomology.AcyclicResolution.extIsoGlobalHomology._proof_1",
+  "TopCat.SheafCohomology.AcyclicResolution.extZeroGlobalIso",
+  "TopCat.SheafCohomology.AcyclicResolution.extZeroGlobalIso._proof_1",
+  "TopCat.SheafCohomology.AcyclicResolution.globalComplex._proof_2",
+  "TopCat.SheafCohomology.AcyclicResolution.isAcyclicFor",
+  "TopCat.SheafH1.AcyclicResolutionH1.Hom.extZeroGlobalIso_naturality",
+  "TopCat.SheafH1.AcyclicResolutionH1.Hom.globalMap._proof_2",
+  "TopCat.SheafH1.AcyclicResolutionH1.extZeroGlobalIso",
+  "TopCat.SheafH1.AcyclicResolutionH1.extZeroGlobalIso._proof_4",
+  "TopCat.SheafH1.AcyclicResolutionH1.extZeroGlobalIso._proof_5",
+  "TopCat.SheafH1.AcyclicResolutionH1.globalComplex._proof_1",
+  "TopCat.SheafH1.AcyclicResolutionH1.h1GlobalIso._proof_1",
+  "TopCat.SheafH1.globalSectionsFunctor",
+  "TopCat.SheafH1.globalSectionsFunctor_additive",
+  "TopCat.SheafH1.h0GlobalIso",
+  "TopCat.SheafH1.h0GlobalIso_naturality",
+  "TopCat.SheafH1.hom_surjective_of_global_surjective",
+  "TopCat.SheafificationPushforward.liftToPushforward",
+  "TopCat.SheafificationPushforward.liftToPushforward_hom_ext",
+  "TopCat.SheafificationPushforward.sheafifyPullback",
+  "TopCat.SheafificationPushforward.sheafifyPullback_naturality",
+  "TopCat.SheafificationPushforward.toSheafify_liftToPushforward",
+  "TopCat.SheafificationPushforward.toSheafify_liftToPushforward_assoc",
+  "TopCat.SheafificationPushforward.toSheafify_sheafifyPullback",
+  "TopCat.SheafificationPushforward.toSheafify_sheafifyPullback_assoc",
+  "TopCat.SingularCochainSheaf.cochainPullbackComplex",
+  "TopCat.SingularCochainSheaf.cochainPullbackComplex_f",
+  "TopCat.SingularCochainSheaf.constant_sheafifyPullback",
+  "TopCat.SingularCochainSheaf.globalCochainComplex._proof_3",
+  "TopCat.SingularCochainSheaf.resolutionGlobalComplexIso._proof_2",
+  "TopCat.SingularCochainSheaf.zeroCochainDirectIsoFunctions",
+  "TopCat.SingularCochainSheaf.zeroCochainEvaluationHom",
+  "TopCat.SingularCochainSheaf.zeroCochainEvaluationHom._proof_1",
+  "TopCat.SingularCochainSheaf.zeroCochainEvaluationInv",
+  "TopCat.SingularCochainSheaf.zeroCochainEvaluationInv._proof_1",
+  "TopCat.SingularCochainSheaf.zeroCochainPresheafIsoFunctions",
+  "TopCat.SingularCochainSheaf.zeroCochainPresheafIsoFunctions._proof_1",
+  "TopCat.SingularCochainSheaf.zeroCochainPresheafIsoFunctions._proof_2",
+  "TopCat.SingularCochainSheaf.zeroCochainSheafIsoFunctions",
+  "TopologicalSpace.OpenCover.SetOpenCover.cechCohomologyDeltaFunctorZeroIsoGlobalSections",
+  "TopologicalSpace.OpenCover.SetOpenCover.cechCohomologyDeltaFunctor_zeroIsoGlobalSections",
+  "TopologicalSpace.OpenCover.SetOpenCover.cechCohomologyToExt_app_zero",
+  "TopologicalSpace.OpenCover.SetOpenCover.cechDerivedGlobalSectionsHom_app_zero",
+  "TopologicalSpace.OpenCover.SetOpenCover.cechDerivedGlobalSectionsHom_unique",
+  "TopologicalSpace.OpenCover.SetOpenCover.cechToDerivedGlobalSections_app_zero",
+  "TopologicalSpace.OpenCover.SetOpenCover.cechToDerivedGlobalSections_unique",
+  "TopologicalSpace.OpenCover.SetOpenCover.derivedGlobalSectionsToCech_app_zero",
+  "TopologicalSpace.OpenCover.SetOpenCover.extToCechCohomology_app_zero"
+ ],
+ "moves": [
+  [
+   "Lib.Topology.Sheaves.SingularCochainSheaf.GlobalUnitH1Criterion",
+   "Lib.Topology.Sheaves.SingularCochainSheaf.GlobalUnitPredicates",
+   3
+  ],
+  [
+   "Lib.Topology.Sheaves.SingularCochainSheaf.GlobalUnitPositive",
+   "Lib.Topology.Sheaves.SingularCochainSheaf.GlobalKernelSmall",
+   1
+  ],
+  [
+   "Lib.Topology.Sheaves.SingularCochainSheaf.GlobalUnitPositive",
+   "Lib.Topology.Sheaves.SingularCochainSheaf.GlobalUnitPredicates",
+   1
+  ],
+  [
+   "Lib.Topology.Sheaves.SingularCochainSheaf.LocalExactH1",
+   "Lib.Topology.Sheaves.SingularCochainSheaf.LocalExactPositive",
+   2
+  ],
+  [
+   "Lib.Topology.Sheaves.SingularCochainSheaf.Sheaf",
+   "Lib.Topology.Sheaves.Sheafification",
+   2
+  ]
+ ],
+ "ambiguous": [],
+ "auxiliary_moved": 1,
+ "verdict": "FAIL"
+}

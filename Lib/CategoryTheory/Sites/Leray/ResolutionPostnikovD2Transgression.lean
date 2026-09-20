@@ -60,15 +60,15 @@ lemma resolutionPostnikovE₂_d₂_eq_transgression
   have hgeneric :
       coyonedaPostnikovD₂TargetExt
           ((pushedResolution f I).extend ComplexShape.embeddingUpNat)
-          (integralSheaf Y) q
+          (TopCat.ConstantSheaf.integralSheaf Y) q
           ((((resolutionPostnikovSpectralSequence f I).page 2).d
             (0, q + 1) (2, q)).hom x) =
         (homologyTwoStepResolutionInt
           ((pushedResolution f I).extend ComplexShape.embeddingUpNat)
-          (q : ℤ)).connectingTwo (integralSheaf Y)
+          (q : ℤ)).connectingTwo (TopCat.ConstantSheaf.integralSheaf Y)
             (Ext.mk₀ (coyonedaPostnikovD₂SourceHom
               ((pushedResolution f I).extend ComplexShape.embeddingUpNat)
-              (integralSheaf Y) q x)) := by
+              (TopCat.ConstantSheaf.integralSheaf Y) q x)) := by
     exact coyonedaPostnikovD₂TargetExt_d₂ _ _ _ _
   apply (resolutionCohomologyIso f I q 2).addCommGroupIsoToAddEquiv.symm.injective
   rw [Iso.addCommGroupIsoToAddEquiv_symm_apply,
@@ -78,10 +78,10 @@ lemma resolutionPostnikovE₂_d₂_eq_transgression
   erw [Iso.hom_inv_id_apply]
   rw [hgeneric]
   rw [← homologyTwoStepResolutionExtendUpNat_connectingTwo
-    (pushedResolution f I) q (integralSheaf Y)
+    (pushedResolution f I) q (TopCat.ConstantSheaf.integralSheaf Y)
       (Ext.mk₀ (coyonedaPostnikovD₂SourceHom
         ((pushedResolution f I).extend ComplexShape.embeddingUpNat)
-        (integralSheaf Y) q x))]
+        (TopCat.ConstantSheaf.integralSheaf Y) q x))]
   rw [resolutionPostnikovE₂AddEquiv_source_coordinate]
   simp
 

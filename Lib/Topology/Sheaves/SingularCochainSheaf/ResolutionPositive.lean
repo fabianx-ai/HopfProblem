@@ -98,7 +98,7 @@ def resolutionGlobalComplexIso (hLC : LocallyContractibleSpace X) :
     TopCat.SheafCohomology.AcyclicResolution.globalComplex
         (resolution X A hLC) ≅
       globalCochainComplex X A :=
-  ((TopCat.SheafH1.globalSectionsFunctor X).mapHomologicalComplex
+  ((TopCat.Sheaf.globalSectionsFunctor X).mapHomologicalComplex
       (ComplexShape.up ℕ)).mapIso
     (exactAugmentedComplex X A hLC).resolutionComplexIso
 

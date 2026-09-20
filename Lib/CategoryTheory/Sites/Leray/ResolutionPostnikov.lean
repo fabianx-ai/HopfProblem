@@ -70,7 +70,7 @@ def pushedResolutionDerivedObject {F : AbelianSheaf X} (I : InjectiveResolution 
 
 /-- The integral sheaf in degree zero, as an object of the derived category. -/
 abbrev integralDerivedObject (Y : TopCat.{0}) : DerivedCategory (AbelianSheaf Y) :=
-  (DerivedCategory.singleFunctor (AbelianSheaf Y) 0).obj (integralSheaf Y)
+  (DerivedCategory.singleFunctor (AbelianSheaf Y) 0).obj (TopCat.ConstantSheaf.integralSheaf Y)
 
 /-- A pushed natural-number-graded resolution represents a nonnegative derived object. -/
 instance pushedResolutionDerivedObject_isGE {F : AbelianSheaf X}
@@ -181,7 +181,7 @@ def resolutionPostnikovE₂Iso {F : AbelianSheaf X}
   resolutionPostnikovE₂PageIso f I p q ≪≫
     (preadditiveCoyoneda.obj (Opposite.op (integralDerivedObject Y))).mapIso
       (resolutionPostnikovShiftedSliceHigherDirectImageIso f I p q) ≪≫
-    ((Ext.homAddEquiv (X := integralSheaf Y)
+    ((Ext.homAddEquiv (X := TopCat.ConstantSheaf.integralSheaf Y)
       (Y := higherDirectImageSheaf f F q) (n := p)).symm.trans
         AddEquiv.ulift.symm).toAddCommGrpIso
 

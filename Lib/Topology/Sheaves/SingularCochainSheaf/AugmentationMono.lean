@@ -79,11 +79,11 @@ theorem sheafAugmentation_mono : Mono (sheafAugmentation X A) := by
   have hsquare : e₁.hom ≫ K.map (sheafAugmentation X A).hom =
       K.map (presheafAugmentation X A) ≫ e₂.hom := by
     change K.map (TopCat.ConstantSheaf.unit X A) ≫
-        K.map ((sheafification X).map (presheafAugmentation X A)).hom =
+        K.map ((TopCat.Sheaf.sheafification X).map (presheafAugmentation X A)).hom =
       K.map (presheafAugmentation X A) ≫ K.map (unit X A 0)
     calc
       _ = K.map (TopCat.ConstantSheaf.unit X A ≫
-          ((sheafification X).map (presheafAugmentation X A)).hom) :=
+          ((TopCat.Sheaf.sheafification X).map (presheafAugmentation X A)).hom) :=
         (K.map_comp _ _).symm
       _ = K.map (presheafAugmentation X A ≫ unit X A 0) :=
         congrArg K.map (toSheafify_naturality (Opens.grothendieckTopology X)

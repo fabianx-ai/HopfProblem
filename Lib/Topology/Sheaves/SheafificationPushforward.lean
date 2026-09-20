@@ -7,6 +7,7 @@ SPDX-License-Identifier: Apache-2.0
 module
 
 public import Mathlib.Algebra.Category.Grp.FilteredColimits
+public import Lib.Topology.Sheaves.Sheafification
 public import Mathlib.Algebra.Category.Grp.Colimits
 public import Mathlib.Algebra.Category.Grp.Limits
 public import Mathlib.CategoryTheory.Sites.ConcreteSheafification
@@ -37,11 +38,6 @@ namespace TopCat.SheafificationPushforward
 
 universe u
 
-/-- Sheafification of presheaves of abelian groups on the open-set site of `X`. -/
-abbrev sheafification (X : TopCat.{u}) :
-    TopCat.Presheaf AddCommGrpCat.{u} X ⥤ TopCat.Sheaf AddCommGrpCat.{u} X :=
-  presheafToSheaf (Opens.grothendieckTopology X) AddCommGrpCat.{u}
-
 variable {X Y : TopCat.{u}} (f : X ⟶ Y)
 
 /-- The unique extension of a presheaf map `P ⟶ f_*F` into a sheaf along the sheafification
@@ -49,7 +45,7 @@ unit. -/
 def liftToPushforward {P : TopCat.Presheaf AddCommGrpCat.{u} Y}
     (F : TopCat.Sheaf AddCommGrpCat.{u} X)
     (η : P ⟶ ((TopCat.Sheaf.pushforward AddCommGrpCat.{u} f).obj F).obj) :
-    (sheafification Y).obj P ⟶ (TopCat.Sheaf.pushforward AddCommGrpCat.{u} f).obj F :=
+    (TopCat.Sheaf.sheafification Y).obj P ⟶ (TopCat.Sheaf.pushforward AddCommGrpCat.{u} f).obj F :=
   ⟨CategoryTheory.sheafifyLift (Opens.grothendieckTopology Y) η
     ((TopCat.Sheaf.pushforward AddCommGrpCat.{u} f).obj F).property⟩
 
@@ -66,7 +62,7 @@ theorem toSheafify_liftToPushforward {P : TopCat.Presheaf AddCommGrpCat.{u} Y}
 unit. -/
 theorem liftToPushforward_hom_ext {P : TopCat.Presheaf AddCommGrpCat.{u} Y}
     {F : TopCat.Sheaf AddCommGrpCat.{u} X}
-    {a b : (sheafification Y).obj P ⟶
+    {a b : (TopCat.Sheaf.sheafification Y).obj P ⟶
       (TopCat.Sheaf.pushforward AddCommGrpCat.{u} f).obj F}
     (h : toSheafify (Opens.grothendieckTopology Y) P ≫ a.hom =
       toSheafify (Opens.grothendieckTopology Y) P ≫ b.hom) : a = b := by
@@ -78,9 +74,9 @@ theorem liftToPushforward_hom_ext {P : TopCat.Presheaf AddCommGrpCat.{u} Y}
 def sheafifyPullback {P : TopCat.Presheaf AddCommGrpCat.{u} Y}
     {Q : TopCat.Presheaf AddCommGrpCat.{u} X}
     (η : P ⟶ (TopCat.Presheaf.pushforward AddCommGrpCat.{u} f).obj Q) :
-    (sheafification Y).obj P ⟶
-      (TopCat.Sheaf.pushforward AddCommGrpCat.{u} f).obj ((sheafification X).obj Q) :=
-  liftToPushforward f ((sheafification X).obj Q)
+    (TopCat.Sheaf.sheafification Y).obj P ⟶
+      (TopCat.Sheaf.pushforward AddCommGrpCat.{u} f).obj ((TopCat.Sheaf.sheafification X).obj Q) :=
+  liftToPushforward f ((TopCat.Sheaf.sheafification X).obj Q)
     (η ≫ (TopCat.Presheaf.pushforward AddCommGrpCat.{u} f).map
       (toSheafify (Opens.grothendieckTopology X) Q))
 
@@ -93,7 +89,7 @@ theorem toSheafify_sheafifyPullback {P : TopCat.Presheaf AddCommGrpCat.{u} Y}
     toSheafify (Opens.grothendieckTopology Y) P ≫ (sheafifyPullback f η).hom =
       η ≫ (TopCat.Presheaf.pushforward AddCommGrpCat.{u} f).map
         (toSheafify (Opens.grothendieckTopology X) Q) :=
-  toSheafify_liftToPushforward f ((sheafification X).obj Q) _
+  toSheafify_liftToPushforward f ((TopCat.Sheaf.sheafification X).obj Q) _
 
 /-- The construction `P ⟶ f_*Q ↦ P⁺⁺ ⟶ f_*(Q⁺⁺)` is natural: it carries every commuting square
 of presheaf maps to a commuting square of sheaf maps. -/
@@ -105,30 +101,30 @@ theorem sheafifyPullback_naturality
     (η₂ : P₂ ⟶ (TopCat.Presheaf.pushforward AddCommGrpCat.{u} f).obj Q₂)
     (h : α ≫ η₂ = η₁ ≫
       (TopCat.Presheaf.pushforward AddCommGrpCat.{u} f).map β) :
-    (sheafification Y).map α ≫ sheafifyPullback f η₂ =
+    (TopCat.Sheaf.sheafification Y).map α ≫ sheafifyPullback f η₂ =
       sheafifyPullback f η₁ ≫
         (TopCat.Sheaf.pushforward AddCommGrpCat.{u} f).map
-          ((sheafification X).map β) := by
+          ((TopCat.Sheaf.sheafification X).map β) := by
   apply liftToPushforward_hom_ext f
   let R := TopCat.Presheaf.pushforward AddCommGrpCat.{u} f
   have hα : toSheafify (Opens.grothendieckTopology Y) P₁ ≫
-      ((sheafification Y).map α).hom =
+      ((TopCat.Sheaf.sheafification Y).map α).hom =
       α ≫ toSheafify (Opens.grothendieckTopology Y) P₂ :=
     (CategoryTheory.toSheafify_naturality (Opens.grothendieckTopology Y) α).symm
   have hβ : β ≫ toSheafify (Opens.grothendieckTopology X) Q₂ =
       toSheafify (Opens.grothendieckTopology X) Q₁ ≫
-        ((sheafification X).map β).hom :=
+        ((TopCat.Sheaf.sheafification X).map β).hom :=
     CategoryTheory.toSheafify_naturality (Opens.grothendieckTopology X) β
   have hu₁ : toSheafify (Opens.grothendieckTopology Y) P₁ ≫
       (sheafifyPullback f η₁).hom =
       η₁ ≫ R.map (toSheafify (Opens.grothendieckTopology X) Q₁) :=
     toSheafify_sheafifyPullback f η₁
   change toSheafify (Opens.grothendieckTopology Y) P₁ ≫
-      (((sheafification Y).map α).hom ≫ (sheafifyPullback f η₂).hom) =
+      (((TopCat.Sheaf.sheafification Y).map α).hom ≫ (sheafifyPullback f η₂).hom) =
     toSheafify (Opens.grothendieckTopology Y) P₁ ≫
-      ((sheafifyPullback f η₁).hom ≫ R.map ((sheafification X).map β).hom)
+      ((sheafifyPullback f η₁).hom ≫ R.map ((TopCat.Sheaf.sheafification X).map β).hom)
   have h₁ : toSheafify (Opens.grothendieckTopology Y) P₁ ≫
-        (((sheafification Y).map α).hom ≫ (sheafifyPullback f η₂).hom) =
+        (((TopCat.Sheaf.sheafification Y).map α).hom ≫ (sheafifyPullback f η₂).hom) =
       α ≫ (η₂ ≫ R.map (toSheafify (Opens.grothendieckTopology X) Q₂)) := by
     rw [← Category.assoc, hα, Category.assoc, toSheafify_sheafifyPullback]
     rfl
@@ -138,17 +134,17 @@ theorem sheafifyPullback_naturality
   have h₃ : η₁ ≫ (R.map β ≫
         R.map (toSheafify (Opens.grothendieckTopology X) Q₂)) =
       η₁ ≫ R.map (toSheafify (Opens.grothendieckTopology X) Q₁ ≫
-        ((sheafification X).map β).hom) := by
+        ((TopCat.Sheaf.sheafification X).map β).hom) := by
     rw [← R.map_comp, hβ]
   have h₄ : η₁ ≫ R.map (toSheafify (Opens.grothendieckTopology X) Q₁ ≫
-        ((sheafification X).map β).hom) =
+        ((TopCat.Sheaf.sheafification X).map β).hom) =
       η₁ ≫ (R.map (toSheafify (Opens.grothendieckTopology X) Q₁) ≫
-        R.map ((sheafification X).map β).hom) := by
+        R.map ((TopCat.Sheaf.sheafification X).map β).hom) := by
     rw [R.map_comp]
   have h₅ : η₁ ≫ (R.map (toSheafify (Opens.grothendieckTopology X) Q₁) ≫
-        R.map ((sheafification X).map β).hom) =
+        R.map ((TopCat.Sheaf.sheafification X).map β).hom) =
       toSheafify (Opens.grothendieckTopology Y) P₁ ≫
-        ((sheafifyPullback f η₁).hom ≫ R.map ((sheafification X).map β).hom) := by
+        ((sheafifyPullback f η₁).hom ≫ R.map ((TopCat.Sheaf.sheafification X).map β).hom) := by
     rw [← Category.assoc, ← hu₁]
     exact Category.assoc _ _ _
   exact h₁.trans (h₂.trans (h₃.trans (h₄.trans h₅)))

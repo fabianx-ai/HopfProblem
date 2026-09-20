@@ -43,7 +43,7 @@ set_option backward.isDefEq.respectTransparency false in
 It is an isomorphism (Hartshorne II.1.2). -/
 def stalkSheafificationUnitNatTrans (y : Y) :
     TopCat.Presheaf.stalkFunctor AddCommGrpCat y ⟶
-      sheafification Y ⋙ TopCat.Sheaf.forget AddCommGrpCat Y ⋙
+      TopCat.Sheaf.sheafification Y ⋙ TopCat.Sheaf.forget AddCommGrpCat Y ⋙
         TopCat.Presheaf.stalkFunctor AddCommGrpCat y where
   app P := (TopCat.Presheaf.stalkFunctor AddCommGrpCat y).map
     (TopCat.SheafificationLocal.unit P)
@@ -54,7 +54,7 @@ def stalkSheafificationUnitNatTrans (y : Y) :
       (TopCat.Presheaf.stalkFunctor AddCommGrpCat y).map
           (TopCat.SheafificationLocal.unit P) ≫
         (TopCat.Presheaf.stalkFunctor AddCommGrpCat y).map
-          ((TopCat.Sheaf.forget AddCommGrpCat Y).map ((sheafification Y).map η))
+          ((TopCat.Sheaf.forget AddCommGrpCat Y).map ((TopCat.Sheaf.sheafification Y).map η))
     rw [← (TopCat.Presheaf.stalkFunctor AddCommGrpCat y).map_comp,
       ← (TopCat.Presheaf.stalkFunctor AddCommGrpCat y).map_comp]
     apply (TopCat.Presheaf.stalkFunctor AddCommGrpCat y).congr_map
@@ -78,18 +78,18 @@ set_option backward.isDefEq.respectTransparency false in
 theorem mapComplexHomologyIso_sheafification_stalk_comp
     (P : CochainComplex (TopCat.Presheaf AddCommGrpCat Y) ℕ) (n : ℕ) (y : Y) :
     mapComplexHomologyIso P
-      (sheafification Y ⋙ TopCat.Sheaf.forget AddCommGrpCat Y ⋙
+      (TopCat.Sheaf.sheafification Y ⋙ TopCat.Sheaf.forget AddCommGrpCat Y ⋙
         TopCat.Presheaf.stalkFunctor AddCommGrpCat y) n =
       mapComplexHomologyIso
-          (((sheafification Y).mapHomologicalComplex (ComplexShape.up ℕ)).obj P)
+          (((TopCat.Sheaf.sheafification Y).mapHomologicalComplex (ComplexShape.up ℕ)).obj P)
           (TopCat.Sheaf.forget AddCommGrpCat Y ⋙
             TopCat.Presheaf.stalkFunctor AddCommGrpCat y) n ≪≫
         (TopCat.Sheaf.forget AddCommGrpCat Y ⋙
           TopCat.Presheaf.stalkFunctor AddCommGrpCat y).mapIso
-            (mapComplexHomologyIso P (sheafification Y) n) := by
+            (mapComplexHomologyIso P (TopCat.Sheaf.sheafification Y) n) := by
   dsimp only [mapComplexHomologyIso]
   exact ShortComplex.mapHomologyIso_comp
-    (sheafification Y)
+    (TopCat.Sheaf.sheafification Y)
     (TopCat.Sheaf.forget AddCommGrpCat Y ⋙
       TopCat.Presheaf.stalkFunctor AddCommGrpCat y) (P.sc n)
 
@@ -142,7 +142,7 @@ theorem stalkHomologyPresheafIso_hom_comp_sheafificationUnit
           (((underlyingPresheafComplex K).sc n).mapNatTrans
             (stalkSheafificationUnitNatTrans y)) ≫
         (mapComplexHomologyIso (underlyingPresheafComplex K)
-          (sheafification Y ⋙ TopCat.Sheaf.forget AddCommGrpCat Y ⋙
+          (TopCat.Sheaf.sheafification Y ⋙ TopCat.Sheaf.forget AddCommGrpCat Y ⋙
             TopCat.Presheaf.stalkFunctor AddCommGrpCat y) n).hom =
       (mapComplexHomologyIso (underlyingPresheafComplex K)
           (TopCat.Presheaf.stalkFunctor AddCommGrpCat y) n).hom ≫
@@ -157,11 +157,11 @@ theorem stalkHomologyPresheafIso_hom_comp_sheafificationUnit
       (TopCat.Sheaf.forget AddCommGrpCat Y ⋙
           TopCat.Presheaf.stalkFunctor AddCommGrpCat y).map
           (mapComplexHomologyIso (underlyingPresheafComplex K)
-            (sheafification Y) n).hom =
+            (TopCat.Sheaf.sheafification Y) n).hom =
         (TopCat.Presheaf.stalkFunctor AddCommGrpCat y).map
           ((TopCat.Sheaf.forget AddCommGrpCat Y).map
             (mapComplexHomologyIso (underlyingPresheafComplex K)
-              (sheafification Y) n).hom) := rfl
+              (TopCat.Sheaf.sheafification Y) n).hom) := rfl
   rw [hmap]
   simp only [← Category.assoc]
   rw [cancel_mono]

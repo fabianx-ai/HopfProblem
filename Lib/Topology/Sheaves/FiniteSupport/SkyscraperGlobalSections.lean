@@ -6,6 +6,7 @@ SPDX-License-Identifier: Apache-2.0
 -/
 module
 
+public import Lib.Topology.Sheaves.GlobalSections
 public import Mathlib.Topology.Sheaves.Abelian
 
 /-!
@@ -38,12 +39,6 @@ def skyscraperAt (p : X) (A : AddCommGrpCat.{u}) : TopCat.Sheaf AddCommGrpCat.{u
   letI : ∀ U : Opens X, Decidable (p ∈ U) := fun _ ↦ Classical.dec _
   exact skyscraperSheaf p A
 
-/-- The global-sections functor `F ↦ Γ(X, F) = F(⊤)` on sheaves of abelian groups. -/
-def topEvaluation (X : TopCat.{u}) :
-    TopCat.Sheaf AddCommGrpCat.{u} X ⥤ AddCommGrpCat.{u} :=
-  TopCat.Sheaf.forget AddCommGrpCat.{u} X ⋙
-    (evaluation (Opens X)ᵒᵖ AddCommGrpCat.{u}).obj (op ⊤)
-
 /-- `Γ(X, skyscraper p A) = A` (Hartshorne II Ex. 1.17). -/
 def skyscraperAtTopIso (p : X) (A : AddCommGrpCat.{u}) :
     (skyscraperAt p A).obj.obj (op (⊤ : Opens X)) ≅ A := by
@@ -73,8 +68,8 @@ def sectionsBiprodIso (F G : TopCat.Sheaf AddCommGrpCat.{u} X) (U : (Opens X)ᵒ
 def globalSectionsIsoOfSkyscraperBiprodIso
     {F : TopCat.Sheaf AddCommGrpCat.{u} X} (p q : X) (A B : AddCommGrpCat.{u})
     (e : F ≅ skyscraperAt p A ⊞ skyscraperAt q B) :
-    (topEvaluation X).obj F ≅ AddCommGrpCat.of (Prod (A : Type u) (B : Type u)) :=
-  (topEvaluation X).mapIso e ≪≫
+    (TopCat.Sheaf.globalSectionsFunctor X).obj F ≅ AddCommGrpCat.of (Prod (A : Type u) (B : Type u)) :=
+  (TopCat.Sheaf.globalSectionsFunctor X).mapIso e ≪≫
     sectionsBiprodIso (skyscraperAt p A) (skyscraperAt q B) (op ⊤) ≪≫
       biprod.mapIso (skyscraperAtTopIso p A) (skyscraperAtTopIso q B) ≪≫
         AddCommGrpCat.biprodIsoProd A B

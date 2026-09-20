@@ -51,12 +51,12 @@ variable (φ : CategoryTheory.Abelian.Ext.AcyclicResolutionH1.Hom R S)
 
 /-- The map of literal global-section complexes. -/
 def globalMap : globalComplex R ⟶ globalComplex S :=
-  (globalSectionsFunctor X).mapShortComplex.map φ.complex
+  (TopCat.Sheaf.globalSectionsFunctor X).mapShortComplex.map φ.complex
 
 /-- The degree-zero comparison between the Ext short complex and the short complex of global
 sections commutes with every map of augmented resolutions. -/
 theorem extZeroGlobalIso_naturality :
-    φ.extZeroMap (unitSheaf X) ≫ (extZeroGlobalIso S).hom =
+    φ.extZeroMap (TopCat.ConstantSheaf.integralSheaf X) ≫ (extZeroGlobalIso S).hom =
       (extZeroGlobalIso R).hom ≫ globalMap φ := by
   apply ShortComplex.hom_ext
   · exact h0GlobalIso_naturality φ.complex.τ₁
@@ -69,32 +69,32 @@ theorem h1GlobalIso_naturality
     [Subsingleton (CategoryTheory.Sheaf.H.{0} S.complex.X₁ 1)] :
     (CategoryTheory.Sheaf.functorH _ 1).map φ.augmentation ≫ (h1GlobalIso S).hom =
       (h1GlobalIso R).hom ≫ ShortComplex.homologyMap (globalMap φ) := by
-  let : Subsingleton (Ext.{0} (unitSheaf X) R.complex.X₁ 1) :=
+  let : Subsingleton (Ext.{0} (TopCat.ConstantSheaf.integralSheaf X) R.complex.X₁ 1) :=
     ‹Subsingleton (CategoryTheory.Sheaf.H.{0} R.complex.X₁ 1)›
-  let : Subsingleton (Ext.{0} (unitSheaf X) S.complex.X₁ 1) :=
+  let : Subsingleton (Ext.{0} (TopCat.ConstantSheaf.integralSheaf X) S.complex.X₁ 1) :=
     ‹Subsingleton (CategoryTheory.Sheaf.H.{0} S.complex.X₁ 1)›
-  change (extFunctorObj (unitSheaf X) 1).map φ.augmentation ≫
-      ((S.extOneIso (unitSheaf X)).hom ≫
+  change (extFunctorObj (TopCat.ConstantSheaf.integralSheaf X) 1).map φ.augmentation ≫
+      ((S.extOneIso (TopCat.ConstantSheaf.integralSheaf X)).hom ≫
         ShortComplex.homologyMap (extZeroGlobalIso S).hom) =
-    ((R.extOneIso (unitSheaf X)).hom ≫
+    ((R.extOneIso (TopCat.ConstantSheaf.integralSheaf X)).hom ≫
       ShortComplex.homologyMap (extZeroGlobalIso R).hom) ≫
         ShortComplex.homologyMap (globalMap φ)
   refine composition_naturality
-    (R.extOneIso (unitSheaf X)).hom
+    (R.extOneIso (TopCat.ConstantSheaf.integralSheaf X)).hom
     (ShortComplex.homologyMap (extZeroGlobalIso R).hom)
-    (S.extOneIso (unitSheaf X)).hom
+    (S.extOneIso (TopCat.ConstantSheaf.integralSheaf X)).hom
     (ShortComplex.homologyMap (extZeroGlobalIso S).hom)
-    ((extFunctorObj (unitSheaf X) 1).map φ.augmentation)
-    (ShortComplex.homologyMap (φ.extZeroMap (unitSheaf X)))
+    ((extFunctorObj (TopCat.ConstantSheaf.integralSheaf X) 1).map φ.augmentation)
+    (ShortComplex.homologyMap (φ.extZeroMap (TopCat.ConstantSheaf.integralSheaf X)))
     (ShortComplex.homologyMap (globalMap φ))
-    (φ.extOneIso_naturality (unitSheaf X)) ?_
+    (φ.extOneIso_naturality (TopCat.ConstantSheaf.integralSheaf X)) ?_
   have hmap :
       ShortComplex.homologyMap
-          (φ.extZeroMap (unitSheaf X) ≫ (extZeroGlobalIso S).hom) =
+          (φ.extZeroMap (TopCat.ConstantSheaf.integralSheaf X) ≫ (extZeroGlobalIso S).hom) =
           ShortComplex.homologyMap ((extZeroGlobalIso R).hom ≫ globalMap φ) :=
     congrArg (fun k => ShortComplex.homologyMap k) (extZeroGlobalIso_naturality φ)
   exact ((ShortComplex.homologyMap_comp
-    (φ.extZeroMap (unitSheaf X)) (extZeroGlobalIso S).hom).symm.trans hmap).trans
+    (φ.extZeroMap (TopCat.ConstantSheaf.integralSheaf X)) (extZeroGlobalIso S).hom).symm.trans hmap).trans
       (ShortComplex.homologyMap_comp (extZeroGlobalIso R).hom (globalMap φ))
 
 end Hom

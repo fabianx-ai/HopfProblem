@@ -37,18 +37,19 @@ namespace TopCat.Sheaf
 /-- The integral unit sheaf has projective dimension less than `n` exactly when every abelian
 coefficient sheaf has trivial integral sheaf cohomology in every degree at least `n`.
 
-Here `CategoryTheory.Sheaf.H F a` is definitionally `Ext (unitSheaf X) F a`, so Ext is derived in
-the coefficient variable `F`. -/
-theorem unitSheaf_hasProjectiveDimensionLT_iff_cohomology_subsingleton
+Here `CategoryTheory.Sheaf.H F a` is definitionally
+`Ext (TopCat.ConstantSheaf.integralSheaf X) F a`, so Ext is derived in the coefficient
+variable `F`. -/
+theorem integralSheaf_hasProjectiveDimensionLT_iff_cohomology_subsingleton
     (X : TopCat.{0}) (n : ℕ) :
-    HasProjectiveDimensionLT (TopCat.SheafH1.unitSheaf X) n ↔
+    HasProjectiveDimensionLT (TopCat.ConstantSheaf.integralSheaf X) n ↔
       ∀ (F : TopCat.Sheaf AddCommGrpCat.{0} X) (a : ℕ), n ≤ a →
         Subsingleton (CategoryTheory.Sheaf.H.{0} F a) := by
   constructor
   · intro h F a ha
-    let _ : HasProjectiveDimensionLT (TopCat.SheafH1.unitSheaf X) n := h
+    let _ : HasProjectiveDimensionLT (TopCat.ConstantSheaf.integralSheaf X) n := h
     exact HasProjectiveDimensionLT.subsingleton
-      (TopCat.SheafH1.unitSheaf X) n a ha F
+      (TopCat.ConstantSheaf.integralSheaf X) n a ha F
   · intro h
     apply HasProjectiveDimensionLT.mk
     intro a ha F e

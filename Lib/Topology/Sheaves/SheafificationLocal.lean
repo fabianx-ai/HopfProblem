@@ -6,6 +6,7 @@ SPDX-License-Identifier: Apache-2.0
 -/
 module
 
+public import Lib.Topology.Sheaves.Sheafification
 public import Mathlib.Algebra.Category.Grp.FilteredColimits
 public import Mathlib.Algebra.Category.Grp.Colimits
 public import Mathlib.Algebra.Category.Grp.Limits
@@ -36,7 +37,7 @@ variable {X : TopCat.{0}}
 
 abbrev sheaf (P : TopCat.Presheaf AddCommGrpCat.{0} X) :
     TopCat.Sheaf AddCommGrpCat.{0} X :=
-  (presheafToSheaf (Opens.grothendieckTopology X) AddCommGrpCat.{0}).obj P
+  (TopCat.Sheaf.sheafification X).obj P
 
 def unit (P : TopCat.Presheaf AddCommGrpCat.{0} X) : P ⟶ (sheaf P).obj :=
   toSheafify (Opens.grothendieckTopology X) P

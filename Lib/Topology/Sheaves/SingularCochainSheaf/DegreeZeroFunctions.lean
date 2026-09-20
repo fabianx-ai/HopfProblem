@@ -6,7 +6,7 @@ SPDX-License-Identifier: Apache-2.0
 -/
 module
 
-public import Lib.Topology.Sheaves.FunctionSheaf
+public import Lib.Topology.Sheaves.DependentFunctionSheaf
 public import Lib.Topology.Sheaves.SingularCochainSheaf.Sheaf
 public import Mathlib.AlgebraicTopology.SimplicialSet.Homology.Basic
 public import Mathlib.AlgebraicTopology.SimplicialSet.TopAdj
@@ -264,7 +264,7 @@ theorem zeroCochainEvaluate_pullback {X Y : Type}
 /-- Evaluation at points, as a morphism from the degree-zero singular-cochain presheaf to the
 presheaf of all `A`-valued functions. -/
 def zeroCochainEvaluationHom (X : TopCat.{0}) (A : AddCommGrpCat.{0}) :
-    presheaf X A 0 ⟶ TopCat.FunctionSheaf.presheaf X A where
+    presheaf X A 0 ⟶ TopCat.DependentFunctionSheaf.presheaf X (fun _ => A) where
   app U := AddCommGrpCat.ofHom (zeroCochainEvaluate U.unop A)
   naturality U V i := by
     apply AddCommGrpCat.hom_ext
@@ -285,7 +285,7 @@ theorem zeroCochainEvaluate_injective (X : Type) [TopologicalSpace X]
 
 /-- The inverse morphism, turning a function on each open into a `0`-cochain there. -/
 def zeroCochainEvaluationInv (X : TopCat.{0}) (A : AddCommGrpCat.{0}) :
-    TopCat.FunctionSheaf.presheaf X A ⟶ presheaf X A 0 where
+    TopCat.DependentFunctionSheaf.presheaf X (fun _ => A) ⟶ presheaf X A 0 where
   app U := AddCommGrpCat.ofHom (zeroCochainOfFunction U.unop A)
   naturality U V i := by
     apply AddCommGrpCat.hom_ext
@@ -315,7 +315,7 @@ def zeroCochainEvaluationInv (X : TopCat.{0}) (A : AddCommGrpCat.{0}) :
 /-- `S^0(·; A) ≅ A^(·)`: the degree-zero singular-cochain presheaf is the presheaf of all
 `A`-valued functions (Bredon III §1; Warner 5.31). -/
 def zeroCochainPresheafIsoFunctions (X : TopCat.{0}) (A : AddCommGrpCat.{0}) :
-    presheaf X A 0 ≅ TopCat.FunctionSheaf.presheaf X A where
+    presheaf X A 0 ≅ TopCat.DependentFunctionSheaf.presheaf X (fun _ => A) where
   hom := zeroCochainEvaluationHom X A
   inv := zeroCochainEvaluationInv X A
   hom_inv_id := by

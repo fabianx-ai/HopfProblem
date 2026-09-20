@@ -175,16 +175,16 @@ theorem presheafAugmentation_d (X : TopCat.{0}) (A : AddCommGrpCat.{0}) :
 /-- The augmentation `A_X ⟶ 𝒮^0(X; A)` of sheaves (Bredon III §1; Warner 5.31). -/
 def sheafAugmentation (X : TopCat.{0}) (A : AddCommGrpCat.{0}) :
     TopCat.ConstantSheaf.sheaf X A ⟶ sheaf X A 0 :=
-  (sheafification X).map (presheafAugmentation X A)
+  (TopCat.Sheaf.sheafification X).map (presheafAugmentation X A)
 
 /-- The sheaf augmentation followed by the first coboundary is zero. -/
 @[reassoc]
 theorem sheafAugmentation_d (X : TopCat.{0}) (A : AddCommGrpCat.{0}) :
     sheafAugmentation X A ≫ sheafDifferential X A 0 1 = 0 := by
-  exact ((sheafification X).map_comp
+  exact ((TopCat.Sheaf.sheafification X).map_comp
     (presheafAugmentation X A) (differential X A 0 1)).symm.trans
-      ((congrArg (sheafification X).map (presheafAugmentation_d X A)).trans
-        ((sheafification X).map_zero _ _))
+      ((congrArg (TopCat.Sheaf.sheafification X).map (presheafAugmentation_d X A)).trans
+        ((TopCat.Sheaf.sheafification X).map_zero _ _))
 
 /-- The short complex `A_X ⟶ 𝒮^0(X; A) ⟶ 𝒮^1(X; A)` of the augmented singular-cochain
 resolution. -/

@@ -8,7 +8,7 @@ module
 
 public import Lib.Algebra.Homology.DerivedCategory.Ext.AcyclicResolutionH1
 public import Lib.Topology.Sheaves.SingularCochainSheaf.AugmentationMono
-public import Lib.Topology.Sheaves.SingularCochainSheaf.LocalExactH1
+public import Lib.Topology.Sheaves.SingularCochainSheaf.LocalExactPositive
 
 /-!
 # The singular-cochain resolution of the constant sheaf in low degrees
@@ -45,7 +45,7 @@ def resolutionH1 (hLC : LocallyContractibleSpace X) :
     ((complexSheaf X A).exactAt_iff' 0 1 2
       ((ComplexShape.up ℕ).prev_eq' (by rfl))
       ((ComplexShape.up ℕ).next_eq' (by rfl))).mp
-        (complexSheaf_exactAt_one X A hLC)
+        (complexSheaf_exactAt_succ X A hLC 0)
   mono_ι := sheafAugmentation_mono X A
 
 end TopCat.SingularCochainSheaf

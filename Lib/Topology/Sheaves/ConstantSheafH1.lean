@@ -7,7 +7,7 @@ SPDX-License-Identifier: Apache-2.0
 module
 
 public import Lib.Topology.Sheaves.SingularCochainSheaf.BarycentricSmallChains
-public import Lib.Topology.Sheaves.SingularCochainSheaf.GlobalUnitH1
+public import Lib.Topology.Sheaves.SingularCochainSheaf.GlobalUnitPositive
 public import Lib.Topology.Sheaves.SingularCochainSheaf.Pullback.FiniteClosedH1
 
 /-!
@@ -66,12 +66,12 @@ theorem exists_h1Comparison_natural
           (AlgebraicTopology.SingularCochains.pullback A f.hom) 1 := by
   let : IsIso (HomologicalComplex.homologyMap
       (globalCochainComparison (TopCat.of X) A) 1) :=
-    globalCochainComparison_homology_isIso_one (TopCat.of X) A
-      (hasSmallChainEquivalences_barycentric (TopCat.of X))
+    globalCochainComparison_homology_isIso_succ (TopCat.of X) A
+      (hasSmallChainEquivalences_barycentric (TopCat.of X)) 0
   let : IsIso (HomologicalComplex.homologyMap
       (globalCochainComparison (TopCat.of Y) A) 1) :=
-    globalCochainComparison_homology_isIso_one (TopCat.of Y) A
-      (hasSmallChainEquivalences_barycentric (TopCat.of Y))
+    globalCochainComparison_homology_isIso_succ (TopCat.of Y) A
+      (hasSmallChainEquivalences_barycentric (TopCat.of Y)) 0
   exact ⟨h1Comparison (TopCat.of X) A hX,
     h1Comparison (TopCat.of Y) A hY,
     h1Comparison_naturality f hf hfinite A hX hY⟩

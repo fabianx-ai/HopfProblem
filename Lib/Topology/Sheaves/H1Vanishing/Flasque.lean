@@ -7,6 +7,7 @@ SPDX-License-Identifier: Apache-2.0
 module
 
 public import Lib.Topology.Sheaves.Cohomology.AddCommGroup
+public import Lib.Topology.Sheaves.ConstantPushforward.GlobalSections
 public import Mathlib.Algebra.Homology.DerivedCategory.Ext.EnoughInjectives
 public import Mathlib.Algebra.Homology.DerivedCategory.Ext.ExactSequences
 public import Mathlib.CategoryTheory.Abelian.Injective.Resolution
@@ -35,10 +36,6 @@ namespace TopCat.SheafH1
 
 variable {X : TopCat.{0}}
 
-private abbrev constantIntegerSheaf : TopCat.Sheaf AddCommGrpCat.{0} X :=
-  (constantSheaf (Opens.grothendieckTopology X) AddCommGrpCat.{0}).obj
-    (AddCommGrpCat.of (ULift.{0} ℤ))
-
 private instance abelianSheaf_hasExt :
     HasExt.{0} (TopCat.Sheaf AddCommGrpCat.{0} X) :=
   IsGrothendieckAbelian.hasExt _
@@ -46,7 +43,7 @@ private instance abelianSheaf_hasExt :
 private theorem hom_surjective_of_global_surjective
     {G Q : TopCat.Sheaf AddCommGrpCat.{0} X} (π : G ⟶ Q)
     (hπ : Function.Surjective (π.hom.app (op (⊤ : Opens X)))) :
-    Function.Surjective (fun f : constantIntegerSheaf ⟶ G => f ≫ π) := by
+    Function.Surjective (fun f : (TopCat.ConstantSheaf.integralSheaf X) ⟶ G => f ≫ π) := by
   intro f
   let x : CategoryTheory.Sheaf.H.{0} Q 0 := Ext.mk₀.{0} f
   let eG := CategoryTheory.Sheaf.H.equiv₀.{0} G
@@ -73,7 +70,7 @@ private theorem hom_surjective_of_global_surjective
     _ = Ext.addEquiv₀.{0} (C := TopCat.Sheaf AddCommGrpCat.{0} X) x :=
       congrArg (Ext.addEquiv₀.{0} (C := TopCat.Sheaf AddCommGrpCat.{0} X)) hz
     _ = f := (Ext.addEquiv₀.{0} (C := TopCat.Sheaf AddCommGrpCat.{0} X)
-      (X := constantIntegerSheaf) (Y := Q)).apply_symm_apply f
+      (X := (TopCat.ConstantSheaf.integralSheaf X)) (Y := Q)).apply_symm_apply f
 
 private theorem subsingleton_ext_one_of_shortExact
     (X₀ : TopCat.Sheaf AddCommGrpCat.{0} X)
@@ -103,7 +100,7 @@ private theorem subsingleton_h1_of_globalLifting
   have hS := p.shortExact_shortComplex
   have hglobal := hlift p.f (cokernel.π p.f) (cokernel.condition p.f) hS
   have hhom := hom_surjective_of_global_surjective (cokernel.π p.f) hglobal
-  exact subsingleton_ext_one_of_shortExact constantIntegerSheaf hS hhom
+  exact subsingleton_ext_one_of_shortExact (TopCat.ConstantSheaf.integralSheaf X) hS hhom
 
 private theorem globalLifting_of_isFlasque
     (F : TopCat.Sheaf AddCommGrpCat.{0} X) [TopCat.Sheaf.IsFlasque F] :

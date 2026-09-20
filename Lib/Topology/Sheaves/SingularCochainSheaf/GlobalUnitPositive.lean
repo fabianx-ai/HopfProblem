@@ -36,15 +36,6 @@ namespace TopCat.SingularCochainSheaf
 
 variable (X : TopCat.{0}) (A : AddCommGrpCat.{0})
 
-/-- A degree-`n` singular cochain vanishing on the chains small with respect to some point-indexed
-open cover of `X` is killed by the comparison map in degree `n`. -/
-def SmallKernelGlobal (n : ℕ) : Prop :=
-  ∀ (U : X → Opens X), (∀ x, x ∈ U x) →
-    ∀ (phi : (AlgebraicTopology.SingularCochains.complex X A).X n),
-      (TopCat.SingularSmallChains.cochainRestriction A
-        (fun x => (U x : Set X))).f n phi = 0 →
-        globalCochainUnit X A n phi = 0
-
 /-- Cocycle lifting in degree `n + 1`: every cocycle in `Γ(X, 𝒮^{n+1}(·; A))` is the image of a
 singular cocycle on `X`. -/
 theorem globalCochainComparison_cycle_lift_succ (n : ℕ)
@@ -140,13 +131,6 @@ theorem globalCochainComparison_homology_isIso_succ_of_small_chains (n : ℕ)
     obtain ⟨s, hs⟩ := hboundary
     exact globalCochainComparison_boundary_detect_succ X A n hunitPrev hkernel
       hsmall phi hphi s hs
-
-/-- A singular cochain vanishing on the chains small for a point-indexed open cover is killed by
-the comparison map, in every degree. -/
-theorem smallKernelGlobal (n : ℕ) : SmallKernelGlobal X A n := by
-  intro U hxU phi hphi
-  exact globalCochainUnit_eq_zero_of_smallRestriction X A n U
-    (fun x => ⟨x, hxU x⟩) phi hphi
 
 /-- On a normal paracompact space the comparison `S^•(X; A) → Γ(X, 𝒮^•(·; A))` is an isomorphism
 on cohomology in every positive degree, given the small-chain homotopy equivalences for open

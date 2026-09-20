@@ -76,12 +76,12 @@ theorem mapIndexedResolution_isAcyclic
 global-section equivalence on degree-zero Ext classes. -/
 private theorem h0GlobalIso_mk₀ {Z : TopCat.{0}}
     (F : TopCat.Sheaf AddCommGrpCat.{0} Z)
-    (g : TopCat.SheafH1.unitSheaf Z ⟶ F) :
+    (g : TopCat.ConstantSheaf.integralSheaf Z ⟶ F) :
     CategoryTheory.Sheaf.H.equiv₀ F
         (show IsTerminal (⊤ : Opens Z) from isTerminalTop) (Ext.mk₀ g) =
       TopCat.ConstantSheaf.integralHomGlobalEquiv Z F g :=
   congrArg (TopCat.ConstantSheaf.integralHomGlobalEquiv Z F)
-    ((Ext.addEquiv₀ (X := TopCat.SheafH1.unitSheaf Z) (Y := F)).apply_symm_apply g)
+    ((Ext.addEquiv₀ (X := TopCat.ConstantSheaf.integralSheaf Z) (Y := F)).apply_symm_apply g)
 
 /-- In degree zero the finite-pushforward Ext comparison preserves the literal global section. -/
 private theorem h0Global_forward (F : TopCat.Sheaf AddCommGrpCat.{0} X) :
@@ -94,7 +94,7 @@ private theorem h0Global_forward (F : TopCat.Sheaf AddCommGrpCat.{0} X) :
   apply AddCommGrpCat.hom_ext
   apply AddMonoidHom.ext
   intro e
-  obtain ⟨g, rfl⟩ := (Ext.mk₀_bijective (TopCat.SheafH1.unitSheaf X) F).surjective e
+  obtain ⟨g, rfl⟩ := (Ext.mk₀_bijective (TopCat.ConstantSheaf.integralSheaf X) F).surjective e
   change CategoryTheory.Sheaf.H.equiv₀
       ((TopCat.Sheaf.pushforward AddCommGrpCat.{0} f).obj F)
       (show IsTerminal (⊤ : Opens Y) from isTerminalTop)
@@ -123,9 +123,9 @@ private theorem h0Global_forward (F : TopCat.Sheaf AddCommGrpCat.{0} X) :
 /-- The termwise Ext comparison from a resolution to its finite closed pushforward. -/
 def indexedEvaluatedComplexForwardMap
     (R : TopCat.SheafCohomology.AcyclicResolution.Resolution (X := X)) :
-    R.evaluatedComplex (TopCat.SheafH1.unitSheaf X) ⟶
+    R.evaluatedComplex (TopCat.ConstantSheaf.integralSheaf X) ⟶
       (mapIndexedResolution f hf hfinite R).evaluatedComplex
-        (TopCat.SheafH1.unitSheaf Y) := by
+        (TopCat.ConstantSheaf.integralSheaf Y) := by
   let _ := (pushforward_preservesFiniteLimitsAndColimits f hf hfinite).1
   let _ := pushforward_preservesFiniteColimits f hf hfinite
   exact CategoryTheory.Abelian.Ext.AcyclicResolution.evaluatedComplexMap
@@ -144,8 +144,8 @@ def indexedGlobalComplexIso
   let _ := pushforward_preservesFiniteColimits f hf hfinite
   exact HomologicalComplex.Hom.isoOfComponents
     (fun n ↦ by
-      change (TopCat.SheafH1.globalSectionsFunctor X).obj (R.X n) ≅
-        (TopCat.SheafH1.globalSectionsFunctor X).obj (R.X n)
+      change (TopCat.Sheaf.globalSectionsFunctor X).obj (R.X n) ≅
+        (TopCat.Sheaf.globalSectionsFunctor X).obj (R.X n)
       exact Iso.refl _)
     (fun i j hij ↦ by
       subst j
@@ -202,10 +202,10 @@ theorem indexedGlobal_forward
   let _ := (pushforward_preservesFiniteLimitsAndColimits f hf hfinite).1
   let _ := pushforward_preservesFiniteColimits f hf hfinite
   let a := AddCommGrpCat.ofHom (cohomologyForward f hf hfinite (R.Z 0) (n + 1))
-  let r := (R.extIsoHomology (TopCat.SheafH1.unitSheaf X)
+  let r := (R.extIsoHomology (TopCat.ConstantSheaf.integralSheaf X)
     (TopCat.SheafCohomology.AcyclicResolution.isAcyclicFor R hR) n).hom
   let s := ((mapIndexedResolution f hf hfinite R).extIsoHomology
-    (TopCat.SheafH1.unitSheaf Y)
+    (TopCat.ConstantSheaf.integralSheaf Y)
     (TopCat.SheafCohomology.AcyclicResolution.isAcyclicFor
       (mapIndexedResolution f hf hfinite R)
       (mapIndexedResolution_isAcyclic f hf hfinite R hR)) n).hom

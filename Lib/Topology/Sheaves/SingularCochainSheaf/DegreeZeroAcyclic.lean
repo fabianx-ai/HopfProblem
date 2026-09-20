@@ -34,7 +34,7 @@ variable (X : TopCat.{0}) (A : AddCommGrpCat.{0})
 presheaf of all `A`-valued functions. -/
 theorem zeroCochainPresheaf_isSheaf : (presheaf X A 0).IsSheaf :=
   (TopCat.Presheaf.isSheaf_iso_iff (zeroCochainPresheafIsoFunctions X A)).mpr
-    (TopCat.FunctionSheaf.isSheaf X A)
+    (TopCat.DependentFunctionSheaf.isSheaf X (fun _ => A))
 
 /-- The degree-zero cochain presheaf regarded directly as a sheaf. -/
 def zeroCochainDirectSheaf : TopCat.Sheaf AddCommGrpCat.{0} X :=
@@ -42,14 +42,14 @@ def zeroCochainDirectSheaf : TopCat.Sheaf AddCommGrpCat.{0} X :=
 
 /-- The direct degree-zero cochain sheaf is the arbitrary-function sheaf. -/
 def zeroCochainDirectIsoFunctions :
-    zeroCochainDirectSheaf X A ≅ TopCat.FunctionSheaf.sheaf X A :=
+    zeroCochainDirectSheaf X A ≅ TopCat.DependentFunctionSheaf.sheaf X (fun _ => A) :=
   (fullyFaithfulSheafToPresheaf (Opens.grothendieckTopology X)
     AddCommGrpCat.{0}).preimageIso (zeroCochainPresheafIsoFunctions X A)
 
 /-- The sheafification of the degree-zero singular-cochain presheaf is the sheaf of all
 `A`-valued functions on `X` (Bredon III §1). -/
 def zeroCochainSheafIsoFunctions :
-    sheaf X A 0 ≅ TopCat.FunctionSheaf.sheaf X A :=
+    sheaf X A 0 ≅ TopCat.DependentFunctionSheaf.sheaf X (fun _ => A) :=
   (CategoryTheory.sheafificationIso (zeroCochainDirectSheaf X A)).symm ≪≫
     zeroCochainDirectIsoFunctions X A
 
@@ -66,12 +66,12 @@ instance zeroCochainSheaf_isFlasque : (sheaf X A 0).IsFlasque where
       infer_instance
     have hinv_hom : e.inv.hom.app V ≫ e.hom.hom.app V = 𝟙 _ := by
       have h := congrArg
-        (fun k : TopCat.FunctionSheaf.sheaf X A ⟶
-          TopCat.FunctionSheaf.sheaf X A => k.hom.app V) e.inv_hom_id
+        (fun k : TopCat.DependentFunctionSheaf.sheaf X (fun _ => A) ⟶
+          TopCat.DependentFunctionSheaf.sheaf X (fun _ => A) => k.hom.app V) e.inv_hom_id
       change e.inv.hom.app V ≫ e.hom.hom.app V = 𝟙 _ at h
       exact h
     have hmap : (sheaf X A 0).obj.map i =
-        e.hom.hom.app U ≫ (TopCat.FunctionSheaf.sheaf X A).obj.map i ≫
+        e.hom.hom.app U ≫ (TopCat.DependentFunctionSheaf.sheaf X (fun _ => A)).obj.map i ≫
           e.inv.hom.app V := by
       rw [← cancel_mono (e.hom.hom.app V)]
       rw [e.hom.hom.naturality i]

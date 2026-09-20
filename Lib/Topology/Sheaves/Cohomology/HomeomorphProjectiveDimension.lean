@@ -75,9 +75,9 @@ end Equivalence
 
 /-- On a locally connected target, the integral unit sheaf is identified with the image of the
 integral unit sheaf under the sheaf equivalence induced by a homeomorphism. -/
-def unitSheafEquivImageIso {X Y : TopCat.{0}} [LocallyConnectedSpace Y] (H : X ≅ Y) :
-    TopCat.SheafH1.unitSheaf Y ≅
-      (equivalenceOfIso H).functor.obj (TopCat.SheafH1.unitSheaf X) := by
+def integralSheafEquivImageIso {X Y : TopCat.{0}} [LocallyConnectedSpace Y] (H : X ≅ Y) :
+    TopCat.ConstantSheaf.integralSheaf Y ≅
+      (equivalenceOfIso H).functor.obj (TopCat.ConstantSheaf.integralSheaf X) := by
   let f := TopCat.ConstantSheaf.pushforwardHom
     (AddCommGrpCat.of (ULift.{0} ℤ)) H.hom
   letI : IsIso f := TopCat.ConstantSheaf.pushforwardHom_isIso
@@ -88,27 +88,27 @@ def unitSheafEquivImageIso {X Y : TopCat.{0}} [LocallyConnectedSpace Y] (H : X �
   exact asIso f
 
 /-- The projective dimension of the integral unit sheaf is invariant under homeomorphism. -/
-theorem unitSheaf_hasProjectiveDimensionLT_iff_of_iso
+theorem integralSheaf_hasProjectiveDimensionLT_iff_of_iso
     {X Y : TopCat.{0}} [LocallyConnectedSpace Y] (H : X ≅ Y) (n : ℕ) :
-    HasProjectiveDimensionLT (TopCat.SheafH1.unitSheaf X) n ↔
-      HasProjectiveDimensionLT (TopCat.SheafH1.unitSheaf Y) n := by
+    HasProjectiveDimensionLT (TopCat.ConstantSheaf.integralSheaf X) n ↔
+      HasProjectiveDimensionLT (TopCat.ConstantSheaf.integralSheaf Y) n := by
   let E := equivalenceOfIso H
-  let e := unitSheafEquivImageIso H
+  let e := integralSheafEquivImageIso H
   constructor
   · intro hX
     have hImage : HasProjectiveDimensionLT
-        (E.functor.obj (TopCat.SheafH1.unitSheaf X)) n :=
+        (E.functor.obj (TopCat.ConstantSheaf.integralSheaf X)) n :=
       CategoryTheory.Equivalence.hasProjectiveDimensionLT_functor_obj
-        E (TopCat.SheafH1.unitSheaf X) n hX
+        E (TopCat.ConstantSheaf.integralSheaf X) n hX
     let _ : HasProjectiveDimensionLT
-      (E.functor.obj (TopCat.SheafH1.unitSheaf X)) n := hImage
+      (E.functor.obj (TopCat.ConstantSheaf.integralSheaf X)) n := hImage
     exact hasProjectiveDimensionLT_of_iso e.symm n
   · intro hY
-    let _ : HasProjectiveDimensionLT (TopCat.SheafH1.unitSheaf Y) n := hY
+    let _ : HasProjectiveDimensionLT (TopCat.ConstantSheaf.integralSheaf Y) n := hY
     have hImage : HasProjectiveDimensionLT
-        (E.functor.obj (TopCat.SheafH1.unitSheaf X)) n :=
+        (E.functor.obj (TopCat.ConstantSheaf.integralSheaf X)) n :=
       hasProjectiveDimensionLT_of_iso e n
     exact (CategoryTheory.Equivalence.hasProjectiveDimensionLT_functor_obj_iff
-      E (TopCat.SheafH1.unitSheaf X) n).mp hImage
+      E (TopCat.ConstantSheaf.integralSheaf X) n).mp hImage
 
 end TopCat.Sheaf

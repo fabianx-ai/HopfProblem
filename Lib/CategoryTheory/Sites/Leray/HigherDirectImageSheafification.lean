@@ -7,6 +7,7 @@ Authors: Fabian Franz
 module
 
 public import Lib.CategoryTheory.Sites.Leray.ResolutionTransgression
+public import Lib.Topology.Sheaves.Sheafification
 public import Mathlib.Algebra.Homology.Functor
 public import Mathlib.CategoryTheory.Limits.FunctorCategory.Finite
 
@@ -112,19 +113,9 @@ def stalkHomologyPresheafIso (K : CochainComplex (AbelianSheaf X) ℕ) (n : ℕ)
     mapComplexHomologyIso (underlyingPresheafComplex K)
       (TopCat.Presheaf.stalkFunctor AddCommGrpCat.{u} x) n
 
-/-- The native abelian sheafification functor on a topological space. -/
-abbrev sheafification (X : TopCat.{u}) :
-    TopCat.Presheaf AddCommGrpCat.{u} X ⥤ AbelianSheaf X :=
-  presheafToSheaf (Opens.grothendieckTopology X) AddCommGrpCat
-
-/-- Abelian sheafification is additive. -/
-instance sheafification_additive (X : TopCat.{u}) : (sheafification X).Additive :=
-  inferInstanceAs
-    (presheafToSheaf (Opens.grothendieckTopology X) AddCommGrpCat.{u}).Additive
-
 /-- Abelian sheafification is left exact: it preserves finite limits. -/
 instance sheafification_preservesFiniteLimits (X : TopCat.{u}) :
-    PreservesFiniteLimits (sheafification X) :=
+    PreservesFiniteLimits (TopCat.Sheaf.sheafification X) :=
   inferInstanceAs (PreservesFiniteLimits
     (presheafToSheaf (Opens.grothendieckTopology X) AddCommGrpCat.{u}))
 
@@ -132,26 +123,26 @@ instance sheafification_preservesFiniteLimits (X : TopCat.{u}) :
 Together with the previous instance this is exactness of sheafification
 (Godement II.1.2; Hartshorne II.1.2). -/
 instance sheafification_preservesFiniteColimits (X : TopCat.{u}) :
-    PreservesFiniteColimits (sheafification X) :=
+    PreservesFiniteColimits (TopCat.Sheaf.sheafification X) :=
   inferInstanceAs (PreservesFiniteColimits
     (presheafToSheaf (Opens.grothendieckTopology X) AddCommGrpCat.{u}))
 
 /-- Sheafifying the underlying presheaf of a sheaf recovers the sheaf. -/
 def sheafificationUnderlyingIso (X : TopCat.{u}) :
-    TopCat.Sheaf.forget AddCommGrpCat X ⋙ sheafification X ≅ 𝟭 (AbelianSheaf X) :=
+    TopCat.Sheaf.forget AddCommGrpCat X ⋙ TopCat.Sheaf.sheafification X ≅ 𝟭 (AbelianSheaf X) :=
   (sheafificationNatIso (Opens.grothendieckTopology X) AddCommGrpCat).symm
 
 /-- Sheafification recovers a complex of sheaves, including its differentials. -/
 def sheafificationComplexIso (K : CochainComplex (AbelianSheaf X) ℕ) :
-    ((sheafification X).mapHomologicalComplex _).obj (underlyingPresheafComplex K) ≅ K :=
+    ((TopCat.Sheaf.sheafification X).mapHomologicalComplex _).obj (underlyingPresheafComplex K) ≅ K :=
   (Functor.mapHomologicalComplexCompIso (sheafificationUnderlyingIso X) _).app K ≪≫
     (Functor.mapHomologicalComplexIdIso (AbelianSheaf X) _).app K
 
 /-- The homology sheaf of a complex is the sheafification of its homology presheaf. -/
 def sheafHomologyIsoSheafification (K : CochainComplex (AbelianSheaf X) ℕ) (n : ℕ) :
-    K.homology n ≅ (sheafification X).obj (homologyPresheaf K n) :=
+    K.homology n ≅ (TopCat.Sheaf.sheafification X).obj (homologyPresheaf K n) :=
   HomologicalComplex.homologyMapIso (sheafificationComplexIso K).symm n ≪≫
-    mapComplexHomologyIso (underlyingPresheafComplex K) (sheafification X) n
+    mapComplexHomologyIso (underlyingPresheafComplex K) (TopCat.Sheaf.sheafification X) n
 
 end Generic
 
@@ -162,7 +153,7 @@ homology presheaf `U ↦ Hⁿ(Γ(f⁻¹U, I))` of any pushed injective resolutio
 def higherDirectImageResolutionSheafificationIso (F : AbelianSheaf X)
     (I : InjectiveResolution F) (n : ℕ) :
     higherDirectImageSheaf f F n ≅
-      (sheafification Y).obj (homologyPresheaf (pushedResolution f I) n) :=
+      (TopCat.Sheaf.sheafification Y).obj (homologyPresheaf (pushedResolution f I) n) :=
   higherDirectImageResolutionIso f F I n ≪≫
     sheafHomologyIsoSheafification (pushedResolution f I) n
 
