@@ -70,7 +70,9 @@ theorem basedFibreInclusion_injective (s : S) :
   exact congrArg Prod.snd h
 
 omit [CompactSpace S] in
-/-- The fibre inclusion based at `s` is a closed map when the product is compact Hausdorff. -/
+/-- The fibre inclusion based at `s` is a closed map: it is continuous, its source `X` is
+compact, and its target `S × X` is Hausdorff because both factors are.  Compactness of `S` is
+not used. -/
 theorem basedFibreInclusion_isClosedMap (s : S) :
     IsClosedMap (basedFibreInclusion S X s) :=
   (basedFibreInclusion S X s).hom.continuous.isClosedMap
