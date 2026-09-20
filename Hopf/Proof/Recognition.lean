@@ -157,7 +157,7 @@ import Lib.AlgebraicTopology.Hurewicz.Straightening
 import Lib.Topology.Homotopy.CellAttachment
 import Lib.AlgebraicTopology.Hurewicz.CubeSphere
 import Lib.AlgebraicTopology.Hurewicz.Naturality
-import Lib.AlgebraicTopology.Hurewicz.SphereGenerator
+import Hopf.Proof.AlgebraicTopology.Hurewicz.SphereGenerator
 import Lib.Topology.Homotopy.CellFilling
 import Lib.Geometry.Manifold.ChartedSpace.Transport
 import Lib.Topology.Homotopy.CylinderHEP

@@ -161,7 +161,7 @@ import Lib.Geometry.Manifold.Morse.CellStructure
 import Lib.Geometry.Manifold.Morse.Reeb
 import Lib.LinearAlgebra.Matrix.TransvectionReduction
 import Lib.Algebra.Module.IntegerPresentation
-import Lib.AlgebraicTopology.Hurewicz.DegreeSix
+import Hopf.Proof.AlgebraicTopology.Hurewicz.DegreeSix
 import Lib.AlgebraicTopology.SingularHomology.LocalContributionsNaturality
 import Lib.Geometry.Manifold.Morse.CutTransport
 import Lib.Geometry.Manifold.Morse.MiddleBlocks

@@ -1,5 +1,4 @@
 import Lib
-import Lib.AlgebraicTopology.Hurewicz.SphereGenerator
 import Lib.Topology.Homotopy.BasedDiskLifting
 import Lib.Topology.Homotopy.RelativeDiskLifting
 import Lib.Topology.Dimension.CubeBoundaryThree
@@ -31,13 +30,6 @@ is an evidence command rather than library content.
 #print axioms CoverLocalContributions.connectingRegularKernelEquiv
 #check CoverLocalContributions.connectingRegularKernelEquiv_apply
 #print axioms CoverLocalContributions.connectingRegularKernelEquiv_apply
-
-/-! ## `Lib.AlgebraicTopology.Hurewicz.SphereGenerator` -/
-
-#check SixthHurewicz.homotopyMap_bijective_of_homologyMap_bijective
-#print axioms SixthHurewicz.homotopyMap_bijective_of_homologyMap_bijective
-#check SixthHurewicz.exists_sphereMap_of_homologySixEquiv
-#print axioms SixthHurewicz.exists_sphereMap_of_homologySixEquiv
 
 /-! ## `Lib.Topology.Homotopy.BasedDiskLifting` -/
 

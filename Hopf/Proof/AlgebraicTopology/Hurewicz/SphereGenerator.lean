@@ -1,30 +1,30 @@
 /-
-Copyright (c) 2026 Fabian Franz. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
-Authors: Fabian Franz
+SPDX-License-Identifier: Apache-2.0
 -/
-import Lib.AlgebraicTopology.Hurewicz.DegreeSix
+
+import Hopf.Proof.AlgebraicTopology.Hurewicz.DegreeSix
 import Lib.AlgebraicTopology.Hurewicz.HopfDegree
 
 /-!
 # Six-sphere maps realizing specified homology generators
 
-For a simply connected target with vanishing second through fifth homotopy groups,
-degree-six Hurewicz naturality identifies the actual induced homotopy map with the
-actual homology map conjugated by Hurewicz isomorphisms. Hence a homology bijection
-induces a homotopy bijection at the actual image basepoint.
+Proof-specific: the degree `6` is hard-coded throughout although every step (degree-six Hurewicz
+naturality, sphere homology, the Noetherian surjective-implies-injective criterion) is
+degree-free; this is the `n = 6` instance of Hatcher, *Algebraic Topology*, Theorem 4.32 together
+with naturality, whose general forms live in `Lib/AlgebraicTopology/Hurewicz/HopfDegree.lean` and
+`Lib/AlgebraicTopology/Hurewicz/Naturality.lean`.
 
-Given a specified equivalence of target H6 with the integers, pull its inverse-at-one
-class back by Hurewicz and choose a based cube representative. Factor that cube through
-the fixed boundary-collapse sphere. Evaluation at the zero corner fixes the basepoint;
-cube-chain functoriality fixes the image of the quotient cube class. Every target class
-is an integer multiple of the specified generator, so this actual homology map is
-surjective. Sphere homology and the supplied equivalence give an injection in the same
-source-to-target direction. The Noetherian target criterion makes the surjection
-injective. Naturality then gives bijectivity on pi6 for this very sphere map.
+For a simply connected target with vanishing second through fifth homotopy groups, degree-six
+Hurewicz naturality identifies the induced homotopy map with the homology map conjugated by
+Hurewicz isomorphisms, so a homology bijection induces a homotopy bijection at the image
+basepoint.  Given a specified equivalence of the target's `H₆` with the integers, pulling its
+inverse-at-one class back by Hurewicz and factoring a based cube representative through the
+boundary-collapse sphere produces a sphere map whose homology map is surjective, hence (over a
+Noetherian target) bijective, hence bijective on `π₆`.
 
-The generator sign is inherited from the supplied equivalence. No smooth structure,
-homotopy inverse, or sphere recognition is asserted.
+Moved out of `Lib/AlgebraicTopology/Hurewicz/SphereGenerator.lean` by the round-8 D-file pass
+(`Lib/reports/round-7/judgement/d-files.md`).
 -/
 
 set_option warningAsError true
