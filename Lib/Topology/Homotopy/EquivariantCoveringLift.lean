@@ -18,6 +18,11 @@ transformations at one point therefore makes the map equivariant globally.
 Existence and uniqueness of a based lift from a simply connected, locally path-connected source
 are already supplied by `IsCoveringMap.existsUnique_continuousMap_lifts` in Mathlib.  The results
 below are the complementary deck-equivariance step.
+
+## References
+
+* A. Hatcher, *Algebraic Topology*, Proposition 1.34 (unique lifting) and §1.3 (normal covering
+  spaces and deck transformations)
 -/
 
 @[expose] public section
@@ -41,7 +46,8 @@ variable {G : Type uG} {H : Type uH} {E : Type uE} {E' : Type uE'}
 then it intertwines that deck transformation everywhere.
 
 The source and target covers may have different bases.  The map `r` relates them through
-`q (F e) = r (p e)`; no continuity hypothesis on `r` is needed for this uniqueness argument. -/
+`q (F e) = r (p e)`; no continuity hypothesis on `r` is needed for this uniqueness argument
+(Hatcher, *Algebraic Topology*, Prop. 1.34). -/
 theorem lift_eq_smul_of_eq_at
     (hp : IsQuotientCoveringMap p G) (hq : IsQuotientCoveringMap q H)
     [PreconnectedSpace E]
