@@ -7,7 +7,7 @@ SPDX-License-Identifier: Apache-2.0
 module
 
 public import Lib.Topology.Sheaves.SingularCochainSheaf.GlobalKernelLocal
-public import Lib.Topology.Sheaves.SingularCochainSheaf.GlobalUnitH1Criterion
+public import Lib.Topology.Sheaves.SingularCochainSheaf.GlobalUnitPredicates
 
 /-!
 # The global-unit kernel and cover-small chains
@@ -137,11 +137,11 @@ the kernel of the global unit is small for some cover. -/
 theorem globalKernelLocallySmall (n : ℕ) : GlobalKernelLocallySmall X A n :=
   exists_cover_cochainRestriction_eq_zero X A n
 
-/-- The converse condition in degree one: a one-cochain vanishing on the chains small for a
-point-indexed open cover is killed by the global unit. -/
-theorem smallKernelGlobalOne : SmallKernelGlobalOne X A := by
+/-- A singular cochain vanishing on the chains small for a point-indexed open cover is killed by
+the comparison map, in every degree. -/
+theorem smallKernelGlobal (n : ℕ) : SmallKernelGlobal X A n := by
   intro U hxU phi hphi
-  exact globalCochainUnit_eq_zero_of_smallRestriction X A 1 U
+  exact globalCochainUnit_eq_zero_of_smallRestriction X A n U
     (fun x => ⟨x, hxU x⟩) phi hphi
 
 end TopCat.SingularCochainSheaf

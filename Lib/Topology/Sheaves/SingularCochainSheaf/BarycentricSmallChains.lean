@@ -7,7 +7,7 @@ SPDX-License-Identifier: Apache-2.0
 module
 
 public import Lib.AlgebraicTopology.SingularSmallChains.Barycentric
-public import Lib.Topology.Sheaves.SingularCochainSheaf.GlobalUnitH1Criterion
+public import Lib.Topology.Sheaves.SingularCochainSheaf.GlobalUnitPredicates
 
 /-!
 # Chains small with respect to an open cover

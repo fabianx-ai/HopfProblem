@@ -347,7 +347,6 @@ import Lib.Topology.Sheaves.SingularCochainSheaf.Sheaf
 import Lib.Topology.Sheaves.SingularCochainSheaf.Augmentation
 import Lib.Topology.Sheaves.SingularCochainSheaf.PrimitivesH1
 import Lib.Topology.Sheaves.SingularCochainSheaf.LocalKernels
-import Lib.Topology.Sheaves.SingularCochainSheaf.LocalExactH1
 import Lib.Topology.Sheaves.SingularCochainSheaf.AugmentationMono
 import Lib.Topology.Sheaves.SingularCochainSheaf.DegreeZeroFunctions
 import Lib.Topology.Sheaves.SingularCochainSheaf.DegreeZeroAcyclic
@@ -384,7 +383,7 @@ import Lib.AlgebraicTopology.SingularSmallChains.Barycentric.SubdivisionHomotopy
 import Lib.AlgebraicTopology.SingularSmallChains.Barycentric.HomotopySupport
 import Lib.AlgebraicTopology.SingularSmallChains.Barycentric.SubdivisionSupport
 import Lib.AlgebraicTopology.SingularSmallChains.Barycentric
-import Lib.Topology.Sheaves.SingularCochainSheaf.GlobalUnitH1Criterion
+import Lib.Topology.Sheaves.SingularCochainSheaf.GlobalUnitPredicates
 import Lib.Topology.Sheaves.SingularCochainSheaf.BarycentricSmallChains
 import Lib.Topology.Sheaves.SingularCochainSheaf.GlobalPatch
 import Lib.Topology.Sheaves.SingularCochainSheaf.GlobalPatchLocal
@@ -392,7 +391,6 @@ import Lib.Topology.Sheaves.SingularCochainSheaf.GlobalSections
 import Lib.Topology.Sheaves.SingularCochainSheaf.GlobalKernelLocal
 import Lib.Topology.Sheaves.SingularCochainSheaf.GlobalKernelSmall
 import Lib.Topology.Sheaves.SingularCochainSheaf.GlobalUnitPositive
-import Lib.Topology.Sheaves.SingularCochainSheaf.GlobalUnitH1
 import Lib.Topology.Sheaves.ConstantSheafH1
 import Lib.Topology.Sheaves.ConstantProductH1Comparison
 import Lib.Topology.Sheaves.ConstantProductH1FibreIndependence

@@ -3859,13 +3859,6 @@ is an evidence command rather than library content.
 #check TopCat.SingularCochainSheaf.sheafify_exact_of_local_kernels
 #print axioms TopCat.SingularCochainSheaf.sheafify_exact_of_local_kernels
 
-/-! ## `Lib.Topology.Sheaves.SingularCochainSheaf.LocalExactH1` -/
-
-#check TopCat.SingularCochainSheaf.initialComplex_exact
-#print axioms TopCat.SingularCochainSheaf.initialComplex_exact
-#check TopCat.SingularCochainSheaf.complexSheaf_exactAt_one
-#print axioms TopCat.SingularCochainSheaf.complexSheaf_exactAt_one
-
 /-! ## `Lib.Topology.Sheaves.SingularCochainSheaf.AugmentationMono` -/
 
 #check TopCat.SingularCochainSheaf.sheafAugmentation_mono
@@ -4699,22 +4692,16 @@ is an evidence command rather than library content.
 #check TopCat.SingularSmallChains.Barycentric.smallChainHomotopyEquiv_hom
 #print axioms TopCat.SingularSmallChains.Barycentric.smallChainHomotopyEquiv_hom
 
-/-! ## `Lib.Topology.Sheaves.SingularCochainSheaf.GlobalUnitH1Criterion` -/
+/-! ## `Lib.Topology.Sheaves.SingularCochainSheaf.GlobalUnitPredicates` -/
 
 #check TopCat.SingularCochainSheaf.GlobalUnitSurjective
 #print axioms TopCat.SingularCochainSheaf.GlobalUnitSurjective
 #check TopCat.SingularCochainSheaf.GlobalKernelLocallySmall
 #print axioms TopCat.SingularCochainSheaf.GlobalKernelLocallySmall
-#check TopCat.SingularCochainSheaf.SmallKernelGlobalOne
-#print axioms TopCat.SingularCochainSheaf.SmallKernelGlobalOne
+#check TopCat.SingularCochainSheaf.SmallKernelGlobal
+#print axioms TopCat.SingularCochainSheaf.SmallKernelGlobal
 #check TopCat.SingularCochainSheaf.HasSmallChainEquivalences
 #print axioms TopCat.SingularCochainSheaf.HasSmallChainEquivalences
-#check TopCat.SingularCochainSheaf.globalCochainComparison_cycle_lift_one
-#print axioms TopCat.SingularCochainSheaf.globalCochainComparison_cycle_lift_one
-#check TopCat.SingularCochainSheaf.globalCochainComparison_boundary_detect_one
-#print axioms TopCat.SingularCochainSheaf.globalCochainComparison_boundary_detect_one
-#check TopCat.SingularCochainSheaf.globalCochainComparison_homology_isIso_one_of_small_chains
-#print axioms TopCat.SingularCochainSheaf.globalCochainComparison_homology_isIso_one_of_small_chains
 
 /-! ## `Lib.Topology.Sheaves.SingularCochainSheaf.BarycentricSmallChains` -/
 
@@ -4783,15 +4770,8 @@ is an evidence command rather than library content.
 #print axioms TopCat.SingularCochainSheaf.globalCochainUnit_eq_zero_iff_smallCover
 #check TopCat.SingularCochainSheaf.globalKernelLocallySmall
 #print axioms TopCat.SingularCochainSheaf.globalKernelLocallySmall
-#check TopCat.SingularCochainSheaf.smallKernelGlobalOne
-#print axioms TopCat.SingularCochainSheaf.smallKernelGlobalOne
-
-/-! ## `Lib.Topology.Sheaves.SingularCochainSheaf.GlobalUnitH1` -/
-
-#check TopCat.SingularCochainSheaf.globalUnitSurjective
-#print axioms TopCat.SingularCochainSheaf.globalUnitSurjective
-#check TopCat.SingularCochainSheaf.globalCochainComparison_homology_isIso_one
-#print axioms TopCat.SingularCochainSheaf.globalCochainComparison_homology_isIso_one
+#check TopCat.SingularCochainSheaf.smallKernelGlobal
+#print axioms TopCat.SingularCochainSheaf.smallKernelGlobal
 
 /-! ## `Lib.Topology.Sheaves.ConstantSheafH1` -/
 
@@ -5358,6 +5338,8 @@ is an evidence command rather than library content.
 
 /-! ## `Lib.Topology.Sheaves.SingularCochainSheaf.LocalExactPositive` -/
 
+#check TopCat.SingularCochainSheaf.initialComplex_exact
+#print axioms TopCat.SingularCochainSheaf.initialComplex_exact
 #check TopCat.SingularCochainSheaf.complexSheaf_exactAt_succ
 #print axioms TopCat.SingularCochainSheaf.complexSheaf_exactAt_succ
 
@@ -6058,16 +6040,12 @@ is an evidence command rather than library content.
 
 /-! ## `Lib.Topology.Sheaves.SingularCochainSheaf.GlobalUnitPositive` -/
 
-#check TopCat.SingularCochainSheaf.SmallKernelGlobal
-#print axioms TopCat.SingularCochainSheaf.SmallKernelGlobal
 #check TopCat.SingularCochainSheaf.globalCochainComparison_cycle_lift_succ
 #print axioms TopCat.SingularCochainSheaf.globalCochainComparison_cycle_lift_succ
 #check TopCat.SingularCochainSheaf.globalCochainComparison_boundary_detect_succ
 #print axioms TopCat.SingularCochainSheaf.globalCochainComparison_boundary_detect_succ
 #check TopCat.SingularCochainSheaf.globalCochainComparison_homology_isIso_succ_of_small_chains
 #print axioms TopCat.SingularCochainSheaf.globalCochainComparison_homology_isIso_succ_of_small_chains
-#check TopCat.SingularCochainSheaf.smallKernelGlobal
-#print axioms TopCat.SingularCochainSheaf.smallKernelGlobal
 #check TopCat.SingularCochainSheaf.globalCochainComparison_homology_isIso_succ
 #print axioms TopCat.SingularCochainSheaf.globalCochainComparison_homology_isIso_succ
 
