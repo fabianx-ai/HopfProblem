@@ -8,7 +8,15 @@ module
 
 public import Lib.AlgebraicTopology.SingularSmallChains.Basic
 
-/-! # Native singular-chain operations used by barycentric subdivision -/
+/-!
+# Native singular-chain operations used by barycentric subdivision
+
+Thin wrappers around Mathlib's singular chain complex (`TopCat.toSSet`,
+`SSet.chainComplexMap`, `AlgebraicTopology.singularChainComplexFunctor`) and around the
+standard topological simplex `stdSimplex ℝ (Fin (n+1))`, together with the face-map
+identities they satisfy.  They are the elementary input to the subdivision operator of
+Hatcher, *Algebraic Topology*, Proposition 2.21 (Bredon IV.17; Spanier 4.6).
+-/
 
 @[expose] public section
 
@@ -43,9 +51,11 @@ abbrev inducedChain {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y]
     (f : C(X, Y)) (n : ℕ) : Chains X n →ₗ[ℤ] Chains Y n :=
   ((singularChainMap f).f n).hom
 
+/-- The `i`-th face inclusion of the standard `n`-simplex is `stdSimplex.map i.succAbove`. -/
 theorem simplexFace_apply (n : ℕ) (i : Fin (n + 2)) (s : Simplex n) :
     TopCat.SingularSmallChains.simplexFace n i s = stdSimplex.map i.succAbove s := rfl
 
+/-- The `i`-th barycentric coordinate of a point on the `i`-th face vanishes. -/
 @[simp]
 theorem simplexFace_apply_self (n : ℕ) (i : Fin (n + 2)) (s : Simplex n) :
     TopCat.SingularSmallChains.simplexFace n i s i = 0 := by
@@ -55,6 +65,8 @@ theorem simplexFace_apply_self (n : ℕ) (i : Fin (n + 2)) (s : Simplex n) :
   intro k hk
   exact False.elim (Fin.succAbove_ne i k (Finset.mem_filter.mp hk).2)
 
+/-- Away from the index `i`, the `i`-th face inclusion keeps the barycentric coordinates
+of its argument. -/
 @[simp]
 theorem simplexFace_apply_succAbove (n : ℕ) (i : Fin (n + 2))
     (s : Simplex n) (k : Fin (n + 1)) :
@@ -64,6 +76,7 @@ theorem simplexFace_apply_succAbove (n : ℕ) (i : Fin (n + 2))
   simp [FunOnFinite.linearMap_apply_apply, Fin.succAbove_right_injective.eq_iff,
     Finset.sum_filter]
 
+/-- The standard `0`-simplex has a single point, its vertex. -/
 theorem simplexZero_eq_vertex (s : Simplex 0) :
     s = stdSimplex.vertex (S := ℝ) (0 : Fin 1) := by
   let : Unique (Fin (0 + 1)) := inferInstanceAs (Unique (Fin 1))
@@ -74,6 +87,8 @@ theorem simplexZero_eq_vertex (s : Simplex 0) :
   change s 0 = 1
   exact stdSimplex.eq_one_of_unique (s : stdSimplex ℝ (Fin 1)) (0 : Fin 1)
 
+/-- The singular set of a continuous map sends the index of a singular simplex `σ` to the
+index of `f ∘ σ`. -/
 theorem simplexIndex_map {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y]
     (f : C(X, Y)) (n : ℕ) (sigma : TopCat.SingularSmallChains.SingularSimplex X n) :
     (TopCat.toSSet.map (TopCat.ofHom f)).app
@@ -81,6 +96,8 @@ theorem simplexIndex_map {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y]
         (TopCat.SingularSmallChains.simplexIndex X n sigma) =
       TopCat.SingularSmallChains.simplexIndex Y n (f.comp sigma) := rfl
 
+/-- The chain map induced by `f : C(X, Y)` sends the basis chain of a singular simplex `σ`
+to the basis chain of `f ∘ σ`. -/
 @[simp]
 theorem inducedChain_simplex {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y]
     (f : C(X, Y)) (n : ℕ) (sigma : TopCat.SingularSmallChains.SingularSimplex X n) :
@@ -92,12 +109,14 @@ theorem inducedChain_simplex {X Y : Type} [TopologicalSpace X] [TopologicalSpace
     (TopCat.SingularSmallChains.simplexIndex X n sigma)
   exact congrArg (fun g : ModuleCat.of ℤ ℤ ⟶ Chains Y n => g.hom 1) h
 
+/-- The map induced by `f` on singular chains commutes with the boundary. -/
 theorem inducedChain_boundary {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y]
     (f : C(X, Y)) (i j : ℕ) (c : Chains X i) :
     inducedChain f j ((singularComplex X).d i j c) =
       (singularComplex Y).d i j (inducedChain f i c) :=
   congrArg (fun g : Chains X i ⟶ Chains Y j => g.hom c) ((singularChainMap f).comm i j).symm
 
+/-- Singular chains are functorial: `(g ∘ f)_* = g_* ∘ f_*`. -/
 theorem inducedChain_comp {X Y Z : Type}
     [TopologicalSpace X] [TopologicalSpace Y] [TopologicalSpace Z]
     (f : C(X, Y)) (g : C(Y, Z)) (n : ℕ) :
