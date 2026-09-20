@@ -14,11 +14,35 @@ public import Mathlib.AlgebraicTopology.SingularHomology.Basic
 public import Mathlib.Topology.Homotopy.Contractible
 
 /-!
-# Positive-degree primitives for native singular cochains
+# Positive-degree primitives for singular cochains
 
-The singular cochain complex of a point is exact in every positive degree.  Combining this
-textbook calculation with cochain homotopy gives an actual primitive after pullback along any
-nullhomotopic map.  The result is coefficient-generic and does not use sheaves.
+The singular cochain complex of a point is exact in every positive degree: a point is
+totally disconnected, so its singular chain complex is homotopy equivalent to the free
+module on the point concentrated in degree `0`, and dualising an additive homotopy
+equivalence gives one again.  Combining this with cochain homotopy shows that the pullback
+of a positive-degree cocycle along a nullhomotopic map is a coboundary.  Everything is
+stated for an arbitrary coefficient group.
+
+## Main results
+
+* `AlgebraicTopology.SingularCochains.pointCochain_exactAt_positive` : the cochain complex
+  of a point is exact in every positive degree.
+* `AlgebraicTopology.SingularCochains.pointCocycle_boundary` : a positive-degree cocycle on
+  a point is a coboundary.
+* `AlgebraicTopology.SingularCochains.homotopy_on_cocycle_succ` : chain-homotopic maps of
+  cochain complexes agree on a cocycle up to an explicit coboundary.
+* `AlgebraicTopology.SingularCochains.nullhomotopic_pullback_closed_succ` : the pullback of a
+  positive-degree cocycle along a nullhomotopic map is a coboundary.
+
+## References
+
+* [Allen Hatcher, *Algebraic Topology*][hatcher02], §3.1 (the cohomology of a point vanishes
+  in positive degrees)
+* `Mathlib/Algebra/Homology/AlternatingConst.lean` for the chain complex of a point
+
+## Tags
+
+singular cohomology, cocycle, coboundary, nullhomotopic, contractible
 -/
 
 @[expose] public section
@@ -29,6 +53,8 @@ set_option autoImplicit false
 noncomputable section
 
 open CategoryTheory CategoryTheory.Limits Opposite
+
+universe u
 
 namespace AlgebraicTopology.SingularCochains
 
@@ -92,8 +118,9 @@ theorem pointCocycle_boundary (A : AddCommGrpCat.{0}) (n : ℕ)
     ShortComplex.ab_exact_iff] at hexact
   exact hexact c hc
 
-/-- A cochain homotopy identifies a positive cocycle up to an explicit coboundary. -/
-theorem homotopy_on_cocycle_succ {K L : CochainComplex AddCommGrpCat.{0} ℕ}
+/-- If `f` and `g` are chain homotopic maps of cochain complexes of abelian groups, then on a
+cocycle `c` in degree `n + 1` they differ by the explicit coboundary `d (h c)`. -/
+theorem homotopy_on_cocycle_succ {K L : CochainComplex AddCommGrpCat.{u} ℕ}
     {f g : K ⟶ L} (h : _root_.Homotopy f g) (n : ℕ)
     (c : K.X (n + 1)) (hc : K.d (n + 1) (n + 2) c = 0) :
     f.f (n + 1) c =
@@ -110,7 +137,7 @@ theorem homotopy_on_cocycle_succ {K L : CochainComplex AddCommGrpCat.{0} ℕ}
   simpa only [hc, map_zero, zero_add] using hv
 
 /-- A cochain map commutes with consecutive positive differentials on elements. -/
-private theorem cochainMap_d_succ {K L : CochainComplex AddCommGrpCat.{0} ℕ}
+private theorem cochainMap_d_succ {K L : CochainComplex AddCommGrpCat.{u} ℕ}
     (f : K ⟶ L) (n : ℕ) (c : K.X (n + 1)) :
     L.d (n + 1) (n + 2) (f.f (n + 1) c) =
       f.f (n + 2) (K.d (n + 1) (n + 2) c) :=
