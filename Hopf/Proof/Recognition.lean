@@ -123,6 +123,7 @@ import Lib.AlgebraicTopology.FundamentalGroup.SimplyConnectedCover
 import Lib.AlgebraicTopology.FundamentalGroup.TwoSimplyConnectedCover
 import Lib.AlgebraicTopology.FundamentalGroup.VanKampen
 import Lib.Topology.Homeomorph.DiskCube
+import Lib.Topology.Homotopy.BasedDiskLifting
 import Lib.LinearAlgebra.SquareZero
 import Lib.Topology.MappingTorus.Basic
 import Lib.Topology.Covering.Quotient
@@ -452,36 +453,9 @@ theorem BasedDiskLifting.exists_based_disk_lift {V : Type*} [NormedAddCommGroup 
           ‖(z : V)‖ = 1 → v z = SixSphereCube.sphereBasePoint) ∧
         ((SpecialPeriods.Threefold.SphereHomologyEquivalence.sphereMap x).comp v).HomotopicRel u
           {z : DiskCylinder.Disk (E := V) | ‖(z : V)‖ = 1} := by
-  let F := SpecialPeriods.Threefold.SphereHomologyEquivalence.sphereMap x
-  let e := DiskCube.homeomorph L
-  let q : GenLoop (Fin 6) SpecialPeriods.Threefold.Space (F SixSphereCube.sphereBasePoint) :=
-    ⟨u.comp (e.symm : C(_, _)), fun z hz =>
-      hu (e.symm z) ((DiskCube.symm_boundary_iff L z).mpr hz)⟩
-  obtain ⟨a, ha⟩ := (sphereMap_piSix_bijective x).2 ⟦q⟧
-  obtain ⟨p, hp⟩ := Quotient.exists_rep a
-  have he : SixthHurewicz.homotopyMap F SixSphereCube.sphereBasePoint ⟦p⟧ = ⟦q⟧ :=
-    (congrArg (SixthHurewicz.homotopyMap F SixSphereCube.sphereBasePoint) hp).trans ha
-  have hh : GenLoop.Homotopic (SecondHurewicz.mapGenLoop F SixSphereCube.sphereBasePoint p) q :=
-    Quotient.exact he
-  obtain ⟨H⟩ := hh
-  let v : C(DiskCylinder.Disk (E := V), SixSphereCube.StandardSphere) :=
-    p.val.comp (e : C(_, _))
-  refine
-    ⟨v, ?_,
-      ⟨{  toFun := fun z => H (z.1, e z.2)
-          continuous_toFun :=
-            H.continuous.comp (continuous_fst.prodMk (e.continuous.comp continuous_snd))
-          map_zero_left := ?_
-          map_one_left := ?_
-          prop' := ?_ }⟩⟩
-  · intro z hz
-    exact p.property (e z) ((DiskCube.boundary_iff L z).mpr hz)
-  · intro z
-    exact H.apply_zero (e z)
-  · intro z
-    exact (H.apply_one (e z)).trans (congrArg u (e.symm_apply_apply z))
-  · intro t z hz
-    exact H.eq_fst t ((DiskCube.boundary_iff L z).mpr hz)
+  exact BasedDiskLifting.exists_based_disk_lift_of_surjective
+    (n := 6) (SpecialPeriods.Threefold.SphereHomologyEquivalence.sphereMap x)
+    SixSphereCube.sphereBasePoint (sphereMap_piSix_bijective x).2 L u hu
 
 theorem Sphere.pi_subsingleton {n : ℕ} (hn : 0 < n) (hn6 : n < 6)
     (x : SixSphereCube.StandardSphere) : Subsingleton (π_ n SixSphereCube.StandardSphere x) := by
