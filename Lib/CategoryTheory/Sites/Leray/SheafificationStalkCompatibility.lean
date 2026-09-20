@@ -13,11 +13,15 @@ public import Lib.Topology.Sheaves.SheafificationLocal
 /-!
 # Compatibility of sheafification with the resolution stalk model
 
-The canonical sheafification description of the homology sheaf and the canonical comparison
-between stalks and presheaf homology induce the same stalk isomorphism.
+Sheafification does not change stalks: the unit `P ⟶ P⁺` induces an isomorphism `P_x ≅ (P⁺)_x`
+(Hartshorne, *Algebraic Geometry*, II.1.2; Godement, *Topologie algébrique et théorie des
+faisceaux*, II.1.2).  Consequently the two descriptions of the stalk of `Rⁿf_*F` — the one coming
+from the sheafification statement `Rⁿf_*F = (U ↦ Hⁿ(Γ(f⁻¹U, I)))⁺` of Hartshorne III.8.1, and the
+one coming from exactness of the stalk functor applied to the complex `f_*I` — give the same
+isomorphism.
 
-These are generic categorical coherence statements. They neither assert proper base change nor
-identify a higher-direct-image stalk with the cohomology of a geometric fibre.
+These are categorical coherence statements.  They neither assert proper base change nor identify
+a higher-direct-image stalk with the cohomology of a geometric fibre.
 -/
 
 @[expose] public section
@@ -35,7 +39,8 @@ variable {X Y : TopCat.{0}}
 
 set_option backward.defeqAttrib.useBackward true in
 set_option backward.isDefEq.respectTransparency false in
-/-- The stalk map induced by the sheafification unit, natural in the presheaf. -/
+/-- The stalk map `P_y ⟶ (P⁺)_y` induced by the sheafification unit, natural in the presheaf.
+It is an isomorphism (Hartshorne II.1.2). -/
 def stalkSheafificationUnitNatTrans (y : Y) :
     TopCat.Presheaf.stalkFunctor AddCommGrpCat y ⟶
       sheafification Y ⋙ TopCat.Sheaf.forget AddCommGrpCat Y ⋙
@@ -58,6 +63,8 @@ def stalkSheafificationUnitNatTrans (y : Y) :
         CategoryTheory.sheafifyMap (Opens.grothendieckTopology Y) η
     exact CategoryTheory.toSheafify_naturality (Opens.grothendieckTopology Y) η
 
+/-- Componentwise, `stalkSheafificationUnitNatTrans` is the stalk map induced by the
+sheafification unit of the presheaf. -/
 @[simp]
 theorem stalkSheafificationUnitNatTrans_app (y : Y)
     (P : TopCat.Presheaf AddCommGrpCat Y) :
