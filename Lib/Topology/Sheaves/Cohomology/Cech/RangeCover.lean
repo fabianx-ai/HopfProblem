@@ -11,10 +11,12 @@ public import Lib.Topology.Sheaves.Cohomology.Cech.DirectedSystem
 /-!
 # Range covers and covering dimension
 
-This file implements textbook section CD-04R. An indexed open cover is replaced by the
-set-valued cover of its distinct members. A chosen refinement descends to this range cover, and
-the index-counting multiplicity bound is preserved. Consequently, a covering-dimension bound
-provides low-multiplicity covers cofinal in the thin refinement preorder of set-valued covers.
+An indexed open cover is replaced by the set-valued cover of its distinct members. A chosen
+refinement descends to this range cover, and the index-counting multiplicity bound is preserved.
+Consequently, a covering-dimension bound provides low-multiplicity covers cofinal in the thin
+refinement preorder of set-valued covers; this is the cofinality step behind Godement, *Topologie
+algébrique et théorie des faisceaux*, II.5.12 (on a space of covering dimension at most `n`, the
+covers of multiplicity at most `n + 1` are cofinal).
 
 The chosen refinement functions witness inequalities in the preorder; they are not retained as
 distinct morphism data. No separation, compactness, or sheaf-theoretic hypothesis is used.
