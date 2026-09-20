@@ -12,9 +12,11 @@ public import Lib.Topology.Sheaves.Cohomology.AddCommGroup
 /-!
 # Degree-two sheaf cohomology across an acyclic quotient
 
-This specializes the textbook degree-two Ext comparison to additive sheaves.
-For `0 ⟶ F ⟶ G ⟶ Q ⟶ 0`, vanishing of `H¹(Q)` and `H²(Q)` makes the
-literal cohomology map `H²(F) ⟶ H²(G)` an additive equivalence.
+For a short exact sequence `0 ⟶ F ⟶ G ⟶ Q ⟶ 0` of abelian sheaves, vanishing of `H¹(Q)` and
+`H²(Q)` makes the induced cohomology map `H²(F) ⟶ H²(G)` an additive equivalence.  This is the
+degree-two window of the long exact cohomology sequence (Hartshorne, *Algebraic Geometry*,
+III.1.1A), specialised from the `Ext` form in
+`Lib.Algebra.Homology.DerivedCategory.Ext.ShortExactAcyclicQuotient` to abelian sheaves.
 -/
 
 @[expose] public section
@@ -30,12 +32,13 @@ namespace TopCat.SheafCohomology
 
 variable {X : TopCat.{0}}
 
-/-- A compact interface for the two consecutive vanishings needed by the
-degree-two acyclic-quotient comparison.  For a finite sum of skyscraper
-sheaves these fields are the standard positive-degree acyclicity theorem. -/
+/-- A sheaf is acyclic in degrees one and two when both `H¹` and `H²` vanish.  This is the
+hypothesis of the degree-two comparison below. -/
 structure AcyclicInDegreesOneTwo
     (Q : TopCat.Sheaf AddCommGrpCat.{0} X) : Prop where
+  /-- The degree-one cohomology of `Q` vanishes. -/
   hOne : Subsingleton (CategoryTheory.Sheaf.H.{0} Q 1)
+  /-- The degree-two cohomology of `Q` vanishes. -/
   hTwo : Subsingleton (CategoryTheory.Sheaf.H.{0} Q 2)
 
 /-- The literal degree-two map induced by the first arrow of a short exact
@@ -76,6 +79,7 @@ def hTwoEquivMiddleOfAcyclicQuotient
   let _ := hQ.hTwo
   exact hTwoEquivMiddleOfSubsingletonQuotient hS
 
+/-- The degree-two comparison equivalence is the map induced by the subobject inclusion. -/
 @[simp]
 theorem hTwoEquivMiddleOfSubsingletonQuotient_apply
     {S : ShortComplex (TopCat.Sheaf AddCommGrpCat.{0} X)}
