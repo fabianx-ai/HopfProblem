@@ -20,6 +20,11 @@ The spectral-sequence field is Mathlib's `E₂CohomologicalSpectralSequenceNat`,
 actual homological complexes and its successor pages are identified with their homology.  The
 convergence field uses an explicit finite filtration by submodules; its graded pieces are genuine
 successive quotients.
+
+## References
+
+* [C. A. Weibel, *An introduction to homological algebra*][weibel1994], §5.2 (spectral sequences
+  supported in finitely many columns and their degeneration).
 -/
 
 @[expose] public section
