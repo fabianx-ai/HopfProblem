@@ -24,12 +24,14 @@ noncomputable section
 
 open CategoryTheory CategoryTheory.Abelian
 
+universe u
+
 namespace CategoryTheory.Sheaf
 
-/-- The canonical additive group on Ext-defined cohomology of a small topological sheaf. -/
-instance cohomologyAddCommGroup {X : TopCat.{0}}
-    (F : TopCat.Sheaf AddCommGrpCat.{0} X) (n : ℕ) :
-    AddCommGroup (CategoryTheory.Sheaf.H.{0} F n) :=
+/-- The canonical additive group on Ext-defined cohomology of a topological sheaf. -/
+instance cohomologyAddCommGroup {X : TopCat.{u}}
+    (F : TopCat.Sheaf AddCommGrpCat.{u} X) (n : ℕ) :
+    AddCommGroup (CategoryTheory.Sheaf.H.{u} F n) :=
   Ext.instAddCommGroup
 
 end CategoryTheory.Sheaf
