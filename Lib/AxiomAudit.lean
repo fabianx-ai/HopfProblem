@@ -57,11 +57,6 @@ is an evidence command rather than library content.
 #check TopCellLifting.relativeDiskLifting_of_pi_vanishing_of_surjective
 #print axioms TopCellLifting.relativeDiskLifting_of_pi_vanishing_of_surjective
 
-/-! ## `Lib.Analysis.Real.MeshScale` -/
-
-#check Real.exists_mesh_scale
-#print axioms Real.exists_mesh_scale
-
 /-! ## `Lib.Topology.MetricSpace.LebesgueNumber` -/
 
 #check Metric.subset_cover_of_diam_lt_of_ball_cover
@@ -71,6 +66,8 @@ is an evidence command rather than library content.
 
 /-! ## `Lib.Topology.Dimension.CubeBoundaryThreeLebesgue` -/
 
+#check TopologicalSpace.CubeBoundaryThree.exists_mesh_scale
+#print axioms TopologicalSpace.CubeBoundaryThree.exists_mesh_scale
 #check TopologicalSpace.CubeBoundaryThree.diam_coe_image
 #print axioms TopologicalSpace.CubeBoundaryThree.diam_coe_image
 #check TopologicalSpace.CubeBoundaryThree.exists_cover_mesh_scale

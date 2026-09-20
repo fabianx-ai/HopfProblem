@@ -209,7 +209,6 @@ import Lib.CategoryTheory.Abelian.CohomologicalDeltaFunctor.Ext
 import Lib.CategoryTheory.Abelian.CohomologicalDeltaFunctor.RightDerived
 import Lib.CategoryTheory.Abelian.CohomologicalDeltaFunctor.Effaceable
 import Lib.Analysis.Normed.LocallyContractible
-import Lib.Analysis.Real.MeshScale
 import Lib.CategoryTheory.Sites.Leray.ResolutionTransgression
 import Lib.CategoryTheory.Sites.Leray.ResolutionPostnikov
 import Lib.CategoryTheory.Sites.Leray.ResolutionPostnikovD2
