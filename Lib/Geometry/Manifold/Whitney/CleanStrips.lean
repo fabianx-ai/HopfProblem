@@ -10,16 +10,39 @@ import Lib.Geometry.Manifold.Morse.CircleGluing
 /-!
 # Clean crossing charts and strip patches
 
-Transverse coordinates and simultaneous sheet charts, isolating crossing neighbourhoods and finiteness of transverse intersections, sphere boundary and sphere normal coordinates, strip coordinates and strip normal data, clean corner patches, clean strip patches and clean bigon boundaries.
+Local normal forms along the two sheets of a Whitney pair. The file builds simultaneous charts in
+which two transverse submanifolds become the two coordinate factors, deduces that transverse
+complementary submanifolds of a compact manifold meet in a finite set, sets up normal coordinates
+along a sphere and along a strip, and assembles corner patches and strip patches into a clean
+embedded neighbourhood of the boundary of a Whitney bigon.
 
-Moved verbatim from the project stock file `Hopf/SingularHomology.lean` (integration 4,
-`Lib/reports/integration-4/singhom-moves.md`); the families here are
-`TransverseCoordinates`, `NativeEuclideanEmbedding.SmoothRetraction`, `SphereBoundary`, `SphereNormalCoordinates`, `ManifoldMorse.MorseSurgeryData`, `StripCoordinates`, `StripNormalData`, `CleanCornerPatch`, `CleanStripPatch`, `WhitneyPairModel`, `CleanBigonBoundary`. The declarations keep their historical dotted names
-and their order; the file order is the dependency order.
+## Main results
+
+* `exists_simultaneous_sheetChart`, `exists_clean_simultaneous_sheetChart`,
+  `exists_clean_crossingChart` : at a transverse intersection point of two submanifolds of
+  complementary dimension there is a chart of the ambient manifold in which the two sheets are the
+  two coordinate factors, and in which a point lies on a sheet exactly when the corresponding
+  coordinate vanishes.
+* `exists_isolating_crossing_neighborhood`, `isDiscrete_transverse_intersections` and
+  `finite_transverse_intersections` : two transverse embedded submanifolds of complementary
+  dimension meet in a discrete set, which is finite when the submanifolds are compact
+  (Guillemin–Pollack, Differential Topology, §1.5 and §2.3).
+* `SphereNormalCoordinates.normalFrame`, `normalJacobian` : the splitting of the ambient space
+  along a sphere into the radial direction and the tangent directions, and the determinant that
+  compares it with a reference frame; it gives the local intersection sign
+  (`ManifoldMorse.MorseSurgeryData.beltIntersectionSign`) of a sphere meeting a belt sphere.
+* `StripCoordinates.*` and `StripNormalData` : charts along a strip in which the centre line
+  `t ↦ ((t, 0), 0)` is straight and the normal direction is a prescribed field `v`, with the
+  blending construction that interpolates two such charts.
+* `CleanCornerPatch`, `CleanStripPatch`, `CleanBigonBoundary` and
+  `exists_clean_bigon_boundary_neighborhood` : an embedded neighbourhood of the boundary of the
+  Whitney bigon which meets the two sheets exactly in the two edges of the bigon.
 
 ## References
 
-* [John Milnor, *Lectures on the h-cobordism theorem*][milnor65], §§5–6.
+* [John Milnor, *Lectures on the h-cobordism theorem*][milnor65], §§5–6 (the Whitney trick).
+* Victor Guillemin and Alan Pollack, *Differential topology*, §§1.5, 2.3 (transversality and
+  finiteness of transverse intersections).
 
 ## Twin
 
@@ -27,7 +50,7 @@ No Mathlib counterpart exists.
 
 ## Tags
 
-Morse theory, Whitney trick, handle cancellation
+Morse theory, Whitney trick, handle cancellation, transversality, normal form
 -/
 
 open Set Function Filter Manifold Topology
@@ -36,18 +59,24 @@ open scoped ContDiff InnerProductSpace
 
 noncomputable section
 
+/-- The map `(x, z) ↦ f x + g z - f 0` gluing two maps into a normed space along their common value
+at the origin; it restricts to `f` on the first factor and to `g` on the second.
+-/
 def TransverseCoordinates.sumMap {D Z A : Type*} [NormedAddCommGroup D]
     [NormedAddCommGroup A] (f : D → A) (g : Z → A) (q : D × Z) : A :=
   f q.1 + g q.2 - f 0
 
+/-- The glued map restricts to `f` on the first factor, provided `f` and `g` agree at the origin. -/
 theorem TransverseCoordinates.sumMap_left {D Z A : Type*} [NormedAddCommGroup D]
     [NormedAddCommGroup Z] [NormedAddCommGroup A] (f : D → A) (g : Z → A) (hzero : g 0 = f 0)
     (x : D) : sumMap f g (x, 0) = f x := by simp [sumMap, hzero]
 
+/-- The glued map restricts to `g` on the second factor. -/
 theorem TransverseCoordinates.sumMap_right {D Z A : Type*} [NormedAddCommGroup D]
     [NormedAddCommGroup A] (f : D → A) (g : Z → A) (z : Z) : sumMap f g (0, z) = g z := by
   simp [sumMap, add_sub_cancel_left]
 
+/-- The glued map is smooth on a product of sets on which the two maps are smooth. -/
 theorem TransverseCoordinates.contDiffOn_sumMap {D Z A : Type*} [NormedAddCommGroup D]
     [NormedSpace ℝ D] [NormedAddCommGroup Z] [NormedSpace ℝ Z] [NormedAddCommGroup A]
     [NormedSpace ℝ A] {f : D → A} {g : Z → A} {U : Set D} {V : Set Z} (hf : ContDiffOn ℝ ∞ f U)
@@ -56,6 +85,7 @@ theorem TransverseCoordinates.contDiffOn_sumMap {D Z A : Type*} [NormedAddCommGr
         (hg.comp contDiff_snd.contDiffOn (fun _ hx => hx.2))).sub
     contDiffOn_const
 
+/-- The derivative of the glued map at the origin is the coproduct of the two derivatives. -/
 theorem TransverseCoordinates.hasFDerivAt_sumMap_zero {D Z A : Type*} [NormedAddCommGroup D]
     [NormedSpace ℝ D] [NormedAddCommGroup Z] [NormedSpace ℝ Z] [NormedAddCommGroup A]
     [NormedSpace ℝ A] {f : D → A} {g : Z → A} (hf : DifferentiableAt ℝ f 0)
@@ -71,18 +101,25 @@ theorem TransverseCoordinates.hasFDerivAt_sumMap_zero {D Z A : Type*} [NormedAdd
   intro q
   simp [ContinuousLinearMap.coprod_apply]
 
+/-- The two-sheet chart candidate attached to a smooth retraction of a tubular neighbourhood of `M`
+in `E`: the two maps are added in `E` and pushed back to `M` by the retraction.
+-/
 def NativeEuclideanEmbedding.SmoothRetraction.sheetCoordinates {E M D Z : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [NormedAddCommGroup D] {e : NativeEuclideanEmbedding E M} (r : e.SmoothRetraction)
     (f : D → M) (g : Z → M) : D × Z → M :=
   r.toFun ∘ TransverseCoordinates.sumMap (e.toFun ∘ f) (e.toFun ∘ g)
 
+/-- The domain on which the two-sheet chart candidate is defined: the product of the two given sets
+intersected with the preimage of the retraction's domain.
+-/
 def NativeEuclideanEmbedding.SmoothRetraction.sheetCoordinateDomain {E M D Z : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [NormedAddCommGroup D] {e : NativeEuclideanEmbedding E M} (r : e.SmoothRetraction)
     (f : D → M) (g : Z → M) (U : Set D) (V : Set Z) : Set (D × Z) :=
   (U ×ˢ V) ∩ TransverseCoordinates.sumMap (e.toFun ∘ f) (e.toFun ∘ g) ⁻¹' r.domain
 
+/-- The two-sheet chart candidate restricts to `f` on the first factor. -/
 theorem NativeEuclideanEmbedding.SmoothRetraction.sheetCoordinates_left {E M D Z : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [NormedAddCommGroup D] [NormedAddCommGroup Z] {e : NativeEuclideanEmbedding E M}
@@ -94,6 +131,7 @@ theorem NativeEuclideanEmbedding.SmoothRetraction.sheetCoordinates_left {E M D Z
   rw [hsum]
   exact r.retract (f x)
 
+/-- The two-sheet chart candidate restricts to `g` on the second factor. -/
 theorem NativeEuclideanEmbedding.SmoothRetraction.sheetCoordinates_right {E M D Z : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [NormedAddCommGroup D] {e : NativeEuclideanEmbedding E M} (r : e.SmoothRetraction)
@@ -101,6 +139,9 @@ theorem NativeEuclideanEmbedding.SmoothRetraction.sheetCoordinates_right {E M D 
   rw [sheetCoordinates, Function.comp_apply, TransverseCoordinates.sumMap_right]
   exact r.retract (g z)
 
+/-- The origin belongs to the domain of the two-sheet chart candidate whenever it belongs to both
+given sets.
+-/
 theorem NativeEuclideanEmbedding.SmoothRetraction.zero_mem_sheetCoordinateDomain
     {E M D Z : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] [NormedAddCommGroup D] [NormedAddCommGroup Z]
@@ -112,6 +153,7 @@ theorem NativeEuclideanEmbedding.SmoothRetraction.zero_mem_sheetCoordinateDomain
   rw [TransverseCoordinates.sumMap_right]
   exact r.contains ⟨g 0, rfl⟩
 
+/-- The domain of the two-sheet chart candidate is open. -/
 theorem NativeEuclideanEmbedding.SmoothRetraction.isOpen_sheetCoordinateDomain
     {E M D Z : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] [NormedAddCommGroup D] [NormedSpace ℝ D] [NormedAddCommGroup Z]
@@ -123,6 +165,7 @@ theorem NativeEuclideanEmbedding.SmoothRetraction.isOpen_sheetCoordinateDomain
         (e.smooth.comp_contMDiffOn hg).contDiffOn).continuousOn.isOpen_inter_preimage
     (hU.prod hV) r.open_domain
 
+/-- The two-sheet chart candidate is smooth on its domain. -/
 theorem NativeEuclideanEmbedding.SmoothRetraction.contMDiffOn_sheetCoordinates
     {E M D Z : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] [NormedAddCommGroup D] [NormedSpace ℝ D] [NormedAddCommGroup Z]
@@ -137,6 +180,10 @@ theorem NativeEuclideanEmbedding.SmoothRetraction.contMDiffOn_sheetCoordinates
       Set.inter_subset_left)
     (fun _ hx => hx.2)
 
+/-- At the origin the derivative of the two-sheet chart candidate is the coproduct of the
+derivatives of the two maps; so the candidate is a local diffeomorphism exactly when the two
+sheets are transverse.
+-/
 theorem NativeEuclideanEmbedding.SmoothRetraction.mfderiv_sheetCoordinates_zero
     {E M D Z : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] [NormedAddCommGroup D] [NormedSpace ℝ D] [NormedAddCommGroup Z]
@@ -193,6 +240,10 @@ theorem NativeEuclideanEmbedding.SmoothRetraction.mfderiv_sheetCoordinates_zero
   change R (T (G q.2)) = G q.2 at hright
   rw [map_add, hleft, hright]
 
+/-- For linear maps out of spaces of complementary dimension, surjectivity of the coproduct `F ⊕ G`
+implies that it is invertible; this is the linear-algebra form of transversality in
+complementary dimension.
+-/
 theorem TransverseCoordinates.isInvertible_coprod_of_surjective {D Z E : Type*}
     [NormedAddCommGroup D] [NormedSpace ℝ D] [NormedAddCommGroup Z] [NormedSpace ℝ Z]
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ D] [FiniteDimensional ℝ Z]
@@ -206,6 +257,11 @@ theorem TransverseCoordinates.isInvertible_coprod_of_surjective {D Z E : Type*}
   let L := (LinearEquiv.ofBijective (F.coprod G).toLinearMap ⟨hi, ht⟩).toContinuousLinearEquiv
   exact ⟨L, rfl⟩
 
+/-- Simultaneous chart at a transverse crossing: if two parametrised sheets `f` and `g` of
+complementary dimension meet at `f 0 = g 0` with surjective coproduct of derivatives, then a
+neighbourhood of that point carries a chart `Φ` of the ambient manifold in which the two sheets
+are the two coordinate axes, `Φ (x, 0) = f x` and `Φ (0, z) = g z`.
+-/
 theorem exists_simultaneous_sheetChart {E M D Z : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] [NormedAddCommGroup D] [NormedSpace ℝ D]
@@ -264,6 +320,10 @@ theorem exists_simultaneous_sheetChart {E M D Z : Type*} [NormedAddCommGroup E]
   · intro z hz
     exact (heq hz).symm.trans (r.sheetCoordinates_right f g z)
 
+/-- The clean form of the simultaneous chart: the chart can be shrunk so that in addition a point of
+the chart lies on the first sheet exactly when its second coordinate vanishes, and on the second
+sheet exactly when its first coordinate vanishes.
+-/
 theorem exists_clean_simultaneous_sheetChart {E M D Z : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] [NormedAddCommGroup D] [NormedSpace ℝ D]
@@ -352,6 +412,11 @@ theorem exists_clean_simultaneous_sheetChart {E M D Z : Type*} [NormedAddCommGro
         subst x
         exact ⟨z, (hsource hq.1).2, (hright z hq.1).symm⟩
 
+/-- Clean crossing chart, stated for two embedded submanifolds given with parametrisations `c` and
+`d`: at a transverse intersection point of complementary dimension there is a chart of the
+ambient manifold in which the images of the two embeddings are the two coordinate factors,
+cleanly.
+-/
 theorem exists_clean_crossingChart_of_parametrizations {E M D Z N P A B : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M]
@@ -456,6 +521,11 @@ theorem exists_clean_crossingChart_of_parametrizations {E M D Z N P A B : Type*}
       exact ⟨d v, hv⟩
   exact ⟨hrangeF.trans (himages q hq).1, hrangeG.trans (himages q hq).2⟩
 
+/-- Clean crossing chart at a transverse intersection point of two embedded submanifolds of
+complementary dimension: a chart of the ambient manifold in which the two submanifolds become
+the two coordinate factors, and in which membership of each submanifold is the vanishing of the
+complementary coordinate (Guillemin–Pollack, Differential Topology, §2.3).
+-/
 theorem exists_clean_crossingChart {E M D Z N P : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] [NormedAddCommGroup D] [NormedSpace ℝ D]
@@ -504,6 +574,10 @@ theorem exists_clean_crossingChart {E M D Z N P : Type*} [NormedAddCommGroup E]
   exact
     ⟨a, ha, Φ, hprod, hsource, htarget, hcenter.trans (congrArg F hcx), hleft, hright, himages⟩
 
+/-- A transverse intersection point of two embedded submanifolds of complementary dimension is
+isolated in their intersection: some open neighbourhood of it meets the intersection only in
+that point.
+-/
 theorem exists_isolating_crossing_neighborhood {E M D Z N P : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] [NormedAddCommGroup D] [NormedSpace ℝ D]
@@ -536,6 +610,9 @@ theorem exists_isolating_crossing_neighborhood {E M D Z N P : Type*} [NormedAddC
     rcases Set.mem_singleton_iff.mp hw with rfl
     exact ⟨hFx, ⟨x, rfl⟩, ⟨y, hxy⟩⟩
 
+/-- Two embedded submanifolds of complementary dimension meeting everywhere transversally intersect
+in a discrete set.
+-/
 theorem isDiscrete_transverse_intersections {E M D Z N P : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] [NormedAddCommGroup D] [NormedSpace ℝ D]
@@ -557,6 +634,9 @@ theorem isDiscrete_transverse_intersections {E M D Z N P : Type*} [NormedAddComm
     exists_isolating_crossing_neighborhood hF hG hembF hembG x y hxy hdim (ht x y hxy)
   exact ⟨O, hO, heq⟩
 
+/-- Two compact embedded submanifolds of complementary dimension meeting everywhere transversally in
+a compact manifold intersect in a finite set (Guillemin–Pollack, Differential Topology, §1.5).
+-/
 theorem finite_transverse_intersections {E M D Z N P : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] [NormedAddCommGroup D] [NormedSpace ℝ D]
@@ -578,13 +658,16 @@ theorem finite_transverse_intersections {E M D Z N P : Type*} [NormedAddCommGrou
     ((isCompact_range hF.continuous).inter_right (isCompact_range hG.continuous).isClosed).finite
       (isDiscrete_transverse_intersections hF hG hembF hembG hdim ht)
 
+/-- The defining function `x ↦ ‖x‖² - 1` of the unit sphere. -/
 def SphereBoundary.definingFunction {E : Type*} [NormedAddCommGroup E] (x : E) : ℝ :=
   ‖x‖ ^ 2 - 1
 
+/-- The defining function of the unit sphere is smooth on an inner product space. -/
 theorem SphereBoundary.contDiff_definingFunction {E : Type*} [NormedAddCommGroup E]
     [InnerProductSpace ℝ E] : ContDiff ℝ ∞ (definingFunction (E := E)) :=
   (contDiff_id.norm_sq (𝕜 := ℝ)).sub contDiff_const
 
+/-- The defining function vanishes exactly on the unit sphere. -/
 theorem SphereBoundary.definingFunction_eq_zero_iff {E : Type*} [NormedAddCommGroup E]
     (x : E) : definingFunction x = 0 ↔ x ∈ Metric.sphere (0 : E) 1 := by
   simp only [definingFunction, Metric.mem_sphere, dist_zero_right]
@@ -595,10 +678,14 @@ theorem SphereBoundary.definingFunction_eq_zero_iff {E : Type*} [NormedAddCommGr
     rw [h]
     norm_num
 
+/-- The derivative of the defining function at `x` is `2 ⟪x, ·⟫`. -/
 theorem SphereBoundary.fderiv_definingFunction {E : Type*} [NormedAddCommGroup E]
     [InnerProductSpace ℝ E] (x : E) : fderiv ℝ (definingFunction (E := E)) x = 2 • innerSL ℝ x :=
   ((hasStrictFDerivAt_norm_sq x).hasFDerivAt.sub_const 1).fderiv
 
+/-- A vector is annihilated by the derivative of the defining function at `x` exactly when it is
+orthogonal to `x`; so the kernel of that derivative is the tangent space of the sphere.
+-/
 theorem SphereBoundary.fderiv_definingFunction_eq_zero_iff {E : Type*}
     [NormedAddCommGroup E] [InnerProductSpace ℝ E] (x v : E) :
     fderiv ℝ (definingFunction (E := E)) x v = 0 ↔ Inner.inner ℝ x v = 0 := by
@@ -611,6 +698,11 @@ theorem SphereBoundary.fderiv_definingFunction_eq_zero_iff {E : Type*}
   · intro h
     rw [h, add_zero]
 
+/-- If a smooth map on `E` restricts on the unit sphere to an immersion, then at every point of the
+sphere the only vector killed both by the derivative of the map and by the derivative of the
+defining function is zero; that is, the map is transverse to the sphere in the sense that its
+kernel meets the tangent space of the sphere trivially.
+-/
 theorem SphereBoundary.common_kernel_of_immersive_sphere_extension {E : Type*}
     [NormedAddCommGroup E] [InnerProductSpace ℝ E] {n : ℕ} [Fact (Module.finrank ℝ E = n + 1)]
     {G H N : Type*} [NormedAddCommGroup G] [NormedSpace ℝ G] [TopologicalSpace H]
@@ -650,11 +742,15 @@ theorem SphereBoundary.common_kernel_of_immersive_sphere_extension {E : Type*}
   rw [hwzero, map_zero] at hw
   exact hw.symm
 
+/-- The derivative of the inclusion of the unit sphere into the ambient space, read in the standard
+chart of `Sⁿ`; it identifies `ℝⁿ` with the tangent space of the sphere at `x`.
+-/
 def SphereNormalCoordinates.inclusionDerivative {V : Type*} [NormedAddCommGroup V]
     [InnerProductSpace ℝ V] {n : ℕ} [Fact (Module.finrank ℝ V = n + 1)]
     (x : Metric.sphere (0 : V) 1) : EuclideanSpace ℝ (Fin n) →L[ℝ] V :=
   mvfderiv (𝓡 n) (Subtype.val : Metric.sphere (0 : V) 1 → V) x
 
+/-- Tangent vectors of the sphere at `x` are orthogonal to `x`. -/
 theorem SphereNormalCoordinates.inner_inclusionDerivative_zero {V : Type*}
     [NormedAddCommGroup V] [InnerProductSpace ℝ V] {n : ℕ} [Fact (Module.finrank ℝ V = n + 1)]
     (x : Metric.sphere (0 : V) 1) (u : EuclideanSpace ℝ (Fin n)) :
@@ -663,17 +759,23 @@ theorem SphereNormalCoordinates.inner_inclusionDerivative_zero {V : Type*}
   rw [← range_mvfderiv_subtypeVal (n := n) x]
   exact ⟨u, rfl⟩
 
+/-- A point of the unit sphere has inner square one. -/
 theorem SphereNormalCoordinates.inner_self_eq_one {V : Type*} [NormedAddCommGroup V]
     [InnerProductSpace ℝ V] (x : Metric.sphere (0 : V) 1) : Inner.inner ℝ (x : V) x = 1 := by
   have hx : ‖(x : V)‖ = 1 := by simpa only [Metric.mem_sphere, dist_zero_right] using x.property
   rw [real_inner_self_eq_norm_sq, hx, one_pow]
 
+/-- The frame of the ambient space at a point `x` of the unit sphere adapted to the splitting into
+the radial line `ℝ x` and the tangent space: it sends `(s, w)` to `s • x` plus the tangent
+vector corresponding to `w` under `A`.
+-/
 def SphereNormalCoordinates.normalFrame {V N : Type*} [NormedAddCommGroup V]
     [InnerProductSpace ℝ V] [NormedAddCommGroup N] [NormedSpace ℝ N] {n : ℕ}
     [Fact (Module.finrank ℝ V = n + 1)] (x : Metric.sphere (0 : V) 1)
     (A : EuclideanSpace ℝ (Fin n) →L[ℝ] N) : (ℝ × N) →L[ℝ] V :=
   ((ContinuousLinearMap.id ℝ ℝ).smulRight (x : V)).coprod ((inclusionDerivative x).comp A.inverse)
 
+/-- The value of the adapted frame: `(s, w) ↦ s • x + inclusionDerivative x (A⁻¹ w)`. -/
 theorem SphereNormalCoordinates.normalFrame_apply {V N : Type*} [NormedAddCommGroup V]
     [InnerProductSpace ℝ V] [NormedAddCommGroup N] [NormedSpace ℝ N] {n : ℕ}
     [Fact (Module.finrank ℝ V = n + 1)] (x : Metric.sphere (0 : V) 1)
@@ -681,6 +783,7 @@ theorem SphereNormalCoordinates.normalFrame_apply {V N : Type*} [NormedAddCommGr
     normalFrame x A z = z.1 • (x : V) + inclusionDerivative x (A.inverse z.2) :=
   rfl
 
+/-- The radial component of the adapted frame is its first argument. -/
 theorem SphereNormalCoordinates.inner_normalFrame {V N : Type*} [NormedAddCommGroup V]
     [InnerProductSpace ℝ V] [NormedAddCommGroup N] [NormedSpace ℝ N] {n : ℕ}
     [Fact (Module.finrank ℝ V = n + 1)] (x : Metric.sphere (0 : V) 1)
@@ -689,6 +792,9 @@ theorem SphereNormalCoordinates.inner_normalFrame {V N : Type*} [NormedAddCommGr
   rw [normalFrame_apply, inner_add_right, inner_smul_right, inner_self_eq_one,
     inner_inclusionDerivative_zero, mul_one, add_zero]
 
+/-- For an invertible `A` the adapted frame is a linear isomorphism, since the ambient space is the
+orthogonal sum of the radial line and the tangent space.
+-/
 theorem SphereNormalCoordinates.bijective_normalFrame {V N : Type*} [NormedAddCommGroup V]
     [InnerProductSpace ℝ V] [NormedAddCommGroup N] [NormedSpace ℝ N] {n : ℕ}
     [Fact (Module.finrank ℝ V = n + 1)] (x : Metric.sphere (0 : V) 1)
@@ -718,12 +824,18 @@ theorem SphereNormalCoordinates.bijective_normalFrame {V N : Type*} [NormedAddCo
     rw [normalFrame_apply, hA.inverse_apply_self, hu]
     abel
 
+/-- The determinant of the adapted frame relative to a reference isomorphism `j`; its sign is the
+local intersection sign of the sphere with a transverse submanifold.
+-/
 def SphereNormalCoordinates.normalJacobian {V N : Type*} [NormedAddCommGroup V]
     [InnerProductSpace ℝ V] [NormedAddCommGroup N] [NormedSpace ℝ N] {n : ℕ}
     [Fact (Module.finrank ℝ V = n + 1)] (j : (ℝ × N) ≃L[ℝ] V) (x : Metric.sphere (0 : V) 1)
     (A : EuclideanSpace ℝ (Fin n) →L[ℝ] N) : ℝ :=
   ((normalFrame x A).comp j.symm.toContinuousLinearMap).det
 
+/-- The normal Jacobian is nonzero when `A` is invertible, since the adapted frame is then an
+isomorphism.
+-/
 theorem SphereNormalCoordinates.normalJacobian_ne_zero {V N : Type*} [NormedAddCommGroup V]
     [InnerProductSpace ℝ V] [NormedAddCommGroup N] [NormedSpace ℝ N] {n : ℕ}
     [Fact (Module.finrank ℝ V = n + 1)] [FiniteDimensional ℝ V] (j : (ℝ × N) ≃L[ℝ] V)
@@ -732,6 +844,9 @@ theorem SphereNormalCoordinates.normalJacobian_ne_zero {V N : Type*} [NormedAddC
   apply (RegularValues.bijective_iff_det_ne_zero _).mp
   exact (bijective_normalFrame x A hA).comp j.symm.bijective
 
+/-- The normal Jacobian is unchanged when the model of the normal factor is replaced by an
+isomorphic one, the reference isomorphism being transported along.
+-/
 theorem SphereNormalCoordinates.normalJacobian_change_normal_model {V N : Type*}
     [NormedAddCommGroup V] [InnerProductSpace ℝ V] [NormedAddCommGroup N] [NormedSpace ℝ N]
     {n : ℕ} [Fact (Module.finrank ℝ V = n + 1)] {N' : Type*} [NormedAddCommGroup N']
@@ -757,6 +872,10 @@ theorem SphereNormalCoordinates.normalJacobian_change_normal_model {V N : Type*}
       (r.symm v).1 • (x : V) + inclusionDerivative x (A.inverse (r.symm v).2)
   rw [hinv]
 
+/-- A reference linear isomorphism between the radial line times the negative coordinates of the
+Morse chart and the ambient space of the belt sphere, available once the negative coordinates
+have dimension `m`.
+-/
 def ManifoldMorse.MorseSurgeryData.beltNormalReference {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ} {p : M}
     (d : ManifoldMorse.MorseSurgeryData E f p) (m : ℕ)
@@ -764,6 +883,9 @@ def ManifoldMorse.MorseSurgeryData.beltNormalReference {E M : Type*} [NormedAddC
     (ℝ × d.chart.NegativeCoordinates) ≃L[ℝ] Hemisphere.Ambient (m + 1) :=
   ContinuousLinearEquiv.ofFinrankEq (by simp [Module.finrank_prod, hdim, Nat.add_comm])
 
+/-- The normal Jacobian at `x` of a sphere `g` meeting the belt sphere of a Morse surgery, computed
+from the derivative of the belt normal coordinate of `g`.
+-/
 def ManifoldMorse.MorseSurgeryData.beltIntersectionJacobian {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ}
     {p : M} (d : ManifoldMorse.MorseSurgeryData E f p) (m : ℕ)
@@ -774,6 +896,9 @@ def ManifoldMorse.MorseSurgeryData.beltIntersectionJacobian {E M : Type*}
   SphereNormalCoordinates.normalJacobian j x
     (mfderiv (𝓡 m) 𝓘(ℝ, d.chart.NegativeCoordinates) (d.beltNormal ∘ g) x)
 
+/-- The local intersection sign at `x` of a sphere with the belt sphere of a Morse surgery, the sign
+of the corresponding normal Jacobian (Milnor, h-cobordism theorem, §6).
+-/
 def ManifoldMorse.MorseSurgeryData.beltIntersectionSign {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ} {p : M}
     (d : ManifoldMorse.MorseSurgeryData E f p) (m : ℕ)
@@ -781,12 +906,16 @@ def ManifoldMorse.MorseSurgeryData.beltIntersectionSign {E M : Type*} [NormedAdd
     (g : Hemisphere.Sphere m → d.UpperLevel) (x : Hemisphere.Sphere m) : SignType :=
   SignType.sign (d.beltIntersectionJacobian m j g x)
 
+/-- The set of parameters at which a sphere `g` meets the belt sphere of a Morse surgery. -/
 def ManifoldMorse.MorseSurgeryData.beltIntersectionPoints {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ}
     {p : M} (d : ManifoldMorse.MorseSurgeryData E f p) (m : ℕ)
     (g : Hemisphere.Sphere m → d.UpperLevel) : Set (Hemisphere.Sphere m) :=
   g ⁻¹' Set.range d.surgery.beltSphere
 
+/-- Two intersection points carry opposite signs exactly when the product of their normal Jacobians
+is negative.
+-/
 theorem ManifoldMorse.MorseSurgeryData.beltIntersectionSigns_opposite_iff {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ}
     {p : M} (d : ManifoldMorse.MorseSurgeryData E f p) (m : ℕ)
@@ -797,6 +926,9 @@ theorem ManifoldMorse.MorseSurgeryData.beltIntersectionSigns_opposite_iff {E M :
   unfold beltIntersectionSign
   rw [← sign_mul, sign_eq_neg_one_iff]
 
+/-- The algebraic intersection number of a sphere with the belt sphere of a Morse surgery: the sum
+of the local signs over the finitely many intersection points.
+-/
 def ManifoldMorse.MorseSurgeryData.beltIntersectionCount {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ}
     {p : M} (d : ManifoldMorse.MorseSurgeryData E f p) (m : ℕ)
@@ -806,6 +938,7 @@ def ManifoldMorse.MorseSurgeryData.beltIntersectionCount {E M : Type*}
   ∑ x ∈ hfin.toFinset, (d.beltIntersectionSign m j g x : ℤ)
 
 attribute [local instance 100] Classical.propDecidable in
+/-- At a transverse intersection point with the belt sphere the normal Jacobian is nonzero. -/
 theorem ManifoldMorse.MorseSurgeryData.beltIntersectionJacobian_ne_zero {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] {f : M → ℝ} {p : M}
@@ -835,6 +968,7 @@ theorem ManifoldMorse.MorseSurgeryData.beltIntersectionJacobian_ne_zero {E M : T
   exact SphereNormalCoordinates.normalJacobian_ne_zero j x A hAi
 
 attribute [local instance 100] Classical.propDecidable in
+/-- At a transverse intersection point with the belt sphere the local sign is `1` or `-1`. -/
 theorem ManifoldMorse.MorseSurgeryData.beltIntersectionSign_unit {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] {f : M → ℝ} {p : M}
@@ -862,6 +996,9 @@ theorem ManifoldMorse.MorseSurgeryData.beltIntersectionSign_unit {E M : Type*}
   · exact Or.inl h
 
 attribute [local instance 100] Classical.propDecidable in
+/-- An injective sphere meeting the belt sphere transversally does so in finitely many points, the
+two being compact submanifolds of complementary dimension in the upper level set.
+-/
 theorem ManifoldMorse.MorseSurgeryData.finite_beltIntersectionPoints {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] {f : M → ℝ} {p : M}
@@ -896,12 +1033,16 @@ theorem ManifoldMorse.MorseSurgeryData.finite_beltIntersectionPoints {E M : Type
     hfin.preimage hinj.injOn
   exact hpre.subset (fun x hx => ⟨⟨x, rfl⟩, hx⟩)
 
+/-- The second coordinate of a chart `Φ : D × B ≃ M`, viewed as a function on the target of `Φ`; it
+is the normal coordinate that cuts out the first sheet.
+-/
 def TransverseCoordinates.normalCoordinate {D B E M : Type*} [NormedAddCommGroup D]
     [NormedSpace ℝ D] [NormedAddCommGroup B] [NormedSpace ℝ B] [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     (Φ : PartialDiffeomorph 𝓘(ℝ, D × B) 𝓘(ℝ, E) (D × B) M ∞) : M → B :=
   Prod.snd ∘ Φ.symm
 
+/-- The normal coordinate of a chart is smooth on the target of the chart. -/
 theorem TransverseCoordinates.contMDiffOn_normalCoordinate {D B E M : Type*}
     [NormedAddCommGroup D] [NormedSpace ℝ D] [NormedAddCommGroup B] [NormedSpace ℝ B]
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
@@ -910,6 +1051,9 @@ theorem TransverseCoordinates.contMDiffOn_normalCoordinate {D B E M : Type*}
   have hs : ContMDiff 𝓘(ℝ, D × B) 𝓘(ℝ, B) ∞ (Prod.snd : D × B → B) := contDiff_snd.contMDiff
   exact hs.comp_contMDiffOn Φ.contMDiffOn_invFun
 
+/-- The derivative of the normal coordinate is the second projection composed with the derivative of
+the inverse chart.
+-/
 theorem TransverseCoordinates.mfderiv_normalCoordinate {D B E M : Type*}
     [NormedAddCommGroup D] [NormedSpace ℝ D] [NormedAddCommGroup B] [NormedSpace ℝ B]
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
@@ -926,6 +1070,9 @@ theorem TransverseCoordinates.mfderiv_normalCoordinate {D B E M : Type*}
     mfderiv_comp p (hs.mdifferentiableAt (by simp)) (Φ.symm.mdifferentiableAt (by simp) hp), hd]
   rfl
 
+/-- The derivative of the normal coordinate is surjective at every point of the target of the chart,
+so the normal coordinate is a submersion there.
+-/
 theorem TransverseCoordinates.surjective_mfderiv_normalCoordinate {D B E M : Type*}
     [NormedAddCommGroup D] [NormedSpace ℝ D] [NormedAddCommGroup B] [NormedSpace ℝ B]
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
@@ -936,6 +1083,10 @@ theorem TransverseCoordinates.surjective_mfderiv_normalCoordinate {D B E M : Typ
     (show Function.Surjective (ContinuousLinearMap.snd ℝ D B) from fun w => ⟨(0, w), rfl⟩).comp
       (PartialChart.bijective_mfderiv Φ.symm hp).2
 
+/-- If the chart is clean for a sheet `F`, then the normal coordinate vanishes identically near
+every parameter whose image lies in the chart's target: the sheet is contained in the zero set
+of the normal coordinate.
+-/
 theorem TransverseCoordinates.normalCoordinate_sheet_eventually_zero {D B E M : Type*}
     [NormedAddCommGroup D] [NormedSpace ℝ D] [NormedAddCommGroup B] [NormedSpace ℝ B]
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
@@ -946,6 +1097,9 @@ theorem TransverseCoordinates.normalCoordinate_sheet_eventually_zero {D B E M : 
   have hq : Φ.invFun (F y) ∈ Φ.source := Φ.map_target' hy
   exact (hclean _ hq).mp ⟨y, (Φ.right_inv' hy).symm⟩
 
+/-- For a clean chart, the derivative of the normal coordinate annihilates the tangent space of the
+sheet.
+-/
 theorem TransverseCoordinates.normalDerivative_comp_sheet_eq_zero {D B E M : Type*}
     [NormedAddCommGroup D] [NormedSpace ℝ D] [NormedAddCommGroup B] [NormedSpace ℝ B]
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
@@ -965,6 +1119,9 @@ theorem TransverseCoordinates.normalDerivative_comp_sheet_eq_zero {D B E M : Typ
       (hF.mdifferentiableAt (by simp))] at hzero
   exact hzero
 
+/-- Partial derivative in the first variable: if `F : ℝ × ℝ → E` is differentiable at `(t, s)`, then
+the horizontal slice `u ↦ F (u, s)` has derivative `fderiv ℝ F (t, s) (1, 0)` at `t`.
+-/
 theorem StripCoordinates.hasDerivAt_horizontalSlice {E : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] {F : (ℝ × ℝ) → E} {t s : ℝ} (hF : DifferentiableAt ℝ F (t, s)) :
     HasDerivAt (fun u : ℝ => F (u, s)) (fderiv ℝ F (t, s) (1, 0)) t := by
@@ -972,31 +1129,47 @@ theorem StripCoordinates.hasDerivAt_horizontalSlice {E : Type*} [NormedAddCommGr
     (hasDerivAt_id t).prodMk (hasDerivAt_const t s)
   exact hF.hasFDerivAt.comp_hasDerivAt t hi
 
+/-- The model space of a strip chart: a line, a transverse factor `A` along the sheet, and a normal
+factor `B`.
+-/
 abbrev StripCoordinates.Space (A B : Type*) :=
   (ℝ × A) × B
 
+/-- The centre line `t ↦ ((t, 0), 0)` of a strip chart. -/
 def StripCoordinates.center {A B : Type*} [NormedAddCommGroup A] [NormedAddCommGroup B]
     (t : ℝ) : Space A B :=
   ((t, 0), 0)
 
+/-- The flat strip model `(t, s) ↦ ((t, 0), s • v t)`: the centre line together with the normal
+field `v`.
+-/
 def StripCoordinates.model {A B : Type*} [NormedAddCommGroup A] [NormedAddCommGroup B]
     [NormedSpace ℝ B] (v : ℝ → B) (p : ℝ × ℝ) : Space A B :=
   ((p.1, 0), p.2 • v p.1)
 
+/-- The normal derivative of a strip map at time `t`: the derivative of its normal component in the
+vertical direction at `(t, 0)`.
+-/
 def StripCoordinates.normalDerivative {A B : Type*} [NormedAddCommGroup B] [NormedSpace ℝ B]
     (F : (ℝ × ℝ) → Space A B) (t : ℝ) : B :=
   fderiv ℝ (fun p => (F p).2) (t, 0) (0, 1)
 
+/-- The interpolation of two strip maps with the flat model, using the two cut-off functions `β₀`
+and `β₁` of the time parameter; it equals `F₀` where `β₀ = 1` and `β₁ = 0`, and `F₁` where the
+two are exchanged.
+-/
 def StripCoordinates.blend {A B : Type*} [NormedAddCommGroup A] [NormedSpace ℝ A]
     [NormedAddCommGroup B] [NormedSpace ℝ B] (v : ℝ → B) (F₀ F₁ : (ℝ × ℝ) → Space A B)
     (β₀ β₁ : ℝ → ℝ) (p : ℝ × ℝ) : Space A B :=
   model v p + β₀ p.1 • (F₀ p - model v p) + β₁ p.1 • (F₁ p - model v p)
 
+/-- The flat strip model is smooth when the normal field is. -/
 theorem StripCoordinates.contDiff_model {A B : Type*} [NormedAddCommGroup A]
     [NormedSpace ℝ A] [NormedAddCommGroup B] [NormedSpace ℝ B] {v : ℝ → B} (hv : ContDiff ℝ ∞ v) :
     ContDiff ℝ ∞ (model (A := A) v) :=
   (contDiff_fst.prodMk contDiff_const).prodMk (contDiff_snd.smul (hv.comp contDiff_fst))
 
+/-- The interpolation of two strip maps is smooth when its ingredients are. -/
 theorem StripCoordinates.contDiff_blend {A B : Type*} [NormedAddCommGroup A]
     [NormedSpace ℝ A] [NormedAddCommGroup B] [NormedSpace ℝ B] {v : ℝ → B}
     {F₀ F₁ : (ℝ × ℝ) → Space A B} {β₀ β₁ : ℝ → ℝ} (hv : ContDiff ℝ ∞ v) (hF₀ : ContDiff ℝ ∞ F₀)
@@ -1005,11 +1178,15 @@ theorem StripCoordinates.contDiff_blend {A B : Type*} [NormedAddCommGroup A]
   ((contDiff_model hv).add ((hβ₀.comp contDiff_fst).smul (hF₀.sub (contDiff_model hv)))).add
     ((hβ₁.comp contDiff_fst).smul (hF₁.sub (contDiff_model hv)))
 
+/-- The flat strip model restricts to the centre line on the axis. -/
 theorem StripCoordinates.model_zero {A B : Type*} [NormedAddCommGroup A]
     [NormedAddCommGroup B] [NormedSpace ℝ B] (v : ℝ → B) (t : ℝ) :
     model (A := A) v (t, 0) = StripCoordinates.center t := by
   simp only [model, StripCoordinates.center, zero_smul]
 
+/-- The interpolation still restricts to the centre line on the axis, provided each of the two maps
+does wherever its cut-off is nonzero.
+-/
 theorem StripCoordinates.blend_zero {A B : Type*} [NormedAddCommGroup A] [NormedSpace ℝ A]
     [NormedAddCommGroup B] [NormedSpace ℝ B] {v : ℝ → B} {F₀ F₁ : (ℝ × ℝ) → Space A B}
     {β₀ β₁ : ℝ → ℝ} (h₀ : ∀ t, β₀ t ≠ 0 → F₀ (t, 0) = StripCoordinates.center t)
@@ -1028,6 +1205,7 @@ theorem StripCoordinates.blend_zero {A B : Type*} [NormedAddCommGroup A] [Normed
       StripCoordinates.center t
   rw [hterm₀, hterm₁, add_zero, add_zero, model_zero]
 
+/-- Where the first cut-off is `1` and the second `0` the interpolation equals the first map. -/
 theorem StripCoordinates.blend_eq_left {A B : Type*} [NormedAddCommGroup A]
     [NormedSpace ℝ A] [NormedAddCommGroup B] [NormedSpace ℝ B] {v : ℝ → B}
     {F₀ F₁ : (ℝ × ℝ) → Space A B} {β₀ β₁ : ℝ → ℝ} {p : ℝ × ℝ} (h₀ : β₀ p.1 = 1)
@@ -1035,6 +1213,7 @@ theorem StripCoordinates.blend_eq_left {A B : Type*} [NormedAddCommGroup A]
   simp only [blend, h₀, h₁, one_smul, zero_smul, add_zero]
   rw [← add_sub_assoc, add_sub_cancel_left]
 
+/-- Where the first cut-off is `0` and the second `1` the interpolation equals the second map. -/
 theorem StripCoordinates.blend_eq_right {A B : Type*} [NormedAddCommGroup A]
     [NormedSpace ℝ A] [NormedAddCommGroup B] [NormedSpace ℝ B] {v : ℝ → B}
     {F₀ F₁ : (ℝ × ℝ) → Space A B} {β₀ β₁ : ℝ → ℝ} {p : ℝ × ℝ} (h₀ : β₀ p.1 = 0)
@@ -1042,6 +1221,9 @@ theorem StripCoordinates.blend_eq_right {A B : Type*} [NormedAddCommGroup A]
   simp only [blend, h₀, h₁, one_smul, zero_smul, add_zero]
   rw [← add_sub_assoc, add_sub_cancel_left]
 
+/-- The interpolation has normal derivative `v` at every time, provided each of the two maps does
+wherever its cut-off is nonzero.
+-/
 theorem StripCoordinates.normalDerivative_blend {A B : Type*} [NormedAddCommGroup A]
     [NormedSpace ℝ A] [NormedAddCommGroup B] [NormedSpace ℝ B] {v : ℝ → B}
     {F₀ F₁ : (ℝ × ℝ) → Space A B} {β₀ β₁ : ℝ → ℝ} (hv : ContDiff ℝ ∞ v) (hF₀ : ContDiff ℝ ∞ F₀)
@@ -1075,6 +1257,10 @@ theorem StripCoordinates.normalDerivative_blend {A B : Type*} [NormedAddCommGrou
           ((contDiff_blend hv hF₀ hF₁ hβ₀ hβ₁).snd.contDiffAt.differentiableAt (by simp))).unique
       hblend'
 
+/-- A strip chart for a sheet `S` along a map `k : ℝ × ℝ → M`: a chart of `M` with model
+`(ℝ × A) × B` in which `S` is cut out by the vanishing of the last coordinate, the centre line
+is the image of `t ↦ ((t, 0), 0)`, and `k` has nonvanishing normal derivative along `[0, 1]`.
+-/
 structure StripNormalData (A B : Type*) [NormedAddCommGroup A] [NormedSpace ℝ A]
     [NormedAddCommGroup B] [NormedSpace ℝ B] {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] (S : Set M) (k : (ℝ × ℝ) → M) where
@@ -1087,6 +1273,9 @@ structure StripNormalData (A B : Type*) [NormedAddCommGroup A] [NormedSpace ℝ 
     ∀ t ∈ Set.Icc (0 : ℝ) 1,
       fderiv ℝ (TransverseCoordinates.normalCoordinate chart ∘ k) (t, 0) (0, 1) ≠ 0
 
+/-- A strip map whose restriction to the axis is the centre line has horizontal derivative
+`center 1` at each point of the axis.
+-/
 theorem StripCoordinates.horizontal_derivative_of_center {A B : Type*}
     [NormedAddCommGroup A] [NormedSpace ℝ A] [NormedAddCommGroup B] [NormedSpace ℝ B]
     {F : (ℝ × ℝ) → Space A B} {t : ℝ} (hF : DifferentiableAt ℝ F (t, 0))
@@ -1101,6 +1290,9 @@ theorem StripCoordinates.horizontal_derivative_of_center {A B : Type*}
     ((hasDerivAt_id t).prodMk (hasDerivAt_const t (0 : A))).prodMk (hasDerivAt_const t (0 : B))
   exact hd.unique hcenter
 
+/-- The same conclusion under the weaker hypothesis that the restriction to the axis agrees with the
+centre line only near `t`.
+-/
 theorem StripCoordinates.horizontal_derivative_of_center_germ {A B : Type*}
     [NormedAddCommGroup A] [NormedSpace ℝ A] [NormedAddCommGroup B] [NormedSpace ℝ B]
     {F : (ℝ × ℝ) → Space A B} {t : ℝ} (hF : DifferentiableAt ℝ F (t, 0))
@@ -1113,6 +1305,7 @@ theorem StripCoordinates.horizontal_derivative_of_center_germ {A B : Type*}
     ((hasDerivAt_id t).prodMk (hasDerivAt_const t (0 : A))).prodMk (hasDerivAt_const t (0 : B))
   exact hd.unique (hcenter.congr_of_eventuallyEq hc)
 
+/-- The normal derivative is the normal component of the vertical derivative. -/
 theorem StripCoordinates.normalDerivative_eq_snd_fderiv {A B : Type*} [NormedAddCommGroup A]
     [NormedSpace ℝ A] [NormedAddCommGroup B] [NormedSpace ℝ B] {F : (ℝ × ℝ) → Space A B} {t : ℝ}
     (hF : DifferentiableAt ℝ F (t, 0)) : normalDerivative F t = (fderiv ℝ F (t, 0) (0, 1)).2 := by
@@ -1120,6 +1313,9 @@ theorem StripCoordinates.normalDerivative_eq_snd_fderiv {A B : Type*} [NormedAdd
   rw [normalDerivative, hd.fderiv]
   rfl
 
+/-- A linear map `ℝ × ℝ → Space A B` sending `(1, 0)` to `center 1` and having nonzero normal
+component on `(0, 1)` is injective.
+-/
 theorem StripCoordinates.injective_of_horizontal_and_normal {A B : Type*}
     [NormedAddCommGroup A] [NormedSpace ℝ A] [NormedAddCommGroup B] [NormedSpace ℝ B]
     (L : (ℝ × ℝ) →L[ℝ] Space A B) (hh : L (1, 0) = StripCoordinates.center 1)
@@ -1141,6 +1337,9 @@ theorem StripCoordinates.injective_of_horizontal_and_normal {A B : Type*}
   apply hker
   rw [map_sub, hpq, sub_self]
 
+/-- A strip map restricting to the centre line on the axis and with nonvanishing normal derivative
+at `t` has injective derivative at `(t, 0)`; so it is an immersion along the centre line.
+-/
 theorem StripCoordinates.injective_fderiv_at_center {A B : Type*} [NormedAddCommGroup A]
     [NormedSpace ℝ A] [NormedAddCommGroup B] [NormedSpace ℝ B] {F : (ℝ × ℝ) → Space A B} {t : ℝ}
     (hF : DifferentiableAt ℝ F (t, 0)) (hc : ∀ s, F (s, 0) = StripCoordinates.center s)
@@ -1149,15 +1348,21 @@ theorem StripCoordinates.injective_fderiv_at_center {A B : Type*} [NormedAddComm
     injective_of_horizontal_and_normal (fderiv ℝ F (t, 0)) (horizontal_derivative_of_center hF hc)
   rwa [← normalDerivative_eq_snd_fderiv hF]
 
+/-- The inclusion `a ↦ ((0, a), 0)` of the transverse factor of the sheet into the strip model
+space.
+-/
 def StripCoordinates.sheetTransverseInclusion {A B : Type*} [NormedAddCommGroup A]
     [NormedSpace ℝ A] [NormedAddCommGroup B] [NormedSpace ℝ B] : A →L[ℝ] Space A B :=
   (ContinuousLinearMap.inl ℝ (ℝ × A) B).comp (ContinuousLinearMap.inr ℝ ℝ A)
 
+/-- The value of the transverse inclusion: `a ↦ ((0, a), 0)`. -/
 theorem StripCoordinates.sheetTransverseInclusion_apply {A B : Type*} [NormedAddCommGroup A]
     [NormedSpace ℝ A] [NormedAddCommGroup B] [NormedSpace ℝ B] (a : A) :
     (sheetTransverseInclusion : A →L[ℝ] Space A B) a = ((0, a), 0) :=
   rfl
 
+/-- The transverse directions of the sheet meet the image of an immersed strip only at the origin.
+-/
 theorem StripCoordinates.sheetTransverse_eq_strip_iff {A B : Type*} [NormedAddCommGroup A]
     [NormedSpace ℝ A] [NormedAddCommGroup B] [NormedSpace ℝ B] (L : (ℝ × ℝ) →L[ℝ] Space A B)
     (hh : L (1, 0) = StripCoordinates.center 1) (hn : (L (0, 1)).2 ≠ 0) (a : A)
@@ -1184,6 +1389,10 @@ theorem StripCoordinates.sheetTransverse_eq_strip_iff {A B : Type*} [NormedAddCo
   · rintro ⟨rfl, rfl⟩
     rw [map_zero, map_zero]
 
+/-- If `Q` has kernel exactly the image of the strip differential, then `Q` is injective on the
+transverse factor of the sheet; the transverse directions map isomorphically onto the normal
+quotient.
+-/
 theorem StripCoordinates.injective_sheetTransverse_normalQuotient {A B Z : Type*}
     [NormedAddCommGroup A] [NormedSpace ℝ A] [NormedAddCommGroup B] [NormedSpace ℝ B]
     [NormedAddCommGroup Z] [NormedSpace ℝ Z] (L : (ℝ × ℝ) →L[ℝ] Space A B) (Q : Space A B →L[ℝ] Z)
@@ -1202,6 +1411,9 @@ theorem StripCoordinates.injective_sheetTransverse_normalQuotient {A B Z : Type*
   change (Q.comp sheetTransverseInclusion) (a - b) = 0
   rw [map_sub, hab, sub_self]
 
+/-- Kernels and images transport along an injective map: if `Q` has kernel the image of `T ∘ L`,
+then `Q ∘ T` has kernel the image of `L`.
+-/
 theorem StripCoordinates.ker_comp_eq_range_of_injective {A B Z : Type*}
     [NormedAddCommGroup A] [NormedSpace ℝ A] [NormedAddCommGroup B] [NormedSpace ℝ B]
     [NormedAddCommGroup Z] [NormedSpace ℝ Z] {V : Type*} [NormedAddCommGroup V] [NormedSpace ℝ V]
@@ -1221,12 +1433,14 @@ theorem StripCoordinates.ker_comp_eq_range_of_injective {A B Z : Type*}
       exact ⟨p, rfl⟩
     exact hmem
 
+/-- The map `k` read in the strip chart, `chart⁻¹ ∘ k`. -/
 def StripNormalData.coordinateMap {A B E M : Type*} [NormedAddCommGroup A] [NormedSpace ℝ A]
     [NormedAddCommGroup B] [NormedSpace ℝ B] [NormedAddCommGroup E] [NormedSpace ℝ E]
     [TopologicalSpace M] [ChartedSpace E M] {S : Set M} {k : (ℝ × ℝ) → M}
     (d : StripNormalData A B (E := E) S k) : (ℝ × ℝ) → StripCoordinates.Space A B :=
   d.chart.symm ∘ k
 
+/-- Along `[0, 1]` the centre of the strip lies in the target of the chart. -/
 theorem StripNormalData.center_mem_target {A B E M : Type*} [NormedAddCommGroup A]
     [NormedSpace ℝ A] [NormedAddCommGroup B] [NormedSpace ℝ B] [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {S : Set M} {k : (ℝ × ℝ) → M}
@@ -1235,6 +1449,7 @@ theorem StripNormalData.center_mem_target {A B E M : Type*} [NormedAddCommGroup 
   rw [d.center t]
   exact d.chart.map_source' (d.line ht)
 
+/-- Near each time in `[0, 1]` the axis of the coordinate map agrees with the centre line. -/
 theorem StripNormalData.coordinate_center_germ {A B E M : Type*} [NormedAddCommGroup A]
     [NormedSpace ℝ A] [NormedAddCommGroup B] [NormedSpace ℝ B] [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {S : Set M} {k : (ℝ × ℝ) → M}
@@ -1248,6 +1463,7 @@ theorem StripNormalData.coordinate_center_germ {A B E M : Type*} [NormedAddCommG
   change d.chart.invFun (k (s, 0)) = StripCoordinates.center s
   rw [d.center s, d.chart.left_inv' hs]
 
+/-- At each time in `[0, 1]` the coordinate map sends `(t, 0)` to the centre `center t`. -/
 theorem StripNormalData.coordinate_center {A B E M : Type*} [NormedAddCommGroup A]
     [NormedSpace ℝ A] [NormedAddCommGroup B] [NormedSpace ℝ B] [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {S : Set M} {k : (ℝ × ℝ) → M}
@@ -1255,6 +1471,7 @@ theorem StripNormalData.coordinate_center {A B E M : Type*} [NormedAddCommGroup 
     d.coordinateMap (t, 0) = StripCoordinates.center t :=
   (d.coordinate_center_germ ht).eq_of_nhds
 
+/-- The coordinate map is smooth at the points of the axis over `[0, 1]`. -/
 theorem StripNormalData.contDiffAt_coordinateMap {A B E M : Type*} [NormedAddCommGroup A]
     [NormedSpace ℝ A] [NormedAddCommGroup B] [NormedSpace ℝ B] [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {S : Set M} {k : (ℝ × ℝ) → M}
@@ -1264,6 +1481,9 @@ theorem StripNormalData.contDiffAt_coordinateMap {A B E M : Type*} [NormedAddCom
           (d.chart.open_target.mem_nhds (d.center_mem_target ht))).comp
       (t, 0) hk).contDiffAt
 
+/-- The coordinate map has horizontal derivative `center 1` along the axis, so it traverses the
+centre line at unit speed.
+-/
 theorem StripNormalData.horizontal_coordinateDerivative {A B E M : Type*}
     [NormedAddCommGroup A] [NormedSpace ℝ A] [NormedAddCommGroup B] [NormedSpace ℝ B]
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {S : Set M}
@@ -1273,6 +1493,7 @@ theorem StripNormalData.horizontal_coordinateDerivative {A B E M : Type*}
   StripCoordinates.horizontal_derivative_of_center_germ
     ((d.contDiffAt_coordinateMap ht hk).differentiableAt (by simp)) (d.coordinate_center_germ ht)
 
+/-- The coordinate map has nonzero normal component of its vertical derivative along the axis. -/
 theorem StripNormalData.normal_coordinateDerivative_nonzero {A B E M : Type*}
     [NormedAddCommGroup A] [NormedSpace ℝ A] [NormedAddCommGroup B] [NormedSpace ℝ B]
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {S : Set M}
@@ -1284,6 +1505,9 @@ theorem StripNormalData.normal_coordinateDerivative_nonzero {A B E M : Type*}
       ((d.contDiffAt_coordinateMap ht hk).differentiableAt (by simp))]
   exact d.normal_nonzero t ht
 
+/-- Along the axis the derivative of `k` factors as the derivative of the chart composed with the
+derivative of the coordinate map.
+-/
 theorem StripNormalData.native_derivative_factor {A B E M : Type*} [NormedAddCommGroup A]
     [NormedSpace ℝ A] [NormedAddCommGroup B] [NormedSpace ℝ B] [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {S : Set M} {k : (ℝ × ℝ) → M}
@@ -1309,6 +1533,9 @@ theorem StripNormalData.native_derivative_factor {A B E M : Type*} [NormedAddCom
     d.coordinate_center ht, mfderiv_eq_fderiv]
   rfl
 
+/-- The derivative of the zero section `x ↦ Φ (x, 0)` of a chart is the derivative of the chart
+restricted to the first factor.
+-/
 theorem TransverseCoordinates.mfderiv_zero_section {D B E M : Type*} [NormedAddCommGroup D]
     [NormedSpace ℝ D] [NormedAddCommGroup B] [NormedSpace ℝ B] [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
@@ -1323,6 +1550,9 @@ theorem TransverseCoordinates.mfderiv_zero_section {D B E M : Type*} [NormedAddC
     mfderiv_eq_fderiv, (ContinuousLinearMap.inl ℝ D B).fderiv]
   rfl
 
+/-- Along the zero section the kernel of the derivative of the normal coordinate is exactly the
+tangent space of the sheet.
+-/
 theorem TransverseCoordinates.ker_normalDerivative_eq_range_zero_section {D B E M : Type*}
     [NormedAddCommGroup D] [NormedSpace ℝ D] [NormedAddCommGroup B] [NormedSpace ℝ B]
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
@@ -1360,6 +1590,9 @@ theorem TransverseCoordinates.ker_normalDerivative_eq_range_zero_section {D B E 
     change (R (L (a, 0))).2 = 0
     rw [hRL_apply]
 
+/-- The frame of the normal bundle of `Ψ` along the strip at time `t`: the transverse directions of
+the sheet pushed into the normal factor `Z` of the chart `Ψ`.
+-/
 def StripNormalData.normalFrame {A B Z E M : Type*} [NormedAddCommGroup A] [NormedSpace ℝ A]
     [NormedAddCommGroup B] [NormedSpace ℝ B] [NormedAddCommGroup Z] [NormedSpace ℝ Z]
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {S : Set M}
@@ -1369,6 +1602,7 @@ def StripNormalData.normalFrame {A B Z E M : Type*} [NormedAddCommGroup A] [Norm
         (StripCoordinates.center t)).comp
     StripCoordinates.sheetTransverseInclusion
 
+/-- The normal frame depends smoothly on the time parameter where both charts are defined. -/
 theorem StripNormalData.contDiffOn_normalFrame {A B Z E M : Type*} [NormedAddCommGroup A]
     [NormedSpace ℝ A] [NormedAddCommGroup B] [NormedSpace ℝ B] [NormedAddCommGroup Z]
     [NormedSpace ℝ Z] [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M]
@@ -1394,6 +1628,9 @@ theorem StripNormalData.contDiffOn_normalFrame {A B Z E M : Type*} [NormedAddCom
     (((htransition.fderiv_right (by simp)).comp t hcenter.contDiffAt).clm_comp
         contDiffAt_const).contDiffWithinAt
 
+/-- The normal frame is smooth on an open neighbourhood of `[0, 1]` when the whole centre line lies
+in the target of `Ψ`.
+-/
 theorem StripNormalData.exists_open_normalFrame_domain {A B Z E M : Type*}
     [NormedAddCommGroup A] [NormedSpace ℝ A] [NormedAddCommGroup B] [NormedSpace ℝ B]
     [NormedAddCommGroup Z] [NormedSpace ℝ Z] [NormedAddCommGroup E] [NormedSpace ℝ E]
@@ -1412,6 +1649,10 @@ theorem StripNormalData.exists_open_normalFrame_domain {A B Z E M : Type*}
       hW.preimage hcenter, fun t ht => ⟨d.line ht, htarget t ht⟩, ?_⟩
   exact d.contDiffOn_normalFrame Ψ
 
+/-- The normal frame is injective at each time of `[0, 1]`: the transverse directions of the sheet
+inject into the normal directions of the strip chart, since the strip and the sheet are
+transverse.
+-/
 theorem StripNormalData.injective_normalFrame_of_strip_germ {A B Z E M : Type*}
     [NormedAddCommGroup A] [NormedSpace ℝ A] [NormedAddCommGroup B] [NormedSpace ℝ B]
     [NormedAddCommGroup Z] [NormedSpace ℝ Z] [NormedAddCommGroup E] [NormedSpace ℝ E]
@@ -1493,6 +1734,9 @@ theorem StripNormalData.injective_normalFrame_of_strip_germ {A B Z E M : Type*}
   rw [htransition]
   exact hinj
 
+/-- The transition from the sheet coordinates `ℝ × A` to the chart `Ψ`, obtained by including the
+sheet factor into the strip model and reading the result in `Ψ`.
+-/
 def StripNormalData.sheetTransition {A B Z E M : Type*} [NormedAddCommGroup A]
     [NormedSpace ℝ A] [NormedAddCommGroup B] [NormedSpace ℝ B] [NormedAddCommGroup Z]
     [NormedSpace ℝ Z] [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M]
@@ -1501,6 +1745,7 @@ def StripNormalData.sheetTransition {A B Z E M : Type*} [NormedAddCommGroup A]
     (ℝ × A) → ((ℝ × ℝ) × Z) :=
   (Ψ.symm ∘ d.chart) ∘ (ContinuousLinearMap.inl ℝ (ℝ × A) B)
 
+/-- The derivative of the sheet transition at `(t, 0)`. -/
 def StripNormalData.sheetDifferential {A B Z E M : Type*} [NormedAddCommGroup A]
     [NormedSpace ℝ A] [NormedAddCommGroup B] [NormedSpace ℝ B] [NormedAddCommGroup Z]
     [NormedSpace ℝ Z] [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M]
@@ -1509,6 +1754,7 @@ def StripNormalData.sheetDifferential {A B Z E M : Type*} [NormedAddCommGroup A]
     (ℝ × A) →L[ℝ] ((ℝ × ℝ) × Z) :=
   fderiv ℝ (d.sheetTransition Ψ) (t, 0)
 
+/-- The transition `Ψ⁻¹ ∘ chart` between the two charts is smooth at the centre. -/
 theorem StripNormalData.contDiffAt_tubularTransition {A B Z E M : Type*}
     [NormedAddCommGroup A] [NormedSpace ℝ A] [NormedAddCommGroup B] [NormedSpace ℝ B]
     [NormedAddCommGroup Z] [NormedSpace ℝ Z] [NormedAddCommGroup E] [NormedSpace ℝ E]
@@ -1523,6 +1769,7 @@ theorem StripNormalData.contDiffAt_tubularTransition {A B Z E M : Type*}
       (d.chart.contMDiffOn_toFun.contMDiffAt
         (d.chart.open_source.mem_nhds (d.line ht)))).contDiffAt
 
+/-- The sheet transition is smooth at `(t, 0)` for `t` in `[0, 1]`. -/
 theorem StripNormalData.contDiffAt_sheetTransition {A B Z E M : Type*}
     [NormedAddCommGroup A] [NormedSpace ℝ A] [NormedAddCommGroup B] [NormedSpace ℝ B]
     [NormedAddCommGroup Z] [NormedSpace ℝ Z] [NormedAddCommGroup E] [NormedSpace ℝ E]
@@ -1535,6 +1782,8 @@ theorem StripNormalData.contDiffAt_sheetTransition {A B Z E M : Type*}
   (d.contDiffAt_tubularTransition Ψ ht htarget).comp (t, 0)
     (ContinuousLinearMap.inl ℝ (ℝ × A) B).contDiff.contDiffAt
 
+/-- The sheet differential is the derivative of the chart transition restricted to the sheet factor.
+-/
 theorem StripNormalData.sheetDifferential_eq {A B Z E M : Type*} [NormedAddCommGroup A]
     [NormedSpace ℝ A] [NormedAddCommGroup B] [NormedSpace ℝ B] [NormedAddCommGroup Z]
     [NormedSpace ℝ Z] [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M]
@@ -1551,6 +1800,8 @@ theorem StripNormalData.sheetDifferential_eq {A B Z E M : Type*} [NormedAddCommG
     (ContinuousLinearMap.inl ℝ (ℝ × A) B).fderiv]
   rfl
 
+/-- The normal component of the sheet differential on the transverse factor `A` is the normal frame.
+-/
 theorem StripNormalData.normal_sheetDifferential {A B Z E M : Type*} [NormedAddCommGroup A]
     [NormedSpace ℝ A] [NormedAddCommGroup B] [NormedSpace ℝ B] [NormedAddCommGroup Z]
     [NormedSpace ℝ Z] [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M]
@@ -1576,6 +1827,9 @@ theorem StripNormalData.normal_sheetDifferential {A B Z E M : Type*} [NormedAddC
   rw [d.sheetDifferential_eq Ψ ht htarget, normalFrame, hn]
   rfl
 
+/-- If the sheet is given near `q t` by the strip map `k` in coordinates `c`, then near `t` the axis
+of the sheet transition is the curve `s ↦ (q s, 0)`.
+-/
 theorem StripNormalData.sheetTransition_center_germ {A B Z E M : Type*}
     [NormedAddCommGroup A] [NormedSpace ℝ A] [NormedAddCommGroup B] [NormedSpace ℝ B]
     [NormedAddCommGroup Z] [NormedSpace ℝ Z] [NormedAddCommGroup E] [NormedSpace ℝ E]
@@ -1594,6 +1848,9 @@ theorem StripNormalData.sheetTransition_center_germ {A B Z E M : Type*}
   rw [← d.center s, ← heq, ← hzero (q s)]
   exact Ψ.left_inv' hsource
 
+/-- Along such a germ the sheet differential sends the unit horizontal vector to the velocity of the
+curve.
+-/
 theorem StripNormalData.sheetDifferential_arc_of_germ {A B Z E M : Type*}
     [NormedAddCommGroup A] [NormedSpace ℝ A] [NormedAddCommGroup B] [NormedSpace ℝ B]
     [NormedAddCommGroup Z] [NormedSpace ℝ Z] [NormedAddCommGroup E] [NormedSpace ℝ E]
@@ -1612,16 +1869,21 @@ theorem StripNormalData.sheetDifferential_arc_of_germ {A B Z E M : Type*}
     hq.prodMk (hasDerivAt_const t (0 : Z))
   exact hd.unique (hq'.congr_of_eventuallyEq hgerm)
 
+/-- The linear corner map `(s, t) ↦ (s • u, t • v)` of the plane into `D × Z`, spanning the two
+coordinate directions by the given vectors.
+-/
 def TransverseCoordinates.cornerLinear {D Z : Type*} [NormedAddCommGroup D]
     [NormedSpace ℝ D] [NormedAddCommGroup Z] [NormedSpace ℝ Z] (u : D) (v : Z) :
     (ℝ × ℝ) →L[ℝ] (D × Z) :=
   ((ContinuousLinearMap.fst ℝ ℝ ℝ).smulRight u).prod ((ContinuousLinearMap.snd ℝ ℝ ℝ).smulRight v)
 
+/-- The value of the linear corner map. -/
 theorem TransverseCoordinates.cornerLinear_apply {D Z : Type*} [NormedAddCommGroup D]
     [NormedSpace ℝ D] [NormedAddCommGroup Z] [NormedSpace ℝ Z] (u : D) (v : Z) (p : ℝ × ℝ) :
     cornerLinear u v p = (p.1 • u, p.2 • v) :=
   rfl
 
+/-- The linear corner map is injective when both spanning vectors are nonzero. -/
 theorem TransverseCoordinates.injective_cornerLinear {D Z : Type*} [NormedAddCommGroup D]
     [NormedSpace ℝ D] [NormedAddCommGroup Z] [NormedSpace ℝ Z] {u : D} {v : Z} (hu : u ≠ 0)
     (hv : v ≠ 0) : Function.Injective (cornerLinear u v) := by
@@ -1630,12 +1892,16 @@ theorem TransverseCoordinates.injective_cornerLinear {D Z : Type*} [NormedAddCom
     Prod.ext ((smul_left_injective ℝ hu) (congrArg Prod.fst hpq))
       ((smul_left_injective ℝ hv) (congrArg Prod.snd hpq))
 
+/-- The corner chart of a crossing: the linear corner map read in the chart `Φ`, a two-dimensional
+slice of the ambient manifold through the crossing containing one direction of each sheet.
+-/
 def TransverseCoordinates.cornerMap {D Z : Type*} [NormedAddCommGroup D] [NormedSpace ℝ D]
     [NormedAddCommGroup Z] [NormedSpace ℝ Z] {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     (Φ : PartialDiffeomorph 𝓘(ℝ, D × Z) 𝓘(ℝ, E) (D × Z) M ∞) (u : D) (v : Z) : (ℝ × ℝ) → M :=
   Φ ∘ cornerLinear u v
 
+/-- The corner chart is smooth where defined. -/
 theorem TransverseCoordinates.contMDiffOn_cornerMap {D Z : Type*} [NormedAddCommGroup D]
     [NormedSpace ℝ D] [NormedAddCommGroup Z] [NormedSpace ℝ Z] {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
@@ -1643,6 +1909,7 @@ theorem TransverseCoordinates.contMDiffOn_cornerMap {D Z : Type*} [NormedAddComm
     ContMDiffOn 𝓘(ℝ, ℝ × ℝ) 𝓘(ℝ, E) ∞ (cornerMap Φ u v) (cornerLinear u v ⁻¹' Φ.source) :=
   Φ.contMDiffOn_toFun.comp (cornerLinear u v).contDiff.contMDiff.contMDiffOn (fun _ hx => hx)
 
+/-- The corner chart is injective where defined, for nonzero spanning vectors. -/
 theorem TransverseCoordinates.injOn_cornerMap {D Z : Type*} [NormedAddCommGroup D]
     [NormedSpace ℝ D] [NormedAddCommGroup Z] [NormedSpace ℝ Z] {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
@@ -1651,6 +1918,7 @@ theorem TransverseCoordinates.injOn_cornerMap {D Z : Type*} [NormedAddCommGroup 
   intro p hp q hq heq
   exact injective_cornerLinear hu hv (Φ.toPartialEquiv.injOn hp hq heq)
 
+/-- The corner chart is an immersion where defined, for nonzero spanning vectors. -/
 theorem TransverseCoordinates.injective_mfderiv_cornerMap {D Z : Type*}
     [NormedAddCommGroup D] [NormedSpace ℝ D] [NormedAddCommGroup Z] [NormedSpace ℝ Z]
     {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
@@ -1664,6 +1932,11 @@ theorem TransverseCoordinates.injective_mfderiv_cornerMap {D Z : Type*}
     mfderiv_eq_fderiv, (cornerLinear u v).fderiv]
   exact (PartialChart.bijective_mfderiv Φ hp).1.comp (injective_cornerLinear hu hv)
 
+/-- Clean corner at a transverse crossing: near a transverse intersection point of two embedded
+submanifolds of complementary dimension there is a two-dimensional immersed injective slice `k`
+through the crossing whose two axes parametrise the two sheets in the prescribed directions `u`
+and `v`, and in which membership of each sheet is the vanishing of the complementary coordinate.
+-/
 theorem exists_native_clean_corner_of_parametrizations {E M D Z N P A B : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M]
@@ -1730,6 +2003,10 @@ theorem exists_native_clean_corner_of_parametrizations {E M D Z N P A B : Type*}
     simpa only [k, TransverseCoordinates.cornerMap, Function.comp_apply,
       TransverseCoordinates.cornerLinear_apply, zero_smul] using hright (t • v) haxis
 
+/-- A clean corner patch for two sheets `S` and `T` crossing at a point: an immersed injective map
+of a plane neighbourhood of the origin into `M` whose two axes parametrise the given arcs `a`
+and `b`, and which meets `S` exactly in the first axis and `T` exactly in the second.
+-/
 structure CleanCornerPatch {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [TopologicalSpace M] [ChartedSpace E M] (S T : Set M) (a b : ℝ → M) where
   domain : Set (ℝ × ℝ)
@@ -1743,6 +2020,9 @@ structure CleanCornerPatch {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ
   axis_first : ∀ t, (t, 0) ∈ domain → map (t, 0) = a t
   axis_second : ∀ t, (0, t) ∈ domain → map (0, t) = b t
 
+/-- Exchanging the two sheets of a clean corner patch, by composing the patch with the swap of the
+two plane coordinates.
+-/
 def CleanCornerPatch.swap {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [TopologicalSpace M] [ChartedSpace E M] {S T : Set M} {a b : ℝ → M}
     (c : CleanCornerPatch (E := E) S T a b) : CleanCornerPatch (E := E) T S b a := by
@@ -1772,6 +2052,12 @@ def CleanCornerPatch.swap {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ 
         (PartialChart.bijective_mfderiv e.toDiffeomorph.toPartialDiffeomorph
             (Set.mem_univ p)).1
 
+/-- A clean strip patch along an arc `a` joining two corners: an immersed injective map of a
+neighbourhood of the strip `[0, 1] × [-w, w]` into `M` which is a closed embedding on that
+strip, meets the sheet `S` exactly in the centre line and the sheet `T` exactly in the two ends,
+restricts to `a` on the centre line, and agrees near its two ends with the given corner patches
+`k₀` and `k₁`.
+-/
 structure CleanStripPatch {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [TopologicalSpace M] [ChartedSpace E M] (S T : Set M) (a : ℝ → M) (k₀ k₁ : (ℝ × ℝ) → M) where
   width : ℝ
@@ -1791,6 +2077,9 @@ structure CleanStripPatch {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ 
   left_germ : map =ᶠ[𝓝 (0, 0)] k₀
   right_germ : map =ᶠ[𝓝 (1, 0)] k₁ ∘ StripCoordinates.reverse
 
+/-- Near the left corner of the bigon the lower and the upper strip charts of a Whitney pair give
+the same map into `M`, both being the left corner patch in its two coordinate orders.
+-/
 theorem bigon_strip_maps_left_germ {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [TopologicalSpace M] [ChartedSpace E M] {h : ℝ} (hh : h ≠ 0) {S T : Set M}
     {a b a₀ b₀ a₁ b₁ : ℝ → M} (c₀ : CleanCornerPatch (E := E) S T a₀ b₀)
@@ -1833,6 +2122,7 @@ theorem bigon_strip_maps_left_germ {E M : Type*} [NormedAddCommGroup E] [NormedS
       c₀.map ((WhitneyPairModel.leftCornerCoordinates h p).swap.swap)
   rw [Prod.swap_swap]
 
+/-- The same agreement near the right corner of the bigon. -/
 theorem bigon_strip_maps_right_germ {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [TopologicalSpace M] [ChartedSpace E M] {h : ℝ} (hh : h ≠ 0) {S T : Set M}
     {a b a₀ b₀ a₁ b₁ : ℝ → M} (c₀ : CleanCornerPatch (E := E) S T a₀ b₀)
@@ -1881,6 +2171,9 @@ theorem bigon_strip_maps_right_germ {E M : Type*} [NormedAddCommGroup E] [Normed
   rw [WhitneyPairModel.lowerStripCoordinates_right h hp,
     WhitneyPairModel.upperStripCoordinates_right hh hp, Prod.swap_swap]
 
+/-- Two smooth maps on open sets that agree on the intersection glue to a map smooth on the union
+and restricting to each of them.
+-/
 theorem exists_smooth_open_gluing {E F X Y : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [TopologicalSpace X] [ChartedSpace E X] [NormedAddCommGroup F] [NormedSpace ℝ F]
     [TopologicalSpace Y] [ChartedSpace F Y] {f g : X → Y} {U V : Set X} (hU : IsOpen U)
@@ -1899,6 +2192,11 @@ theorem exists_smooth_open_gluing {E F X Y : Type*} [NormedAddCommGroup E] [Norm
     ⟨k, (hf.congr (fun _ hx => hkf hx)).union_of_isOpen (hg.congr (fun _ hx => hkg hx)) hU hV,
       hkf, hkg⟩
 
+/-- Gluing the two strip patches of a Whitney pair along the corners gives a smooth map on a
+neighbourhood of the boundary of the bigon of height `h` which restricts to the given arcs `a`
+and `b` on the two edges, and which is the lower strip chart near the lower edge and the upper
+strip chart near the upper edge.
+-/
 theorem exists_smooth_bigon_boundary_neighborhood {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {h : ℝ} (hh : 0 < h) {S T : Set M}
     {a b a₀ b₀ a₁ b₁ : ℝ → M} (c₀ : CleanCornerPatch (E := E) S T a₀ b₀)
@@ -1976,6 +2274,9 @@ theorem exists_smooth_bigon_boundary_neighborhood {E M : Type*} [NormedAddCommGr
     rw [WhitneyPairModel.upperStripCoordinates_upper]
     exact l.center t ht
 
+/-- A linear endomorphism of the plane fixing `(1, 0)` and with nonzero second component on `(0, 1)`
+is injective.
+-/
 theorem StripCoordinates.injective_plane_of_horizontal_and_normal
     (L : (ℝ × ℝ) →L[ℝ] (ℝ × ℝ)) (hh : L (1, 0) = (1, 0)) (hn : (L (0, 1)).2 ≠ 0) :
     Function.Injective L := by
@@ -1989,22 +2290,28 @@ theorem StripCoordinates.injective_plane_of_horizontal_and_normal
   intro p q hpq
   exact hi (congrArg i hpq)
 
+/-- The detector map `(t, s) ↦ (t, ⟪v t, (F (t, s)).2⟫)` of a strip map, which records the time and
+the component of the normal part along the normal field `v`.
+-/
 def StripCoordinates.detector {A B : Type*} [NormedAddCommGroup B] [InnerProductSpace ℝ B]
     (v : ℝ → B) (F : (ℝ × ℝ) → Space A B) (p : ℝ × ℝ) : ℝ × ℝ :=
   (p.1, ⟪v p.1, (F p).2⟫_ℝ)
 
+/-- The detector map is smooth when the normal field and the strip map are. -/
 theorem StripCoordinates.contDiff_detector {A B : Type*} [NormedAddCommGroup A]
     [NormedSpace ℝ A] [NormedAddCommGroup B] [InnerProductSpace ℝ B] {v : ℝ → B}
     {F : (ℝ × ℝ) → Space A B} (hv : ContDiff ℝ ∞ v) (hF : ContDiff ℝ ∞ F) :
     ContDiff ℝ ∞ (detector v F) :=
   contDiff_fst.prodMk ((hv.comp contDiff_fst).inner ℝ hF.snd)
 
+/-- A strip map through the centre line has detector vanishing on the axis. -/
 theorem StripCoordinates.detector_zero {A B : Type*} [NormedAddCommGroup A]
     [NormedAddCommGroup B] [InnerProductSpace ℝ B] {v : ℝ → B} {F : (ℝ × ℝ) → Space A B}
     (hc : ∀ t, F (t, 0) = StripCoordinates.center t) (t : ℝ) :
     detector v F (t, 0) = (t, 0) := by
   simp only [detector, hc, StripCoordinates.center, inner_zero_right]
 
+/-- The vertical derivative of the detector at a point of the axis is `(0, ‖v t‖²)`. -/
 theorem StripCoordinates.detector_vertical_derivative {A B : Type*} [NormedAddCommGroup A]
     [NormedSpace ℝ A] [NormedAddCommGroup B] [InnerProductSpace ℝ B] {v : ℝ → B}
     {F : (ℝ × ℝ) → Space A B} (hv : ContDiff ℝ ∞ v) (hF : ContDiff ℝ ∞ F)
@@ -2024,6 +2331,9 @@ theorem StripCoordinates.detector_vertical_derivative {A B : Type*} [NormedAddCo
           ((contDiff_detector hv hF).contDiffAt.differentiableAt (by simp))).unique
       hslice
 
+/-- The detector of a strip map through the centre line with normal derivative `v` has injective
+derivative wherever `v` does not vanish.
+-/
 theorem StripCoordinates.injective_fderiv_detector_at_center {A B : Type*}
     [NormedAddCommGroup A] [NormedSpace ℝ A] [NormedAddCommGroup B] [InnerProductSpace ℝ B]
     {v : ℝ → B} {F : (ℝ × ℝ) → Space A B} (hv : ContDiff ℝ ∞ v) (hF : ContDiff ℝ ∞ F)
@@ -2040,6 +2350,9 @@ theorem StripCoordinates.injective_fderiv_detector_at_center {A B : Type*}
   rw [detector_vertical_derivative hv hF hn t]
   exact inner_self_ne_zero.mpr ht
 
+/-- The lower strip chart of the bigon has horizontal derivative `(1/2, 0)` on the lower edge, the
+arc parameter running at half speed.
+-/
 theorem WhitneyPairModel.lowerStripCoordinates_horizontal_derivative {h : ℝ} (hh : h ≠ 0)
     (s : ℝ) : fderiv ℝ (lowerStripCoordinates h) (s, 0) (1, 0) = (1 / 2, 0) := by
   have hf : DifferentiableAt ℝ (lowerStripCoordinates h) (s, 0) :=
@@ -2052,6 +2365,9 @@ theorem WhitneyPairModel.lowerStripCoordinates_horizontal_derivative {h : ℝ} (
   exact
     hd.unique (((hasDerivAt_id s).add_const 1).div_const 2 |>.prodMk (hasDerivAt_const s (0 : ℝ)))
 
+/-- The vertical derivative of the lower strip chart of the bigon on the lower edge, in terms of the
+corner sign and the corner scale.
+-/
 theorem WhitneyPairModel.lowerStripCoordinates_vertical_derivative {h : ℝ} (hh : h ≠ 0)
     (s : ℝ) :
     fderiv ℝ (lowerStripCoordinates h) (s, 0) (0, 1) =
@@ -2067,6 +2383,7 @@ theorem WhitneyPairModel.lowerStripCoordinates_vertical_derivative {h : ℝ} (hh
   have hfirst := (HasDerivAt.const_mul (cornerSign ((s + 1) / 2)) hdiv).const_add ((s + 1) / 2)
   exact hd.unique (hfirst.prodMk hdiv)
 
+/-- The lower strip chart of the bigon is an immersion along the lower edge. -/
 theorem WhitneyPairModel.injective_fderiv_lowerStripCoordinates {h : ℝ} (hh : h ≠ 0)
     (s : ℝ) : Function.Injective (fderiv ℝ (lowerStripCoordinates h) (s, 0)) := by
   let L := fderiv ℝ (lowerStripCoordinates h) (s, 0)
@@ -2086,6 +2403,7 @@ theorem WhitneyPairModel.injective_fderiv_lowerStripCoordinates {h : ℝ} (hh : 
   intro x y hxy
   exact hi (congrArg (fun z : ℝ × ℝ => (2 : ℝ) • z) hxy)
 
+/-- The edge exchange of the bigon is an immersion (indeed a diffeomorphism) everywhere. -/
 theorem WhitneyPairModel.injective_fderiv_exchangeEdges (h : ℝ) (p : ℝ × ℝ) :
     Function.Injective (fderiv ℝ (exchangeEdges h) p) := by
   have heq : exchangeEdges h ∘ exchangeEdges h = id := funext (exchangeEdges_involutive h)
@@ -2105,6 +2423,7 @@ theorem WhitneyPairModel.injective_fderiv_exchangeEdges (h : ℝ) (p : ℝ × �
   rw [hd] at he
   exact he
 
+/-- The upper strip chart of the bigon is an immersion along the upper edge. -/
 theorem WhitneyPairModel.injective_fderiv_upperStripCoordinates {h : ℝ} (hh : h ≠ 0)
     (s : ℝ) : Function.Injective (fderiv ℝ (upperStripCoordinates h) (s, h * (1 - s ^ 2))) := by
   rw [upperStripCoordinates,
@@ -2115,6 +2434,9 @@ theorem WhitneyPairModel.injective_fderiv_upperStripCoordinates {h : ℝ} (hh : 
   rw [heq]
   exact (injective_fderiv_lowerStripCoordinates hh s).comp (injective_fderiv_exchangeEdges h _)
 
+/-- The frontier of the bigon is exactly the union of the two parametrised edges `t ↦ (2t - 1, 0)`
+and `t ↦ (2t - 1, h (1 - (2t - 1)²))` over `t ∈ [0, 1]`.
+-/
 theorem WhitneyPairModel.mem_frontier_bigon_iff_exists_time {h : ℝ} (hh : 0 < h)
     (p : ℝ × ℝ) :
     p ∈ frontier (bigon h) ↔
@@ -2145,6 +2467,9 @@ theorem WhitneyPairModel.mem_frontier_bigon_iff_exists_time {h : ℝ} (hh : 0 < 
       rw [abs_le]
       constructor <;> linarith [ht.1, ht.2]
 
+/-- A map on the plane restricting to two injective arcs on the two edges of the bigon, which meet
+only at the two shared endpoints, is injective on the frontier of the bigon.
+-/
 theorem WhitneyPairModel.injOn_frontier_bigon_of_arcs {M : Type*} {h : ℝ} (hh : 0 < h)
     {f : (ℝ × ℝ) → M} {a b : ℝ → M} (ha : Set.InjOn a (Set.Icc (0 : ℝ) 1))
     (hb : Set.InjOn b (Set.Icc (0 : ℝ) 1))
@@ -2170,6 +2495,7 @@ theorem WhitneyPairModel.injOn_frontier_bigon_of_arcs {M : Type*} {h : ℝ} (hh 
   · rw [hupper t ht, hupper s hs] at heq
     rw [hb ht hs heq]
 
+/-- The centre arc of a clean strip patch is injective on `[0, 1]`. -/
 theorem CleanStripPatch.center_injOn {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [TopologicalSpace M] [ChartedSpace E M] {S T : Set M} {a : ℝ → M} {k₀ k₁ : (ℝ × ℝ) → M}
     (k : CleanStripPatch (E := E) S T a k₀ k₁) : Set.InjOn a (Set.Icc (0 : ℝ) 1) := by
@@ -2183,6 +2509,9 @@ theorem CleanStripPatch.center_injOn {E M : Type*} [NormedAddCommGroup E] [Norme
     exact heq
   exact congrArg Prod.fst (k.injective htK hsK hmaps)
 
+/-- If two clean strip patches can only agree over swapped corner parameters, then their centre arcs
+meet only at the two shared endpoints.
+-/
 theorem strip_center_coincidences_of_corner_overlap {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {S T : Set M} {a b : ℝ → M}
     {k₀ k₁ l₀ l₁ : (ℝ × ℝ) → M} (k : CleanStripPatch (E := E) S T a k₀ k₁)
@@ -2208,6 +2537,9 @@ theorem strip_center_coincidences_of_corner_overlap {E M : Type*} [NormedAddComm
     have hs' : 0 = 1 - s := congrArg Prod.snd hright
     constructor <;> linarith
 
+/-- A map given on an open set by a clean strip patch composed with an immersion `r` is itself an
+immersion there.
+-/
 theorem injective_nativeDerivative_of_strip_germ {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {S T : Set M} {a : ℝ → M}
     {k₀ k₁ : (ℝ × ℝ) → M} (k : CleanStripPatch (E := E) S T a k₀ k₁) {r : (ℝ × ℝ) → ℝ × ℝ}
@@ -2224,6 +2556,9 @@ theorem injective_nativeDerivative_of_strip_germ {E M : Type*} [NormedAddCommGro
     exact hi
   exact (k.derivative_injective (r p) (hmap hp)).comp hri
 
+/-- The map glued from the two strip patches is an immersion at every point of the frontier of the
+bigon.
+-/
 theorem injective_nativeDerivative_bigon_boundary {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {h : ℝ} (hh : 0 < h) {S T : Set M}
     {a b : ℝ → M} {k₀ k₁ l₀ l₁ : (ℝ × ℝ) → M} (k : CleanStripPatch (E := E) S T a k₀ k₁)
@@ -2248,6 +2583,9 @@ theorem injective_nativeDerivative_bigon_boundary {E M : Type*} [NormedAddCommGr
         (WhitneyPairModel.contDiff_upperStripCoordinates hh.ne') hV hfhi hmapV (huppV ht)
         (WhitneyPairModel.injective_fderiv_upperStripCoordinates hh.ne' _)
 
+/-- The glued map is injective and an immersion on some open neighbourhood of the frontier of the
+bigon, hence an embedding there.
+-/
 theorem exists_embedded_bigon_boundary_neighborhood {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [FiniteDimensional ℝ E]
     [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] {h : ℝ} (hh : 0 < h) {S T : Set M} {a b : ℝ → M}
@@ -2298,6 +2636,9 @@ theorem exists_embedded_bigon_boundary_neighborhood {E M : Type*} [NormedAddComm
     ManifoldImmersion.exists_open_embedded_immersive_neighborhood (hU.union hV) hf hcompact hfront
       hinj hi
 
+/-- The interpolated strip time `t + (2β - 1) z / (4 h J)` of an interior point of the bigon again
+lies strictly between `0` and `1`.
+-/
 theorem WhitneyPairModel.interpolated_strip_time_mem_Ioo {h t β z J : ℝ} (hh : 0 < h)
     (ht : t ∈ Set.Ioo (0 : ℝ) 1) (hβ : β ∈ Set.Icc (0 : ℝ) 1) (hJ : 0 < J)
     (hJdef : J = (1 - β) * (1 - t) + β * t) (hz : 0 < z) (hzupper : z < 4 * h * t * (1 - t)) :
@@ -2327,6 +2668,9 @@ theorem WhitneyPairModel.interpolated_strip_time_mem_Ioo {h t β z J : ℝ} (hh 
         (mul_nonneg hθ0.le (sub_nonneg.mpr he1))
     nlinarith
 
+/-- The lower strip chart carries the interior of the bigon into the open strip: the time lies in
+`(0, 1)` and the height is positive.
+-/
 theorem WhitneyPairModel.lowerStripCoordinates_interior {h : ℝ} (hh : 0 < h) {p : ℝ × ℝ}
     (hp : p ∈ interior (bigon h)) :
     (lowerStripCoordinates h p).1 ∈ Set.Ioo (0 : ℝ) 1 ∧ 0 < (lowerStripCoordinates h p).2 := by
@@ -2348,6 +2692,7 @@ theorem WhitneyPairModel.lowerStripCoordinates_interior {h : ℝ} (hh : 0 < h) {
   · exact interpolated_strip_time_mem_Ioo hh ht hβ (cornerScale_pos _) rfl hp0 hzupper
   · exact div_pos hp0 (mul_pos (mul_pos (by norm_num) hh) (cornerScale_pos _))
 
+/-- The edge exchange preserves the interior of the bigon. -/
 theorem WhitneyPairModel.exchangeEdges_mem_interior {h : ℝ} {p : ℝ × ℝ}
     (hp : p ∈ interior (bigon h)) : exchangeEdges h p ∈ interior (bigon h) := by
   obtain ⟨hp0, hphi⟩ := (mem_interior_bigon_iff h p).mp hp
@@ -2355,11 +2700,15 @@ theorem WhitneyPairModel.exchangeEdges_mem_interior {h : ℝ} {p : ℝ × ℝ}
   change 0 < h * (1 - p.1 ^ 2) - p.2 ∧ h * (1 - p.1 ^ 2) - p.2 < h * (1 - p.1 ^ 2)
   constructor <;> linarith
 
+/-- The upper strip chart carries the interior of the bigon into the open strip. -/
 theorem WhitneyPairModel.upperStripCoordinates_interior {h : ℝ} (hh : 0 < h) {p : ℝ × ℝ}
     (hp : p ∈ interior (bigon h)) :
     (upperStripCoordinates h p).1 ∈ Set.Ioo (0 : ℝ) 1 ∧ 0 < (upperStripCoordinates h p).2 :=
   lowerStripCoordinates_interior hh (exchangeEdges_mem_interior hp)
 
+/-- A clean strip patch avoids both sheets at parameters with time strictly between `0` and `1` and
+nonzero height.
+-/
 theorem CleanStripPatch.avoids_sheets {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [TopologicalSpace M] [ChartedSpace E M] {S T : Set M} {a : ℝ → M} {k₀ k₁ : (ℝ × ℝ) → M}
     (k : CleanStripPatch (E := E) S T a k₀ k₁) {p : ℝ × ℝ} (hp : p ∈ k.domain)
@@ -2370,6 +2719,9 @@ theorem CleanStripPatch.avoids_sheets {E M : Type*} [NormedAddCommGroup E] [Norm
     · exact ht.1.ne' h0
     · exact ht.2.ne h1
 
+/-- The map glued from the two strip patches avoids both sheets on the interior of the bigon; the
+bigon meets the two sheets only in its two edges.
+-/
 theorem bigon_boundary_map_avoids_sheets {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {h : ℝ} (hh : 0 < h) {S T : Set M}
     {a b : ℝ → M} {k₀ k₁ l₀ l₁ : (ℝ × ℝ) → M} (k : CleanStripPatch (E := E) S T a k₀ k₁)
@@ -2389,6 +2741,12 @@ theorem bigon_boundary_map_avoids_sheets {E M : Type*} [NormedAddCommGroup E]
     rw [Set.union_comm]
     exact l.avoids_sheets (hmapV hpV) hc.1 hc.2.ne'
 
+/-- A clean embedded neighbourhood of the boundary of the Whitney bigon of height `h`: an immersed
+injective map defined on an open set containing a compact neighbourhood of the frontier of the
+bigon, a closed embedding there, restricting to the arcs `a` and `b` on the two edges, given
+near the edges by the strip charts `k` and `l`, and meeting the sheets `S` and `T` only along
+those edges.
+-/
 structure CleanBigonBoundary {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [TopologicalSpace M] [ChartedSpace E M] (S T : Set M) (a b : ℝ → M) (k l : (ℝ × ℝ) → M)
     (h : ℝ) where
@@ -2418,6 +2776,11 @@ structure CleanBigonBoundary {E M : Type*} [NormedAddCommGroup E] [NormedSpace �
       map =ᶠ[𝓝 (2 * t - 1, h * (1 - (2 * t - 1) ^ 2))]
         l ∘ WhitneyPairModel.upperStripCoordinates h
 
+/-- Existence of a clean embedded neighbourhood of the bigon boundary: two clean corner patches and
+two clean strip patches for the arcs `a` and `b` glue to a map which is injective, an immersion
+and a closed embedding on a compact neighbourhood of the frontier of the bigon, restricts to `a`
+and `b` on the two edges and meets the two sheets only there.
+-/
 theorem exists_clean_bigon_boundary_neighborhood {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] {h : ℝ} (hh : 0 < h) {S T : Set M}
@@ -2485,6 +2848,7 @@ theorem exists_clean_bigon_boundary_neighborhood {E M : Type*} [NormedAddCommGro
   · intro t ht
     exact Filter.mem_of_superset (hV.mem_nhds (huppV ht)) (fun _ hp => hfhi hp)
 
+/-- The same statement packaged as the nonemptiness of `CleanBigonBoundary`. -/
 theorem nonempty_cleanBigonBoundary {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M]
     [T2Space M] {h : ℝ} (hh : 0 < h) {S T : Set M} {a b a₀ b₀ a₁ b₁ : ℝ → M}

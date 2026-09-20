@@ -10,16 +10,34 @@ import Lib.Geometry.Manifold.Whitney.CleanStrips
 /-!
 # Annular extensions and sphere nullhomotopies
 
-Sphere cones, annular extensions of circle maps, smooth sphere representatives and the nullhomotopy of sphere maps omitting a point or of low dimension, extension of circle nullhomotopies to bigon neighbourhoods, and the `TubularBigon` structure.
+The point-set and homotopy-theoretic input to the Whitney trick: the cone on a sphere and the
+extension of a nullhomotopy across the closed ball, the annular extension of a map defined on a
+closed annulus, smooth representatives of maps into a sphere, the vanishing of `π_m(Sⁿ)` for
+`m < n`, the extension of a circle nullhomotopy to a neighbourhood of the boundary of a Whitney
+bigon, and the structure `TubularBigon` of an embedded bigon with a tubular neighbourhood.
 
-Moved verbatim from the project stock file `Hopf/SingularHomology.lean` (integration 4,
-`Lib/reports/integration-4/singhom-moves.md`); the families here are
-`SphereCone`, `AnnularExtension`, `ClosedHemisphere`, `WhitneyPairModel`, `TubularBigon`. The declarations keep their historical dotted names
-and their order; the file order is the dependency order.
+## Main results
+
+* `SphereCone.extension` : a nullhomotopy of `f : S(E) → M` extends `f` continuously over the
+  closed unit ball, because the cone on the unit sphere is that ball.
+* `AnnularExtension.exists_continuous_annular_extension` : a map defined on a closed annulus
+  `a ≤ ‖x‖ ≤ b` whose restrictions to the two bounding spheres are nullhomotopic extends to a
+  continuous map on all of `E` which is constant far from the annulus.
+* `sphereMap_nullhomotopic_of_omitted_point` : a map into `Sⁿ` missing a point is nullhomotopic
+  (stereographic projection contracts the complement of a point).
+* `sphereMap_nullhomotopic_of_dim_lt` and `sphere_sphere_nullhomotopic` : every continuous map
+  from a compact `m`-dimensional manifold, in particular from `Sᵐ`, into `Sⁿ` with `m < n` is
+  nullhomotopic; that is `π_m(Sⁿ) = 0` for `m < n`.
+* `exists_bigon_neighborhood_extension_of_circle_nullhomotopies` and its smooth counterpart : if
+  every circle in the target is nullhomotopic, a map defined near the boundary of the Whitney
+  bigon extends over the whole plane.
+* `TubularBigon` : an embedded Whitney bigon together with a tubular-neighbourhood chart.
 
 ## References
 
-* [John Milnor, *Lectures on the h-cobordism theorem*][milnor65], §§5–6.
+* [John Milnor, *Lectures on the h-cobordism theorem*][milnor65], §§5–6 (the Whitney trick).
+* [Allen Hatcher, *Algebraic topology*][hatcher02], §4.1, and Milnor, *Topology from the
+  differentiable viewpoint*, §7 (`π_m(Sⁿ) = 0` for `m < n`).
 
 ## Twin
 
@@ -27,7 +45,7 @@ No Mathlib counterpart exists.
 
 ## Tags
 
-Morse theory, Whitney trick, handle cancellation
+Morse theory, Whitney trick, handle cancellation, nullhomotopy, annulus
 -/
 
 open Set Function Filter Manifold Topology
@@ -36,6 +54,9 @@ open scoped ContDiff
 
 noncomputable section
 
+/-- The cone map `[0, 1] × S(E) → B(E)`, `(t, x) ↦ (1 - t) • x`, which realises the closed unit ball
+as the cone on the unit sphere.
+-/
 def SphereCone.point {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     (p : unitInterval × Metric.sphere (0 : E) 1) : Metric.closedBall (0 : E) 1 :=
   ⟨(1 - (p.1 : ℝ)) • (p.2 : E),
@@ -44,12 +65,14 @@ def SphereCone.point {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
       abs_of_nonneg (sub_nonneg.mpr p.1.2.2), mem_sphere_zero_iff_norm.mp p.2.property, mul_one]
     linarith [p.1.2.1]⟩
 
+/-- The cone map has norm `1 - t` at parameter `t`. -/
 theorem SphereCone.norm_point {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     (p : unitInterval × Metric.sphere (0 : E) 1) : ‖(point p : E)‖ = 1 - (p.1 : ℝ) := by
   change ‖(1 - (p.1 : ℝ)) • (p.2 : E)‖ = _
   rw [norm_smul, Real.norm_eq_abs, abs_of_nonneg (sub_nonneg.mpr p.1.2.2),
     mem_sphere_zero_iff_norm.mp p.2.property, mul_one]
 
+/-- The cone map is continuous. -/
 theorem SphereCone.continuous_point {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] :
     Continuous (point (E := E)) := by
   apply Continuous.subtype_mk
@@ -57,6 +80,9 @@ theorem SphereCone.continuous_point {E : Type*} [NormedAddCommGroup E] [NormedSp
     (continuous_const.sub (continuous_subtype_val.comp continuous_fst)).smul
       (continuous_subtype_val.comp continuous_snd)
 
+/-- The cone map is injective away from the cone point: two parameters with the same image are
+equal, unless both have time `1`.
+-/
 theorem SphereCone.point_fibers {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     {p q : unitInterval × Metric.sphere (0 : E) 1} (hpq : point p = point q) :
     p = q ∨ (p.1 = 1 ∧ q.1 = 1) := by
@@ -75,6 +101,7 @@ theorem SphereCone.point_fibers {E : Type*} [NormedAddCommGroup E] [NormedSpace 
     have hxy : x = y := Subtype.ext ((smul_right_injective E hnonzero) hvec)
     exact Or.inl (congrArg (fun z => (t, z)) hxy)
 
+/-- The cone map is surjective onto the closed unit ball. -/
 theorem SphereCone.surjective_point {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [Nonempty (Metric.sphere (0 : E) 1)] : Function.Surjective (point (E := E)) := by
   intro x
@@ -91,6 +118,9 @@ theorem SphereCone.surjective_point {E : Type*} [NormedAddCommGroup E] [NormedSp
     change (1 - (1 - ‖(x : E)‖)) • (‖(x : E)‖⁻¹ • (x : E)) = (x : E)
     rw [sub_sub_cancel, smul_inv_smul₀ (norm_ne_zero_iff.mpr hx)]
 
+/-- In finite dimension the cone map is a quotient map, so the closed unit ball carries the quotient
+topology of the cone on the sphere.
+-/
 theorem SphereCone.isQuotientMap_point {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [Nonempty (Metric.sphere (0 : E) 1)] [FiniteDimensional ℝ E] :
     Topology.IsQuotientMap (point (E := E)) := by
@@ -98,6 +128,9 @@ theorem SphereCone.isQuotientMap_point {E : Type*} [NormedAddCommGroup E] [Norme
     isCompact_iff_compactSpace.mp (isCompact_sphere _ _)
   exact .of_surjective_continuous surjective_point continuous_point
 
+/-- A nullhomotopy of a map on the sphere is constant on the fibres of the cone map, hence descends
+to the closed ball.
+-/
 theorem SphereCone.homotopy_eq_of_point_eq {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] (f : C(Metric.sphere (0 : E) 1, M)) (c : M)
     (H : f.Homotopy (ContinuousMap.const _ c)) {p q : unitInterval × Metric.sphere (0 : E) 1}
@@ -109,17 +142,24 @@ theorem SphereCone.homotopy_eq_of_point_eq {E M : Type*} [NormedAddCommGroup E]
     rw [hp', hq', H.apply_one, H.apply_one]
     rfl
 
+/-- The function on the closed unit ball induced by a nullhomotopy of a map on the sphere, obtained
+by descending the homotopy along the cone map.
+-/
 def SphereCone.extensionFun {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [TopologicalSpace M] [Nonempty (Metric.sphere (0 : E) 1)] (f : C(Metric.sphere (0 : E) 1, M))
     (c : M) (H : f.Homotopy (ContinuousMap.const _ c)) (x : Metric.closedBall (0 : E) 1) : M :=
   H (Function.surjInv surjective_point x)
 
+/-- The induced function on the ball composed with the cone map is the nullhomotopy itself. -/
 theorem SphereCone.extensionFun_point {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [TopologicalSpace M] [Nonempty (Metric.sphere (0 : E) 1)] (f : C(Metric.sphere (0 : E) 1, M))
     (c : M) (H : f.Homotopy (ContinuousMap.const _ c))
     (p : unitInterval × Metric.sphere (0 : E) 1) : extensionFun f c H (point p) = H p :=
   homotopy_eq_of_point_eq f c H (Function.surjInv_eq surjective_point (point p))
 
+/-- The continuous extension of a map `f : S(E) → M` over the closed unit ball determined by a
+nullhomotopy of `f`.
+-/
 def SphereCone.extension {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [TopologicalSpace M] [Nonempty (Metric.sphere (0 : E) 1)] (f : C(Metric.sphere (0 : E) 1, M))
     (c : M) (H : f.Homotopy (ContinuousMap.const _ c)) [FiniteDimensional ℝ E] :
@@ -132,6 +172,7 @@ def SphereCone.extension {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E
     rw [heq]
     exact H.continuous
 
+/-- The extension restricts to the given map on the boundary sphere. -/
 theorem SphereCone.extension_boundary {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [TopologicalSpace M] [Nonempty (Metric.sphere (0 : E) 1)] (f : C(Metric.sphere (0 : E) 1, M))
     (c : M) (H : f.Homotopy (ContinuousMap.const _ c)) [FiniteDimensional ℝ E]
@@ -146,6 +187,7 @@ theorem SphereCone.extension_boundary {E M : Type*} [NormedAddCommGroup E] [Norm
   change extensionFun f c H _ = f x
   rw [heq, extensionFun_point, H.apply_zero]
 
+/-- The extension takes the centre of the ball to the constant value of the nullhomotopy. -/
 theorem SphereCone.extension_zero {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [TopologicalSpace M] [Nonempty (Metric.sphere (0 : E) 1)] (f : C(Metric.sphere (0 : E) 1, M))
     (c : M) (H : f.Homotopy (ContinuousMap.const _ c)) [FiniteDimensional ℝ E] :
@@ -160,51 +202,66 @@ theorem SphereCone.extension_zero {E M : Type*} [NormedAddCommGroup E] [NormedSp
   rw [heq, extensionFun_point, H.apply_one]
   rfl
 
+/-- Radial retraction to the closed unit ball at scale `a`: `x ↦ (max a ‖x‖)⁻¹ • x`, the identity
+direction rescaled so that points of norm at most `a` are sent inside.
+-/
 def AnnularExtension.unitClamp {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] (a : ℝ)
     (x : E) : E :=
   (Max.max a ‖x‖)⁻¹ • x
 
+/-- For positive `a` the scaling factor `max a ‖x‖` is positive. -/
 theorem AnnularExtension.max_radius_pos {E : Type*} [NormedAddCommGroup E] {a : ℝ}
     (ha : 0 < a) (x : E) : 0 < Max.max a ‖x‖ :=
   ha.trans_le (le_max_left _ _)
 
+/-- The unit clamp is continuous for positive scale. -/
 theorem AnnularExtension.continuous_unitClamp {E : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] {a : ℝ} (ha : 0 < a) : Continuous (unitClamp (E := E) a) :=
   ((continuous_const.max continuous_norm).inv₀ (fun x => (max_radius_pos ha x).ne')).smul
     continuous_id
 
+/-- The norm of the unit clamp is `‖x‖ / max a ‖x‖`. -/
 theorem AnnularExtension.norm_unitClamp {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     {a : ℝ} (ha : 0 < a) (x : E) : ‖unitClamp a x‖ = ‖x‖ / Max.max a ‖x‖ := by
   rw [unitClamp, norm_smul, Real.norm_eq_abs, abs_of_pos (inv_pos.mpr (max_radius_pos ha x)),
     div_eq_mul_inv, mul_comm]
 
+/-- The unit clamp takes values in the closed unit ball. -/
 theorem AnnularExtension.norm_unitClamp_le {E : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] {a : ℝ} (ha : 0 < a) (x : E) : ‖unitClamp a x‖ ≤ 1 := by
   rw [norm_unitClamp ha]
   exact (div_le_one (max_radius_pos ha x)).mpr (le_max_right _ _)
 
+/-- The unit clamp viewed as a continuous map from `E` to the closed unit ball. -/
 def AnnularExtension.innerDisk {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] {a : ℝ}
     (ha : 0 < a) : C(E, Metric.closedBall (0 : E) 1)
     where
   toFun x := ⟨unitClamp a x, mem_closedBall_zero_iff.mpr (norm_unitClamp_le ha x)⟩
   continuous_toFun := (continuous_unitClamp ha).subtype_mk _
 
+/-- Inside the ball of radius `a` the unit clamp is the linear rescaling `x ↦ a⁻¹ • x`. -/
 theorem AnnularExtension.unitClamp_of_norm_le {E : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] {a : ℝ} {x : E} (hx : ‖x‖ ≤ a) : unitClamp a x = a⁻¹ • x := by
   rw [unitClamp, max_eq_left hx]
 
+/-- Radial retraction of `E` onto the closed ball of radius `a`: the identity on that ball and the
+radial projection outside it.
+-/
 def AnnularExtension.clamp {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] (a : ℝ)
     (x : E) : E :=
   a • unitClamp a x
 
+/-- The radial retraction onto the ball of radius `a` is continuous for positive `a`. -/
 theorem AnnularExtension.continuous_clamp {E : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] {a : ℝ} (ha : 0 < a) : Continuous (clamp (E := E) a) :=
   continuous_const.smul (continuous_unitClamp ha)
 
+/-- The radial retraction fixes the closed ball of radius `a` pointwise. -/
 theorem AnnularExtension.clamp_of_norm_le {E : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] {a : ℝ} (ha : 0 < a) {x : E} (hx : ‖x‖ ≤ a) : clamp a x = x := by
   rw [clamp, unitClamp_of_norm_le hx, smul_inv_smul₀ ha.ne']
 
+/-- The radial retraction has norm `min a ‖x‖`. -/
 theorem AnnularExtension.norm_clamp {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     {a : ℝ} (ha : 0 < a) (x : E) : ‖clamp a x‖ = Min.min a ‖x‖ := by
   by_cases hx : ‖x‖ ≤ a
@@ -214,33 +271,47 @@ theorem AnnularExtension.norm_clamp {E : Type*} [NormedAddCommGroup E] [NormedSp
     rw [clamp, norm_smul, Real.norm_eq_abs, abs_of_pos ha, norm_unitClamp ha, max_eq_right hx',
       div_self hnorm, mul_one, min_eq_left hx']
 
+/-- The radial retraction onto the ball of radius `b` carries the region `a ≤ ‖x‖` into the closed
+annulus `a ≤ ‖·‖ ≤ b`, for `a ≤ b`.
+-/
 theorem AnnularExtension.clamp_mem_annulus {E : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] {a b : ℝ} (hb : 0 < b) (hab : a ≤ b) {x : E} (hx : a ≤ ‖x‖) :
     a ≤ ‖clamp b x‖ ∧ ‖clamp b x‖ ≤ b := by
   rw [norm_clamp hb]
   exact ⟨le_min hab hx, min_le_left _ _⟩
 
+/-- The radial cut-off `min 1 (max 0 (2 - ‖x‖ / a))`, equal to `1` on `‖x‖ ≤ a` and to `0` on
+`‖x‖ ≥ 2 a`.
+-/
 def AnnularExtension.exteriorFactor {E : Type*} [NormedAddCommGroup E] (a : ℝ) (x : E) :
     ℝ :=
   Min.min 1 (Max.max 0 (2 - ‖x‖ / a))
 
+/-- The radial cut-off is nonnegative. -/
 theorem AnnularExtension.exteriorFactor_nonneg {E : Type*} [NormedAddCommGroup E] (a : ℝ)
     (x : E) : 0 ≤ exteriorFactor a x :=
   le_min zero_le_one (le_max_left _ _)
 
+/-- The radial cut-off is at most `1`. -/
 theorem AnnularExtension.exteriorFactor_le_one {E : Type*} [NormedAddCommGroup E] (a : ℝ)
     (x : E) : exteriorFactor a x ≤ 1 :=
   min_le_left _ _
 
+/-- The exterior collapse map `x ↦ exteriorFactor a x • unitClamp a x`: the radial retraction damped
+by the cut-off, so that it agrees with the unit clamp on the sphere of radius `a` and vanishes
+outside radius `2 a`.
+-/
 def AnnularExtension.exteriorVector {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     (a : ℝ) (x : E) : E :=
   exteriorFactor a x • unitClamp a x
 
+/-- The exterior collapse map is continuous for positive scale. -/
 theorem AnnularExtension.continuous_exteriorVector {E : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] {a : ℝ} (ha : 0 < a) : Continuous (exteriorVector (E := E) a) := by
   have hf : Continuous (exteriorFactor (E := E) a) := by unfold exteriorFactor; fun_prop
   exact hf.smul (continuous_unitClamp ha)
 
+/-- The exterior collapse map takes values in the closed unit ball. -/
 theorem AnnularExtension.norm_exteriorVector_le {E : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] {a : ℝ} (ha : 0 < a) (x : E) : ‖exteriorVector a x‖ ≤ 1 := by
   rw [exteriorVector, norm_smul, Real.norm_eq_abs, abs_of_nonneg (exteriorFactor_nonneg a x)]
@@ -249,12 +320,14 @@ theorem AnnularExtension.norm_exteriorVector_le {E : Type*} [NormedAddCommGroup 
       mul_le_mul (exteriorFactor_le_one a x) (norm_unitClamp_le ha x) (norm_nonneg _) zero_le_one
     _ = 1 := one_mul _
 
+/-- The exterior collapse map viewed as a continuous map from `E` to the closed unit ball. -/
 def AnnularExtension.exteriorDisk {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     {a : ℝ} (ha : 0 < a) : C(E, Metric.closedBall (0 : E) 1)
     where
   toFun x := ⟨exteriorVector a x, mem_closedBall_zero_iff.mpr (norm_exteriorVector_le ha x)⟩
   continuous_toFun := (continuous_exteriorVector ha).subtype_mk _
 
+/-- On the sphere of radius `a` the exterior collapse map agrees with the unit clamp. -/
 theorem AnnularExtension.exteriorVector_on_sphere {E : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] {a : ℝ} (ha : 0 < a) {x : E} (hx : ‖x‖ = a) :
     exteriorVector a x = unitClamp a x := by
@@ -264,6 +337,9 @@ theorem AnnularExtension.exteriorVector_on_sphere {E : Type*} [NormedAddCommGrou
     norm_num
   rw [exteriorVector, hf, one_smul]
 
+/-- Outside radius `2 a` the exterior collapse map is zero, so it collapses the far region to the
+centre of the ball.
+-/
 theorem AnnularExtension.exteriorVector_eq_zero {E : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] {a : ℝ} (ha : 0 < a) {x : E} (hx : 2 * a ≤ ‖x‖) : exteriorVector a x = 0 := by
   have hdiv : 2 ≤ ‖x‖ / a := (le_div_iff₀ ha).mpr hx
@@ -272,6 +348,9 @@ theorem AnnularExtension.exteriorVector_eq_zero {E : Type*} [NormedAddCommGroup 
     rw [max_eq_left (by linarith : 2 - ‖x‖ / a ≤ 0), min_eq_right zero_le_one]
   rw [exteriorVector, hf, zero_smul]
 
+/-- If an extension `F` over the closed unit ball restricts on the boundary sphere to
+`v ↦ g (a • v)`, then `F ∘ innerDisk` agrees with `g` on the sphere of radius `a`.
+-/
 theorem AnnularExtension.disk_extension_on_radius {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] {a : ℝ} (ha : 0 < a) {g : E → M}
     (F : C(Metric.closedBall (0 : E) 1, M))
@@ -287,6 +366,9 @@ theorem AnnularExtension.disk_extension_on_radius {E M : Type*} [NormedAddCommGr
   change g (clamp a x) = g x
   rw [clamp_of_norm_le ha hx.le]
 
+/-- The same matching statement for the exterior collapse map: `F ∘ exteriorDisk` agrees with `g` on
+the sphere of radius `a`.
+-/
 theorem AnnularExtension.exterior_extension_on_radius {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] {a : ℝ} (ha : 0 < a) {g : E → M}
     (F : C(Metric.closedBall (0 : E) 1, M))
@@ -298,6 +380,10 @@ theorem AnnularExtension.exterior_extension_on_radius {E M : Type*} [NormedAddCo
   rw [heq]
   exact disk_extension_on_radius ha F hF hx
 
+/-- Annular extension: a map `g` continuous on the closed annulus `a ≤ ‖x‖ ≤ b` whose two boundary
+restrictions `v ↦ g (a • v)` and `v ↦ g (b • v)` extend over the closed unit ball extends to a
+continuous map `G : E → M` agreeing with `g` on the annulus and constant outside radius `2 b`.
+-/
 theorem AnnularExtension.exists_continuous_annular_extension {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] {a b : ℝ} (ha : 0 < a)
     (hab : a < b) {g : E → M} (hg : ContinuousOn g {x : E | a ≤ ‖x‖ ∧ ‖x‖ ≤ b})
@@ -367,6 +453,8 @@ theorem AnnularExtension.exists_continuous_annular_extension {E M : Type*}
     apply congrArg F₁
     exact Subtype.ext (exteriorVector_eq_zero hb hx)
 
+/-- The distance from a nonzero vector to its radial projection on the unit sphere is `|‖x‖ - 1|`.
+-/
 theorem AnnularExtension.dist_direction {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     {x : E} (hx : x ≠ 0) : Dist.dist x (RadialExtension.direction x hx : E) = |‖x‖ - 1| := by
   let v := RadialExtension.direction x hx
@@ -377,6 +465,9 @@ theorem AnnularExtension.dist_direction {E : Type*} [NormedAddCommGroup E] [Norm
     _ = ‖(‖x‖ - 1) • (v : E)‖ := by rw [dist_eq_norm, sub_smul, one_smul, hvec]
     _ = |‖x‖ - 1| := by rw [norm_smul, Real.norm_eq_abs, hn, mul_one]
 
+/-- Any open set containing the unit sphere of a finite-dimensional space contains a closed annulus
+`a ≤ ‖x‖ ≤ b` around it, with `a < 1 < b`.
+-/
 theorem AnnularExtension.exists_closed_annulus_subset {E : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] {W : Set E} (hW : IsOpen W)
     (hSW : Metric.sphere (0 : E) 1 ⊆ W) :
@@ -402,16 +493,22 @@ theorem AnnularExtension.exists_closed_annulus_subset {E : Type*} [NormedAddComm
       (Metric.mem_cthickening_of_dist_le x (RadialExtension.direction x hx0) δ
         (Metric.sphere (0 : E) 1) (RadialExtension.direction x hx0).property hdist)
 
+/-- The unit sphere of a normed space, centred at the origin. -/
 abbrev UnitSphere (E : Type*) [NormedAddCommGroup E] :=
   Metric.sphere (0 : E) 1
 
+/-- Points of the unit sphere have norm one. -/
 theorem ClosedHemisphere.unit_norm {E : Type*} [NormedAddCommGroup E]
     (x : UnitSphere E) : ‖(x : E)‖ = 1 := by
   simpa only [Metric.mem_sphere, dist_zero_right] using x.property
 
+/-- The standard `n`-sphere, the unit sphere of `EuclideanSpace ℝ (Fin (n + 1))`. -/
 abbrev Sphere (n : ℕ) :=
   Metric.sphere (0 : EuclideanSpace ℝ (Fin (n + 1))) 1
 
+/-- The radial normalisation `x ↦ g x / ‖g x‖` of a nowhere-vanishing continuous map into an inner
+product space, as a continuous map into the unit sphere.
+-/
 noncomputable def normalizedSphereMap {X E : Type*} [TopologicalSpace X]
     [NormedAddCommGroup E] [InnerProductSpace ℝ E] (g : C(X, E)) (hg : ∀ x, g x ≠ 0) :
     C(X, UnitSphere E) := by
@@ -423,12 +520,16 @@ noncomputable def normalizedSphereMap {X E : Type*} [TopologicalSpace X]
     (g.continuous.norm.inv₀ (fun x ↦ norm_ne_zero_iff.mpr (hg x))).smul g.continuous
   exact ⟨fun x ↦ ⟨gN x, hm x⟩, hc.subtype_mk hm⟩
 
+/-- A vector at distance less than `1` from a point of the unit sphere is nonzero. -/
 theorem nearby_unit_ne_zero {E : Type*} [NormedAddCommGroup E] (a : UnitSphere E) (b : E)
     (h : Dist.dist b (a : E) < 1) : b ≠ 0 := by
   intro hb
   rw [hb, dist_zero_left, ClosedHemisphere.unit_norm] at h
   exact (lt_irrefl 1) h
 
+/-- Every point of the segment from a point `a` of the unit sphere to a vector `b` with
+`dist b a < 1` again lies at distance less than `1` from `a`.
+-/
 theorem nearby_segment_dist_lt {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ E]
     (a : UnitSphere E) (b : E) (h : Dist.dist b (a : E) < 1) (t : (unitInterval)) :
     Dist.dist ((a : E) + (t : ℝ) • (b - (a : E))) (a : E) < 1 := by
@@ -437,11 +538,16 @@ theorem nearby_segment_dist_lt {E : Type*} [NormedAddCommGroup E] [InnerProductS
     (t : ℝ) * ‖b - (a : E)‖ ≤ ‖b - (a : E)‖ := mul_le_of_le_one_left (norm_nonneg _) t.2.2
     _ < 1 := by simpa only [dist_eq_norm] using h
 
+/-- The segment from a point of the unit sphere to a nearby vector avoids the origin. -/
 theorem nearby_segment_ne_zero {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ E]
     (a : UnitSphere E) (b : E) (h : Dist.dist b (a : E) < 1) (t : (unitInterval)) :
     (a : E) + (t : ℝ) • (b - (a : E)) ≠ 0 :=
   nearby_unit_ne_zero a _ (nearby_segment_dist_lt a b h t)
 
+/-- The straight-line homotopy, normalised to the sphere, from a map `f` into the unit sphere to the
+normalisation of a map `g` that stays within distance `1` of `f`; so a sufficiently close
+approximation of a sphere-valued map is homotopic to it.
+-/
 noncomputable def nearbyNormalizationHomotopy {X E : Type*} [TopologicalSpace X]
     [NormedAddCommGroup E] [InnerProductSpace ℝ E] (f : C(X, UnitSphere E)) (g : C(X, E))
     (h : ∀ x, Dist.dist (g x) (f x : E) < 1) :
@@ -479,6 +585,9 @@ noncomputable def nearbyNormalizationHomotopy {X E : Type*} [TopologicalSpace X]
         NormedSpace.normalize (g x)
     rw [one_smul, ← add_sub_assoc, add_sub_cancel_left]
 
+/-- The normalisation `x ↦ g x / ‖g x‖` of a smooth nowhere-vanishing map into an inner product
+space is smooth.
+-/
 theorem contMDiff_normalize {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ E]
     {B H M : Type*} [NormedAddCommGroup B] [NormedSpace ℝ B] [TopologicalSpace H]
     {I : ModelWithCorners ℝ B H} [TopologicalSpace M] [ChartedSpace H M] {g : M → E}
@@ -489,6 +598,9 @@ theorem contMDiff_normalize {E : Type*} [NormedAddCommGroup E] [InnerProductSpac
     ((contDiffAt_norm ℝ (hn x)).inv (norm_ne_zero_iff.mpr (hn x))).smul contDiffAt_id
   exact hN.comp_contMDiffAt (f := g) (x := x) (hg x)
 
+/-- Smooth approximation for sphere-valued maps: every continuous map from a manifold into `Sⁿ` is
+homotopic to a smooth one.
+-/
 theorem exists_smoothSphereRepresentative {B H M : Type*} [NormedAddCommGroup B]
     [NormedSpace ℝ B] [TopologicalSpace H] {I : ModelWithCorners ℝ B H} [TopologicalSpace M]
     [ChartedSpace H M] [FiniteDimensional ℝ B] [IsManifold I ∞ M] [SigmaCompactSpace M]
@@ -507,6 +619,9 @@ theorem exists_smoothSphereRepresentative {B H M : Type*} [NormedAddCommGroup B]
     (contMDiff_normalize g.contMDiff hn).codRestrict_sphere (n := n)
       (fun x ↦ (normalizedSphereMap gC hn x).2)
 
+/-- The contraction of a map whose image lies in a chart with target all of `E`: pulling the chart
+image linearly to the origin gives a nullhomotopy onto the preimage of `0`.
+-/
 noncomputable def chartContractionHomotopy {X Y E : Type*} [TopologicalSpace X]
     [TopologicalSpace Y] [NormedAddCommGroup E] [NormedSpace ℝ E] (f : C(X, Y))
     (c : OpenPartialHomeomorph Y E) (ht : c.target = Set.univ) (hf : ∀ x, f x ∈ c.source) :
@@ -533,6 +648,9 @@ noncomputable def chartContractionHomotopy {X Y E : Type*} [TopologicalSpace X]
     change c.symm ((1 - (1 : ℝ)) • c (f x)) = c.symm 0
     rw [sub_self, zero_smul]
 
+/-- A continuous map into `Sⁿ` which misses one point is nullhomotopic: stereographic projection
+from that point identifies its complement with `ℝⁿ`, which is contractible.
+-/
 theorem sphereMap_nullhomotopic_of_omitted_point {X : Type*} [TopologicalSpace X] (n : ℕ)
     (f : C(X, Sphere n)) (p : Sphere n) (hp : ∀ x, f x ≠ p) :
     ∃ c, f.Homotopic (ContinuousMap.const _ c) := by
@@ -544,6 +662,10 @@ theorem sphereMap_nullhomotopic_of_omitted_point {X : Type*} [TopologicalSpace X
     simpa only [c, stereographic'_source, Set.mem_compl_iff, Set.mem_singleton_iff] using hp x
   exact ⟨c.symm 0, ⟨chartContractionHomotopy f c (stereographic'_target (n := n) p) hf⟩⟩
 
+/-- A continuous map from a compact boundaryless manifold of dimension less than `n` into `Sⁿ` is
+nullhomotopic: a smooth representative cannot be surjective by Sard's theorem, and a map
+omitting a point is nullhomotopic.
+-/
 theorem sphereMap_nullhomotopic_of_dim_lt {B H M : Type*} [NormedAddCommGroup B]
     [NormedSpace ℝ B] [FiniteDimensional ℝ B] [TopologicalSpace H] {I : ModelWithCorners ℝ B H}
     [I.Boundaryless] [TopologicalSpace M] [ChartedSpace H M] [IsManifold I ∞ M] [CompactSpace M]
@@ -559,11 +681,19 @@ theorem sphereMap_nullhomotopic_of_dim_lt {B H M : Type*} [NormedAddCommGroup B]
   obtain ⟨c, hgc⟩ := sphereMap_nullhomotopic_of_omitted_point n g p hp
   exact ⟨c, hfg.trans hgc⟩
 
+/-- `π_m(Sⁿ) = 0` for `m < n`: every continuous map `Sᵐ → Sⁿ` with `m < n` is nullhomotopic
+(Hatcher, Algebraic Topology, §4.1).
+-/
 theorem sphere_sphere_nullhomotopic {m n : ℕ} (hmn : m < n) (f : C(Sphere m, Sphere n)) :
     ∃ c, f.Homotopic (ContinuousMap.const _ c) :=
   sphereMap_nullhomotopic_of_dim_lt (I := 𝓡 m) n f
     (by simpa only [finrank_euclideanSpace_fin] using hmn)
 
+/-- If every circle in `M` is nullhomotopic, a map continuous on an open neighbourhood `W` of the
+unit circle in the plane agrees with a globally continuous map `G` on some smaller open
+neighbourhood of that circle, where `G` is constant off a compact set. The extension is obtained
+by extending the two boundary circles of an annulus in `W` over discs.
+-/
 theorem exists_circle_neighborhood_extension_of_circle_nullhomotopies {M : Type*}
     [TopologicalSpace M]
     (hnull : ∀ f : C(Hemisphere.Sphere 1, M), ∃ c, f.Homotopic (ContinuousMap.const _ c))
@@ -627,6 +757,7 @@ theorem exists_circle_neighborhood_extension_of_circle_nullhomotopies {M : Type*
     rw [hn]
     exact ⟨ha1, h1b⟩
 
+/-- For nonnegative height the model bigon is convex. -/
 theorem WhitneyPairModel.convex_bigon {h : ℝ} (hh : 0 ≤ h) : Convex ℝ (bigon h) := by
   intro x hx y hy a b ha hb hab
   change 0 ≤ a * x.2 + b * y.2 ∧ h * (a * x.1 + b * y.1) ^ 2 + (a * x.2 + b * y.2) ≤ h
@@ -644,6 +775,7 @@ theorem WhitneyPairModel.convex_bigon {h : ℝ} (hh : 0 ≤ h) : Convex ℝ (big
       (add_le_add (mul_le_mul_of_nonneg_left hx.2 ha) (mul_le_mul_of_nonneg_left hy.2 hb))
     _ = h := by rw [← add_mul, hab, one_mul]
 
+/-- The point `(0, h/2)` lies in the interior of the bigon of height `h > 0`. -/
 theorem WhitneyPairModel.bigon_center_mem_interior {h : ℝ} (hh : 0 < h) :
     (0, h / 2) ∈ interior (bigon h) := by
   apply (mem_interior_bigon_iff h _).mpr
@@ -651,10 +783,16 @@ theorem WhitneyPairModel.bigon_center_mem_interior {h : ℝ} (hh : 0 < h) :
   norm_num only [zero_pow (by decide : 2 ≠ 0), sub_zero, mul_one]
   constructor <;> linarith
 
+/-- For positive height the bigon has nonempty interior. -/
 theorem WhitneyPairModel.interior_bigon_nonempty {h : ℝ} (hh : 0 < h) :
     (interior (bigon h)).Nonempty :=
   ⟨(0, h / 2), bigon_center_mem_interior hh⟩
 
+/-- The bigon is a closed disc: there is a homeomorphism of the plane onto the ambient plane
+carrying the bigon, its interior and its frontier to the closed unit ball, the open ball and the
+unit sphere. This is the standard fact that a compact convex body with nonempty interior is
+homeomorphic to a ball.
+-/
 theorem WhitneyPairModel.exists_bigon_disk_homeomorph {h : ℝ} (hh : 0 < h) :
     ∃ e : (ℝ × ℝ) ≃ₜ Hemisphere.Ambient 2,
       e '' bigon h = Metric.closedBall 0 1 ∧
@@ -685,6 +823,11 @@ theorem WhitneyPairModel.exists_bigon_disk_homeomorph {h : ℝ} (hh : 0 < h) :
       _ = e '' (L '' frontier (bigon h)) := (Set.image_image e L (frontier (bigon h))).symm
       _ = Metric.sphere 0 1 := by rw [hLfront]; exact hefront
 
+/-- If every circle in `M` is nullhomotopic, a map continuous on an open neighbourhood `W` of the
+boundary of the Whitney bigon agrees with a globally continuous map on a smaller open
+neighbourhood of that boundary, the global map being constant off a compact set. It is the
+previous circle statement transported by the homeomorphism of the bigon with a disc.
+-/
 theorem exists_bigon_neighborhood_extension_of_circle_nullhomotopies {M : Type*}
     [TopologicalSpace M]
     (hnull : ∀ f : C(Hemisphere.Sphere 1, M), ∃ c, f.Homotopic (ContinuousMap.const _ c)) {h : ℝ}
@@ -731,6 +874,10 @@ theorem exists_bigon_neighborhood_extension_of_circle_nullhomotopies {M : Type*}
     change f (φ.symm (φ x)) = f x
     rw [φ.symm_apply_apply]
 
+/-- The smooth form of the previous extension: a smooth map defined near the boundary of the Whitney
+bigon in a target with nullhomotopic circles agrees, on a smaller neighbourhood of that
+boundary, with a globally smooth map of the plane.
+-/
 theorem exists_smooth_bigon_neighborhood_extension_of_circle_nullhomotopies {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M]
@@ -758,6 +905,12 @@ theorem exists_smooth_bigon_neighborhood_extension_of_circle_nullhomotopies {E M
   intro x hx
   exact (hrel.fst_eq_snd (interior_subset hx)).symm.trans (hGeq (hCV (interior_subset hx)))
 
+/-- An embedded Whitney bigon with a tubular neighbourhood: a smooth closed embedding of the model
+bigon into `M` whose two edges parametrise the given arcs `a` and `b`, whose interior avoids the
+two sheets `S` and `T`, which is given near the edges by the strip charts `k` and `l`, and which
+extends to a diffeomorphism of a normal disc bundle of fibre dimension `n` onto a neighbourhood
+of the bigon. This is the datum of Milnor's Whitney lemma (h-cobordism theorem, §6).
+-/
 structure TubularBigon {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [TopologicalSpace M] [ChartedSpace E M] (S T : Set M) (a b : ℝ → M) (k l : (ℝ × ℝ) → M)
     (h : ℝ) (n : ℕ := 4) where
