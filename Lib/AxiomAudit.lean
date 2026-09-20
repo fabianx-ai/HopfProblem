@@ -18,10 +18,6 @@ is an evidence command rather than library content.
 #check AddMonoidHom.surjective_signed_prod_of_surjective_ker
 #print axioms AddMonoidHom.surjective_signed_prod_of_surjective_ker
 
-/-! ## `Lib.Data.Int.SignedResidual` -/
-
-#check Int.signed_residual_coordinate_zero
-#print axioms Int.signed_residual_coordinate_zero
 
 /-! ## `Lib.AlgebraicTopology.SingularHomology.LocalContributions` -/
 

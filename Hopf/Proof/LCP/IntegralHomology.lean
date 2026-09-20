@@ -63,7 +63,7 @@ Original source lines 211736--237524; see PROVENANCE.md.
 
 import Hopf.LibShims
 import Lib.LinearAlgebra.ColumnKernel
-import Lib.Data.Int.SignedResidual
+import Hopf.Proof.Data.Int.SignedResidual
 import Lib.Algebra.Group.Prod
 import Hopf.LCP.IntegralHomology
 import Hopf.Proof.LCP.BoundaryTopology
@@ -23049,7 +23049,8 @@ theorem ThreefoldHomology.FifthDegree.fifthWangCoordinate_vanishes
       cuspResidualCoefficient * ThreefoldHomology.FourthWang.fifthWangCoordinate a := by
     linear_combination hsum - hcusp
   exact
-    Int.signed_residual_coordinate_zero (ThreefoldHomology.FourthWang.fifthWangCoordinate a)
+    ThreefoldHomology.signed_residual_coordinate_zero
+      (ThreefoldHomology.FourthWang.fifthWangCoordinate a)
       (PeriodTorusHigherHomology.realTorusH4Equiv (b (Option.some .three)))
       (PeriodTorusHigherHomology.realTorusH4Equiv (b (Option.some .four))) cuspResidualCoefficient
       hthree hfour hregular

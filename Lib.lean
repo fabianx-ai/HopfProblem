@@ -1,6 +1,5 @@
 import Lib.Algebra.Group.Prod
 import Lib.Algebra.Group.DeterminingFamily
-import Lib.Data.Int.SignedResidual
 import Lib.Algebra.Homology.MayerVietorisShortExact
 import Lib.Topology.Homotopy.Suspension
 import Lib.Topology.Algebra.FreeActionLocus
