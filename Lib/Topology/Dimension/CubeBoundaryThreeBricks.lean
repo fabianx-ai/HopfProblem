@@ -1,0 +1,706 @@
+module
+
+public import Mathlib.Analysis.Normed.Affine.AddTorsor
+public import Lib.Topology.Dimension.Covering
+
+public import Lib.Topology.Dimension.CubeBoundaryThreeLebesgue
+public import Mathlib.Analysis.Normed.Module.Convex
+
+public import Lib.Topology.Dimension.CubeBoundaryThreeCells
+public import Mathlib.Data.Finite.Sum
+public import Mathlib.Topology.MetricSpace.HausdorffDistance
+
+/-!
+# The brick cover of the boundary of the three-cube
+
+For the mesh-`h` subdivision of `∂[-1,1]³`, this file builds the open cover by "bricks": one
+neighbourhood around each mesh vertex, one tube around each mesh edge, and the relative interior
+of each mesh square.  Each brick has small diameter, the bricks cover the boundary, and, for a
+cover with Lebesgue number `lambda` and mesh scales chosen below `lambda`, the brick family
+refines the given cover.
+
+This is the cell-thickening construction behind `dim Iⁿ ≤ n`: the cells of a subdivision are
+thickened to open sets so that only cells of different dimensions can meet.
+
+## References
+
+* R. Engelking, *Dimension Theory*, Theorem 1.8.2
+* W. Hurewicz and H. Wallman, *Dimension Theory*, Theorem IV 1
+-/
+
+set_option warningAsError true
+set_option autoImplicit false
+open Set
+namespace TopologicalSpace.CubeBoundaryThree
+
+/-- A brick index remembers the dimension and the actual geometric cell. -/
+public inductive BrickIndex (N : ℕ) (h : ℝ)
+  | vertex : {v : Ambient // v ∈ vertices N h} → BrickIndex N h
+  | edge : {e : Set Ambient // e ∈ edges N h} → BrickIndex N h
+  | square : {s : Set Ambient // s ∈ squares N h} → BrickIndex N h
+
+/- Representation-only encoding into the literal nested finite sum. -/
+private def brickIndexToSum (N : ℕ) (h : ℝ) : BrickIndex N h →
+    {v : Ambient // v ∈ vertices N h} ⊕
+      ({e : Set Ambient // e ∈ edges N h} ⊕ {s : Set Ambient // s ∈ squares N h})
+  | .vertex v => Sum.inl v
+  | .edge e => Sum.inr (Sum.inl e)
+  | .square s => Sum.inr (Sum.inr s)
+
+private theorem brickIndexToSum_injective (N : ℕ) (h : ℝ) :
+    Function.Injective (brickIndexToSum N h) := by
+  intro a b hab
+  cases a <;> cases b <;> simp_all [brickIndexToSum]
+
+/-- The three-way actual-cell brick index is finite. -/
+public theorem finite_brickIndex (N : ℕ) (h : ℝ) : Finite (BrickIndex N h) := by
+  let _ : Fintype {v : Ambient // v ∈ vertices N h} := (finite_vertices N h).fintype
+  let _ : Fintype {e : Set Ambient // e ∈ edges N h} := (finite_edges N h).fintype
+  let _ : Fintype {s : Set Ambient // s ∈ squares N h} := (finite_squares N h).fintype
+  exact Finite.of_injective (brickIndexToSum N h) (brickIndexToSum_injective N h)
+
+/-- The boundary ball of radius `4 * epsilon` about an actual vertex. -/
+public def vertexBrick {N : ℕ} {h : ℝ} (epsilon : ℝ)
+    (v : {v : Ambient // v ∈ vertices N h}) : Set Boundary :=
+  {x | dist (x : Ambient) (v : Ambient) < 4 * epsilon}
+
+/-- The edge tube with exclusion from every intrinsic endpoint. -/
+public noncomputable def edgeBrick {N : ℕ} {h : ℝ} (epsilon : ℝ)
+    (e : {e : Set Ambient // e ∈ edges N h}) : Set Boundary :=
+  {x | Metric.infDist (x : Ambient) (e : Set Ambient) < epsilon ∧
+    ∀ w ∈ edgeEndpoints N h e, 3 * epsilon < dist (x : Ambient) w}
+
+/-- The square brick is its intrinsic relative interior in the boundary. -/
+public noncomputable def squareBrick {N : ℕ} {h : ℝ}
+    (s : {s : Set Ambient // s ∈ squares N h}) : Set Boundary :=
+  {x | (x : Ambient) ∈ squareRelInterior N h s}
+
+/-- Dispatch the exact raw brick by its actual-cell tag. -/
+public noncomputable def brickSet (N : ℕ) (h epsilon : ℝ) : BrickIndex N h → Set Boundary
+  | .vertex v => vertexBrick epsilon v
+  | .edge e => edgeBrick epsilon e
+  | .square s => squareBrick s
+
+/-- Vertex membership is precisely the defining distance inequality. -/
+public theorem mem_vertexBrick {N : ℕ} {h epsilon : ℝ}
+    (v : {v : Ambient // v ∈ vertices N h}) (x : Boundary) :
+    x ∈ vertexBrick epsilon v ↔ dist (x : Ambient) (v : Ambient) < 4 * epsilon := Iff.rfl
+
+/-- Edge membership is the tube condition together with all endpoint exclusions. -/
+public theorem mem_edgeBrick {N : ℕ} {h epsilon : ℝ}
+    (e : {e : Set Ambient // e ∈ edges N h}) (x : Boundary) :
+    x ∈ edgeBrick epsilon e ↔ Metric.infDist (x : Ambient) (e : Set Ambient) < epsilon ∧
+      ∀ w ∈ edgeEndpoints N h e, 3 * epsilon < dist (x : Ambient) w := Iff.rfl
+
+/-- Square membership is membership in the intrinsic relative interior. -/
+public theorem mem_squareBrick {N : ℕ} {h : ℝ}
+    (s : {s : Set Ambient // s ∈ squares N h}) (x : Boundary) :
+    x ∈ squareBrick s ↔ (x : Ambient) ∈ squareRelInterior N h s := Iff.rfl
+
+/-- Dispatching a vertex tag returns its vertex brick. -/
+public theorem brickSet_vertex {N : ℕ} {h epsilon : ℝ}
+    (v : {v : Ambient // v ∈ vertices N h}) :
+    brickSet N h epsilon (.vertex v) = vertexBrick epsilon v := by simp [brickSet]
+
+/-- Dispatching an edge tag returns its edge brick. -/
+public theorem brickSet_edge {N : ℕ} {h epsilon : ℝ}
+    (e : {e : Set Ambient // e ∈ edges N h}) :
+    brickSet N h epsilon (.edge e) = edgeBrick epsilon e := by simp [brickSet]
+
+/-- Dispatching a square tag returns its square brick. -/
+public theorem brickSet_square {N : ℕ} {h epsilon : ℝ}
+    (s : {s : Set Ambient // s ∈ squares N h}) :
+    brickSet N h epsilon (.square s) = squareBrick s := by simp [brickSet]
+
+/- Owner-local: an endpoint presentation expands the unordered endpoint condition to both points. -/
+private theorem mem_edgeBrick_of_presentation {N : ℕ} {h epsilon : ℝ}
+    (e : {e : Set Ambient // e ∈ edges N h}) {v : Ambient} {j : Fin 3}
+    (hend : edgeEndpoints N h e = {v, v + h • EuclideanSpace.single j 1})
+    (x : Boundary) :
+    x ∈ edgeBrick epsilon e ↔
+      Metric.infDist (x : Ambient) (e : Set Ambient) < epsilon ∧
+      3 * epsilon < dist (x : Ambient) v ∧
+      3 * epsilon < dist (x : Ambient) (v + h • EuclideanSpace.single j 1) := by
+  rw [mem_edgeBrick, hend]
+  simp only [Set.mem_insert_iff, Set.mem_singleton_iff, forall_eq_or_imp, forall_eq]
+
+/- Owner-local: the intrinsic square brick is the boundary trace of the signed ambient open box. -/
+private theorem squareBrick_ambientOpen_description {N : ℕ} {h : ℝ}
+    (hN : 0 < N) (hh : h = 2 / (N : ℝ))
+    (s : {s : Set Ambient // s ∈ squares N h}) :
+    ∃ (v : Ambient) (j k i : Fin 3),
+      v ∈ vertices N h ∧ j < k ∧ v j ≤ 1 - h ∧ v k ≤ 1 - h ∧
+      i ≠ j ∧ i ≠ k ∧ |v i| = 1 ∧
+      squareBrick s = {x : Boundary |
+        0 < v i * (x : Ambient) i ∧
+        (x : Ambient) j ∈ Set.Ioo (v j) (v j + h) ∧
+        (x : Ambient) k ∈ Set.Ioo (v k) (v k + h)} := by
+  obtain ⟨v, j, k, i, hv, hjk, hvj, hvk, hij, hik, hvi, _hclosed, hri, _hface⟩ :=
+    square_coordinate_description hN hh s.property
+  refine ⟨v, j, k, i, hv, hjk, hvj, hvk, hij, hik, hvi, ?_⟩
+  -- Each moving coordinate lies strictly between -1 and 1, using the vertex bounds.
+  have hstrict (x : Ambient) (r : Fin 3) (hvr : v r ≤ 1 - h)
+      (hxr : x r ∈ Set.Ioo (v r) (v r + h)) : |x r| < 1 := by
+    rw [abs_lt]
+    have hvmax : maxAbs v = 1 := vertex_mem_boundary hv
+    have hvabs : |v r| ≤ 1 := by
+      rw [← hvmax]
+      fin_cases r <;> simp [maxAbs]
+    have hvlow : -1 ≤ v r := (abs_le.mp hvabs).1
+    constructor <;> linarith [hxr.1, hxr.2]
+  -- Three distinct coordinate indices exhaust the ambient coordinates.
+  have hexhaust : ∀ r : Fin 3, r = i ∨ r = j ∨ r = k := by
+    intro r
+    fin_cases i <;> fin_cases j <;> fin_cases k <;> fin_cases r <;> omega
+  -- On the boundary, the remaining coordinate is saturated; its sign selects the face.
+  have hsign : ∀ x : Boundary,
+      (x : Ambient) j ∈ Set.Ioo (v j) (v j + h) →
+      (x : Ambient) k ∈ Set.Ioo (v k) (v k + h) →
+      ((x : Ambient) i = v i ↔ 0 < v i * (x : Ambient) i) := by
+    intro x hxj hxk
+    have hj := hstrict (x : Ambient) j hvj hxj
+    have hk := hstrict (x : Ambient) k hvk hxk
+    have hx : maxAbs (x : Ambient) = 1 := x.property
+    have hxi : |(x : Ambient) i| = 1 := by
+      have hile : |(x : Ambient) i| ≤ 1 := by
+        rw [← hx]
+        fin_cases i <;> simp [maxAbs]
+      apply le_antisymm hile
+      by_contra hn
+      have hi : |(x : Ambient) i| < 1 := lt_of_not_ge hn
+      have hall : ∀ r : Fin 3, |(x : Ambient) r| < 1 := by
+        intro r
+        rcases hexhaust r with rfl | rfl | rfl <;> assumption
+      have : maxAbs (x : Ambient) < 1 := max_lt (hall 0) (max_lt (hall 1) (hall 2))
+      linarith
+    constructor
+    · intro heq
+      rw [heq]
+      have ha2 : (v i) ^ 2 = 1 := by rw [← sq_abs, hvi]; norm_num
+      nlinarith
+    · intro hprod
+      have ha2 : (v i) ^ 2 = 1 := by rw [← sq_abs, hvi]; norm_num
+      have hb2 : ((x : Ambient) i) ^ 2 = 1 := by rw [← sq_abs, hxi]; norm_num
+      nlinarith [sq_nonneg (v i - (x : Ambient) i), sq_nonneg (v i + (x : Ambient) i)]
+  -- Replace fixed-coordinate equality by this conditional sign equivalence in the rectangle.
+  ext x
+  change (x : Ambient) ∈ squareRelInterior N h s ↔ _
+  rw [hri]
+  constructor
+  · rintro ⟨hxi, hxj, hxk⟩
+    exact ⟨(hsign x hxj hxk).mp hxi, hxj, hxk⟩
+  · rintro ⟨hprod, hxj, hxk⟩
+    exact ⟨(hsign x hxj hxk).mpr hprod, hxj, hxk⟩
+
+end TopologicalSpace.CubeBoundaryThree
+
+namespace TopologicalSpace.CubeBoundaryThree
+
+/-- A vertex brick is the trace of an ambient open ball under the continuous
+boundary inclusion, hence is open in the boundary. -/
+private theorem isOpen_vertexBrick {N : ℕ} {h epsilon : ℝ}
+    (v : {v : Ambient // v ∈ vertices N h}) : IsOpen (vertexBrick epsilon v) := by
+  change IsOpen ((fun x : Boundary => (x : Ambient)) ⁻¹'
+    Metric.ball (v : Ambient) (4 * epsilon))
+  exact IsOpen.preimage continuous_subtype_val Metric.isOpen_ball
+
+/-- Present the edge by its two endpoints. Distance to the edge is continuous
+because it is 1-Lipschitz, and distance to either endpoint is continuous. The tube
+and both strict endpoint exclusions are therefore open; their intersection pulls
+back to the edge brick under the boundary inclusion. -/
+private theorem isOpen_edgeBrick {N : ℕ} {h epsilon : ℝ}
+    (hN : 0 < N) (hh : h = 2 / (N : ℝ))
+    (e : {e : Set Ambient // e ∈ edges N h}) : IsOpen (edgeBrick epsilon e) := by
+  obtain ⟨v, j, _hv, _hvj, _hsub, _hseg, hend⟩ := edge_presentation hN hh e.property
+  have heq : edgeBrick epsilon e = (fun x : Boundary => (x : Ambient)) ⁻¹'
+      ({x : Ambient | Metric.infDist x (e : Set Ambient) < epsilon} ∩
+        ({x : Ambient | 3 * epsilon < dist x v} ∩
+          {x : Ambient | 3 * epsilon < dist x (v + h • EuclideanSpace.single j 1)})) := by
+    ext x
+    exact mem_edgeBrick_of_presentation e hend x
+  rw [heq]
+  apply IsOpen.preimage continuous_subtype_val
+  have htube : IsOpen {x : Ambient | Metric.infDist x (e : Set Ambient) < epsilon} :=
+    isOpen_lt (Metric.continuous_infDist_pt (e : Set Ambient)) continuous_const
+  have hfirst : IsOpen {x : Ambient | 3 * epsilon < dist x v} :=
+    isOpen_lt continuous_const (continuous_id.dist continuous_const)
+  have hlast : IsOpen {x : Ambient |
+      3 * epsilon < dist x (v + h • EuclideanSpace.single j 1)} :=
+    isOpen_lt continuous_const (continuous_id.dist continuous_const)
+  exact htube.inter (hfirst.inter hlast)
+
+/-- The square brick is the boundary trace of its signed ambient box. The
+positive face-sign condition and both open coordinate intervals are open by
+continuity of coordinate evaluation and multiplication. Their intersection has
+open preimage in the boundary. -/
+private theorem isOpen_squareBrick {N : ℕ} {h : ℝ}
+    (hN : 0 < N) (hh : h = 2 / (N : ℝ))
+    (s : {s : Set Ambient // s ∈ squares N h}) : IsOpen (squareBrick s) := by
+  obtain ⟨v, j, k, i, _hv, _hjk, _hvj, _hvk, _hij, _hik, _hvi, hdesc⟩ :=
+    squareBrick_ambientOpen_description hN hh s
+  have heq : squareBrick s = (fun x : Boundary => (x : Ambient)) ⁻¹'
+      ({x : Ambient | 0 < v i * x i} ∩
+        ((fun x : Ambient => x j) ⁻¹' Set.Ioo (v j) (v j + h) ∩
+          (fun x : Ambient => x k) ⁻¹' Set.Ioo (v k) (v k + h))) := hdesc
+  rw [heq]
+  apply IsOpen.preimage continuous_subtype_val
+  have ci := PiLp.continuous_apply 2 (fun _ : Fin 3 => ℝ) i
+  have cj := PiLp.continuous_apply 2 (fun _ : Fin 3 => ℝ) j
+  have ck := PiLp.continuous_apply 2 (fun _ : Fin 3 => ℝ) k
+  have hsign : IsOpen {x : Ambient | 0 < v i * x i} :=
+    isOpen_lt continuous_const (continuous_const.mul ci)
+  have hj : IsOpen ((fun x : Ambient => x j) ⁻¹' Set.Ioo (v j) (v j + h)) :=
+    IsOpen.preimage cj isOpen_Ioo
+  have hk : IsOpen ((fun x : Ambient => x k) ⁻¹' Set.Ioo (v k) (v k + h)) :=
+    IsOpen.preimage ck isOpen_Ioo
+  exact hsign.inter (hj.inter hk)
+
+/-- Each index has exactly one of the vertex, edge, or square tags. The
+corresponding openness result therefore proves every raw brick open. -/
+private theorem isOpen_brickSet {N : ℕ} {h : ℝ}
+    (hN : 0 < N) (hh : h = 2 / (N : ℝ)) (epsilon : ℝ)
+    (c : BrickIndex N h) : IsOpen (brickSet N h epsilon c) := by
+  cases c with
+  | vertex v =>
+    rw [brickSet_vertex]
+    exact isOpen_vertexBrick v
+  | edge e =>
+    rw [brickSet_edge]
+    exact isOpen_edgeBrick hN hh e
+  | square s =>
+    rw [brickSet_square]
+    exact isOpen_squareBrick hN hh s
+
+/-- The open family consists of precisely the raw bricks, equipped with the
+openness proved above. -/
+public noncomputable def brickOpens {N : ℕ} {h : ℝ}
+    (hN : 0 < N) (hh : h = 2 / (N : ℝ)) (epsilon : ℝ) :
+    BrickIndex N h → Opens Boundary :=
+  fun c => ⟨brickSet N h epsilon c, isOpen_brickSet hN hh epsilon c⟩
+
+/-- Forgetting openness recovers the same raw brick. -/
+public theorem coe_brickOpens {N : ℕ} {h : ℝ}
+    (hN : 0 < N) (hh : h = 2 / (N : ℝ)) (epsilon : ℝ)
+    (c : BrickIndex N h) :
+    (brickOpens hN hh epsilon c : Set Boundary) = brickSet N h epsilon c := by simp [brickOpens, brickSet]
+
+/-- Membership in the open family is exactly membership in the raw family. -/
+public theorem mem_brickOpens {N : ℕ} {h : ℝ}
+    (hN : 0 < N) (hh : h = 2 / (N : ℝ)) (epsilon : ℝ)
+    (c : BrickIndex N h) (x : Boundary) :
+    x ∈ brickOpens hN hh epsilon c ↔ x ∈ brickSet N h epsilon c := Iff.rfl
+
+/-- The vertex tag has the same underlying vertex brick. -/
+public theorem coe_brickOpens_vertex {N : ℕ} {h : ℝ}
+    (hN : 0 < N) (hh : h = 2 / (N : ℝ)) (epsilon : ℝ)
+    (v : {v : Ambient // v ∈ vertices N h}) :
+    (brickOpens hN hh epsilon (.vertex v) : Set Boundary) = vertexBrick epsilon v := by simp [brickOpens, brickSet]
+
+/-- The edge tag has the same underlying edge brick. -/
+public theorem coe_brickOpens_edge {N : ℕ} {h : ℝ}
+    (hN : 0 < N) (hh : h = 2 / (N : ℝ)) (epsilon : ℝ)
+    (e : {e : Set Ambient // e ∈ edges N h}) :
+    (brickOpens hN hh epsilon (.edge e) : Set Boundary) = edgeBrick epsilon e := by simp [brickOpens, brickSet]
+
+/-- The square tag has the same underlying square brick. -/
+public theorem coe_brickOpens_square {N : ℕ} {h : ℝ}
+    (hN : 0 < N) (hh : h = 2 / (N : ℝ)) (epsilon : ℝ)
+    (s : {s : Set Ambient // s ∈ squares N h}) :
+    (brickOpens hN hh epsilon (.square s) : Set Boundary) = squareBrick s := by simp [brickOpens, brickSet]
+
+/-- The open vertex brick retains the defining radius inequality. -/
+public theorem mem_brickOpens_vertex {N : ℕ} {h : ℝ}
+    (hN : 0 < N) (hh : h = 2 / (N : ℝ)) (epsilon : ℝ)
+    (v : {v : Ambient // v ∈ vertices N h}) (x : Boundary) :
+    x ∈ brickOpens hN hh epsilon (.vertex v) ↔
+      dist (x : Ambient) (v : Ambient) < 4 * epsilon := Iff.rfl
+
+/-- The open edge brick retains the tube condition and every endpoint exclusion. -/
+public theorem mem_brickOpens_edge {N : ℕ} {h : ℝ}
+    (hN : 0 < N) (hh : h = 2 / (N : ℝ)) (epsilon : ℝ)
+    (e : {e : Set Ambient // e ∈ edges N h}) (x : Boundary) :
+    x ∈ brickOpens hN hh epsilon (.edge e) ↔
+      Metric.infDist (x : Ambient) (e : Set Ambient) < epsilon ∧
+      ∀ w ∈ edgeEndpoints N h e, 3 * epsilon < dist (x : Ambient) w := Iff.rfl
+
+/-- The open square brick retains membership in its intrinsic relative interior. -/
+public theorem mem_brickOpens_square {N : ℕ} {h : ℝ}
+    (hN : 0 < N) (hh : h = 2 / (N : ℝ)) (epsilon : ℝ)
+    (s : {s : Set Ambient // s ∈ squares N h}) (x : Boundary) :
+    x ∈ brickOpens hN hh epsilon (.square s) ↔
+      (x : Ambient) ∈ squareRelInterior N h s := Iff.rfl
+
+end TopologicalSpace.CubeBoundaryThree
+
+namespace TopologicalSpace.CubeBoundaryThree
+
+/- Two points of a vertex brick are each within 4 epsilon of its vertex. The triangle inequality gives 8 epsilon in the ambient image, hence in the boundary subtype. -/
+private theorem vertexBrick_diam_le {N : ℕ} {h epsilon : ℝ} (hepsilon : 0 ≤ epsilon)
+    (v : {v : Ambient // v ∈ vertices N h}) :
+    Metric.diam (vertexBrick epsilon v) ≤ 8 * epsilon := by
+  rw [diam_coe_image]
+  apply Metric.diam_le_of_forall_dist_le (mul_nonneg (by norm_num) hepsilon)
+  rintro _ ⟨x, hx, rfl⟩ _ ⟨y, hy, rfl⟩
+  have hx' := (mem_vertexBrick v x).mp hx
+  have hy' := (mem_vertexBrick v y).mp hy
+  have ht := dist_triangle (x : Ambient) (v : Ambient) (y : Ambient)
+  rw [dist_comm (v : Ambient) (y : Ambient)] at ht
+  linarith
+
+/- An edge is the segment joining its two endpoints, equivalently their finite convex hull; thus it is compact, as used to attain the nearest points below. -/
+private theorem isCompact_edge {N : ℕ} {h : ℝ} (hN : 0 < N) (hh : h = 2 / (N : ℝ))
+    (e : {e : Set Ambient // e ∈ edges N h}) : IsCompact (e : Set Ambient) := by
+  obtain ⟨v, j, _, _, _, he, _⟩ := edge_presentation hN hh e.property
+  rw [he, ← convexHull_pair]
+  exact ((Set.finite_singleton (v + h • EuclideanSpace.single j 1)).insert v).isCompact_convexHull ℝ
+
+/- The segment contains its left endpoint and is compact. Distance to this nonempty edge is therefore attained, independently of any later brick-nonemptiness result. -/
+private theorem edge_infDist_attained {N : ℕ} {h : ℝ} (hN : 0 < N)
+    (hh : h = 2 / (N : ℝ)) (e : {e : Set Ambient // e ∈ edges N h}) (x : Ambient) :
+    ∃ p ∈ (e : Set Ambient), Metric.infDist x (e : Set Ambient) = dist x p := by
+  have hne : (e : Set Ambient).Nonempty := by
+    obtain ⟨v, j, _, _, _, he, _⟩ := edge_presentation hN hh e.property
+    rw [he]
+    exact ⟨v, left_mem_segment ℝ v (v + h • EuclideanSpace.single j 1)⟩
+  exact (isCompact_edge hN hh e).exists_infDist_eq_dist hne x
+
+/- The endpoint displacement has one Euclidean coordinate h, so its norm is h for nonnegative h (the edge-length calculation). -/
+private theorem edge_endpoint_dist (v : Ambient) (j : Fin 3) (h : ℝ) (hh : 0 ≤ h) :
+    dist v (v + h • EuclideanSpace.single j 1) = h := by
+  rw [dist_eq_norm]
+  simp [norm_smul, Real.norm_eq_abs, abs_of_nonneg hh]
+
+/- The diameter of the segment equals that of its two endpoints, whose distance is h. Every pair of points of the compact edge is therefore at distance at most h. -/
+private theorem edge_points_dist_le_mesh {N : ℕ} {h : ℝ} (hN : 0 < N)
+    (hh : h = 2 / (N : ℝ)) (e : {e : Set Ambient // e ∈ edges N h})
+    {p q : Ambient} (hp : p ∈ (e : Set Ambient)) (hq : q ∈ (e : Set Ambient)) :
+    dist p q ≤ h := by
+  have hpos : 0 < h := by
+    rw [hh]
+    exact div_pos (by norm_num) (Nat.cast_pos.mpr hN)
+  obtain ⟨v, j, _, _, _, he, _⟩ := edge_presentation hN hh e.property
+  calc
+    dist p q ≤ Metric.diam (e : Set Ambient) :=
+      Metric.dist_le_diam_of_mem (isCompact_edge hN hh e).isBounded hp hq
+    _ = h := by
+      rw [he, ← convexHull_pair, convexHull_diam, Metric.diam_pair,
+        edge_endpoint_dist v j h hpos.le]
+
+/- Choose attained nearest points p and q on the edge. The two outer distances are below epsilon and the segment leg is at most h. Two triangle inequalities give h + 2 epsilon, then diameter transport gives the brick bound. -/
+private theorem edgeBrick_diam_le {N : ℕ} {h epsilon : ℝ} (hN : 0 < N)
+    (hh : h = 2 / (N : ℝ)) (hepsilon : 0 ≤ epsilon)
+    (e : {e : Set Ambient // e ∈ edges N h}) :
+    Metric.diam (edgeBrick epsilon e) ≤ h + 2 * epsilon := by
+  have hpos : 0 < h := by
+    rw [hh]
+    exact div_pos (by norm_num) (Nat.cast_pos.mpr hN)
+  rw [diam_coe_image]
+  apply Metric.diam_le_of_forall_dist_le
+    (add_nonneg hpos.le (mul_nonneg (by norm_num) hepsilon))
+  rintro _ ⟨x, hx, rfl⟩ _ ⟨y, hy, rfl⟩
+  obtain ⟨p, hp, hxp⟩ := edge_infDist_attained hN hh e (x : Ambient)
+  obtain ⟨q, hq, hyq⟩ := edge_infDist_attained hN hh e (y : Ambient)
+  have hx' := ((mem_edgeBrick e x).mp hx).1
+  have hy' := ((mem_edgeBrick e y).mp hy).1
+  rw [hxp] at hx'
+  rw [hyq] at hy'
+  have hpq := edge_points_dist_le_mesh hN hh e hp hq
+  have ht₁ := dist_triangle (x : Ambient) p (y : Ambient)
+  have ht₂ := dist_triangle p q (y : Ambient)
+  rw [dist_comm q (y : Ambient)] at ht₂
+  linarith
+
+/- The two points have the same square origin and two distinct coordinate directions. Subtracting cancels the origin and leaves exactly the two parameter differences in the squared Euclidean norm. -/
+private theorem square_parameter_dist_sq (v : Ambient) (j k : Fin 3) (hjk : j < k)
+    (h a b a' b' : ℝ) :
+    dist (v + (a*h) • EuclideanSpace.single j 1 + (b*h) • EuclideanSpace.single k 1)
+      (v + (a'*h) • EuclideanSpace.single j 1 + (b'*h) • EuclideanSpace.single k 1) ^ 2 =
+      h^2 * ((a-a')^2 + (b-b')^2) := by
+  rw [dist_eq_norm, EuclideanSpace.real_norm_sq_eq]
+  fin_cases j <;> fin_cases k
+  all_goals simp_all [Fin.sum_univ_succ, PiLp.single_apply]
+  all_goals ring
+
+/- Both square parameters lie in [0,1], so each parameter difference has absolute value at most one. Their two squares sum to at most two; the squared-norm formula and nonnegative square root give h sqrt 2. -/
+private theorem square_points_dist_le_mesh_sqrtTwo {N : ℕ} {h : ℝ} (hN : 0 < N)
+    (hh : h = 2 / (N : ℝ)) (s : {s : Set Ambient // s ∈ squares N h})
+    {p q : Ambient} (hp : p ∈ (s : Set Ambient)) (hq : q ∈ (s : Set Ambient)) :
+    dist p q ≤ h * Real.sqrt 2 := by
+  have hpos : 0 < h := by
+    rw [hh]
+    exact div_pos (by norm_num) (Nat.cast_pos.mpr hN)
+  obtain ⟨v, j, k, _, hjk, _, _, _, hs, _⟩ := square_presentation hN hh s.property
+  rw [hs] at hp hq
+  obtain ⟨a, ha, b, hb, rfl⟩ := hp
+  obtain ⟨a', ha', b', hb', rfl⟩ := hq
+  have haa : |a - a'| ≤ 1 := abs_sub_le_iff.mpr
+    ⟨by linarith [ha.1, ha.2, ha'.1, ha'.2],
+     by linarith [ha.1, ha.2, ha'.1, ha'.2]⟩
+  have hbb : |b - b'| ≤ 1 := abs_sub_le_iff.mpr
+    ⟨by linarith [hb.1, hb.2, hb'.1, hb'.2],
+     by linarith [hb.1, hb.2, hb'.1, hb'.2]⟩
+  have haa₂ := (sq_le_one_iff_abs_le_one (a - a')).mpr haa
+  have hbb₂ := (sq_le_one_iff_abs_le_one (b - b')).mpr hbb
+  have hsum : (a - a')^2 + (b - b')^2 ≤ 2 := by linarith
+  have hmul := mul_le_mul_of_nonneg_left hsum (sq_nonneg h)
+  apply le_of_sq_le_sq ?_ (mul_nonneg hpos.le (Real.sqrt_nonneg 2))
+  rw [square_parameter_dist_sq v j k hjk h a b a' b', mul_pow,
+    Real.sq_sqrt (by norm_num : (0 : ℝ) ≤ 2)]
+  exact hmul
+
+/- An intrinsic-interior point has the same square parameters in (0,1); weakening the endpoint inequalities places it in the closed square. -/
+private theorem squareBrick_coe_mem {N : ℕ} {h : ℝ} (hN : 0 < N)
+    (hh : h = 2 / (N : ℝ)) (s : {s : Set Ambient // s ∈ squares N h})
+    {x : Boundary} (hx : x ∈ squareBrick s) : (x : Ambient) ∈ (s : Set Ambient) := by
+  obtain ⟨v, j, k, _, _, _, _, _, hs, hi⟩ := square_presentation hN hh s.property
+  have hx' := (mem_squareBrick s x).mp hx
+  rw [hi] at hx'
+  obtain ⟨a, ha, b, hb, hx'⟩ := hx'
+  rw [hs]
+  exact ⟨a, ⟨ha.1.le, ha.2.le⟩, b, ⟨hb.1.le, hb.2.le⟩, hx'⟩
+
+/- Two square-brick points lie in the closed square, where the two-parameter estimate bounds their distance by h sqrt 2. Transport diameter through the boundary inclusion. -/
+private theorem squareBrick_diam_le {N : ℕ} {h : ℝ} (hN : 0 < N)
+    (hh : h = 2 / (N : ℝ)) (s : {s : Set Ambient // s ∈ squares N h}) :
+    Metric.diam (squareBrick s) ≤ h * Real.sqrt 2 := by
+  have hpos : 0 < h := by
+    rw [hh]
+    exact div_pos (by norm_num) (Nat.cast_pos.mpr hN)
+  rw [diam_coe_image]
+  apply Metric.diam_le_of_forall_dist_le (mul_nonneg hpos.le (Real.sqrt_nonneg 2))
+  rintro _ ⟨x, hx, rfl⟩ _ ⟨y, hy, rfl⟩
+  exact square_points_dist_le_mesh_sqrtTwo hN hh s
+    (squareBrick_coe_mem hN hh s hx) (squareBrick_coe_mem hN hh s hy)
+
+/- The three tags have bounds 8 epsilon, h + 2 epsilon and h sqrt 2. Composing each bound with its strict comparison to the same lambda proves the common brick estimate. -/
+private theorem brick_diam_lt {N : ℕ} {h epsilon lambda : ℝ} (hN : 0 < N)
+    (hh : h = 2 / (N : ℝ)) (hepsilon : 0 ≤ epsilon)
+    (hv : 8 * epsilon < lambda) (he : h + 2 * epsilon < lambda)
+    (hs : h * Real.sqrt 2 < lambda) (c : BrickIndex N h) :
+    Metric.diam (brickSet N h epsilon c) < lambda := by
+  cases c with
+  | vertex v =>
+    rw [brickSet_vertex]
+    exact lt_of_le_of_lt (vertexBrick_diam_le hepsilon v) hv
+  | edge e =>
+    rw [brickSet_edge]
+    exact lt_of_le_of_lt (edgeBrick_diam_le hN hh hepsilon e) he
+  | square s =>
+    rw [brickSet_square]
+    exact lt_of_le_of_lt (squareBrick_diam_le hN hh s) hs
+
+end TopologicalSpace.CubeBoundaryThree
+
+namespace TopologicalSpace.CubeBoundaryThree
+universe r
+noncomputable section
+
+/-- The vertex itself lies in Boundary and its distance to itself is zero, strictly below the positive radius 4 epsilon. -/
+private theorem vertexBrick_nonempty {N : ℕ} {h epsilon : ℝ}
+    (hepsilon : 0 < epsilon) (v : {v : Ambient // v ∈ vertices N h}) :
+    (vertexBrick epsilon v).Nonempty := by
+  let x : Boundary := ⟨v, vertex_mem_boundary v.property⟩
+  refine ⟨x, (mem_vertexBrick v x).2 ?_⟩
+  change dist (v : Ambient) v < 4 * epsilon
+  rw [dist_self]
+  positivity
+
+/-- For the fixed mesh epsilon = h/9 with h positive, three epsilon is h/3, strictly less than h/2. -/
+private theorem three_epsilon_lt_half_mesh {h epsilon : ℝ}
+    (hh : 0 < h) (hepsilon : epsilon = h / 9) : 3 * epsilon < h / 2 := by
+  rw [hepsilon]
+  linarith
+
+/-- The actual edge midpoint lies on its segment, so its distance to the edge is zero. Each endpoint is at distance h/2, strictly greater than three epsilon; both endpoint exclusions are retained. -/
+private theorem edgeMidpoint_mem_brick {N : ℕ} {h epsilon : ℝ}
+    (hh : 0 ≤ h) (hepsilon : 0 < epsilon) (hhalf : 3 * epsilon < h / 2)
+    (e : {e : Set Ambient // e ∈ edges N h}) (v : Ambient) (j : Fin 3)
+    (he : (e : Set Ambient) = segment ℝ v (v + h • EuclideanSpace.single j 1))
+    (hend : edgeEndpoints N h e = {v, v + h • EuclideanSpace.single j 1})
+    (hb : segment ℝ v (v + h • EuclideanSpace.single j 1) ⊆ boundary) :
+    (⟨midpoint ℝ v (v + h • EuclideanSpace.single j 1),
+      hb (midpoint_mem_segment (𝕜 := ℝ) v (v + h • EuclideanSpace.single j 1))⟩ : Boundary)
+      ∈ edgeBrick epsilon e := by
+  apply (mem_edgeBrick_of_presentation e hend _).2
+  have hm : midpoint ℝ v (v + h • EuclideanSpace.single j 1) ∈ (e : Set Ambient) := by
+    rw [he]
+    exact midpoint_mem_segment (𝕜 := ℝ) _ _
+  have hl : dist (midpoint ℝ v (v + h • EuclideanSpace.single j 1)) v = h / 2 := by
+    rw [dist_midpoint_left, edge_endpoint_dist v j h hh]
+    norm_num
+    ring
+  have hr : dist (midpoint ℝ v (v + h • EuclideanSpace.single j 1))
+      (v + h • EuclideanSpace.single j 1) = h / 2 := by
+    rw [dist_midpoint_right, edge_endpoint_dist v j h hh]
+    norm_num
+    ring
+  exact ⟨by simpa only [Metric.infDist_zero_of_mem hm] using hepsilon,
+    by simpa only [hl] using hhalf, by simpa only [hr] using hhalf⟩
+
+/-- Take the midpoint of the actual edge presentation. Positive mesh gives the endpoint clearance, and the midpoint membership supplies a witness in the edge brick. -/
+private theorem edgeBrick_nonempty {N : ℕ} {h epsilon : ℝ}
+    (hN : 0 < N) (hh : h = 2 / (N : ℝ)) (hepsilon : 0 < epsilon)
+    (heps : epsilon = h / 9) (e : {e : Set Ambient // e ∈ edges N h}) :
+    (edgeBrick epsilon e).Nonempty := by
+  have hhpos : 0 < h := by
+    rw [hh]
+    exact div_pos (by norm_num) (Nat.cast_pos.mpr hN)
+  obtain ⟨v, j, _, _, hb, he, hend⟩ := edge_presentation hN hh e.property
+  exact ⟨_, edgeMidpoint_mem_brick hhpos.le hepsilon
+    (three_epsilon_lt_half_mesh hhpos heps) e v j he hend hb⟩
+
+/-- The square center has both intrinsic parameters equal to one half, strictly between zero and one, hence lies in the relative interior. -/
+private theorem squareCenter_mem_brick {N : ℕ} {h : ℝ}
+    (s : {s : Set Ambient // s ∈ squares N h}) (v : Ambient) (j k : Fin 3)
+    (hi : squareRelInterior N h s =
+      {x | ∃ a ∈ Set.Ioo (0 : ℝ) 1, ∃ b ∈ Set.Ioo (0 : ℝ) 1,
+        x = v + (a * h) • EuclideanSpace.single j 1 +
+          (b * h) • EuclideanSpace.single k 1})
+    (x : Boundary)
+    (hx : (x : Ambient) = v + ((1 / 2 : ℝ) * h) • EuclideanSpace.single j 1 +
+      ((1 / 2 : ℝ) * h) • EuclideanSpace.single k 1) : x ∈ squareBrick s := by
+  rw [mem_squareBrick, hi]
+  exact ⟨1 / 2, by norm_num, 1 / 2, by norm_num, hx⟩
+
+/-- The closed square presentation places its center in Boundary; the same center lies in the intrinsic open square and witnesses nonemptiness. -/
+private theorem squareBrick_nonempty {N : ℕ} {h : ℝ}
+    (hN : 0 < N) (hh : h = 2 / (N : ℝ))
+    (s : {s : Set Ambient // s ∈ squares N h}) : (squareBrick s).Nonempty := by
+  obtain ⟨v, j, k, _, _, _, _, hb, _, hi⟩ := square_presentation hN hh s.property
+  let x : Boundary := ⟨v + ((1 / 2 : ℝ) * h) • EuclideanSpace.single j 1 +
+    ((1 / 2 : ℝ) * h) • EuclideanSpace.single k 1,
+    hb ⟨1 / 2, by norm_num, 1 / 2, by norm_num, rfl⟩⟩
+  exact ⟨x, squareCenter_mem_brick s v j k hi x rfl⟩
+
+/-- The vertex, edge and square witnesses establish nonemptiness for each of the three actual-cell tags. -/
+private theorem brickSet_nonempty {N : ℕ} {h epsilon : ℝ}
+    (hN : 0 < N) (hh : h = 2 / (N : ℝ)) (hepsilon : 0 < epsilon)
+    (heps : epsilon = h / 9) (c : BrickIndex N h) :
+    (brickSet N h epsilon c).Nonempty := by
+  cases c with
+  | vertex v => exact vertexBrick_nonempty hepsilon v
+  | edge e => exact edgeBrick_nonempty hN hh hepsilon heps e
+  | square s => exact squareBrick_nonempty hN hh s
+
+/-- Apply the original cover containment clause to the nonempty raw brick and its existing diameter bound at the same lambda. No mesh or cover is reselected. -/
+private theorem brickSet_subset_some_cover {ι : Type r} {N : ℕ} {h epsilon lambda : ℝ}
+    (U : ι → Opens Boundary) (hN : 0 < N) (hh : h = 2 / (N : ℝ))
+    (hepsilon : 0 < epsilon) (heps : epsilon = h / 9)
+    (hv : 8 * epsilon < lambda) (he : h + 2 * epsilon < lambda)
+    (hs : h * Real.sqrt 2 < lambda)
+    (hcontain : ∀ A : Set Boundary, A.Nonempty → Metric.diam A < lambda →
+      ∃ i : ι, A ⊆ U i) (c : BrickIndex N h) :
+    ∃ i : ι, brickSet N h epsilon c ⊆ U i := by
+  exact hcontain (brickSet N h epsilon c) (brickSet_nonempty hN hh hepsilon heps c)
+    (brick_diam_lt hN hh hepsilon.le hv he hs c)
+
+/-- Choose a containing original member for each of the finitely many bricks, then retain that index and containment as a refinement of exactly the existing open brick family. -/
+public noncomputable def brickRefinement {ι : Type r} {N : ℕ} {h epsilon lambda : ℝ}
+    (U : ι → Opens Boundary) (hN : 0 < N) (hh : h = 2 / (N : ℝ))
+    (hepsilon : 0 < epsilon) (heps : epsilon = h / 9)
+    (hv : 8 * epsilon < lambda) (he : h + 2 * epsilon < lambda)
+    (hs : h * Real.sqrt 2 < lambda)
+    (hcontain : ∀ A : Set Boundary, A.Nonempty → Metric.diam A < lambda →
+      ∃ i : ι, A ⊆ U i) :
+    OpenCover.Refinement (brickOpens hN hh epsilon) U where
+  index c := Classical.choose
+    (brickSet_subset_some_cover U hN hh hepsilon heps hv he hs hcontain c)
+  le c := by
+    change (brickOpens hN hh epsilon c : Set Boundary) ⊆ _
+    rw [coe_brickOpens]
+    exact Classical.choose_spec
+      (brickSet_subset_some_cover U hN hh hepsilon heps hv he hs hcontain c)
+
+end
+end TopologicalSpace.CubeBoundaryThree
+
+namespace TopologicalSpace.CubeBoundaryThree
+
+/-- A point in the intrinsic square interior lies in that same square brick. -/
+private theorem mem_square_tag_of_relInterior {N : ℕ} {h epsilon : ℝ}
+    (s : {s : Set Ambient // s ∈ squares N h}) (x : Boundary)
+    (hx : (x : Ambient) ∈ squareRelInterior N h s) :
+    x ∈ brickSet N h epsilon (.square s) := by
+  exact (mem_squareBrick s x).mpr hx
+
+/-- Outside the relative interior, the four-edge square boundary lemma gives an actual edge containing the point. Each disjunct retains its matching edge membership, including corners. -/
+private theorem exists_edge_mem_of_square_not_relInterior {N : ℕ} {h : ℝ}
+    (hN : 0 < N) (hh : h = 2 / (N : ℝ))
+    (s : {s : Set Ambient // s ∈ squares N h}) (x : Boundary)
+    (hxs : (x : Ambient) ∈ (s : Set Ambient))
+    (hxopen : (x : Ambient) ∉ squareRelInterior N h s) :
+    ∃ e : {e : Set Ambient // e ∈ edges N h}, (x : Ambient) ∈ (e : Set Ambient) := by
+  obtain ⟨v, j, k, _, _, _, _, _, he1, he2, he3, he4, hx⟩ :=
+    square_boundary_edges hN hh s.property hxs hxopen
+  rcases hx with hx | hx | hx | hx
+  · exact ⟨⟨_, he1⟩, hx⟩
+  · exact ⟨⟨_, he2⟩, hx⟩
+  · exact ⟨⟨_, he3⟩, hx⟩
+  · exact ⟨⟨_, he4⟩, hx⟩
+
+/-- An intrinsic endpoint is a mesh vertex. Distance below four epsilon places the point in its vertex brick. -/
+private theorem mem_vertex_tag_of_endpoint_close {N : ℕ} {h epsilon : ℝ}
+    (hN : 0 < N) (hh : h = 2 / (N : ℝ))
+    (e : {e : Set Ambient // e ∈ edges N h}) (w : Ambient)
+    (hw : w ∈ edgeEndpoints N h e) (x : Boundary)
+    (hxw : dist (x : Ambient) w < 4 * epsilon) :
+    x ∈ brickSet N h epsilon (.vertex ⟨w, edge_endpoints_vertices hN hh e hw⟩) := by
+  exact (mem_vertexBrick ⟨w, edge_endpoints_vertices hN hh e hw⟩ x).mpr hxw
+
+/-- If neither endpoint is within four epsilon, both endpoint distances exceed three epsilon by positivity. A point on the actual edge has infimum distance zero, so lies in the edge brick. -/
+private theorem mem_edge_tag_of_endpoints_not_close {N : ℕ} {h epsilon : ℝ}
+    (hepsilon : 0 < epsilon) (e : {e : Set Ambient // e ∈ edges N h})
+    (v : Ambient) (j : Fin 3)
+    (hend : edgeEndpoints N h e = {v, v + h • EuclideanSpace.single j 1})
+    (x : Boundary) (hxe : (x : Ambient) ∈ (e : Set Ambient))
+    (hleft : ¬ dist (x : Ambient) v < 4 * epsilon)
+    (hright : ¬ dist (x : Ambient) (v + h • EuclideanSpace.single j 1) < 4 * epsilon) :
+    x ∈ brickSet N h epsilon (.edge e) := by
+  have hgap : 3 * epsilon < 4 * epsilon := by linarith
+  apply (mem_edgeBrick_of_presentation e hend x).mpr
+  exact ⟨by simpa only [Metric.infDist_zero_of_mem hxe] using hepsilon,
+    lt_of_lt_of_le hgap (not_lt.mp hleft), lt_of_lt_of_le hgap (not_lt.mp hright)⟩
+
+/-- Present the actual edge and test closeness to each of its two endpoints in turn. A close endpoint supplies a vertex brick; if both tests fail, the edge brick contains the point. -/
+private theorem mem_some_brick_of_mem_edge {N : ℕ} {h epsilon : ℝ}
+    (hN : 0 < N) (hh : h = 2 / (N : ℝ)) (hepsilon : 0 < epsilon)
+    (e : {e : Set Ambient // e ∈ edges N h}) (x : Boundary)
+    (hxe : (x : Ambient) ∈ (e : Set Ambient)) :
+    ∃ c : BrickIndex N h, x ∈ brickSet N h epsilon c := by
+  obtain ⟨v, j, _, _, _, _, hend⟩ := edge_presentation hN hh e.property
+  by_cases hl : dist (x : Ambient) v < 4 * epsilon
+  · have hv : v ∈ edgeEndpoints N h e := by rw [hend]; simp
+    exact ⟨_, mem_vertex_tag_of_endpoint_close hN hh e v hv x hl⟩
+  · by_cases hr : dist (x : Ambient) (v + h • EuclideanSpace.single j 1) < 4 * epsilon
+    · have hv : v + h • EuclideanSpace.single j 1 ∈ edgeEndpoints N h e := by
+        rw [hend]
+        simp
+      exact ⟨_, mem_vertex_tag_of_endpoint_close hN hh e _ hv x hr⟩
+    · exact ⟨.edge e, mem_edge_tag_of_endpoints_not_close hepsilon e v j hend x hxe hl hr⟩
+
+/-- First choose a square containing the boundary point. Its intrinsic interior gives a square brick; otherwise a boundary edge and the two endpoint tests supply a brick. -/
+private theorem mem_some_brick {N : ℕ} {h epsilon : ℝ}
+    (hN : 0 < N) (hh : h = 2 / (N : ℝ)) (hepsilon : 0 < epsilon) (x : Boundary) :
+    ∃ c : BrickIndex N h, x ∈ brickSet N h epsilon c := by
+  obtain ⟨s, hs, hxs⟩ := exists_square_mem hN hh x.property
+  by_cases hi : (x : Ambient) ∈ squareRelInterior N h ⟨s, hs⟩
+  · exact ⟨.square ⟨s, hs⟩, mem_square_tag_of_relInterior ⟨s, hs⟩ x hi⟩
+  · obtain ⟨e, hxe⟩ := exists_edge_mem_of_square_not_relInterior hN hh ⟨s, hs⟩ x hxs hi
+    exact mem_some_brick_of_mem_edge hN hh hepsilon e x hxe
+
+/-- Every boundary point belongs to an indexed raw brick, hence the union of precisely those bricks is the whole boundary. -/
+private theorem iUnion_brickSet_eq_univ {N : ℕ} {h epsilon : ℝ}
+    (hN : 0 < N) (hh : h = 2 / (N : ℝ)) (hepsilon : 0 < epsilon) :
+    (⋃ c : BrickIndex N h, brickSet N h epsilon c) = Set.univ := by
+  apply Set.eq_univ_iff_forall.mpr
+  intro x
+  exact Set.mem_iUnion.mpr (mem_some_brick hN hh hepsilon x)
+
+/-- The already-open brick sets have union equal to the boundary, so the unchanged open brick family is an open cover. -/
+public theorem brickOpens_isOpenCover {N : ℕ} {h epsilon : ℝ}
+    (hN : 0 < N) (hh : h = 2 / (N : ℝ)) (hepsilon : 0 < epsilon) :
+    IsOpenCover (brickOpens hN hh epsilon) := by
+  exact IsOpenCover.of_sets (isOpen_brickSet hN hh epsilon)
+    (iUnion_brickSet_eq_univ hN hh hepsilon)
+
+end TopologicalSpace.CubeBoundaryThree

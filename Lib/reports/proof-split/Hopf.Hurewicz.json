@@ -1,0 +1,288 @@
+{
+"module": "Hopf.Hurewicz",
+"source": "/home/goblin/hopf-lib-integration/Hopf/Hurewicz.lean",
+"source_sha256": "24416b362a2f82a7210e9a4a9b9865a1bce5c286255558c55f2296c4dd81133d",
+"units_kept": 16,
+"units_moved": 9,
+"units": [
+{
+"names": [
+"_private.Hopf.Hurewicz.0.Mathoverflow1973._aux_Hopf_Hurewicz___unexpand_Path_trans_1",
+"_private.Hopf.Hurewicz.0.Mathoverflow1973.\u00ab_aux_Hopf_Hurewicz___macroRules__private_Hopf_Hurewicz_0_Mathoverflow1973_term_\u226b\u209a__1\u00bb",
+"_private.Hopf.Hurewicz.0.Mathoverflow1973.\u00abterm_\u226b\u209a_\u00bb"
+],
+"class": "move",
+"lines": [
+97,
+97
+],
+"sha256": "8d095093345461faac1e010d0478941ed42e0e575ad161ca2a59316efc9b73f4"
+},
+{
+"names": [
+"_private.Hopf.Hurewicz.0.Mathoverflow1973._aux_Hopf_Hurewicz___unexpand_SlashAction_map_1",
+"_private.Hopf.Hurewicz.0.Mathoverflow1973.\u00ab_aux_Hopf_Hurewicz___macroRules__private_Hopf_Hurewicz_0_Mathoverflow1973_term_\u2223[_]__1\u00bb",
+"_private.Hopf.Hurewicz.0.Mathoverflow1973.\u00abterm_\u2223[_]_\u00bb"
+],
+"class": "move",
+"lines": [
+99,
+99
+],
+"sha256": "c826f8a48c119eec2c0f69fb208cac85a241ac194402fc2e0571c056e86b7351"
+},
+{
+"names": [
+"Mathoverflow1973.fundamentalGroup_eq_one_of_path"
+],
+"class": "move",
+"lines": [
+102,
+106
+],
+"sha256": "a0e91ecd42a98093eb5b97c547ed3aeaa104172857bfe81edc94424926e72811"
+},
+{
+"names": [
+"Mathoverflow1973.simplyConnectedSpace_iff_fundamentalGroup_eq_one"
+],
+"class": "move",
+"lines": [
+108,
+122
+],
+"sha256": "abf8c21a5993a9a547d029c52dfec1427491774fff0bab6155f1a995476c90d7"
+},
+{
+"names": [
+"Mathoverflow1973.simplyConnectedSpace_of_fundamentalGroup_eq_one"
+],
+"class": "move",
+"lines": [
+124,
+127
+],
+"sha256": "72fb492afa07cdde3b946931548f631185dd5569db3e8e5701e79bf893fce80b"
+},
+{
+"names": [
+"Mathoverflow1973.SphereHomology.twoOpenCover_pathConnectedSpace"
+],
+"class": "keep",
+"lines": [
+129,
+133
+],
+"sha256": "6d3d9ddb2b0e415587964e68e71db787a1d7137040e4ffb7af5781a0ca5cb778"
+},
+{
+"names": [
+"Mathoverflow1973.SphereHomology.twoOpenCover_fundamentalGroup_eq_one"
+],
+"class": "keep",
+"lines": [
+135,
+150
+],
+"sha256": "d1402b0a607f911de81b113fd51b962ad7ff078f8f40f0cc117d842811394422"
+},
+{
+"names": [
+"Mathoverflow1973.SphereHomology.twoOpenCover_simplyConnectedSpace"
+],
+"class": "move",
+"lines": [
+152,
+158
+],
+"sha256": "366caba7635131b569f4e460df2fb5f1a046420c79a98d5e6341a7b6c70d0f60"
+},
+{
+"names": [
+"Mathoverflow1973.SphereHomology.suspensionConeCover"
+],
+"class": "keep",
+"lines": [
+160,
+185
+],
+"sha256": "4a1a49afebddddc5f4f9240d882895f34bd3be399baa74da365960f137f9b826"
+},
+{
+"names": [
+"Mathoverflow1973.SphereHomology.suspension_simplyConnectedSpace"
+],
+"class": "move",
+"lines": [
+187,
+200
+],
+"sha256": "63b1f4f1932c85249c092c17edc675c3d28806949f935016c0092a2d2a5e7f8a"
+},
+{
+"names": [
+"Mathoverflow1973.SphereHomology.unitSphere_simplyConnectedSpace"
+],
+"class": "move",
+"lines": [
+202,
+204
+],
+"sha256": "bb4ebf9122ff51f9de841dbe32531fd95815ee0596c2403a1ee4d82a436e8307"
+},
+{
+"names": [
+"Mathoverflow1973.SphereHomology.unitSphere_piTwo_subsingleton"
+],
+"class": "move",
+"lines": [
+205,
+208
+],
+"sha256": "edd4ea4e789cc53abb3fca93635a5fbaa86d32e49801bcaea87e6d5d36c86f18"
+},
+{
+"names": [
+"Mathoverflow1973.ThirdHurewicz.hurewiczLinearEquiv"
+],
+"class": "keep",
+"lines": [
+211,
+216
+],
+"sha256": "4b161e5d7aa3198bd6f3ccced9d2cc695308c855f7eb6fd3acdd1219dd8c74aa"
+},
+{
+"names": [
+"Mathoverflow1973.ThirdHurewicz.hurewiczPi3Equiv"
+],
+"class": "keep",
+"lines": [
+218,
+228
+],
+"sha256": "4ba198617cf615a70ff974af6ee08a6783d93e305438558d13b7c470d71cdac3"
+},
+{
+"names": [
+"Mathoverflow1973.FourthHurewicz.hurewiczLinearEquiv"
+],
+"class": "keep",
+"lines": [
+230,
+235
+],
+"sha256": "d6ceb11c867d1a75e6ceb2a1927319c62232cbd8e067172236687651df26f992"
+},
+{
+"names": [
+"Mathoverflow1973.FourthHurewicz.hurewiczPi4Equiv"
+],
+"class": "keep",
+"lines": [
+237,
+247
+],
+"sha256": "eec6630998d9b4b2fc235d1ac2b545ebed62e9b30a8cef513c8d5e6fc561033c"
+},
+{
+"names": [
+"Mathoverflow1973.FifthHurewicz.hurewiczLinearEquiv"
+],
+"class": "keep",
+"lines": [
+249,
+254
+],
+"sha256": "7c49b49c84331de1462441234488e11cda5a0b922c567bb01ceea1216af5993c"
+},
+{
+"names": [
+"Mathoverflow1973.FifthHurewicz.hurewiczPi5Equiv"
+],
+"class": "keep",
+"lines": [
+256,
+266
+],
+"sha256": "fbfcd9129969a62b5b26a605a49afbc3d864b8f36e9eda849f84e3bfa7ae6743"
+},
+{
+"names": [
+"Mathoverflow1973.SixSphereCube.StandardSphere"
+],
+"class": "keep",
+"lines": [
+268,
+269
+],
+"sha256": "a090bee41da08953efece03caf41f7f2ad36d68f892b40ee285c2d237a3bef4f"
+},
+{
+"names": [
+"Mathoverflow1973.SixSphereCube.euclideanOnePointSphereHomeomorph"
+],
+"class": "keep",
+"lines": [
+271,
+273
+],
+"sha256": "b124fe0d6118ba49d686e751a456794a58d74a8d488d65f7c94dc05fa538ba69"
+},
+{
+"names": [
+"Mathoverflow1973.SixSphereCube.sphereBasePoint"
+],
+"class": "keep",
+"lines": [
+275,
+276
+],
+"sha256": "89088ff5e3b534f2da9659b3372bd6478c57e41945de1a358aed2b9bb2b324ea"
+},
+{
+"names": [
+"Mathoverflow1973.Sphere.piTwo_subsingleton"
+],
+"class": "keep",
+"lines": [
+278,
+280
+],
+"sha256": "058d48b2e1440b8ff2ee19071b294b9c7c07c10120564991ba141da009c0f496"
+},
+{
+"names": [
+"Mathoverflow1973.Sphere.piThree_subsingleton"
+],
+"class": "keep",
+"lines": [
+282,
+284
+],
+"sha256": "5dab8d80fa759a1f6c950f836b0f3827291d3d6f28f460528ab029bce7b64fb6"
+},
+{
+"names": [
+"Mathoverflow1973.Sphere.piFour_subsingleton"
+],
+"class": "keep",
+"lines": [
+286,
+288
+],
+"sha256": "539113ea415cdb2310c0d225edd75d51ed176d3e0709804e9fdc9ab056cf5933"
+},
+{
+"names": [
+"Mathoverflow1973.Sphere.piFive_subsingleton"
+],
+"class": "keep",
+"lines": [
+290,
+292
+],
+"sha256": "c0a09c79f7e680ee160c191603148588d8faf85332e7e2dd6e620bd0bc6c33a3"
+}
+]
+}

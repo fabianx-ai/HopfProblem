@@ -1,0 +1,634 @@
+# group-04 — head f0e28a82 — 2026-09-20
+
+## Lib/AlgebraicTopology/SingularSmallChains/Barycentric/HomotopySupport.lean  (1 declarations, 38 lines)
+verdict: B (minor: docs/names)
+twin: Hatcher Prop 2.21 proof (the chain homotopy T preserves 𝒰-small chains); no Mathlib twin (Mathlib has no singular chains)
+findings:
+- l.12 module docstring is a one-line title; no statement of the result, no reference, no `## Main results`
+- l.25 `{X : Type}` fixes universe 0 where `Type*` is the norm elsewhere in the directory (cf. MeshAffine l.101)
+- l.29 `subdivisionHomotopy_mem_small` is general in the cover `U : I → Set X`; a one-theorem file that Mathlib would fold into `SubdivisionHomotopy.lean`
+suggestion: merge into `SubdivisionHomotopy.lean` (or `SubdivisionSupport.lean`) with a docstring naming Hatcher 2.21 and use `Type*`
+
+## Lib/AlgebraicTopology/SingularSmallChains/Barycentric/MeshAffine.lean  (10 declarations, 131 lines)
+verdict: C (project residue: two-set open cover)
+twin: Hatcher Prop 2.21 step (2)–(3) (diameter of barycentric subdivision simplices, Lebesgue number); nearest Mathlib: Mathlib/Analysis/Convex/Combination.lean, Mathlib/Topology/MetricSpace/Bounded (diam)
+findings:
+- l.38–97 barycenter/diameter estimates on `Simplex p` are generic and well named (`dist_simplexBarycenter_convexHull_le`, `affineSimplex_diam_le`)
+- l.101–127 `simplex_eventually_small_of_vertices`, `finite_family_eventually_small_of_vertices` are stated for a two-set cover `U V` with conclusion `⊆ U ∨ ⊆ V`; Hatcher's argument is for any open cover `U : I → Set X` (as in HomotopySupport l.29); Mayer–Vietoris residue
+- l.69 `dist_simplexBarycenter_vertex_le` lacks a docstring (1 missing)
+- l.16–20 docstring says "the actual" five times but never names the reference; l.33–35 three blank lines
+suggestion: restate the `OpenCover` section for an arbitrary indexed open cover (as `ArbitraryCoverMesh.lean` already does) and derive the two-set case from it, citing Hatcher 2.21
+
+## Lib/AlgebraicTopology/SingularSmallChains/Barycentric/MeshBarycenter.lean  (11 declarations, 145 lines)
+verdict: A (textbook-ready)
+twin: Hatcher Prop 2.21 proof, "the diameter of each simplex of the barycentric subdivision is at most n/(n+1) times that of the simplex" (also Bredon IV.17); nearest Mathlib: Mathlib/Analysis/Convex/Combination.lean (`Finset.centerMass`, `convexHull_diam`)
+findings:
+- l.35 generic `[SeminormedAddCommGroup E] [NormedSpace ℝ E]`; all 11 declarations documented; names follow `dist_foo_bar_le`
+- l.39 `vertexBarycenter` duplicates `Finset.univ.centerMass 1 v`; a `vertexBarycenter_eq_centerMass` simp lemma would tie it to Mathlib
+- l.33 namespace `TopCat.SingularSmallChains.Barycentric` for a purely normed-space fact; Mathlib would place this under `Analysis/Convex` with namespace-free names
+suggestion: move to `Lib/Analysis/Convex/Barycenter.lean` outside the `TopCat.SingularSmallChains` namespace and add the `centerMass` bridge lemma
+
+## Lib/AlgebraicTopology/SingularSmallChains/Barycentric/MeshLebesgue.lean  (14 declarations, 189 lines)
+verdict: C (project residue: two-set open cover)
+twin: Hatcher Prop 2.21 step (3) "iterated barycentric subdivision" + Lebesgue number lemma (Munkres Lemma 27.5); Mathlib: `lebesgue_number_lemma_of_metric` (Mathlib/Topology/MetricSpace/Pseudo/Lemmas), `tendsto_pow_atTop_nhds_zero_of_lt_one`
+findings:
+- l.48, l.86, l.136–185 every Lebesgue statement is for a two-set cover `U V` with conclusion `⊆ U ∨ ⊆ V`; the textbook statement is for an arbitrary open cover (`∃ i, σ '' s ⊆ U i`) and the two-set case is the Mayer–Vietoris special case; names `..._two` advertise the specialisation
+- l.48 `exists_lebesgue_number_two_pairwise` re-proves the Lebesgue number lemma from `lebesgue_number_lemma_of_metric` for a `Bool`-indexed cover; a general `exists_lebesgue_number_of_diam` over `ι → Set X` would subsume l.48–92 and l.136–151
+- l.97 `meshFactor n := n/(n+1)` is fine; l.99–122 `meshFactor_nonneg/_lt_one/_le_one/_pow_tendsto/_pow_mul_tendsto` lack docstrings (5 missing)
+- l.14–26 docstring gives no reference; "actual"/"genuine" wording (l.15, 46, 83, 153) is not descriptive
+suggestion: state the Lebesgue and eventual-smallness lemmas for an arbitrary indexed open cover (cf. the sibling `ArbitraryCoverMesh.lean`) and derive the two-set case as a corollary, citing Hatcher 2.21
+
+## Lib/AlgebraicTopology/SingularSmallChains/Barycentric/MeshSubdivision.lean  (10 declarations, 206 lines)
+verdict: C (project residue: two-set open cover)
+twin: Hatcher Prop 2.21 step (2) (mesh of barycentric subdivision ≤ n/(n+1) · diam) via the recursive cone construction (Bredon IV.17.2); no Mathlib twin
+findings:
+- l.42–139 `Coordinates` section is well general: any `FormalCenter V` with coordinates in a normed space `E` (`formalSubdivision_iterate_mesh` l.126); all documented; this is the textbook argument
+- l.174–202 `simplex_formalSubdivision_eventually_small`, `finite_family_formalSubdivision_eventually_small` are two-set (`U V`) cover statements inherited from MeshLebesgue/MeshAffine
+- l.155, 181, 195 `formalSubdivision (fun _ v => simplexBarycenter v)` repeated inline; a named `simplexCenter : FormalCenter (Simplex p)` would make statements readable
+- l.36–39 three blank lines; "actual" appears 11 times in docstrings; no reference in the module docstring
+suggestion: introduce a named `FormalCenter` for `simplexBarycenter` and derive the two-set `Simplex` section from the sibling `ArbitraryCoverMesh.lean` instead of duplicating it
+
+## Lib/AlgebraicTopology/SingularSmallChains/Barycentric/Native.lean  (13 declarations, 110 lines)
+verdict: B (minor: docs/names)
+twin: Mathlib/AlgebraicTopology/SingularHomology/Basic.lean (`TopCat.singularChainsFunctor`, `SSet.chainComplexMap`); Hatcher §2.1 singular chains
+findings:
+- l.11 module docstring is a title only; no statement of what "native" means (the project's `AlgebraicTopology.SingularCochains.chains`, a Lib def, versus Mathlib's `SSet.chainComplex`)
+- l.29–44 `Chains`, `singularComplex`, `singularChainMap`, `inducedChain` are abbrevs over `X : Type` (universe 0) and coefficients fixed to `ModuleCat.of ℤ ℤ`; Mathlib's chain complex is `SSet.chainComplex X M` for any `M`
+- l.46–108 8 of 13 declarations lack docstrings (`simplexFace_apply`, `simplexFace_apply_self`, `simplexFace_apply_succAbove`, `simplexZero_eq_vertex`, `simplexIndex_map`, `inducedChain_simplex`, `inducedChain_boundary`, `inducedChain_comp`)
+- l.46–75 `simplexFace_apply*`, `simplexZero_eq_vertex` are `stdSimplex.map` facts unrelated to chains; Mathlib would put them in `Analysis/Convex/StdSimplex`
+suggestion: add docstrings and an explanatory module docstring, and separate the `stdSimplex` face lemmas from the chain-map abbrevs
+
+## Lib/AlgebraicTopology/SingularSmallChains/Barycentric/RealizationSupport.lean  (5 declarations, 105 lines)
+verdict: B (minor: docs/names)
+twin: Hatcher Prop 2.21 proof (the operators S, T carry 𝒰-small chains to 𝒰-small chains); Mathlib: `Finsupp.supported_eq_span_single`, `Submodule.span_le`
+findings:
+- l.12 module docstring is a title; no reference, no outline
+- l.25, 38, 59 `{V M X I : Type}` fix universe 0 throughout; the statements are universe-polymorphic
+- l.28 `formalLinearMap_mem_of_support` is a generic `Finsupp` fact (`f c ∈ P` when it holds on the support) unrelated to chains; belongs in a `Finsupp` helper file or replaced by `Finsupp.mem_supported`/`Submodule.span_le`
+- l.41–70 `singularLinearMap_mem_of_support`, `singularLinearMap_mem_of_small` are well general in the cover `U : I → Set X`; all 5 declarations documented
+suggestion: write a two-sentence module docstring naming Hatcher 2.21, use `Type*`, and move `formalLinearMap_mem_of_support` next to `FormalSupport`
+
+## Lib/AlgebraicTopology/SingularSmallChains/Barycentric/Subdivision.lean  (13 declarations, 175 lines)
+verdict: B (minor: docs/names)
+twin: Hatcher Prop 2.21 step (3), the subdivision operator `S : Cₙ(X) → Cₙ(X)` (also Bredon IV.17, Spanier 4.6); no Mathlib twin (Mathlib singular homology has no subdivision)
+findings:
+- l.32 `subdivision X k n` is the textbook `Sᵏ`, defined by the universal affine formula and pushed forward; `subdivision_boundary` l.99, `subdivisionChainMap` l.142, `subdivisionChainMap_natural` l.165 are the standard API
+- l.32, 49, 142 `X : Type` fixes universe 0 and coefficients are `ℤ` (via `Chains`); Mathlib would take `X : TopCat.{u}` and a coefficient module
+- l.40, 154 `subdivision_simplex`, `subdivisionChainMap_f` lack docstrings (2 missing; both simp lemmas)
+- l.76 `affineSimplex_comp_stdVertices` belongs in `AffineSimplex.lean`
+- l.12–18 module docstring names no reference; the phrase "Mathlib's native integral singular-chain complex" is inaccurate (`Chains` is the project's `SingularCochains.chains`)
+suggestion: cite Hatcher 2.21 in the docstring and generalise `X : Type` to `Type*` (or `TopCat.{u}`)
+
+## Lib/AlgebraicTopology/SingularSmallChains/Barycentric/SubdivisionHomotopy.lean  (9 declarations, 158 lines)
+verdict: B (minor: docs/names)
+twin: Hatcher Prop 2.21 step (3), the chain homotopy `T` with `∂T + T∂ = 𝟙 − S` (Bredon IV.17.3); no Mathlib twin
+findings:
+- l.29 `subdivisionHomotopy X k n` and l.125 `subdivisionHomotopy_boundary` (`d H + H d = id − sdᵏ`) are the textbook statements, all in degree-explicit form; a packaging as `Homotopy (subdivisionChainMap X k) (𝟙 _)` (Mathlib's `Homotopy` structure) is missing and would be the Mathlib-facing statement
+- l.29, 46 `X : Type` universe 0 as in `Subdivision.lean`
+- l.37 `subdivisionHomotopy_simplex` lacks a docstring (1 missing)
+- l.147 `subdivisionHomotopy_boundary_of_cycle` uses `n - 1` truncated subtraction in the hypothesis; awkward but standard for `HomologicalComplex.d`
+suggestion: add `subdivisionHomotopyChainMap : Homotopy (subdivisionChainMap X k) (𝟙 _)` and cite Hatcher 2.21
+
+## Lib/AlgebraicTopology/SingularSmallChains/Barycentric/SubdivisionSupport.lean  (3 declarations, 82 lines)
+verdict: B (minor: docs/names)
+twin: Hatcher Prop 2.21 step (4) "for each singular simplex there is m with Sᵐσ ∈ Cₙ^𝒰(X)"; no Mathlib twin
+findings:
+- l.29–80 the three theorems are exactly the textbook statements for an arbitrary indexed open cover `U : I → Set X`; well documented
+- l.13 module docstring is a title only, no reference
+- l.26 `{X : Type} {I : Type}` universe 0
+- l.9 imports `ArbitraryCoverMesh`, which makes the two-set files `MeshLebesgue`/`MeshAffine`/`MeshSubdivision` redundant for this file
+suggestion: expand the docstring to name Hatcher 2.21 (4) and use `Type*`
+
+## Lib/AlgebraicTopology/SingularSmallChains/Basic.lean  (53 declarations, 592 lines)
+verdict: C (project residue: degree-one-only cochain corollaries, two subjects)
+twin: Hatcher Prop 2.21 (the subcomplex `Cₙ^𝒰(X)` of 𝒰-small chains and its inclusion); Mathlib/AlgebraicTopology/SingularHomology/Basic.lean for the ambient chains; no Mathlib twin for small chains
+findings:
+- l.13–20 module docstring calls the file "This prototype" and names no reference; "Mathlib's native integral singular-chain complex" is the project's `AlgebraicTopology.SingularCochains.chains`
+- l.35–170 `singularSet`, `SingularSimplex`, `simplexChain`, `chainLift`, `chainsEquivFinsupp`, `chainBasis` are a free-module API for singular chains that Mathlib's `SSet.chainComplex` should already provide; l.177–330 `IsSmallSimplex`, `submodule`, `complex`, `inclusion` are the textbook `C^𝒰`
+- l.506–592 `cochainMap_d`, `homotopy_on_cocycle_one`, `smallCochain_cocycle_lift_exact_one`, `smallCochain_boundary_of_restriction_boundary_one`, `cochainRestriction_homologyMap_isIso_one` are stated only in degree one (`d 1 2`, `homologyMap … 1`); the textbook statement is `IsIso (homologyMap … n)` for all `n` (already given by `HomotopyEquiv.quasiIsoAt_hom`), so the `_one` lemmas exist only to feed the project's `H¹` step
+- l.424 `addHomToIntLinearMap` duplicates `AddMonoidHom.toIntLinearMap`; l.469 `dualHomotopyEquiv` is a generic contravariant-functor fact placed here
+- every `X : Type`, `M : Type`, `AddCommGrpCat.{0}`, `ModuleCat.{0} ℤ`: universe 0 throughout; 7 declarations without docstrings (`chainsFromFinsupp_single` l.118 etc.)
+- the file has three subjects: free-basis API for chains (l.35–170), the small subcomplex (l.177–405), cochain restriction/degree-one cohomology (l.410–592)
+suggestion: split off the cochain-restriction half (l.410–592) into its own file, replace the `_one` lemmas by the all-degree `quasiIsoAt` statement, and cite Hatcher 2.21
+
+## Lib/AlgebraicTopology/SingularSmallChains/CochainHomotopy.lean  (4 declarations, 118 lines)
+verdict: B (minor: docs/names)
+twin: Hatcher Prop 2.21 dualised (a chain homotopy equivalence induces cohomology isomorphisms); Mathlib: `HomotopyEquiv.quasiIsoAt_hom`, `quasiIsoAt_iff_isIso_homologyMap`
+findings:
+- l.107 `cochainRestriction_homologyMap_isIso` is the all-degree statement that makes `Basic.lean`'s `_one` versions (l.512–592 there) redundant; the two files should be merged, keeping only this one
+- l.32 `homotopy_on_cocycle_succ` is a generic `Homotopy` evaluation lemma for `CochainComplex AddCommGrpCat.{0} ℕ`; not about small chains, belongs in `Algebra/Homology/Homotopy`
+- l.47, 84 lifting statements are stated with `n + 1`, `n + 2` indices; a cleaner form uses `ComplexShape.up` relations, but this is common
+- l.14 docstring says "used by the sheafification comparison": project-purpose sentence; no reference; `X : Type`, `AddCommGrpCat.{0}` universe 0; all 4 documented
+suggestion: merge with the cochain half of `Basic.lean`, deleting the degree-one duplicates, and move `homotopy_on_cocycle_succ` to a homology helper
+
+## Lib/AlgebraicTopology/SingularSmallChains/Projective.lean  (3 declarations, 67 lines)
+verdict: B (minor: docs/names)
+twin: Weibel Thm 10.4.8 / Mathlib `ChainComplex.quasiIso_iff_of_projective` (a quasi-iso between bounded-below complexes of projectives is a homotopy equivalence)
+findings:
+- l.34–59 `inclusion_isHomotopyEquivalence_of_quasiIso`, `inclusionHomotopyEquivOfQuasiIso` are direct applications of Mathlib to `inclusion U`; correct and small
+- l.48 `inclusionHomotopyEquivOfQuasiIso` uses `.choose` on a `homotopyEquivalences` witness, so the inverse is noncanonical; fine, but the docstring should say so
+- l.12–19 docstring ("The exact geometric seam") is a project narrative, no reference; l.62 `inclusionHomotopyEquivOfQuasiIso_hom` lacks a docstring (1 missing); `X : Type`, `ModuleCat.{0} ℤ` universe 0
+suggestion: fold into `SubdivisionCriterion.lean` (its only consumer) and cite `ChainComplex.quasiIso_iff_of_projective` in the docstring
+
+## Lib/AlgebraicTopology/SingularSmallChains/SubdivisionCriterion.lean  (4 declarations, 98 lines)
+verdict: A (textbook-ready)
+twin: Hatcher Prop 2.21 (the inclusion `C^𝒰(X) → C(X)` is a chain homotopy equivalence), abstracted to the four axioms of the proof; no Mathlib twin
+findings:
+- l.34 `SubdivisionData U` packages exactly the four hypotheses of Hatcher's proof (`∂S = S∂`, `∂T + T∂ = 𝟙 − S` on cycles, eventual smallness, `T` preserves smallness); l.59 `inclusion_quasiIso_of_subdivisionData` is the theorem; good textbook abstraction
+- l.45–49 `homotopy_boundary_of_cycle` is only asked on cycles with `n - 1` truncated subtraction; the textbook has the full identity, which `SubdivisionHomotopy.lean` proves; a `SubdivisionData.ofHomotopy` constructor from the full identity would be natural
+- l.93 `inclusionHomotopyEquivOfSubdivisionData_hom` lacks a docstring (1 missing); `X : Type` universe 0; docstring names no reference
+suggestion: cite Hatcher 2.21 in the docstring and use `Type*`
+
+## Lib/Analysis/Calculus/MorseLemma.lean  (158 declarations, 2478 lines)
+verdict: C (project residue: seven unrelated topics in one file, project namespaces)
+twin: Milnor, Morse Theory Lemma 2.2 (Morse lemma) and h-cobordism Thm 2.5 (existence of Morse functions); no Mathlib twin (Mathlib has `Mathlib/Analysis/Calculus/...` but no Morse lemma — genuine gap for l.1142–2035)
+findings:
+- l.11–52 docstring names Milnor 2.2 / 2.5 with references; every declaration has a docstring (1 missing); the headline `SmoothMorseLemma.exists_signed_morse_chart_of_contDiffOn` l.1993 and `ManifoldMorse.exists_morse_function` l.1131 are textbook statements, general in `E` finite-dimensional and `M` a boundaryless `𝓘(ℝ, E)`-manifold
+- the file mixes nine namespaces: `MorsePerturbation`, `ManifoldPerturbation`, `ManifoldMorse`, `SmoothMorseLemma`, `MorseHandle` (Morse theory) with `FlowConstruction` l.533–866 (descent vector fields), `MorseCancellation` l.733, 2356–2478 (closed blocks for handle cancellation), `HolomorphicCousin` l.868–946 (smooth partitions of unity: nothing to do with Cousin or Morse) and `LineBundleTransport` l.947–1001 (cutoff functions); the last two are named for their project consumer, not their content
+- l.1142–1187 `contDiff_parametric_intervalIntegral*` and l.1705–1768 `exists_contDiff_extension*` are general calculus facts that Mathlib would place in `Analysis/Calculus/ParametricIntervalIntegral` and `Analysis/Calculus/BumpFunction`; l.988 `LineBundleTransport.exists_interval_cutoff` likewise
+- l.1288–1400 `Bilinear`, `SymmetricForm`, `symmetrize`, `congruence`, `raiseIndex` is a symmetric-bilinear-form toolkit that duplicates `LinearMap.BilinForm`/`LinearMap.IsSymm`
+- l.7–10 `import Mathlib`, `import all Mathlib.Geometry.Manifold.LocalDiffeomorph`; l.55–70 `set_option maxSynthPendingDepth 3`, kitchen-sink `open scoped … Modular … UpperHalfPlane`, `universe u v` unused, `local notation` for `SlashAction.map` and `Path.trans`: project preamble
+- all manifold statements are for `𝓘(ℝ, E)` only (178 occurrences); Milnor's Morse lemma is for manifolds without boundary, so this is acceptable, but a general `ModelWithCorners` version of `IsMorseAt` would be the Mathlib form
+- read up to l.1141 and l.1993–2100 in full, statements only afterwards; the pattern is clear
+suggestion: split into `MorseLemma.lean` (l.1142–2035), `Morse/Exists.lean` (l.75–1141), `Morse/DescentField.lean` (l.533–866, 2239–2478), and move the partition-of-unity, cutoff and parametric-integral lemmas to their Mathlib-shaped homes, dropping the `HolomorphicCousin`/`LineBundleTransport` namespaces
+
+## Lib/Analysis/Complex/Cousin.lean  (95 declarations, 1062 lines)
+verdict: C (project residue: normalisation-at-infinity packaging, `NegativeOne` variant)
+twin: Hörmander, An Introduction to Complex Analysis in Several Variables, Thm 1.4.4 (∂̄u = f on ℂ via the Cauchy–Green transform) and Thm 1.4.5 (Cousin I on open subsets of ℂ); Forster §13; no Mathlib twin (Mathlib has `Complex.circleIntegral`/Cauchy but no ∂̄-solution — genuine gap)
+findings:
+- l.14–46 docstring, references and outline present; 0 missing docstrings; namespace `HolomorphicCousin` throughout
+- l.190–282 `dbar`, `dbar_eq_zero_iff`, `differentiableAt_complex_iff_dbar` (Wirtinger ∂̄ from the real Fréchet derivative) and l.438–800 `cauchyGreen`, `cauchyGreen_dbar`, `cauchyGreen_smooth_dbar_solution` are the textbook Hörmander 1.4.4 argument via polar coordinates; this is library material and should be its own file `Analysis/Complex/CauchyGreen.lean`
+- l.986–1062 `NormalizedCocycleSolution`, `NegativeOneCocycleSolution`, `exists_negativeOne_holomorphic_cocycle_solution`: the headline is stated with a distinguished index `i₀`, a radius `R`, `(ball 0 R)ᶜ ⊆ U i₀`, and an `infinityPart` analytic on `ball 0 R⁻¹` with `localPart i₀ z = z⁻¹ * infinityPart z⁻¹` outside `ball 0 R`; this is the project's normalisation for the Riemann sphere and the `−1`-twist has no textbook counterpart; the plain Cousin I statement (`∃ g, ∀ i j, g i - g j = h i j` on `U i ∩ U j`) is never stated on its own
+- l.284 `LocalPotential` structure bundles the cover, the smooth splitting and the analytic differences; a textbook would call this a smooth solution of Cousin I
+- l.805–938 `cauchyGreenInfinity` and its analyticity at 0 are the Riemann-sphere chart computation, again project packaging
+- l.9–12 imports `Lib.Analysis.Calculus.MorseLemma` (for `HolomorphicCousin.exists_smoothPartitionOfUnity_*`, which live in the Morse file) and `RiemannMapping`; l.49–64 the same kitchen-sink preamble (`Modular`, `UpperHalfPlane`, slash notation, `universe u v`)
+suggestion: state and prove plain Cousin I on `ℂ` (Hörmander 1.4.5) as the headline, split the Cauchy–Green ∂̄-solver into its own file, and move the normalised/`−1` variants to the Riemann-sphere consumer
+
+## Lib/Analysis/Complex/Mobius.lean  (54 declarations, 556 lines)
+verdict: B (minor: docs/names)
+twin: Ahlfors, Complex Analysis Ch. 3 §3 (cross ratio, three-point normalisation, orientation of circles, 3.3.4); nearest Mathlib: `Mathlib/Analysis/Complex/UpperHalfPlane/MoebiusAction.lean` (SL₂ action), no cross ratio in Mathlib
+findings:
+- l.9–30 docstring with Ahlfors reference; 0 missing docstrings; `RiemannSphere.threePointBiholomorph` l.224, `MobiusCircle.crossRatio` l.283, `orientation` l.291 are the textbook objects
+- l.53 `Biholomorph` and the whole file depend on the project's `Lib/Geometry/Manifold/Instances/RiemannSphere` rather than `OnePoint ℂ`; acceptable given the gap, but the cross-ratio section l.283–427 is pure `ℂ` algebra and could be stated without the sphere
+- l.306 `MobiusCircle.unit_ne_zero`, l.333 `numerator_im`, l.214 `crossRatioScale_ne_zero`, l.219 `crossRatioResidue_ne_zero` are unnamed-object lemma names; Mathlib would name after the expression (`ne_zero_of_norm_eq_one` exists as `norm_pos_iff`)
+- l.459–556 `closedDiscWithoutPole`, `closedOrientedHalfPlane`, `closedDiscHalfPlaneHomeomorph` are the disc/half-plane homeomorphism with the pole removed, indexed by three unit-circle points: a project-shaped parametrisation but a correct textbook fact
+- l.6 `import Mathlib`; l.33–48 `set_option maxSynthPendingDepth 3`, kitchen-sink `open scoped`, `universe u v`, slash-action `local notation`: project preamble
+suggestion: move the cross-ratio/orientation section to `Analysis/Complex/CrossRatio.lean` over plain `ℂ` with Mathlib-style names and trim the preamble
+
+## Lib/Analysis/Complex/RiemannMapping.lean  (181 declarations, 2411 lines)
+verdict: C (project residue: three topics merged, triangle-specific roots, lane narrative in docstring)
+twin: Ahlfors Ch. 6 §1 / Rudin RCA Thm 14.8 (Riemann mapping theorem via normal families and the Koebe square-root trick); Carathéodory–Schwarz boundary extension (Ahlfors 6.1.3 / Pommerenke §2); Mathlib/Analysis/Complex/RiemannMapping.lean has only the Koebe step (`exists_mapsTo_unitBall_injOn_deriv_ne_zero`), not the theorem
+findings:
+- l.11–60 docstring names Ahlfors 6.1 and Rudin 14.8; 0 missing docstrings; the core l.453–800 (`compactSubsets`, `normalizedClass`, `exists_maximal_normalizedMap`, `exists_bijOn_unitBall_deriv_ne_zero_map_eq_zero` l.690, `riemannMap` l.789) is the textbook proof, general in `U : Set ℂ`
+- l.23–27 docstring says the boundary lemmas "share this file (lane-A MayerVietoris-style merge, recorded in Lib/reports/A.md)": project process narrative in a library docstring; the file is three namespaces `TriangleRiemannNormalization` (l.80–222), `RiemannMapping`, `RiemannBoundary` (l.267–440, 804–2400)
+- l.1563–1937 `principalRoot`, `principalRoot_three_*`, `cubic_sector_slack`, `quartic_sector_slack`, `quarticRootRotation`, `rotatedPrincipalRootFour_*`: the `z ↦ z^{1/3}`, `z^{1/4}` straightening maps for the project's triangle vertices at angles π/3, π/4 (or 2π/3...) — a special case of the general `z ↦ z^{π/α}` corner-straightening (Ahlfors 6.2, Schwarz–Christoffel); the exponent-specific lemmas have no textbook counterpart
+- l.2354 `triangleSideParameter`, l.80–222 `TriangleRiemannNormalization.*` and l.310–440 `logHalfStrip`, `onePointDomain*` are the project's triangle/ideal-vertex normalisation
+- l.804–966 `openRectangle`, `wedgeIntegral_*`, `isExactOn_openRectangle`, `exists_continuous_primitive_openRectangle` duplicate Mathlib's `Complex.integral_boundary_rect_eq_zero_of_differentiableOn` / primitive-on-convex-set machinery
+- l.1056 `exists_analytic_extension_of_vanishing_jump`, l.1239 `exists_analytic_extension_of_modulus_one` are Schwarz-reflection facts that belong in `SchwarzReflection.lean`
+- l.6 `import Mathlib`, l.62–77 same kitchen-sink preamble (`maxSynthPendingDepth`, `Modular`, `UpperHalfPlane`, slash notation, `universe u v`)
+- read docstring and all statements; sampled l.453–800 and l.1563–1760; pattern clear
+suggestion: keep l.453–800 as `RiemannMapping.lean` (Ahlfors 6.1), move `RiemannBoundary.*` to a `Carathéodory`/`SchwarzReflection` file stated for a general corner exponent, and move `TriangleRiemannNormalization`/`principalRoot_three_*`/`rotatedPrincipalRootFour_*` to the project's triangle consumer
+
+## Lib/Analysis/Complex/RiemannMapping/Steps.lean  (31 declarations, 700 lines)
+verdict: B (minor: docs/names)
+twin: Rudin RCA 14.8 steps / Hurwitz's theorem (Ahlfors 5.1.3 Thm 2); Mathlib: `Mathlib/Analysis/Complex/RiemannMapping.lean` (private lemmas, per the docstring), `Mathlib/Analysis/Complex/UnitDisc/Basic.lean`
+findings:
+- l.58 `AnalyticOnNhd.exists_finset_eq_prod_smul_nonzero`, l.215, 286 `Complex.eqOn_zero_or_forall_ne_zero_of_tendstoLocallyUniformlyOn`, `eqOn_const_or_injOn_of_tendstoLocallyUniformlyOn` (Hurwitz) are general, `_root_`-namespaced, Mathlib-style statements; 0 missing docstrings
+- l.392–570 `Complex.UnitDisc.shift`, `shiftFun`, `deriv_shift_comp` etc. (the disc automorphism `z ↦ (z−a)/(1−āz)`) is a 30-lemma API that should be checked against `Mathlib/Analysis/Complex/UnitDisc` before upstreaming
+- l.319 `Complex.exists_injective_not_dense_image_deriv_ne_zero` and l.365 `Complex.exists_mapsTo_unitBall_injOn_deriv_ne_zero` are verbatim duplicates of the two public declarations of Mathlib/Analysis/Complex/RiemannMapping.lean (l.48, l.117 there); the docstring l.22–24 calls them "private lemmas" and "Decision Q6 … upstream follow-up" — stale project narrative: they can be deleted now
+- l.9–10 `import Mathlib` plus `Lib.Geometry.Manifold.Instances.RiemannSphere` (unused by the statements); l.38–53 kitchen-sink preamble, `universe u v`, slash-action notation
+suggestion: name the two Mathlib duplicates in the docstring, drop the RiemannSphere import and preamble, and propose the Hurwitz lemmas upstream
+
+## Lib/Analysis/Complex/SchwarzReflection.lean  (16 declarations, 237 lines)
+verdict: B (minor: docs/names)
+twin: Ahlfors Ch. 4 §6.5 Thm 24 (Schwarz reflection principle) via Morera; Mathlib: `Complex.wedgeIntegral`, `Complex.Rectangle`, `Complex.integral_boundary_rect_eq_zero_of_differentiableOn`; no Mathlib reflection principle (genuine gap)
+findings:
+- l.154 `differentiableOn_of_continuousOn_off_real`, l.183 `analyticOnNhd_of_continuousOn_off_real` (continuous on `U`, holomorphic off the real axis ⇒ holomorphic) is the textbook Morera step; l.191–237 `pasteUpper`, `analyticOnNhd_pasteUpper` is the reflection itself; 0 missing docstrings
+- l.52 `rectangleIntegral` re-defines the boundary integral that Mathlib expresses via `Complex.wedgeIntegral` (l.59 proves the identity); l.65–147 five rectangle-bookkeeping lemmas would shrink with Mathlib's `Complex.Rectangle` API
+- l.191 `pasteUpper f z := if 0 ≤ z.im then f z else conj (f (conj z))` covers only reflection across ℝ; the docstring promises "across an arc of the unit circle", but no circle-arc declaration exists (grep `circle` empty apart from docstring) — stale promise
+- l.6–8 `import Mathlib`, `Lib.Analysis.Complex.Mobius`, `RiemannSphere` (unused by the statements); l.32–47 project preamble
+suggestion: delete the circle-arc sentence (or add the statement), and restate the rectangle lemmas via `Complex.wedgeIntegral`/`Complex.Rectangle`
+
+## Lib/Analysis/Complex/SquareRoot.lean  (62 declarations, 785 lines)
+verdict: C (project residue: sheaf-of-roots machinery for one corollary, review narrative in docstring)
+twin: Rudin RCA 13.11 (holomorphic logarithm/square root on simply connected regions); Mathlib: none for the square root (Mathlib has `Complex.log` and `SimplyConnectedSpace`; nearest `Mathlib/Analysis/SpecialFunctions/Complex/Log.lean`)
+findings:
+- l.697 `exists_analytic_square_root_on` and l.719 `..._of_even_zeros` (analytic `F` on simply connected `S : Opens ℂ` with even zero orders has an analytic square root with halved orders) is a correct generalisation of Rudin 13.11 to functions with zeros; l.62 `exists_analytic_unit_root` (local `m`-th root) is textbook
+- l.91–695 the proof builds a presheaf of root sections (`rootPresheaf`, `RootSection`, `germ_bijective`, `etaleValue`, `sectionOfEtaleSection`, `exists_global_section_with_germ_of_germ_bijective`) — a bespoke étalé-space/covering argument; the textbook proof uses `Complex.log` of `F/∏(z−a)^{2n}` or the monodromy theorem; 600 lines of infrastructure for one theorem
+- l.731–785 `upperHalfPlaneOpen`, `instContractibleSpace1` (auto-generated name), `exists_analytic_square_root_upperHalfPlane`, `exists_holomorphic_square_root_upperHalfPlane`: the project's `ℍ` specialisation, stated twice (set and manifold versions)
+- l.14–17 docstring: "specialized to the analytic root covers used by the source development", "renamed from the project prefix `SpecialPeriods` per review A item 3; no external consumers": project narrative; namespace `AnalyticRootCover` names the proof method, not the object
+- l.9–13 imports `RiemannMapping`, `MorseLemma`, `RiemannSphere`, `import Mathlib` — none needed for a statement about `Opens ℂ`; l.42–57 project preamble
+suggestion: state `exists_analytic_square_root_on_of_even_zeros` as the file's theorem under a Mathlib-style name (`AnalyticOnNhd.exists_sq_eq_of_simplyConnected`), move the `ℍ` corollaries to their consumer, and rewrite the docstring without the review history
+
+## Lib/Analysis/Normed/LocallyContractible.lean  (4 declarations, 77 lines)
+verdict: B (minor: docs/names)
+twin: Mathlib/Topology/Homotopy/LocallyContractible.lean (`StronglyLocallyContractibleSpace.of_bases`), Mathlib/Analysis/Convex (`Convex.contractibleSpace`)
+findings:
+- l.26 `normedSpaceStronglyLocallyContractible` is a theorem, not an instance, with a non-Mathlib name; Mathlib would write `instance NormedSpace.stronglyLocallyContractibleSpace` or `StronglyLocallyContractibleSpace.of_normedSpace`; also stated for `SeminormedAddCommGroup` (good)
+- l.42 `ballInClosedBallHomeomorph` and l.69 `closedBallStronglyLocallyContractible` (instance) are the useful statements; l.38 could be `SeminormedAddCommGroup` as at l.27
+- l.12–17 docstring names no reference (Hatcher §4.G / Spanier for "locally contractible"); all 4 declarations documented
+suggestion: turn l.26 into an instance named `NormedSpace.stronglyLocallyContractibleSpace` and propose the file upstream next to `Topology/Homotopy/LocallyContractible.lean`
+
+## Lib/Analysis/Real/MeshScale.lean  (1 declarations, 88 lines)
+verdict: D (proof-specific: the project's constants h = 2/N, ε = h/9 and five ad-hoc inequalities)
+twin: none: no textbook counterpart (Archimedean property `exists_nat_gt`)
+findings:
+- l.10–11, 17–19 docstring: "the mesh choice and all inequalities (2.2) from the canonical textbook proof, lines 1355--1366": refers to the project's own proof text by line number, not to a textbook
+- l.20 `Real.exists_mesh_scale` packs `h = 2/N`, `ε = h/9`, `h < λ/2`, `8ε < h`, `2ε < h`, `h√2 < λ`, `h + 2ε < λ`, `8ε < λ` into one 12-fold conjunction: constants and conjunction order are those of one consumer proof; the mathematical content is `exists_nat_gt` plus `linarith`
+- l.33–84 proof comments `(S-01)` … `(S-09)` are step tags from a work plan; namespace `Real` is Mathlib's, so `Real.exists_mesh_scale` would collide with the Mathlib namespace on upstreaming; l.1–7 no copyright header
+suggestion: move to `Hopf/Proof` (or the consumer's file) and inline the constants where used
+
+## Lib/Analysis/ODE/SmoothFlow.lean  (54 declarations, 1044 lines)
+verdict: C (project residue: `MorseCancellation`/`DiskFraming` namespaces and Morse imports inside an ODE file)
+twin: Lee, Introduction to Smooth Manifolds Thm 9.12 (smooth dependence of the flow on initial conditions; Lang, Real and Functional Analysis XIV §4 for the Banach-space Picard argument); Mathlib: `Mathlib/Analysis/ODE/PicardLindelof.lean`, `Mathlib/Geometry/Manifold/IntegralCurve/*` (no smooth dependence — genuine gap)
+findings:
+- l.56–570 `SmoothODE.*` (smooth implicit-function fixed point of the Picard operator on paths, `contDiffAt_ordinary_localFlow` l.556, `contDiffAt_local_field_flow` l.669) is the textbook proof of smooth dependence, general in Banach `E`; 0 missing docstrings; docstring cites Lee 9.12
+- l.769–1011 `contMDiffAt_native_flow_zero`, `contMDiff_native_flow`, `nativeFlowTimeDiffeomorph`, `mpullback_flow_time`, `partialChartField_flow_shift` transfer to the project's `Lib.Geometry.Manifold.Flow.*` ("native flow"), for `𝓘(ℝ, E)` manifolds only
+- l.575–668 `DiskFraming.starConvex_thickening_zero`, `exists_smooth_map_into_neighborhood`, `exists_smooth_extension_near_starConvex`, `exists_smooth_extension_near_point` are bump/extension lemmas unrelated to ODEs, some at root namespace; l.703–768 `MorseCancellation.coordinateField*` is Morse-specific and belongs with the Morse files
+- l.8–12 imports `Mathlib`, `Lib.Analysis.Calculus.MorseLemma`, `import all Mathlib.Geometry.Manifold.LocalDiffeomorph`: an ODE file should not depend on the Morse lemma; l.36–51 project preamble (`maxSynthPendingDepth`, `Modular`, `UpperHalfPlane`, slash notation, `universe u v`)
+- statements read in full; l.56–135 and l.556–575 read; pattern clear
+suggestion: keep `SmoothODE.*` (l.56–570, 769–1011) as `Analysis/ODE/SmoothFlow.lean` without the Morse import, and move `DiskFraming`/`MorseCancellation` blocks to their Morse consumers
+
+## Lib/CategoryTheory/Abelian/CohomologicalDeltaFunctor/Basic.lean  (7 declarations, 99 lines)
+verdict: B (minor: docs/names)
+twin: Grothendieck, Tôhoku §2.1 (∂-functors); Weibel, Homological Algebra 2.1.1 (δ-functor); Hartshorne III.1; no Mathlib twin (Mathlib has no δ-functor structure — genuine gap)
+findings:
+- l.32 `CohomologicalDeltaFunctor C D` is the textbook definition, universe-polymorphic, with `AdditiveFunctor` degrees and `ShortComplex.ShortExact` inputs; Mathlib-style would state the long exact sequence as one `Exact` predicate per position (as here) — good
+- l.42–51 the three exactness fields `exact₁/exact₂/exact₃` plus `comp₂/comp₃` are eight fields where Weibel's definition needs three; acceptable, but a constructor from a single `HomologySequence`-style statement would be the Mathlib form
+- l.59, 65, 75, 81, 89, 93 docstrings carry "textbook coordinate L-H1, equation (U4)", "(L-H2)" … "(L-H6)": project work-plan tags in library docstrings
+- l.13–18 module docstring gives no reference; `Hom` has no `Category` instance (Weibel's δ-functors form a category); 0 missing docstrings
+suggestion: cite Weibel 2.1.1/Tôhoku 2.1 in the docstring, strip the `(L-Hn)`/`(U4)` tags, and add the `Category (CohomologicalDeltaFunctor C D)` instance from `Hom.id`/`Hom.comp`
+
+## Lib/CategoryTheory/Abelian/CohomologicalDeltaFunctor/Ext.lean  (5 declarations, 73 lines)
+verdict: B (minor: docs/names)
+twin: Weibel Thm 2.5.1 / Hartshorne III.1.1A (Ext(P, −) is a universal δ-functor, effaceable because Ext(P, I) = 0 for injective I); Mathlib: `CategoryTheory.Abelian.Ext`, `Ext.subsingleton_of_injective`
+findings:
+- l.30 `ofExt P : CohomologicalDeltaFunctor C AddCommGrpCat.{v}`, l.56 `ofExt_effaceable`, l.70 `ofExt_isUniversal` are exactly the textbook statements; general `[Abelian C] [EnoughInjectives C]`
+- l.10–15, 26–29, 40–41, 45–46, 51 docstrings cite "textbook lines 1744–1747", "1778–1783", "1784–1786": line numbers of the project's own document, not a reference; the phrase "native" is project jargon
+- l.24 `local instance : HasExt.{v} C := hasExt_of_enoughInjectives` fixes the Ext universe to `v`; fine but should be a `variable [HasExt.{w} C]`
+- l.50 `set_option backward.isDefEq.respectTransparency false in`: a tactic workaround left on a public theorem; l.1–5 no copyright header; l.18 `public section` not `@[expose]`
+suggestion: replace the "textbook lines …" citations by Weibel 2.5.1 and drop the `respectTransparency` workaround if the `let` instance can be a `haveI`
+
+## Lib/CategoryTheory/Abelian/CohomologicalDeltaFunctor/RightDerived.lean  (11 declarations, 154 lines)
+verdict: B (minor: docs/names)
+twin: Weibel Thm 2.4.6 / Hartshorne III.1.3A (right derived functors form a universal δ-functor; effaceable by injectives); Mathlib: `Functor.rightDerived`, `Functor.isZero_rightDerived_obj_injective_succ`
+findings:
+- l.38 `ofRightDerived F`, l.66 `ofRightDerived_effaceable`, l.78 `ofRightDerived_isUniversal` are the textbook statements for any additive `F : C ⥤ AddCommGrpCat.{w}`; the target should be a general abelian `D`, as in `Basic.lean`, since `rightDerived` needs only `[Abelian D]`
+- l.94–152 `ofRightDerivedHom`, `ofRightDerivedInv` and the two composition laws transport along `α : F ≅ G` but require `[PreservesFiniteLimits F] [PreservesFiniteLimits G]`, which the textbook statement does not need (a natural iso induces an iso of derived δ-functors for any additive `F`, `G`); the hypothesis comes from Lib's `NatIso.rightDerived_hom_connecting`; a packaged `Iso (ofRightDerived F) (ofRightDerived G)` is missing
+- l.15–25, 37, 51, 57, 65, 76–77, 93, 103, 111, 120, 131, 144 docstrings cite "TEXTBOOK 1589–1598", "M00-D", "CD05L", "M10, 1820–1826": project plan coordinates in every docstring
+- l.1–11 fine; `universe u v w`; 0 missing docstrings
+suggestion: generalise the target to `[Abelian D]`, drop `PreservesFiniteLimits` from the transport (or explain why it is needed), and replace the `TEXTBOOK …`/`M00-D` citations by Weibel 2.4.6
+
+## Lib/CategoryTheory/Abelian/CohomologicalDeltaFunctor/Effaceable.lean  (42 declarations, 422 lines)
+verdict: B (minor: docs/names)
+twin: Grothendieck, Tôhoku Prop. 2.2.1 (an effaceable cohomological δ-functor is universal); Weibel Thm 2.4.7 / Ex. 2.4.5; Hartshorne III.1.3A; no Mathlib twin (genuine gap)
+findings:
+- l.36–45 `EffaceableAt`, `Effaceable`, `IsUniversal` and l.415 `Effaceable.isUniversal` are exactly Tôhoku 2.2.1, universe-polymorphic over abelian `C`, `D`; 0 missing docstrings; the file is the textbook proof (effacement → cokernel short complex → `nextApp` → uniqueness)
+- l.69, 82, 86, 93 and throughout: docstrings end in "(U-E1; before (U5))", "(U-E2)" … project work-plan tags; the module docstring l.13–17 gives no reference
+- l.93 `EffaceableAt.effacement` uses `.choose` on the effaceability predicate; standard, but a `Nonempty (Effacement T m A)`-style `Effaceable` would avoid the double `choose_spec`
+- l.50 `IsUniversal.extend` is `Classical.choose` of the universality statement; fine
+- l.21 `set_option warningAsError true` in a library file
+suggestion: cite Tôhoku 2.2.1 / Weibel 2.4.7 in the module docstring and strip the `(U-En)` tags
+
+## Lib/CategoryTheory/Abelian/Injective/CompatibleResolution.lean  (69 declarations, 1285 lines)
+verdict: C (project residue: Horseshoe lemma stated as 30-component existentials tied to one consumer's proof shape)
+twin: Weibel Prop. 2.2.8 (Horseshoe lemma, dual form for injectives), Cartan–Eilenberg V.2; no Mathlib twin (Mathlib has `InjectiveResolution` but no horseshoe — genuine gap)
+findings:
+- l.230 `exists_recursive_injective_presentations`, l.484 `strict_sequence_of_recursive_presentations`, l.859 `exists_presentations_of_compatible_resolutions`, l.1095 `exists_recursive_comparison`, l.1218 `exists_strict_comparison_of_compatible_resolutions` are the five public theorems; the first is the Horseshoe lemma but returns `∃ T h0 L R eA eB eC rA rB rC, … ∧ …` with ~30 conjuncts (destructured at Connecting l.480 as a 33-name pattern); a textbook statement would be a structure `ShortComplex.InjectiveResolutions S` with `IA IB IC`, a degreewise split short exact `ShortComplex (CochainComplex C ℕ)` and augmentation compatibility
+- only 5 of 69 declarations are public theorems; the other 64 are `private`/local helpers (`presentationTower` l.847, `comparisonTower` l.1083, `columnResolution` …), so `grep -c` overstates the API
+- l.9–11, 17–19, 224–229, 478–480, 852–858, 1089–1094, 1211–1217 docstrings cite "PD-L07, PD7–PD8", "PD9", "PD-L10", "PD12 and PD13", "PD-L13": project plan coordinates, not references
+- l.390 `set_option linter.unusedVariables false in`; l.1218 signature runs past 100 columns
+- read the docstring and all five public statements plus l.218–260 and l.847–900; helpers skimmed
+suggestion: repackage the Horseshoe lemma as a structure (`ShortComplex.ShortExact.InjectiveResolutionTriple`) with named fields and derive the five theorems from it, citing Weibel 2.2.8
+
+## Lib/CategoryTheory/Abelian/Injective/Ext.lean  (20 declarations, 711 lines)
+verdict: B (minor: docs/names)
+twin: Weibel 2.7.? / Hartshorne III.1.1A and Ex. III.6.4 (Ext(P, −) as the right derived functor of Hom(P, −), computed by injective resolutions; long exact sequence in the second variable); Mathlib: `CategoryTheory.Abelian.Ext`, `InjectiveResolution.extEquivCohomologyClass` (Mathlib/CategoryTheory/Abelian/Injective/Ext.lean)
+findings:
+- l.72 `extHomologyIso` (Ext(P, A)ⁿ ≅ Hⁿ Hom(P, I•)), l.198 `extFunctorObjIsoRightDerived` (natural in `A`), l.333 `extConnecting`, l.454–531 `ext_exact₁/₂/₃`, l.617 `extConnecting_naturality` are the textbook statements, general in `[Abelian C] [EnoughInjectives C]`; 0 missing docstrings
+- l.333 `extConnecting` is defined by conjugating `rightDerivedConnecting` through the iso, so `extConnecting_eq_rightDerived` l.702 is `rfl`; the natural Mathlib statement would derive the LES from Mathlib's `Ext` triangle (`Ext.covariantSequence`/`Ext.extClass` machinery in `DerivedCategory/Ext`) rather than through classical `rightDerived`
+- l.1–8 no copyright header; l.9 docstring "Textbook source: cohomological-dimension/TEXTBOOK.md, lines 1628–1650 (C29a)" and every docstring cites "textbook lines …", "C29b/C29c", "M04": project coordinates; "native Ext" jargon
+- l.16 `local instance : HasExt.{v} C := hasExt_of_enoughInjectives.{v,v,u}` fixes the Ext universe; l.71, 83, 570 `set_option backward.isDefEq.respectTransparency false in` on public declarations
+- l.571 `ext_zero_injective` (Hom(P, −) is left exact) is `Ext.mk₀`-level; Mathlib already has `preadditiveCoyoneda` left-exactness (`Functor.PreservesFiniteLimits`)
+suggestion: replace the TEXTBOOK.md line citations by Weibel/Hartshorne references and make `HasExt.{w} C` a variable instead of a local instance
+
+## Lib/CategoryTheory/Abelian/Injective/ShortExact.lean  (7 declarations, 250 lines)
+verdict: B (minor: docs/names)
+twin: Weibel Prop. 2.2.8 step 1 (Horseshoe lemma: the middle term embeds into the biproduct of the chosen injectives), dual of the projective case; Mathlib: `ShortComplex.Splitting.ofHasBinaryBiproduct`, `Injective.factorThru`
+findings:
+- l.37 `exists_injective_biprod_embedding`, l.91 `injective_biprod_cokernel_successor`, l.239 `exists_extension_to_split_injective` are general `[Abelian C]` statements in the `ShortComplex.ShortExact` namespace; 0 missing docstrings
+- l.13–17 module docstring names no reference (Weibel 2.2.8)
+- l.80–81 `set_option backward.isDefEq.respectTransparency false in`, `backward.defeqAttrib.useBackward true in` on a public theorem; l.21 `warningAsError`
+- 4 of 7 declarations are private helpers; the three public theorems are ~50 lines each with long conjunction conclusions (l.91 returns a 9-fold `∃`)
+suggestion: cite Weibel 2.2.8 and restate l.91 as a structure or as two lemmas rather than a 9-fold existential
+
+## Lib/CategoryTheory/Abelian/Projective/DimensionEquivalence.lean  (2 declarations, 75 lines)
+verdict: B (minor: docs/names)
+twin: Weibel 4.1 (projective dimension) — invariance under equivalence is folklore; Mathlib: Mathlib/CategoryTheory/Abelian/Projective/Dimension.lean (`HasProjectiveDimensionLT`, `hasProjectiveDimensionLT_of_iso`), `Functor.mapExt_bijective_of_preservesInjectiveObjects`
+findings:
+- l.36 `Equivalence.hasProjectiveDimensionLT_functor_obj`, l.63 `…_iff` are the right Mathlib-style statements and names; both documented
+- l.32 `{C D : Type u} [Category.{v} C] [Category.{v} D]` forces the same universes for `C` and `D`; an equivalence between categories of different universes is common (Mathlib uses `Type u₁`, `Type u₂`)
+- l.37, 64 `[EnoughInjectives C] [EnoughInjectives D]` are needed only because the proof goes through `mapExt_bijective_of_preservesInjectiveObjects`; the textbook fact needs no injectives (projective resolutions transport along an additive equivalence directly; Mathlib's `hasProjectiveDimensionLT_iff` needs `HasExt`)
+- l.40–41 `let _ := HasExt.standard C` inside the proof; fine
+suggestion: use independent universes `Type u₁`/`Type u₂` and, if possible, drop the `EnoughInjectives` hypotheses via `Functor.mapExt_bijective_of_preservesProjectiveObjects`, then propose upstream
+
+## Lib/CategoryTheory/Abelian/RightDerived.lean  (5 declarations, 148 lines)
+verdict: B (minor: docs/names)
+twin: Weibel Thm 2.4.6(a) (Rⁿ F is additive) and 2.4.6(c)/Ex. 2.4.3 (a natural iso F ≅ G induces Rⁿ F ≅ Rⁿ G compatible with R⁰ ≅ F); Mathlib: `Functor.rightDerived`, `NatTrans.rightDerived`, `Functor.rightDerivedZeroIsoSelf`
+findings:
+- l.39 `Functor.rightDerived_additive` instance: general and right; but stated only for `F : A ⥤ AddCommGrpCat.{w}` where any abelian target works (Mathlib `rightDerived` needs `[Abelian D]`); same at l.70–71
+- l.79 `NatIso.rightDerived` and l.114 `rightDerived_zero_hom` are Mathlib-shaped; `rightDerived_zero_hom` needs `[PreservesFiniteLimits F] [PreservesFiniteLimits G]` only because `rightDerivedZeroIsoSelf` does — correct
+- l.25–26 global `set_option backward.isDefEq.respectTransparency false` / `backward.defeqAttrib.useBackward true` for the whole first section; l.58–64 `end … end … public section … noncomputable section` restarts the file mid-way (two `universe u v w` declarations l.22, l.65)
+- l.30–38, 73–78, 108–113 docstrings say "PD-L04", "textbook M09": project plan tags; module docstring l.13–17 has no reference and the sentence "This module retains the existing derived objects and coefficient maps" is process narrative
+suggestion: generalise the target to `[Abelian D]`, merge the two sections into one preamble, and cite Weibel 2.4.6
+
+## Lib/CategoryTheory/Abelian/RightDerived/Connecting.lean  (14 declarations, 577 lines)
+verdict: C (project residue: `AddCommGrpCat`-only target where the textbook is for any abelian category; choice-based definition)
+twin: Weibel Thm 2.4.6(b) (long exact sequence of right derived functors, naturality of δ); Hartshorne III.1.1A; no Mathlib twin for classical `rightDerived` (Mathlib has the LES only in the derived category, `HomologySequence`)
+findings:
+- l.144 `rightDerivedConnecting` is `Classical.choose (exists_boundary …)`, with l.152 `rightDerivedConnecting_eq` the "any compatible triple computes it" characterisation; a textbook definition would fix it via the Horseshoe lemma's short exact sequence of complexes and `HomologicalComplex.HomologySequence.δ`, with independence as a theorem
+- l.22, 144, 262–475 every statement takes `F : C ⥤ AddCommGrpCat.{w}`; Weibel 2.4.6 is for any abelian target (used with `Function.Injective` at l.475 and Grp-specific lemmas via `Mathlib.Algebra.Category.Grp.EpiMono`); Lib's consumers (`CohomologicalDeltaFunctor/RightDerived.lean`) inherit the restriction
+- l.520, 566 `rightDerived_hom_connecting`, `rightDerived_inv_connecting` need `[PreservesFiniteLimits F] [PreservesFiniteLimits G]`, which the naturality of δ under `α : F ≅ G` does not need mathematically
+- l.18–20 global `set_option backward.isDefEq.respectTransparency false`, `backward.defeqAttrib.useBackward true`, `linter.unusedVariables false` for the whole file; l.1–15 no module docstring at all
+- all docstrings cite "PD-L21, TEXTBOOK 1535–1540", "PD-L23", "TEXTBOOK M10": project coordinates
+- l.480–520 proofs open with a 33-name `obtain` pattern from `CompatibleResolution` (see that entry)
+suggestion: add a module docstring citing Weibel 2.4.6, generalise the target to `[Abelian D]`, and define δ from the Horseshoe short exact sequence of complexes via `HomologySequence.δ` instead of `Classical.choose`
+
+## Lib/CategoryTheory/Sites/Leray/CanonicalPositiveNeighborhoodSection.lean  (2 declarations, 93 lines)
+verdict: C (project residue: one step of the project's stalk/fibre chain, universe 0, "normalized" vocabulary)
+twin: Hartshorne III.8.1 (Rⁱf_*F is the sheaf associated to V ↦ Hⁱ(f⁻¹V, F)); Godement II.4.11; no Mathlib twin (Mathlib has no higher direct images on `TopCat` — genuine gap)
+findings:
+- l.40 `canonicalDerivedNeighborhoodSectionPositive f I n U : Hⁿ⁺¹(f⁻¹U, F) ⟶ Γ(U, Rⁿ⁺¹f_*F)` (the sheafification unit) and l.53 its compatibility with `germ` are textbook (Hartshorne III.8.1), but stated only in positive degree `n + 1`, relative to a chosen `I : InjectiveResolution F` and through Lib's `sourceCohomologyPresheaf`/`ResolutionCohomologyNormalization`
+- l.36 `{X Y : TopCat.{0}}` universe 0 throughout the Leray directory; `AbelianSheaf X` is a Lib abbreviation
+- l.9–20 docstring: "normalized Ext class", "actual higher-direct-image sheaf", "neither asserts proper base change nor …" — disclaimer prose rather than a reference; names carry `Positive`/`canonical`/`Derived` suffix-stacks (`canonicalDerivedNeighborhoodGermPositive`)
+- l.50 `set_option backward.isDefEq.respectTransparency false in`; l.27 `warningAsError`
+suggestion: state the unit `Hⁿ(f⁻¹U, F) → Γ(U, Rⁿf_*F)` for all `n` without the resolution parameter, cite Hartshorne III.8.1, and merge with `HigherDirectImageSheafification.lean`
+
+## Lib/CategoryTheory/Sites/Leray/FibreStalkEvaluation.lean  (0 declarations, 17 lines)
+verdict: B (minor: docs only — an umbrella import)
+twin: n/a (import-only file; Mathlib uses such files without docstrings, e.g. `Mathlib/Topology/Sheaves/Sheaf.lean` style umbrellas)
+findings:
+- l.9 re-exports only `FibreStalkEvaluation.CanonicalPositive`; the docstring l.11–15 promises "finite-closed neighborhood evaluation, explicit normalization-relative stalk adapters, literal constant point fibres, and positive-degree wrappers" — these come from transitive imports, and `CofinalCriterion`, `CanonicalPositiveCofinalExt`, `ConstantEvaluationBijective` in the same directory are not imported here, so the umbrella is incomplete
+- "No proper-base-change theorem is asserted": disclaimer, not documentation
+suggestion: either import every `FibreStalkEvaluation/*` file or delete the umbrella
+
+## Lib/CategoryTheory/Sites/Leray/FibreStalkEvaluation/CanonicalPositive.lean  (9 declarations, 151 lines)
+verdict: C (project residue: positive-degree-only wrappers relative to a chosen resolution; finite-closed-source hypotheses shaped for the project's branched cover)
+twin: Godement II.4.11.1 / Bredon, Sheaf Theory II.10 / Iversen III.6.2 (stalk of Rᑫf_*F at y versus cohomology of the fibre, "proper base change"); no Mathlib twin
+findings:
+- l.48 `canonicalDerivedStalkIsoPositive` ((Rⁿ⁺¹f_*F)_y ≅ stalk of the presheaf U ↦ Hⁿ⁺¹(f⁻¹U, F)) is Hartshorne III.8.1 at the stalk; l.55 `canonicalDerivedStalkEvaluationPositive : (Rⁿ⁺¹f_*F)_y ⟶ Hⁿ⁺¹(T, G)` for a "finite closed" `i : T ⟶ X` with `[T2Space T]` and `κ : F ⟶ i_*G` is the base-change map, but in the project's shape (a finite closed map into the fibre rather than the fibre inclusion of a proper map)
+- l.84 `…_isIso_of_local_lift_killPositive` is the standard "lift and kill" criterion for a colimit map to be bijective; stated ad hoc rather than as `IsIso` of a `colimit` map via `Types.FilteredColimit.isColimit_eq_iff`
+- l.105–145 `ConstantPointFibre` namespace repeats the same three declarations for the constant sheaf `TopCat.ConstantSheaf.sheaf X A` with `[T2Space X] [T1Space Y]`; l.132–145 the statement of `canonicalStalkToFibre_neighborhoodGermPositive` spells out `@AddCommGrpCat.ofHom … Ext.instAddCommGroup …` with explicit instances: unreadable as a statement
+- every statement in positive degree `n + 1` and relative to `I : InjectiveResolution F` (the docstring says so: "remain relative to the chosen injective resolution"); universe `TopCat.{0}`, `AddCommGrpCat.{0}`
+- 0 missing docstrings; docstring l.9–15 has no reference
+suggestion: state the base-change map for all degrees and independent of `I` (via `higherDirectImageSheaf` alone), and hide the instance arguments of l.132–145 behind a definition
+
+## Lib/CategoryTheory/Sites/Leray/FibreStalkEvaluation/CanonicalPositiveCofinalExt.lean  (1 declarations, 60 lines)
+verdict: C (project residue: a one-lemma file whose content is `stalk_hom_ext` along a cofinal family, in the project's positive-degree wrapper)
+twin: Mathlib `TopCat.Presheaf.stalk_hom_ext` / `germ_ext` (maps out of a stalk are determined on germs); cofinality is `Filter`/`IsCofinal` folklore
+findings:
+- l.40 `canonicalNeighborhoodGermPositive_hom_ext_of_cofinal` says two maps out of `(Rⁿ⁺¹f_*(A_X))_y` agree if they agree after `canonicalNeighborhoodGermPositive` on a cofinal family of neighbourhoods; this is `stalk_hom_ext` composed with the iso `canonicalDerivedStalkIsoPositive`, restricted to the constant sheaf with `[T2Space X] [T1Space Y]` — hypotheses irrelevant to the statement
+- l.12–15 docstring: "the formal reduction needed to replace a global special-to-nearby square by a coordinate-disc identity" — consumer narrative
+suggestion: prove a general `TopCat.Presheaf.stalk_hom_ext_of_cofinal` (any presheaf, any `y`) and derive this as a one-line corollary inside `CanonicalPositive.lean`
+
+## Lib/CategoryTheory/Sites/Leray/FibreStalkEvaluation/CofinalCriterion.lean  (2 declarations, 105 lines)
+verdict: C (project residue: positive-degree, resolution-relative, finite-closed-source packaging)
+twin: Godement II.4.11 / Bredon II.10 (the base-change map is an iso when Hᑫ(f⁻¹V) → Hᑫ(fibre) is bijective for a cofinal system of V); Mathlib: `Types.FilteredColimit` bijectivity criteria
+findings:
+- l.45 `canonicalDerivedStalkEvaluation_isIso_of_cofinal_bijectivePositive` and l.84 the constant-sheaf copy are the textbook criterion (colimit of isomorphisms is an isomorphism) in the project's wrapper: `n + 1`, `I : InjectiveResolution F`, `i hi hfinite κ` finite-closed source data
+- l.9–20 docstring is honest ("Neither theorem asserts that the local bijectivity hypothesis holds"), no reference; 0 missing docstrings
+- the two theorems could be one: the `ConstantPointFibre` version is the first with `i := fibreInclusion f y`
+suggestion: merge into `CanonicalPositive.lean` as a single all-degree criterion and cite Godement II.4.11
+
+## Lib/CategoryTheory/Sites/Leray/FibreStalkEvaluation/ConstantEvaluationBijective.lean  (2 declarations, 87 lines)
+verdict: C (project residue: `LocallyConnectedSpace (TopCat.of U)` and finite-closed-map hypotheses for one consumer)
+twin: Bredon II.9–10 (restriction of constant-sheaf cohomology to a subspace), folklore; no Mathlib twin
+findings:
+- l.37 `intrinsicOpenClass_bijective` (Hⁿ(X; A_X)|_U ≅ Hⁿ(U; A_U) for locally connected `U`) is a correct fact whose hypothesis `[LocallyConnectedSpace (TopCat.of U)]` is only there because Lib's constant sheaf is defined via locally constant functions; the textbook identification `(A_X)|_U = A_U` holds for every open `U`
+- l.64 `canonicalConstantEvaluation_bijective_of_pullback_isIso` takes `[IsIso (ConstantSheafCohomology.pullback …)]` as an instance argument on a 3-line term: an `IsIso` instance hypothesis with explicit proof arguments is unusual; a `Prop` hypothesis `hpull : IsIso …` reads better
+- l.24–25 `set_option maxHeartbeats 1000000`, `set_option linter.style.haveILetI false` file-wide; l.36, 62 the awk shows docstring lines beginning "open subspace…" (multi-line docstrings starting with `open`, harmless)
+suggestion: drop the `LocallyConnectedSpace` hypothesis by proving `(A_X)|_U ≅ A_U` for every open `U`, and fold into `ConstantNormalization.lean`
+
+## Lib/CategoryTheory/Sites/Leray/FibreStalkEvaluation/ConstantNormalization.lean  (10 declarations, 244 lines)
+verdict: C (project residue: finite-closed-map pushforward calculus tailored to the branched-cover consumer)
+twin: Bredon II.9.? / Iversen II.? (restriction and pushforward of constant sheaves along an open; naturality of Hⁿ); no Mathlib twin
+findings:
+- l.42–63 `openConstantRestrictionHom`, `openConstantRestriction_coefficient` and l.99 `intrinsicOpenClass` compare Lib's `restriction U`, `TopCat.ConstantSheaf.pushforwardHom`, `restrictionPushforwardIso`: bookkeeping between three Lib constructions, correct but with no textbook counterpart as separate statements
+- l.110–241 `cohomologyEvaluation_forward_open`, `intrinsicOpenClass_coefficient`, `canonicalConstantEvaluation`, `intrinsicConstantPullback`, `canonicalConstantEvaluation_forward`: each statement is 10–15 lines of explicit `(induced i U hU) (induced_isClosedMap i U hU hi) (induced_finite_fibres i U hU hfinite)` arguments; a bundled structure `FiniteClosedMap T X` (Mathlib style: `IsProperMap` + finite fibres) would halve every statement
+- hypotheses `[T2Space T]`, `IsClosedMap i`, `∀ x, (i ⁻¹' {x}).Finite` are the project's "finite closed map" notion; the textbook proper base change uses proper maps (Bredon II.10) — finite closed maps are a special case, but no general statement exists in Lib
+- 0 missing docstrings; docstring l.9–15 without reference; universe 0
+suggestion: introduce a bundled `FiniteClosedMap`/proper-map structure for `(i, hi, hfinite)` and restate the file's five theorems with it
+
+## Lib/CategoryTheory/Sites/Leray/DegreeZero.lean  (2 declarations, 41 lines)
+verdict: D (Mathlib already has it: `Functor.rightDerivedZeroIsoSelf`)
+twin: Hartshorne III.1.3(a)/III.8.1 (R⁰f_* = f_*); Mathlib `CategoryTheory.Functor.rightDerivedZeroIsoSelf` (Mathlib/CategoryTheory/Abelian/RightDerivedZero.lean)
+findings:
+- l.31 `higherDirectImageZeroIsoPushforward f := (pushforward f).rightDerivedZeroIsoSelf` and l.36 its `.app F`: two names for one Mathlib declaration, over `TopCat.{0}`
+- l.9–17 docstring is four lines of disclaimers ("does not compute…, identify…, construct…, or specialize…") for a two-line file
+- imports `ResolutionTransgression` (263 lines) only to reach the `higherDirectImage` abbreviation
+suggestion: delete the file and use `(pushforward f).rightDerivedZeroIsoSelf` at the call sites (or keep a one-line `abbrev` next to `higherDirectImage`)
+
+## Lib/CategoryTheory/Sites/Leray/FibreStalkEvaluation/ConstantNormalizationConsequences.lean  (1 declarations, 67 lines)
+verdict: C (project residue: one-lemma file gluing two project definitions)
+twin: none: no textbook counterpart (an identity between two Lib-defined maps)
+findings:
+- l.37 `canonicalConstantEvaluation_eq_intrinsicConstantPullback` states that two Lib constructions (`canonicalConstantEvaluation`, `intrinsicConstantPullback`, both from `ConstantNormalization.lean`) agree; it should be a lemma in that file, ideally making one of them a definition of the other
+- l.38 `[LocallyConnectedSpace (TopCat.of U)]` inherited from Lib's constant-sheaf restriction (see `ConstantEvaluationBijective` entry)
+- docstring l.9–14 "native constant-sheaf pullback of its intrinsic normalized class": project jargon, no reference
+suggestion: fold into `ConstantNormalization.lean` and define `canonicalConstantEvaluation` as `intrinsicConstantPullback` if they coincide
+
+## Lib/CategoryTheory/Sites/Leray/FibreStalkEvaluation/ConstantPointFibre.lean  (10 declarations, 122 lines)
+verdict: C (project residue: `Fibre f y` as a bare subtype with hypotheses tailored to a finite map; constant-sheaf copy of `Stalk.lean`)
+twin: Godement II.4.11 / Bredon II.10 specialised to the fibre `f⁻¹(y)` and constant coefficients; no Mathlib twin
+findings:
+- l.38–57 `Fibre f y := f ⁻¹' {y}`, `fibreInclusion`, `fibreInclusion_isClosedMap` (`[T1Space Y]`), `fibreInclusion_finite_fibres` are generic and reasonable, but `Fibre` shadows nothing in Mathlib and would be `TopCat.of (f ⁻¹' {y})` inline
+- l.64 `ConstantNormalization` abbreviation and l.71, 87, 98 `stalkToFibre`, `neighborhoodGerm`, `stalkToFibre_neighborhoodGerm` re-instantiate `Stalk.lean`'s `derivedStalkEvaluation`/`derivedNeighborhoodGerm` for `TopCat.ConstantSheaf.sheaf X A` and `i := fibreInclusion`: a specialisation file
+- l.76–80, l.102–114 statements written with `@AddCommGrpCat.of … (cohomologyAddCommGroup …)` and `@AddCommGrpCat.ofHom … Ext.instAddCommGroup …`: explicit instance arguments in a public statement signal an instance-diamond workaround that should be fixed at the source (`Sheaf.H` vs `Ext` group structures)
+- 3 missing docstrings (l.44 `fibreInclusion_injective`, l.52 `fibreInclusion_finite_fibres`, l.57 `map_fibreInclusion`); universe 0
+suggestion: resolve the `Sheaf.H`/`Ext` `AddCommGroup` instance mismatch so the statements can be written with plain `AddCommGrpCat.ofHom`, and merge with `Stalk.lean`
+
+## Lib/CategoryTheory/Sites/Leray/FibreStalkEvaluation/Neighborhood.lean  (25 declarations, 299 lines)
+verdict: C (project residue: finite-closed-map pushforward with integral representing sheaf; free-open Yoneda calculus specific to Lib's `Sheaf.H'`)
+twin: Bredon II.9.? / Iversen II.? (Hⁿ(U, i_*G) = Hⁿ(T, G) for a finite (proper) map `i` with image in `U`, via exactness of `i_*`); Mathlib: `TopCat.Sheaf.pushforward`, `preadditiveCoyoneda` — no cohomology of `TopCat` sheaves in Mathlib (genuine gap)
+findings:
+- l.136–153 `neighborhoodCohomologyForward`, `neighborhoodCohomologyEquiv : H'ⁿ(U, i_*G) ≃+ Hⁿ(T, G)` is the textbook statement (exact pushforward preserves cohomology) for `[T2Space T]`, `IsClosedMap i`, finite fibres; a textbook would assume `i` proper (or finite) and state it for the sheaf-cohomology functor rather than via the `freeOpen U`/`integralSheaf` representing objects
+- l.38–124 `freeOpenFunctor`, `sectionsEquiv`, `neighborhoodHomEquiv`, `neighborhoodUnit` (Hom(ℤ_T, G) ≃ Hom(ℤ_U, i_*G)) are Yoneda bookkeeping for Lib's definition `H'ⁿ(U, F) := Ext(ℤ_U, F)` — needed only because of that definition
+- l.175 `private theorem comparison_precompose` is a generic `Ext.ExactFunctorComparison` fact for any exact `R : C ⥤ D`, hidden as private
+- l.268–291 `coefficientMap`, `cohomologyEvaluation`, `cohomologyEvaluation_restrict` are the evaluation `H'ⁿ(U, F) → Hⁿ(T, G)` along `κ : F ⟶ i_*G` and its restriction compatibility: fine
+- 2 missing docstrings (l.159 `neighborhoodCohomologyEquiv_symm_apply`, l.280 `cohomologyEvaluation_apply`, both simp); universe 0; docstring has no reference and ends "No proper-base-change … is made"
+suggestion: state `neighborhoodCohomologyEquiv` for a bundled proper/finite map and make `comparison_precompose` a public lemma in the `Ext.ExactFunctorComparison` namespace
+
+## Lib/CategoryTheory/Sites/Leray/FibreStalkEvaluation/OpenRestrictionComposition.lean  (12 declarations, 206 lines)
+verdict: C (project residue: bookkeeping between Lib's `restriction U`, `induced`, `FiniteClosedPushforward.cohomologyForward`)
+twin: folklore ((i_*G)|_U = (i')_*G for the induced map `i' : T → U` when `i(T) ⊆ U`); Mathlib: `TopCat.Sheaf.pushforward`, `Opens.map`, `TopCat.Presheaf.restrict` — no twin statement
+findings:
+- l.40–58 `induced i U hU : T ⟶ TopCat.of U`, `induced_isClosedMap`, `induced_finite_fibres` are generic; Mathlib spells this `TopCat.ofHom ⟨Set.codRestrict i U hU, …⟩`/`Set.MapsTo.restrict`
+- l.83 `restrictionPushforwardIso : pushforward i ⋙ restriction U ≅ pushforward (induced i U hU)` is the file's content and is a correct textbook-level identity; l.98–174 are its unfoldings, with `eqToHom` at l.101
+- l.142 `restrictionPushforwardIso_neighborhoodUnit` is stated against `AddCommGrpCat.of (ULift.{0} ℤ)` — the `ULift ℤ` coefficient group leaks Lib's universe handling into a statement
+- 0 missing docstrings; docstring l.9–15 has no reference and the usual disclaimer
+suggestion: keep `induced` + `restrictionPushforwardIso` as a short general file under `Topology/Sheaves/` and move the cohomology comparison l.164 next to `FiniteClosedPushforward.Cohomology`
+
+## Lib/CategoryTheory/Sites/Leray/FibreStalkEvaluation/Stalk.lean  (13 declarations, 208 lines)
+verdict: C (project residue: "normalization-relative" adapters parametrised by a chosen natural iso `ρ`)
+twin: Godement II.4.11 / Hartshorne III.8.1 at the stalk ((Rⁿf_*F)_y = colim_{U∋y} Hⁿ(f⁻¹U, F)); Mathlib: `TopCat.Presheaf.stalk`, `Types.FilteredColimit`
+findings:
+- l.43 `sourceCohomologyPresheaf f n := (Opens.map f).op ⋙ cohomologyPresheaf F n` (U ↦ Hⁿ(f⁻¹U, F)) and l.61–94 `evaluationCocone`, `presheafStalkEvaluation`, `presheafStalkEvaluation_germ` are the textbook colimit map to fibre cohomology, stated for the finite-closed source `(i, hi, hfinite, κ)`
+- l.96 `ResolutionCohomologyNormalization f I n := homologyPresheaf (pushedResolution f I) n ≅ sourceCohomologyPresheaf f n` and l.101–186 `derivedStalkIso`, `derivedStalkEvaluation`, `derivedNeighborhoodGerm`, `derivedStalkEvaluation_isIso_of_local_lift_kill` all take an explicit `ρ`; `ResolutionCohomologyPresheaf.lean` then supplies `ρ` in positive degrees, and `CanonicalPositive.lean` re-exports the same five declarations with `ρ` filled in — three files for one construction
+- l.151 `presheafStalkEvaluation_bijective_of_local_lift_kill` is the filtered-colimit bijectivity criterion (`Types.FilteredColimit.isColimit_eq_iff`/`jointly_surjective`) restated with explicit lift/kill hypotheses; fine but Mathlib-derivable
+- 0 missing docstrings; docstring l.9–14 "does not choose such a normalization and does not assert proper base change"; universe 0
+suggestion: remove the `ρ` parameter by defining the comparison once through `higherDirectImageResolutionStalkIso` and delete `CanonicalPositive.lean`'s re-exports
+
+## Lib/CategoryTheory/Sites/Leray/HigherDirectImageSheafification.lean  (19 declarations, 194 lines)
+verdict: C (project residue: universe-0, generic homological algebra mixed with the sheaf statement, resolution-dependent form)
+twin: Hartshorne III.8.1 (Rⁱf_*F is the sheafification of V ↦ Hⁱ(f⁻¹V, F)); Godement II.4.17.1; Mathlib: `Functor.rightDerived`, `TopCat.Presheaf.stalkFunctor`, `ShortComplex.mapHomologyIso` — no higher direct images (genuine gap)
+findings:
+- l.149 `higherDirectImageResolutionSheafificationIso : Rⁿf_*F ≅ sheafify (U ↦ Hⁿ(Γ(f⁻¹U, I•)))` is Hartshorne III.8.1 in the resolution form, and l.185 its stalk version; correct and general in `f`, `F`, `n` — good
+- l.41, 48 `presheafStalk_preservesFiniteLimits/Colimits` (stalk functor is exact), l.60–82 `mapComplexHomologyIso` (an exact functor commutes with `HomologicalComplex.homology`, for any `C`, `D`, `c`), l.110–141 `sheafification` exactness instances and `sheafHomologyIsoSheafification`: four generic results that belong in `Algebra/Homology/` and `Topology/Sheaves/Stalks`; Mathlib has `HomologicalComplex.homologyMap` naturality and `ShortComplex.mapHomologyIso`, from which `mapComplexHomologyIso` is a two-liner
+- l.37, 110, 145 `TopCat.{0}`, `AddCommGrpCat.{0}`; the generic block l.56–82 is `Type*` (inconsistent with the rest)
+- 3 missing docstrings (l.41, 48 instances, l.114 `sheafification_additive`); docstring names the "standard local description" but no reference
+suggestion: cite Hartshorne III.8.1, move `mapComplexHomologyIso` and the stalk/sheafification exactness instances to their Mathlib-shaped homes, and state the main iso independently of `I` via `homologyPresheaf (pushedResolution f I) n ≅ sourceCohomologyPresheaf f n`
+
+## Lib/CategoryTheory/Sites/Leray/ResolutionAbutment.lean  (8 declarations, 162 lines)
+verdict: C (project residue: one step of the project's Leray spectral-object assembly; K-injectivity through Lib's derived-category layer)
+twin: Godement II.4.17 / Weibel 5.8.6 (Leray spectral sequence abutting to Hⁿ(X, F)); the abutment identification `H^n(RΓ(Y, Rf_*F)) = H^n(X, F)` is Hartshorne III.8 Ex. / Weibel 10.8.? (Grothendieck spectral sequence for Γ_Y ∘ f_*); Mathlib: `CochainComplex.IsKInjective`, `Functor.PreservesInjectiveObjects`
+findings:
+- l.64 `pushforwardPreservesInjectiveObjects` (f_* preserves injectives, right adjoint to exact f⁻¹) is a textbook lemma (Hartshorne III.2.? / Weibel 2.3.10) stated for `TopCat.{0}`; l.78 `mappedExtendedResolution_isKInjective` (bounded-below complex of injectives is K-injective) is Mathlib-level general (`CochainComplex.isKInjective_of_injective`?) — both belong outside the Leray directory
+- l.97, 120 `integralCoyonedaPushforwardIso` (Hom(ℤ_Y, f_*K) ≅ Hom(ℤ_X, K)) is the adjunction `f⁻¹ℤ_Y = ℤ_X`; generic
+- l.128 `resolutionDerivedHomCohomologyEquiv` and l.154 `resolutionPostnikovTotalCohomologyEquiv` identify the total term of the project's `resolutionPostnikovSpectralObject` with `Hⁿ(X, F)`: the statement is meaningful only relative to Lib's spectral object (`ComposableArrows.mk₁ (homOfLE bot_le)` on `EInt`)
+- l.45 `attribute [local instance] HasDerivedCategory.standard`; l.93–94 `set_option backward.*` on the main iso; docstring l.9–29 is careful and honest, no reference; 0 missing docstrings
+suggestion: move `pushforwardPreservesInjectiveObjects`, the K-injectivity instance, and `integralCoyonedaPushforwardIso` to general files, leaving the abutment identification with a Godement II.4.17 citation
+
+## Lib/CategoryTheory/Sites/Leray/ResolutionCohomologyPresheaf.lean  (21 declarations, 254 lines)
+verdict: C (project residue: positive-degree-only comparison forced by Lib's `H'` definition; generic exactness facts mixed in)
+twin: Hartshorne III.8.1 proof (the presheaf U ↦ Hⁿ(Γ(U, I•)) is U ↦ Hⁿ(U, F|_U)); Godement II.4.? ; Mathlib: `preadditiveCoyoneda`, `Functor.mapHomologicalComplex`, `evaluation` exactness
+findings:
+- l.195 `resolutionCohomologyPresheafIsoPositive : homologyPresheaf I.cocomplex (n+1) ≅ cohomologyPresheaf G (n+1)` and l.243 its pushed version are the file's content; the restriction to `n + 1` is an artefact of Lib's `H'ⁿ(U, F) := Ext(ℤ_U, F)` in degree 0 vs sections (degree 0 needs `Γ(U, F) = Hom(ℤ_U, F)`, which is also true) — the textbook statement is for all `n`
+- l.44–96 `freeOpenFunctor`, `sectionsFunctor`, `freeOpenSectionsIso`, `presheafEvaluation` exactness, `homSectionsComplexIso`: generic Yoneda/exactness facts (evaluation at `U` is exact on presheaves, `Hom(ℤ_U, −) = Γ(U, −)` on sheaves) that Mathlib has in pieces (`evaluation` preserves limits/colimits: `evaluationPreservesLimits`)
+- l.211–225 `presheafPushforward` and its exactness — generic, Mathlib-level (`TopCat.Presheaf.pushforward` is a precomposition, hence exact)
+- 7 missing docstrings (l.64, 74, 78, 83, 215, 218, 224 — the exactness lemmas); universe 0
+suggestion: extend the comparison to degree 0 and split the generic exactness lemmas into `Topology/Sheaves/Presheaf/Exact.lean`
+
+## Lib/CategoryTheory/Sites/Leray/ResolutionPostnikov.lean  (14 declarations, 185 lines)
+verdict: C (project residue: Leray E₂-page built from a chosen resolution, universe-lifted `ULift.{1}` groups, workflow narrative in docstring)
+twin: Godement II.4.17.1 / Weibel 5.8.6 (Leray spectral sequence E₂ᵖᑫ = Hᵖ(Y, Rᑫf_*F) ⇒ Hᵖ⁺ᑫ(X, F)), constructed via the Postnikov (t-structure) tower as in Kashiwara–Schapira, Categories and Sheaves §12/13 / Verdier; Mathlib: `E₂CohomologicalSpectralSequenceNat`, `DerivedCategory.TStructure.t`, `SpectralObject` (Riou)
+findings:
+- l.97, 104 `resolutionPostnikovSpectralObject`, `resolutionPostnikovSpectralSequence` and l.166, 179 `resolutionPostnikovE₂Iso : E₂.X (p,q) ≅ ULift.{1} (E₂ f F p q)`, `resolutionPostnikovE₂AddEquiv` are the textbook page identification; the `ULift.{1}` in a statement is a universe artefact of Lib's `DerivedCategory` instance on `AbelianSheaf Y` (`TopCat.{0}` sheaves in `Type 1` derived category)
+- l.56–61 `pushedResolutionDerivedObject f I`, `integralDerivedObject Y` depend on a chosen `I`; l.79–92 the homology identification with `Rᑫf_*F` is Hartshorne III.8 via `higherDirectImageResolutionIso`
+- l.9–34 docstring: "This is the page-construction owner… supplied downstream by the … owners", "The literal page-two differential is expanded downstream in …": project workflow narrative naming five sibling files; no reference
+- l.50 `attribute [local instance] HasDerivedCategory.standard`; 0 missing docstrings; `TopCat.{0}` throughout
+suggestion: cite Godement II.4.17/Weibel 5.8.6, replace the "owner" paragraph by a `## Main results` list, and state the E₂ page without `ULift` by working in one universe
+
+## Lib/CategoryTheory/Sites/Leray/ResolutionPostnikovD2.lean  (1 declarations, 60 lines)
+verdict: C (project residue: one-lemma file specialising a generic Postnikov d₂ formula to the pushed resolution)
+twin: Postnikov/t-structure spectral object d₂ as the connecting map of the two-slice triangle (Kashiwara–Schapira 12.? / Verdier, Ex. II.4.3); no Mathlib twin
+findings:
+- l.45 `resolutionPostnikovE₂_d₂_eq` is `coyonedaPostnikovD₂SourcePageIso ≫ homologySequenceδ (triangleω₁δ …) ≫ TargetPageIso.inv` applied to `pushedResolutionDerivedObject f I`: an instance of Lib's generic `Algebra/Homology/SpectralObject/PostnikovD2` result, whose statement would be read off by `rfl`/`simp` at the call site
+- l.9–20 docstring is again a routing paragraph ("supplied downstream by …", "This owner exposes …")
+- 12-line signature with `(by simp) (by simp)`, `(by omega)` proof terms inside the statement
+suggestion: fold into `ResolutionPostnikov.lean` as a `@[simp]` lemma
+
+## Lib/CategoryTheory/Sites/Leray/ResolutionPostnikovD2Coordinates.lean  (2 declarations, 177 lines)
+verdict: C (project residue: two coordinate-matching lemmas for the project's d₂, with 3.2M-heartbeat proofs)
+twin: none: no textbook counterpart (identification of Lib's `resolutionExtZeroIso`/`resolutionCohomologyIso` with Lib's `coyonedaPostnikovD₂Source/TargetExt`)
+findings:
+- l.46 `resolutionPostnikovE₂AddEquiv_source_coordinate`, l.109 `…_target_coordinate` state that two Lib-defined identifications of E₂⁰'ᑫ⁺¹ and E₂²'ᑫ agree up to `extendHomologyIso`; correct bookkeeping for `D2Transgression`, no independent meaning
+- l.41, 104 `set_option maxHeartbeats 3200000 in`, `1600000 in`; l.42 `backward.isDefEq.respectTransparency false in`: the proofs are 60 and 70 lines of `erw`/`simp` on `eqToHom`s; the docstring says "keep the non-definitional total-degree transports visible"
+- 0 missing docstrings; docstring l.9–14 has no reference
+suggestion: merge with `ResolutionPostnikovD2Transgression.lean` and try to make the coordinate isos definitional so the heartbeat overrides can go
+
+## Lib/CategoryTheory/Sites/Leray/ResolutionPostnikovD2Transgression.lean  (1 declarations, 80 lines)
+verdict: C (project residue: one lemma, global 1.6M heartbeats, identifies d₂ with the project's "two-step transgression")
+twin: Godement II.4.17 / Weibel 5.8.6 (d₂ : H⁰(Y, Rᑫ⁺¹f_*F) → H²(Y, Rᑫf_*F) is the transgression); no Mathlib twin
+findings:
+- l.44 `resolutionPostnikovE₂_d₂_eq_transgression` is the mathematically meaningful statement of the `ResolutionPostnikov*` cluster: the Leray d₂ on the edge equals `resolutionTransgressionAddOfResolution` (the connecting map of the two-step Ext resolution); it is stated only at bidegree `(0, q+1) → (2, q)`
+- l.27 `set_option maxHeartbeats 1600000` file-wide; l.41 `backward.isDefEq.respectTransparency false in`
+- docstring l.9–14: "No convergence or support hypothesis is used" — disclaimer, no reference
+suggestion: make this the headline theorem of a merged `ResolutionPostnikovD2.lean` with a Godement II.4.17 citation
+
+## Lib/CategoryTheory/Sites/Leray/ResolutionTransgression.lean  (27 declarations, 263 lines)
+verdict: C (project residue: basic Leray definitions mixed with the project's chosen-resolution "transgression"; `E₂` defined as a bare `Type` in universe 0)
+twin: Hartshorne III.8 (Rⁱf_* as right derived functors of f_*), Godement II.4.17 (Leray d₂ as transgression); Mathlib: `Functor.rightDerived`, `TopCat.Sheaf.pushforward`, `CategoryTheory.Sheaf.H` (Mathlib/CategoryTheory/Sites/SheafCohomology/Basic.lean)
+findings:
+- l.44–78 `AbelianSheaf X`, `integralSheaf`, `abelianSheafHasExt`, `pushforward f`, `higherDirectImage f n := (pushforward f).rightDerived n`, `higherDirectImageSheaf` are the definitions the whole directory uses; they are Hartshorne III.8 and Mathlib-shaped, but pinned to `TopCat.{0}`/`AddCommGrpCat.{0}` and should live in their own `Leray/Basic.lean`
+- l.93 `abbrev E₂ f F a b : Type := Sheaf.H (higherDirectImageSheaf f F b) a` with the arguments in `(a, b) = (p, q)` order but named `a b`; universe-0 `Type`
+- l.152–259 `resolutionTransgressionMorphismOfResolution`, `resolutionTransgressionAdd`, `resolutionTransgression f F n : E₂ f F 0 (n+1) →ₗ[ℤ] E₂ f F 2 n` (via `injectiveResolution F`) plus four `_apply_ne_zero_iff_connectingTwo` lemmas: the same map packaged four times (as `AddCommGrpCat` morphism, `→+`, `→ₗ[ℤ]`, with/without `I`); the `≠ 0 ↔ ≠ 0` lemmas exist for one consumer's nonvanishing argument
+- docstring l.9–21 correctly disclaims ("does not construct a Leray spectral sequence… independence from the chosen resolution"), no reference; 0 missing docstrings
+suggestion: split the definitions l.44–92 into `Leray/Basic.lean` (universe-polymorphic), keep one packaging of the transgression, and derive the `ne_zero_iff` lemmas at the call site
+
+## Lib/CategoryTheory/Sites/Leray/SheafificationNeighborhoodGerm.lean  (1 declarations, 94 lines)
+verdict: C (project residue: one coherence lemma between three Lib adapters)
+twin: none: no textbook counterpart (compatibility of `derivedNeighborhoodGerm` with `SheafificationLocal` germs)
+findings:
+- l.43 `derivedNeighborhoodGerm_eq_germ_of_localRepresentative` relates Lib's `derivedNeighborhoodGerm f y I n rho U hy` to the sheafification-unit germ of a local representative; it depends on the `ρ`-parametrised adapters of `Stalk.lean` and on `SheafificationStalkCompatibility`
+- l.9, 11 mixed `import`/`public import` of two Lib sheafification files; l.39–40 `set_option backward.*` on the theorem; the 40-line signature is unreadable without the three imported files
+- docstring l.9–16 disclaimer paragraph, no reference
+suggestion: fold into `SheafificationStalkCompatibility.lean` (or `Stalk.lean`) once the `ρ` parameter is removed
+
+## Lib/CategoryTheory/Sites/Leray/SheafificationStalkCompatibility.lean  (7 declarations, 251 lines)
+verdict: C (project residue: coherence between two Lib-defined stalk isomorphisms, universe 0, `set_option backward.*` on four declarations)
+twin: Hartshorne II.1.2 / Godement II.1.? (sheafification preserves stalks) and exactness of stalks; Mathlib: `TopCat.Presheaf.stalkFunctor`, `Sheaf.forget`, `toSheafification`, `TopCat.Presheaf.stalkToFiber`
+findings:
+- l.39–66 `stalkSheafificationUnitNatTrans` (stalk of `P` → stalk of `P⁺`) and l.120 `stalkHomologyPresheafIso_hom_comp_sheafificationUnit` are generic sheaf facts (Mathlib has `TopCat.Presheaf.stalkPushforward`/`Sheafification` stalk isos in `Mathlib/Topology/Sheaves/Stalks.lean`); l.71 `mapComplexHomologyIso_sheafification_stalk_comp` is a functoriality of the generic `mapComplexHomologyIso` (composition of exact functors), which belongs with that definition
+- l.199, 213 `higherDirectImageResolutionSheafificationStalkIso` and its equality with `higherDirectImageResolutionStalkIso`: the file's purpose is to show two Lib constructions of the same iso agree — a sign that one should be defined from the other
+- l.36–37, 68–69, 89–90 `set_option backward.defeqAttrib.useBackward true in`/`backward.isDefEq.respectTransparency false in` on four declarations; l.9 `import Lib.Algebra.Homology.FunctorCoherence` (non-public)
+- docstring calls these "generic categorical coherence statements" and adds the disclaimer; 0 missing docstrings
+suggestion: define `higherDirectImageResolutionStalkIso` once (via sheafification) so l.213 is `rfl`, and move the generic stalk/sheafification lemmas to `Topology/Sheaves/`
+
+## Lib/CategoryTheory/Sites/Leray/StalkLocalCriterion.lean  (2 declarations, 61 lines)
+verdict: B (minor: docs/names — generic lemma misplaced under `Leray`)
+twin: filtered-colimit criterion for bijectivity (Mathlib `Types.FilteredColimit.isColimit_eq_iff`, `TopCat.Presheaf.germ_exist`, `TopCat.Presheaf.germ_eq`); folklore (Godement II.1.1)
+findings:
+- l.36 `stalkMap_bijective_of_local_lift_kill`: a map `m` out of `P.stalk x` compatible with a family `e U hx : P.obj U → A` is bijective iff every element lifts locally and every local kernel element dies after shrinking — a general statement for any `TopCat.Presheaf AddCommGrpCat X`, correctly parametrised; the docstring is good
+- l.27 namespace `CategoryTheory.Sheaf.Leray` and directory `Sites/Leray` for a lemma about `TopCat.Presheaf.stalk` with no Leray content; Mathlib would put it in `Topology/Sheaves/Stalks.lean` as `TopCat.Presheaf.stalk_bijective_of_forall_germ`
+- l.29 `TopCat.{0}`, `AddCommGrpCat.{0}`: the argument is universe-polymorphic; 1 declaration without docstring (a `variable`-section helper)
+suggestion: move to `Lib/Topology/Sheaves/Stalks/LocalCriterion.lean` under `TopCat.Presheaf`, universe-polymorphic, and propose upstream
+
+## Lib/CategoryTheory/Triangulated/CoyonedaTriangleShift.lean  (7 declarations, 174 lines)
+verdict: B (minor: docs/names)
+twin: Mathlib/CategoryTheory/Triangulated/Yoneda.lean (`preadditiveCoyoneda_homologySequenceδ_apply`), `Triangle.shiftFunctor` (Mathlib/CategoryTheory/Triangulated/TriangleShift.lean); Neeman, Triangulated Categories Rem. 1.1.?/Def. of the shifted triangle sign
+findings:
+- l.75 `triangleShift_mor₃` (`rfl`), l.84 `triangleShift_mor₃_comp_shiftFunctorAdd_inv`, l.101 `preadditiveCoyoneda_homologySequenceδ_shift_zero` (δ of `T⟦n⟧` in degrees 0→1 is `n.negOnePow •` δ of `T` in degrees n→n+1) are correct general `[Preadditive C] [HasShift C ℤ]` statements with Mathlib names; l.43 `_reindex_apply` and l.159 `_shift_iso_of_eq` are `eqToHom`/degree-renaming conveniences, acceptable
+- l.20–22 docstring "the exact parity factor needed when an adjacent Postnikov triangle is shifted": consumer-motivated sentence, otherwise fine; no reference (Neeman/Verdier sign conventions)
+- l.40, 81, 98, 127, 155 `set_option backward.isDefEq.respectTransparency false in` on five of seven lemmas: a defeq workaround that upstream would want removed
+- 0 missing docstrings; universe-polymorphic; namespace `CategoryTheory.Pretriangulated` matches Mathlib
+suggestion: remove the `respectTransparency` overrides (or explain them) and propose `triangleShift_mor₃_comp_shiftFunctorAdd_inv` and `…_shift_zero` upstream into `Triangulated/Yoneda.lean`
+
+## Lib/Data/Int/SignedResidual.lean  (1 declarations, 17 lines)
+verdict: D (proof-specific: one linear-combination identity with the project's constants 3, −4, 12)
+twin: none: no textbook counterpart (a `linear_combination`/`omega` one-liner)
+findings:
+- l.11 `Int.signed_residual_coordinate_zero : 3u = k → −4v = k → u + v = dk → k = 0`: the constants are the project's (the `(12d − 1)k = 0` computation); no general statement (e.g. `a*u = k`, `b*v = k`, `u + v = d*k`, `(a+b) ∤ …`) is extracted
+- l.8–10 docstring cites "`CENTER_NATIVE_H5_VANISHING_TEXTBOOK.md`, HV10": a project document, not a textbook; name `signed_residual_coordinate_zero` names no mathematical object; placed in Mathlib's `Int` namespace and directory `Data/Int/`
+- l.1–3 no copyright header; `import Mathlib.Tactic.LinearCombination` non-public
+suggestion: move to `Hopf/Proof` (inline at the single use site with `linear_combination`)
+
+## Lib/Geometry/Manifold/ChartedSpace/LocallyContractible.lean  (1 declarations, 36 lines)
+verdict: B (minor: docs/names)
+twin: folklore (manifolds are locally contractible; Hatcher Prop. A.? / Lee Thm 1.? for manifolds); Mathlib: `StronglyLocallyContractibleSpace.of_open_neighborhoods`, `IsOpenEmbedding.stronglyLocallyContractibleSpace` (Lib's `Topology/Homotopy/LocallyContractible`)
+findings:
+- l.26 `chartedSpaceStronglyLocallyContractible (H M) [ChartedSpace H M] [StronglyLocallyContractibleSpace H] : StronglyLocallyContractibleSpace M` is the right general statement and a six-line proof; it should be an `instance` (Mathlib would write `instance ChartedSpace.stronglyLocallyContractibleSpace` — as stated, `H` is not determined by `M`, so an instance needs `H` outParam-free handling; a theorem is defensible)
+- name lacks the `ChartedSpace.` namespace and Mathlib's `_of_` pattern; docstring present; no reference
+suggestion: rename to `ChartedSpace.stronglyLocallyContractibleSpace` and propose upstream together with `Topology/Homotopy/LocallyContractible.lean`
+
+## Lib/Geometry/Manifold/ChartedSpace/Transport.lean  (3 declarations, 68 lines)
+verdict: B (minor: docs/names)
+twin: folklore (transport of a smooth structure along a homeomorphism); Mathlib: `OpenPartialHomeomorph.lift_openEmbedding`, `IsOpenEmbedding.singletonChartedSpace`, `ChartedSpace.comp`
+findings:
+- l.40 `ManifoldAtlasTransport.chartedSpace (h : M ≃ₜ N) : ChartedSpace H N` and l.58 `isManifold` (transported structure is `C^n` for the same model) are correct and general (`𝕜`, `E`, `H`, `n : ℕ∞ω`); l.50 `transition_eq` is the key lemma
+- namespace `ManifoldAtlasTransport` is not a mathematical object; Mathlib would use `Homeomorph.transferChartedSpace`/`ChartedSpace.transport` and make l.58 an instance-producing `def`
+- l.12–14 docstring promises "the criteria for two transported structures to coincide" — no such declaration exists (3 declarations only); stale sentence
+- l.8 `import Mathlib`; l.19–34 kitchen-sink preamble (`maxSynthPendingDepth 3`, `open scoped … Modular … UpperHalfPlane`, `universe u v` unused, `Path.trans`/`SlashAction` local notation) for a 30-line file
+suggestion: rename to `Homeomorph.transferChartedSpace`/`Homeomorph.isManifold_transfer`, delete the stale "criteria" sentence and the preamble, and propose upstream
+
+## Lib/Geometry/Manifold/Collar.lean  (147 declarations, 2550 lines)
+verdict: C (project residue: six unrelated topics in one file, project-shaped statements, plan narrative in docstring)
+twin: Lee, Introduction to Smooth Manifolds Thm 6.24 (tubular neighbourhood theorem), Thm 9.25 (collar neighbourhood theorem), Hirsch Ch. 4 §5–6; Milnor h-cobordism §2–3 (level transport by gradient-like flows); no Mathlib twin (genuine gap for tubular neighbourhoods and collars)
+findings:
+- l.9–41 docstring cites Lee Ch. 10/Thm 6.24 but also "in the level-transport form used by the recognition development. (The plan's Tubular.lean is folded here; see Lib/reports/A.md.)": project process narrative; 0 missing docstrings
+- l.582 `NativeEuclideanEmbedding.exists_tubularNeighborhood` and l.1639 `exists_tubularNeighborhood_in_open_of_embedded_closedBall` are the tubular neighbourhood theorem, the second in a specialised form (an embedded closed unit ball `f : D → M` with `finrank D + n = finrank E`, inside a given open `O`, on a compact `M`); the textbook statement is for any embedded submanifold; `NativeEuclideanEmbedding` (a Lib structure: `M` embedded in Euclidean space) is the project's route via Whitney embedding rather than a normal bundle on `M` intrinsically
+- l.1707, 1781 `RegularLevel.exists_transverseCollar`, `exists_heightCollar` (Lee 9.25 in the regular-level form, with `letI := chartedSpace hf hreg` in the statement), l.2185–2496 `exists_ambientTransport_of_heightCollar`, `exists_nearby_ambient_level_diffeomorphs`, `AmbientEquivalent`, `exists_levelDiffeomorph_of_ambient`: level-transport machinery (Milnor h-cobordism §3) — a second topic
+- l.886–1660 `DiskFraming.*` (smooth frames along a star-convex set, `SmoothRangeTransportOn`, `isOpen_forall_compact` l.1139 and `homotopyTransportDomain` l.1157 at root namespace), l.1875–1990 `SmallPerturbation.*` (`id + small` is a diffeomorphism, bump translations), l.1994–2170 `SupportedDiffeomorph.*` (extension by the identity of a compactly supported diffeomorphism in a chart), l.2532 `SphereCoordinates.ofLinearIsometry`: four further topics, each Mathlib-shaped on its own
+- l.8–23 `import Mathlib` plus 16 Lib imports including `Morse.HandleAttachment`, `Topology.Homotopy.HandleRetraction`, `WhitneyEmbedding`: a collar file should not depend on handle attachment; l.36 `set_option maxSynthPendingDepth 3`; all manifolds are `𝓘(ℝ, E)`, `[CompactSpace M]` where Lee's theorems need no compactness (216 occurrences)
+- statements read in full; l.79–130, 582–600, 1639–1660, 1707–1716 read; pattern clear
+suggestion: split into `Tubular.lean` (l.79–660, 1639), `Collar.lean` (l.673–860, 1690–1870), `SupportedDiffeomorph.lean` (l.1875–2170) and `LevelTransport.lean` (l.2175–2530), state the tubular and collar theorems for non-compact `M` as in Lee 6.24/9.25, and delete the plan narrative
+# done 63 files

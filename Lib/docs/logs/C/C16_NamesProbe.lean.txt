@@ -1,0 +1,24 @@
+import Hopf.LibShims
+import Lib.AlgebraicTopology.Hurewicz.Naturality
+import Lib.Topology.Homeomorph.DiskCube
+import Solution
+
+#check Mathoverflow1973.SecondHurewicz.mapGenLoop
+#check Mathoverflow1973.Hurewicz.DegreeTwo.mapGenLoop
+#check Mathoverflow1973.SecondHurewicz.SimplyConnected.hurewiczPi2Equiv
+#check Mathoverflow1973.Hurewicz.DegreeTwo.SimplyConnected.hurewiczPi2Equiv
+#check Mathoverflow1973.SecondHurewicz.SimplyConnected.hurewiczLinearEquiv
+
+example :
+    @Mathoverflow1973.SecondHurewicz.mapGenLoop =
+      @Mathoverflow1973.Hurewicz.DegreeTwo.mapGenLoop := rfl
+
+example :
+    @Mathoverflow1973.SecondHurewicz.SimplyConnected.hurewiczPi2Equiv =
+      @Mathoverflow1973.Hurewicz.DegreeTwo.SimplyConnected.hurewiczPi2Equiv := rfl
+
+#print axioms Mathoverflow1973.Hurewicz.DegreeTwo.SimplyConnected.hurewiczPi2Equiv
+#print axioms Mathoverflow1973.Hurewicz.hurewiczLinearEquivOfTwoLE_natural
+#print axioms Mathoverflow1973.Hurewicz.subsingleton_singularHomology_of_lt
+#print axioms Mathoverflow1973.DiskCube.boundary_iff
+#print axioms Mathoverflow1973.mathoverflow_1973

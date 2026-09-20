@@ -1,0 +1,7438 @@
+import Lib
+import Lib.Topology.Homotopy.BasedDiskLifting
+import Lib.Topology.Homotopy.RelativeDiskLifting
+import Lib.Topology.Dimension.CubeBoundaryThree
+import Lib.Topology.Dimension.CubeBoundaryThreeCells
+import Lib.Topology.Dimension.CubeBoundaryThreeLebesgue
+
+/-!
+# Per-export axiom audit for the reusable library
+
+Compile this file directly. It deliberately is not imported by `Lib.lean`, because `#print axioms`
+is an evidence command rather than library content.
+-/
+
+/-! ## `Lib.Algebra.Group.Prod` -/
+
+#check AddMonoidHom.surjective_signed_prod_of_surjective_ker
+#print axioms AddMonoidHom.surjective_signed_prod_of_surjective_ker
+
+
+/-! ## `Lib.Algebra.Group.Ker` -/
+
+#check MonoidHom.apply_eq_apply_of_ker_le
+#print axioms MonoidHom.apply_eq_apply_of_ker_le
+
+
+/-! ## `Lib.AlgebraicTopology.SingularHomology.LocalContributions` -/
+
+#check CoverLocalContributions.leftHomologyMap_in_coordinates
+#print axioms CoverLocalContributions.leftHomologyMap_in_coordinates
+#check CoverLocalContributions.leftHomologyMap_surjective_of_regular_surjective
+#print axioms CoverLocalContributions.leftHomologyMap_surjective_of_regular_surjective
+#check CoverLocalContributions.connectingHomomorphism_injective_of_regular_surjective
+#print axioms CoverLocalContributions.connectingHomomorphism_injective_of_regular_surjective
+#check CoverLocalContributions.connectingRegularKernelEquiv
+#print axioms CoverLocalContributions.connectingRegularKernelEquiv
+#check CoverLocalContributions.connectingRegularKernelEquiv_apply
+#print axioms CoverLocalContributions.connectingRegularKernelEquiv_apply
+
+/-! ## `Lib.Topology.Homotopy.BasedDiskLifting` -/
+
+#check BasedDiskLifting.exists_based_disk_lift_of_surjective
+#print axioms BasedDiskLifting.exists_based_disk_lift_of_surjective
+#check TopCellLifting.exists_disk_lift_of_boundary_nullhomotopic
+#print axioms TopCellLifting.exists_disk_lift_of_boundary_nullhomotopic
+
+/-! ## `Lib.Topology.Homotopy.RelativeDiskLifting` -/
+
+#check LowCellLifting.relativeDiskLifting_of_pi_vanishing
+#print axioms LowCellLifting.relativeDiskLifting_of_pi_vanishing
+#check TopCellLifting.relativeDiskLifting_of_pi_vanishing_of_surjective
+#print axioms TopCellLifting.relativeDiskLifting_of_pi_vanishing_of_surjective
+
+/-! ## `Lib.Topology.MetricSpace.LebesgueNumber` -/
+
+#check Metric.subset_cover_of_diam_lt_of_ball_cover
+#print axioms Metric.subset_cover_of_diam_lt_of_ball_cover
+#check Metric.exists_lebesgue_number_diam
+#print axioms Metric.exists_lebesgue_number_diam
+
+/-! ## `Lib.Topology.Dimension.CubeBoundaryThreeLebesgue` -/
+
+#check TopologicalSpace.CubeBoundaryThree.exists_mesh_scale
+#print axioms TopologicalSpace.CubeBoundaryThree.exists_mesh_scale
+#check TopologicalSpace.CubeBoundaryThree.diam_coe_image
+#print axioms TopologicalSpace.CubeBoundaryThree.diam_coe_image
+#check TopologicalSpace.CubeBoundaryThree.exists_cover_mesh_scale
+#print axioms TopologicalSpace.CubeBoundaryThree.exists_cover_mesh_scale
+
+/-! ## `Lib.Topology.Dimension.CubeBoundaryThree` -/
+
+#check TopologicalSpace.CubeBoundaryThree.Ambient
+#print axioms TopologicalSpace.CubeBoundaryThree.Ambient
+#check TopologicalSpace.CubeBoundaryThree.maxAbs
+#print axioms TopologicalSpace.CubeBoundaryThree.maxAbs
+#check TopologicalSpace.CubeBoundaryThree.maxAbs_le_norm
+#print axioms TopologicalSpace.CubeBoundaryThree.maxAbs_le_norm
+#check TopologicalSpace.CubeBoundaryThree.norm_le_sqrt_three_mul_maxAbs
+#print axioms TopologicalSpace.CubeBoundaryThree.norm_le_sqrt_three_mul_maxAbs
+#check TopologicalSpace.CubeBoundaryThree.continuous_maxAbs
+#print axioms TopologicalSpace.CubeBoundaryThree.continuous_maxAbs
+#check TopologicalSpace.CubeBoundaryThree.maxAbs_smul_of_nonneg
+#print axioms TopologicalSpace.CubeBoundaryThree.maxAbs_smul_of_nonneg
+#check TopologicalSpace.CubeBoundaryThree.boundary
+#print axioms TopologicalSpace.CubeBoundaryThree.boundary
+#check TopologicalSpace.CubeBoundaryThree.Boundary
+#print axioms TopologicalSpace.CubeBoundaryThree.Boundary
+#check TopologicalSpace.CubeBoundaryThree.face
+#print axioms TopologicalSpace.CubeBoundaryThree.face
+#check TopologicalSpace.CubeBoundaryThree.mem_face_iff
+#print axioms TopologicalSpace.CubeBoundaryThree.mem_face_iff
+#check TopologicalSpace.CubeBoundaryThree.exists_mem_face
+#print axioms TopologicalSpace.CubeBoundaryThree.exists_mem_face
+#check TopologicalSpace.CubeBoundaryThree.boundary_nonempty
+#print axioms TopologicalSpace.CubeBoundaryThree.boundary_nonempty
+#check TopologicalSpace.CubeBoundaryThree.isCompact_boundary
+#print axioms TopologicalSpace.CubeBoundaryThree.isCompact_boundary
+#check TopologicalSpace.CubeBoundaryThree.instNonemptyBoundary
+#print axioms TopologicalSpace.CubeBoundaryThree.instNonemptyBoundary
+#check TopologicalSpace.CubeBoundaryThree.instCompactSpaceBoundary
+#print axioms TopologicalSpace.CubeBoundaryThree.instCompactSpaceBoundary
+#check TopologicalSpace.CubeBoundaryThree.norm_pos_of_mem_boundary
+#print axioms TopologicalSpace.CubeBoundaryThree.norm_pos_of_mem_boundary
+#check TopologicalSpace.CubeBoundaryThree.maxAbs_pos_of_mem_sphere
+#print axioms TopologicalSpace.CubeBoundaryThree.maxAbs_pos_of_mem_sphere
+#check TopologicalSpace.CubeBoundaryThree.toSphere
+#print axioms TopologicalSpace.CubeBoundaryThree.toSphere
+#check TopologicalSpace.CubeBoundaryThree.fromSphere
+#print axioms TopologicalSpace.CubeBoundaryThree.fromSphere
+#check TopologicalSpace.CubeBoundaryThree.toSphere_apply
+#print axioms TopologicalSpace.CubeBoundaryThree.toSphere_apply
+#check TopologicalSpace.CubeBoundaryThree.fromSphere_apply
+#print axioms TopologicalSpace.CubeBoundaryThree.fromSphere_apply
+#check TopologicalSpace.CubeBoundaryThree.continuous_toSphere
+#print axioms TopologicalSpace.CubeBoundaryThree.continuous_toSphere
+#check TopologicalSpace.CubeBoundaryThree.continuous_fromSphere
+#print axioms TopologicalSpace.CubeBoundaryThree.continuous_fromSphere
+#check TopologicalSpace.CubeBoundaryThree.fromSphere_toSphere
+#print axioms TopologicalSpace.CubeBoundaryThree.fromSphere_toSphere
+#check TopologicalSpace.CubeBoundaryThree.toSphere_fromSphere
+#print axioms TopologicalSpace.CubeBoundaryThree.toSphere_fromSphere
+#check TopologicalSpace.CubeBoundaryThree.homeomorphSphere
+#print axioms TopologicalSpace.CubeBoundaryThree.homeomorphSphere
+
+/-! ## `Lib.AlgebraicTopology.SingularCochains` -/
+
+#check AlgebraicTopology.SingularCochains.precompose
+#print axioms AlgebraicTopology.SingularCochains.precompose
+#check AlgebraicTopology.SingularCochains.moduleDual
+#print axioms AlgebraicTopology.SingularCochains.moduleDual
+#check AlgebraicTopology.SingularCochains.moduleDual_additive
+#print axioms AlgebraicTopology.SingularCochains.moduleDual_additive
+#check AlgebraicTopology.SingularCochains.dualComplexFunctor
+#print axioms AlgebraicTopology.SingularCochains.dualComplexFunctor
+#check AlgebraicTopology.SingularCochains.dualComplex
+#print axioms AlgebraicTopology.SingularCochains.dualComplex
+#check AlgebraicTopology.SingularCochains.dualMap
+#print axioms AlgebraicTopology.SingularCochains.dualMap
+#check AlgebraicTopology.SingularCochains.dualMap_id
+#print axioms AlgebraicTopology.SingularCochains.dualMap_id
+#check AlgebraicTopology.SingularCochains.dualMap_comp
+#print axioms AlgebraicTopology.SingularCochains.dualMap_comp
+#check AlgebraicTopology.SingularCochains.dualHomotopy
+#print axioms AlgebraicTopology.SingularCochains.dualHomotopy
+#check AlgebraicTopology.SingularCochains.chains
+#print axioms AlgebraicTopology.SingularCochains.chains
+#check AlgebraicTopology.SingularCochains.complex
+#print axioms AlgebraicTopology.SingularCochains.complex
+#check AlgebraicTopology.SingularCochains.pullback
+#print axioms AlgebraicTopology.SingularCochains.pullback
+#check AlgebraicTopology.SingularCochains.pullback_id
+#print axioms AlgebraicTopology.SingularCochains.pullback_id
+#check AlgebraicTopology.SingularCochains.pullback_comp
+#print axioms AlgebraicTopology.SingularCochains.pullback_comp
+#check AlgebraicTopology.SingularCochains.pullbackHomotopy
+#print axioms AlgebraicTopology.SingularCochains.pullbackHomotopy
+#check AlgebraicTopology.SingularCochains.homologyMap_eq_of_homotopy
+#print axioms AlgebraicTopology.SingularCochains.homologyMap_eq_of_homotopy
+#check AlgebraicTopology.SingularCochains.homotopyEquivCohomologyIso
+#print axioms AlgebraicTopology.SingularCochains.homotopyEquivCohomologyIso
+#check AlgebraicTopology.SingularCochains.homotopyEquivCohomologyIso_hom
+#print axioms AlgebraicTopology.SingularCochains.homotopyEquivCohomologyIso_hom
+
+#print axioms Module.End.cyclicAverage
+#print axioms Module.End.mul_sum_powers_eq_sum_powers
+#print axioms Module.End.sum_powers_mul_eq_sum_powers
+#print axioms Module.End.mul_cyclicAverage
+#print axioms Module.End.cyclicAverage_mul
+#print axioms Module.End.cyclicAverage_apply_of_fixed
+#print axioms Module.End.isProj_cyclicAverage
+#print axioms Module.End.isIdempotentElem_cyclicAverage
+#print axioms Module.End.range_cyclicAverage
+#print axioms Module.End.comp_cyclicAverage
+
+#print axioms LinearMap.dualMap_sub
+#print axioms LinearMap.dualAnnihilator_range_sub_eq_ker_sub_dualMap
+#print axioms LinearMap.dualAnnihilator_range_sub_id_eq_fixedSubmodule
+#print axioms LinearMap.range_dualMap_eq_fixedSubmodule_of_surjective_of_ker_eq_range_sub_id
+#print axioms LinearMap.dualEquivFixedSubmoduleOfSurjectiveOfKerEqRangeSubId
+#print axioms LinearMap.dualEquivFixedSubmoduleOfSurjectiveOfKerEqRangeSubId_apply_coe
+#print axioms LinearMap.injective_of_duality_naturality_of_surjective
+#print axioms LinearMap.map_range_eq_fixedSubmodule_of_duality_naturality
+
+#print axioms exteriorPower.finBasis
+#print axioms exteriorPower.finBasis_map_coefficient
+#print axioms exteriorPower.finMatrix
+#print axioms exteriorPower.toMatrix_map
+#print axioms exteriorPower.finCoordinates
+#print axioms exteriorPower.finCoordinates_apply
+#print axioms exteriorPower.finCoordinates_map
+
+#print axioms exteriorPower.reindexedFinBasis
+#print axioms exteriorPower.reindexedFinBasis_apply
+#print axioms exteriorPower.reindexedFinCoordinates
+#print axioms exteriorPower.reindexedFinCoordinates_apply
+#print axioms exteriorPower.reindexedFinCoordinates_basis
+#print axioms exteriorPower.reindexedFinMatrix
+#print axioms exteriorPower.reindexedFinBasis_map_coefficient
+#print axioms exteriorPower.toMatrix_map_reindexed
+#print axioms exteriorPower.reindexedFinCoordinates_map
+
+#print axioms exteriorPower.wedge
+#print axioms exteriorPower.coe_wedge
+#print axioms exteriorPower.finCoordinates_finBasis
+#print axioms exteriorPower.finBasis_wedge_of_not_disjoint
+#print axioms exteriorPower.finCoordinates_wedge_of_not_disjoint
+#print axioms exteriorPower.finBasis_wedge_of_disjoint
+#print axioms exteriorPower.finCoordinates_wedge_of_disjoint
+
+#print axioms Set.powersetCard.orderIsoOfFin_permOfDisjoint_castAdd
+#print axioms Set.powersetCard.orderIsoOfFin_permOfDisjoint_natAdd
+#print axioms Set.powersetCard.permOfDisjoint_eq
+#print axioms Set.powersetCard.permOfDisjoint_eq_of_orderEmbOfFin
+
+#print axioms Matrix.natAbs_det_eq_natCard_quotient_range_toLin'
+#check LinearMap.exists_ne_zero_smul_mem_range_of_injective
+#print axioms LinearMap.exists_ne_zero_smul_mem_range_of_injective
+#print axioms Matrix.quotientRangeToLin'EquivZModOfIsCoprime
+#print axioms Matrix.quotientRangeToLinEquivZModOfIsCoprime
+
+#print axioms Module.End.oneAddSMul
+#print axioms Module.End.oneAddSMul_zero
+#print axioms Module.End.oneAddSMul_apply
+#print axioms Module.End.oneAddSMul_mul_oneAddSMul
+#print axioms Module.End.oneAddSMulEquiv
+#print axioms Module.End.oneAddSMulEquiv_toLinearMap
+#print axioms Module.End.oneAddSMulEquiv_apply
+#print axioms Module.End.oneAddSMulEquiv_symm_toLinearMap
+#print axioms Module.End.quadratic_term_eq_zero
+#print axioms Module.End.oneAddSMul_preserves_bilin
+#print axioms Module.End.oneAddSMul_preserves_bilin_of_isSkewAdjoint
+
+#print axioms Abelianization.mapMulAut
+#print axioms SemidirectProduct.abelianizationRepresentation
+#print axioms SemidirectProduct.AbelianizationCoinvariants
+#print axioms SemidirectProduct.coinvariantsMk
+#print axioms SemidirectProduct.coinvariantsMk_action
+#print axioms SemidirectProduct.abelianizationMulEquiv
+#print axioms SemidirectProduct.abelianizationMulEquiv_apply_of_inl
+#print axioms SemidirectProduct.abelianizationMulEquiv_apply_of_inr
+#print axioms SemidirectProduct.abelianizationMulEquiv_symm_apply_inl
+#print axioms SemidirectProduct.abelianizationMulEquiv_symm_apply_inr
+#print axioms GroupExtension.Splitting.abelianizationMulEquiv
+
+/-! ## `Lib.GroupTheory.FreeGroup.Invariant` -/
+
+#check FreeGroup.forall_apply_eq_self_iff
+#print axioms FreeGroup.forall_apply_eq_self_iff
+
+/-! ## `Lib.GroupTheory.FreeGroup.ZpowersPrimitiveDetector` -/
+
+#check Subgroup.zpowers_eq_of_mem_of_multiplicativeInt_detector
+#print axioms Subgroup.zpowers_eq_of_mem_of_multiplicativeInt_detector
+#check FreeGroup.generatorExponent
+#print axioms FreeGroup.generatorExponent
+#check FreeGroup.generatorExponent_of
+#print axioms FreeGroup.generatorExponent_of
+#check FreeGroup.zpowers_eq_of_generator_mem
+#print axioms FreeGroup.zpowers_eq_of_generator_mem
+
+/-! ## `Lib.RepresentationTheory.FreeGroupCoinvariants` -/
+
+#check Representation.freeGroupGeneratorRelations
+#print axioms Representation.freeGroupGeneratorRelations
+#check Representation.coinvariants_ker_eq_freeGroupGeneratorRelations
+#print axioms Representation.coinvariants_ker_eq_freeGroupGeneratorRelations
+
+/-! ## `Lib.RepresentationTheory.FreeGroupGeneratorCokernel` -/
+
+#check Representation.orientedFreeGenerator
+#print axioms Representation.orientedFreeGenerator
+#check Representation.freeGroupOrientedGeneratorDifference
+#print axioms Representation.freeGroupOrientedGeneratorDifference
+#check Representation.freeGroupOrientedGeneratorDifference_single
+#print axioms Representation.freeGroupOrientedGeneratorDifference_single
+#check Representation.freeGroupOrientedGeneratorDifference_range_eq_coinvariants_ker
+#print axioms Representation.freeGroupOrientedGeneratorDifference_range_eq_coinvariants_ker
+#check Representation.FreeGroupGeneratorCokernel
+#print axioms Representation.FreeGroupGeneratorCokernel
+#check Representation.freeGroupGeneratorCokernelEquivCoinvariants
+#print axioms Representation.freeGroupGeneratorCokernelEquivCoinvariants
+#check Representation.freeGroupGeneratorCokernelEquivCoinvariants_mk
+#print axioms Representation.freeGroupGeneratorCokernelEquivCoinvariants_mk
+#check Representation.freeGroupGeneratorCokernelEquivGroupHomologyH0
+#print axioms Representation.freeGroupGeneratorCokernelEquivGroupHomologyH0
+
+#print axioms Subgroup.isMulCommutative_of_closure_eq_top
+#print axioms AddSubgroup.isAddCommutative_of_closure_eq_top
+#print axioms AddSubgroup.eq_of_le_of_quotient_subsingleton
+#print axioms AddSubgroup.eq_top_of_le_of_quotient_subsingleton
+
+#check Monoid.PushoutI.equivOfCocone
+#print axioms Monoid.PushoutI.equivOfCocone
+#check Monoid.PushoutI.equivOfCocone_apply_of
+#print axioms Monoid.PushoutI.equivOfCocone_apply_of
+#check Monoid.PushoutI.equivOfCocone_symm_apply_f
+#print axioms Monoid.PushoutI.equivOfCocone_symm_apply_f
+
+#check CategoryTheory.Triangulated.SpectralObject.mapHomologicalFunctor
+#print axioms CategoryTheory.Triangulated.SpectralObject.mapHomologicalFunctor
+#check CategoryTheory.Triangulated.SpectralObject.mapHomologicalFunctor_H
+#print axioms CategoryTheory.Triangulated.SpectralObject.mapHomologicalFunctor_H
+#check CategoryTheory.Triangulated.SpectralObject.mapHomologicalFunctor_δ'_app
+#print axioms CategoryTheory.Triangulated.SpectralObject.mapHomologicalFunctor_δ'_app
+
+/-! ## `Lib.Algebra.Homology.SpectralObject.TotalFiltration` -/
+
+#check CategoryTheory.Abelian.SpectralObject.totalFiltrationMap
+#print axioms CategoryTheory.Abelian.SpectralObject.totalFiltrationMap
+#check CategoryTheory.Abelian.SpectralObject.totalFiltrationTransition
+#print axioms CategoryTheory.Abelian.SpectralObject.totalFiltrationTransition
+#check CategoryTheory.Abelian.SpectralObject.totalFiltrationTransition_comp
+#print axioms CategoryTheory.Abelian.SpectralObject.totalFiltrationTransition_comp
+#check CategoryTheory.Abelian.SpectralObject.totalFiltration
+#print axioms CategoryTheory.Abelian.SpectralObject.totalFiltration
+#check CategoryTheory.Abelian.SpectralObject.totalFiltration_mono
+#print axioms CategoryTheory.Abelian.SpectralObject.totalFiltration_mono
+#check CategoryTheory.Abelian.SpectralObject.totalFiltration_bot
+#print axioms CategoryTheory.Abelian.SpectralObject.totalFiltration_bot
+#check CategoryTheory.Abelian.SpectralObject.totalFiltration_top
+#print axioms CategoryTheory.Abelian.SpectralObject.totalFiltration_top
+
+/-! ## `Lib.Algebra.Homology.SpectralObject.StableEndpoint` -/
+
+#check CategoryTheory.Abelian.SpectralObject.stableE
+#print axioms CategoryTheory.Abelian.SpectralObject.stableE
+#check CategoryTheory.Abelian.SpectralObject.stableEProjection
+#print axioms CategoryTheory.Abelian.SpectralObject.stableEProjection
+#check CategoryTheory.Abelian.SpectralObject.totalFiltrationToStableE
+#print axioms CategoryTheory.Abelian.SpectralObject.totalFiltrationToStableE
+#check CategoryTheory.Abelian.SpectralObject.totalFiltrationToStableE_rangeRestrict
+#print axioms CategoryTheory.Abelian.SpectralObject.totalFiltrationToStableE_rangeRestrict
+#check CategoryTheory.Abelian.SpectralObject.totalFiltrationToStableE_surjective
+#print axioms CategoryTheory.Abelian.SpectralObject.totalFiltrationToStableE_surjective
+#check CategoryTheory.Abelian.SpectralObject.totalFiltrationToStableE_ker
+#print axioms CategoryTheory.Abelian.SpectralObject.totalFiltrationToStableE_ker
+#check CategoryTheory.Abelian.SpectralObject.totalFiltrationGradedEquiv
+#print axioms CategoryTheory.Abelian.SpectralObject.totalFiltrationGradedEquiv
+#check CategoryTheory.Abelian.SpectralObject.totalFiltrationGradedEquiv_mk
+#print axioms CategoryTheory.Abelian.SpectralObject.totalFiltrationGradedEquiv_mk
+
+/-! ## `Lib.Algebra.Homology.SpectralObject.FinitePageStabilization` -/
+
+#check CategoryTheory.Abelian.SpectralObject.finiteEIsoStableE
+#print axioms CategoryTheory.Abelian.SpectralObject.finiteEIsoStableE
+#check CategoryTheory.Abelian.SpectralObject.firstQuadrantPageIsoStableE
+#print axioms CategoryTheory.Abelian.SpectralObject.firstQuadrantPageIsoStableE
+
+/-! ## `Lib.Algebra.Homology.Embedding.ExtendHomologySequence` -/
+
+#check HomologicalComplex.extend_opcyclesToCycles
+#print axioms HomologicalComplex.extend_opcyclesToCycles
+#check HomologicalComplex.extend_opcyclesToCycles_assoc
+#print axioms HomologicalComplex.extend_opcyclesToCycles_assoc
+
+/-! ## `Lib.Algebra.Homology.HomologicalComplex.MapExtend` -/
+
+#check HomologicalComplex.mapExtendXIso
+#print axioms HomologicalComplex.mapExtendXIso
+#check HomologicalComplex.mapExtendIso
+#print axioms HomologicalComplex.mapExtendIso
+
+/-! ## `Lib.Algebra.Homology.HomotopyCategory.HomComplexSingle` -/
+
+#check CochainComplex.HomComplex.coyonedaComplex
+#print axioms CochainComplex.HomComplex.coyonedaComplex
+#check CochainComplex.HomComplex.fromSingleXIso
+#print axioms CochainComplex.HomComplex.fromSingleXIso
+#check CochainComplex.HomComplex.fromSingleIso
+#print axioms CochainComplex.HomComplex.fromSingleIso
+#check CochainComplex.HomComplex.fromSingleHomologyIso
+#print axioms CochainComplex.HomComplex.fromSingleHomologyIso
+
+/-! ## `Lib.Algebra.Homology.HomotopyCategory.TwoTermMappingCone` -/
+
+#check CochainComplex.relNegOneZero
+#print axioms CochainComplex.relNegOneZero
+#check CochainComplex.relZeroOne
+#print axioms CochainComplex.relZeroOne
+#check CochainComplex.chainSingleZero
+#print axioms CochainComplex.chainSingleZero
+#check CochainComplex.cochainSingleZero
+#print axioms CochainComplex.cochainSingleZero
+#check CochainComplex.twoTermData
+#print axioms CochainComplex.twoTermData
+#check CochainComplex.twoTerm
+#print axioms CochainComplex.twoTerm
+#check CochainComplex.twoTerm_isZero_X
+#print axioms CochainComplex.twoTerm_isZero_X
+#check CochainComplex.mappingCone_single_isZero_X
+#print axioms CochainComplex.mappingCone_single_isZero_X
+#check CochainComplex.twoTermPointIsoNegOne
+#print axioms CochainComplex.twoTermPointIsoNegOne
+#check CochainComplex.twoTermPointIsoZero
+#print axioms CochainComplex.twoTermPointIsoZero
+#check CochainComplex.twoTermPointIso
+#print axioms CochainComplex.twoTermPointIso
+#check CochainComplex.twoTermPointIsoNegOne_hom
+#print axioms CochainComplex.twoTermPointIsoNegOne_hom
+#check CochainComplex.twoTermPointIsoZero_hom
+#print axioms CochainComplex.twoTermPointIsoZero_hom
+#check CochainComplex.twoTermIsoMappingCone
+#print axioms CochainComplex.twoTermIsoMappingCone
+
+/-! ## `Lib.Algebra.Homology.SpectralObject.Postnikov` -/
+
+#check CategoryTheory.Triangulated.TStructure.postnikovSpectralObject
+#print axioms CategoryTheory.Triangulated.TStructure.postnikovSpectralObject
+#check CategoryTheory.Triangulated.TStructure.postnikovTotalIso
+#print axioms CategoryTheory.Triangulated.TStructure.postnikovTotalIso
+#check CategoryTheory.Triangulated.TStructure.coyonedaPostnikovSpectralObject
+#print axioms CategoryTheory.Triangulated.TStructure.coyonedaPostnikovSpectralObject
+#check CategoryTheory.Triangulated.TStructure.coyonedaPostnikovSpectralObject_isFirstQuadrant
+#print axioms CategoryTheory.Triangulated.TStructure.coyonedaPostnikovSpectralObject_isFirstQuadrant
+#check CategoryTheory.Triangulated.TStructure.coyonedaPostnikovSpectralSequence
+#print axioms CategoryTheory.Triangulated.TStructure.coyonedaPostnikovSpectralSequence
+#check CategoryTheory.Triangulated.TStructure.coyonedaPostnikovE₂PageIso
+#print axioms CategoryTheory.Triangulated.TStructure.coyonedaPostnikovE₂PageIso
+
+/-! ## `Lib.Algebra.Homology.SpectralObject.PostnikovD2` -/
+
+#check CategoryTheory.Triangulated.TStructure.coyonedaPostnikovFirstPageXIso_hom_apply_eq_of_deg
+#print axioms CategoryTheory.Triangulated.TStructure.coyonedaPostnikovFirstPageXIso_hom_apply_eq_of_deg
+#check CategoryTheory.Triangulated.TStructure.coyonedaPostnikovFirstPageXIso_hom_apply_eq_of_indices
+#print axioms CategoryTheory.Triangulated.TStructure.coyonedaPostnikovFirstPageXIso_hom_apply_eq_of_indices
+#check CategoryTheory.Triangulated.TStructure.coyonedaPostnikovFirstPageXIso_hom_apply_eq_of_indices_assoc
+#print axioms CategoryTheory.Triangulated.TStructure.coyonedaPostnikovFirstPageXIso_hom_apply_eq_of_indices_assoc
+#check CategoryTheory.Triangulated.TStructure.coyonedaPostnikovD₂SourcePageIso
+#print axioms CategoryTheory.Triangulated.TStructure.coyonedaPostnikovD₂SourcePageIso
+#check CategoryTheory.Triangulated.TStructure.coyonedaPostnikovD₂TargetPageIso
+#print axioms CategoryTheory.Triangulated.TStructure.coyonedaPostnikovD₂TargetPageIso
+#check CategoryTheory.Triangulated.TStructure.coyonedaPostnikovE₂PageIso_two_eq_d₂Target_apply
+#print axioms CategoryTheory.Triangulated.TStructure.coyonedaPostnikovE₂PageIso_two_eq_d₂Target_apply
+#check CategoryTheory.Triangulated.TStructure.coyonedaPostnikovD₂δ_eq
+#print axioms CategoryTheory.Triangulated.TStructure.coyonedaPostnikovD₂δ_eq
+#check CategoryTheory.Triangulated.TStructure.coyonedaPostnikovE₂_d₂_eq
+#print axioms CategoryTheory.Triangulated.TStructure.coyonedaPostnikovE₂_d₂_eq
+
+/-! ## `Lib.CategoryTheory.Triangulated.CoyonedaTriangleShift` -/
+
+#check CategoryTheory.Pretriangulated.preadditiveCoyoneda_homologySequenceδ_reindex_apply
+#print axioms CategoryTheory.Pretriangulated.preadditiveCoyoneda_homologySequenceδ_reindex_apply
+#check CategoryTheory.Pretriangulated.preadditiveCoyoneda_homologySequenceδ_zero_apply
+#print axioms CategoryTheory.Pretriangulated.preadditiveCoyoneda_homologySequenceδ_zero_apply
+#check CategoryTheory.Pretriangulated.triangleShift_mor₃
+#print axioms CategoryTheory.Pretriangulated.triangleShift_mor₃
+#check CategoryTheory.Pretriangulated.triangleShift_mor₃_comp_shiftFunctorAdd_inv
+#print axioms CategoryTheory.Pretriangulated.triangleShift_mor₃_comp_shiftFunctorAdd_inv
+#check CategoryTheory.Pretriangulated.preadditiveCoyoneda_homologySequenceδ_shift_zero
+#print axioms CategoryTheory.Pretriangulated.preadditiveCoyoneda_homologySequenceδ_shift_zero
+#check CategoryTheory.Pretriangulated.preadditiveCoyoneda_homologySequenceδ_shift_iso
+#print axioms CategoryTheory.Pretriangulated.preadditiveCoyoneda_homologySequenceδ_shift_iso
+#check CategoryTheory.Pretriangulated.preadditiveCoyoneda_homologySequenceδ_shift_iso_of_eq
+#print axioms CategoryTheory.Pretriangulated.preadditiveCoyoneda_homologySequenceδ_shift_iso_of_eq
+
+/-! ## `Lib.Algebra.Homology.DerivedCategory.KInjectiveCohomology` -/
+
+#check DerivedCategory.homEquivCoyonedaHomologyOfIsKInjective
+#print axioms DerivedCategory.homEquivCoyonedaHomologyOfIsKInjective
+
+/-! ## `Lib.Algebra.Homology.DerivedCategory.PostnikovSlice` -/
+
+#check DerivedCategory.isoSingleFunctorHomology
+#print axioms DerivedCategory.isoSingleFunctorHomology
+#check DerivedCategory.isIso_homologyFunctor_map_truncLTι
+#print axioms DerivedCategory.isIso_homologyFunctor_map_truncLTι
+#check DerivedCategory.isIso_homologyFunctor_map_truncGEπ
+#print axioms DerivedCategory.isIso_homologyFunctor_map_truncGEπ
+#check DerivedCategory.postnikovSliceHomologyIso
+#print axioms DerivedCategory.postnikovSliceHomologyIso
+#check DerivedCategory.postnikovSliceIso
+#print axioms DerivedCategory.postnikovSliceIso
+
+/-! ## `Lib.Algebra.Homology.DerivedCategory.PostnikovSliceNaturality` -/
+
+#check DerivedCategory.homologyFunctor_map_Q_commShiftIso_hom_comp_shiftIso
+#print axioms DerivedCategory.homologyFunctor_map_Q_commShiftIso_hom_comp_shiftIso
+#check DerivedCategory.homologyFunctor_map_Q_commShiftIso_hom_comp_shiftIso_assoc
+#print axioms DerivedCategory.homologyFunctor_map_Q_commShiftIso_hom_comp_shiftIso_assoc
+#check DerivedCategory.homologyFunctor_shiftIso_hom_comp_homologyFunctorFactors
+#print axioms DerivedCategory.homologyFunctor_shiftIso_hom_comp_homologyFunctorFactors
+#check DerivedCategory.homologyFunctor_shiftIso_hom_comp_homologyFunctorFactors_assoc
+#print axioms DerivedCategory.homologyFunctor_shiftIso_hom_comp_homologyFunctorFactors_assoc
+#check DerivedCategory.singleFunctorCompHomologyFunctorIso_shiftIso_hom_of_indices
+#print axioms DerivedCategory.singleFunctorCompHomologyFunctorIso_shiftIso_hom_of_indices
+#check DerivedCategory.singleFunctorCompHomologyFunctorIso_shiftIso_hom_of_indices_assoc
+#print axioms DerivedCategory.singleFunctorCompHomologyFunctorIso_shiftIso_hom_of_indices_assoc
+#check DerivedCategory.singleFunctorCompHomologyFunctorIso_shiftIso_hom
+#print axioms DerivedCategory.singleFunctorCompHomologyFunctorIso_shiftIso_hom
+#check DerivedCategory.homologyFunctor_map_isoSingleFunctorHomology_hom
+#print axioms DerivedCategory.homologyFunctor_map_isoSingleFunctorHomology_hom
+#check DerivedCategory.homologyFunctor_map_postnikovSliceIso_hom
+#print axioms DerivedCategory.homologyFunctor_map_postnikovSliceIso_hom
+#check DerivedCategory.homologyFunctor_map_injective_singleFunctor
+#print axioms DerivedCategory.homologyFunctor_map_injective_singleFunctor
+#check DerivedCategory.homologyFunctor_map_injective_of_isGE_of_isLE
+#print axioms DerivedCategory.homologyFunctor_map_injective_of_isGE_of_isLE
+#check DerivedCategory.isoSingleFunctorHomology_hom_naturality
+#print axioms DerivedCategory.isoSingleFunctorHomology_hom_naturality
+#check DerivedCategory.postnikovSliceHomologyIso_hom_naturality
+#print axioms DerivedCategory.postnikovSliceHomologyIso_hom_naturality
+#check DerivedCategory.postnikovSliceIso_hom_naturality
+#print axioms DerivedCategory.postnikovSliceIso_hom_naturality
+
+/-! ## `Lib.Algebra.Homology.DerivedCategory.TruncationTriangle` -/
+
+#check CochainComplex.isIso_ιTruncLE_f_of_lt
+#print axioms CochainComplex.isIso_ιTruncLE_f_of_lt
+#check CochainComplex.isIso_πTruncGE_f_of_lt
+#print axioms CochainComplex.isIso_πTruncGE_f_of_lt
+#check DerivedCategory.truncationTriangleIso
+#print axioms DerivedCategory.truncationTriangleIso
+#check DerivedCategory.truncationTriangleIso_hom_hom₂
+#print axioms DerivedCategory.truncationTriangleIso_hom_hom₂
+#check DerivedCategory.truncationTriangleIso_hom_comm₃
+#print axioms DerivedCategory.truncationTriangleIso_hom_comm₃
+#check DerivedCategory.truncLTIsoQTruncLE
+#print axioms DerivedCategory.truncLTIsoQTruncLE
+#check DerivedCategory.truncGEIsoQTruncGE
+#print axioms DerivedCategory.truncGEIsoQTruncGE
+#check DerivedCategory.concreteTruncationδ
+#print axioms DerivedCategory.concreteTruncationδ
+#check DerivedCategory.truncLTIsoQTruncLE_hom_comp_ι
+#print axioms DerivedCategory.truncLTIsoQTruncLE_hom_comp_ι
+#check DerivedCategory.truncGEπ_comp_truncGEIsoQTruncGE_hom
+#print axioms DerivedCategory.truncGEπ_comp_truncGEIsoQTruncGE_hom
+#check DerivedCategory.concreteTruncationδ_eq
+#print axioms DerivedCategory.concreteTruncationδ_eq
+
+/-! ## `Lib.Algebra.Homology.DerivedCategory.AdjacentTwoSlice` -/
+
+#check CochainComplex.πTruncGE_f_boundary_generic
+#print axioms CochainComplex.πTruncGE_f_boundary_generic
+#check CochainComplex.πTruncGE_f_interior_generic
+#print axioms CochainComplex.πTruncGE_f_interior_generic
+#check CochainComplex.πTruncGE_f_boundary
+#print axioms CochainComplex.πTruncGE_f_boundary
+#check CochainComplex.πTruncGE_f_interior
+#print axioms CochainComplex.πTruncGE_f_interior
+#check CochainComplex.truncGE_d_fromOpcycles
+#print axioms CochainComplex.truncGE_d_fromOpcycles
+#check CochainComplex.ιTruncLE_f_boundary
+#print axioms CochainComplex.ιTruncLE_f_boundary
+#check CochainComplex.adjacentTwoSlice
+#print axioms CochainComplex.adjacentTwoSlice
+#check CochainComplex.adjacentTwoSlice_d_eq
+#print axioms CochainComplex.adjacentTwoSlice_d_eq
+#check CochainComplex.isIso_opcyclesMap_ιTruncLE
+#print axioms CochainComplex.isIso_opcyclesMap_ιTruncLE
+#check CochainComplex.shiftedAdjacentTwoSlice
+#print axioms CochainComplex.shiftedAdjacentTwoSlice
+#check CochainComplex.shiftedAdjacentTwoSlice_isZero_X
+#print axioms CochainComplex.shiftedAdjacentTwoSlice_isZero_X
+#check CochainComplex.shiftedTwoSlicePointIsoNegOne
+#print axioms CochainComplex.shiftedTwoSlicePointIsoNegOne
+#check CochainComplex.shiftedTwoSlicePointIsoZero
+#print axioms CochainComplex.shiftedTwoSlicePointIsoZero
+#check CochainComplex.shiftedTwoSlicePointIso
+#print axioms CochainComplex.shiftedTwoSlicePointIso
+#check CochainComplex.shiftedAdjacentTwoSliceIsoTwoTerm
+#print axioms CochainComplex.shiftedAdjacentTwoSliceIsoTwoTerm
+#check CochainComplex.shiftedAdjacentTwoSliceIsoMappingCone
+#print axioms CochainComplex.shiftedAdjacentTwoSliceIsoMappingCone
+
+/-! ## `Lib.Algebra.Homology.DerivedCategory.PostnikovTwoSlice` -/
+
+#check DerivedCategory.postnikovTwoSliceIso
+#print axioms DerivedCategory.postnikovTwoSliceIso
+#check DerivedCategory.triangleω₁δIsoAdjacentTwoSliceTriangle
+#print axioms DerivedCategory.triangleω₁δIsoAdjacentTwoSliceTriangle
+#check DerivedCategory.triangleω₁δIsoAdjacentTwoSliceTriangle_hom_hom₂
+#print axioms DerivedCategory.triangleω₁δIsoAdjacentTwoSliceTriangle_hom_hom₂
+
+/-! ## `Lib.Algebra.Homology.DerivedCategory.PostnikovTwoSliceShift` -/
+
+#check DerivedCategory.shiftedPostnikovTwoSliceIso
+#print axioms DerivedCategory.shiftedPostnikovTwoSliceIso
+#check DerivedCategory.shiftedPostnikovAdjacentTriangle
+#print axioms DerivedCategory.shiftedPostnikovAdjacentTriangle
+#check DerivedCategory.shiftedAdjacentTwoSliceTruncationTriangle
+#print axioms DerivedCategory.shiftedAdjacentTwoSliceTruncationTriangle
+#check DerivedCategory.shiftedAdjacentTwoSliceTruncationTriangleIsoConcrete
+#print axioms DerivedCategory.shiftedAdjacentTwoSliceTruncationTriangleIsoConcrete
+#check DerivedCategory.shiftedAdjacentTwoSliceTruncationTriangleIsoConcrete_hom_hom₂
+#print axioms DerivedCategory.shiftedAdjacentTwoSliceTruncationTriangleIsoConcrete_hom_hom₂
+#check DerivedCategory.shiftedPostnikovAdjacentTriangleIsoConcrete
+#print axioms DerivedCategory.shiftedPostnikovAdjacentTriangleIsoConcrete
+#check DerivedCategory.shiftedPostnikovAdjacentTriangleIsoConcrete_hom_hom₂
+#print axioms DerivedCategory.shiftedPostnikovAdjacentTriangleIsoConcrete_hom_hom₂
+#check DerivedCategory.shiftedPostnikovAdjacentTriangle_mor₃
+#print axioms DerivedCategory.shiftedPostnikovAdjacentTriangle_mor₃
+#check DerivedCategory.shiftedPostnikovAdjacentTriangleIsoConcrete_comm₃_signed
+#print axioms DerivedCategory.shiftedPostnikovAdjacentTriangleIsoConcrete_comm₃_signed
+
+/-! ## `Lib.Algebra.Homology.DerivedCategory.PostnikovTwoSliceEndpoints` -/
+
+#check DerivedCategory.shiftedPostnikovLowerEndpointIso
+#print axioms DerivedCategory.shiftedPostnikovLowerEndpointIso
+#check DerivedCategory.postnikovUpperEndpointIso
+#print axioms DerivedCategory.postnikovUpperEndpointIso
+#check DerivedCategory.shiftedPostnikovUpperEndpointIso
+#print axioms DerivedCategory.shiftedPostnikovUpperEndpointIso
+#check DerivedCategory.concreteLowerEndpointPostnikovIso
+#print axioms DerivedCategory.concreteLowerEndpointPostnikovIso
+#check DerivedCategory.concreteUpperEndpointPostnikovIso
+#print axioms DerivedCategory.concreteUpperEndpointPostnikovIso
+#check DerivedCategory.shiftedPostnikovAdjacentTriangleIsoConcrete_hom_hom₁_postnikov
+#print axioms DerivedCategory.shiftedPostnikovAdjacentTriangleIsoConcrete_hom_hom₁_postnikov
+#check DerivedCategory.shiftedPostnikovAdjacentTriangleIsoConcrete_hom_hom₁_postnikov_assoc
+#print axioms DerivedCategory.shiftedPostnikovAdjacentTriangleIsoConcrete_hom_hom₁_postnikov_assoc
+#check DerivedCategory.shiftedPostnikovAdjacentTriangleIsoConcrete_hom_hom₃_postnikov
+#print axioms DerivedCategory.shiftedPostnikovAdjacentTriangleIsoConcrete_hom_hom₃_postnikov
+#check DerivedCategory.shiftedPostnikovAdjacentTriangleIsoConcrete_hom_hom₃_postnikov_assoc
+#print axioms DerivedCategory.shiftedPostnikovAdjacentTriangleIsoConcrete_hom_hom₃_postnikov_assoc
+
+/-! ## `Lib.Algebra.Homology.DerivedCategory.PostnikovUpperRouteHomology` -/
+
+#check DerivedCategory.postnikovUpperCutoffIso
+#print axioms DerivedCategory.postnikovUpperCutoffIso
+#check DerivedCategory.homologyFunctor_map_postnikovUpperEndpointIso_hom
+#print axioms DerivedCategory.homologyFunctor_map_postnikovUpperEndpointIso_hom
+#check DerivedCategory.adjacentTwoSliceUpperHomologyIso
+#print axioms DerivedCategory.adjacentTwoSliceUpperHomologyIso
+#check DerivedCategory.postnikovUpperRouteHomology
+#print axioms DerivedCategory.postnikovUpperRouteHomology
+
+#check LinearMap.RankOneNormalization
+#print axioms LinearMap.RankOneNormalization
+#check LinearMap.RankOneNormalization.mk
+#print axioms LinearMap.RankOneNormalization.mk
+#check LinearMap.RankOneNormalization.source
+#print axioms LinearMap.RankOneNormalization.source
+#check LinearMap.RankOneNormalization.target
+#print axioms LinearMap.RankOneNormalization.target
+#check LinearMap.RankOneNormalization.normalized
+#print axioms LinearMap.RankOneNormalization.normalized
+#check LinearMap.RankOneNormalization.coefficient
+#print axioms LinearMap.RankOneNormalization.coefficient
+#check LinearMap.RankOneNormalization.normalized_eq_lsmul
+#print axioms LinearMap.RankOneNormalization.normalized_eq_lsmul
+#check LinearMap.RankOneNormalization.map_eq_zero_iff
+#print axioms LinearMap.RankOneNormalization.map_eq_zero_iff
+#check LinearMap.RankOneNormalization.map_ne_zero_iff
+#print axioms LinearMap.RankOneNormalization.map_ne_zero_iff
+#check LinearMap.RankOneNormalization.injective_iff_coefficient_ne_zero
+#print axioms LinearMap.RankOneNormalization.injective_iff_coefficient_ne_zero
+#check LinearMap.RankOneNormalization.injective_iff_ne_zero
+#print axioms LinearMap.RankOneNormalization.injective_iff_ne_zero
+#check LinearMap.RankOneNormalization.kernelEquivNormalized
+#print axioms LinearMap.RankOneNormalization.kernelEquivNormalized
+#check LinearMap.RankOneNormalization.kernelEquiv
+#print axioms LinearMap.RankOneNormalization.kernelEquiv
+#check LinearMap.RankOneNormalization.cokernelEquivNormalized
+#print axioms LinearMap.RankOneNormalization.cokernelEquivNormalized
+#check LinearMap.RankOneNormalization.cokernelEquiv
+#print axioms LinearMap.RankOneNormalization.cokernelEquiv
+#check LinearMap.RankOneNormalization.bijective_iff_isUnit
+#print axioms LinearMap.RankOneNormalization.bijective_iff_isUnit
+
+#check ThreeColumnPage.Data
+#print axioms ThreeColumnPage.Data
+#check ThreeColumnPage.Data.mk
+#print axioms ThreeColumnPage.Data.mk
+#check ThreeColumnPage.Data.E
+#print axioms ThreeColumnPage.Data.E
+#check ThreeColumnPage.Data.addCommGroup
+#print axioms ThreeColumnPage.Data.addCommGroup
+#check ThreeColumnPage.Data.module
+#print axioms ThreeColumnPage.Data.module
+#check ThreeColumnPage.Data.differential
+#print axioms ThreeColumnPage.Data.differential
+#check ThreeColumnPage.Data.source
+#print axioms ThreeColumnPage.Data.source
+#check ThreeColumnPage.Data.target
+#print axioms ThreeColumnPage.Data.target
+#check ThreeColumnPage.Data.middle
+#print axioms ThreeColumnPage.Data.middle
+#check ThreeColumnPage.Data.ofCoefficients
+#print axioms ThreeColumnPage.Data.ofCoefficients
+#check ThreeColumnPage.Data.normalization
+#print axioms ThreeColumnPage.Data.normalization
+#check ThreeColumnPage.Data.coefficient
+#print axioms ThreeColumnPage.Data.coefficient
+#check ThreeColumnPage.Data.ofCoefficients_coefficient
+#print axioms ThreeColumnPage.Data.ofCoefficients_coefficient
+#check ThreeColumnPage.Data.Kernel
+#print axioms ThreeColumnPage.Data.Kernel
+#check ThreeColumnPage.Data.Cokernel
+#print axioms ThreeColumnPage.Data.Cokernel
+#check ThreeColumnPage.Data.kernelEquiv
+#print axioms ThreeColumnPage.Data.kernelEquiv
+#check ThreeColumnPage.Data.cokernelEquiv
+#print axioms ThreeColumnPage.Data.cokernelEquiv
+#check ThreeColumnPage.Data.differential_bijective_iff_isUnit
+#print axioms ThreeColumnPage.Data.differential_bijective_iff_isUnit
+#check ThreeColumnPage.Data.differential_injective_iff_ne_zero
+#print axioms ThreeColumnPage.Data.differential_injective_iff_ne_zero
+
+#check ThreeColumnPage.FilteredAbutment
+#print axioms ThreeColumnPage.FilteredAbutment
+#check ThreeColumnPage.FilteredAbutment.mk
+#print axioms ThreeColumnPage.FilteredAbutment.mk
+#check ThreeColumnPage.FilteredAbutment.H
+#print axioms ThreeColumnPage.FilteredAbutment.H
+#check ThreeColumnPage.FilteredAbutment.addCommGroup
+#print axioms ThreeColumnPage.FilteredAbutment.addCommGroup
+#check ThreeColumnPage.FilteredAbutment.degreeOne
+#print axioms ThreeColumnPage.FilteredAbutment.degreeOne
+#check ThreeColumnPage.FilteredAbutment.bottom
+#print axioms ThreeColumnPage.FilteredAbutment.bottom
+#check ThreeColumnPage.FilteredAbutment.middle
+#print axioms ThreeColumnPage.FilteredAbutment.middle
+#check ThreeColumnPage.FilteredAbutment.bottom_le_middle
+#print axioms ThreeColumnPage.FilteredAbutment.bottom_le_middle
+#check ThreeColumnPage.FilteredAbutment.bottomGraded
+#print axioms ThreeColumnPage.FilteredAbutment.bottomGraded
+#check ThreeColumnPage.FilteredAbutment.middleGraded
+#print axioms ThreeColumnPage.FilteredAbutment.middleGraded
+#check ThreeColumnPage.FilteredAbutment.topGraded
+#print axioms ThreeColumnPage.FilteredAbutment.topGraded
+#check ThreeColumnPage.FilteredAbutment.all_subsingleton_iff
+#print axioms ThreeColumnPage.FilteredAbutment.all_subsingleton_iff
+#check ThreeColumnPage.FilteredAbutment.all_subsingleton_iff_isUnit_of_coefficients_eq
+#print axioms ThreeColumnPage.FilteredAbutment.all_subsingleton_iff_isUnit_of_coefficients_eq
+
+#check ThreeColumnPage.LowerDifferentialsBijectiveAndNeZero
+#print axioms ThreeColumnPage.LowerDifferentialsBijectiveAndNeZero
+#check ThreeColumnPage.Data.lowerDifferentialsBijectiveAndNeZero_iff_coefficients
+#print axioms ThreeColumnPage.Data.lowerDifferentialsBijectiveAndNeZero_iff_coefficients
+#check ThreeColumnPage.Data.lowerDifferentialsBijectiveAndNeZero_iff_isUnit_of_coefficients_eq
+#print axioms ThreeColumnPage.Data.lowerDifferentialsBijectiveAndNeZero_iff_isUnit_of_coefficients_eq
+#check ThreeColumnPage.Data.lowerDifferentialsBijectiveAndNeZero_iff_injective
+#print axioms ThreeColumnPage.Data.lowerDifferentialsBijectiveAndNeZero_iff_injective
+#check ThreeColumnPage.Data.lowerDifferentialsBijectiveAndNeZero_iff_all_subsingleton
+#print axioms ThreeColumnPage.Data.lowerDifferentialsBijectiveAndNeZero_iff_all_subsingleton
+
+/-! ## `Lib.Algebra.Homology.SpectralSequence.NatLowerEdge` -/
+
+#check CategoryTheory.SpectralSequence.NatLowerEdge.mono_d₂_zeroOne_twoZero_of_isZero_pageFour
+#print axioms CategoryTheory.SpectralSequence.NatLowerEdge.mono_d₂_zeroOne_twoZero_of_isZero_pageFour
+#check CategoryTheory.SpectralSequence.NatLowerEdge.epi_d₂_zeroOne_twoZero_of_isZero_pageFour
+#print axioms CategoryTheory.SpectralSequence.NatLowerEdge.epi_d₂_zeroOne_twoZero_of_isZero_pageFour
+#check CategoryTheory.SpectralSequence.NatLowerEdge.mono_d₂_zeroTwo_twoOne_of_isZero_pageFour
+#print axioms CategoryTheory.SpectralSequence.NatLowerEdge.mono_d₂_zeroTwo_twoOne_of_isZero_pageFour
+#check CategoryTheory.SpectralSequence.NatLowerEdge.epi_d₂_zeroTwo_twoOne_of_isZero_pageFour
+#print axioms CategoryTheory.SpectralSequence.NatLowerEdge.epi_d₂_zeroTwo_twoOne_of_isZero_pageFour
+#check CategoryTheory.SpectralSequence.NatLowerEdge.isIso_d₂_zeroTwo_twoOne_of_isZero_pageFour
+#print axioms CategoryTheory.SpectralSequence.NatLowerEdge.isIso_d₂_zeroTwo_twoOne_of_isZero_pageFour
+#check CategoryTheory.SpectralSequence.NatLowerEdge.mono_d₂_zeroThree_twoTwo_of_isZero_pageFive
+#print axioms CategoryTheory.SpectralSequence.NatLowerEdge.mono_d₂_zeroThree_twoTwo_of_isZero_pageFive
+#check CategoryTheory.SpectralSequence.NatLowerEdge.epi_d₂_zeroThree_twoTwo_of_isZero_pageFour
+#print axioms CategoryTheory.SpectralSequence.NatLowerEdge.epi_d₂_zeroThree_twoTwo_of_isZero_pageFour
+#check CategoryTheory.SpectralSequence.NatLowerEdge.isIso_d₂_zeroThree_twoTwo_of_isZero_pageFour_pageFive
+#print axioms CategoryTheory.SpectralSequence.NatLowerEdge.isIso_d₂_zeroThree_twoTwo_of_isZero_pageFour_pageFive
+#check CategoryTheory.SpectralSequence.NatLowerEdge.pageTwoOneOneIsoPageThree
+#print axioms CategoryTheory.SpectralSequence.NatLowerEdge.pageTwoOneOneIsoPageThree
+#check CategoryTheory.SpectralSequence.NatLowerEdge.isZero_pageTwo_oneOne_of_isZero_pageThree
+#print axioms CategoryTheory.SpectralSequence.NatLowerEdge.isZero_pageTwo_oneOne_of_isZero_pageThree
+
+#check CategoryTheory.SpectralSequence.NatLowerEdge.pageTwoOneTwoIsoPageThree
+#print axioms CategoryTheory.SpectralSequence.NatLowerEdge.pageTwoOneTwoIsoPageThree
+#check CategoryTheory.SpectralSequence.NatLowerEdge.pageThreeOneTwoIsoPageFour
+#print axioms CategoryTheory.SpectralSequence.NatLowerEdge.pageThreeOneTwoIsoPageFour
+#check CategoryTheory.SpectralSequence.NatLowerEdge.pageTwoOneTwoIsoPageFour
+#print axioms CategoryTheory.SpectralSequence.NatLowerEdge.pageTwoOneTwoIsoPageFour
+#check CategoryTheory.SpectralSequence.NatLowerEdge.isZero_pageTwo_oneTwo_of_isZero_pageFour
+#print axioms CategoryTheory.SpectralSequence.NatLowerEdge.isZero_pageTwo_oneTwo_of_isZero_pageFour
+
+/-! ## `Lib.Algebra.Homology.ThreeColumnSpectralSequence` -/
+
+#check ThreeColumnSpectralSequence.Raw
+#print axioms ThreeColumnSpectralSequence.Raw
+#check ThreeColumnSpectralSequence.Raw.mk
+#print axioms ThreeColumnSpectralSequence.Raw.mk
+#check ThreeColumnSpectralSequence.Raw.spectralSequence
+#print axioms ThreeColumnSpectralSequence.Raw.spectralSequence
+#check ThreeColumnSpectralSequence.Raw.isZero_E₂_of_three_le
+#print axioms ThreeColumnSpectralSequence.Raw.isZero_E₂_of_three_le
+#check ThreeColumnSpectralSequence.Raw.E
+#print axioms ThreeColumnSpectralSequence.Raw.E
+#check ThreeColumnSpectralSequence.Raw.E₂
+#print axioms ThreeColumnSpectralSequence.Raw.E₂
+#check ThreeColumnSpectralSequence.Raw.d₂
+#print axioms ThreeColumnSpectralSequence.Raw.d₂
+#check ThreeColumnSpectralSequence.Raw.Einf
+#print axioms ThreeColumnSpectralSequence.Raw.Einf
+#check ThreeColumnSpectralSequence.Raw.offsetPage
+#print axioms ThreeColumnSpectralSequence.Raw.offsetPage
+#check ThreeColumnSpectralSequence.Raw.isZero_offsetPage_of_three_le
+#print axioms ThreeColumnSpectralSequence.Raw.isZero_offsetPage_of_three_le
+#check ThreeColumnSpectralSequence.Raw.middle_dTo_eq_zero
+#print axioms ThreeColumnSpectralSequence.Raw.middle_dTo_eq_zero
+#check ThreeColumnSpectralSequence.Raw.middle_dFrom_eq_zero
+#print axioms ThreeColumnSpectralSequence.Raw.middle_dFrom_eq_zero
+#check ThreeColumnSpectralSequence.Raw.middlePageSuccIso
+#print axioms ThreeColumnSpectralSequence.Raw.middlePageSuccIso
+#check ThreeColumnSpectralSequence.Raw.middlePageIso
+#print axioms ThreeColumnSpectralSequence.Raw.middlePageIso
+#check ThreeColumnSpectralSequence.Raw.middlePermanenceIso
+#print axioms ThreeColumnSpectralSequence.Raw.middlePermanenceIso
+#check ThreeColumnSpectralSequence.Raw.stable_dTo_eq_zero
+#print axioms ThreeColumnSpectralSequence.Raw.stable_dTo_eq_zero
+#check ThreeColumnSpectralSequence.Raw.stable_dFrom_eq_zero
+#print axioms ThreeColumnSpectralSequence.Raw.stable_dFrom_eq_zero
+#check ThreeColumnSpectralSequence.Raw.stablePageSuccIso
+#print axioms ThreeColumnSpectralSequence.Raw.stablePageSuccIso
+#check ThreeColumnSpectralSequence.Raw.stablePageIso
+#print axioms ThreeColumnSpectralSequence.Raw.stablePageIso
+
+#check ThreeColumnSpectralSequence.FiniteFiltration
+#print axioms ThreeColumnSpectralSequence.FiniteFiltration
+#check ThreeColumnSpectralSequence.FiniteFiltration.mk
+#print axioms ThreeColumnSpectralSequence.FiniteFiltration.mk
+#check ThreeColumnSpectralSequence.FiniteFiltration.step
+#print axioms ThreeColumnSpectralSequence.FiniteFiltration.step
+#check ThreeColumnSpectralSequence.FiniteFiltration.step_zero
+#print axioms ThreeColumnSpectralSequence.FiniteFiltration.step_zero
+#check ThreeColumnSpectralSequence.FiniteFiltration.step_three
+#print axioms ThreeColumnSpectralSequence.FiniteFiltration.step_three
+#check ThreeColumnSpectralSequence.FiniteFiltration.GradedPiece
+#print axioms ThreeColumnSpectralSequence.FiniteFiltration.GradedPiece
+
+#check ThreeColumnSpectralSequence.Convergence
+#print axioms ThreeColumnSpectralSequence.Convergence
+#check ThreeColumnSpectralSequence.Convergence.mk
+#print axioms ThreeColumnSpectralSequence.Convergence.mk
+#check ThreeColumnSpectralSequence.Convergence.H
+#print axioms ThreeColumnSpectralSequence.Convergence.H
+#check ThreeColumnSpectralSequence.Convergence.addCommGroup
+#print axioms ThreeColumnSpectralSequence.Convergence.addCommGroup
+#check ThreeColumnSpectralSequence.Convergence.module
+#print axioms ThreeColumnSpectralSequence.Convergence.module
+#check ThreeColumnSpectralSequence.Convergence.filtration
+#print axioms ThreeColumnSpectralSequence.Convergence.filtration
+#check ThreeColumnSpectralSequence.Convergence.gradedIso
+#print axioms ThreeColumnSpectralSequence.Convergence.gradedIso
+#check ThreeColumnSpectralSequence.Convergence.Einf_subsingleton
+#print axioms ThreeColumnSpectralSequence.Convergence.Einf_subsingleton
+#check ThreeColumnSpectralSequence.Convergence.middle_E₂_subsingleton
+#print axioms ThreeColumnSpectralSequence.Convergence.middle_E₂_subsingleton
+
+/-! ## `Lib.Algebra.Homology.ThreeColumnSpectralSequence.ThreeColumnPage` -/
+
+#check ThreeColumnSpectralSequence.OuterNormalization
+#print axioms ThreeColumnSpectralSequence.OuterNormalization
+#check ThreeColumnSpectralSequence.OuterNormalization.mk
+#print axioms ThreeColumnSpectralSequence.OuterNormalization.mk
+#check ThreeColumnSpectralSequence.OuterNormalization.source
+#print axioms ThreeColumnSpectralSequence.OuterNormalization.source
+#check ThreeColumnSpectralSequence.OuterNormalization.target
+#print axioms ThreeColumnSpectralSequence.OuterNormalization.target
+#check ThreeColumnSpectralSequence.Convergence.toThreeColumnPageData
+#print axioms ThreeColumnSpectralSequence.Convergence.toThreeColumnPageData
+#check ThreeColumnSpectralSequence.Convergence.toThreeColumnPageData_E
+#print axioms ThreeColumnSpectralSequence.Convergence.toThreeColumnPageData_E
+#check ThreeColumnSpectralSequence.Convergence.toThreeColumnPageData_differential
+#print axioms ThreeColumnSpectralSequence.Convergence.toThreeColumnPageData_differential
+#check ThreeColumnSpectralSequence.Convergence.toThreeColumnPageData_source
+#print axioms ThreeColumnSpectralSequence.Convergence.toThreeColumnPageData_source
+#check ThreeColumnSpectralSequence.Convergence.toThreeColumnPageData_target
+#print axioms ThreeColumnSpectralSequence.Convergence.toThreeColumnPageData_target
+
+/-! ## `Lib.Algebra.Homology.ThreeColumnSpectralSequence.LowerTransfer` -/
+
+#check ThreeColumnSpectralSequence.Raw.left_dTo_eq_zero
+#print axioms ThreeColumnSpectralSequence.Raw.left_dTo_eq_zero
+#check ThreeColumnSpectralSequence.Raw.right_dFrom_eq_zero
+#print axioms ThreeColumnSpectralSequence.Raw.right_dFrom_eq_zero
+#check ThreeColumnSpectralSequence.Raw.d₂_injective_of_subsingleton_Einf
+#print axioms ThreeColumnSpectralSequence.Raw.d₂_injective_of_subsingleton_Einf
+#check ThreeColumnSpectralSequence.Raw.d₂_surjective_of_subsingleton_Einf
+#print axioms ThreeColumnSpectralSequence.Raw.d₂_surjective_of_subsingleton_Einf
+#check ThreeColumnSpectralSequence.Convergence.d₂_injective_of_subsingleton
+#print axioms ThreeColumnSpectralSequence.Convergence.d₂_injective_of_subsingleton
+#check ThreeColumnSpectralSequence.Convergence.d₂_surjective_of_subsingleton
+#print axioms ThreeColumnSpectralSequence.Convergence.d₂_surjective_of_subsingleton
+#check ThreeColumnSpectralSequence.Convergence.d₂_bijective_of_subsingleton
+#print axioms ThreeColumnSpectralSequence.Convergence.d₂_bijective_of_subsingleton
+#check ThreeColumnSpectralSequence.Convergence.sourceNormalizationOfTarget
+#print axioms ThreeColumnSpectralSequence.Convergence.sourceNormalizationOfTarget
+#check ThreeColumnSpectralSequence.Convergence.targetNormalizationOfSource
+#print axioms ThreeColumnSpectralSequence.Convergence.targetNormalizationOfSource
+#check ThreeColumnSpectralSequence.Convergence.outerNormalizationOfAlternatingCoordinates
+#print axioms ThreeColumnSpectralSequence.Convergence.outerNormalizationOfAlternatingCoordinates
+#check ThreeColumnSpectralSequence.Convergence.lowerDifferentialsBijectiveAndNeZero
+#print axioms ThreeColumnSpectralSequence.Convergence.lowerDifferentialsBijectiveAndNeZero
+
+/-! ## `Lib.AlgebraicTopology.FundamentalGroup.HomotopyEquiv` -/
+
+#check FundamentalGroup.map_bijective_of_homotopyEquiv
+#print axioms FundamentalGroup.map_bijective_of_homotopyEquiv
+#check FundamentalGroup.mulEquivOfHomotopyEquiv
+#print axioms FundamentalGroup.mulEquivOfHomotopyEquiv
+
+#check Path.trans_mem
+#print axioms Path.trans_mem
+#check FundamentalGroup.VanKampen.Cocone.subpath_mem_of_mem_Icc
+#print axioms FundamentalGroup.VanKampen.Cocone.subpath_mem_of_mem_Icc
+#check FundamentalGroup.VanKampen.Cocone.LocalPathValue
+#print axioms FundamentalGroup.VanKampen.Cocone.LocalPathValue
+#check FundamentalGroup.VanKampen.Cocone.LocalPathValue.mk
+#print axioms FundamentalGroup.VanKampen.Cocone.LocalPathValue.mk
+#check FundamentalGroup.VanKampen.Cocone.LocalPathValue.value
+#print axioms FundamentalGroup.VanKampen.Cocone.LocalPathValue.value
+#check FundamentalGroup.VanKampen.Cocone.LocalPathValue.refl
+#print axioms FundamentalGroup.VanKampen.Cocone.LocalPathValue.refl
+#check FundamentalGroup.VanKampen.Cocone.LocalPathValue.trans
+#print axioms FundamentalGroup.VanKampen.Cocone.LocalPathValue.trans
+#check FundamentalGroup.VanKampen.Cocone.LocalPathValue.subpath_mul
+#print axioms FundamentalGroup.VanKampen.Cocone.LocalPathValue.subpath_mul
+#check FundamentalGroup.VanKampen.Cocone.LocalPathValue.compatible
+#print axioms FundamentalGroup.VanKampen.Cocone.LocalPathValue.compatible
+#check FundamentalGroup.VanKampen.Cocone.LocalPathValue.value_cast
+#print axioms FundamentalGroup.VanKampen.Cocone.LocalPathValue.value_cast
+#check FundamentalGroup.VanKampen.Cocone.LocalPathValue.HomotopyInvariant
+#print axioms FundamentalGroup.VanKampen.Cocone.LocalPathValue.HomotopyInvariant
+#check FundamentalGroup.VanKampen.Cocone.PathValue
+#print axioms FundamentalGroup.VanKampen.Cocone.PathValue
+#check FundamentalGroup.VanKampen.Cocone.PathValue.mk
+#print axioms FundamentalGroup.VanKampen.Cocone.PathValue.mk
+#check FundamentalGroup.VanKampen.Cocone.PathValue.value
+#print axioms FundamentalGroup.VanKampen.Cocone.PathValue.value
+#check FundamentalGroup.VanKampen.Cocone.PathValue.refl
+#print axioms FundamentalGroup.VanKampen.Cocone.PathValue.refl
+#check FundamentalGroup.VanKampen.Cocone.PathValue.trans
+#print axioms FundamentalGroup.VanKampen.Cocone.PathValue.trans
+#check FundamentalGroup.VanKampen.Cocone.PathValue.subpath_mul
+#print axioms FundamentalGroup.VanKampen.Cocone.PathValue.subpath_mul
+#check FundamentalGroup.VanKampen.Cocone.PathValue.value_cast
+#print axioms FundamentalGroup.VanKampen.Cocone.PathValue.value_cast
+#check FundamentalGroup.VanKampen.Cocone.PathValue.value_subpath_zero_one
+#print axioms FundamentalGroup.VanKampen.Cocone.PathValue.value_subpath_zero_one
+#check FundamentalGroup.VanKampen.Cocone.PathValue.Extends
+#print axioms FundamentalGroup.VanKampen.Cocone.PathValue.Extends
+#check FundamentalGroup.VanKampen.Cocone.PathValue.HomotopyInvariant
+#print axioms FundamentalGroup.VanKampen.Cocone.PathValue.HomotopyInvariant
+#check FundamentalGroup.VanKampen.Cocone.TwoOpenCover
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoOpenCover
+#check FundamentalGroup.VanKampen.Cocone.TwoOpenCover.mk
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoOpenCover.mk
+#check FundamentalGroup.VanKampen.Cocone.TwoOpenCover.U
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoOpenCover.U
+#check FundamentalGroup.VanKampen.Cocone.TwoOpenCover.V
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoOpenCover.V
+#check FundamentalGroup.VanKampen.Cocone.TwoOpenCover.cover
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoOpenCover.cover
+#check FundamentalGroup.VanKampen.Cocone.TwoOpenCover.pathConnectedU
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoOpenCover.pathConnectedU
+#check FundamentalGroup.VanKampen.Cocone.TwoOpenCover.pathConnectedV
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoOpenCover.pathConnectedV
+#check FundamentalGroup.VanKampen.Cocone.TwoOpenCover.pathConnectedIntersection
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoOpenCover.pathConnectedIntersection
+#check FundamentalGroup.VanKampen.Cocone.TwoOpenCover.base
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoOpenCover.base
+#check FundamentalGroup.VanKampen.Cocone.TwoOpenCover.baseU
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoOpenCover.baseU
+#check FundamentalGroup.VanKampen.Cocone.TwoOpenCover.baseV
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoOpenCover.baseV
+#check FundamentalGroup.VanKampen.Cocone.TwoOpenCover.chart
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoOpenCover.chart
+#check FundamentalGroup.VanKampen.Cocone.TwoOpenCover.base_mem_chart
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoOpenCover.base_mem_chart
+#check FundamentalGroup.VanKampen.Cocone.TwoOpenCover.chart_open
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoOpenCover.chart_open
+#check FundamentalGroup.VanKampen.Cocone.TwoOpenCover.chart_cover
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoOpenCover.chart_cover
+#check FundamentalGroup.VanKampen.Cocone.TwoOpenCover.mem_U_or_V
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoOpenCover.mem_U_or_V
+#check FundamentalGroup.VanKampen.Cocone.TwoOpenCover.rawPathTo
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoOpenCover.rawPathTo
+#check FundamentalGroup.VanKampen.Cocone.TwoOpenCover.rawPathTo_mem
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoOpenCover.rawPathTo_mem
+#check FundamentalGroup.VanKampen.Cocone.TwoOpenCover.pathTo
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoOpenCover.pathTo
+#check FundamentalGroup.VanKampen.Cocone.TwoOpenCover.pathTo_base
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoOpenCover.pathTo_base
+#check FundamentalGroup.VanKampen.Cocone.TwoOpenCover.pathTo_mem
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoOpenCover.pathTo_mem
+#check FundamentalGroup.VanKampen.Cocone.TwoOpenCover.overlap
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoOpenCover.overlap
+#check FundamentalGroup.VanKampen.Cocone.TwoOpenCover.baseUPoint
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoOpenCover.baseUPoint
+#check FundamentalGroup.VanKampen.Cocone.TwoOpenCover.baseVPoint
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoOpenCover.baseVPoint
+#check FundamentalGroup.VanKampen.Cocone.TwoOpenCover.baseOverlapPoint
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoOpenCover.baseOverlapPoint
+#check FundamentalGroup.VanKampen.Cocone.TwoOpenCover.baseChart
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoOpenCover.baseChart
+#check FundamentalGroup.VanKampen.Cocone.TwoOpenCover.UGroup
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoOpenCover.UGroup
+#check FundamentalGroup.VanKampen.Cocone.TwoOpenCover.VGroup
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoOpenCover.VGroup
+#check FundamentalGroup.VanKampen.Cocone.TwoOpenCover.OverlapGroup
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoOpenCover.OverlapGroup
+#check FundamentalGroup.VanKampen.Cocone.TwoOpenCover.overlapToU
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoOpenCover.overlapToU
+#check FundamentalGroup.VanKampen.Cocone.TwoOpenCover.overlapToV
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoOpenCover.overlapToV
+#check FundamentalGroup.VanKampen.Cocone.TwoOpenCover.inclusionU
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoOpenCover.inclusionU
+#check FundamentalGroup.VanKampen.Cocone.TwoOpenCover.inclusionV
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoOpenCover.inclusionV
+#check FundamentalGroup.VanKampen.Cocone.TwoOpenCover.overlapHomU
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoOpenCover.overlapHomU
+#check FundamentalGroup.VanKampen.Cocone.TwoOpenCover.overlapHomV
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoOpenCover.overlapHomV
+#check FundamentalGroup.VanKampen.Cocone.TwoOpenCover.inclusionHomU
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoOpenCover.inclusionHomU
+#check FundamentalGroup.VanKampen.Cocone.TwoOpenCover.inclusionHomV
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoOpenCover.inclusionHomV
+#check FundamentalGroup.VanKampen.Cocone.TwoOpenCover.inclusionHom_compatible
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoOpenCover.inclusionHom_compatible
+#check FundamentalGroup.VanKampen.Cocone.TwoOpenCover.Compatible
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoOpenCover.Compatible
+#check FundamentalGroup.VanKampen.Cocone.pathIn
+#print axioms FundamentalGroup.VanKampen.Cocone.pathIn
+#check FundamentalGroup.VanKampen.Cocone.pathIn_apply
+#print axioms FundamentalGroup.VanKampen.Cocone.pathIn_apply
+#check FundamentalGroup.VanKampen.Cocone.pathIn_map
+#print axioms FundamentalGroup.VanKampen.Cocone.pathIn_map
+#check FundamentalGroup.VanKampen.Cocone.pathIn_refl
+#print axioms FundamentalGroup.VanKampen.Cocone.pathIn_refl
+#check FundamentalGroup.VanKampen.Cocone.pathIn_trans
+#print axioms FundamentalGroup.VanKampen.Cocone.pathIn_trans
+#check FundamentalGroup.VanKampen.Cocone.homotopyIn
+#print axioms FundamentalGroup.VanKampen.Cocone.homotopyIn
+#check FundamentalGroup.VanKampen.Cocone.homotopy_trans_mem
+#print axioms FundamentalGroup.VanKampen.Cocone.homotopy_trans_mem
+#check FundamentalGroup.VanKampen.Cocone.homotopy_transRefl_mem
+#print axioms FundamentalGroup.VanKampen.Cocone.homotopy_transRefl_mem
+#check FundamentalGroup.VanKampen.Cocone.homotopy_subpathTransSubpathRefl_mem
+#print axioms FundamentalGroup.VanKampen.Cocone.homotopy_subpathTransSubpathRefl_mem
+#check FundamentalGroup.VanKampen.Cocone.homotopy_subpathTransSubpath_mem
+#print axioms FundamentalGroup.VanKampen.Cocone.homotopy_subpathTransSubpath_mem
+#check FundamentalGroup.VanKampen.Cocone.mem_Icc_of_subpath_mem
+#print axioms FundamentalGroup.VanKampen.Cocone.mem_Icc_of_subpath_mem
+#check FundamentalGroup.VanKampen.Cocone.subpathTransSubpathIn
+#print axioms FundamentalGroup.VanKampen.Cocone.subpathTransSubpathIn
+#check FundamentalGroup.VanKampen.Cocone.PathClass.pathClass_property_cast
+#print axioms FundamentalGroup.VanKampen.Cocone.PathClass.pathClass_property_cast
+#check FundamentalGroup.VanKampen.Cocone.PathClass.pathClass_induction_of_open_cover
+#print axioms FundamentalGroup.VanKampen.Cocone.PathClass.pathClass_induction_of_open_cover
+#check FundamentalGroup.VanKampen.Cocone.PathClass.quotient_symm_trans_cancel
+#print axioms FundamentalGroup.VanKampen.Cocone.PathClass.quotient_symm_trans_cancel
+#check FundamentalGroup.VanKampen.Cocone.PathClass.quotient_trans_right_cancel
+#print axioms FundamentalGroup.VanKampen.Cocone.PathClass.quotient_trans_right_cancel
+#check FundamentalGroup.VanKampen.Cocone.PathClass.basedLoop
+#print axioms FundamentalGroup.VanKampen.Cocone.PathClass.basedLoop
+#check FundamentalGroup.VanKampen.Cocone.PathClass.pathDifference
+#print axioms FundamentalGroup.VanKampen.Cocone.PathClass.pathDifference
+#check FundamentalGroup.VanKampen.Cocone.PathClass.basedLoop_refl
+#print axioms FundamentalGroup.VanKampen.Cocone.PathClass.basedLoop_refl
+#check FundamentalGroup.VanKampen.Cocone.PathClass.basedLoop_trans
+#print axioms FundamentalGroup.VanKampen.Cocone.PathClass.basedLoop_trans
+#check FundamentalGroup.VanKampen.Cocone.PathClass.basedLoop_comparison
+#print axioms FundamentalGroup.VanKampen.Cocone.PathClass.basedLoop_comparison
+#check FundamentalGroup.VanKampen.Cocone.TwoOpenCover.hom_ext
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoOpenCover.hom_ext
+
+/-! ## `Lib.AlgebraicTopology.FundamentalGroup.VanKampen.TwoSimplyConnectedCover` -/
+
+#check FundamentalGroup.VanKampen.Cocone.TwoSimplyConnectedCover
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoSimplyConnectedCover
+#check FundamentalGroup.VanKampen.Cocone.TwoSimplyConnectedCover.mk
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoSimplyConnectedCover.mk
+#check FundamentalGroup.VanKampen.Cocone.TwoSimplyConnectedCover.U
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoSimplyConnectedCover.U
+#check FundamentalGroup.VanKampen.Cocone.TwoSimplyConnectedCover.V
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoSimplyConnectedCover.V
+#check FundamentalGroup.VanKampen.Cocone.TwoSimplyConnectedCover.cover
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoSimplyConnectedCover.cover
+#check FundamentalGroup.VanKampen.Cocone.TwoSimplyConnectedCover.simplyU
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoSimplyConnectedCover.simplyU
+#check FundamentalGroup.VanKampen.Cocone.TwoSimplyConnectedCover.simplyV
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoSimplyConnectedCover.simplyV
+#check FundamentalGroup.VanKampen.Cocone.TwoSimplyConnectedCover.base
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoSimplyConnectedCover.base
+#check FundamentalGroup.VanKampen.Cocone.TwoSimplyConnectedCover.baseU
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoSimplyConnectedCover.baseU
+#check FundamentalGroup.VanKampen.Cocone.TwoSimplyConnectedCover.baseV
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoSimplyConnectedCover.baseV
+#check FundamentalGroup.VanKampen.Cocone.TwoSimplyConnectedCover.rec
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoSimplyConnectedCover.rec
+#check FundamentalGroup.VanKampen.Cocone.TwoSimplyConnectedCover.recOn
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoSimplyConnectedCover.recOn
+#check FundamentalGroup.VanKampen.Cocone.TwoSimplyConnectedCover.casesOn
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoSimplyConnectedCover.casesOn
+#check FundamentalGroup.VanKampen.Cocone.paths_homotopic_of_mem
+#print axioms FundamentalGroup.VanKampen.Cocone.paths_homotopic_of_mem
+#check FundamentalGroup.VanKampen.Cocone.TwoSimplyConnectedCover.pathU
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoSimplyConnectedCover.pathU
+#check FundamentalGroup.VanKampen.Cocone.TwoSimplyConnectedCover.pathV
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoSimplyConnectedCover.pathV
+#check FundamentalGroup.VanKampen.Cocone.TwoSimplyConnectedCover.pathU_mem
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoSimplyConnectedCover.pathU_mem
+#check FundamentalGroup.VanKampen.Cocone.TwoSimplyConnectedCover.pathV_mem
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoSimplyConnectedCover.pathV_mem
+#check FundamentalGroup.VanKampen.Cocone.TwoSimplyConnectedCover.pathU_trans
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoSimplyConnectedCover.pathU_trans
+#check FundamentalGroup.VanKampen.Cocone.TwoSimplyConnectedCover.pathV_trans
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoSimplyConnectedCover.pathV_trans
+#check FundamentalGroup.VanKampen.Cocone.TwoSimplyConnectedCover.switchClass
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoSimplyConnectedCover.switchClass
+#check FundamentalGroup.VanKampen.Cocone.TwoSimplyConnectedCover.switchClass_eq_of_joinedIn
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoSimplyConnectedCover.switchClass_eq_of_joinedIn
+#check FundamentalGroup.VanKampen.Cocone.TwoSimplyConnectedCover.switchClass_base
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoSimplyConnectedCover.switchClass_base
+#check FundamentalGroup.VanKampen.Cocone.TwoSimplyConnectedCover.subgroup_eq_top_of_switchClass_mem
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoSimplyConnectedCover.subgroup_eq_top_of_switchClass_mem
+#check FundamentalGroup.VanKampen.Cocone.TwoSimplyConnectedCover.switchClass_eq_of_paths
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoSimplyConnectedCover.switchClass_eq_of_paths
+
+/-! ## `Lib.Topology.Homotopy.PuncturedCyclicCover` -/
+
+#check FundamentalGroup.VanKampen.Cocone.TwoSimplyConnectedCover.zpowers_switchClass_eq_top
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoSimplyConnectedCover.zpowers_switchClass_eq_top
+
+/-! ## `Lib.Topology.Homotopy.PuncturedPlaneCyclic` -/
+
+#check PuncturedPlaneCyclic.planeOpen
+#print axioms PuncturedPlaneCyclic.planeOpen
+#check PuncturedPlaneCyclic.Plane
+#print axioms PuncturedPlaneCyclic.Plane
+#check PuncturedPlaneCyclic.plane_pathConnectedSpace
+#print axioms PuncturedPlaneCyclic.plane_pathConnectedSpace
+#check PuncturedPlaneCyclic.upperSet
+#print axioms PuncturedPlaneCyclic.upperSet
+#check PuncturedPlaneCyclic.lowerSet
+#print axioms PuncturedPlaneCyclic.lowerSet
+#check PuncturedPlaneCyclic.upperSet_isOpen
+#print axioms PuncturedPlaneCyclic.upperSet_isOpen
+#check PuncturedPlaneCyclic.lowerSet_isOpen
+#print axioms PuncturedPlaneCyclic.lowerSet_isOpen
+#check PuncturedPlaneCyclic.upperSet_subset_punctured
+#print axioms PuncturedPlaneCyclic.upperSet_subset_punctured
+#check PuncturedPlaneCyclic.lowerSet_subset_punctured
+#print axioms PuncturedPlaneCyclic.lowerSet_subset_punctured
+#check PuncturedPlaneCyclic.slitSets_union
+#print axioms PuncturedPlaneCyclic.slitSets_union
+#check PuncturedPlaneCyclic.slitSets_inter
+#print axioms PuncturedPlaneCyclic.slitSets_inter
+#check PuncturedPlaneCyclic.upperBasepoint
+#print axioms PuncturedPlaneCyclic.upperBasepoint
+#check PuncturedPlaneCyclic.upperHeightMap
+#print axioms PuncturedPlaneCyclic.upperHeightMap
+#check PuncturedPlaneCyclic.upper_vertical_mem
+#print axioms PuncturedPlaneCyclic.upper_vertical_mem
+#check PuncturedPlaneCyclic.upperVerticalHomotopy
+#print axioms PuncturedPlaneCyclic.upperVerticalHomotopy
+#check PuncturedPlaneCyclic.upperHorizontalHomotopy
+#print axioms PuncturedPlaneCyclic.upperHorizontalHomotopy
+#check PuncturedPlaneCyclic.upperContraction
+#print axioms PuncturedPlaneCyclic.upperContraction
+#check PuncturedPlaneCyclic.upperSet_contractibleSpace
+#print axioms PuncturedPlaneCyclic.upperSet_contractibleSpace
+#check PuncturedPlaneCyclic.slitConjugation
+#print axioms PuncturedPlaneCyclic.slitConjugation
+#check PuncturedPlaneCyclic.lowerSet_contractibleSpace
+#print axioms PuncturedPlaneCyclic.lowerSet_contractibleSpace
+#check PuncturedPlaneCyclic.upperSlit
+#print axioms PuncturedPlaneCyclic.upperSlit
+#check PuncturedPlaneCyclic.lowerSlit
+#print axioms PuncturedPlaneCyclic.lowerSlit
+#check PuncturedPlaneCyclic.upperSlit_union_lowerSlit
+#print axioms PuncturedPlaneCyclic.upperSlit_union_lowerSlit
+#check PuncturedPlaneCyclic.upperSlitHomeomorph
+#print axioms PuncturedPlaneCyclic.upperSlitHomeomorph
+#check PuncturedPlaneCyclic.lowerSlitHomeomorph
+#print axioms PuncturedPlaneCyclic.lowerSlitHomeomorph
+#check PuncturedPlaneCyclic.upperSlit_contractibleSpace
+#print axioms PuncturedPlaneCyclic.upperSlit_contractibleSpace
+#check PuncturedPlaneCyclic.lowerSlit_contractibleSpace
+#print axioms PuncturedPlaneCyclic.lowerSlit_contractibleSpace
+#check PuncturedPlaneCyclic.upperSlit_simplyConnected
+#print axioms PuncturedPlaneCyclic.upperSlit_simplyConnected
+#check PuncturedPlaneCyclic.lowerSlit_simplyConnected
+#print axioms PuncturedPlaneCyclic.lowerSlit_simplyConnected
+#check PuncturedPlaneCyclic.base
+#print axioms PuncturedPlaneCyclic.base
+#check PuncturedPlaneCyclic.opposite
+#print axioms PuncturedPlaneCyclic.opposite
+#check PuncturedPlaneCyclic.base_mem_upper
+#print axioms PuncturedPlaneCyclic.base_mem_upper
+#check PuncturedPlaneCyclic.base_mem_lower
+#print axioms PuncturedPlaneCyclic.base_mem_lower
+#check PuncturedPlaneCyclic.opposite_mem_upper
+#print axioms PuncturedPlaneCyclic.opposite_mem_upper
+#check PuncturedPlaneCyclic.opposite_mem_lower
+#print axioms PuncturedPlaneCyclic.opposite_mem_lower
+#check PuncturedPlaneCyclic.slitCover
+#print axioms PuncturedPlaneCyclic.slitCover
+#check PuncturedPlaneCyclic.positiveOverlap
+#print axioms PuncturedPlaneCyclic.positiveOverlap
+#check PuncturedPlaneCyclic.negativeOverlap
+#print axioms PuncturedPlaneCyclic.negativeOverlap
+#check PuncturedPlaneCyclic.positiveOverlapHomeomorph
+#print axioms PuncturedPlaneCyclic.positiveOverlapHomeomorph
+#check PuncturedPlaneCyclic.negativeOverlapHomeomorph
+#print axioms PuncturedPlaneCyclic.negativeOverlapHomeomorph
+#check PuncturedPlaneCyclic.positiveOverlap_isPathConnected
+#print axioms PuncturedPlaneCyclic.positiveOverlap_isPathConnected
+#check PuncturedPlaneCyclic.negativeOverlap_isPathConnected
+#print axioms PuncturedPlaneCyclic.negativeOverlap_isPathConnected
+#check PuncturedPlaneCyclic.positiveOverlap_subset_slitOverlap
+#print axioms PuncturedPlaneCyclic.positiveOverlap_subset_slitOverlap
+#check PuncturedPlaneCyclic.negativeOverlap_subset_slitOverlap
+#print axioms PuncturedPlaneCyclic.negativeOverlap_subset_slitOverlap
+#check PuncturedPlaneCyclic.overlap_has_two_components
+#print axioms PuncturedPlaneCyclic.overlap_has_two_components
+#check PuncturedPlaneCyclic.meridianHalfCircle
+#print axioms PuncturedPlaneCyclic.meridianHalfCircle
+#check PuncturedPlaneCyclic.continuous_meridianHalfCircle
+#print axioms PuncturedPlaneCyclic.continuous_meridianHalfCircle
+#check PuncturedPlaneCyclic.meridianHalfCircle_zero
+#print axioms PuncturedPlaneCyclic.meridianHalfCircle_zero
+#check PuncturedPlaneCyclic.meridianHalfCircle_one
+#print axioms PuncturedPlaneCyclic.meridianHalfCircle_one
+#check PuncturedPlaneCyclic.meridianHalfCircle_im_pos
+#print axioms PuncturedPlaneCyclic.meridianHalfCircle_im_pos
+#check PuncturedPlaneCyclic.meridianHalfCircle_mem_upperSet
+#print axioms PuncturedPlaneCyclic.meridianHalfCircle_mem_upperSet
+#check PuncturedPlaneCyclic.conj_meridianHalfCircle_mem_lowerSet
+#print axioms PuncturedPlaneCyclic.conj_meridianHalfCircle_mem_lowerSet
+#check PuncturedPlaneCyclic.upperPath
+#print axioms PuncturedPlaneCyclic.upperPath
+#check PuncturedPlaneCyclic.lowerPath
+#print axioms PuncturedPlaneCyclic.lowerPath
+#check PuncturedPlaneCyclic.upperPath_mem
+#print axioms PuncturedPlaneCyclic.upperPath_mem
+#check PuncturedPlaneCyclic.lowerPath_mem
+#print axioms PuncturedPlaneCyclic.lowerPath_mem
+#check PuncturedPlaneCyclic.meridian
+#print axioms PuncturedPlaneCyclic.meridian
+#check PuncturedPlaneCyclic.zpowers_meridian_eq_top
+#print axioms PuncturedPlaneCyclic.zpowers_meridian_eq_top
+#check PuncturedPlaneCyclic.range_eq_zpowers_meridian
+#print axioms PuncturedPlaneCyclic.range_eq_zpowers_meridian
+#check PuncturedPlaneCyclic.ballHomeomorph
+#print axioms PuncturedPlaneCyclic.ballHomeomorph
+#check PuncturedPlaneCyclic.ballHomeomorph_apply_zero
+#print axioms PuncturedPlaneCyclic.ballHomeomorph_apply_zero
+#check PuncturedPlaneCyclic.PuncturedBall
+#print axioms PuncturedPlaneCyclic.PuncturedBall
+#check PuncturedPlaneCyclic.puncturedBallHomeomorph
+#print axioms PuncturedPlaneCyclic.puncturedBallHomeomorph
+#check PuncturedPlaneCyclic.puncturedBall_pathConnectedSpace
+#print axioms PuncturedPlaneCyclic.puncturedBall_pathConnectedSpace
+#check PuncturedPlaneCyclic.puncturedBallFundamentalGroupEquiv
+#print axioms PuncturedPlaneCyclic.puncturedBallFundamentalGroupEquiv
+#check PuncturedPlaneCyclic.puncturedBallMeridianClass
+#print axioms PuncturedPlaneCyclic.puncturedBallMeridianClass
+#check PuncturedPlaneCyclic.puncturedBall_range_eq_zpowers_meridian
+#print axioms PuncturedPlaneCyclic.puncturedBall_range_eq_zpowers_meridian
+#check PuncturedPlaneCyclic.puncturedBall_exists_cyclic_range
+#print axioms PuncturedPlaneCyclic.puncturedBall_exists_cyclic_range
+
+#check FundamentalGroup.VanKampen.Cocone.TwoOpenCover.chartPath
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoOpenCover.chartPath
+#check FundamentalGroup.VanKampen.Cocone.TwoOpenCover.chartPath_base
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoOpenCover.chartPath_base
+#check FundamentalGroup.VanKampen.Cocone.TwoOpenCover.chartPathClass
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoOpenCover.chartPathClass
+#check FundamentalGroup.VanKampen.Cocone.TwoOpenCover.chartPathClass_base
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoOpenCover.chartPathClass_base
+#check FundamentalGroup.VanKampen.Cocone.TwoOpenCover.closePath
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoOpenCover.closePath
+#check FundamentalGroup.VanKampen.Cocone.TwoOpenCover.closePath_refl
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoOpenCover.closePath_refl
+#check FundamentalGroup.VanKampen.Cocone.TwoOpenCover.closePath_trans
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoOpenCover.closePath_trans
+#check FundamentalGroup.VanKampen.Cocone.TwoOpenCover.closePath_homotopic
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoOpenCover.closePath_homotopic
+#check FundamentalGroup.VanKampen.Cocone.TwoOpenCover.closePath_loop
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoOpenCover.closePath_loop
+#check FundamentalGroup.VanKampen.Cocone.TwoOpenCover.chartHom
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoOpenCover.chartHom
+#check FundamentalGroup.VanKampen.Cocone.TwoOpenCover.localValue
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoOpenCover.localValue
+#check FundamentalGroup.VanKampen.Cocone.TwoOpenCover.localValue_refl
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoOpenCover.localValue_refl
+#check FundamentalGroup.VanKampen.Cocone.TwoOpenCover.localValue_trans
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoOpenCover.localValue_trans
+#check FundamentalGroup.VanKampen.Cocone.TwoOpenCover.localValue_subpath_mul
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoOpenCover.localValue_subpath_mul
+#check FundamentalGroup.VanKampen.Cocone.TwoOpenCover.localValue_homotopy
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoOpenCover.localValue_homotopy
+#check FundamentalGroup.VanKampen.Cocone.TwoOpenCover.overlapPath
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoOpenCover.overlapPath
+#check FundamentalGroup.VanKampen.Cocone.TwoOpenCover.overlapPath_map_U
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoOpenCover.overlapPath_map_U
+#check FundamentalGroup.VanKampen.Cocone.TwoOpenCover.overlapPath_map_V
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoOpenCover.overlapPath_map_V
+#check FundamentalGroup.VanKampen.Cocone.TwoOpenCover.overlapClose
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoOpenCover.overlapClose
+#check FundamentalGroup.VanKampen.Cocone.TwoOpenCover.overlapHomU_close
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoOpenCover.overlapHomU_close
+#check FundamentalGroup.VanKampen.Cocone.TwoOpenCover.overlapHomV_close
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoOpenCover.overlapHomV_close
+#check FundamentalGroup.VanKampen.Cocone.TwoOpenCover.localValue_compatible_UV
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoOpenCover.localValue_compatible_UV
+#check FundamentalGroup.VanKampen.Cocone.TwoOpenCover.localValue_compatible
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoOpenCover.localValue_compatible
+#check FundamentalGroup.VanKampen.Cocone.TwoOpenCover.localPathValue
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoOpenCover.localPathValue
+#check FundamentalGroup.VanKampen.Cocone.TwoOpenCover.localPathValue_homotopyInvariant
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoOpenCover.localPathValue_homotopyInvariant
+#check FundamentalGroup.VanKampen.Cocone.TwoOpenCover.localValue_map_loop
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoOpenCover.localValue_map_loop
+#check FundamentalGroup.VanKampen.Cocone.PathValue.fundamentalGroupHom
+#print axioms FundamentalGroup.VanKampen.Cocone.PathValue.fundamentalGroupHom
+#check FundamentalGroup.VanKampen.Cocone.PathValue.fundamentalGroupHom_mk
+#print axioms FundamentalGroup.VanKampen.Cocone.PathValue.fundamentalGroupHom_mk
+#check FundamentalGroup.VanKampen.Cocone.mem_of_subpath_mem
+#print axioms FundamentalGroup.VanKampen.Cocone.mem_of_subpath_mem
+#check FundamentalGroup.VanKampen.Cocone.subpath_mem_mono
+#print axioms FundamentalGroup.VanKampen.Cocone.subpath_mem_mono
+#check FundamentalGroup.VanKampen.Cocone.exists_path_subdivision
+#print axioms FundamentalGroup.VanKampen.Cocone.exists_path_subdivision
+#check FundamentalGroup.VanKampen.Cocone.LocalPathValue.IsPrimitive
+#print axioms FundamentalGroup.VanKampen.Cocone.LocalPathValue.IsPrimitive
+#check FundamentalGroup.VanKampen.Cocone.LocalPathValue.IsPrimitiveUpTo
+#print axioms FundamentalGroup.VanKampen.Cocone.LocalPathValue.IsPrimitiveUpTo
+#check FundamentalGroup.VanKampen.Cocone.LocalPathValue.isPrimitiveUpTo_zero
+#print axioms FundamentalGroup.VanKampen.Cocone.LocalPathValue.isPrimitiveUpTo_zero
+#check FundamentalGroup.VanKampen.Cocone.LocalPathValue.exists_primitiveUpTo_step
+#print axioms FundamentalGroup.VanKampen.Cocone.LocalPathValue.exists_primitiveUpTo_step
+#check FundamentalGroup.VanKampen.Cocone.LocalPathValue.exists_primitive
+#print axioms FundamentalGroup.VanKampen.Cocone.LocalPathValue.exists_primitive
+#check FundamentalGroup.VanKampen.Cocone.LocalPathValue.primitive_unique
+#print axioms FundamentalGroup.VanKampen.Cocone.LocalPathValue.primitive_unique
+#check FundamentalGroup.VanKampen.Cocone.convexComb_monotone
+#print axioms FundamentalGroup.VanKampen.Cocone.convexComb_monotone
+#check FundamentalGroup.VanKampen.Cocone.convexComb_comp
+#print axioms FundamentalGroup.VanKampen.Cocone.convexComb_comp
+#check FundamentalGroup.VanKampen.Cocone.subpath_subpath
+#print axioms FundamentalGroup.VanKampen.Cocone.subpath_subpath
+#check FundamentalGroup.VanKampen.Cocone.intervalHalf
+#print axioms FundamentalGroup.VanKampen.Cocone.intervalHalf
+#check FundamentalGroup.VanKampen.Cocone.trans_convexComb_first_half
+#print axioms FundamentalGroup.VanKampen.Cocone.trans_convexComb_first_half
+#check FundamentalGroup.VanKampen.Cocone.trans_convexComb_second_half
+#print axioms FundamentalGroup.VanKampen.Cocone.trans_convexComb_second_half
+#check FundamentalGroup.VanKampen.Cocone.trans_apply_intervalHalf
+#print axioms FundamentalGroup.VanKampen.Cocone.trans_apply_intervalHalf
+#check FundamentalGroup.VanKampen.Cocone.trans_subpath_first_half
+#print axioms FundamentalGroup.VanKampen.Cocone.trans_subpath_first_half
+#check FundamentalGroup.VanKampen.Cocone.trans_subpath_second_half
+#print axioms FundamentalGroup.VanKampen.Cocone.trans_subpath_second_half
+#check FundamentalGroup.VanKampen.Cocone.LocalPathValue.value_eq_of_path_eq
+#print axioms FundamentalGroup.VanKampen.Cocone.LocalPathValue.value_eq_of_path_eq
+#check FundamentalGroup.VanKampen.Cocone.LocalPathValue.isPrimitive_subpath
+#print axioms FundamentalGroup.VanKampen.Cocone.LocalPathValue.isPrimitive_subpath
+#check FundamentalGroup.VanKampen.Cocone.LocalPathValue.transport
+#print axioms FundamentalGroup.VanKampen.Cocone.LocalPathValue.transport
+#check FundamentalGroup.VanKampen.Cocone.LocalPathValue.transport_zero
+#print axioms FundamentalGroup.VanKampen.Cocone.LocalPathValue.transport_zero
+#check FundamentalGroup.VanKampen.Cocone.LocalPathValue.transport_isPrimitive
+#print axioms FundamentalGroup.VanKampen.Cocone.LocalPathValue.transport_isPrimitive
+#check FundamentalGroup.VanKampen.Cocone.LocalPathValue.transport_subpath
+#print axioms FundamentalGroup.VanKampen.Cocone.LocalPathValue.transport_subpath
+#check FundamentalGroup.VanKampen.Cocone.LocalPathValue.rawValue
+#print axioms FundamentalGroup.VanKampen.Cocone.LocalPathValue.rawValue
+#check FundamentalGroup.VanKampen.Cocone.LocalPathValue.rawValue_cast
+#print axioms FundamentalGroup.VanKampen.Cocone.LocalPathValue.rawValue_cast
+#check FundamentalGroup.VanKampen.Cocone.LocalPathValue.rawValue_subpath_zero_one
+#print axioms FundamentalGroup.VanKampen.Cocone.LocalPathValue.rawValue_subpath_zero_one
+#check FundamentalGroup.VanKampen.Cocone.LocalPathValue.rawValue_subpath
+#print axioms FundamentalGroup.VanKampen.Cocone.LocalPathValue.rawValue_subpath
+#check FundamentalGroup.VanKampen.Cocone.LocalPathValue.rawValue_local
+#print axioms FundamentalGroup.VanKampen.Cocone.LocalPathValue.rawValue_local
+#check FundamentalGroup.VanKampen.Cocone.LocalPathValue.rawValue_refl
+#print axioms FundamentalGroup.VanKampen.Cocone.LocalPathValue.rawValue_refl
+#check FundamentalGroup.VanKampen.Cocone.LocalPathValue.rawValue_subpath_mul
+#print axioms FundamentalGroup.VanKampen.Cocone.LocalPathValue.rawValue_subpath_mul
+#check FundamentalGroup.VanKampen.Cocone.LocalPathValue.rawValue_trans
+#print axioms FundamentalGroup.VanKampen.Cocone.LocalPathValue.rawValue_trans
+#check FundamentalGroup.VanKampen.Cocone.LocalPathValue.extension
+#print axioms FundamentalGroup.VanKampen.Cocone.LocalPathValue.extension
+#check FundamentalGroup.VanKampen.Cocone.LocalPathValue.extension_extends
+#print axioms FundamentalGroup.VanKampen.Cocone.LocalPathValue.extension_extends
+#check FundamentalGroup.VanKampen.Cocone.squareHorizontal
+#print axioms FundamentalGroup.VanKampen.Cocone.squareHorizontal
+#check FundamentalGroup.VanKampen.Cocone.squareVertical
+#print axioms FundamentalGroup.VanKampen.Cocone.squareVertical
+#check FundamentalGroup.VanKampen.Cocone.squarePathHomotopy
+#print axioms FundamentalGroup.VanKampen.Cocone.squarePathHomotopy
+#check FundamentalGroup.VanKampen.Cocone.convexComb_mem_Icc
+#print axioms FundamentalGroup.VanKampen.Cocone.convexComb_mem_Icc
+#check FundamentalGroup.VanKampen.Cocone.squarePathHomotopy_mem_rectangle
+#print axioms FundamentalGroup.VanKampen.Cocone.squarePathHomotopy_mem_rectangle
+#check FundamentalGroup.VanKampen.Cocone.rectangleHorizontalVertical
+#print axioms FundamentalGroup.VanKampen.Cocone.rectangleHorizontalVertical
+#check FundamentalGroup.VanKampen.Cocone.rectangleVerticalHorizontal
+#print axioms FundamentalGroup.VanKampen.Cocone.rectangleVerticalHorizontal
+#check FundamentalGroup.VanKampen.Cocone.rectangleHorizontalVertical_map
+#print axioms FundamentalGroup.VanKampen.Cocone.rectangleHorizontalVertical_map
+#check FundamentalGroup.VanKampen.Cocone.rectangleVerticalHorizontal_map
+#print axioms FundamentalGroup.VanKampen.Cocone.rectangleVerticalHorizontal_map
+#check FundamentalGroup.VanKampen.Cocone.rectangleHorizontalVertical_mem
+#print axioms FundamentalGroup.VanKampen.Cocone.rectangleHorizontalVertical_mem
+#check FundamentalGroup.VanKampen.Cocone.rectangleVerticalHorizontal_mem
+#print axioms FundamentalGroup.VanKampen.Cocone.rectangleVerticalHorizontal_mem
+#check FundamentalGroup.VanKampen.Cocone.rectangleBoundaryHomotopy
+#print axioms FundamentalGroup.VanKampen.Cocone.rectangleBoundaryHomotopy
+#check FundamentalGroup.VanKampen.Cocone.rectangleBoundaryHomotopy_apply
+#print axioms FundamentalGroup.VanKampen.Cocone.rectangleBoundaryHomotopy_apply
+#check FundamentalGroup.VanKampen.Cocone.rectangleBoundaryHomotopy_mem
+#print axioms FundamentalGroup.VanKampen.Cocone.rectangleBoundaryHomotopy_mem
+#check FundamentalGroup.VanKampen.Cocone.PathValue.square_cell_of_local
+#print axioms FundamentalGroup.VanKampen.Cocone.PathValue.square_cell_of_local
+#check FundamentalGroup.VanKampen.Cocone.PathValue.value_eq_one_of_constant
+#print axioms FundamentalGroup.VanKampen.Cocone.PathValue.value_eq_one_of_constant
+#check FundamentalGroup.VanKampen.Cocone.PathValue.square_strip
+#print axioms FundamentalGroup.VanKampen.Cocone.PathValue.square_strip
+#check FundamentalGroup.VanKampen.Cocone.PathValue.value_squareHorizontal_homotopy
+#print axioms FundamentalGroup.VanKampen.Cocone.PathValue.value_squareHorizontal_homotopy
+#check FundamentalGroup.VanKampen.Cocone.PathValue.value_squareVertical_homotopy_zero
+#print axioms FundamentalGroup.VanKampen.Cocone.PathValue.value_squareVertical_homotopy_zero
+#check FundamentalGroup.VanKampen.Cocone.PathValue.value_squareVertical_homotopy_one
+#print axioms FundamentalGroup.VanKampen.Cocone.PathValue.value_squareVertical_homotopy_one
+#check FundamentalGroup.VanKampen.Cocone.PathValue.value_eq_of_homotopy_of_open_cover
+#print axioms FundamentalGroup.VanKampen.Cocone.PathValue.value_eq_of_homotopy_of_open_cover
+#check FundamentalGroup.VanKampen.Cocone.PathValue.homotopyInvariant_of_open_cover
+#print axioms FundamentalGroup.VanKampen.Cocone.PathValue.homotopyInvariant_of_open_cover
+#check FundamentalGroup.VanKampen.Cocone.TwoOpenCover.globalPathValue
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoOpenCover.globalPathValue
+#check FundamentalGroup.VanKampen.Cocone.TwoOpenCover.globalPathValue_extends
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoOpenCover.globalPathValue_extends
+#check FundamentalGroup.VanKampen.Cocone.TwoOpenCover.globalPathValue_homotopyInvariant
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoOpenCover.globalPathValue_homotopyInvariant
+#check FundamentalGroup.VanKampen.Cocone.TwoOpenCover.lift
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoOpenCover.lift
+#check FundamentalGroup.VanKampen.Cocone.TwoOpenCover.lift_mk_of_mem
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoOpenCover.lift_mk_of_mem
+#check FundamentalGroup.VanKampen.Cocone.TwoOpenCover.lift_comp_inclusionU
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoOpenCover.lift_comp_inclusionU
+#check FundamentalGroup.VanKampen.Cocone.TwoOpenCover.lift_comp_inclusionV
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoOpenCover.lift_comp_inclusionV
+#check FundamentalGroup.VanKampen.Cocone.TwoOpenCover.ChartGroup
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoOpenCover.ChartGroup
+#check FundamentalGroup.VanKampen.Cocone.TwoOpenCover.overlapHom
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoOpenCover.overlapHom
+#check FundamentalGroup.VanKampen.Cocone.TwoOpenCover.inclusionHom
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoOpenCover.inclusionHom
+#check FundamentalGroup.VanKampen.Cocone.TwoOpenCover.inclusionHom_comp_overlapHom
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoOpenCover.inclusionHom_comp_overlapHom
+#check FundamentalGroup.VanKampen.Cocone.TwoOpenCover.Pushout
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoOpenCover.Pushout
+#check FundamentalGroup.VanKampen.Cocone.TwoOpenCover.pushoutEquiv
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoOpenCover.pushoutEquiv
+#check FundamentalGroup.VanKampen.Cocone.TwoOpenCover.pushoutEquiv_of
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoOpenCover.pushoutEquiv_of
+#check FundamentalGroup.VanKampen.Cocone.TwoOpenCover.pushoutEquiv_symm_inclusionHom
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoOpenCover.pushoutEquiv_symm_inclusionHom
+
+#check FundamentalGroup.VanKampen.Cocone.TwoOpenCover.inclusionHomU_surjective_of_overlapHomV_surjective
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoOpenCover.inclusionHomU_surjective_of_overlapHomV_surjective
+#check FundamentalGroup.VanKampen.Cocone.TwoOpenCover.inclusionHomV_surjective_of_overlapHomU_surjective
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoOpenCover.inclusionHomV_surjective_of_overlapHomU_surjective
+#check FundamentalGroup.basepointChange_naturality
+#print axioms FundamentalGroup.basepointChange_naturality
+#check FundamentalGroup.basepointChange_naturality_apply
+#print axioms FundamentalGroup.basepointChange_naturality_apply
+#check FundamentalGroup.map_surjective_at_of_path
+#print axioms FundamentalGroup.map_surjective_at_of_path
+#check FundamentalGroup.map_surjective_at_of_pathConnected
+#print axioms FundamentalGroup.map_surjective_at_of_pathConnected
+#check FundamentalGroup.eq_one_of_path
+#print axioms FundamentalGroup.eq_one_of_path
+#check FundamentalGroup.simplyConnectedSpace_iff_eq_one
+#print axioms FundamentalGroup.simplyConnectedSpace_iff_eq_one
+#check FundamentalGroup.simplyConnectedSpace_of_eq_one
+#print axioms FundamentalGroup.simplyConnectedSpace_of_eq_one
+#check FundamentalGroup.VanKampen.Cocone.TwoOpenCover.pathConnectedSpace
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoOpenCover.pathConnectedSpace
+
+/-! ## `Lib.Topology.Covering.FiberFrameCentralizer` -/
+
+#check IsQuotientCoveringMap.commute_of_monodromy_eq_toPermFiber
+#print axioms IsQuotientCoveringMap.commute_of_monodromy_eq_toPermFiber
+#check IsQuotientCoveringMap.commute_fiberEquivGroup_of_monodromy_eq
+#print axioms IsQuotientCoveringMap.commute_fiberEquivGroup_of_monodromy_eq
+
+/-! ## `Lib.Topology.Covering.QuotientConnectedness` -/
+
+#check IsQuotientCoveringMap.pathConnectedSpace_of_fundamentalGroupToMulOpposite_surjective
+#print axioms IsQuotientCoveringMap.pathConnectedSpace_of_fundamentalGroupToMulOpposite_surjective
+
+-- Basic: every public source declaration in source order.
+#check MappingTorus.Circle
+#print axioms MappingTorus.Circle
+#check MappingTorus.deck
+#print axioms MappingTorus.deck
+#check MappingTorus.deck_zero
+#print axioms MappingTorus.deck_zero
+#check MappingTorus.deck_add
+#print axioms MappingTorus.deck_add
+#check MappingTorus.deck_continuous
+#print axioms MappingTorus.deck_continuous
+#check MappingTorus.deckHomeomorph
+#print axioms MappingTorus.deckHomeomorph
+#check MappingTorus.orbitSetoid
+#print axioms MappingTorus.orbitSetoid
+#check MappingTorus.Torus
+#print axioms MappingTorus.Torus
+#check MappingTorus.instLocal1
+#print axioms MappingTorus.instLocal1
+#check MappingTorus.mk
+#print axioms MappingTorus.mk
+#check MappingTorus.mk_continuous
+#print axioms MappingTorus.mk_continuous
+#check MappingTorus.mk_surjective
+#print axioms MappingTorus.mk_surjective
+#check MappingTorus.mk_eq_mk_iff
+#print axioms MappingTorus.mk_eq_mk_iff
+#check MappingTorus.mk_deck
+#print axioms MappingTorus.mk_deck
+#check MappingTorus.mk_sub_one
+#print axioms MappingTorus.mk_sub_one
+#check MappingTorus.mk_add_one
+#print axioms MappingTorus.mk_add_one
+#check MappingTorus.mk_preimage_image
+#print axioms MappingTorus.mk_preimage_image
+#check MappingTorus.mk_open
+#print axioms MappingTorus.mk_open
+#check MappingTorus.circle_intCast
+#print axioms MappingTorus.circle_intCast
+#check MappingTorus.circle_coe_eq_iff
+#print axioms MappingTorus.circle_coe_eq_iff
+#check MappingTorus.base
+#print axioms MappingTorus.base
+#check MappingTorus.base_mk
+#print axioms MappingTorus.base_mk
+
+-- TranslationCocycle: every public source declaration in source order.
+#check MappingTorus.TranslationCocycle
+#print axioms MappingTorus.TranslationCocycle
+#check MappingTorus.TranslationCocycle.cylinder
+#print axioms MappingTorus.TranslationCocycle.cylinder
+#check MappingTorus.TranslationCocycle.cylinder_continuous
+#print axioms MappingTorus.TranslationCocycle.cylinder_continuous
+#check MappingTorus.TranslationCocycle.cylinder_deck
+#print axioms MappingTorus.TranslationCocycle.cylinder_deck
+#check MappingTorus.TranslationCocycle.map
+#print axioms MappingTorus.TranslationCocycle.map
+#check MappingTorus.TranslationCocycle.map_mk
+#print axioms MappingTorus.TranslationCocycle.map_mk
+#check MappingTorus.TranslationCocycle.map_add_apply
+#print axioms MappingTorus.TranslationCocycle.map_add_apply
+#check MappingTorus.TranslationCocycle.map_zero_apply
+#print axioms MappingTorus.TranslationCocycle.map_zero_apply
+#check MappingTorus.TranslationCocycle.shear
+#print axioms MappingTorus.TranslationCocycle.shear
+#check MappingTorus.TranslationCocycle.base_shear
+#print axioms MappingTorus.TranslationCocycle.base_shear
+#check MappingTorus.TranslationCocycle.shear_add_apply
+#print axioms MappingTorus.TranslationCocycle.shear_add_apply
+#check MappingTorus.TranslationCocycle.zsmul_shift_eq_zero_of_shear_eq
+#print axioms MappingTorus.TranslationCocycle.zsmul_shift_eq_zero_of_shear_eq
+#check MappingTorus.TranslationCocycle.shear_zero
+#print axioms MappingTorus.TranslationCocycle.shear_zero
+
+-- SquareZeroWinding: every public source declaration in source order.
+#check MappingTorus.SquareZeroWinding.Data
+#print axioms MappingTorus.SquareZeroWinding.Data
+#check MappingTorus.SquareZeroWinding.Data.linearEquiv
+#print axioms MappingTorus.SquareZeroWinding.Data.linearEquiv
+#check MappingTorus.SquareZeroWinding.Data.linearEquiv_apply
+#print axioms MappingTorus.SquareZeroWinding.Data.linearEquiv_apply
+#check MappingTorus.SquareZeroWinding.Data.linearEquiv_continuous
+#print axioms MappingTorus.SquareZeroWinding.Data.linearEquiv_continuous
+#check MappingTorus.SquareZeroWinding.Data.linearEquiv_symm_apply
+#print axioms MappingTorus.SquareZeroWinding.Data.linearEquiv_symm_apply
+#check MappingTorus.SquareZeroWinding.Data.linearEquiv_symm_continuous
+#print axioms MappingTorus.SquareZeroWinding.Data.linearEquiv_symm_continuous
+#check MappingTorus.SquareZeroWinding.Data.linearEquiv_mem_lattice
+#print axioms MappingTorus.SquareZeroWinding.Data.linearEquiv_mem_lattice
+#check MappingTorus.SquareZeroWinding.Data.linearEquiv_symm_mem_lattice
+#print axioms MappingTorus.SquareZeroWinding.Data.linearEquiv_symm_mem_lattice
+#check MappingTorus.SquareZeroWinding.Data.linearEquiv_map_lattice
+#print axioms MappingTorus.SquareZeroWinding.Data.linearEquiv_map_lattice
+#check MappingTorus.SquareZeroWinding.Data.Torus
+#print axioms MappingTorus.SquareZeroWinding.Data.Torus
+#check MappingTorus.SquareZeroWinding.Data.torusLinearEquiv
+#print axioms MappingTorus.SquareZeroWinding.Data.torusLinearEquiv
+#check MappingTorus.SquareZeroWinding.Data.torusContinuousAddEquiv
+#print axioms MappingTorus.SquareZeroWinding.Data.torusContinuousAddEquiv
+#check MappingTorus.SquareZeroWinding.Data.torusContinuousAddEquiv_mkQ
+#print axioms MappingTorus.SquareZeroWinding.Data.torusContinuousAddEquiv_mkQ
+#check MappingTorus.SquareZeroWinding.Data.linearEquiv_zero_apply
+#print axioms MappingTorus.SquareZeroWinding.Data.linearEquiv_zero_apply
+#check MappingTorus.SquareZeroWinding.Data.torusContinuousAddEquiv_zero_apply
+#print axioms MappingTorus.SquareZeroWinding.Data.torusContinuousAddEquiv_zero_apply
+#check MappingTorus.SquareZeroWinding.Data.linearEquiv_add_apply
+#print axioms MappingTorus.SquareZeroWinding.Data.linearEquiv_add_apply
+#check MappingTorus.SquareZeroWinding.Data.torusContinuousAddEquiv_add_apply
+#print axioms MappingTorus.SquareZeroWinding.Data.torusContinuousAddEquiv_add_apply
+#check MappingTorus.SquareZeroWinding.Data.monodromy
+#print axioms MappingTorus.SquareZeroWinding.Data.monodromy
+#check MappingTorus.SquareZeroWinding.Data.monodromy_zpow
+#print axioms MappingTorus.SquareZeroWinding.Data.monodromy_zpow
+#check MappingTorus.SquareZeroWinding.Data.windingLift
+#print axioms MappingTorus.SquareZeroWinding.Data.windingLift
+#check MappingTorus.SquareZeroWinding.Data.windingLift_continuous
+#print axioms MappingTorus.SquareZeroWinding.Data.windingLift_continuous
+#check MappingTorus.SquareZeroWinding.Data.windingLift_zero
+#print axioms MappingTorus.SquareZeroWinding.Data.windingLift_zero
+#check MappingTorus.SquareZeroWinding.Data.windingLift_one
+#print axioms MappingTorus.SquareZeroWinding.Data.windingLift_one
+#check MappingTorus.SquareZeroWinding.Data.windingLift_add_int_sub_linearEquiv_neg
+#print axioms MappingTorus.SquareZeroWinding.Data.windingLift_add_int_sub_linearEquiv_neg
+#check MappingTorus.SquareZeroWinding.Data.windingLift_defect_mem_lattice
+#print axioms MappingTorus.SquareZeroWinding.Data.windingLift_defect_mem_lattice
+#check MappingTorus.SquareZeroWinding.Data.windingShift
+#print axioms MappingTorus.SquareZeroWinding.Data.windingShift
+#check MappingTorus.SquareZeroWinding.Data.windingShift_continuous
+#print axioms MappingTorus.SquareZeroWinding.Data.windingShift_continuous
+#check MappingTorus.SquareZeroWinding.Data.windingShift_add_int
+#print axioms MappingTorus.SquareZeroWinding.Data.windingShift_add_int
+#check MappingTorus.SquareZeroWinding.Data.translationCocycle
+#print axioms MappingTorus.SquareZeroWinding.Data.translationCocycle
+#check MappingTorus.SquareZeroWinding.Data.shear
+#print axioms MappingTorus.SquareZeroWinding.Data.shear
+#check MappingTorus.SquareZeroWinding.Data.shear_zero
+#print axioms MappingTorus.SquareZeroWinding.Data.shear_zero
+#check MappingTorus.SquareZeroWinding.Data.shear_add_apply
+#print axioms MappingTorus.SquareZeroWinding.Data.shear_add_apply
+#check MappingTorus.SquareZeroWinding.Detector
+#print axioms MappingTorus.SquareZeroWinding.Detector
+#check MappingTorus.SquareZeroWinding.Detector.functional_windingLift
+#print axioms MappingTorus.SquareZeroWinding.Detector.functional_windingLift
+#check MappingTorus.SquareZeroWinding.Detector.windingShift_detector_ne_zero
+#print axioms MappingTorus.SquareZeroWinding.Detector.windingShift_detector_ne_zero
+#check MappingTorus.SquareZeroWinding.Detector.shear_injective
+#print axioms MappingTorus.SquareZeroWinding.Detector.shear_injective
+
+-- Manifold scalar restriction and smooth descent: every public declaration in source order.
+#check IsManifold.restrictScalars
+#print axioms IsManifold.restrictScalars
+#check ContMDiffWithinAt.restrictScalars
+#print axioms ContMDiffWithinAt.restrictScalars
+#check ContMDiffAt.restrictScalars
+#print axioms ContMDiffAt.restrictScalars
+#check ContMDiff.restrictScalars
+#print axioms ContMDiff.restrictScalars
+#check ContMDiffOn.restrictScalars
+#print axioms ContMDiffOn.restrictScalars
+#check Diffeomorph.restrictScalars
+#print axioms Diffeomorph.restrictScalars
+#check PartialDiffeomorph.restrictScalars
+#print axioms PartialDiffeomorph.restrictScalars
+#check contMDiff_of_comp_surjective_localDiffeomorph
+#print axioms contMDiff_of_comp_surjective_localDiffeomorph
+#check contMDiff_of_comp_surjective_localDiffeomorph_restrictScalars
+#print axioms contMDiff_of_comp_surjective_localDiffeomorph_restrictScalars
+#check contMDiffOn_of_contMDiff_restriction
+#print axioms contMDiffOn_of_contMDiff_restriction
+
+/-! ## `Lib.Algebra.Homology.DerivedCategory.Ext.DegreeZero` -/
+
+#check CategoryTheory.Abelian.Ext.singleFunctor_map_addEquiv₀
+#print axioms CategoryTheory.Abelian.Ext.singleFunctor_map_addEquiv₀
+#check CategoryTheory.Abelian.Ext.singleFunctor_map_addEquiv₀_homAddEquiv_symm
+#print axioms CategoryTheory.Abelian.Ext.singleFunctor_map_addEquiv₀_homAddEquiv_symm
+
+-- CochainTransgression: every intended public source declaration in source order.
+#check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution
+#print axioms CategoryTheory.Abelian.ExtTransgression.TwoStepResolution
+#check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.mk
+#print axioms CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.mk
+#check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.F
+#print axioms CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.F
+#check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.complex
+#print axioms CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.complex
+#check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.ι
+#print axioms CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.ι
+#check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.zero
+#print axioms CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.zero
+#check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.initial_exact
+#print axioms CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.initial_exact
+#check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.exact
+#print axioms CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.exact
+#check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.mono_ι
+#print axioms CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.mono_ι
+#check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.epi_g
+#print axioms CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.epi_g
+#check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.boundary
+#print axioms CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.boundary
+#check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.toBoundary
+#print axioms CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.toBoundary
+#check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.toBoundary_ι
+#print axioms CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.toBoundary_ι
+#check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.ι_toBoundary
+#print axioms CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.ι_toBoundary
+#check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.first
+#print axioms CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.first
+#check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.second
+#print axioms CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.second
+#check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.first_shortExact
+#print axioms CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.first_shortExact
+#check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.second_shortExact
+#print axioms CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.second_shortExact
+#check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.connectingTwo
+#print axioms CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.connectingTwo
+#check CategoryTheory.Abelian.ExtTransgression.cyclesComplex
+#print axioms CategoryTheory.Abelian.ExtTransgression.cyclesComplex
+#check CategoryTheory.Abelian.ExtTransgression.cyclesComplex_exact
+#print axioms CategoryTheory.Abelian.ExtTransgression.cyclesComplex_exact
+#check CategoryTheory.Abelian.ExtTransgression.cyclesComplex_epi_g
+#print axioms CategoryTheory.Abelian.ExtTransgression.cyclesComplex_epi_g
+#check CategoryTheory.Abelian.ExtTransgression.iCycles_toCycles
+#print axioms CategoryTheory.Abelian.ExtTransgression.iCycles_toCycles
+#check CategoryTheory.Abelian.ExtTransgression.cyclesInitial_exact
+#print axioms CategoryTheory.Abelian.ExtTransgression.cyclesInitial_exact
+#check CategoryTheory.Abelian.ExtTransgression.cyclesResolution
+#print axioms CategoryTheory.Abelian.ExtTransgression.cyclesResolution
+#check CategoryTheory.Abelian.ExtTransgression.cochainTransgression
+#print axioms CategoryTheory.Abelian.ExtTransgression.cochainTransgression
+
+/-! ## `Lib.Algebra.Homology.DerivedCategory.Ext.TwoStepResolutionNaturality` -/
+
+#check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.Hom
+#print axioms CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.Hom
+#check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.Hom.mk
+#print axioms CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.Hom.mk
+#check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.Hom.τF
+#print axioms CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.Hom.τF
+#check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.Hom.τ₁
+#print axioms CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.Hom.τ₁
+#check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.Hom.τ₂
+#print axioms CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.Hom.τ₂
+#check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.Hom.τ₃
+#print axioms CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.Hom.τ₃
+#check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.Hom.comm_ι
+#print axioms CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.Hom.comm_ι
+#check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.Hom.comm_f
+#print axioms CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.Hom.comm_f
+#check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.Hom.comm_g
+#print axioms CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.Hom.comm_g
+#check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.Hom.boundary
+#print axioms CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.Hom.boundary
+#check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.Hom.boundary_ι
+#print axioms CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.Hom.boundary_ι
+#check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.Hom.boundary_ι_assoc
+#print axioms CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.Hom.boundary_ι_assoc
+#check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.Hom.first
+#print axioms CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.Hom.first
+#check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.Hom.second
+#print axioms CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.Hom.second
+#check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.Hom.connectingTwo_naturality
+#print axioms CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.Hom.connectingTwo_naturality
+
+/-! ## `Lib.Algebra.Homology.DerivedCategory.Ext.CochainTransgressionHomology` -/
+
+#check CategoryTheory.Abelian.ExtTransgression.homologyCyclesComplex
+#print axioms CategoryTheory.Abelian.ExtTransgression.homologyCyclesComplex
+#check CategoryTheory.Abelian.ExtTransgression.homologyTwoStepResolution
+#print axioms CategoryTheory.Abelian.ExtTransgression.homologyTwoStepResolution
+#check CategoryTheory.Abelian.ExtTransgression.homologyTwoStepResolutionOfRel
+#print axioms CategoryTheory.Abelian.ExtTransgression.homologyTwoStepResolutionOfRel
+#check CategoryTheory.Abelian.ExtTransgression.homologyTwoStepResolutionInt
+#print axioms CategoryTheory.Abelian.ExtTransgression.homologyTwoStepResolutionInt
+#check CategoryTheory.Abelian.ExtTransgression.cyclesToHomologyFirst
+#print axioms CategoryTheory.Abelian.ExtTransgression.cyclesToHomologyFirst
+#check CategoryTheory.Abelian.ExtTransgression.cyclesFirst_extClass_comp_homologyπ
+#print axioms CategoryTheory.Abelian.ExtTransgression.cyclesFirst_extClass_comp_homologyπ
+#check CategoryTheory.Abelian.ExtTransgression.cochainTransgression_comp_homologyπ
+#print axioms CategoryTheory.Abelian.ExtTransgression.cochainTransgression_comp_homologyπ
+
+/-! ## `Lib.Algebra.Homology.DerivedCategory.Ext.HomologyTwoStepResolutionExtend` -/
+
+#check CategoryTheory.Abelian.ExtTransgression.homologyTwoStepResolutionExtendHom
+#print axioms CategoryTheory.Abelian.ExtTransgression.homologyTwoStepResolutionExtendHom
+#check CategoryTheory.Abelian.ExtTransgression.homologyTwoStepResolutionExtend_connectingTwo
+#print axioms CategoryTheory.Abelian.ExtTransgression.homologyTwoStepResolutionExtend_connectingTwo
+#check CategoryTheory.Abelian.ExtTransgression.homologyTwoStepResolutionExtendUpNatHom
+#print axioms CategoryTheory.Abelian.ExtTransgression.homologyTwoStepResolutionExtendUpNatHom
+#check CategoryTheory.Abelian.ExtTransgression.homologyTwoStepResolutionExtendUpNat_connectingTwo
+#print axioms CategoryTheory.Abelian.ExtTransgression.homologyTwoStepResolutionExtendUpNat_connectingTwo
+
+/-! ## `Lib.Algebra.Homology.DerivedCategory.Ext.TwoStepSplice` -/
+
+#check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.compositeTriangle
+#print axioms CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.compositeTriangle
+#check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.compositeTriangle_distinguished
+#print axioms CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.compositeTriangle_distinguished
+#check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.mappingConeCompositeTriangle
+#print axioms CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.mappingConeCompositeTriangle
+#check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.mappingConeCompositeTriangle_distinguished
+#print axioms CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.mappingConeCompositeTriangle_distinguished
+#check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.compositeTriangleIsoMappingCone
+#print axioms CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.compositeTriangleIsoMappingCone
+#check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.compositeTriangleIsoMappingCone_hom_hom₁
+#print axioms CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.compositeTriangleIsoMappingCone_hom_hom₁
+#check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.compositeTriangleIsoMappingCone_hom_hom₂
+#print axioms CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.compositeTriangleIsoMappingCone_hom_hom₂
+#check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.spliceTriangle
+#print axioms CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.spliceTriangle
+#check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.spliceTriangle_obj₁
+#print axioms CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.spliceTriangle_obj₁
+#check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.spliceTriangle_obj₃
+#print axioms CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.spliceTriangle_obj₃
+#check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.spliceTriangleObj₁Iso
+#print axioms CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.spliceTriangleObj₁Iso
+#check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.spliceTriangleObj₃Iso
+#print axioms CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.spliceTriangleObj₃Iso
+#check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.spliceTriangle_distinguished
+#print axioms CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.spliceTriangle_distinguished
+#check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.first_singleδ_comp_spliceTriangle_mor₁
+#print axioms CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.first_singleδ_comp_spliceTriangle_mor₁
+#check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.compositeTriangle_mor₂_comp_spliceTriangle_mor₂
+#print axioms CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.compositeTriangle_mor₂_comp_spliceTriangle_mor₂
+#check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.mappingConeCompositeTriangle_mor₂_comp_inv_hom₃_comp_spliceTriangle_mor₂
+#print axioms CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.mappingConeCompositeTriangle_mor₂_comp_inv_hom₃_comp_spliceTriangle_mor₂
+#check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.spliceTriangle_mor₃
+#print axioms CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.spliceTriangle_mor₃
+#check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.spliceTriangle_homologySequenceδ_apply
+#print axioms CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.spliceTriangle_homologySequenceδ_apply
+
+/-! ## `Lib.Algebra.Homology.DerivedCategory.Ext.TwoStepSpliceLowerNormalization` -/
+
+#check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.mappingConeLowerLift
+#print axioms CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.mappingConeLowerLift
+#check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.mappingConeLowerInclusion
+#print axioms CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.mappingConeLowerInclusion
+#check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.mappingConeLowerLift_comp_mor₃
+#print axioms CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.mappingConeLowerLift_comp_mor₃
+#check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.mappingConeLowerInclusion_comp_mor₃
+#print axioms CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.mappingConeLowerInclusion_comp_mor₃
+#check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.spliceTriangle_mor₁_comp_compositeTriangle_mor₃
+#print axioms CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.spliceTriangle_mor₁_comp_compositeTriangle_mor₃
+#check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.spliceTriangle_mor₁_mappingCone
+#print axioms CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.spliceTriangle_mor₁_mappingCone
+#check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.mappingConeLowerInclusion_f_negOne
+#print axioms CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.mappingConeLowerInclusion_f_negOne
+
+/-! ## `Lib.Algebra.Homology.DerivedCategory.Ext.AdjacentTwoSliceSplice` -/
+
+#check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.spliceObjTwoIsoShiftedAdjacentTwoSlice
+#print axioms CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.spliceObjTwoIsoShiftedAdjacentTwoSlice
+#check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.shiftedAdjacentTwoSliceTriangleIsoSplice
+#print axioms CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.shiftedAdjacentTwoSliceTriangleIsoSplice
+#check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.shiftedAdjacentTwoSliceTriangleIsoSplice_hom_hom₂
+#print axioms CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.shiftedAdjacentTwoSliceTriangleIsoSplice_hom_hom₂
+#check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.shiftedAdjacentTwoSliceTriangleIsoSplice_comm₃
+#print axioms CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.shiftedAdjacentTwoSliceTriangleIsoSplice_comm₃
+
+/-! ## `Lib.Algebra.Homology.DerivedCategory.Ext.PostnikovTwoSliceSplice` -/
+
+#check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.shiftedPostnikovAdjacentTriangleIsoSplice
+#print axioms CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.shiftedPostnikovAdjacentTriangleIsoSplice
+#check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.shiftedPostnikovAdjacentTriangleIsoSplice_hom_hom₂
+#print axioms CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.shiftedPostnikovAdjacentTriangleIsoSplice_hom_hom₂
+#check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.shiftedPostnikovAdjacentTriangleIsoSplice_comm₃_signed
+#print axioms CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.shiftedPostnikovAdjacentTriangleIsoSplice_comm₃_signed
+
+/-! ## `Lib.Algebra.Homology.DerivedCategory.Ext.PostnikovD2Splice` -/
+
+#check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.postnikovAdjacent_homologySequenceδ_apply
+#print axioms CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.postnikovAdjacent_homologySequenceδ_apply
+
+/-! ## `Lib.Algebra.Homology.DerivedCategory.Ext.PostnikovUpperEndpointConcreteNormalization` -/
+
+#check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.singleFunctorCompHomologyFunctorIso_inv_comp_homologyFunctorFactors_hom
+#print axioms CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.singleFunctorCompHomologyFunctorIso_inv_comp_homologyFunctorFactors_hom
+#check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.mappingCone_inr_comp_shiftedAdjacentTwoSliceIsoMappingCone_inv_f_zero
+#print axioms CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.mappingCone_inr_comp_shiftedAdjacentTwoSliceIsoMappingCone_inv_f_zero
+#check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.mappingCone_inr_shiftedAdjacentTwoSlice_upper_component
+#print axioms CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.mappingCone_inr_shiftedAdjacentTwoSlice_upper_component
+#check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.mappingConeCompositeTriangle_mor₂_upper_homology
+#print axioms CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.mappingConeCompositeTriangle_mor₂_upper_homology
+
+/-! ## `Lib.Algebra.Homology.DerivedCategory.Ext.PostnikovUpperEndpointNormalization` -/
+
+#check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.mappingConeCompositeTriangle_mor₂_comp_concreteUpperEndpoint
+#print axioms CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.mappingConeCompositeTriangle_mor₂_comp_concreteUpperEndpoint
+#check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.shiftedPostnikovAdjacentTriangleIsoSplice_hom_hom₃_upper
+#print axioms CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.shiftedPostnikovAdjacentTriangleIsoSplice_hom_hom₃_upper
+
+/-! ## `Lib.Algebra.Homology.DerivedCategory.Ext.PostnikovLowerEndpointNormalization` -/
+
+#check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.shiftedPostnikovAdjacentTriangleIsoSplice_hom_hom₁_lower
+#print axioms CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.shiftedPostnikovAdjacentTriangleIsoSplice_hom_hom₁_lower
+
+/-! ## `Lib.Algebra.Homology.DerivedCategory.Ext.PostnikovD2PageSplice` -/
+
+#check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.coyonedaPostnikovE₂_d₂_splice_apply
+#print axioms CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.coyonedaPostnikovE₂_d₂_splice_apply
+#check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.coyonedaPostnikovE₂_d₂_connectingTwo_apply
+#print axioms CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.coyonedaPostnikovE₂_d₂_connectingTwo_apply
+
+/-! ## `Lib.Algebra.Homology.DerivedCategory.Ext.PostnikovD2SourceCoordinates` -/
+
+#check DerivedCategory.postnikovSourceShiftedSliceIso_hom_eq_of_shift
+#print axioms DerivedCategory.postnikovSourceShiftedSliceIso_hom_eq_of_shift
+#check DerivedCategory.coyonedaPostnikovE₂PageIso_zero_to_d₂SourceEndpoint
+#print axioms DerivedCategory.coyonedaPostnikovE₂PageIso_zero_to_d₂SourceEndpoint
+#check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.coyonedaPostnikovD₂SourceHom
+#print axioms CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.coyonedaPostnikovD₂SourceHom
+#check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.coyonedaPostnikovD₂SpliceSource_eq
+#print axioms CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.coyonedaPostnikovD₂SpliceSource_eq
+#check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.connectingTwo_negOnePow_cancel
+#print axioms CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.connectingTwo_negOnePow_cancel
+
+/-! ## `Lib.Algebra.Homology.DerivedCategory.Ext.PostnikovD2PageCoordinates` -/
+
+#check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.postnikovTargetExtIso
+#print axioms CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.postnikovTargetExtIso
+#check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.postnikovTargetSingleShiftIso_naturality_of_shift
+#print axioms CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.postnikovTargetSingleShiftIso_naturality_of_shift
+#check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.postnikovTargetSingleShiftIso_naturality_of_shift_assoc
+#print axioms CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.postnikovTargetSingleShiftIso_naturality_of_shift_assoc
+#check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.postnikovTargetSingleShiftIso_hom_inv_of_shift
+#print axioms CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.postnikovTargetSingleShiftIso_hom_inv_of_shift
+#check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.postnikovTargetSingleShiftIso_hom_inv_of_shift_assoc
+#print axioms CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.postnikovTargetSingleShiftIso_hom_inv_of_shift_assoc
+#check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.postnikovTargetSingleShiftIso_naturality
+#print axioms CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.postnikovTargetSingleShiftIso_naturality
+#check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.postnikovTargetSingleShiftIso_naturality_assoc
+#print axioms CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.postnikovTargetSingleShiftIso_naturality_assoc
+#check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.postnikovTargetExtIso_hom_eq_of_shift
+#print axioms CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.postnikovTargetExtIso_hom_eq_of_shift
+#check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.postnikovTargetExtIso_hom_eq_shiftedLowerEndpoint
+#print axioms CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.postnikovTargetExtIso_hom_eq_shiftedLowerEndpoint
+#check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.lowerTargetShift_naturality
+#print axioms CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.lowerTargetShift_naturality
+#check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.lowerTargetShift_naturality_assoc
+#print axioms CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.lowerTargetShift_naturality_assoc
+#check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.lowerTargetShift_of_fac
+#print axioms CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.lowerTargetShift_of_fac
+#check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.coyonedaPostnikovD₂TargetExt
+#print axioms CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.coyonedaPostnikovD₂TargetExt
+
+/-! ## `Lib.Algebra.Homology.DerivedCategory.Ext.PostnikovD2Normalized` -/
+
+#check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.coyonedaPostnikovD₂TargetExt_hom_eq_splice
+#print axioms CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.coyonedaPostnikovD₂TargetExt_hom_eq_splice
+#check CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.coyonedaPostnikovD₂TargetExt_d₂
+#print axioms CategoryTheory.Abelian.ExtTransgression.TwoStepResolution.coyonedaPostnikovD₂TargetExt_d₂
+
+-- ExactFunctoriality: every intended public source declaration in source order.
+#check CategoryTheory.Abelian.Ext.mapExactFunctor_compFunctor
+#print axioms CategoryTheory.Abelian.Ext.mapExactFunctor_compFunctor
+#check CategoryTheory.Abelian.Ext.mapExactFunctor_id
+#print axioms CategoryTheory.Abelian.Ext.mapExactFunctor_id
+#check CategoryTheory.Abelian.Ext.mapExactFunctor_natTrans
+#print axioms CategoryTheory.Abelian.Ext.mapExactFunctor_natTrans
+
+-- ExactFunctorComparison: every intended public source declaration in source order.
+#check CategoryTheory.Abelian.Ext.ExactFunctorComparison.map
+#print axioms CategoryTheory.Abelian.Ext.ExactFunctorComparison.map
+#check CategoryTheory.Abelian.Ext.ExactFunctorComparison.map_mk₀
+#print axioms CategoryTheory.Abelian.Ext.ExactFunctorComparison.map_mk₀
+#check CategoryTheory.Abelian.Ext.ExactFunctorComparison.map_naturality
+#print axioms CategoryTheory.Abelian.Ext.ExactFunctorComparison.map_naturality
+#check CategoryTheory.Abelian.Ext.ExactFunctorComparison.map_connecting
+#print axioms CategoryTheory.Abelian.Ext.ExactFunctorComparison.map_connecting
+#check CategoryTheory.Abelian.Ext.ExactFunctorComparison.map_zero_bijective
+#print axioms CategoryTheory.Abelian.Ext.ExactFunctorComparison.map_zero_bijective
+#check CategoryTheory.Abelian.Ext.ExactFunctorComparison.map_bijective
+#print axioms CategoryTheory.Abelian.Ext.ExactFunctorComparison.map_bijective
+#check CategoryTheory.Abelian.Ext.ExactFunctorComparison.equiv
+#print axioms CategoryTheory.Abelian.Ext.ExactFunctorComparison.equiv
+#check CategoryTheory.Abelian.Ext.ExactFunctorComparison.precompose
+#print axioms CategoryTheory.Abelian.Ext.ExactFunctorComparison.precompose
+#check CategoryTheory.Abelian.Ext.ExactFunctorComparison.comp
+#print axioms CategoryTheory.Abelian.Ext.ExactFunctorComparison.comp
+#check CategoryTheory.Abelian.Ext.ExactFunctorComparison.natTrans
+#print axioms CategoryTheory.Abelian.Ext.ExactFunctorComparison.natTrans
+#check CategoryTheory.Abelian.Ext.ExactFunctorComparison.comp_natTrans
+#print axioms CategoryTheory.Abelian.Ext.ExactFunctorComparison.comp_natTrans
+#check CategoryTheory.Abelian.Ext.ExactFunctorComparison.natTrans_id
+#print axioms CategoryTheory.Abelian.Ext.ExactFunctorComparison.natTrans_id
+
+/-! ## `Lib.Algebra.Homology.DerivedCategory.Ext.InjectiveResolutionHomology` -/
+
+-- Every intended public declaration is queried in source order. The sole generated reassociation
+-- theorem is queried immediately after its attributed source theorem.
+#check CategoryTheory.ShortComplex.ab_homologyπ_comp_abHomologyIso_hom
+#print axioms CategoryTheory.ShortComplex.ab_homologyπ_comp_abHomologyIso_hom
+#check CategoryTheory.ShortComplex.shortCycleClass
+#print axioms CategoryTheory.ShortComplex.shortCycleClass
+#check CategoryTheory.ShortComplex.shortHomologyMap_cycleClass
+#print axioms CategoryTheory.ShortComplex.shortHomologyMap_cycleClass
+#check CategoryTheory.HomologicalComplex.homologyIsoSc'_hom_naturality
+#print axioms CategoryTheory.HomologicalComplex.homologyIsoSc'_hom_naturality
+#check CategoryTheory.InjectiveResolution.evaluatedResolution
+#print axioms CategoryTheory.InjectiveResolution.evaluatedResolution
+#check CategoryTheory.InjectiveResolution.evaluatedResolutionMap
+#print axioms CategoryTheory.InjectiveResolution.evaluatedResolutionMap
+#check CategoryTheory.InjectiveResolution.evaluatedResolutionXAddEquiv
+#print axioms CategoryTheory.InjectiveResolution.evaluatedResolutionXAddEquiv
+#check CategoryTheory.InjectiveResolution.evaluatedResolutionXAddEquiv_d
+#print axioms CategoryTheory.InjectiveResolution.evaluatedResolutionXAddEquiv_d
+#check CategoryTheory.InjectiveResolution.positiveShortComplex
+#print axioms CategoryTheory.InjectiveResolution.positiveShortComplex
+#check CategoryTheory.InjectiveResolution.positiveShortComplexMap
+#print axioms CategoryTheory.InjectiveResolution.positiveShortComplexMap
+#check CategoryTheory.InjectiveResolution.positiveX₁AddEquiv
+#print axioms CategoryTheory.InjectiveResolution.positiveX₁AddEquiv
+#check CategoryTheory.InjectiveResolution.positiveX₂AddEquiv
+#print axioms CategoryTheory.InjectiveResolution.positiveX₂AddEquiv
+#check CategoryTheory.InjectiveResolution.positiveX₃AddEquiv
+#print axioms CategoryTheory.InjectiveResolution.positiveX₃AddEquiv
+#check CategoryTheory.InjectiveResolution.positiveShortComplex_f_apply
+#print axioms CategoryTheory.InjectiveResolution.positiveShortComplex_f_apply
+#check CategoryTheory.InjectiveResolution.positiveShortComplex_g_apply
+#print axioms CategoryTheory.InjectiveResolution.positiveShortComplex_g_apply
+#check CategoryTheory.InjectiveResolution.positiveShortComplexMap_τ₂_apply
+#print axioms CategoryTheory.InjectiveResolution.positiveShortComplexMap_τ₂_apply
+#check CategoryTheory.InjectiveResolution.positiveCycle_isCycle
+#print axioms CategoryTheory.InjectiveResolution.positiveCycle_isCycle
+#check CategoryTheory.InjectiveResolution.positiveCyclePrecomp
+#print axioms CategoryTheory.InjectiveResolution.positiveCyclePrecomp
+#check CategoryTheory.InjectiveResolution.positiveShortComplexMap_τ₂_cycle
+#print axioms CategoryTheory.InjectiveResolution.positiveShortComplexMap_τ₂_cycle
+#check CategoryTheory.InjectiveResolution.positiveCyclesToExt
+#print axioms CategoryTheory.InjectiveResolution.positiveCyclesToExt
+#check CategoryTheory.InjectiveResolution.positiveCyclesToExt_precomp
+#print axioms CategoryTheory.InjectiveResolution.positiveCyclesToExt_precomp
+#check CategoryTheory.InjectiveResolution.positiveCyclesToExt_boundary
+#print axioms CategoryTheory.InjectiveResolution.positiveCyclesToExt_boundary
+#check CategoryTheory.InjectiveResolution.positiveQuotientToExt
+#print axioms CategoryTheory.InjectiveResolution.positiveQuotientToExt
+#check CategoryTheory.InjectiveResolution.positiveQuotientToExt_surjective
+#print axioms CategoryTheory.InjectiveResolution.positiveQuotientToExt_surjective
+#check CategoryTheory.InjectiveResolution.positiveCyclesToExt_surjective
+#print axioms CategoryTheory.InjectiveResolution.positiveCyclesToExt_surjective
+#check CategoryTheory.InjectiveResolution.positiveQuotientToExt_injective
+#print axioms CategoryTheory.InjectiveResolution.positiveQuotientToExt_injective
+#check CategoryTheory.InjectiveResolution.positiveQuotientToExt_bijective
+#print axioms CategoryTheory.InjectiveResolution.positiveQuotientToExt_bijective
+#check CategoryTheory.InjectiveResolution.positiveHomologyExtIso
+#print axioms CategoryTheory.InjectiveResolution.positiveHomologyExtIso
+#check CategoryTheory.InjectiveResolution.positiveCycleClass
+#print axioms CategoryTheory.InjectiveResolution.positiveCycleClass
+#check CategoryTheory.InjectiveResolution.positiveCycleClass_naturality
+#print axioms CategoryTheory.InjectiveResolution.positiveCycleClass_naturality
+#check CategoryTheory.InjectiveResolution.positiveHomologyExtIso_hom_cycleClass
+#print axioms CategoryTheory.InjectiveResolution.positiveHomologyExtIso_hom_cycleClass
+#check CategoryTheory.InjectiveResolution.positiveCycleClass_surjective
+#print axioms CategoryTheory.InjectiveResolution.positiveCycleClass_surjective
+#check CategoryTheory.InjectiveResolution.positiveHomologyExtIso_hom_naturality
+#print axioms CategoryTheory.InjectiveResolution.positiveHomologyExtIso_hom_naturality
+#check CategoryTheory.InjectiveResolution.positiveHomologyExtIso_hom_naturality_assoc
+#print axioms CategoryTheory.InjectiveResolution.positiveHomologyExtIso_hom_naturality_assoc
+#check CategoryTheory.InjectiveResolution.coyonedaHomologyFunctor
+#print axioms CategoryTheory.InjectiveResolution.coyonedaHomologyFunctor
+#check CategoryTheory.InjectiveResolution.positiveHomologyExtNatIso
+#print axioms CategoryTheory.InjectiveResolution.positiveHomologyExtNatIso
+
+/-! ## `Lib.Topology.Sheaves.Sheafification` -/
+
+#check TopCat.Sheaf.sheafification
+#print axioms TopCat.Sheaf.sheafification
+#check TopCat.Sheaf.sheafification_additive
+#print axioms TopCat.Sheaf.sheafification_additive
+
+/-! ## `Lib.Topology.Sheaves.GlobalSections` -/
+
+#check TopCat.Sheaf.globalSectionsFunctor
+#print axioms TopCat.Sheaf.globalSectionsFunctor
+#check TopCat.Sheaf.globalSectionsFunctor_additive
+#print axioms TopCat.Sheaf.globalSectionsFunctor_additive
+
+/-! ## `Lib.Topology.Sheaves.AddCommGrpPushforward` -/
+
+#check TopCat.Sheaf.pushforwardAdditive
+#print axioms TopCat.Sheaf.pushforwardAdditive
+
+/-! ## `Lib.Topology.Sheaves.Cohomology.AddCommGroup` -/
+
+#check CategoryTheory.Sheaf.instAddCommGroupH
+#print axioms CategoryTheory.Sheaf.instAddCommGroupH
+
+/-! ## `Lib.Topology.Sheaves.Cohomology.MayerVietorisVanishing` -/
+
+#check CategoryTheory.GrothendieckTopology.MayerVietorisSquare.cohomology_succ_subsingleton
+#print axioms CategoryTheory.GrothendieckTopology.MayerVietorisSquare.cohomology_succ_subsingleton
+#check TopCat.Sheaf.MayerVietoris.restrictedCohomology_succ_subsingleton
+#print axioms TopCat.Sheaf.MayerVietoris.restrictedCohomology_succ_subsingleton
+
+/-! ## `Lib.Topology.Sheaves.ConstantPushforward.GlobalSections` -/
+
+#check TopCat.ConstantSheaf.integralSheaf
+#print axioms TopCat.ConstantSheaf.integralSheaf
+#check TopCat.ConstantSheaf.integralHomGlobalEquiv
+#print axioms TopCat.ConstantSheaf.integralHomGlobalEquiv
+#check TopCat.ConstantSheaf.integralHomGlobalEquiv_naturality
+#print axioms TopCat.ConstantSheaf.integralHomGlobalEquiv_naturality
+#check TopCat.ConstantSheaf.integralHomGlobalEquiv_id
+#print axioms TopCat.ConstantSheaf.integralHomGlobalEquiv_id
+#check TopCat.ConstantSheaf.integralGlobalSectionsEquiv
+#print axioms TopCat.ConstantSheaf.integralGlobalSectionsEquiv
+#check TopCat.ConstantSheaf.integralHomPushforwardEquiv
+#print axioms TopCat.ConstantSheaf.integralHomPushforwardEquiv
+#check TopCat.ConstantSheaf.integralHomPushforwardEquiv_global
+#print axioms TopCat.ConstantSheaf.integralHomPushforwardEquiv_global
+#check TopCat.ConstantSheaf.integralHomPushforwardEquiv_naturality
+#print axioms TopCat.ConstantSheaf.integralHomPushforwardEquiv_naturality
+#check TopCat.ConstantSheaf.integralPushforwardHom_global
+#print axioms TopCat.ConstantSheaf.integralPushforwardHom_global
+#check TopCat.ConstantSheaf.integralPushforwardHom_comp
+#print axioms TopCat.ConstantSheaf.integralPushforwardHom_comp
+#check TopCat.ConstantSheaf.integralPushforwardHom_comp_bijective
+#print axioms TopCat.ConstantSheaf.integralPushforwardHom_comp_bijective
+
+-- ResolutionTransgression: every intended public source declaration in source order.
+#check CategoryTheory.Sheaf.Leray.AbelianSheaf
+#print axioms CategoryTheory.Sheaf.Leray.AbelianSheaf
+#check CategoryTheory.Sheaf.Leray.abelianSheafHasExt
+#print axioms CategoryTheory.Sheaf.Leray.abelianSheafHasExt
+#check CategoryTheory.Sheaf.Leray.sheafCohomologyAddCommGroup
+#print axioms CategoryTheory.Sheaf.Leray.sheafCohomologyAddCommGroup
+#check CategoryTheory.Sheaf.Leray.pushforward
+#print axioms CategoryTheory.Sheaf.Leray.pushforward
+#check CategoryTheory.Sheaf.Leray.pushforwardAdditive
+#print axioms CategoryTheory.Sheaf.Leray.pushforwardAdditive
+#check CategoryTheory.Sheaf.Leray.higherDirectImage
+#print axioms CategoryTheory.Sheaf.Leray.higherDirectImage
+#check CategoryTheory.Sheaf.Leray.higherDirectImageSheaf
+#print axioms CategoryTheory.Sheaf.Leray.higherDirectImageSheaf
+#check CategoryTheory.Sheaf.Leray.higherDirectImageResolutionIso
+#print axioms CategoryTheory.Sheaf.Leray.higherDirectImageResolutionIso
+#check CategoryTheory.Sheaf.Leray.pushedResolution
+#print axioms CategoryTheory.Sheaf.Leray.pushedResolution
+#check CategoryTheory.Sheaf.Leray.E₂
+#print axioms CategoryTheory.Sheaf.Leray.E₂
+#check CategoryTheory.Sheaf.Leray.resolutionCohomologyIso
+#print axioms CategoryTheory.Sheaf.Leray.resolutionCohomologyIso
+#check CategoryTheory.Sheaf.Leray.resolutionCohomologyIso_hom_apply
+#print axioms CategoryTheory.Sheaf.Leray.resolutionCohomologyIso_hom_apply
+#check CategoryTheory.Sheaf.Leray.resolutionCohomologyIso_inv_apply
+#print axioms CategoryTheory.Sheaf.Leray.resolutionCohomologyIso_inv_apply
+#check CategoryTheory.Sheaf.Leray.resolutionExtZeroIso
+#print axioms CategoryTheory.Sheaf.Leray.resolutionExtZeroIso
+#check CategoryTheory.Sheaf.Leray.resolutionExtZeroIso_hom_apply
+#print axioms CategoryTheory.Sheaf.Leray.resolutionExtZeroIso_hom_apply
+#check CategoryTheory.Sheaf.Leray.resolutionExtZeroIso_inv_apply
+#print axioms CategoryTheory.Sheaf.Leray.resolutionExtZeroIso_inv_apply
+#check CategoryTheory.Sheaf.Leray.resolutionTransgressionMorphismOfResolution
+#print axioms CategoryTheory.Sheaf.Leray.resolutionTransgressionMorphismOfResolution
+#check CategoryTheory.Sheaf.Leray.resolutionTransgressionMorphismOfResolution_eq_connectingTwo
+#print axioms CategoryTheory.Sheaf.Leray.resolutionTransgressionMorphismOfResolution_eq_connectingTwo
+#check CategoryTheory.Sheaf.Leray.resolutionTransgressionMorphism
+#print axioms CategoryTheory.Sheaf.Leray.resolutionTransgressionMorphism
+#check CategoryTheory.Sheaf.Leray.resolutionTransgressionAddOfResolution
+#print axioms CategoryTheory.Sheaf.Leray.resolutionTransgressionAddOfResolution
+#check CategoryTheory.Sheaf.Leray.resolutionTransgressionAddOfResolution_apply_eq_connectingTwo
+#print axioms CategoryTheory.Sheaf.Leray.resolutionTransgressionAddOfResolution_apply_eq_connectingTwo
+#check CategoryTheory.Sheaf.Leray.resolutionTransgressionAddOfResolution_apply_ne_zero_iff_connectingTwo
+#print axioms CategoryTheory.Sheaf.Leray.resolutionTransgressionAddOfResolution_apply_ne_zero_iff_connectingTwo
+#check CategoryTheory.Sheaf.Leray.resolutionTransgressionAdd
+#print axioms CategoryTheory.Sheaf.Leray.resolutionTransgressionAdd
+#check CategoryTheory.Sheaf.Leray.resolutionTransgressionOfResolution
+#print axioms CategoryTheory.Sheaf.Leray.resolutionTransgressionOfResolution
+#check CategoryTheory.Sheaf.Leray.resolutionTransgression
+#print axioms CategoryTheory.Sheaf.Leray.resolutionTransgression
+#check CategoryTheory.Sheaf.Leray.resolutionTransgression_apply_ne_zero_iff_connectingTwo
+#print axioms CategoryTheory.Sheaf.Leray.resolutionTransgression_apply_ne_zero_iff_connectingTwo
+
+/-! ## `Lib.CategoryTheory.Sites.Leray.ResolutionPostnikov` -/
+
+#check CategoryTheory.Sheaf.Leray.pushedResolutionDerivedObject
+#print axioms CategoryTheory.Sheaf.Leray.pushedResolutionDerivedObject
+#check CategoryTheory.Sheaf.Leray.integralDerivedObject
+#print axioms CategoryTheory.Sheaf.Leray.integralDerivedObject
+#check CategoryTheory.Sheaf.Leray.pushedResolutionDerivedObject_isGE
+#print axioms CategoryTheory.Sheaf.Leray.pushedResolutionDerivedObject_isGE
+#check CategoryTheory.Sheaf.Leray.integralDerivedObject_isLE
+#print axioms CategoryTheory.Sheaf.Leray.integralDerivedObject_isLE
+#check CategoryTheory.Sheaf.Leray.pushedResolutionDerivedObjectHomologyIso
+#print axioms CategoryTheory.Sheaf.Leray.pushedResolutionDerivedObjectHomologyIso
+#check CategoryTheory.Sheaf.Leray.pushedResolutionDerivedObjectHomologyHigherDirectImageIso
+#print axioms CategoryTheory.Sheaf.Leray.pushedResolutionDerivedObjectHomologyHigherDirectImageIso
+#check CategoryTheory.Sheaf.Leray.resolutionPostnikovSpectralObject
+#print axioms CategoryTheory.Sheaf.Leray.resolutionPostnikovSpectralObject
+#check CategoryTheory.Sheaf.Leray.resolutionPostnikovSpectralSequence
+#print axioms CategoryTheory.Sheaf.Leray.resolutionPostnikovSpectralSequence
+#check CategoryTheory.Sheaf.Leray.resolutionPostnikovTotalIso
+#print axioms CategoryTheory.Sheaf.Leray.resolutionPostnikovTotalIso
+#check CategoryTheory.Sheaf.Leray.resolutionPostnikovE₂PageIso
+#print axioms CategoryTheory.Sheaf.Leray.resolutionPostnikovE₂PageIso
+#check CategoryTheory.Sheaf.Leray.resolutionPostnikovSliceHigherDirectImageIso
+#print axioms CategoryTheory.Sheaf.Leray.resolutionPostnikovSliceHigherDirectImageIso
+#check CategoryTheory.Sheaf.Leray.resolutionPostnikovShiftedSliceHigherDirectImageIso
+#print axioms CategoryTheory.Sheaf.Leray.resolutionPostnikovShiftedSliceHigherDirectImageIso
+#check CategoryTheory.Sheaf.Leray.resolutionPostnikovE₂Iso
+#print axioms CategoryTheory.Sheaf.Leray.resolutionPostnikovE₂Iso
+#check CategoryTheory.Sheaf.Leray.resolutionPostnikovE₂AddEquiv
+#print axioms CategoryTheory.Sheaf.Leray.resolutionPostnikovE₂AddEquiv
+
+/-! ## `Lib.CategoryTheory.Sites.Leray.ResolutionPostnikovD2` -/
+
+#check CategoryTheory.Sheaf.Leray.resolutionPostnikovE₂_d₂_eq
+#print axioms CategoryTheory.Sheaf.Leray.resolutionPostnikovE₂_d₂_eq
+
+/-! ## `Lib.CategoryTheory.Sites.Leray.ResolutionPostnikovD2Coordinates` -/
+
+#check CategoryTheory.Sheaf.Leray.resolutionPostnikovE₂AddEquiv_source_coordinate
+#print axioms CategoryTheory.Sheaf.Leray.resolutionPostnikovE₂AddEquiv_source_coordinate
+#check CategoryTheory.Sheaf.Leray.resolutionPostnikovE₂AddEquiv_target_coordinate
+#print axioms CategoryTheory.Sheaf.Leray.resolutionPostnikovE₂AddEquiv_target_coordinate
+
+/-! ## `Lib.CategoryTheory.Sites.Leray.ResolutionPostnikovD2Transgression` -/
+
+#check CategoryTheory.Sheaf.Leray.resolutionPostnikovE₂_d₂_eq_transgression
+#print axioms CategoryTheory.Sheaf.Leray.resolutionPostnikovE₂_d₂_eq_transgression
+
+/-! ## `Lib.CategoryTheory.Sites.Leray.ResolutionAbutment` -/
+
+#check CategoryTheory.Sheaf.Leray.mappedExtendedResolution
+#print axioms CategoryTheory.Sheaf.Leray.mappedExtendedResolution
+#check CategoryTheory.Sheaf.Leray.mappedExtendedResolutionIso
+#print axioms CategoryTheory.Sheaf.Leray.mappedExtendedResolutionIso
+#check CategoryTheory.Sheaf.Leray.pushforwardPreservesInjectiveObjects
+#print axioms CategoryTheory.Sheaf.Leray.pushforwardPreservesInjectiveObjects
+#check CategoryTheory.Sheaf.Leray.mappedExtendedResolution_isKInjective
+#print axioms CategoryTheory.Sheaf.Leray.mappedExtendedResolution_isKInjective
+#check CategoryTheory.Sheaf.Leray.integralCoyonedaPushforwardIso
+#print axioms CategoryTheory.Sheaf.Leray.integralCoyonedaPushforwardIso
+#check CategoryTheory.Sheaf.Leray.integralCoyonedaPushforwardHomologyIso
+#print axioms CategoryTheory.Sheaf.Leray.integralCoyonedaPushforwardHomologyIso
+#check CategoryTheory.Sheaf.Leray.resolutionDerivedHomCohomologyEquiv
+#print axioms CategoryTheory.Sheaf.Leray.resolutionDerivedHomCohomologyEquiv
+#check CategoryTheory.Sheaf.Leray.resolutionPostnikovTotalCohomologyEquiv
+#print axioms CategoryTheory.Sheaf.Leray.resolutionPostnikovTotalCohomologyEquiv
+
+
+-- Gluing over a covered base: every handwritten declaration plus structure constructors and
+-- field projections, in compiled public declaration order (generated recursors excluded).
+#check ThreefoldGluing.Data
+#print axioms ThreefoldGluing.Data
+#check ThreefoldGluing.Data.mk
+#print axioms ThreefoldGluing.Data.mk
+#check ThreefoldGluing.Data.J
+#print axioms ThreefoldGluing.Data.J
+#check ThreefoldGluing.Data.patch
+#print axioms ThreefoldGluing.Data.patch
+#check ThreefoldGluing.Data.cover
+#print axioms ThreefoldGluing.Data.cover
+#check ThreefoldGluing.Data.piece
+#print axioms ThreefoldGluing.Data.piece
+#check ThreefoldGluing.Data.toBase
+#print axioms ThreefoldGluing.Data.toBase
+#check ThreefoldGluing.Data.toBase_mem
+#print axioms ThreefoldGluing.Data.toBase_mem
+#check ThreefoldGluing.Data.transition
+#print axioms ThreefoldGluing.Data.transition
+#check ThreefoldGluing.Data.source_eq
+#print axioms ThreefoldGluing.Data.source_eq
+#check ThreefoldGluing.Data.self_eq
+#print axioms ThreefoldGluing.Data.self_eq
+#check ThreefoldGluing.Data.symm_eq
+#print axioms ThreefoldGluing.Data.symm_eq
+#check ThreefoldGluing.Data.preserves_base
+#print axioms ThreefoldGluing.Data.preserves_base
+#check ThreefoldGluing.Data.cocycle
+#print axioms ThreefoldGluing.Data.cocycle
+#check ThreefoldGluing.Data.transition_map_source
+#print axioms ThreefoldGluing.Data.transition_map_source
+#check ThreefoldGluing.Data.transition_inter
+#print axioms ThreefoldGluing.Data.transition_inter
+#check ThreefoldGluing.Data.gluingCore
+#print axioms ThreefoldGluing.Data.gluingCore
+#check ThreefoldGluing.Data.gluing
+#print axioms ThreefoldGluing.Data.gluing
+#check ThreefoldGluing.Data.Space
+#print axioms ThreefoldGluing.Data.Space
+#check ThreefoldGluing.Data.inclusion
+#print axioms ThreefoldGluing.Data.inclusion
+#check ThreefoldGluing.Data.inclusion_openEmbedding
+#print axioms ThreefoldGluing.Data.inclusion_openEmbedding
+#check ThreefoldGluing.Data.inclusion_jointly_surjective
+#print axioms ThreefoldGluing.Data.inclusion_jointly_surjective
+#check ThreefoldGluing.Data.inclusion_eq_iff
+#print axioms ThreefoldGluing.Data.inclusion_eq_iff
+#check ThreefoldGluing.Data.representative
+#print axioms ThreefoldGluing.Data.representative
+#check ThreefoldGluing.Data.inclusion_representative
+#print axioms ThreefoldGluing.Data.inclusion_representative
+#check ThreefoldGluing.Data.parametrization
+#print axioms ThreefoldGluing.Data.parametrization
+#check ThreefoldGluing.Data.parametrization_target
+#print axioms ThreefoldGluing.Data.parametrization_target
+#check ThreefoldGluing.Data.parametrization_transition
+#print axioms ThreefoldGluing.Data.parametrization_transition
+#check ThreefoldGluing.Data.projection
+#print axioms ThreefoldGluing.Data.projection
+#check ThreefoldGluing.Data.projection_inclusion
+#print axioms ThreefoldGluing.Data.projection_inclusion
+#check ThreefoldGluing.Data.projection_continuous
+#print axioms ThreefoldGluing.Data.projection_continuous
+#check ThreefoldGluing.Data.inclusion_range
+#print axioms ThreefoldGluing.Data.inclusion_range
+#check ThreefoldGluing.Data.localProjection
+#print axioms ThreefoldGluing.Data.localProjection
+#check ThreefoldGluing.Data.patchHomeomorph
+#print axioms ThreefoldGluing.Data.patchHomeomorph
+#check ThreefoldGluing.Data.patchHomeomorph_projection
+#print axioms ThreefoldGluing.Data.patchHomeomorph_projection
+#check SpecialPeriods.Threefold.Star.Input
+#print axioms SpecialPeriods.Threefold.Star.Input
+#check SpecialPeriods.Threefold.Star.Input.mk
+#print axioms SpecialPeriods.Threefold.Star.Input.mk
+#check SpecialPeriods.Threefold.Star.Input.patch
+#print axioms SpecialPeriods.Threefold.Star.Input.patch
+#check SpecialPeriods.Threefold.Star.Input.cover
+#print axioms SpecialPeriods.Threefold.Star.Input.cover
+#check SpecialPeriods.Threefold.Star.Input.disjoint
+#print axioms SpecialPeriods.Threefold.Star.Input.disjoint
+#check SpecialPeriods.Threefold.Star.Input.piece
+#print axioms SpecialPeriods.Threefold.Star.Input.piece
+#check SpecialPeriods.Threefold.Star.Input.toBase
+#print axioms SpecialPeriods.Threefold.Star.Input.toBase
+#check SpecialPeriods.Threefold.Star.Input.toBase_mem
+#print axioms SpecialPeriods.Threefold.Star.Input.toBase_mem
+#check SpecialPeriods.Threefold.Star.Input.overlap
+#print axioms SpecialPeriods.Threefold.Star.Input.overlap
+#check SpecialPeriods.Threefold.Star.Input.source_eq
+#print axioms SpecialPeriods.Threefold.Star.Input.source_eq
+#check SpecialPeriods.Threefold.Star.Input.target_eq
+#print axioms SpecialPeriods.Threefold.Star.Input.target_eq
+#check SpecialPeriods.Threefold.Star.Input.preserves_base
+#print axioms SpecialPeriods.Threefold.Star.Input.preserves_base
+#check SpecialPeriods.Threefold.Star.Input.transition
+#print axioms SpecialPeriods.Threefold.Star.Input.transition
+#check SpecialPeriods.Threefold.Star.Input.transition_none_none
+#print axioms SpecialPeriods.Threefold.Star.Input.transition_none_none
+#check SpecialPeriods.Threefold.Star.Input.transition_none_some
+#print axioms SpecialPeriods.Threefold.Star.Input.transition_none_some
+#check SpecialPeriods.Threefold.Star.Input.transition_some_none
+#print axioms SpecialPeriods.Threefold.Star.Input.transition_some_none
+#check SpecialPeriods.Threefold.Star.Input.transition_some_self
+#print axioms SpecialPeriods.Threefold.Star.Input.transition_some_self
+#check SpecialPeriods.Threefold.Star.Input.transition_some_some_of_ne
+#print axioms SpecialPeriods.Threefold.Star.Input.transition_some_some_of_ne
+#check SpecialPeriods.Threefold.Star.Input.transition_self
+#print axioms SpecialPeriods.Threefold.Star.Input.transition_self
+#check SpecialPeriods.Threefold.Star.Input.transition_symm
+#print axioms SpecialPeriods.Threefold.Star.Input.transition_symm
+#check SpecialPeriods.Threefold.Star.Input.overlap_symm_preserves_base
+#print axioms SpecialPeriods.Threefold.Star.Input.overlap_symm_preserves_base
+#check SpecialPeriods.Threefold.Star.Input.toBase_preimage_own
+#print axioms SpecialPeriods.Threefold.Star.Input.toBase_preimage_own
+#check SpecialPeriods.Threefold.Star.Input.filling_preimage_eq_empty
+#print axioms SpecialPeriods.Threefold.Star.Input.filling_preimage_eq_empty
+#check SpecialPeriods.Threefold.Star.Input.transition_some_some_source_eq_empty
+#print axioms SpecialPeriods.Threefold.Star.Input.transition_some_some_source_eq_empty
+#check SpecialPeriods.Threefold.Star.Input.transition_source_eq
+#print axioms SpecialPeriods.Threefold.Star.Input.transition_source_eq
+#check SpecialPeriods.Threefold.Star.Input.transition_preserves_base
+#print axioms SpecialPeriods.Threefold.Star.Input.transition_preserves_base
+#check SpecialPeriods.Threefold.Star.Input.eq_or_eq_or_eq_of_common_base
+#print axioms SpecialPeriods.Threefold.Star.Input.eq_or_eq_or_eq_of_common_base
+#check SpecialPeriods.Threefold.Star.Input.transition_cocycle
+#print axioms SpecialPeriods.Threefold.Star.Input.transition_cocycle
+#check SpecialPeriods.Threefold.Star.Input.toData
+#print axioms SpecialPeriods.Threefold.Star.Input.toData
+#check ThreefoldGluing.Data.parametrization_symm_inclusion
+#print axioms ThreefoldGluing.Data.parametrization_symm_inclusion
+#check ThreefoldGluing.Data.gluedChart
+#print axioms ThreefoldGluing.Data.gluedChart
+#check ThreefoldGluing.Data.gluedChart_symm
+#print axioms ThreefoldGluing.Data.gluedChart_symm
+#check ThreefoldGluing.Data.gluedChart_inclusion
+#print axioms ThreefoldGluing.Data.gluedChart_inclusion
+#check ThreefoldGluing.Data.gluedChart_inclusion_mem_source
+#print axioms ThreefoldGluing.Data.gluedChart_inclusion_mem_source
+#check ThreefoldGluing.Data.chartedSpace
+#print axioms ThreefoldGluing.Data.chartedSpace
+#check ThreefoldGluing.Data.gluedChart_mem_atlas
+#print axioms ThreefoldGluing.Data.gluedChart_mem_atlas
+#check ThreefoldGluing.Data.gluedChart_transition_apply
+#print axioms ThreefoldGluing.Data.gluedChart_transition_apply
+#check ThreefoldGluing.Data.gluedChart_transition_contMDiff
+#print axioms ThreefoldGluing.Data.gluedChart_transition_contMDiff
+#check ThreefoldGluing.Data.isManifold_of_contMDiffOn_transition
+#print axioms ThreefoldGluing.Data.isManifold_of_contMDiffOn_transition
+#check SpecialPeriods.Threefold.Star.Input.transition_contMDiff
+#print axioms SpecialPeriods.Threefold.Star.Input.transition_contMDiff
+#check SpecialPeriods.Threefold.Star.Input.toData_transition_contMDiff
+#print axioms SpecialPeriods.Threefold.Star.Input.toData_transition_contMDiff
+
+/-! ## `Lib.Topology.Sheaves.ConstantPushforward` -/
+
+#check TopCat.ConstantSheaf.presheaf
+#print axioms TopCat.ConstantSheaf.presheaf
+#check TopCat.ConstantSheaf.sheaf
+#print axioms TopCat.ConstantSheaf.sheaf
+#check TopCat.ConstantSheaf.unit
+#print axioms TopCat.ConstantSheaf.unit
+#check TopCat.ConstantSheaf.stalkIso
+#print axioms TopCat.ConstantSheaf.stalkIso
+#check TopCat.ConstantSheaf.sectionValue
+#print axioms TopCat.ConstantSheaf.sectionValue
+#check TopCat.ConstantSheaf.sectionValue_isLocallyConstant
+#print axioms TopCat.ConstantSheaf.sectionValue_isLocallyConstant
+#check TopCat.ConstantSheaf.unit_app_surjective
+#print axioms TopCat.ConstantSheaf.unit_app_surjective
+#check TopCat.ConstantSheaf.unit_app_injective
+#print axioms TopCat.ConstantSheaf.unit_app_injective
+#check TopCat.ConstantSheaf.unit_app_bijective
+#print axioms TopCat.ConstantSheaf.unit_app_bijective
+#check TopCat.ConstantSheaf.rawPushforwardHom
+#print axioms TopCat.ConstantSheaf.rawPushforwardHom
+#check TopCat.ConstantSheaf.pushforwardHom
+#print axioms TopCat.ConstantSheaf.pushforwardHom
+#check TopCat.ConstantSheaf.unit_pushforwardHom
+#print axioms TopCat.ConstantSheaf.unit_pushforwardHom
+#check TopCat.ConstantSheaf.pushforwardHom_app_unit
+#print axioms TopCat.ConstantSheaf.pushforwardHom_app_unit
+#check TopCat.ConstantSheaf.pushforwardHom_isIso_of_isBasis
+#print axioms TopCat.ConstantSheaf.pushforwardHom_isIso_of_isBasis
+#check TopCat.ConstantSheaf.pushforwardHom_isIso
+#print axioms TopCat.ConstantSheaf.pushforwardHom_isIso
+
+/-! ## `Lib.Topology.Sheaves.ConstantSheaf.GlobalSections` -/
+
+#check TopCat.ConstantSheaf.homGlobalSectionsAddEquiv
+#print axioms TopCat.ConstantSheaf.homGlobalSectionsAddEquiv
+#check TopCat.ConstantSheaf.homGlobalSectionsAddEquiv_apply
+#print axioms TopCat.ConstantSheaf.homGlobalSectionsAddEquiv_apply
+#check TopCat.ConstantSheaf.homGlobalSectionsAddEquiv_symm_hom
+#print axioms TopCat.ConstantSheaf.homGlobalSectionsAddEquiv_symm_hom
+#check TopCat.ConstantSheaf.homGlobalSectionsAddEquiv_symm_unit_app
+#print axioms TopCat.ConstantSheaf.homGlobalSectionsAddEquiv_symm_unit_app
+#check TopCat.ConstantSheaf.homGlobalSectionsAddEquiv_symm_unique
+#print axioms TopCat.ConstantSheaf.homGlobalSectionsAddEquiv_symm_unique
+#check TopCat.ConstantSheaf.homGlobalSectionsAddEquiv_naturality
+#print axioms TopCat.ConstantSheaf.homGlobalSectionsAddEquiv_naturality
+#check TopCat.ConstantSheaf.extFunctorObjZeroIsoGlobalSections
+#print axioms TopCat.ConstantSheaf.extFunctorObjZeroIsoGlobalSections
+#check TopCat.ConstantSheaf.extFunctorObjZeroIsoGlobalSections_hom_app
+#print axioms TopCat.ConstantSheaf.extFunctorObjZeroIsoGlobalSections_hom_app
+
+/-! ## `Lib.Topology.Sheaves.FiniteClosedPushforward` -/
+
+#check TopCat.FiniteClosedPushforward.fiber_mem_preimage
+#print axioms TopCat.FiniteClosedPushforward.fiber_mem_preimage
+#check TopCat.FiniteClosedPushforward.exists_open_preimage_subset
+#print axioms TopCat.FiniteClosedPushforward.exists_open_preimage_subset
+#check TopCat.FiniteClosedPushforward.pushforwardStalkComponent
+#print axioms TopCat.FiniteClosedPushforward.pushforwardStalkComponent
+#check TopCat.FiniteClosedPushforward.pushforwardStalkComponent_germ
+#print axioms TopCat.FiniteClosedPushforward.pushforwardStalkComponent_germ
+#check TopCat.FiniteClosedPushforward.pushforwardStalkHom
+#print axioms TopCat.FiniteClosedPushforward.pushforwardStalkHom
+#check TopCat.FiniteClosedPushforward.pushforwardStalkHom_apply
+#print axioms TopCat.FiniteClosedPushforward.pushforwardStalkHom_apply
+#check TopCat.FiniteClosedPushforward.pushforwardStalkHom_germ
+#print axioms TopCat.FiniteClosedPushforward.pushforwardStalkHom_germ
+#check TopCat.FiniteClosedPushforward.exists_section_germ_eq_of_finite
+#print axioms TopCat.FiniteClosedPushforward.exists_section_germ_eq_of_finite
+#check TopCat.FiniteClosedPushforward.pushforward_germ_eq_of_fiber_germ_eq
+#print axioms TopCat.FiniteClosedPushforward.pushforward_germ_eq_of_fiber_germ_eq
+#check TopCat.FiniteClosedPushforward.pushforwardStalkHom_injective
+#print axioms TopCat.FiniteClosedPushforward.pushforwardStalkHom_injective
+#check TopCat.FiniteClosedPushforward.pushforwardStalkHom_surjective
+#print axioms TopCat.FiniteClosedPushforward.pushforwardStalkHom_surjective
+#check TopCat.FiniteClosedPushforward.pushforwardStalkHom_bijective
+#print axioms TopCat.FiniteClosedPushforward.pushforwardStalkHom_bijective
+#check TopCat.FiniteClosedPushforward.pushforwardStalkEquiv
+#print axioms TopCat.FiniteClosedPushforward.pushforwardStalkEquiv
+#check TopCat.FiniteClosedPushforward.pushforwardStalkEquiv_apply
+#print axioms TopCat.FiniteClosedPushforward.pushforwardStalkEquiv_apply
+#check TopCat.FiniteClosedPushforward.pushforwardStalkEquiv_germ
+#print axioms TopCat.FiniteClosedPushforward.pushforwardStalkEquiv_germ
+#check TopCat.FiniteClosedPushforward.pushforwardStalkHom_naturality
+#print axioms TopCat.FiniteClosedPushforward.pushforwardStalkHom_naturality
+#check TopCat.FiniteClosedPushforward.pushforwardStalkEquiv_naturality
+#print axioms TopCat.FiniteClosedPushforward.pushforwardStalkEquiv_naturality
+
+/-! ## `Lib.Topology.Sheaves.FiniteClosedPushforward.Exact` -/
+
+#check TopCat.FiniteClosedPushforward.pullback_preservesFiniteLimits
+#print axioms TopCat.FiniteClosedPushforward.pullback_preservesFiniteLimits
+#check TopCat.FiniteClosedPushforward.pushforward_preservesInjectiveObjects
+#print axioms TopCat.FiniteClosedPushforward.pushforward_preservesInjectiveObjects
+#check TopCat.FiniteClosedPushforward.pushforward_exact
+#print axioms TopCat.FiniteClosedPushforward.pushforward_exact
+#check TopCat.FiniteClosedPushforward.pushforward_preservesFiniteLimitsAndColimits
+#print axioms TopCat.FiniteClosedPushforward.pushforward_preservesFiniteLimitsAndColimits
+#check TopCat.FiniteClosedPushforward.pushforward_preservesFiniteColimits
+#print axioms TopCat.FiniteClosedPushforward.pushforward_preservesFiniteColimits
+#check TopCat.FiniteClosedPushforward.pushforward_shortExact
+#print axioms TopCat.FiniteClosedPushforward.pushforward_shortExact
+
+/-! ## `Lib.Topology.Sheaves.FiniteClosedPushforward.Cohomology` -/
+
+#check TopCat.FiniteClosedPushforward.cohomologyForward
+#print axioms TopCat.FiniteClosedPushforward.cohomologyForward
+#check TopCat.FiniteClosedPushforward.cohomologyForward_bijective
+#print axioms TopCat.FiniteClosedPushforward.cohomologyForward_bijective
+#check TopCat.FiniteClosedPushforward.cohomologyEquiv
+#print axioms TopCat.FiniteClosedPushforward.cohomologyEquiv
+#check TopCat.FiniteClosedPushforward.cohomologyEquiv_symm_apply
+#print axioms TopCat.FiniteClosedPushforward.cohomologyEquiv_symm_apply
+#check TopCat.FiniteClosedPushforward.cohomologyForward_equiv
+#print axioms TopCat.FiniteClosedPushforward.cohomologyForward_equiv
+#check TopCat.FiniteClosedPushforward.cohomologyForward_naturality
+#print axioms TopCat.FiniteClosedPushforward.cohomologyForward_naturality
+#check TopCat.FiniteClosedPushforward.cohomologyEquiv_naturality
+#print axioms TopCat.FiniteClosedPushforward.cohomologyEquiv_naturality
+
+/-! ## `Lib.Topology.Sheaves.ConstantCohomologyPullback` -/
+
+#check TopCat.ConstantSheafCohomology.pullback
+#print axioms TopCat.ConstantSheafCohomology.pullback
+#check TopCat.ConstantSheafCohomology.pullback_forward
+#print axioms TopCat.ConstantSheafCohomology.pullback_forward
+#check TopCat.ConstantSheafCohomology.pullback_forward_assoc
+#print axioms TopCat.ConstantSheafCohomology.pullback_forward_assoc
+
+/-! ## `Lib.Topology.Sheaves.ConstantProductH1` -/
+
+#check TopCat.ConstantProductH1.basedContraction_homotopic
+#print axioms TopCat.ConstantProductH1.basedContraction_homotopic
+#check TopCat.ConstantProductH1.basedProductHomotopyEquiv
+#print axioms TopCat.ConstantProductH1.basedProductHomotopyEquiv
+#check TopCat.ConstantProductH1.basedFibreInclusion
+#print axioms TopCat.ConstantProductH1.basedFibreInclusion
+#check TopCat.ConstantProductH1.basedFibreInclusion_apply
+#print axioms TopCat.ConstantProductH1.basedFibreInclusion_apply
+#check TopCat.ConstantProductH1.basedFibreInclusion_injective
+#print axioms TopCat.ConstantProductH1.basedFibreInclusion_injective
+#check TopCat.ConstantProductH1.basedFibreInclusion_isClosedMap
+#print axioms TopCat.ConstantProductH1.basedFibreInclusion_isClosedMap
+#check TopCat.ConstantProductH1.basedFibreInclusion_finite_fibres
+#print axioms TopCat.ConstantProductH1.basedFibreInclusion_finite_fibres
+#check TopCat.ConstantProductH1.singularPullback_basedFibreInclusion_isIso
+#print axioms TopCat.ConstantProductH1.singularPullback_basedFibreInclusion_isIso
+#check TopCat.ConstantProductH1.nativePullback_isIso_of_comparison
+#print axioms TopCat.ConstantProductH1.nativePullback_isIso_of_comparison
+
+/-! ## `Lib.Topology.Sheaves.CofinalNeighborhoodEvaluation` -/
+
+#check TopCat.Presheaf.CompatibleNeighborhoodEvaluation
+#print axioms TopCat.Presheaf.CompatibleNeighborhoodEvaluation
+#check TopCat.Presheaf.CompatibleNeighborhoodEvaluation.mk
+#print axioms TopCat.Presheaf.CompatibleNeighborhoodEvaluation.mk
+#check TopCat.Presheaf.CompatibleNeighborhoodEvaluation.app
+#print axioms TopCat.Presheaf.CompatibleNeighborhoodEvaluation.app
+#check TopCat.Presheaf.CompatibleNeighborhoodEvaluation.naturality
+#print axioms TopCat.Presheaf.CompatibleNeighborhoodEvaluation.naturality
+#check TopCat.Presheaf.CompatibleNeighborhoodEvaluation.cocone
+#print axioms TopCat.Presheaf.CompatibleNeighborhoodEvaluation.cocone
+#check TopCat.Presheaf.CompatibleNeighborhoodEvaluation.stalkMap
+#print axioms TopCat.Presheaf.CompatibleNeighborhoodEvaluation.stalkMap
+#check TopCat.Presheaf.CompatibleNeighborhoodEvaluation.stalkMap_germ
+#print axioms TopCat.Presheaf.CompatibleNeighborhoodEvaluation.stalkMap_germ
+#check TopCat.Presheaf.CompatibleNeighborhoodEvaluation.stalkMap_bijective_of_cofinal
+#print axioms TopCat.Presheaf.CompatibleNeighborhoodEvaluation.stalkMap_bijective_of_cofinal
+#check TopCat.Presheaf.CompatibleNeighborhoodEvaluation.stalkMap_isIso_of_cofinal
+#print axioms TopCat.Presheaf.CompatibleNeighborhoodEvaluation.stalkMap_isIso_of_cofinal
+#check TopCat.Presheaf.germ_bijective_of_cofinal_restriction
+#print axioms TopCat.Presheaf.germ_bijective_of_cofinal_restriction
+#check TopCat.Presheaf.germ_isIso_of_cofinal_restriction
+#print axioms TopCat.Presheaf.germ_isIso_of_cofinal_restriction
+
+/-! ## `Lib.Topology.Sheaves.CokernelStalk` -/
+
+#check TopCat.Sheaf.stalkCokernelIso
+#print axioms TopCat.Sheaf.stalkCokernelIso
+#check TopCat.Sheaf.stalk_cokernelπ_comp_stalkCokernelIso_hom
+#print axioms TopCat.Sheaf.stalk_cokernelπ_comp_stalkCokernelIso_hom
+#check TopCat.Sheaf.stalk_cokernelπ_comp_stalkCokernelIso_hom_assoc
+#print axioms TopCat.Sheaf.stalk_cokernelπ_comp_stalkCokernelIso_hom_assoc
+#check TopCat.Sheaf.stalkCokernel_isZero_of_epi
+#print axioms TopCat.Sheaf.stalkCokernel_isZero_of_epi
+#check TopCat.Sheaf.stalkCokernelHom
+#print axioms TopCat.Sheaf.stalkCokernelHom
+#check TopCat.Sheaf.stalk_cokernelπ_comp_stalkCokernelHom
+#print axioms TopCat.Sheaf.stalk_cokernelπ_comp_stalkCokernelHom
+#check TopCat.Sheaf.stalk_cokernelπ_comp_stalkCokernelHom_assoc
+#print axioms TopCat.Sheaf.stalk_cokernelπ_comp_stalkCokernelHom_assoc
+
+/-! ## `Lib.Topology.Sheaves.OpenRestriction` -/
+
+#check TopCat.Sheaf.OpenRestriction.inclusion
+#print axioms TopCat.Sheaf.OpenRestriction.inclusion
+#check TopCat.Sheaf.OpenRestriction.inclusion_isOpenEmbedding
+#print axioms TopCat.Sheaf.OpenRestriction.inclusion_isOpenEmbedding
+#check TopCat.Sheaf.OpenRestriction.inclusion_mono
+#print axioms TopCat.Sheaf.OpenRestriction.inclusion_mono
+#check TopCat.Sheaf.OpenRestriction.openImage
+#print axioms TopCat.Sheaf.OpenRestriction.openImage
+#check TopCat.Sheaf.OpenRestriction.openImage_full
+#print axioms TopCat.Sheaf.OpenRestriction.openImage_full
+#check TopCat.Sheaf.OpenRestriction.preimageOpen
+#print axioms TopCat.Sheaf.OpenRestriction.preimageOpen
+#check TopCat.Sheaf.OpenRestriction.openImage_obj_le
+#print axioms TopCat.Sheaf.OpenRestriction.openImage_obj_le
+#check TopCat.Sheaf.OpenRestriction.openImage_preimage
+#print axioms TopCat.Sheaf.OpenRestriction.openImage_preimage
+#check TopCat.Sheaf.OpenRestriction.costructuredArrow_isEmpty
+#print axioms TopCat.Sheaf.OpenRestriction.costructuredArrow_isEmpty
+#check TopCat.Sheaf.OpenRestriction.lan_obj_isZero_of_not_le
+#print axioms TopCat.Sheaf.OpenRestriction.lan_obj_isZero_of_not_le
+#check TopCat.Sheaf.OpenRestriction.lan_preservesMonomorphisms
+#print axioms TopCat.Sheaf.OpenRestriction.lan_preservesMonomorphisms
+#check TopCat.Sheaf.OpenRestriction.openImage_continuous
+#print axioms TopCat.Sheaf.OpenRestriction.openImage_continuous
+#check TopCat.Sheaf.OpenRestriction.openImage_cocontinuous
+#print axioms TopCat.Sheaf.OpenRestriction.openImage_cocontinuous
+#check TopCat.Sheaf.OpenRestriction.restriction
+#print axioms TopCat.Sheaf.OpenRestriction.restriction
+#check TopCat.Sheaf.OpenRestriction.restriction_eq_sheafRestrict
+#print axioms TopCat.Sheaf.OpenRestriction.restriction_eq_sheafRestrict
+#check TopCat.Sheaf.OpenRestriction.restriction_additive
+#print axioms TopCat.Sheaf.OpenRestriction.restriction_additive
+#check TopCat.Sheaf.OpenRestriction.restriction_rightAdjoint
+#print axioms TopCat.Sheaf.OpenRestriction.restriction_rightAdjoint
+#check TopCat.Sheaf.OpenRestriction.restriction_leftAdjoint
+#print axioms TopCat.Sheaf.OpenRestriction.restriction_leftAdjoint
+#check TopCat.Sheaf.OpenRestriction.restriction_preservesFiniteLimits
+#print axioms TopCat.Sheaf.OpenRestriction.restriction_preservesFiniteLimits
+#check TopCat.Sheaf.OpenRestriction.restriction_preservesFiniteColimits
+#print axioms TopCat.Sheaf.OpenRestriction.restriction_preservesFiniteColimits
+#check TopCat.Sheaf.OpenRestriction.extension
+#print axioms TopCat.Sheaf.OpenRestriction.extension
+#check TopCat.Sheaf.OpenRestriction.extension_preservesMonomorphisms
+#print axioms TopCat.Sheaf.OpenRestriction.extension_preservesMonomorphisms
+#check TopCat.Sheaf.OpenRestriction.restriction_preservesInjectiveObjects
+#print axioms TopCat.Sheaf.OpenRestriction.restriction_preservesInjectiveObjects
+
+/-! ## `Lib.Topology.Sheaves.OpenRestriction.StalkUnit` -/
+
+#check TopCat.Sheaf.OpenRestriction.pullbackRestrictionIso
+#print axioms TopCat.Sheaf.OpenRestriction.pullbackRestrictionIso
+#check TopCat.Sheaf.OpenRestriction.nearbyExtension
+#print axioms TopCat.Sheaf.OpenRestriction.nearbyExtension
+#check TopCat.Sheaf.OpenRestriction.nearbyRestrictionUnit
+#print axioms TopCat.Sheaf.OpenRestriction.nearbyRestrictionUnit
+#check TopCat.Sheaf.OpenRestriction.nearbyExtensionObjIso
+#print axioms TopCat.Sheaf.OpenRestriction.nearbyExtensionObjIso
+#check TopCat.Sheaf.OpenRestriction.nearbyNeighborhoodDiagram
+#print axioms TopCat.Sheaf.OpenRestriction.nearbyNeighborhoodDiagram
+#check TopCat.Sheaf.OpenRestriction.nearbySectionsStalk
+#print axioms TopCat.Sheaf.OpenRestriction.nearbySectionsStalk
+#check TopCat.Sheaf.OpenRestriction.nearbySectionsStalk_eq_colimit
+#print axioms TopCat.Sheaf.OpenRestriction.nearbySectionsStalk_eq_colimit
+#check TopCat.Sheaf.OpenRestriction.nearbyStalkUnit
+#print axioms TopCat.Sheaf.OpenRestriction.nearbyStalkUnit
+#check TopCat.Sheaf.OpenRestriction.nearbyStalkUnit_natural
+#print axioms TopCat.Sheaf.OpenRestriction.nearbyStalkUnit_natural
+#check TopCat.Sheaf.OpenRestriction.germ_nearbyStalkUnit
+#print axioms TopCat.Sheaf.OpenRestriction.germ_nearbyStalkUnit
+
+/-! ## `Lib.Topology.Sheaves.OpenRestriction.NearbyEvaluationCompatibility` -/
+
+#check TopCat.Presheaf.stalk_hom_ext_of_cofinal
+#print axioms TopCat.Presheaf.stalk_hom_ext_of_cofinal
+#check TopCat.Presheaf.CompatibleNeighborhoodEvaluation.germ_comp_stalkMap
+#print axioms TopCat.Presheaf.CompatibleNeighborhoodEvaluation.germ_comp_stalkMap
+#check TopCat.Presheaf.CompatibleNeighborhoodEvaluation.precomp
+#print axioms TopCat.Presheaf.CompatibleNeighborhoodEvaluation.precomp
+#check TopCat.Presheaf.CompatibleNeighborhoodEvaluation.stalkFunctorMap_comp_stalkMap
+#print axioms TopCat.Presheaf.CompatibleNeighborhoodEvaluation.stalkFunctorMap_comp_stalkMap
+#check TopCat.Presheaf.CompatibleNeighborhoodEvaluation.stalkMap_eq_of_cofinal_app
+#print axioms TopCat.Presheaf.CompatibleNeighborhoodEvaluation.stalkMap_eq_of_cofinal_app
+#check TopCat.Sheaf.OpenRestriction.pullbackNearbyEvaluation
+#print axioms TopCat.Sheaf.OpenRestriction.pullbackNearbyEvaluation
+#check TopCat.Sheaf.OpenRestriction.nearbyStalkUnit_comp_stalkMap
+#print axioms TopCat.Sheaf.OpenRestriction.nearbyStalkUnit_comp_stalkMap
+#check TopCat.Sheaf.OpenRestriction.germ_nearbyStalkUnit_comp_stalkMap
+#print axioms TopCat.Sheaf.OpenRestriction.germ_nearbyStalkUnit_comp_stalkMap
+#check TopCat.Sheaf.OpenRestriction.nearbyStalkUnit_comp_map_comp_stalkMap
+#print axioms TopCat.Sheaf.OpenRestriction.nearbyStalkUnit_comp_map_comp_stalkMap
+#check TopCat.Sheaf.OpenRestriction.germ_nearbyStalkUnit_comp_map_comp_stalkMap
+#print axioms TopCat.Sheaf.OpenRestriction.germ_nearbyStalkUnit_comp_map_comp_stalkMap
+
+/-! ## `Lib.Topology.Sheaves.OpenRestriction.Cohomology` -/
+
+#check TopCat.Sheaf.OpenRestriction.restrictedCohomologyGroup
+#print axioms TopCat.Sheaf.OpenRestriction.restrictedCohomologyGroup
+#check TopCat.Sheaf.OpenRestriction.freeOpen
+#print axioms TopCat.Sheaf.OpenRestriction.freeOpen
+#check TopCat.Sheaf.OpenRestriction.freeHomEquiv
+#print axioms TopCat.Sheaf.OpenRestriction.freeHomEquiv
+#check TopCat.Sheaf.OpenRestriction.freeHomEquiv_naturality
+#print axioms TopCat.Sheaf.OpenRestriction.freeHomEquiv_naturality
+#check TopCat.Sheaf.OpenRestriction.freeHomAddEquiv
+#print axioms TopCat.Sheaf.OpenRestriction.freeHomAddEquiv
+#check TopCat.Sheaf.OpenRestriction.freeHomEquiv_naturality_open
+#print axioms TopCat.Sheaf.OpenRestriction.freeHomEquiv_naturality_open
+#check TopCat.Sheaf.OpenRestriction.freeHomAddEquiv_naturality_open
+#print axioms TopCat.Sheaf.OpenRestriction.freeHomAddEquiv_naturality_open
+#check TopCat.Sheaf.OpenRestriction.openImage_top
+#print axioms TopCat.Sheaf.OpenRestriction.openImage_top
+#check TopCat.Sheaf.OpenRestriction.restrictionGlobalEquiv
+#print axioms TopCat.Sheaf.OpenRestriction.restrictionGlobalEquiv
+#check TopCat.Sheaf.OpenRestriction.restrictionGlobalEquiv_naturality
+#print axioms TopCat.Sheaf.OpenRestriction.restrictionGlobalEquiv_naturality
+#check TopCat.Sheaf.OpenRestriction.homRestrictionEquiv
+#print axioms TopCat.Sheaf.OpenRestriction.homRestrictionEquiv
+#check TopCat.Sheaf.OpenRestriction.homRestrictionEquiv_sections
+#print axioms TopCat.Sheaf.OpenRestriction.homRestrictionEquiv_sections
+#check TopCat.Sheaf.OpenRestriction.homRestrictionEquiv_naturality
+#print axioms TopCat.Sheaf.OpenRestriction.homRestrictionEquiv_naturality
+#check TopCat.Sheaf.OpenRestriction.representingUnit
+#print axioms TopCat.Sheaf.OpenRestriction.representingUnit
+#check TopCat.Sheaf.OpenRestriction.representingUnit_comp
+#print axioms TopCat.Sheaf.OpenRestriction.representingUnit_comp
+#check TopCat.Sheaf.OpenRestriction.representingUnit_bijective
+#print axioms TopCat.Sheaf.OpenRestriction.representingUnit_bijective
+#check TopCat.Sheaf.OpenRestriction.zeroEquiv
+#print axioms TopCat.Sheaf.OpenRestriction.zeroEquiv
+#check TopCat.Sheaf.OpenRestriction.cohomologyForward
+#print axioms TopCat.Sheaf.OpenRestriction.cohomologyForward
+#check TopCat.Sheaf.OpenRestriction.cohomologyForward_bijective
+#print axioms TopCat.Sheaf.OpenRestriction.cohomologyForward_bijective
+#check TopCat.Sheaf.OpenRestriction.cohomologyEquiv
+#print axioms TopCat.Sheaf.OpenRestriction.cohomologyEquiv
+#check TopCat.Sheaf.OpenRestriction.cohomologyEquiv_mk₀
+#print axioms TopCat.Sheaf.OpenRestriction.cohomologyEquiv_mk₀
+#check TopCat.Sheaf.OpenRestriction.cohomologyEquiv_naturality
+#print axioms TopCat.Sheaf.OpenRestriction.cohomologyEquiv_naturality
+
+/-! ## `Lib.Topology.Sheaves.PrincipalCoverLocalSystem` -/
+
+#check PrincipalCoverLocalSystem.LiftedOpen
+#print axioms PrincipalCoverLocalSystem.LiftedOpen
+#check PrincipalCoverLocalSystem.liftedAction
+#print axioms PrincipalCoverLocalSystem.liftedAction
+#check PrincipalCoverLocalSystem.liftedInclusion
+#print axioms PrincipalCoverLocalSystem.liftedInclusion
+#check PrincipalCoverLocalSystem.equivariantSections
+#print axioms PrincipalCoverLocalSystem.equivariantSections
+#check PrincipalCoverLocalSystem.mem_equivariantSections
+#print axioms PrincipalCoverLocalSystem.mem_equivariantSections
+#check PrincipalCoverLocalSystem.restrict
+#print axioms PrincipalCoverLocalSystem.restrict
+#check PrincipalCoverLocalSystem.presheaf
+#print axioms PrincipalCoverLocalSystem.presheaf
+#check PrincipalCoverLocalSystem.presheaf_map_apply
+#print axioms PrincipalCoverLocalSystem.presheaf_map_apply
+#check PrincipalCoverLocalSystem.presheaf_isSheaf
+#print axioms PrincipalCoverLocalSystem.presheaf_isSheaf
+#check PrincipalCoverLocalSystem.sheaf
+#print axioms PrincipalCoverLocalSystem.sheaf
+#check PrincipalCoverLocalSystem.invariantCoefficients
+#print axioms PrincipalCoverLocalSystem.invariantCoefficients
+#check PrincipalCoverLocalSystem.liftedTopHomeomorph
+#print axioms PrincipalCoverLocalSystem.liftedTopHomeomorph
+#check PrincipalCoverLocalSystem.globalSectionsEquivInvariantCoefficients
+#print axioms PrincipalCoverLocalSystem.globalSectionsEquivInvariantCoefficients
+#check PrincipalCoverLocalSystem.globalSectionsEquivInvariantCoefficients_apply
+#print axioms PrincipalCoverLocalSystem.globalSectionsEquivInvariantCoefficients_apply
+
+/-! ## `Lib.Topology.Sheaves.PrincipalCoverLocalSystem.CyclicComponentSections` -/
+
+#check PrincipalCoverLocalSystem.liftedActionHomeomorph
+#print axioms PrincipalCoverLocalSystem.liftedActionHomeomorph
+#check PrincipalCoverLocalSystem.liftedActionHomeomorph_apply
+#print axioms PrincipalCoverLocalSystem.liftedActionHomeomorph_apply
+#check PrincipalCoverLocalSystem.liftedOpenBase
+#print axioms PrincipalCoverLocalSystem.liftedOpenBase
+#check PrincipalCoverLocalSystem.liftedOpenAmbientFiber
+#print axioms PrincipalCoverLocalSystem.liftedOpenAmbientFiber
+#check PrincipalCoverLocalSystem.openInclusion
+#print axioms PrincipalCoverLocalSystem.openInclusion
+#check PrincipalCoverLocalSystem.localDeckMonodromyHom
+#print axioms PrincipalCoverLocalSystem.localDeckMonodromyHom
+#check PrincipalCoverLocalSystem.liftedAction_mem_connectedComponent_iff_inv_mem_localDeckMonodromy_range
+#print axioms PrincipalCoverLocalSystem.liftedAction_mem_connectedComponent_iff_inv_mem_localDeckMonodromy_range
+#check PrincipalCoverLocalSystem.CyclicComponentData
+#print axioms PrincipalCoverLocalSystem.CyclicComponentData
+#check PrincipalCoverLocalSystem.CyclicComponentData.mk
+#print axioms PrincipalCoverLocalSystem.CyclicComponentData.mk
+#check PrincipalCoverLocalSystem.CyclicComponentData.component
+#print axioms PrincipalCoverLocalSystem.CyclicComponentData.component
+#check PrincipalCoverLocalSystem.CyclicComponentData.base
+#print axioms PrincipalCoverLocalSystem.CyclicComponentData.base
+#check PrincipalCoverLocalSystem.CyclicComponentData.base_mem
+#print axioms PrincipalCoverLocalSystem.CyclicComponentData.base_mem
+#check PrincipalCoverLocalSystem.CyclicComponentData.component_isOpen
+#print axioms PrincipalCoverLocalSystem.CyclicComponentData.component_isOpen
+#check PrincipalCoverLocalSystem.CyclicComponentData.component_isPreconnected
+#print axioms PrincipalCoverLocalSystem.CyclicComponentData.component_isPreconnected
+#check PrincipalCoverLocalSystem.CyclicComponentData.translates_cover
+#print axioms PrincipalCoverLocalSystem.CyclicComponentData.translates_cover
+#check PrincipalCoverLocalSystem.CyclicComponentData.generator_base_mem
+#print axioms PrincipalCoverLocalSystem.CyclicComponentData.generator_base_mem
+#check PrincipalCoverLocalSystem.CyclicComponentData.overlap_cyclic
+#print axioms PrincipalCoverLocalSystem.CyclicComponentData.overlap_cyclic
+#check PrincipalCoverLocalSystem.CyclicComponentData.exists_translate_mem_connectedComponent
+#print axioms PrincipalCoverLocalSystem.CyclicComponentData.exists_translate_mem_connectedComponent
+#check PrincipalCoverLocalSystem.CyclicComponentData.ofConnectedComponent
+#print axioms PrincipalCoverLocalSystem.CyclicComponentData.ofConnectedComponent
+#check PrincipalCoverLocalSystem.CyclicComponentData.ofPathConnectedComponentStabilizer
+#print axioms PrincipalCoverLocalSystem.CyclicComponentData.ofPathConnectedComponentStabilizer
+#check PrincipalCoverLocalSystem.CyclicComponentData.chosenGroup
+#print axioms PrincipalCoverLocalSystem.CyclicComponentData.chosenGroup
+#check PrincipalCoverLocalSystem.CyclicComponentData.chosenPoint
+#print axioms PrincipalCoverLocalSystem.CyclicComponentData.chosenPoint
+#check PrincipalCoverLocalSystem.CyclicComponentData.chosenPoint_mem
+#print axioms PrincipalCoverLocalSystem.CyclicComponentData.chosenPoint_mem
+#check PrincipalCoverLocalSystem.CyclicComponentData.chosen_representation
+#print axioms PrincipalCoverLocalSystem.CyclicComponentData.chosen_representation
+#check PrincipalCoverLocalSystem.CyclicComponentData.zpow_smul_eq
+#print axioms PrincipalCoverLocalSystem.CyclicComponentData.zpow_smul_eq
+#check PrincipalCoverLocalSystem.CyclicComponentData.chosenGroup_smul_eq_of_representation
+#print axioms PrincipalCoverLocalSystem.CyclicComponentData.chosenGroup_smul_eq_of_representation
+#check PrincipalCoverLocalSystem.CyclicComponentData.reconstructedValue
+#print axioms PrincipalCoverLocalSystem.CyclicComponentData.reconstructedValue
+#check PrincipalCoverLocalSystem.CyclicComponentData.reconstructedValue_of_representation
+#print axioms PrincipalCoverLocalSystem.CyclicComponentData.reconstructedValue_of_representation
+#check PrincipalCoverLocalSystem.CyclicComponentData.reconstructedValue_isLocallyConstant
+#print axioms PrincipalCoverLocalSystem.CyclicComponentData.reconstructedValue_isLocallyConstant
+#check PrincipalCoverLocalSystem.CyclicComponentData.reconstructedSection
+#print axioms PrincipalCoverLocalSystem.CyclicComponentData.reconstructedSection
+#check PrincipalCoverLocalSystem.CyclicComponentData.sectionEvaluation
+#print axioms PrincipalCoverLocalSystem.CyclicComponentData.sectionEvaluation
+#check PrincipalCoverLocalSystem.CyclicComponentData.sectionReconstruction
+#print axioms PrincipalCoverLocalSystem.CyclicComponentData.sectionReconstruction
+#check PrincipalCoverLocalSystem.CyclicComponentData.sectionEvaluation_sectionReconstruction
+#print axioms PrincipalCoverLocalSystem.CyclicComponentData.sectionEvaluation_sectionReconstruction
+#check PrincipalCoverLocalSystem.CyclicComponentData.sectionReconstruction_sectionEvaluation
+#print axioms PrincipalCoverLocalSystem.CyclicComponentData.sectionReconstruction_sectionEvaluation
+#check PrincipalCoverLocalSystem.CyclicComponentData.sectionsEquiv
+#print axioms PrincipalCoverLocalSystem.CyclicComponentData.sectionsEquiv
+#check PrincipalCoverLocalSystem.CyclicComponentData.sectionEvaluation_bijective
+#print axioms PrincipalCoverLocalSystem.CyclicComponentData.sectionEvaluation_bijective
+#check PrincipalCoverLocalSystem.CyclicComponentData.sectionEvaluation_restrict
+#print axioms PrincipalCoverLocalSystem.CyclicComponentData.sectionEvaluation_restrict
+#check PrincipalCoverLocalSystem.CyclicComponentData.invariantActionEquiv
+#print axioms PrincipalCoverLocalSystem.CyclicComponentData.invariantActionEquiv
+#check PrincipalCoverLocalSystem.CyclicComponentData.sectionEvaluation_restrict_eq_invariantActionEquiv
+#print axioms PrincipalCoverLocalSystem.CyclicComponentData.sectionEvaluation_restrict_eq_invariantActionEquiv
+#check PrincipalCoverLocalSystem.CyclicComponentData.restrict_bijective_of_commuting_component_transport
+#print axioms PrincipalCoverLocalSystem.CyclicComponentData.restrict_bijective_of_commuting_component_transport
+
+/-! ## `Lib.Topology.Sheaves.PrincipalCoverLocalSystem.DeckTranslate` -/
+
+#check PrincipalCoverLocalSystem.fundamentalGroupToMulOpposite_translate
+#print axioms PrincipalCoverLocalSystem.fundamentalGroupToMulOpposite_translate
+#check PrincipalCoverLocalSystem.inverseFundamentalGroupToMulOpposite_translate
+#print axioms PrincipalCoverLocalSystem.inverseFundamentalGroupToMulOpposite_translate
+#check PrincipalCoverLocalSystem.deckMonodromyHom
+#print axioms PrincipalCoverLocalSystem.deckMonodromyHom
+#check PrincipalCoverLocalSystem.deckMonodromyHom_homeomorph_comp
+#print axioms PrincipalCoverLocalSystem.deckMonodromyHom_homeomorph_comp
+#check PrincipalCoverLocalSystem.fiberTransport
+#print axioms PrincipalCoverLocalSystem.fiberTransport
+#check PrincipalCoverLocalSystem.deckMonodromyHom_fiberTransport
+#print axioms PrincipalCoverLocalSystem.deckMonodromyHom_fiberTransport
+#check PrincipalCoverLocalSystem.deckMonodromyHom_liftedPath
+#print axioms PrincipalCoverLocalSystem.deckMonodromyHom_liftedPath
+#check PrincipalCoverLocalSystem.deckMonodromyHom_translate_apply
+#print axioms PrincipalCoverLocalSystem.deckMonodromyHom_translate_apply
+#check PrincipalCoverLocalSystem.deckMonodromyHom_translate
+#print axioms PrincipalCoverLocalSystem.deckMonodromyHom_translate
+#check PrincipalCoverLocalSystem.deckMonodromyHom_translate_range
+#print axioms PrincipalCoverLocalSystem.deckMonodromyHom_translate_range
+#check PrincipalCoverLocalSystem.map_conj_zpowers_inv_mul_mul
+#print axioms PrincipalCoverLocalSystem.map_conj_zpowers_inv_mul_mul
+
+/-! ## `Lib.Topology.Sheaves.PrincipalCoverLocalSystem.Stalk` -/
+
+#check PrincipalCoverLocalSystem.evaluationCocone
+#print axioms PrincipalCoverLocalSystem.evaluationCocone
+#check PrincipalCoverLocalSystem.stalkEvaluation
+#print axioms PrincipalCoverLocalSystem.stalkEvaluation
+#check PrincipalCoverLocalSystem.stalkEvaluation_germ
+#print axioms PrincipalCoverLocalSystem.stalkEvaluation_germ
+#check PrincipalCoverLocalSystem.stalkEvaluation_germ_smul
+#print axioms PrincipalCoverLocalSystem.stalkEvaluation_germ_smul
+#check PrincipalCoverLocalSystem.stalkEvaluation_surjective
+#print axioms PrincipalCoverLocalSystem.stalkEvaluation_surjective
+#check PrincipalCoverLocalSystem.stalkEvaluation_injective
+#print axioms PrincipalCoverLocalSystem.stalkEvaluation_injective
+#check PrincipalCoverLocalSystem.stalkEvaluation_bijective
+#print axioms PrincipalCoverLocalSystem.stalkEvaluation_bijective
+#check PrincipalCoverLocalSystem.stalkEvaluation_isIso
+#print axioms PrincipalCoverLocalSystem.stalkEvaluation_isIso
+#check PrincipalCoverLocalSystem.stalkIsoCoefficientAtLift
+#print axioms PrincipalCoverLocalSystem.stalkIsoCoefficientAtLift
+
+/-! ## `Lib.Topology.Sheaves.PrincipalCoverLocalSystem.Comparison` -/
+
+#check PrincipalCoverLocalSystem.StalkComparisonData
+#print axioms PrincipalCoverLocalSystem.StalkComparisonData
+#check PrincipalCoverLocalSystem.StalkComparisonData.mk
+#print axioms PrincipalCoverLocalSystem.StalkComparisonData.mk
+#check PrincipalCoverLocalSystem.StalkComparisonData.stalkMap
+#print axioms PrincipalCoverLocalSystem.StalkComparisonData.stalkMap
+#check PrincipalCoverLocalSystem.StalkComparisonData.section_isLocallyConstant
+#print axioms PrincipalCoverLocalSystem.StalkComparisonData.section_isLocallyConstant
+#check PrincipalCoverLocalSystem.StalkComparisonData.section_equivariant
+#print axioms PrincipalCoverLocalSystem.StalkComparisonData.section_equivariant
+#check PrincipalCoverLocalSystem.StalkComparisonData.toSection
+#print axioms PrincipalCoverLocalSystem.StalkComparisonData.toSection
+#check PrincipalCoverLocalSystem.StalkComparisonData.sectionMap
+#print axioms PrincipalCoverLocalSystem.StalkComparisonData.sectionMap
+#check PrincipalCoverLocalSystem.StalkComparisonData.presheafHom
+#print axioms PrincipalCoverLocalSystem.StalkComparisonData.presheafHom
+#check PrincipalCoverLocalSystem.StalkComparisonData.hom
+#print axioms PrincipalCoverLocalSystem.StalkComparisonData.hom
+#check PrincipalCoverLocalSystem.StalkComparisonData.stalkFunctorMap_comp_stalkEvaluation
+#print axioms PrincipalCoverLocalSystem.StalkComparisonData.stalkFunctorMap_comp_stalkEvaluation
+#check PrincipalCoverLocalSystem.StalkComparisonData.stalkFunctorMap_isIso
+#print axioms PrincipalCoverLocalSystem.StalkComparisonData.stalkFunctorMap_isIso
+#check PrincipalCoverLocalSystem.StalkComparisonData.hom_isIso
+#print axioms PrincipalCoverLocalSystem.StalkComparisonData.hom_isIso
+
+/-! ## `Lib.Topology.Sheaves.PrincipalCoverLocalSystem.Trivialization` -/
+
+#check PrincipalCoverLocalSystem.sectionCoordinate
+#print axioms PrincipalCoverLocalSystem.sectionCoordinate
+#check PrincipalCoverLocalSystem.sectionCoordinate_isLocallyConstant
+#print axioms PrincipalCoverLocalSystem.sectionCoordinate_isLocallyConstant
+#check PrincipalCoverLocalSystem.constantComparisonData
+#print axioms PrincipalCoverLocalSystem.constantComparisonData
+#check PrincipalCoverLocalSystem.constantSheafHomOfSection
+#print axioms PrincipalCoverLocalSystem.constantSheafHomOfSection
+#check PrincipalCoverLocalSystem.constantSheafHomOfSection_isIso
+#print axioms PrincipalCoverLocalSystem.constantSheafHomOfSection_isIso
+#check PrincipalCoverLocalSystem.constantSheafIsoOfSection
+#print axioms PrincipalCoverLocalSystem.constantSheafIsoOfSection
+
+/-! ## `Lib.Topology.Sheaves.PrincipalCoverLocalSystem.Restriction` -/
+
+#check PrincipalCoverLocalSystem.restrictedMulAction
+#print axioms PrincipalCoverLocalSystem.restrictedMulAction
+#check PrincipalCoverLocalSystem.restrictedProjection
+#print axioms PrincipalCoverLocalSystem.restrictedProjection
+#check PrincipalCoverLocalSystem.liftedOpenPreimageHomeomorph
+#print axioms PrincipalCoverLocalSystem.liftedOpenPreimageHomeomorph
+#check PrincipalCoverLocalSystem.restrictedProjection_isQuotientCoveringMap
+#print axioms PrincipalCoverLocalSystem.restrictedProjection_isQuotientCoveringMap
+#check PrincipalCoverLocalSystem.restrictionLiftedOpenHomeomorph
+#print axioms PrincipalCoverLocalSystem.restrictionLiftedOpenHomeomorph
+#check PrincipalCoverLocalSystem.equivariantSectionsEquivOfHomeomorph
+#print axioms PrincipalCoverLocalSystem.equivariantSectionsEquivOfHomeomorph
+#check PrincipalCoverLocalSystem.restrictionSectionsEquiv
+#print axioms PrincipalCoverLocalSystem.restrictionSectionsEquiv
+#check PrincipalCoverLocalSystem.restrictedSheaf
+#print axioms PrincipalCoverLocalSystem.restrictedSheaf
+#check PrincipalCoverLocalSystem.restrictionPresheafIso
+#print axioms PrincipalCoverLocalSystem.restrictionPresheafIso
+#check PrincipalCoverLocalSystem.restrictionSheafIso
+#print axioms PrincipalCoverLocalSystem.restrictionSheafIso
+#check PrincipalCoverLocalSystem.restrictedCoverSection
+#print axioms PrincipalCoverLocalSystem.restrictedCoverSection
+#check PrincipalCoverLocalSystem.constantSheafRestrictionIsoOfSection
+#print axioms PrincipalCoverLocalSystem.constantSheafRestrictionIsoOfSection
+
+/-! ## `Lib.CategoryTheory.Sites.Leray.HigherDirectImageSheafification` -/
+
+#check CategoryTheory.Sheaf.Leray.presheafStalk_preservesFiniteLimits
+#print axioms CategoryTheory.Sheaf.Leray.presheafStalk_preservesFiniteLimits
+#check CategoryTheory.Sheaf.Leray.presheafStalk_preservesFiniteColimits
+#print axioms CategoryTheory.Sheaf.Leray.presheafStalk_preservesFiniteColimits
+#check CategoryTheory.Sheaf.Leray.mapComplexHomologyIso
+#print axioms CategoryTheory.Sheaf.Leray.mapComplexHomologyIso
+#check CategoryTheory.Sheaf.Leray.mapComplexHomologyIso_hom_naturality
+#print axioms CategoryTheory.Sheaf.Leray.mapComplexHomologyIso_hom_naturality
+#check CategoryTheory.Sheaf.Leray.mapComplexHomologyIso_hom_naturality_assoc
+#print axioms CategoryTheory.Sheaf.Leray.mapComplexHomologyIso_hom_naturality_assoc
+#check CategoryTheory.Sheaf.Leray.mapComplexHomologyIso_inv_naturality
+#print axioms CategoryTheory.Sheaf.Leray.mapComplexHomologyIso_inv_naturality
+#check CategoryTheory.Sheaf.Leray.mapComplexHomologyIso_inv_naturality_assoc
+#print axioms CategoryTheory.Sheaf.Leray.mapComplexHomologyIso_inv_naturality_assoc
+#check CategoryTheory.Sheaf.Leray.underlyingPresheafComplex
+#print axioms CategoryTheory.Sheaf.Leray.underlyingPresheafComplex
+#check CategoryTheory.Sheaf.Leray.homologyPresheaf
+#print axioms CategoryTheory.Sheaf.Leray.homologyPresheaf
+#check CategoryTheory.Sheaf.Leray.stalkHomologyPresheafIso
+#print axioms CategoryTheory.Sheaf.Leray.stalkHomologyPresheafIso
+#check CategoryTheory.Sheaf.Leray.sheafification_preservesFiniteLimits
+#print axioms CategoryTheory.Sheaf.Leray.sheafification_preservesFiniteLimits
+#check CategoryTheory.Sheaf.Leray.sheafification_preservesFiniteColimits
+#print axioms CategoryTheory.Sheaf.Leray.sheafification_preservesFiniteColimits
+#check CategoryTheory.Sheaf.Leray.sheafificationUnderlyingIso
+#print axioms CategoryTheory.Sheaf.Leray.sheafificationUnderlyingIso
+#check CategoryTheory.Sheaf.Leray.sheafificationComplexIso
+#print axioms CategoryTheory.Sheaf.Leray.sheafificationComplexIso
+#check CategoryTheory.Sheaf.Leray.sheafHomologyIsoSheafification
+#print axioms CategoryTheory.Sheaf.Leray.sheafHomologyIsoSheafification
+#check CategoryTheory.Sheaf.Leray.higherDirectImageResolutionSheafificationIso
+#print axioms CategoryTheory.Sheaf.Leray.higherDirectImageResolutionSheafificationIso
+#check CategoryTheory.Sheaf.Leray.inverseImageResolutionSections
+#print axioms CategoryTheory.Sheaf.Leray.inverseImageResolutionSections
+#check CategoryTheory.Sheaf.Leray.higherDirectImageResolutionPresheafObjIso
+#print axioms CategoryTheory.Sheaf.Leray.higherDirectImageResolutionPresheafObjIso
+#check CategoryTheory.Sheaf.Leray.higherDirectImageResolutionStalkIso
+#print axioms CategoryTheory.Sheaf.Leray.higherDirectImageResolutionStalkIso
+
+/-! ## `Lib.CategoryTheory.Sites.Leray.SheafificationStalkCompatibility` -/
+
+#check CategoryTheory.Sheaf.Leray.stalkSheafificationUnitNatTrans
+#print axioms CategoryTheory.Sheaf.Leray.stalkSheafificationUnitNatTrans
+#check CategoryTheory.Sheaf.Leray.stalkSheafificationUnitNatTrans_app
+#print axioms CategoryTheory.Sheaf.Leray.stalkSheafificationUnitNatTrans_app
+#check CategoryTheory.Sheaf.Leray.mapComplexHomologyIso_sheafification_stalk_comp
+#print axioms CategoryTheory.Sheaf.Leray.mapComplexHomologyIso_sheafification_stalk_comp
+#check CategoryTheory.Sheaf.Leray.sheafificationComplexIso_symm_hom_underlying
+#print axioms CategoryTheory.Sheaf.Leray.sheafificationComplexIso_symm_hom_underlying
+#check CategoryTheory.Sheaf.Leray.stalkHomologyPresheafIso_hom_comp_sheafificationUnit
+#print axioms CategoryTheory.Sheaf.Leray.stalkHomologyPresheafIso_hom_comp_sheafificationUnit
+#check CategoryTheory.Sheaf.Leray.higherDirectImageResolutionSheafificationStalkIso
+#print axioms CategoryTheory.Sheaf.Leray.higherDirectImageResolutionSheafificationStalkIso
+#check CategoryTheory.Sheaf.Leray.higherDirectImageResolutionSheafificationStalkIso_eq
+#print axioms CategoryTheory.Sheaf.Leray.higherDirectImageResolutionSheafificationStalkIso_eq
+
+/-! ## `Lib.CategoryTheory.Sites.Leray.ResolutionCohomologyPresheaf` -/
+
+#check CategoryTheory.Sheaf.Leray.freeOpenFunctor
+#print axioms CategoryTheory.Sheaf.Leray.freeOpenFunctor
+#check CategoryTheory.Sheaf.Leray.sectionsFunctor
+#print axioms CategoryTheory.Sheaf.Leray.sectionsFunctor
+#check CategoryTheory.Sheaf.Leray.freeOpenSectionsIso
+#print axioms CategoryTheory.Sheaf.Leray.freeOpenSectionsIso
+#check CategoryTheory.Sheaf.Leray.sectionsFunctor_additive
+#print axioms CategoryTheory.Sheaf.Leray.sectionsFunctor_additive
+#check CategoryTheory.Sheaf.Leray.presheafEvaluation
+#print axioms CategoryTheory.Sheaf.Leray.presheafEvaluation
+#check CategoryTheory.Sheaf.Leray.presheafEvaluation_additive
+#print axioms CategoryTheory.Sheaf.Leray.presheafEvaluation_additive
+#check CategoryTheory.Sheaf.Leray.presheafEvaluation_preservesFiniteLimits
+#print axioms CategoryTheory.Sheaf.Leray.presheafEvaluation_preservesFiniteLimits
+#check CategoryTheory.Sheaf.Leray.presheafEvaluation_preservesFiniteColimits
+#print axioms CategoryTheory.Sheaf.Leray.presheafEvaluation_preservesFiniteColimits
+#check CategoryTheory.Sheaf.Leray.homSectionsComplexIso
+#print axioms CategoryTheory.Sheaf.Leray.homSectionsComplexIso
+#check CategoryTheory.Sheaf.Leray.homSectionsComplexIso_hom_naturality_open
+#print axioms CategoryTheory.Sheaf.Leray.homSectionsComplexIso_hom_naturality_open
+#check CategoryTheory.Sheaf.Leray.homSectionsComplexIso_hom_naturality_open_assoc
+#print axioms CategoryTheory.Sheaf.Leray.homSectionsComplexIso_hom_naturality_open_assoc
+#check CategoryTheory.Sheaf.Leray.evaluationHomologyIso_hom_naturality_open
+#print axioms CategoryTheory.Sheaf.Leray.evaluationHomologyIso_hom_naturality_open
+#check CategoryTheory.Sheaf.Leray.evaluationHomologyIso_hom_naturality_open_assoc
+#print axioms CategoryTheory.Sheaf.Leray.evaluationHomologyIso_hom_naturality_open_assoc
+#check CategoryTheory.Sheaf.Leray.homSectionsHomologyIso
+#print axioms CategoryTheory.Sheaf.Leray.homSectionsHomologyIso
+#check CategoryTheory.Sheaf.Leray.homSectionsHomologyIso_hom_naturality_open
+#print axioms CategoryTheory.Sheaf.Leray.homSectionsHomologyIso_hom_naturality_open
+#check CategoryTheory.Sheaf.Leray.homSectionsHomologyIso_hom_naturality_open_assoc
+#print axioms CategoryTheory.Sheaf.Leray.homSectionsHomologyIso_hom_naturality_open_assoc
+#check CategoryTheory.Sheaf.Leray.representedHomologyPresheafIso
+#print axioms CategoryTheory.Sheaf.Leray.representedHomologyPresheafIso
+#check CategoryTheory.Sheaf.Leray.resolutionCohomologyPresheafIsoPositive
+#print axioms CategoryTheory.Sheaf.Leray.resolutionCohomologyPresheafIsoPositive
+#check CategoryTheory.Sheaf.Leray.presheafPushforward
+#print axioms CategoryTheory.Sheaf.Leray.presheafPushforward
+#check CategoryTheory.Sheaf.Leray.presheafPushforward_additive
+#print axioms CategoryTheory.Sheaf.Leray.presheafPushforward_additive
+#check CategoryTheory.Sheaf.Leray.presheafPushforward_preservesFiniteLimits
+#print axioms CategoryTheory.Sheaf.Leray.presheafPushforward_preservesFiniteLimits
+#check CategoryTheory.Sheaf.Leray.presheafPushforward_preservesFiniteColimits
+#print axioms CategoryTheory.Sheaf.Leray.presheafPushforward_preservesFiniteColimits
+#check CategoryTheory.Sheaf.Leray.homologyPresheafPushforwardIso
+#print axioms CategoryTheory.Sheaf.Leray.homologyPresheafPushforwardIso
+#check CategoryTheory.Sheaf.Leray.pushedResolutionCohomologyPresheafIsoPositive
+#print axioms CategoryTheory.Sheaf.Leray.pushedResolutionCohomologyPresheafIsoPositive
+
+/-! ## `Lib.CategoryTheory.Sites.Leray.FibreStalkEvaluation.Neighborhood` -/
+
+#check CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.freeOpenFunctor
+#print axioms CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.freeOpenFunctor
+#check CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.inverseImage_eq_top
+#print axioms CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.inverseImage_eq_top
+#check CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.sectionsEquiv
+#print axioms CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.sectionsEquiv
+#check CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.sectionsEquiv_naturality
+#print axioms CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.sectionsEquiv_naturality
+#check CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.neighborhoodHomEquiv
+#print axioms CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.neighborhoodHomEquiv
+#check CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.neighborhoodHomEquiv_sections
+#print axioms CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.neighborhoodHomEquiv_sections
+#check CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.neighborhoodHomEquiv_naturality
+#print axioms CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.neighborhoodHomEquiv_naturality
+#check CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.neighborhoodUnit
+#print axioms CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.neighborhoodUnit
+#check CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.neighborhoodUnit_comp
+#print axioms CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.neighborhoodUnit_comp
+#check CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.neighborhoodUnit_bijective
+#print axioms CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.neighborhoodUnit_bijective
+#check CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.neighborhoodCohomologyForward
+#print axioms CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.neighborhoodCohomologyForward
+#check CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.neighborhoodCohomologyForward_bijective
+#print axioms CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.neighborhoodCohomologyForward_bijective
+#check CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.neighborhoodCohomologyEquiv
+#print axioms CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.neighborhoodCohomologyEquiv
+#check CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.neighborhoodCohomologyEquiv_symm_apply
+#print axioms CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.neighborhoodCohomologyEquiv_symm_apply
+#check CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.neighborhoodCohomologyForward_equiv
+#print axioms CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.neighborhoodCohomologyForward_equiv
+#check CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.sectionsEquiv_restrict
+#print axioms CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.sectionsEquiv_restrict
+#check CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.neighborhoodHomEquiv_restrict
+#print axioms CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.neighborhoodHomEquiv_restrict
+#check CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.neighborhoodUnit_restrict
+#print axioms CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.neighborhoodUnit_restrict
+#check CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.neighborhoodCohomologyForward_restrict
+#print axioms CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.neighborhoodCohomologyForward_restrict
+#check CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.neighborhoodCohomologyEquiv_restrict
+#print axioms CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.neighborhoodCohomologyEquiv_restrict
+#check CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.coefficientMap
+#print axioms CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.coefficientMap
+#check CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.cohomologyEvaluation
+#print axioms CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.cohomologyEvaluation
+#check CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.cohomologyEvaluation_apply
+#print axioms CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.cohomologyEvaluation_apply
+#check CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.cohomologyEvaluation_restrict
+#print axioms CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.cohomologyEvaluation_restrict
+
+/-! ## `Lib.CategoryTheory.Sites.Leray.FibreStalkEvaluation.Stalk` -/
+
+#check CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.sourceCohomologyPresheaf
+#print axioms CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.sourceCohomologyPresheaf
+#check CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.sourceResolutionPresheaf
+#print axioms CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.sourceResolutionPresheaf
+#check CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.fibre_mem_preimage
+#print axioms CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.fibre_mem_preimage
+#check CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.evaluationCocone
+#print axioms CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.evaluationCocone
+#check CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.presheafStalkEvaluation
+#print axioms CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.presheafStalkEvaluation
+#check CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.presheafStalkEvaluation_germ
+#print axioms CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.presheafStalkEvaluation_germ
+#check CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.ResolutionCohomologyNormalization
+#print axioms CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.ResolutionCohomologyNormalization
+#check CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.derivedStalkIso
+#print axioms CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.derivedStalkIso
+#check CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.derivedStalkEvaluation
+#print axioms CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.derivedStalkEvaluation
+#check CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.derivedNeighborhoodGerm
+#print axioms CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.derivedNeighborhoodGerm
+#check CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.derivedStalkEvaluation_germ
+#print axioms CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.derivedStalkEvaluation_germ
+#check CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.presheafStalkEvaluation_bijective_of_local_lift_kill
+#print axioms CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.presheafStalkEvaluation_bijective_of_local_lift_kill
+#check CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.derivedStalkEvaluation_isIso_of_local_lift_kill
+#print axioms CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.derivedStalkEvaluation_isIso_of_local_lift_kill
+
+/-! ## `Lib.CategoryTheory.Sites.Leray.FibreStalkEvaluation.ConstantPointFibre` -/
+
+#check CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.ConstantPointFibre.Fibre
+#print axioms CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.ConstantPointFibre.Fibre
+#check CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.ConstantPointFibre.fibreInclusion
+#print axioms CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.ConstantPointFibre.fibreInclusion
+#check CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.ConstantPointFibre.fibreInclusion_injective
+#print axioms CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.ConstantPointFibre.fibreInclusion_injective
+#check CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.ConstantPointFibre.fibreInclusion_isClosedMap
+#print axioms CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.ConstantPointFibre.fibreInclusion_isClosedMap
+#check CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.ConstantPointFibre.fibreInclusion_finite_fibres
+#print axioms CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.ConstantPointFibre.fibreInclusion_finite_fibres
+#check CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.ConstantPointFibre.map_fibreInclusion
+#print axioms CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.ConstantPointFibre.map_fibreInclusion
+#check CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.ConstantPointFibre.ConstantNormalization
+#print axioms CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.ConstantPointFibre.ConstantNormalization
+#check CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.ConstantPointFibre.stalkToFibre
+#print axioms CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.ConstantPointFibre.stalkToFibre
+#check CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.ConstantPointFibre.neighborhoodGerm
+#print axioms CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.ConstantPointFibre.neighborhoodGerm
+#check CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.ConstantPointFibre.stalkToFibre_neighborhoodGerm
+#print axioms CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.ConstantPointFibre.stalkToFibre_neighborhoodGerm
+
+/-! ## `Lib.CategoryTheory.Sites.Leray.FibreStalkEvaluation.CanonicalPositive` -/
+
+#check CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.canonicalResolutionCohomologyNormalizationPositive
+#print axioms CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.canonicalResolutionCohomologyNormalizationPositive
+#check CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.canonicalDerivedStalkIsoPositive
+#print axioms CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.canonicalDerivedStalkIsoPositive
+#check CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.canonicalDerivedStalkEvaluationPositive
+#print axioms CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.canonicalDerivedStalkEvaluationPositive
+#check CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.canonicalDerivedNeighborhoodGermPositive
+#print axioms CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.canonicalDerivedNeighborhoodGermPositive
+#check CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.canonicalDerivedStalkEvaluation_germPositive
+#print axioms CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.canonicalDerivedStalkEvaluation_germPositive
+#check CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.canonicalDerivedStalkEvaluation_isIso_of_local_lift_killPositive
+#print axioms CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.canonicalDerivedStalkEvaluation_isIso_of_local_lift_killPositive
+#check CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.ConstantPointFibre.canonicalStalkToFibrePositive
+#print axioms CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.ConstantPointFibre.canonicalStalkToFibrePositive
+#check CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.ConstantPointFibre.canonicalNeighborhoodGermPositive
+#print axioms CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.ConstantPointFibre.canonicalNeighborhoodGermPositive
+#check CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.ConstantPointFibre.canonicalStalkToFibre_neighborhoodGermPositive
+#print axioms CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.ConstantPointFibre.canonicalStalkToFibre_neighborhoodGermPositive
+
+/-! ## `Lib.CategoryTheory.Sites.Leray.FibreStalkEvaluation.CanonicalPositiveCofinalExt` -/
+
+#check CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.ConstantPointFibre.canonicalNeighborhoodGermPositive_hom_ext_of_cofinal
+#print axioms CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.ConstantPointFibre.canonicalNeighborhoodGermPositive_hom_ext_of_cofinal
+
+/-! ## `Lib.LinearAlgebra.Dual.TriangularRankTwo` -/
+
+#check LinearMap.dualMap_mem_range_comp_iff_of_surjective
+#print axioms LinearMap.dualMap_mem_range_comp_iff_of_surjective
+#check LinearMap.finTwoSecondCoordinate
+#print axioms LinearMap.finTwoSecondCoordinate
+#check LinearMap.smul_finTwoSecondCoordinate_mem_range_dualMap_iff
+#print axioms LinearMap.smul_finTwoSecondCoordinate_mem_range_dualMap_iff
+
+/-! ## `Lib.LinearAlgebra.Dual.TriangularRankTwoInjective` -/
+
+#check LinearMap.dualMap_injective_of_finTwo_triangular
+#print axioms LinearMap.dualMap_injective_of_finTwo_triangular
+
+/-! ## `Lib.CategoryTheory.Sites.Leray.StalkLocalCriterion` -/
+
+#check CategoryTheory.Sheaf.Leray.stalkMap_bijective_of_local_lift_kill
+#print axioms CategoryTheory.Sheaf.Leray.stalkMap_bijective_of_local_lift_kill
+
+/-! ## `Lib.Topology.Homotopy.LocallyContractible` -/
+
+#check locallyContractibleSpace_of_retract
+#print axioms locallyContractibleSpace_of_retract
+#check LocallyContractibleSpace.of_retract
+#print axioms LocallyContractibleSpace.of_retract
+#check StronglyLocallyContractibleSpace.of_open_neighborhoods
+#print axioms StronglyLocallyContractibleSpace.of_open_neighborhoods
+#check IsLocalHomeomorph.stronglyLocallyContractibleSpace_of_surjective
+#print axioms IsLocalHomeomorph.stronglyLocallyContractibleSpace_of_surjective
+
+/-! ## `Lib.Algebra.Homology.DerivedCategory.Ext.InjectiveResolutionCoyoneda` -/
+
+#check CategoryTheory.InjectiveResolution.coyonedaHomologyExtAddEquiv
+#print axioms CategoryTheory.InjectiveResolution.coyonedaHomologyExtAddEquiv
+
+/-! ## `Lib.Analysis.Normed.LocallyContractible` -/
+
+#check normedSpaceStronglyLocallyContractible
+#print axioms normedSpaceStronglyLocallyContractible
+#check Metric.ballInClosedBallHomeomorph
+#print axioms Metric.ballInClosedBallHomeomorph
+#check Metric.ballInClosedBall_contractible
+#print axioms Metric.ballInClosedBall_contractible
+#check Metric.closedBallStronglyLocallyContractible
+#print axioms Metric.closedBallStronglyLocallyContractible
+
+/-! ## `Lib.Geometry.Manifold.ChartedSpace.LocallyContractible` -/
+
+#check chartedSpaceStronglyLocallyContractible
+#print axioms chartedSpaceStronglyLocallyContractible
+
+/-! ## `Lib.LinearAlgebra.ColumnKernel` -/
+
+#check LinearMap.kerEquivOfColumnIso
+#print axioms LinearMap.kerEquivOfColumnIso
+#check LinearMap.kerEquivOfColumnIso_apply
+#print axioms LinearMap.kerEquivOfColumnIso_apply
+#check LinearMap.kerEquivOfColumnIso_symm_apply_val
+#print axioms LinearMap.kerEquivOfColumnIso_symm_apply_val
+#check LinearMap.surjective_of_columnIso
+#print axioms LinearMap.surjective_of_columnIso
+
+/-! ## `Lib.LinearAlgebra.CyclicKernel` -/
+
+#check eq_equiv_smul_generator
+#print axioms eq_equiv_smul_generator
+#check ker_le_of_cyclic_generator_zero
+#print axioms ker_le_of_cyclic_generator_zero
+
+/-! ## `Lib.AlgebraicTopology.FundamentalGroup.VanKampen.Character` -/
+
+#check FundamentalGroup.VanKampen.Cocone.TwoOpenCover.characterLift
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoOpenCover.characterLift
+#check FundamentalGroup.VanKampen.Cocone.TwoOpenCover.characterLift_comp_inclusionHomU
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoOpenCover.characterLift_comp_inclusionHomU
+#check FundamentalGroup.VanKampen.Cocone.TwoOpenCover.characterLift_comp_inclusionHomV
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoOpenCover.characterLift_comp_inclusionHomV
+#check FundamentalGroup.VanKampen.Cocone.TwoOpenCover.characterLift_surjective_of_left
+#print axioms FundamentalGroup.VanKampen.Cocone.TwoOpenCover.characterLift_surjective_of_left
+
+/-! ## `Lib.Topology.Homotopy.OpenNullhomotopy` -/
+
+#check TopCat.exists_open_nullhomotopic_inclusion
+#print axioms TopCat.exists_open_nullhomotopic_inclusion
+
+/-! ## `Lib.Algebra.Homology.HomologicalComplex.CycleLift` -/
+
+#check CategoryTheory.HomologicalComplex.isIso_homologyMap_succ_of_cycle_lifts
+#print axioms CategoryTheory.HomologicalComplex.isIso_homologyMap_succ_of_cycle_lifts
+
+/-! ## `Lib.Algebra.Homology.HomologicalComplex.ChainCycleLift` -/
+
+#check CategoryTheory.HomologicalComplex.ChainCycleLift.Cycle
+#print axioms CategoryTheory.HomologicalComplex.ChainCycleLift.Cycle
+#check CategoryTheory.HomologicalComplex.ChainCycleLift.cycleModule
+#print axioms CategoryTheory.HomologicalComplex.ChainCycleLift.cycleModule
+#check CategoryTheory.HomologicalComplex.ChainCycleLift.next_nat
+#print axioms CategoryTheory.HomologicalComplex.ChainCycleLift.next_nat
+#check CategoryTheory.HomologicalComplex.ChainCycleLift.cycle_condition
+#print axioms CategoryTheory.HomologicalComplex.ChainCycleLift.cycle_condition
+#check CategoryTheory.HomologicalComplex.ChainCycleLift.mkCycle
+#print axioms CategoryTheory.HomologicalComplex.ChainCycleLift.mkCycle
+#check CategoryTheory.HomologicalComplex.ChainCycleLift.mkCycle_val
+#print axioms CategoryTheory.HomologicalComplex.ChainCycleLift.mkCycle_val
+#check CategoryTheory.HomologicalComplex.ChainCycleLift.ShortCycle
+#print axioms CategoryTheory.HomologicalComplex.ChainCycleLift.ShortCycle
+#check CategoryTheory.HomologicalComplex.ChainCycleLift.shortCycleModule
+#print axioms CategoryTheory.HomologicalComplex.ChainCycleLift.shortCycleModule
+#check CategoryTheory.HomologicalComplex.ChainCycleLift.ShortBoundaries
+#print axioms CategoryTheory.HomologicalComplex.ChainCycleLift.ShortBoundaries
+#check CategoryTheory.HomologicalComplex.ChainCycleLift.shortCycleClass
+#print axioms CategoryTheory.HomologicalComplex.ChainCycleLift.shortCycleClass
+#check CategoryTheory.HomologicalComplex.ChainCycleLift.shortCycleClass_surjective
+#print axioms CategoryTheory.HomologicalComplex.ChainCycleLift.shortCycleClass_surjective
+#check CategoryTheory.HomologicalComplex.ChainCycleLift.shortCycleClass_eq_zero_iff
+#print axioms CategoryTheory.HomologicalComplex.ChainCycleLift.shortCycleClass_eq_zero_iff
+#check CategoryTheory.HomologicalComplex.ChainCycleLift.cycleClass
+#print axioms CategoryTheory.HomologicalComplex.ChainCycleLift.cycleClass
+#check CategoryTheory.HomologicalComplex.ChainCycleLift.cycleClass_surjective
+#print axioms CategoryTheory.HomologicalComplex.ChainCycleLift.cycleClass_surjective
+#check CategoryTheory.HomologicalComplex.ChainCycleLift.cycleClass_eq_zero_iff
+#print axioms CategoryTheory.HomologicalComplex.ChainCycleLift.cycleClass_eq_zero_iff
+#check CategoryTheory.HomologicalComplex.ChainCycleLift.cycleClass_eq_iff
+#print axioms CategoryTheory.HomologicalComplex.ChainCycleLift.cycleClass_eq_iff
+#check CategoryTheory.HomologicalComplex.ChainCycleLift.shortMap
+#print axioms CategoryTheory.HomologicalComplex.ChainCycleLift.shortMap
+#check CategoryTheory.HomologicalComplex.ChainCycleLift.mapCycles
+#print axioms CategoryTheory.HomologicalComplex.ChainCycleLift.mapCycles
+#check CategoryTheory.HomologicalComplex.ChainCycleLift.mapCycles_val
+#print axioms CategoryTheory.HomologicalComplex.ChainCycleLift.mapCycles_val
+#check CategoryTheory.HomologicalComplex.ChainCycleLift.homologyMap_cycleClass
+#print axioms CategoryTheory.HomologicalComplex.ChainCycleLift.homologyMap_cycleClass
+#check CategoryTheory.HomologicalComplex.ChainCycleLift.quasiIso_of_injective_chain_conditions
+#print axioms CategoryTheory.HomologicalComplex.ChainCycleLift.quasiIso_of_injective_chain_conditions
+
+/-! ## `Lib.Algebra.Homology.FunctorCoherence` -/
+
+#check CategoryTheory.ShortComplex.mapHomologyIso_comp
+#print axioms CategoryTheory.ShortComplex.mapHomologyIso_comp
+#check CategoryTheory.ShortComplex.mapHomologyIso_hom_naturality_natTrans
+#print axioms CategoryTheory.ShortComplex.mapHomologyIso_hom_naturality_natTrans
+
+/-! ## `Lib.Algebra.Homology.ShortComplex.LeftHomologyData` -/
+
+#check CategoryTheory.ShortComplex.leftHomologyDataOfExact
+#print axioms CategoryTheory.ShortComplex.leftHomologyDataOfExact
+
+/-! ## `Lib.Topology.ClosedRefinement` -/
+
+#check TopCat.ClosedRefinement
+#print axioms TopCat.ClosedRefinement
+#check TopCat.ClosedRefinement.mk
+#print axioms TopCat.ClosedRefinement.mk
+#check TopCat.ClosedRefinement.support
+#print axioms TopCat.ClosedRefinement.support
+#check TopCat.ClosedRefinement.isClosed
+#print axioms TopCat.ClosedRefinement.isClosed
+#check TopCat.ClosedRefinement.locallyFinite
+#print axioms TopCat.ClosedRefinement.locallyFinite
+#check TopCat.ClosedRefinement.subordinate
+#print axioms TopCat.ClosedRefinement.subordinate
+#check TopCat.ClosedRefinement.covers
+#print axioms TopCat.ClosedRefinement.covers
+#check TopCat.ClosedRefinement.rec
+#print axioms TopCat.ClosedRefinement.rec
+#check TopCat.ClosedRefinement.recOn
+#print axioms TopCat.ClosedRefinement.recOn
+#check TopCat.ClosedRefinement.casesOn
+#print axioms TopCat.ClosedRefinement.casesOn
+#check TopCat.ClosedRefinement.noConfusionType
+#print axioms TopCat.ClosedRefinement.noConfusionType
+#check TopCat.ClosedRefinement.noConfusion
+#print axioms TopCat.ClosedRefinement.noConfusion
+#check TopCat.ClosedRefinement.mk.injEq
+#print axioms TopCat.ClosedRefinement.mk.injEq
+#check TopCat.ClosedRefinement.mk.inj
+#print axioms TopCat.ClosedRefinement.mk.inj
+#check TopCat.ClosedRefinement.ctorIdx
+#print axioms TopCat.ClosedRefinement.ctorIdx
+#check TopCat.ClosedRefinement.mk.sizeOf_spec
+#print axioms TopCat.ClosedRefinement.mk.sizeOf_spec
+#check TopCat.ClosedRefinement.mk.noConfusion
+#print axioms TopCat.ClosedRefinement.mk.noConfusion
+#check TopCat.exists_closedRefinement
+#print axioms TopCat.exists_closedRefinement
+#check TopCat.ClosedRefinement.index
+#print axioms TopCat.ClosedRefinement.index
+#check TopCat.ClosedRefinement.mem_support_index
+#print axioms TopCat.ClosedRefinement.mem_support_index
+#check TopCat.ClosedRefinement.mem_open_index
+#print axioms TopCat.ClosedRefinement.mem_open_index
+#check TopCat.ClosedRefinement.finite_at
+#print axioms TopCat.ClosedRefinement.finite_at
+#check TopCat.ClosedRefinement.exists_controlled_neighborhood
+#print axioms TopCat.ClosedRefinement.exists_controlled_neighborhood
+
+/-! ## `Lib.Topology.Dimension.Covering` -/
+
+#check TopologicalSpace.OpenCover.Refinement
+#print axioms TopologicalSpace.OpenCover.Refinement
+#check TopologicalSpace.OpenCover.Refinement.mk
+#print axioms TopologicalSpace.OpenCover.Refinement.mk
+#check TopologicalSpace.OpenCover.Refinement.index
+#print axioms TopologicalSpace.OpenCover.Refinement.index
+#check TopologicalSpace.OpenCover.Refinement.le
+#print axioms TopologicalSpace.OpenCover.Refinement.le
+#check TopologicalSpace.OpenCover.Refinement.refl
+#print axioms TopologicalSpace.OpenCover.Refinement.refl
+#check TopologicalSpace.OpenCover.Refinement.comp
+#print axioms TopologicalSpace.OpenCover.Refinement.comp
+#check TopologicalSpace.OpenCover.Refinement.refl_index
+#print axioms TopologicalSpace.OpenCover.Refinement.refl_index
+#check TopologicalSpace.OpenCover.Refinement.comp_index
+#print axioms TopologicalSpace.OpenCover.Refinement.comp_index
+#check TopologicalSpace.OpenCover.Refinement.refl_comp
+#print axioms TopologicalSpace.OpenCover.Refinement.refl_comp
+#check TopologicalSpace.OpenCover.Refinement.comp_refl
+#print axioms TopologicalSpace.OpenCover.Refinement.comp_refl
+#check TopologicalSpace.OpenCover.Refinement.comp_assoc
+#print axioms TopologicalSpace.OpenCover.Refinement.comp_assoc
+#check TopologicalSpace.OpenCover.MultiplicityLE
+#print axioms TopologicalSpace.OpenCover.MultiplicityLE
+#check TopologicalSpace.OpenCover.MultiplicityLE.mono
+#print axioms TopologicalSpace.OpenCover.MultiplicityLE.mono
+#check TopologicalSpace.OpenCover.MultiplicityLE.iff_iInter_eq_empty
+#print axioms TopologicalSpace.OpenCover.MultiplicityLE.iff_iInter_eq_empty
+#check TopologicalSpace.OpenCover.MultiplicityLE.iff_iInter_eq_empty_of_card_eq_succ
+#print axioms TopologicalSpace.OpenCover.MultiplicityLE.iff_iInter_eq_empty_of_card_eq_succ
+#check HasCoveringDimensionLE
+#print axioms HasCoveringDimensionLE
+#check HasCoveringDimensionLE.mono
+#print axioms HasCoveringDimensionLE.mono
+#check HasCoveringDimensionLE.of_homeomorph
+#print axioms HasCoveringDimensionLE.of_homeomorph
+
+/-! ## `Lib.Topology.Sheaves.DependentFunctionSheaf` -/
+
+#check TopCat.DependentFunctionSheaf.presheaf
+#print axioms TopCat.DependentFunctionSheaf.presheaf
+#check TopCat.DependentFunctionSheaf.presheaf_obj
+#print axioms TopCat.DependentFunctionSheaf.presheaf_obj
+#check TopCat.DependentFunctionSheaf.presheaf_map_apply
+#print axioms TopCat.DependentFunctionSheaf.presheaf_map_apply
+#check TopCat.DependentFunctionSheaf.forgetIso
+#print axioms TopCat.DependentFunctionSheaf.forgetIso
+#check TopCat.DependentFunctionSheaf.isSheaf
+#print axioms TopCat.DependentFunctionSheaf.isSheaf
+#check TopCat.DependentFunctionSheaf.sheaf
+#print axioms TopCat.DependentFunctionSheaf.sheaf
+#check TopCat.DependentFunctionSheaf.extendByZero
+#print axioms TopCat.DependentFunctionSheaf.extendByZero
+#check TopCat.DependentFunctionSheaf.restrict_extendByZero
+#print axioms TopCat.DependentFunctionSheaf.restrict_extendByZero
+#check TopCat.DependentFunctionSheaf.sheaf_isFlasque
+#print axioms TopCat.DependentFunctionSheaf.sheaf_isFlasque
+
+/-! ## `Lib.Topology.Sheaves.Cohomology.GodementEnvelope` -/
+
+#check TopCat.SheafCohomology.Godement.stalkFiber
+#print axioms TopCat.SheafCohomology.Godement.stalkFiber
+#check TopCat.SheafCohomology.Godement.envelope
+#print axioms TopCat.SheafCohomology.Godement.envelope
+#check TopCat.SheafCohomology.Godement.germEmbeddingPresheaf
+#print axioms TopCat.SheafCohomology.Godement.germEmbeddingPresheaf
+#check TopCat.SheafCohomology.Godement.germEmbedding
+#print axioms TopCat.SheafCohomology.Godement.germEmbedding
+#check TopCat.SheafCohomology.Godement.germEmbedding_app_apply
+#print axioms TopCat.SheafCohomology.Godement.germEmbedding_app_apply
+#check TopCat.SheafCohomology.Godement.germEmbedding_app_injective
+#print axioms TopCat.SheafCohomology.Godement.germEmbedding_app_injective
+#check TopCat.SheafCohomology.Godement.germEmbedding_mono
+#print axioms TopCat.SheafCohomology.Godement.germEmbedding_mono
+#check TopCat.SheafCohomology.Godement.envelope_isFlasque
+#print axioms TopCat.SheafCohomology.Godement.envelope_isFlasque
+
+/-! ## `Lib.Topology.Sheaves.Cohomology.GodementResolution` -/
+
+#check TopCat.SheafCohomology.Godement.remainder
+#print axioms TopCat.SheafCohomology.Godement.remainder
+#check TopCat.SheafCohomology.Godement.remainder_zero
+#print axioms TopCat.SheafCohomology.Godement.remainder_zero
+#check TopCat.SheafCohomology.Godement.remainder_succ
+#print axioms TopCat.SheafCohomology.Godement.remainder_succ
+#check TopCat.SheafCohomology.Godement.resolution
+#print axioms TopCat.SheafCohomology.Godement.resolution
+#check TopCat.SheafCohomology.Godement.resolution_Z
+#print axioms TopCat.SheafCohomology.Godement.resolution_Z
+#check TopCat.SheafCohomology.Godement.resolution_X
+#print axioms TopCat.SheafCohomology.Godement.resolution_X
+#check TopCat.SheafCohomology.Godement.resolution_i
+#print axioms TopCat.SheafCohomology.Godement.resolution_i
+#check TopCat.SheafCohomology.Godement.resolution_p
+#print axioms TopCat.SheafCohomology.Godement.resolution_p
+#check TopCat.SheafCohomology.Godement.resolution_term_isFlasque
+#print axioms TopCat.SheafCohomology.Godement.resolution_term_isFlasque
+#check TopCat.SheafCohomology.Godement.resolution_isAcyclic
+#print axioms TopCat.SheafCohomology.Godement.resolution_isAcyclic
+#check TopCat.SheafCohomology.Godement.cohomologyIsoGlobalHomology
+#print axioms TopCat.SheafCohomology.Godement.cohomologyIsoGlobalHomology
+
+/-! ## `Lib.Topology.Sheaves.Cohomology.MayerVietorisProjectiveDimension` -/
+
+#check TopCat.Sheaf.OpenRestriction.hasProjectiveDimensionLT_freeOpen_sup
+#print axioms TopCat.Sheaf.OpenRestriction.hasProjectiveDimensionLT_freeOpen_sup
+
+/-! ## `Lib.Topology.Sheaves.Cohomology.ProjectiveDimension` -/
+
+#check TopCat.Sheaf.integralSheaf_hasProjectiveDimensionLT_iff_cohomology_subsingleton
+#print axioms TopCat.Sheaf.integralSheaf_hasProjectiveDimensionLT_iff_cohomology_subsingleton
+
+/-! ## `Lib.Topology.Sheaves.Cohomology.RepresentedOpenProjectiveDimension` -/
+
+#check TopCat.Sheaf.OpenRestriction.integralToFreeTop
+#print axioms TopCat.Sheaf.OpenRestriction.integralToFreeTop
+#check TopCat.Sheaf.OpenRestriction.integralToFreeTop_comp_section
+#print axioms TopCat.Sheaf.OpenRestriction.integralToFreeTop_comp_section
+#check TopCat.Sheaf.OpenRestriction.integralToFreeTop_comp_bijective
+#print axioms TopCat.Sheaf.OpenRestriction.integralToFreeTop_comp_bijective
+#check TopCat.Sheaf.OpenRestriction.integralSheafFreeTopIso
+#print axioms TopCat.Sheaf.OpenRestriction.integralSheafFreeTopIso
+#check TopCat.Sheaf.OpenRestriction.freeOpen_hasProjectiveDimensionLT_iff
+#print axioms TopCat.Sheaf.OpenRestriction.freeOpen_hasProjectiveDimensionLT_iff
+#check TopCat.Sheaf.OpenRestriction.integralSheaf_hasProjectiveDimensionLT_iff_freeOpen_top
+#print axioms TopCat.Sheaf.OpenRestriction.integralSheaf_hasProjectiveDimensionLT_iff_freeOpen_top
+
+/-! ## `Lib.Topology.Sheaves.Cohomology.DiscreteProjectiveDimension` -/
+
+#check TopCat.Sheaf.OpenRestriction.sheaf_isFlasque_of_discreteTopology
+#print axioms TopCat.Sheaf.OpenRestriction.sheaf_isFlasque_of_discreteTopology
+#check TopCat.Sheaf.OpenRestriction.freeOpen_projective_of_discreteTopology
+#print axioms TopCat.Sheaf.OpenRestriction.freeOpen_projective_of_discreteTopology
+#check TopCat.Sheaf.OpenRestriction.integralSheaf_projective_of_discreteTopology
+#print axioms TopCat.Sheaf.OpenRestriction.integralSheaf_projective_of_discreteTopology
+
+/-! ## `Lib.CategoryTheory.Abelian.Projective.DimensionEquivalence` -/
+
+#check CategoryTheory.Equivalence.hasProjectiveDimensionLT_functor_obj
+#print axioms CategoryTheory.Equivalence.hasProjectiveDimensionLT_functor_obj
+#check CategoryTheory.Equivalence.hasProjectiveDimensionLT_functor_obj_iff
+#print axioms CategoryTheory.Equivalence.hasProjectiveDimensionLT_functor_obj_iff
+
+/-! ## `Lib.Topology.Sheaves.Cohomology.HomeomorphProjectiveDimension` -/
+
+#check TopCat.Sheaf.equivalenceOfIso
+#print axioms TopCat.Sheaf.equivalenceOfIso
+#check TopCat.Sheaf.integralSheafEquivImageIso
+#print axioms TopCat.Sheaf.integralSheafEquivImageIso
+#check TopCat.Sheaf.integralSheaf_hasProjectiveDimensionLT_iff_of_iso
+#print axioms TopCat.Sheaf.integralSheaf_hasProjectiveDimensionLT_iff_of_iso
+
+/-! ## `Lib.Topology.Sheaves.H1Vanishing.Flasque` -/
+
+#check TopCat.SheafH1.subsingleton_h1_of_isFlasque
+#print axioms TopCat.SheafH1.subsingleton_h1_of_isFlasque
+
+/-! ## `Lib.Topology.Sheaves.SheafificationLocal` -/
+
+#check TopCat.SheafificationLocal.sheaf
+#print axioms TopCat.SheafificationLocal.sheaf
+#check TopCat.SheafificationLocal.unit
+#print axioms TopCat.SheafificationLocal.unit
+#check TopCat.SheafificationLocal.unit_stalk_isIso
+#print axioms TopCat.SheafificationLocal.unit_stalk_isIso
+#check TopCat.SheafificationLocal.unit_stalk_injective
+#print axioms TopCat.SheafificationLocal.unit_stalk_injective
+#check TopCat.SheafificationLocal.exists_local_representative
+#print axioms TopCat.SheafificationLocal.exists_local_representative
+#check TopCat.SheafificationLocal.germ_unit_eq_iff
+#print axioms TopCat.SheafificationLocal.germ_unit_eq_iff
+#check TopCat.SheafificationLocal.exists_restriction_eq_of_germ_unit_eq
+#print axioms TopCat.SheafificationLocal.exists_restriction_eq_of_germ_unit_eq
+
+/-! ## `Lib.Topology.Sheaves.SheafificationPushforward` -/
+
+#check TopCat.SheafificationPushforward.liftToPushforward
+#print axioms TopCat.SheafificationPushforward.liftToPushforward
+#check TopCat.SheafificationPushforward.toSheafify_liftToPushforward
+#print axioms TopCat.SheafificationPushforward.toSheafify_liftToPushforward
+#check TopCat.SheafificationPushforward.toSheafify_liftToPushforward_assoc
+#print axioms TopCat.SheafificationPushforward.toSheafify_liftToPushforward_assoc
+#check TopCat.SheafificationPushforward.liftToPushforward_hom_ext
+#print axioms TopCat.SheafificationPushforward.liftToPushforward_hom_ext
+#check TopCat.SheafificationPushforward.sheafifyPullback
+#print axioms TopCat.SheafificationPushforward.sheafifyPullback
+#check TopCat.SheafificationPushforward.toSheafify_sheafifyPullback
+#print axioms TopCat.SheafificationPushforward.toSheafify_sheafifyPullback
+#check TopCat.SheafificationPushforward.toSheafify_sheafifyPullback_assoc
+#print axioms TopCat.SheafificationPushforward.toSheafify_sheafifyPullback_assoc
+#check TopCat.SheafificationPushforward.sheafifyPullback_naturality
+#print axioms TopCat.SheafificationPushforward.sheafifyPullback_naturality
+
+/-! ## `Lib.Algebra.Homology.DerivedCategory.Ext.AcyclicResolutionH1` -/
+
+#check CategoryTheory.Abelian.Ext.connecting
+#print axioms CategoryTheory.Abelian.Ext.connecting
+#check CategoryTheory.Abelian.Ext.connecting_apply
+#print axioms CategoryTheory.Abelian.Ext.connecting_apply
+#check CategoryTheory.Abelian.Ext.connecting_surjective
+#print axioms CategoryTheory.Abelian.Ext.connecting_surjective
+#check CategoryTheory.Abelian.Ext.connecting_exact
+#print axioms CategoryTheory.Abelian.Ext.connecting_exact
+#check CategoryTheory.Abelian.Ext.AcyclicResolutionH1
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolutionH1
+#check CategoryTheory.Abelian.Ext.AcyclicResolutionH1.mk
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolutionH1.mk
+#check CategoryTheory.Abelian.Ext.AcyclicResolutionH1.F
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolutionH1.F
+#check CategoryTheory.Abelian.Ext.AcyclicResolutionH1.complex
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolutionH1.complex
+#check CategoryTheory.Abelian.Ext.AcyclicResolutionH1.ι
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolutionH1.ι
+#check CategoryTheory.Abelian.Ext.AcyclicResolutionH1.zero
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolutionH1.zero
+#check CategoryTheory.Abelian.Ext.AcyclicResolutionH1.initial_exact
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolutionH1.initial_exact
+#check CategoryTheory.Abelian.Ext.AcyclicResolutionH1.exact
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolutionH1.exact
+#check CategoryTheory.Abelian.Ext.AcyclicResolutionH1.mono_ι
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolutionH1.mono_ι
+#check CategoryTheory.Abelian.Ext.AcyclicResolutionH1.rec
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolutionH1.rec
+#check CategoryTheory.Abelian.Ext.AcyclicResolutionH1.recOn
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolutionH1.recOn
+#check CategoryTheory.Abelian.Ext.AcyclicResolutionH1.casesOn
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolutionH1.casesOn
+#check CategoryTheory.Abelian.Ext.AcyclicResolutionH1.noConfusionType
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolutionH1.noConfusionType
+#check CategoryTheory.Abelian.Ext.AcyclicResolutionH1.noConfusion
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolutionH1.noConfusion
+#check CategoryTheory.Abelian.Ext.AcyclicResolutionH1.mk.injEq
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolutionH1.mk.injEq
+#check CategoryTheory.Abelian.Ext.AcyclicResolutionH1.mk.inj
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolutionH1.mk.inj
+#check CategoryTheory.Abelian.Ext.AcyclicResolutionH1.ctorIdx
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolutionH1.ctorIdx
+#check CategoryTheory.Abelian.Ext.AcyclicResolutionH1.mk.sizeOf_spec
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolutionH1.mk.sizeOf_spec
+#check CategoryTheory.Abelian.Ext.AcyclicResolutionH1.mk.noConfusion
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolutionH1.mk.noConfusion
+#check CategoryTheory.Abelian.Ext.AcyclicResolutionH1.cycles
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolutionH1.cycles
+#check CategoryTheory.Abelian.Ext.AcyclicResolutionH1.toCycles
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolutionH1.toCycles
+#check CategoryTheory.Abelian.Ext.AcyclicResolutionH1.toCycles_ι
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolutionH1.toCycles_ι
+#check CategoryTheory.Abelian.Ext.AcyclicResolutionH1.toCycles_ι_assoc
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolutionH1.toCycles_ι_assoc
+#check CategoryTheory.Abelian.Ext.AcyclicResolutionH1.augmentation_toCycles
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolutionH1.augmentation_toCycles
+#check CategoryTheory.Abelian.Ext.AcyclicResolutionH1.first
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolutionH1.first
+#check CategoryTheory.Abelian.Ext.AcyclicResolutionH1.first_shortExact
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolutionH1.first_shortExact
+#check CategoryTheory.Abelian.Ext.AcyclicResolutionH1.extZeroComplex
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolutionH1.extZeroComplex
+#check CategoryTheory.Abelian.Ext.AcyclicResolutionH1.extOneHomologyData
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolutionH1.extOneHomologyData
+#check CategoryTheory.Abelian.Ext.AcyclicResolutionH1.extOneIso
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolutionH1.extOneIso
+
+/-! ## `Lib.Algebra.Homology.DerivedCategory.Ext.AcyclicResolutionH1Naturality` -/
+
+#check CategoryTheory.Abelian.Ext.connecting_naturality
+#print axioms CategoryTheory.Abelian.Ext.connecting_naturality
+#check CategoryTheory.Abelian.Ext.AcyclicResolutionH1.Hom
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolutionH1.Hom
+#check CategoryTheory.Abelian.Ext.AcyclicResolutionH1.Hom.mk
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolutionH1.Hom.mk
+#check CategoryTheory.Abelian.Ext.AcyclicResolutionH1.Hom.augmentation
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolutionH1.Hom.augmentation
+#check CategoryTheory.Abelian.Ext.AcyclicResolutionH1.Hom.complex
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolutionH1.Hom.complex
+#check CategoryTheory.Abelian.Ext.AcyclicResolutionH1.Hom.comm
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolutionH1.Hom.comm
+#check CategoryTheory.Abelian.Ext.AcyclicResolutionH1.Hom.rec
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolutionH1.Hom.rec
+#check CategoryTheory.Abelian.Ext.AcyclicResolutionH1.Hom.recOn
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolutionH1.Hom.recOn
+#check CategoryTheory.Abelian.Ext.AcyclicResolutionH1.Hom.casesOn
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolutionH1.Hom.casesOn
+#check CategoryTheory.Abelian.Ext.AcyclicResolutionH1.Hom.noConfusionType
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolutionH1.Hom.noConfusionType
+#check CategoryTheory.Abelian.Ext.AcyclicResolutionH1.Hom.noConfusion
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolutionH1.Hom.noConfusion
+#check CategoryTheory.Abelian.Ext.AcyclicResolutionH1.Hom.mk.injEq
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolutionH1.Hom.mk.injEq
+#check CategoryTheory.Abelian.Ext.AcyclicResolutionH1.Hom.mk.inj
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolutionH1.Hom.mk.inj
+#check CategoryTheory.Abelian.Ext.AcyclicResolutionH1.Hom.ctorIdx
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolutionH1.Hom.ctorIdx
+#check CategoryTheory.Abelian.Ext.AcyclicResolutionH1.Hom.mk.sizeOf_spec
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolutionH1.Hom.mk.sizeOf_spec
+#check CategoryTheory.Abelian.Ext.AcyclicResolutionH1.Hom.mk.noConfusion
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolutionH1.Hom.mk.noConfusion
+#check CategoryTheory.Abelian.Ext.AcyclicResolutionH1.Hom.cyclesMap
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolutionH1.Hom.cyclesMap
+#check CategoryTheory.Abelian.Ext.AcyclicResolutionH1.Hom.cyclesMap_ι
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolutionH1.Hom.cyclesMap_ι
+#check CategoryTheory.Abelian.Ext.AcyclicResolutionH1.Hom.cyclesMap_ι_assoc
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolutionH1.Hom.cyclesMap_ι_assoc
+#check CategoryTheory.Abelian.Ext.AcyclicResolutionH1.Hom.toCycles_naturality
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolutionH1.Hom.toCycles_naturality
+#check CategoryTheory.Abelian.Ext.AcyclicResolutionH1.Hom.firstMap
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolutionH1.Hom.firstMap
+#check CategoryTheory.Abelian.Ext.AcyclicResolutionH1.Hom.extZeroMap
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolutionH1.Hom.extZeroMap
+#check CategoryTheory.Abelian.Ext.AcyclicResolutionH1.Hom.connectingOne_naturality
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolutionH1.Hom.connectingOne_naturality
+#check CategoryTheory.Abelian.Ext.AcyclicResolutionH1.Hom.connectingOne_naturality_assoc
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolutionH1.Hom.connectingOne_naturality_assoc
+#check CategoryTheory.Abelian.Ext.AcyclicResolutionH1.extCycleMap
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolutionH1.extCycleMap
+#check CategoryTheory.Abelian.Ext.AcyclicResolutionH1.extCycleMap_i
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolutionH1.extCycleMap_i
+#check CategoryTheory.Abelian.Ext.AcyclicResolutionH1.extCycleMap_i_assoc
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolutionH1.extCycleMap_i_assoc
+#check CategoryTheory.Abelian.Ext.AcyclicResolutionH1.extOneHomologyData_cyclesIso_inv
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolutionH1.extOneHomologyData_cyclesIso_inv
+#check CategoryTheory.Abelian.Ext.AcyclicResolutionH1.extOneIso_connecting_cycle
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolutionH1.extOneIso_connecting_cycle
+#check CategoryTheory.Abelian.Ext.AcyclicResolutionH1.Hom.extCycleMap_naturality
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolutionH1.Hom.extCycleMap_naturality
+#check CategoryTheory.Abelian.Ext.AcyclicResolutionH1.comparison_naturality_of_epi
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolutionH1.comparison_naturality_of_epi
+#check CategoryTheory.Abelian.Ext.AcyclicResolutionH1.Hom.extOneIso_naturality
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolutionH1.Hom.extOneIso_naturality
+#check CategoryTheory.Abelian.Ext.AcyclicResolutionH1.Hom.extOneIso_naturality_assoc
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolutionH1.Hom.extOneIso_naturality_assoc
+
+/-! ## `Lib.Topology.Sheaves.Cohomology.AcyclicResolutionH1` -/
+
+#check TopCat.SheafH1.h0GlobalIso
+#print axioms TopCat.SheafH1.h0GlobalIso
+#check TopCat.SheafH1.h0GlobalIso_naturality
+#print axioms TopCat.SheafH1.h0GlobalIso_naturality
+#check TopCat.SheafH1.AcyclicResolutionH1.globalComplex
+#print axioms TopCat.SheafH1.AcyclicResolutionH1.globalComplex
+#check TopCat.SheafH1.AcyclicResolutionH1.extZeroGlobalIso
+#print axioms TopCat.SheafH1.AcyclicResolutionH1.extZeroGlobalIso
+#check TopCat.SheafH1.AcyclicResolutionH1.h1GlobalIso
+#print axioms TopCat.SheafH1.AcyclicResolutionH1.h1GlobalIso
+
+/-! ## `Lib.Topology.Sheaves.Cohomology.AcyclicResolutionH1Naturality` -/
+
+#check TopCat.SheafH1.AcyclicResolutionH1.Hom.globalMap
+#print axioms TopCat.SheafH1.AcyclicResolutionH1.Hom.globalMap
+#check TopCat.SheafH1.AcyclicResolutionH1.Hom.extZeroGlobalIso_naturality
+#print axioms TopCat.SheafH1.AcyclicResolutionH1.Hom.extZeroGlobalIso_naturality
+#check TopCat.SheafH1.AcyclicResolutionH1.Hom.h1GlobalIso_naturality
+#print axioms TopCat.SheafH1.AcyclicResolutionH1.Hom.h1GlobalIso_naturality
+
+/-! ## `Lib.Topology.Sheaves.SingularCochainSheaf.Presheaf` -/
+
+#check TopCat.SingularCochainSheaf.cochainFunctor
+#print axioms TopCat.SingularCochainSheaf.cochainFunctor
+#check TopCat.SingularCochainSheaf.presheaf
+#print axioms TopCat.SingularCochainSheaf.presheaf
+#check TopCat.SingularCochainSheaf.presheaf_obj
+#print axioms TopCat.SingularCochainSheaf.presheaf_obj
+#check TopCat.SingularCochainSheaf.differential
+#print axioms TopCat.SingularCochainSheaf.differential
+#check TopCat.SingularCochainSheaf.differential_app
+#print axioms TopCat.SingularCochainSheaf.differential_app
+#check TopCat.SingularCochainSheaf.complex
+#print axioms TopCat.SingularCochainSheaf.complex
+#check TopCat.SingularCochainSheaf.complex_X
+#print axioms TopCat.SingularCochainSheaf.complex_X
+#check TopCat.SingularCochainSheaf.complex_d
+#print axioms TopCat.SingularCochainSheaf.complex_d
+
+/-! ## `Lib.Topology.Sheaves.SingularCochainSheaf.Sheaf` -/
+
+#check TopCat.SingularCochainSheaf.sheaf
+#print axioms TopCat.SingularCochainSheaf.sheaf
+#check TopCat.SingularCochainSheaf.sheafDifferential
+#print axioms TopCat.SingularCochainSheaf.sheafDifferential
+#check TopCat.SingularCochainSheaf.complexSheaf
+#print axioms TopCat.SingularCochainSheaf.complexSheaf
+#check TopCat.SingularCochainSheaf.complexSheaf_X
+#print axioms TopCat.SingularCochainSheaf.complexSheaf_X
+#check TopCat.SingularCochainSheaf.complexSheaf_d
+#print axioms TopCat.SingularCochainSheaf.complexSheaf_d
+#check TopCat.SingularCochainSheaf.unit
+#print axioms TopCat.SingularCochainSheaf.unit
+#check TopCat.SingularCochainSheaf.unit_d
+#print axioms TopCat.SingularCochainSheaf.unit_d
+#check TopCat.SingularCochainSheaf.unit_d_assoc
+#print axioms TopCat.SingularCochainSheaf.unit_d_assoc
+#check TopCat.SingularCochainSheaf.unitComplex
+#print axioms TopCat.SingularCochainSheaf.unitComplex
+
+/-! ## `Lib.Topology.Sheaves.SingularCochainSheaf.Augmentation` -/
+
+#check TopCat.SingularCochainSheaf.chainMap
+#print axioms TopCat.SingularCochainSheaf.chainMap
+#check TopCat.SingularCochainSheaf.singularSet
+#print axioms TopCat.SingularCochainSheaf.singularSet
+#check TopCat.SingularCochainSheaf.rawChainAugmentation
+#print axioms TopCat.SingularCochainSheaf.rawChainAugmentation
+#check TopCat.SingularCochainSheaf.chainAugmentation
+#print axioms TopCat.SingularCochainSheaf.chainAugmentation
+#check TopCat.SingularCochainSheaf.simplex_chainAugmentation
+#print axioms TopCat.SingularCochainSheaf.simplex_chainAugmentation
+#check TopCat.SingularCochainSheaf.simplex_chainAugmentation_assoc
+#print axioms TopCat.SingularCochainSheaf.simplex_chainAugmentation_assoc
+#check TopCat.SingularCochainSheaf.rawChainAugmentation_naturality
+#print axioms TopCat.SingularCochainSheaf.rawChainAugmentation_naturality
+#check TopCat.SingularCochainSheaf.rawChainAugmentation_naturality_assoc
+#print axioms TopCat.SingularCochainSheaf.rawChainAugmentation_naturality_assoc
+#check TopCat.SingularCochainSheaf.chainAugmentation_naturality
+#print axioms TopCat.SingularCochainSheaf.chainAugmentation_naturality
+#check TopCat.SingularCochainSheaf.chainAugmentation_naturality_assoc
+#print axioms TopCat.SingularCochainSheaf.chainAugmentation_naturality_assoc
+#check TopCat.SingularCochainSheaf.rawBoundary_chainAugmentation
+#print axioms TopCat.SingularCochainSheaf.rawBoundary_chainAugmentation
+#check TopCat.SingularCochainSheaf.rawBoundary_chainAugmentation_assoc
+#print axioms TopCat.SingularCochainSheaf.rawBoundary_chainAugmentation_assoc
+#check TopCat.SingularCochainSheaf.boundary_chainAugmentation
+#print axioms TopCat.SingularCochainSheaf.boundary_chainAugmentation
+#check TopCat.SingularCochainSheaf.boundary_chainAugmentation_assoc
+#print axioms TopCat.SingularCochainSheaf.boundary_chainAugmentation_assoc
+#check TopCat.SingularCochainSheaf.integerMultiple
+#print axioms TopCat.SingularCochainSheaf.integerMultiple
+#check TopCat.SingularCochainSheaf.constantCochain
+#print axioms TopCat.SingularCochainSheaf.constantCochain
+#check TopCat.SingularCochainSheaf.constantCochain_d_zero
+#print axioms TopCat.SingularCochainSheaf.constantCochain_d_zero
+#check TopCat.SingularCochainSheaf.pullback_constant
+#print axioms TopCat.SingularCochainSheaf.pullback_constant
+#check TopCat.SingularCochainSheaf.presheafAugmentation
+#print axioms TopCat.SingularCochainSheaf.presheafAugmentation
+#check TopCat.SingularCochainSheaf.presheafAugmentation_d
+#print axioms TopCat.SingularCochainSheaf.presheafAugmentation_d
+#check TopCat.SingularCochainSheaf.presheafAugmentation_d_assoc
+#print axioms TopCat.SingularCochainSheaf.presheafAugmentation_d_assoc
+#check TopCat.SingularCochainSheaf.sheafAugmentation
+#print axioms TopCat.SingularCochainSheaf.sheafAugmentation
+#check TopCat.SingularCochainSheaf.sheafAugmentation_d
+#print axioms TopCat.SingularCochainSheaf.sheafAugmentation_d
+#check TopCat.SingularCochainSheaf.sheafAugmentation_d_assoc
+#print axioms TopCat.SingularCochainSheaf.sheafAugmentation_d_assoc
+#check TopCat.SingularCochainSheaf.initialComplex
+#print axioms TopCat.SingularCochainSheaf.initialComplex
+
+/-! ## `Lib.Topology.Sheaves.SingularCochainSheaf.PrimitivesH1` -/
+
+#check TopCat.SingularCochainSheaf.constantCochain_injective
+#print axioms TopCat.SingularCochainSheaf.constantCochain_injective
+#check TopCat.SingularCochainSheaf.nullhomotopic_pullback_closed_zero
+#print axioms TopCat.SingularCochainSheaf.nullhomotopic_pullback_closed_zero
+#check TopCat.SingularCochainSheaf.nullhomotopic_pullback_closed_one
+#print axioms TopCat.SingularCochainSheaf.nullhomotopic_pullback_closed_one
+
+/-! ## `Lib.Topology.Sheaves.SingularCochainSheaf.LocalKernels` -/
+
+#check TopCat.SingularCochainSheaf.sheafify_exact_of_local_kernels
+#print axioms TopCat.SingularCochainSheaf.sheafify_exact_of_local_kernels
+
+/-! ## `Lib.Topology.Sheaves.SingularCochainSheaf.AugmentationMono` -/
+
+#check TopCat.SingularCochainSheaf.sheafAugmentation_mono
+#print axioms TopCat.SingularCochainSheaf.sheafAugmentation_mono
+
+/-! ## `Lib.Topology.Sheaves.SingularCochainSheaf.DegreeZeroFunctions` -/
+
+#check TopCat.SingularCochainSheaf.zeroSingularSet
+#print axioms TopCat.SingularCochainSheaf.zeroSingularSet
+#check TopCat.SingularCochainSheaf.NativeChains
+#print axioms TopCat.SingularCochainSheaf.NativeChains
+#check TopCat.SingularCochainSheaf.NativeCochains
+#print axioms TopCat.SingularCochainSheaf.NativeCochains
+#check TopCat.SingularCochainSheaf.pointSimplex
+#print axioms TopCat.SingularCochainSheaf.pointSimplex
+#check TopCat.SingularCochainSheaf.simplexPoint
+#print axioms TopCat.SingularCochainSheaf.simplexPoint
+#check TopCat.SingularCochainSheaf.simplexPoint_pointSimplex
+#print axioms TopCat.SingularCochainSheaf.simplexPoint_pointSimplex
+#check TopCat.SingularCochainSheaf.pointSimplex_simplexPoint
+#print axioms TopCat.SingularCochainSheaf.pointSimplex_simplexPoint
+#check TopCat.SingularCochainSheaf.simplexChain
+#print axioms TopCat.SingularCochainSheaf.simplexChain
+#check TopCat.SingularCochainSheaf.zeroCochainEvaluate
+#print axioms TopCat.SingularCochainSheaf.zeroCochainEvaluate
+#check TopCat.SingularCochainSheaf.integerLinear
+#print axioms TopCat.SingularCochainSheaf.integerLinear
+#check TopCat.SingularCochainSheaf.functionChainHom
+#print axioms TopCat.SingularCochainSheaf.functionChainHom
+#check TopCat.SingularCochainSheaf.iota_functionChainHom
+#print axioms TopCat.SingularCochainSheaf.iota_functionChainHom
+#check TopCat.SingularCochainSheaf.iota_functionChainHom_assoc
+#print axioms TopCat.SingularCochainSheaf.iota_functionChainHom_assoc
+#check TopCat.SingularCochainSheaf.functionChainHom_zero
+#print axioms TopCat.SingularCochainSheaf.functionChainHom_zero
+#check TopCat.SingularCochainSheaf.functionChainHom_add
+#print axioms TopCat.SingularCochainSheaf.functionChainHom_add
+#check TopCat.SingularCochainSheaf.zeroCochainOfFunction
+#print axioms TopCat.SingularCochainSheaf.zeroCochainOfFunction
+#check TopCat.SingularCochainSheaf.zeroCochainEvaluate_ofFunction
+#print axioms TopCat.SingularCochainSheaf.zeroCochainEvaluate_ofFunction
+#check TopCat.SingularCochainSheaf.zeroCochainOfFunction_evaluate
+#print axioms TopCat.SingularCochainSheaf.zeroCochainOfFunction_evaluate
+#check TopCat.SingularCochainSheaf.zeroCochainsIsoFunctions
+#print axioms TopCat.SingularCochainSheaf.zeroCochainsIsoFunctions
+#check TopCat.SingularCochainSheaf.degreeZeroChainMap
+#print axioms TopCat.SingularCochainSheaf.degreeZeroChainMap
+#check TopCat.SingularCochainSheaf.map_pointSimplex
+#print axioms TopCat.SingularCochainSheaf.map_pointSimplex
+#check TopCat.SingularCochainSheaf.zeroCochainEvaluate_pullback
+#print axioms TopCat.SingularCochainSheaf.zeroCochainEvaluate_pullback
+#check TopCat.SingularCochainSheaf.zeroCochainEvaluationHom
+#print axioms TopCat.SingularCochainSheaf.zeroCochainEvaluationHom
+#check TopCat.SingularCochainSheaf.zeroCochainEvaluate_injective
+#print axioms TopCat.SingularCochainSheaf.zeroCochainEvaluate_injective
+#check TopCat.SingularCochainSheaf.zeroCochainEvaluationInv
+#print axioms TopCat.SingularCochainSheaf.zeroCochainEvaluationInv
+#check TopCat.SingularCochainSheaf.zeroCochainPresheafIsoFunctions
+#print axioms TopCat.SingularCochainSheaf.zeroCochainPresheafIsoFunctions
+
+/-! ## `Lib.Topology.Sheaves.SingularCochainSheaf.DegreeZeroAcyclic` -/
+
+#check TopCat.SingularCochainSheaf.zeroCochainPresheaf_isSheaf
+#print axioms TopCat.SingularCochainSheaf.zeroCochainPresheaf_isSheaf
+#check TopCat.SingularCochainSheaf.zeroCochainDirectSheaf
+#print axioms TopCat.SingularCochainSheaf.zeroCochainDirectSheaf
+#check TopCat.SingularCochainSheaf.zeroCochainDirectIsoFunctions
+#print axioms TopCat.SingularCochainSheaf.zeroCochainDirectIsoFunctions
+#check TopCat.SingularCochainSheaf.zeroCochainSheafIsoFunctions
+#print axioms TopCat.SingularCochainSheaf.zeroCochainSheafIsoFunctions
+#check TopCat.SingularCochainSheaf.zeroCochainSheaf_isFlasque
+#print axioms TopCat.SingularCochainSheaf.zeroCochainSheaf_isFlasque
+#check TopCat.SingularCochainSheaf.zeroCochainSheaf_h1_subsingleton
+#print axioms TopCat.SingularCochainSheaf.zeroCochainSheaf_h1_subsingleton
+
+/-! ## `Lib.Topology.Sheaves.SingularCochainSheaf.ResolutionH1` -/
+
+#check TopCat.SingularCochainSheaf.resolutionH1
+#print axioms TopCat.SingularCochainSheaf.resolutionH1
+
+/-! ## `Lib.Topology.Sheaves.SingularCochainSheaf.GlobalResolutionH1` -/
+
+#check TopCat.SingularCochainSheaf.globalCochainComplex
+#print axioms TopCat.SingularCochainSheaf.globalCochainComplex
+#check TopCat.SingularCochainSheaf.globalWindowH1Iso
+#print axioms TopCat.SingularCochainSheaf.globalWindowH1Iso
+#check TopCat.SingularCochainSheaf.constantSheafGlobalH1Iso
+#print axioms TopCat.SingularCochainSheaf.constantSheafGlobalH1Iso
+
+/-! ## `Lib.Topology.Sheaves.SingularCochainSheaf.GlobalUnit` -/
+
+#check TopCat.SingularCochainSheaf.globalCochainUnit
+#print axioms TopCat.SingularCochainSheaf.globalCochainUnit
+#check TopCat.SingularCochainSheaf.globalCochainComparison
+#print axioms TopCat.SingularCochainSheaf.globalCochainComparison
+#check TopCat.SingularCochainSheaf.globalCochainComparison_f
+#print axioms TopCat.SingularCochainSheaf.globalCochainComparison_f
+
+/-! ## `Lib.Topology.Sheaves.SingularCochainSheaf.ComparisonH1` -/
+
+#check TopCat.SingularCochainSheaf.h1Comparison
+#print axioms TopCat.SingularCochainSheaf.h1Comparison
+#check TopCat.SingularCochainSheaf.h1Comparison_global
+#print axioms TopCat.SingularCochainSheaf.h1Comparison_global
+#check TopCat.SingularCochainSheaf.h1Comparison_global_assoc
+#print axioms TopCat.SingularCochainSheaf.h1Comparison_global_assoc
+
+/-! ## `Lib.Topology.Sheaves.SingularCochainSheaf.Pullback.Presheaf` -/
+
+#check TopCat.SingularCochainSheaf.preimageMap
+#print axioms TopCat.SingularCochainSheaf.preimageMap
+#check TopCat.SingularCochainSheaf.preimageMap_apply
+#print axioms TopCat.SingularCochainSheaf.preimageMap_apply
+#check TopCat.SingularCochainSheaf.preimageMap_restrict
+#print axioms TopCat.SingularCochainSheaf.preimageMap_restrict
+#check TopCat.SingularCochainSheaf.openPullback_restrict
+#print axioms TopCat.SingularCochainSheaf.openPullback_restrict
+#check TopCat.SingularCochainSheaf.presheafPullback
+#print axioms TopCat.SingularCochainSheaf.presheafPullback
+#check TopCat.SingularCochainSheaf.presheafPullback_app
+#print axioms TopCat.SingularCochainSheaf.presheafPullback_app
+#check TopCat.SingularCochainSheaf.presheafPullback_d
+#print axioms TopCat.SingularCochainSheaf.presheafPullback_d
+#check TopCat.SingularCochainSheaf.presheafPullback_d_assoc
+#print axioms TopCat.SingularCochainSheaf.presheafPullback_d_assoc
+#check TopCat.SingularCochainSheaf.constantPresheafPullback
+#print axioms TopCat.SingularCochainSheaf.constantPresheafPullback
+#check TopCat.SingularCochainSheaf.presheafPullback_augmentation
+#print axioms TopCat.SingularCochainSheaf.presheafPullback_augmentation
+#check TopCat.SingularCochainSheaf.presheafPullback_augmentation_assoc
+#print axioms TopCat.SingularCochainSheaf.presheafPullback_augmentation_assoc
+
+/-! ## `Lib.Topology.Sheaves.SingularCochainSheaf.Pullback.Sheaf` -/
+
+#check TopCat.SingularCochainSheaf.cochainPullback
+#print axioms TopCat.SingularCochainSheaf.cochainPullback
+#check TopCat.SingularCochainSheaf.unit_cochainPullback
+#print axioms TopCat.SingularCochainSheaf.unit_cochainPullback
+#check TopCat.SingularCochainSheaf.unit_cochainPullback_assoc
+#print axioms TopCat.SingularCochainSheaf.unit_cochainPullback_assoc
+#check TopCat.SingularCochainSheaf.cochainPullback_d
+#print axioms TopCat.SingularCochainSheaf.cochainPullback_d
+#check TopCat.SingularCochainSheaf.cochainPullback_d_assoc
+#print axioms TopCat.SingularCochainSheaf.cochainPullback_d_assoc
+#check TopCat.SingularCochainSheaf.constant_sheafifyPullback
+#print axioms TopCat.SingularCochainSheaf.constant_sheafifyPullback
+#check TopCat.SingularCochainSheaf.cochainPullback_augmentation
+#print axioms TopCat.SingularCochainSheaf.cochainPullback_augmentation
+#check TopCat.SingularCochainSheaf.cochainPullback_augmentation_assoc
+#print axioms TopCat.SingularCochainSheaf.cochainPullback_augmentation_assoc
+#check TopCat.SingularCochainSheaf.cochainPullbackComplex
+#print axioms TopCat.SingularCochainSheaf.cochainPullbackComplex
+#check TopCat.SingularCochainSheaf.cochainPullbackComplex_f
+#print axioms TopCat.SingularCochainSheaf.cochainPullbackComplex_f
+
+/-! ## `Lib.Topology.Sheaves.SingularCochainSheaf.Pullback.Global` -/
+
+#check TopCat.SingularCochainSheaf.preimageMap_inclusion
+#print axioms TopCat.SingularCochainSheaf.preimageMap_inclusion
+#check TopCat.SingularCochainSheaf.globalSheafPullback
+#print axioms TopCat.SingularCochainSheaf.globalSheafPullback
+#check TopCat.SingularCochainSheaf.globalSheafPullback_f
+#print axioms TopCat.SingularCochainSheaf.globalSheafPullback_f
+#check TopCat.SingularCochainSheaf.globalCochainUnit_pullback
+#print axioms TopCat.SingularCochainSheaf.globalCochainUnit_pullback
+#check TopCat.SingularCochainSheaf.globalCochainComparison_naturality
+#print axioms TopCat.SingularCochainSheaf.globalCochainComparison_naturality
+#check TopCat.SingularCochainSheaf.globalCochainComparison_homology_naturality
+#print axioms TopCat.SingularCochainSheaf.globalCochainComparison_homology_naturality
+
+/-! ## `Lib.Topology.Sheaves.SingularCochainSheaf.Pullback.ComparisonH1` -/
+
+#check TopCat.SingularCochainSheaf.h1Comparison_naturality_of_global
+#print axioms TopCat.SingularCochainSheaf.h1Comparison_naturality_of_global
+
+/-! ## `Lib.Algebra.Homology.DerivedCategory.Ext.AcyclicResolutionH1ExactFunctor` -/
+
+#check CategoryTheory.Abelian.Ext.AcyclicResolutionH1.map
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolutionH1.map
+#check CategoryTheory.Abelian.Ext.AcyclicResolutionH1.comparisonHom
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolutionH1.comparisonHom
+#check CategoryTheory.Abelian.Ext.AcyclicResolutionH1.extZeroMap
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolutionH1.extZeroMap
+#check CategoryTheory.Abelian.Ext.AcyclicResolutionH1.extOneIso_naturality
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolutionH1.extOneIso_naturality
+#check CategoryTheory.Abelian.Ext.AcyclicResolutionH1.extOneIso_naturality_assoc
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolutionH1.extOneIso_naturality_assoc
+
+/-! ## `Lib.Topology.Sheaves.FiniteClosedPushforward.AcyclicResolutionH1` -/
+
+#check TopCat.FiniteClosedPushforward.mapResolution
+#print axioms TopCat.FiniteClosedPushforward.mapResolution
+#check TopCat.FiniteClosedPushforward.mapResolution_h1_subsingleton
+#print axioms TopCat.FiniteClosedPushforward.mapResolution_h1_subsingleton
+#check TopCat.FiniteClosedPushforward.pushedH1GlobalIso
+#print axioms TopCat.FiniteClosedPushforward.pushedH1GlobalIso
+#check TopCat.FiniteClosedPushforward.h1Global_forward
+#print axioms TopCat.FiniteClosedPushforward.h1Global_forward
+
+/-! ## `Lib.Topology.Sheaves.SingularCochainSheaf.Pullback.FiniteClosedH1` -/
+
+#check TopCat.SingularCochainSheaf.resolutionH1Pullback
+#print axioms TopCat.SingularCochainSheaf.resolutionH1Pullback
+#check TopCat.SingularCochainSheaf.globalWindowH1Iso_pullback
+#print axioms TopCat.SingularCochainSheaf.globalWindowH1Iso_pullback
+#check TopCat.SingularCochainSheaf.h1_global_naturality
+#print axioms TopCat.SingularCochainSheaf.h1_global_naturality
+#check TopCat.SingularCochainSheaf.h1Comparison_naturality
+#print axioms TopCat.SingularCochainSheaf.h1Comparison_naturality
+
+/-! ## `Lib.AlgebraicTopology.SingularSmallChains.Basic` -/
+
+#check TopCat.SingularSmallChains.singularSet
+#print axioms TopCat.SingularSmallChains.singularSet
+#check TopCat.SingularSmallChains.SingularSimplex
+#print axioms TopCat.SingularSmallChains.SingularSimplex
+#check TopCat.SingularSmallChains.simplexIndex
+#print axioms TopCat.SingularSmallChains.simplexIndex
+#check TopCat.SingularSmallChains.simplexChain
+#print axioms TopCat.SingularSmallChains.simplexChain
+#check TopCat.SingularSmallChains.chainLift
+#print axioms TopCat.SingularSmallChains.chainLift
+#check TopCat.SingularSmallChains.chainLift_simplex
+#print axioms TopCat.SingularSmallChains.chainLift_simplex
+#check TopCat.SingularSmallChains.chainMap_ext
+#print axioms TopCat.SingularSmallChains.chainMap_ext
+#check TopCat.SingularSmallChains.chainsRepr
+#print axioms TopCat.SingularSmallChains.chainsRepr
+#check TopCat.SingularSmallChains.chainsFromFinsupp
+#print axioms TopCat.SingularSmallChains.chainsFromFinsupp
+#check TopCat.SingularSmallChains.chainsFromFinsupp_single
+#print axioms TopCat.SingularSmallChains.chainsFromFinsupp_single
+#check TopCat.SingularSmallChains.chainsFromFinsupp_comp_repr
+#print axioms TopCat.SingularSmallChains.chainsFromFinsupp_comp_repr
+#check TopCat.SingularSmallChains.chainsRepr_comp_fromFinsupp
+#print axioms TopCat.SingularSmallChains.chainsRepr_comp_fromFinsupp
+#check TopCat.SingularSmallChains.chainsEquivFinsupp
+#print axioms TopCat.SingularSmallChains.chainsEquivFinsupp
+#check TopCat.SingularSmallChains.chainBasis
+#print axioms TopCat.SingularSmallChains.chainBasis
+#check TopCat.SingularSmallChains.chainBasis_repr
+#print axioms TopCat.SingularSmallChains.chainBasis_repr
+#check TopCat.SingularSmallChains.chainBasis_apply
+#print axioms TopCat.SingularSmallChains.chainBasis_apply
+#check TopCat.SingularSmallChains.mem_simplex_span_iff
+#print axioms TopCat.SingularSmallChains.mem_simplex_span_iff
+#check TopCat.SingularSmallChains.IsSmallSimplex
+#print axioms TopCat.SingularSmallChains.IsSmallSimplex
+#check TopCat.SingularSmallChains.submodule
+#print axioms TopCat.SingularSmallChains.submodule
+#check TopCat.SingularSmallChains.simplexChain_mem
+#print axioms TopCat.SingularSmallChains.simplexChain_mem
+#check TopCat.SingularSmallChains.simplexFace
+#print axioms TopCat.SingularSmallChains.simplexFace
+#check TopCat.SingularSmallChains.simplexIndex_face
+#print axioms TopCat.SingularSmallChains.simplexIndex_face
+#check TopCat.SingularSmallChains.boundary_simplex
+#print axioms TopCat.SingularSmallChains.boundary_simplex
+#check TopCat.SingularSmallChains.simplex_face_subset
+#print axioms TopCat.SingularSmallChains.simplex_face_subset
+#check TopCat.SingularSmallChains.boundary_mem
+#print axioms TopCat.SingularSmallChains.boundary_mem
+#check TopCat.SingularSmallChains.smallChainModule
+#print axioms TopCat.SingularSmallChains.smallChainModule
+#check TopCat.SingularSmallChains.differential
+#print axioms TopCat.SingularSmallChains.differential
+#check TopCat.SingularSmallChains.differential_val
+#print axioms TopCat.SingularSmallChains.differential_val
+#check TopCat.SingularSmallChains.complex
+#print axioms TopCat.SingularSmallChains.complex
+#check TopCat.SingularSmallChains.inclusion
+#print axioms TopCat.SingularSmallChains.inclusion
+#check TopCat.SingularSmallChains.inclusion_f_apply
+#print axioms TopCat.SingularSmallChains.inclusion_f_apply
+#check TopCat.SingularSmallChains.inclusion_f_injective
+#print axioms TopCat.SingularSmallChains.inclusion_f_injective
+#check TopCat.SingularSmallChains.SmallSimplex
+#print axioms TopCat.SingularSmallChains.SmallSimplex
+#check TopCat.SingularSmallChains.smallSimplex_linearIndependent
+#print axioms TopCat.SingularSmallChains.smallSimplex_linearIndependent
+#check TopCat.SingularSmallChains.smallSimplex_range
+#print axioms TopCat.SingularSmallChains.smallSimplex_range
+#check TopCat.SingularSmallChains.smallChainBasis
+#print axioms TopCat.SingularSmallChains.smallChainBasis
+#check TopCat.SingularSmallChains.smallChainBasis_apply_val
+#print axioms TopCat.SingularSmallChains.smallChainBasis_apply_val
+#check TopCat.SingularSmallChains.smallChain_projective
+#print axioms TopCat.SingularSmallChains.smallChain_projective
+#check TopCat.SingularSmallChains.chainProjection
+#print axioms TopCat.SingularSmallChains.chainProjection
+#check TopCat.SingularSmallChains.chainProjection_small_simplex
+#print axioms TopCat.SingularSmallChains.chainProjection_small_simplex
+#check TopCat.SingularSmallChains.cochainRestriction
+#print axioms TopCat.SingularSmallChains.cochainRestriction
+#check TopCat.SingularSmallChains.cochainExtension
+#print axioms TopCat.SingularSmallChains.cochainExtension
+#check TopCat.SingularSmallChains.addHomToIntLinearMap
+#print axioms TopCat.SingularSmallChains.addHomToIntLinearMap
+#check TopCat.SingularSmallChains.addHomToIntLinearMap_apply
+#print axioms TopCat.SingularSmallChains.addHomToIntLinearMap_apply
+#check TopCat.SingularSmallChains.cochainRestriction_extension
+#print axioms TopCat.SingularSmallChains.cochainRestriction_extension
+#check TopCat.SingularSmallChains.cochainRestriction_surjective
+#print axioms TopCat.SingularSmallChains.cochainRestriction_surjective
+#check TopCat.SingularSmallChains.dualHomotopyEquiv
+#print axioms TopCat.SingularSmallChains.dualHomotopyEquiv
+#check TopCat.SingularSmallChains.cochainRestrictionHomotopyEquiv
+#print axioms TopCat.SingularSmallChains.cochainRestrictionHomotopyEquiv
+#check TopCat.SingularSmallChains.cochainMap_d
+#print axioms TopCat.SingularSmallChains.cochainMap_d
+
+/-! ## `Lib.AlgebraicTopology.SingularSmallChains.Barycentric.FormalChains` -/
+
+#check TopCat.SingularSmallChains.Barycentric.FormalChains
+#print axioms TopCat.SingularSmallChains.Barycentric.FormalChains
+#check TopCat.SingularSmallChains.Barycentric.formalSimplex
+#print axioms TopCat.SingularSmallChains.Barycentric.formalSimplex
+#check TopCat.SingularSmallChains.Barycentric.formalLift
+#print axioms TopCat.SingularSmallChains.Barycentric.formalLift
+#check TopCat.SingularSmallChains.Barycentric.formalLift_simplex
+#print axioms TopCat.SingularSmallChains.Barycentric.formalLift_simplex
+#check TopCat.SingularSmallChains.Barycentric.formalChains_ext
+#print axioms TopCat.SingularSmallChains.Barycentric.formalChains_ext
+#check TopCat.SingularSmallChains.Barycentric.formalMap
+#print axioms TopCat.SingularSmallChains.Barycentric.formalMap
+#check TopCat.SingularSmallChains.Barycentric.formalMap_simplex
+#print axioms TopCat.SingularSmallChains.Barycentric.formalMap_simplex
+#check TopCat.SingularSmallChains.Barycentric.formalCone
+#print axioms TopCat.SingularSmallChains.Barycentric.formalCone
+#check TopCat.SingularSmallChains.Barycentric.formalCone_simplex
+#print axioms TopCat.SingularSmallChains.Barycentric.formalCone_simplex
+#check TopCat.SingularSmallChains.Barycentric.formalBoundary
+#print axioms TopCat.SingularSmallChains.Barycentric.formalBoundary
+#check TopCat.SingularSmallChains.Barycentric.formalBoundary_simplex
+#print axioms TopCat.SingularSmallChains.Barycentric.formalBoundary_simplex
+#check TopCat.SingularSmallChains.Barycentric.formalBoundary_cone_zero
+#print axioms TopCat.SingularSmallChains.Barycentric.formalBoundary_cone_zero
+#check TopCat.SingularSmallChains.Barycentric.formalBoundary_cone
+#print axioms TopCat.SingularSmallChains.Barycentric.formalBoundary_cone
+#check TopCat.SingularSmallChains.Barycentric.formalBoundary_comp
+#print axioms TopCat.SingularSmallChains.Barycentric.formalBoundary_comp
+#check TopCat.SingularSmallChains.Barycentric.formalBoundary_boundary
+#print axioms TopCat.SingularSmallChains.Barycentric.formalBoundary_boundary
+#check TopCat.SingularSmallChains.Barycentric.formalMap_boundary
+#print axioms TopCat.SingularSmallChains.Barycentric.formalMap_boundary
+#check TopCat.SingularSmallChains.Barycentric.formalMap_cone
+#print axioms TopCat.SingularSmallChains.Barycentric.formalMap_cone
+
+/-! ## `Lib.AlgebraicTopology.SingularSmallChains.Barycentric.MeshBarycenter` -/
+
+#check TopCat.SingularSmallChains.Barycentric.vertexBarycenter
+#print axioms TopCat.SingularSmallChains.Barycentric.vertexBarycenter
+#check TopCat.SingularSmallChains.Barycentric.vertexBarycenter_mem_of_convex
+#print axioms TopCat.SingularSmallChains.Barycentric.vertexBarycenter_mem_of_convex
+#check TopCat.SingularSmallChains.Barycentric.vertexBarycenter_mem_convexHull
+#print axioms TopCat.SingularSmallChains.Barycentric.vertexBarycenter_mem_convexHull
+#check TopCat.SingularSmallChains.Barycentric.vertexBarycenter_sub
+#print axioms TopCat.SingularSmallChains.Barycentric.vertexBarycenter_sub
+#check TopCat.SingularSmallChains.Barycentric.sum_norm_vertex_sub_le
+#print axioms TopCat.SingularSmallChains.Barycentric.sum_norm_vertex_sub_le
+#check TopCat.SingularSmallChains.Barycentric.dist_vertexBarycenter_vertex_le
+#print axioms TopCat.SingularSmallChains.Barycentric.dist_vertexBarycenter_vertex_le
+#check TopCat.SingularSmallChains.Barycentric.dist_vertexBarycenter_convexHull_le
+#print axioms TopCat.SingularSmallChains.Barycentric.dist_vertexBarycenter_convexHull_le
+#check TopCat.SingularSmallChains.Barycentric.dist_vertexBarycenter_vertexBarycenter_le
+#print axioms TopCat.SingularSmallChains.Barycentric.dist_vertexBarycenter_vertexBarycenter_le
+#check TopCat.SingularSmallChains.Barycentric.dist_vertexBarycenter_reindex_le
+#print axioms TopCat.SingularSmallChains.Barycentric.dist_vertexBarycenter_reindex_le
+#check TopCat.SingularSmallChains.Barycentric.dist_convexHull_range_le
+#print axioms TopCat.SingularSmallChains.Barycentric.dist_convexHull_range_le
+#check TopCat.SingularSmallChains.Barycentric.convexHull_range_diam_le
+#print axioms TopCat.SingularSmallChains.Barycentric.convexHull_range_diam_le
+
+/-! ## `Lib.AlgebraicTopology.SingularSmallChains.Projective` -/
+
+#check TopCat.SingularSmallChains.inclusion_isHomotopyEquivalence_of_quasiIso
+#print axioms TopCat.SingularSmallChains.inclusion_isHomotopyEquivalence_of_quasiIso
+#check TopCat.SingularSmallChains.inclusionHomotopyEquivOfQuasiIso
+#print axioms TopCat.SingularSmallChains.inclusionHomotopyEquivOfQuasiIso
+#check TopCat.SingularSmallChains.inclusionHomotopyEquivOfQuasiIso_hom
+#print axioms TopCat.SingularSmallChains.inclusionHomotopyEquivOfQuasiIso_hom
+
+/-! ## `Lib.AlgebraicTopology.SingularSmallChains.Barycentric.Native` -/
+
+#check TopCat.SingularSmallChains.Barycentric.Simplex
+#print axioms TopCat.SingularSmallChains.Barycentric.Simplex
+#check TopCat.SingularSmallChains.Barycentric.Chains
+#print axioms TopCat.SingularSmallChains.Barycentric.Chains
+#check TopCat.SingularSmallChains.Barycentric.singularComplex
+#print axioms TopCat.SingularSmallChains.Barycentric.singularComplex
+#check TopCat.SingularSmallChains.Barycentric.singularChainMap
+#print axioms TopCat.SingularSmallChains.Barycentric.singularChainMap
+#check TopCat.SingularSmallChains.Barycentric.inducedChain
+#print axioms TopCat.SingularSmallChains.Barycentric.inducedChain
+#check TopCat.SingularSmallChains.Barycentric.simplexFace_apply
+#print axioms TopCat.SingularSmallChains.Barycentric.simplexFace_apply
+#check TopCat.SingularSmallChains.Barycentric.simplexFace_apply_self
+#print axioms TopCat.SingularSmallChains.Barycentric.simplexFace_apply_self
+#check TopCat.SingularSmallChains.Barycentric.simplexFace_apply_succAbove
+#print axioms TopCat.SingularSmallChains.Barycentric.simplexFace_apply_succAbove
+#check TopCat.SingularSmallChains.Barycentric.simplexZero_eq_vertex
+#print axioms TopCat.SingularSmallChains.Barycentric.simplexZero_eq_vertex
+#check TopCat.SingularSmallChains.Barycentric.simplexIndex_map
+#print axioms TopCat.SingularSmallChains.Barycentric.simplexIndex_map
+#check TopCat.SingularSmallChains.Barycentric.inducedChain_simplex
+#print axioms TopCat.SingularSmallChains.Barycentric.inducedChain_simplex
+#check TopCat.SingularSmallChains.Barycentric.inducedChain_boundary
+#print axioms TopCat.SingularSmallChains.Barycentric.inducedChain_boundary
+#check TopCat.SingularSmallChains.Barycentric.inducedChain_comp
+#print axioms TopCat.SingularSmallChains.Barycentric.inducedChain_comp
+
+/-! ## `Lib.AlgebraicTopology.SingularSmallChains.Barycentric.FormalSubdivision` -/
+
+#check TopCat.SingularSmallChains.Barycentric.FormalCenter
+#print axioms TopCat.SingularSmallChains.Barycentric.FormalCenter
+#check TopCat.SingularSmallChains.Barycentric.formalSubdivision
+#print axioms TopCat.SingularSmallChains.Barycentric.formalSubdivision
+#check TopCat.SingularSmallChains.Barycentric.formalSubdivision_zero
+#print axioms TopCat.SingularSmallChains.Barycentric.formalSubdivision_zero
+#check TopCat.SingularSmallChains.Barycentric.formalSubdivision_simplex_succ
+#print axioms TopCat.SingularSmallChains.Barycentric.formalSubdivision_simplex_succ
+#check TopCat.SingularSmallChains.Barycentric.formalBoundary_subdivision
+#print axioms TopCat.SingularSmallChains.Barycentric.formalBoundary_subdivision
+#check TopCat.SingularSmallChains.Barycentric.formalMap_subdivision
+#print axioms TopCat.SingularSmallChains.Barycentric.formalMap_subdivision
+
+/-! ## `Lib.AlgebraicTopology.SingularSmallChains.SubdivisionCriterion` -/
+
+#check TopCat.SingularSmallChains.SubdivisionData
+#print axioms TopCat.SingularSmallChains.SubdivisionData
+#check TopCat.SingularSmallChains.SubdivisionData.mk
+#print axioms TopCat.SingularSmallChains.SubdivisionData.mk
+#check TopCat.SingularSmallChains.SubdivisionData.subdivision
+#print axioms TopCat.SingularSmallChains.SubdivisionData.subdivision
+#check TopCat.SingularSmallChains.SubdivisionData.subdivision_boundary
+#print axioms TopCat.SingularSmallChains.SubdivisionData.subdivision_boundary
+#check TopCat.SingularSmallChains.SubdivisionData.eventually_small
+#print axioms TopCat.SingularSmallChains.SubdivisionData.eventually_small
+#check TopCat.SingularSmallChains.SubdivisionData.homotopy
+#print axioms TopCat.SingularSmallChains.SubdivisionData.homotopy
+#check TopCat.SingularSmallChains.SubdivisionData.homotopy_boundary_of_cycle
+#print axioms TopCat.SingularSmallChains.SubdivisionData.homotopy_boundary_of_cycle
+#check TopCat.SingularSmallChains.SubdivisionData.homotopy_small
+#print axioms TopCat.SingularSmallChains.SubdivisionData.homotopy_small
+#check TopCat.SingularSmallChains.SubdivisionData.rec
+#print axioms TopCat.SingularSmallChains.SubdivisionData.rec
+#check TopCat.SingularSmallChains.SubdivisionData.recOn
+#print axioms TopCat.SingularSmallChains.SubdivisionData.recOn
+#check TopCat.SingularSmallChains.SubdivisionData.casesOn
+#print axioms TopCat.SingularSmallChains.SubdivisionData.casesOn
+#check TopCat.SingularSmallChains.SubdivisionData.noConfusion
+#print axioms TopCat.SingularSmallChains.SubdivisionData.noConfusion
+#check TopCat.SingularSmallChains.SubdivisionData.noConfusionType
+#print axioms TopCat.SingularSmallChains.SubdivisionData.noConfusionType
+#check TopCat.SingularSmallChains.SubdivisionData.ctorIdx
+#print axioms TopCat.SingularSmallChains.SubdivisionData.ctorIdx
+#check TopCat.SingularSmallChains.SubdivisionData.mk.injEq
+#print axioms TopCat.SingularSmallChains.SubdivisionData.mk.injEq
+#check TopCat.SingularSmallChains.SubdivisionData.mk.inj
+#print axioms TopCat.SingularSmallChains.SubdivisionData.mk.inj
+#check TopCat.SingularSmallChains.SubdivisionData.mk.noConfusion
+#print axioms TopCat.SingularSmallChains.SubdivisionData.mk.noConfusion
+#check TopCat.SingularSmallChains.SubdivisionData.mk.sizeOf_spec
+#print axioms TopCat.SingularSmallChains.SubdivisionData.mk.sizeOf_spec
+#check TopCat.SingularSmallChains.inclusion_quasiIso_of_subdivisionData
+#print axioms TopCat.SingularSmallChains.inclusion_quasiIso_of_subdivisionData
+#check TopCat.SingularSmallChains.inclusionHomotopyEquivOfSubdivisionData
+#print axioms TopCat.SingularSmallChains.inclusionHomotopyEquivOfSubdivisionData
+#check TopCat.SingularSmallChains.inclusionHomotopyEquivOfSubdivisionData_hom
+#print axioms TopCat.SingularSmallChains.inclusionHomotopyEquivOfSubdivisionData_hom
+
+/-! ## `Lib.AlgebraicTopology.SingularSmallChains.Barycentric.FormalHomotopy` -/
+
+#check TopCat.SingularSmallChains.Barycentric.formalSubdivisionHomotopy
+#print axioms TopCat.SingularSmallChains.Barycentric.formalSubdivisionHomotopy
+#check TopCat.SingularSmallChains.Barycentric.formalSubdivisionHomotopy_zero
+#print axioms TopCat.SingularSmallChains.Barycentric.formalSubdivisionHomotopy_zero
+#check TopCat.SingularSmallChains.Barycentric.formalSubdivisionHomotopy_simplex_succ
+#print axioms TopCat.SingularSmallChains.Barycentric.formalSubdivisionHomotopy_simplex_succ
+#check TopCat.SingularSmallChains.Barycentric.formalSubdivisionHomotopy_boundary_zero
+#print axioms TopCat.SingularSmallChains.Barycentric.formalSubdivisionHomotopy_boundary_zero
+#check TopCat.SingularSmallChains.Barycentric.formalSubdivisionHomotopy_boundary
+#print axioms TopCat.SingularSmallChains.Barycentric.formalSubdivisionHomotopy_boundary
+#check TopCat.SingularSmallChains.Barycentric.formalMap_subdivisionHomotopy
+#print axioms TopCat.SingularSmallChains.Barycentric.formalMap_subdivisionHomotopy
+
+/-! ## `Lib.AlgebraicTopology.SingularSmallChains.Barycentric.AffineSimplex` -/
+
+#check TopCat.SingularSmallChains.Barycentric.affineSimplex
+#print axioms TopCat.SingularSmallChains.Barycentric.affineSimplex
+#check TopCat.SingularSmallChains.Barycentric.affineSimplex_coe
+#print axioms TopCat.SingularSmallChains.Barycentric.affineSimplex_coe
+#check TopCat.SingularSmallChains.Barycentric.affineSimplex_coordinate
+#print axioms TopCat.SingularSmallChains.Barycentric.affineSimplex_coordinate
+#check TopCat.SingularSmallChains.Barycentric.affineSimplex_vertex
+#print axioms TopCat.SingularSmallChains.Barycentric.affineSimplex_vertex
+#check TopCat.SingularSmallChains.Barycentric.stdVertices
+#print axioms TopCat.SingularSmallChains.Barycentric.stdVertices
+#check TopCat.SingularSmallChains.Barycentric.affineSimplex_stdVertices
+#print axioms TopCat.SingularSmallChains.Barycentric.affineSimplex_stdVertices
+#check TopCat.SingularSmallChains.Barycentric.affineSimplex_face
+#print axioms TopCat.SingularSmallChains.Barycentric.affineSimplex_face
+#check TopCat.SingularSmallChains.Barycentric.affineSimplex_comp
+#print axioms TopCat.SingularSmallChains.Barycentric.affineSimplex_comp
+#check TopCat.SingularSmallChains.Barycentric.affineSimplex_mem_convexHull
+#print axioms TopCat.SingularSmallChains.Barycentric.affineSimplex_mem_convexHull
+#check TopCat.SingularSmallChains.Barycentric.affineSimplex_mem_of_convex
+#print axioms TopCat.SingularSmallChains.Barycentric.affineSimplex_mem_of_convex
+#check TopCat.SingularSmallChains.Barycentric.simplexBarycenter
+#print axioms TopCat.SingularSmallChains.Barycentric.simplexBarycenter
+#check TopCat.SingularSmallChains.Barycentric.simplexBarycenter_coe
+#print axioms TopCat.SingularSmallChains.Barycentric.simplexBarycenter_coe
+#check TopCat.SingularSmallChains.Barycentric.simplexBarycenter_singleton
+#print axioms TopCat.SingularSmallChains.Barycentric.simplexBarycenter_singleton
+#check TopCat.SingularSmallChains.Barycentric.affineSimplex_simplexBarycenter
+#print axioms TopCat.SingularSmallChains.Barycentric.affineSimplex_simplexBarycenter
+#check TopCat.SingularSmallChains.Barycentric.simplexBarycenter_mem_convexHull
+#print axioms TopCat.SingularSmallChains.Barycentric.simplexBarycenter_mem_convexHull
+
+/-! ## `Lib.AlgebraicTopology.SingularSmallChains.Barycentric.FormalIteration` -/
+
+#check TopCat.SingularSmallChains.Barycentric.formalBoundary_subdivision_iterate
+#print axioms TopCat.SingularSmallChains.Barycentric.formalBoundary_subdivision_iterate
+#check TopCat.SingularSmallChains.Barycentric.formalMap_subdivision_iterate
+#print axioms TopCat.SingularSmallChains.Barycentric.formalMap_subdivision_iterate
+#check TopCat.SingularSmallChains.Barycentric.formalSubdivisionIteratedHomotopy
+#print axioms TopCat.SingularSmallChains.Barycentric.formalSubdivisionIteratedHomotopy
+#check TopCat.SingularSmallChains.Barycentric.formalSubdivisionIteratedHomotopy_apply
+#print axioms TopCat.SingularSmallChains.Barycentric.formalSubdivisionIteratedHomotopy_apply
+#check TopCat.SingularSmallChains.Barycentric.formalSubdivisionIteratedHomotopy_zero
+#print axioms TopCat.SingularSmallChains.Barycentric.formalSubdivisionIteratedHomotopy_zero
+#check TopCat.SingularSmallChains.Barycentric.formalSubdivisionIteratedHomotopy_succ
+#print axioms TopCat.SingularSmallChains.Barycentric.formalSubdivisionIteratedHomotopy_succ
+#check TopCat.SingularSmallChains.Barycentric.formalSubdivisionIteratedHomotopy_degree_zero
+#print axioms TopCat.SingularSmallChains.Barycentric.formalSubdivisionIteratedHomotopy_degree_zero
+#check TopCat.SingularSmallChains.Barycentric.formalSubdivision_iterate_degree_zero
+#print axioms TopCat.SingularSmallChains.Barycentric.formalSubdivision_iterate_degree_zero
+#check TopCat.SingularSmallChains.Barycentric.formalSubdivisionIteratedHomotopy_boundary_zero
+#print axioms TopCat.SingularSmallChains.Barycentric.formalSubdivisionIteratedHomotopy_boundary_zero
+#check TopCat.SingularSmallChains.Barycentric.formalSubdivisionIteratedHomotopy_boundary
+#print axioms TopCat.SingularSmallChains.Barycentric.formalSubdivisionIteratedHomotopy_boundary
+#check TopCat.SingularSmallChains.Barycentric.formalMap_subdivisionIteratedHomotopy
+#print axioms TopCat.SingularSmallChains.Barycentric.formalMap_subdivisionIteratedHomotopy
+
+/-! ## `Lib.AlgebraicTopology.SingularSmallChains.Barycentric.AffineChains` -/
+
+#check TopCat.SingularSmallChains.Barycentric.simplexCenter
+#print axioms TopCat.SingularSmallChains.Barycentric.simplexCenter
+#check TopCat.SingularSmallChains.Barycentric.affineChainMap
+#print axioms TopCat.SingularSmallChains.Barycentric.affineChainMap
+#check TopCat.SingularSmallChains.Barycentric.affineChainMap_simplex
+#print axioms TopCat.SingularSmallChains.Barycentric.affineChainMap_simplex
+#check TopCat.SingularSmallChains.Barycentric.affineChainMap_boundary
+#print axioms TopCat.SingularSmallChains.Barycentric.affineChainMap_boundary
+#check TopCat.SingularSmallChains.Barycentric.inducedChain_affineChainMap
+#print axioms TopCat.SingularSmallChains.Barycentric.inducedChain_affineChainMap
+#check TopCat.SingularSmallChains.Barycentric.affineChainMap_stdVertices
+#print axioms TopCat.SingularSmallChains.Barycentric.affineChainMap_stdVertices
+#check TopCat.SingularSmallChains.Barycentric.faceVertices
+#print axioms TopCat.SingularSmallChains.Barycentric.faceVertices
+#check TopCat.SingularSmallChains.Barycentric.affineSimplex_faceVertices
+#print axioms TopCat.SingularSmallChains.Barycentric.affineSimplex_faceVertices
+#check TopCat.SingularSmallChains.Barycentric.affineSimplex_preserves_center
+#print axioms TopCat.SingularSmallChains.Barycentric.affineSimplex_preserves_center
+#check TopCat.SingularSmallChains.Barycentric.simplexFace_preserves_center
+#print axioms TopCat.SingularSmallChains.Barycentric.simplexFace_preserves_center
+#check TopCat.SingularSmallChains.Barycentric.simplexFace_stdVertices
+#print axioms TopCat.SingularSmallChains.Barycentric.simplexFace_stdVertices
+#check TopCat.SingularSmallChains.Barycentric.formalBoundary_stdVertices
+#print axioms TopCat.SingularSmallChains.Barycentric.formalBoundary_stdVertices
+#check TopCat.SingularSmallChains.Barycentric.formalSubdivision_affine_natural
+#print axioms TopCat.SingularSmallChains.Barycentric.formalSubdivision_affine_natural
+
+/-! ## `Lib.AlgebraicTopology.SingularSmallChains.Barycentric.FormalSupport` -/
+
+#check TopCat.SingularSmallChains.Barycentric.formalChainsSupported
+#print axioms TopCat.SingularSmallChains.Barycentric.formalChainsSupported
+#check TopCat.SingularSmallChains.Barycentric.mem_formalChainsSupported_iff
+#print axioms TopCat.SingularSmallChains.Barycentric.mem_formalChainsSupported_iff
+#check TopCat.SingularSmallChains.Barycentric.formalChainsSupported_mono
+#print axioms TopCat.SingularSmallChains.Barycentric.formalChainsSupported_mono
+#check TopCat.SingularSmallChains.Barycentric.formalChainsSupported_univ
+#print axioms TopCat.SingularSmallChains.Barycentric.formalChainsSupported_univ
+#check TopCat.SingularSmallChains.Barycentric.formalChainsSupported_zero
+#print axioms TopCat.SingularSmallChains.Barycentric.formalChainsSupported_zero
+#check TopCat.SingularSmallChains.Barycentric.formalChainsSupported_inter
+#print axioms TopCat.SingularSmallChains.Barycentric.formalChainsSupported_inter
+#check TopCat.SingularSmallChains.Barycentric.formalSimplex_mem_supported_iff
+#print axioms TopCat.SingularSmallChains.Barycentric.formalSimplex_mem_supported_iff
+#check TopCat.SingularSmallChains.Barycentric.formalSimplex_mem_supported
+#print axioms TopCat.SingularSmallChains.Barycentric.formalSimplex_mem_supported
+#check TopCat.SingularSmallChains.Barycentric.formalChainsSupported_le
+#print axioms TopCat.SingularSmallChains.Barycentric.formalChainsSupported_le
+#check TopCat.SingularSmallChains.Barycentric.formalLinearMap_mem_of_supported
+#print axioms TopCat.SingularSmallChains.Barycentric.formalLinearMap_mem_of_supported
+#check TopCat.SingularSmallChains.Barycentric.formalLift_mem_of_supported
+#print axioms TopCat.SingularSmallChains.Barycentric.formalLift_mem_of_supported
+#check TopCat.SingularSmallChains.Barycentric.formalBoundary_mem_supported
+#print axioms TopCat.SingularSmallChains.Barycentric.formalBoundary_mem_supported
+#check TopCat.SingularSmallChains.Barycentric.formalCone_mem_supported
+#print axioms TopCat.SingularSmallChains.Barycentric.formalCone_mem_supported
+#check TopCat.SingularSmallChains.Barycentric.formalCone_mem_supported_insert
+#print axioms TopCat.SingularSmallChains.Barycentric.formalCone_mem_supported_insert
+#check TopCat.SingularSmallChains.Barycentric.formalMap_mem_supported
+#print axioms TopCat.SingularSmallChains.Barycentric.formalMap_mem_supported
+#check TopCat.SingularSmallChains.Barycentric.formalMap_mem_supported_image
+#print axioms TopCat.SingularSmallChains.Barycentric.formalMap_mem_supported_image
+#check TopCat.SingularSmallChains.Barycentric.formalMap_mem_supported_of_preimage
+#print axioms TopCat.SingularSmallChains.Barycentric.formalMap_mem_supported_of_preimage
+#check TopCat.SingularSmallChains.Barycentric.formalSubdivision_mem_supported
+#print axioms TopCat.SingularSmallChains.Barycentric.formalSubdivision_mem_supported
+#check TopCat.SingularSmallChains.Barycentric.formalSubdivision_iterate_mem_supported
+#print axioms TopCat.SingularSmallChains.Barycentric.formalSubdivision_iterate_mem_supported
+#check TopCat.SingularSmallChains.Barycentric.formalCone_support_exists
+#print axioms TopCat.SingularSmallChains.Barycentric.formalCone_support_exists
+#check TopCat.SingularSmallChains.Barycentric.formalLift_support_exists
+#print axioms TopCat.SingularSmallChains.Barycentric.formalLift_support_exists
+#check TopCat.SingularSmallChains.Barycentric.formalLinearMap_support_exists
+#print axioms TopCat.SingularSmallChains.Barycentric.formalLinearMap_support_exists
+#check TopCat.SingularSmallChains.Barycentric.formalBoundary_support_exists
+#print axioms TopCat.SingularSmallChains.Barycentric.formalBoundary_support_exists
+#check TopCat.SingularSmallChains.Barycentric.formalSubdivisionHomotopy_mem_supported
+#print axioms TopCat.SingularSmallChains.Barycentric.formalSubdivisionHomotopy_mem_supported
+#check TopCat.SingularSmallChains.Barycentric.formalSubdivisionIteratedHomotopy_mem_supported
+#print axioms TopCat.SingularSmallChains.Barycentric.formalSubdivisionIteratedHomotopy_mem_supported
+
+/-! ## `Lib.AlgebraicTopology.SingularCochains.Generators` -/
+
+#check AlgebraicTopology.SingularCochains.Cochains
+#print axioms AlgebraicTopology.SingularCochains.Cochains
+#check AlgebraicTopology.SingularCochains.simplexInOpen
+#print axioms AlgebraicTopology.SingularCochains.simplexInOpen
+#check AlgebraicTopology.SingularCochains.simplexInOpen_val
+#print axioms AlgebraicTopology.SingularCochains.simplexInOpen_val
+#check AlgebraicTopology.SingularCochains.pullback_simplex
+#print axioms AlgebraicTopology.SingularCochains.pullback_simplex
+#check AlgebraicTopology.SingularCochains.cochain_ext
+#print axioms AlgebraicTopology.SingularCochains.cochain_ext
+#check AlgebraicTopology.SingularCochains.cochainFromValues
+#print axioms AlgebraicTopology.SingularCochains.cochainFromValues
+#check AlgebraicTopology.SingularCochains.cochainFromValues_simplex
+#print axioms AlgebraicTopology.SingularCochains.cochainFromValues_simplex
+
+/-! Slice-D adjacent audit count: 184 authored roots + 17 generated structure API = 201. -/
+
+/-! ## `Lib.AlgebraicTopology.SingularSmallChains.Barycentric.MeshLebesgue` -/
+
+#check TopCat.SingularSmallChains.Barycentric.exists_lebesgue_number_two_pairwise
+#print axioms TopCat.SingularSmallChains.Barycentric.exists_lebesgue_number_two_pairwise
+#check TopCat.SingularSmallChains.Barycentric.exists_lebesgue_number_two
+#print axioms TopCat.SingularSmallChains.Barycentric.exists_lebesgue_number_two
+#check TopCat.SingularSmallChains.Barycentric.meshFactor
+#print axioms TopCat.SingularSmallChains.Barycentric.meshFactor
+#check TopCat.SingularSmallChains.Barycentric.meshFactor_nonneg
+#print axioms TopCat.SingularSmallChains.Barycentric.meshFactor_nonneg
+#check TopCat.SingularSmallChains.Barycentric.meshFactor_lt_one
+#print axioms TopCat.SingularSmallChains.Barycentric.meshFactor_lt_one
+#check TopCat.SingularSmallChains.Barycentric.meshFactor_le_one
+#print axioms TopCat.SingularSmallChains.Barycentric.meshFactor_le_one
+#check TopCat.SingularSmallChains.Barycentric.meshFactor_mono
+#print axioms TopCat.SingularSmallChains.Barycentric.meshFactor_mono
+#check TopCat.SingularSmallChains.Barycentric.meshFactor_pow_tendsto
+#print axioms TopCat.SingularSmallChains.Barycentric.meshFactor_pow_tendsto
+#check TopCat.SingularSmallChains.Barycentric.meshFactor_pow_mul_tendsto
+#print axioms TopCat.SingularSmallChains.Barycentric.meshFactor_pow_mul_tendsto
+#check TopCat.SingularSmallChains.Barycentric.eventually_meshFactor_pow_mul_lt
+#print axioms TopCat.SingularSmallChains.Barycentric.eventually_meshFactor_pow_mul_lt
+#check TopCat.SingularSmallChains.Barycentric.simplex_lebesgue_number_two
+#print axioms TopCat.SingularSmallChains.Barycentric.simplex_lebesgue_number_two
+#check TopCat.SingularSmallChains.Barycentric.simplex_lebesgue_number_subsimplices
+#print axioms TopCat.SingularSmallChains.Barycentric.simplex_lebesgue_number_subsimplices
+#check TopCat.SingularSmallChains.Barycentric.simplex_eventually_small_of_diameter
+#print axioms TopCat.SingularSmallChains.Barycentric.simplex_eventually_small_of_diameter
+#check TopCat.SingularSmallChains.Barycentric.finite_family_eventually_small_of_diameter
+#print axioms TopCat.SingularSmallChains.Barycentric.finite_family_eventually_small_of_diameter
+
+/-! ## `Lib.AlgebraicTopology.SingularSmallChains.Barycentric.MeshAffine` -/
+
+#check TopCat.SingularSmallChains.Barycentric.simplexBarycenter_eq_vertexBarycenter
+#print axioms TopCat.SingularSmallChains.Barycentric.simplexBarycenter_eq_vertexBarycenter
+#check TopCat.SingularSmallChains.Barycentric.affineSimplex_ambient_range_subset_convexHull
+#print axioms TopCat.SingularSmallChains.Barycentric.affineSimplex_ambient_range_subset_convexHull
+#check TopCat.SingularSmallChains.Barycentric.dist_simplexBarycenter_convexHull_le
+#print axioms TopCat.SingularSmallChains.Barycentric.dist_simplexBarycenter_convexHull_le
+#check TopCat.SingularSmallChains.Barycentric.dist_simplexBarycenter_affineSimplex_le
+#print axioms TopCat.SingularSmallChains.Barycentric.dist_simplexBarycenter_affineSimplex_le
+#check TopCat.SingularSmallChains.Barycentric.dist_simplexBarycenter_vertex_le
+#print axioms TopCat.SingularSmallChains.Barycentric.dist_simplexBarycenter_vertex_le
+#check TopCat.SingularSmallChains.Barycentric.dist_simplexBarycenter_simplexBarycenter_le
+#print axioms TopCat.SingularSmallChains.Barycentric.dist_simplexBarycenter_simplexBarycenter_le
+#check TopCat.SingularSmallChains.Barycentric.dist_affineSimplex_le
+#print axioms TopCat.SingularSmallChains.Barycentric.dist_affineSimplex_le
+#check TopCat.SingularSmallChains.Barycentric.affineSimplex_diam_le
+#print axioms TopCat.SingularSmallChains.Barycentric.affineSimplex_diam_le
+#check TopCat.SingularSmallChains.Barycentric.simplex_eventually_small_of_vertices
+#print axioms TopCat.SingularSmallChains.Barycentric.simplex_eventually_small_of_vertices
+#check TopCat.SingularSmallChains.Barycentric.finite_family_eventually_small_of_vertices
+#print axioms TopCat.SingularSmallChains.Barycentric.finite_family_eventually_small_of_vertices
+
+/-! ## `Lib.AlgebraicTopology.SingularSmallChains.Barycentric.MeshSubdivision` -/
+
+#check TopCat.SingularSmallChains.Barycentric.formalCenter_mem_of_convex
+#print axioms TopCat.SingularSmallChains.Barycentric.formalCenter_mem_of_convex
+#check TopCat.SingularSmallChains.Barycentric.formalSubdivision_simplex_vertices_mem_convexHull
+#print axioms TopCat.SingularSmallChains.Barycentric.formalSubdivision_simplex_vertices_mem_convexHull
+#check TopCat.SingularSmallChains.Barycentric.formalSubdivision_simplex_mesh
+#print axioms TopCat.SingularSmallChains.Barycentric.formalSubdivision_simplex_mesh
+#check TopCat.SingularSmallChains.Barycentric.formalSubdivision_mesh
+#print axioms TopCat.SingularSmallChains.Barycentric.formalSubdivision_mesh
+#check TopCat.SingularSmallChains.Barycentric.formalSubdivision_iterate_mesh
+#print axioms TopCat.SingularSmallChains.Barycentric.formalSubdivision_iterate_mesh
+#check TopCat.SingularSmallChains.Barycentric.simplex_dist_le_one
+#print axioms TopCat.SingularSmallChains.Barycentric.simplex_dist_le_one
+#check TopCat.SingularSmallChains.Barycentric.simplex_formalSubdivision_iterate_mesh
+#print axioms TopCat.SingularSmallChains.Barycentric.simplex_formalSubdivision_iterate_mesh
+#check TopCat.SingularSmallChains.Barycentric.simplex_formalSubdivision_iterate_diam
+#print axioms TopCat.SingularSmallChains.Barycentric.simplex_formalSubdivision_iterate_diam
+#check TopCat.SingularSmallChains.Barycentric.simplex_formalSubdivision_eventually_small
+#print axioms TopCat.SingularSmallChains.Barycentric.simplex_formalSubdivision_eventually_small
+#check TopCat.SingularSmallChains.Barycentric.finite_family_formalSubdivision_eventually_small
+#print axioms TopCat.SingularSmallChains.Barycentric.finite_family_formalSubdivision_eventually_small
+
+/-! ## `Lib.AlgebraicTopology.SingularSmallChains.Barycentric.ArbitraryCoverMesh` -/
+
+#check TopCat.SingularSmallChains.Barycentric.ArbitraryCover.exists_lebesgue_number_pairwise
+#print axioms TopCat.SingularSmallChains.Barycentric.ArbitraryCover.exists_lebesgue_number_pairwise
+#check TopCat.SingularSmallChains.Barycentric.ArbitraryCover.exists_lebesgue_number
+#print axioms TopCat.SingularSmallChains.Barycentric.ArbitraryCover.exists_lebesgue_number
+#check TopCat.SingularSmallChains.Barycentric.ArbitraryCover.simplex_lebesgue_number_subsimplices
+#print axioms TopCat.SingularSmallChains.Barycentric.ArbitraryCover.simplex_lebesgue_number_subsimplices
+#check TopCat.SingularSmallChains.Barycentric.ArbitraryCover.simplex_eventually_small_of_diameter
+#print axioms TopCat.SingularSmallChains.Barycentric.ArbitraryCover.simplex_eventually_small_of_diameter
+#check TopCat.SingularSmallChains.Barycentric.ArbitraryCover.simplex_formalSubdivision_eventually_small
+#print axioms TopCat.SingularSmallChains.Barycentric.ArbitraryCover.simplex_formalSubdivision_eventually_small
+#check TopCat.SingularSmallChains.Barycentric.ArbitraryCover.finite_family_formalSubdivision_eventually_small
+#print axioms TopCat.SingularSmallChains.Barycentric.ArbitraryCover.finite_family_formalSubdivision_eventually_small
+
+/-! ## `Lib.AlgebraicTopology.SingularSmallChains.Barycentric.RealizationSupport` -/
+
+#check TopCat.SingularSmallChains.Barycentric.formalLinearMap_mem_of_support
+#print axioms TopCat.SingularSmallChains.Barycentric.formalLinearMap_mem_of_support
+#check TopCat.SingularSmallChains.Barycentric.singularLinearMap_mem_of_support
+#print axioms TopCat.SingularSmallChains.Barycentric.singularLinearMap_mem_of_support
+#check TopCat.SingularSmallChains.Barycentric.singularLinearMap_mem_of_small
+#print axioms TopCat.SingularSmallChains.Barycentric.singularLinearMap_mem_of_small
+#check TopCat.SingularSmallChains.Barycentric.realizedChain_mem_small
+#print axioms TopCat.SingularSmallChains.Barycentric.realizedChain_mem_small
+#check TopCat.SingularSmallChains.Barycentric.realizedChain_mem_small_of_support
+#print axioms TopCat.SingularSmallChains.Barycentric.realizedChain_mem_small_of_support
+
+/-! ## `Lib.AlgebraicTopology.SingularSmallChains.Barycentric.Subdivision` -/
+
+#check TopCat.SingularSmallChains.Barycentric.subdivision
+#print axioms TopCat.SingularSmallChains.Barycentric.subdivision
+#check TopCat.SingularSmallChains.Barycentric.subdivision_simplex
+#print axioms TopCat.SingularSmallChains.Barycentric.subdivision_simplex
+#check TopCat.SingularSmallChains.Barycentric.subdivision_zero
+#print axioms TopCat.SingularSmallChains.Barycentric.subdivision_zero
+#check TopCat.SingularSmallChains.Barycentric.inducedChain_subdivision
+#print axioms TopCat.SingularSmallChains.Barycentric.inducedChain_subdivision
+#check TopCat.SingularSmallChains.Barycentric.affineSimplex_comp_stdVertices
+#print axioms TopCat.SingularSmallChains.Barycentric.affineSimplex_comp_stdVertices
+#check TopCat.SingularSmallChains.Barycentric.subdivision_affineChainMap
+#print axioms TopCat.SingularSmallChains.Barycentric.subdivision_affineChainMap
+#check TopCat.SingularSmallChains.Barycentric.subdivision_boundary
+#print axioms TopCat.SingularSmallChains.Barycentric.subdivision_boundary
+#check TopCat.SingularSmallChains.Barycentric.subdivision_add
+#print axioms TopCat.SingularSmallChains.Barycentric.subdivision_add
+#check TopCat.SingularSmallChains.Barycentric.subdivision_eq_iterate
+#print axioms TopCat.SingularSmallChains.Barycentric.subdivision_eq_iterate
+#check TopCat.SingularSmallChains.Barycentric.subdivisionChainMap
+#print axioms TopCat.SingularSmallChains.Barycentric.subdivisionChainMap
+#check TopCat.SingularSmallChains.Barycentric.subdivisionChainMap_f
+#print axioms TopCat.SingularSmallChains.Barycentric.subdivisionChainMap_f
+#check TopCat.SingularSmallChains.Barycentric.subdivision_d
+#print axioms TopCat.SingularSmallChains.Barycentric.subdivision_d
+#check TopCat.SingularSmallChains.Barycentric.subdivisionChainMap_natural
+#print axioms TopCat.SingularSmallChains.Barycentric.subdivisionChainMap_natural
+
+/-! ## `Lib.AlgebraicTopology.SingularSmallChains.Barycentric.SubdivisionHomotopy` -/
+
+#check TopCat.SingularSmallChains.Barycentric.subdivisionHomotopy
+#print axioms TopCat.SingularSmallChains.Barycentric.subdivisionHomotopy
+#check TopCat.SingularSmallChains.Barycentric.subdivisionHomotopy_simplex
+#print axioms TopCat.SingularSmallChains.Barycentric.subdivisionHomotopy_simplex
+#check TopCat.SingularSmallChains.Barycentric.inducedChain_subdivisionHomotopy
+#print axioms TopCat.SingularSmallChains.Barycentric.inducedChain_subdivisionHomotopy
+#check TopCat.SingularSmallChains.Barycentric.subdivisionHomotopy_affineChainMap
+#print axioms TopCat.SingularSmallChains.Barycentric.subdivisionHomotopy_affineChainMap
+#check TopCat.SingularSmallChains.Barycentric.subdivisionHomotopy_boundary_zero_affineChainMap
+#print axioms TopCat.SingularSmallChains.Barycentric.subdivisionHomotopy_boundary_zero_affineChainMap
+#check TopCat.SingularSmallChains.Barycentric.subdivisionHomotopy_boundary_affineChainMap
+#print axioms TopCat.SingularSmallChains.Barycentric.subdivisionHomotopy_boundary_affineChainMap
+#check TopCat.SingularSmallChains.Barycentric.subdivisionHomotopy_boundary_zero
+#print axioms TopCat.SingularSmallChains.Barycentric.subdivisionHomotopy_boundary_zero
+#check TopCat.SingularSmallChains.Barycentric.subdivisionHomotopy_boundary
+#print axioms TopCat.SingularSmallChains.Barycentric.subdivisionHomotopy_boundary
+#check TopCat.SingularSmallChains.Barycentric.subdivisionHomotopy_boundary_of_cycle
+#print axioms TopCat.SingularSmallChains.Barycentric.subdivisionHomotopy_boundary_of_cycle
+
+/-! ## `Lib.AlgebraicTopology.SingularSmallChains.Barycentric.HomotopySupport` -/
+
+#check TopCat.SingularSmallChains.Barycentric.subdivisionHomotopy_mem_small
+#print axioms TopCat.SingularSmallChains.Barycentric.subdivisionHomotopy_mem_small
+
+/-! ## `Lib.AlgebraicTopology.SingularSmallChains.Barycentric.SubdivisionSupport` -/
+
+#check TopCat.SingularSmallChains.Barycentric.subdivision_mem_small
+#print axioms TopCat.SingularSmallChains.Barycentric.subdivision_mem_small
+#check TopCat.SingularSmallChains.Barycentric.eventually_subdivision_simplex_mem_small
+#print axioms TopCat.SingularSmallChains.Barycentric.eventually_subdivision_simplex_mem_small
+#check TopCat.SingularSmallChains.Barycentric.eventually_subdivision_mem_small
+#print axioms TopCat.SingularSmallChains.Barycentric.eventually_subdivision_mem_small
+
+/-! ## `Lib.AlgebraicTopology.SingularSmallChains.Barycentric` -/
+
+#check TopCat.SingularSmallChains.Barycentric.subdivisionData
+#print axioms TopCat.SingularSmallChains.Barycentric.subdivisionData
+#check TopCat.SingularSmallChains.Barycentric.inclusion_quasiIso
+#print axioms TopCat.SingularSmallChains.Barycentric.inclusion_quasiIso
+#check TopCat.SingularSmallChains.Barycentric.smallChainHomotopyEquiv
+#print axioms TopCat.SingularSmallChains.Barycentric.smallChainHomotopyEquiv
+#check TopCat.SingularSmallChains.Barycentric.smallChainHomotopyEquiv_hom
+#print axioms TopCat.SingularSmallChains.Barycentric.smallChainHomotopyEquiv_hom
+
+/-! ## `Lib.Topology.Sheaves.SingularCochainSheaf.GlobalUnitPredicates` -/
+
+#check TopCat.SingularCochainSheaf.GlobalUnitSurjective
+#print axioms TopCat.SingularCochainSheaf.GlobalUnitSurjective
+#check TopCat.SingularCochainSheaf.GlobalKernelLocallySmall
+#print axioms TopCat.SingularCochainSheaf.GlobalKernelLocallySmall
+#check TopCat.SingularCochainSheaf.SmallKernelGlobal
+#print axioms TopCat.SingularCochainSheaf.SmallKernelGlobal
+#check TopCat.SingularCochainSheaf.HasSmallChainEquivalences
+#print axioms TopCat.SingularCochainSheaf.HasSmallChainEquivalences
+
+/-! ## `Lib.Topology.Sheaves.SingularCochainSheaf.BarycentricSmallChains` -/
+
+#check TopCat.SingularCochainSheaf.hasSmallChainEquivalences_barycentric
+#print axioms TopCat.SingularCochainSheaf.hasSmallChainEquivalences_barycentric
+
+/-! ## `Lib.Topology.Sheaves.SingularCochainSheaf.GlobalPatch` -/
+
+#check TopCat.SingularCochainSheaf.restrictGlobalCochain
+#print axioms TopCat.SingularCochainSheaf.restrictGlobalCochain
+#check TopCat.SingularCochainSheaf.restrictGlobalCochain_simplex
+#print axioms TopCat.SingularCochainSheaf.restrictGlobalCochain_simplex
+#check TopCat.SingularCochainSheaf.restrictGlobalCochain_restrict
+#print axioms TopCat.SingularCochainSheaf.restrictGlobalCochain_restrict
+#check TopCat.SingularCochainSheaf.patchIndex
+#print axioms TopCat.SingularCochainSheaf.patchIndex
+#check TopCat.SingularCochainSheaf.patchedValue
+#print axioms TopCat.SingularCochainSheaf.patchedValue
+#check TopCat.SingularCochainSheaf.patchedCochain
+#print axioms TopCat.SingularCochainSheaf.patchedCochain
+#check TopCat.SingularCochainSheaf.patchedCochain_simplex
+#print axioms TopCat.SingularCochainSheaf.patchedCochain_simplex
+#check TopCat.SingularCochainSheaf.patchedCochain_simplex_of_subset
+#print axioms TopCat.SingularCochainSheaf.patchedCochain_simplex_of_subset
+
+/-! ## `Lib.Topology.Sheaves.SingularCochainSheaf.GlobalPatchLocal` -/
+
+#check TopCat.SingularCochainSheaf.patchedCochain_restrict_of_compatible
+#print axioms TopCat.SingularCochainSheaf.patchedCochain_restrict_of_compatible
+#check TopCat.SingularCochainSheaf.exists_neighborhood_patchedCochain_eq
+#print axioms TopCat.SingularCochainSheaf.exists_neighborhood_patchedCochain_eq
+
+/-! ## `Lib.Topology.Sheaves.SingularCochainSheaf.GlobalSections` -/
+
+#check TopCat.SingularCochainSheaf.globalCochainUnit_apply
+#print axioms TopCat.SingularCochainSheaf.globalCochainUnit_apply
+#check TopCat.SingularCochainSheaf.unit_restrict
+#print axioms TopCat.SingularCochainSheaf.unit_restrict
+#check TopCat.SingularCochainSheaf.globalCochainUnit_restrict
+#print axioms TopCat.SingularCochainSheaf.globalCochainUnit_restrict
+#check TopCat.SingularCochainSheaf.globalCochainUnit_germ
+#print axioms TopCat.SingularCochainSheaf.globalCochainUnit_germ
+#check TopCat.SingularCochainSheaf.globalCochainUnit_surjective
+#print axioms TopCat.SingularCochainSheaf.globalCochainUnit_surjective
+
+/-! ## `Lib.Topology.Sheaves.SingularCochainSheaf.GlobalKernelLocal` -/
+
+#check TopCat.SingularCochainSheaf.globalCochainUnit_eq_zero_of_local
+#print axioms TopCat.SingularCochainSheaf.globalCochainUnit_eq_zero_of_local
+#check TopCat.SingularCochainSheaf.globalCochainUnit_locally_zero
+#print axioms TopCat.SingularCochainSheaf.globalCochainUnit_locally_zero
+#check TopCat.SingularCochainSheaf.globalCochainUnit_eq_zero_iff_local
+#print axioms TopCat.SingularCochainSheaf.globalCochainUnit_eq_zero_iff_local
+
+/-! ## `Lib.Topology.Sheaves.SingularCochainSheaf.GlobalKernelSmall` -/
+
+#check TopCat.SingularCochainSheaf.cochainRestriction_eq_zero_iff
+#print axioms TopCat.SingularCochainSheaf.cochainRestriction_eq_zero_iff
+#check TopCat.SingularCochainSheaf.cochainRestriction_eq_zero_iff_open_restrictions
+#print axioms TopCat.SingularCochainSheaf.cochainRestriction_eq_zero_iff_open_restrictions
+#check TopCat.SingularCochainSheaf.globalCochainUnit_eq_zero_of_smallRestriction
+#print axioms TopCat.SingularCochainSheaf.globalCochainUnit_eq_zero_of_smallRestriction
+#check TopCat.SingularCochainSheaf.exists_cover_cochainRestriction_eq_zero
+#print axioms TopCat.SingularCochainSheaf.exists_cover_cochainRestriction_eq_zero
+#check TopCat.SingularCochainSheaf.globalCochainUnit_eq_zero_iff_smallCover
+#print axioms TopCat.SingularCochainSheaf.globalCochainUnit_eq_zero_iff_smallCover
+#check TopCat.SingularCochainSheaf.globalKernelLocallySmall
+#print axioms TopCat.SingularCochainSheaf.globalKernelLocallySmall
+#check TopCat.SingularCochainSheaf.smallKernelGlobal
+#print axioms TopCat.SingularCochainSheaf.smallKernelGlobal
+
+/-! ## `Lib.Topology.Sheaves.ConstantSheafH1` -/
+
+#check TopCat.SingularCochainSheaf.exists_h1Comparison_natural
+#print axioms TopCat.SingularCochainSheaf.exists_h1Comparison_natural
+
+/-! ## `Lib.Topology.Sheaves.ConstantProductH1Comparison` -/
+
+#check TopCat.ConstantProductH1.nativePullback_basedFibreInclusion_isIso
+#print axioms TopCat.ConstantProductH1.nativePullback_basedFibreInclusion_isIso
+
+/-! ## `Lib.Topology.Sheaves.OpenEmbeddingCohomology` -/
+
+#check TopCat.Sheaf.OpenEmbeddingCohomology.openImage
+#print axioms TopCat.Sheaf.OpenEmbeddingCohomology.openImage
+#check TopCat.Sheaf.OpenEmbeddingCohomology.openImage_continuous
+#print axioms TopCat.Sheaf.OpenEmbeddingCohomology.openImage_continuous
+#check TopCat.Sheaf.OpenEmbeddingCohomology.restriction
+#print axioms TopCat.Sheaf.OpenEmbeddingCohomology.restriction
+#check TopCat.Sheaf.OpenEmbeddingCohomology.restriction_additive
+#print axioms TopCat.Sheaf.OpenEmbeddingCohomology.restriction_additive
+#check TopCat.Sheaf.OpenEmbeddingCohomology.openImage_cocontinuous
+#print axioms TopCat.Sheaf.OpenEmbeddingCohomology.openImage_cocontinuous
+#check TopCat.Sheaf.OpenEmbeddingCohomology.restriction_rightAdjoint
+#print axioms TopCat.Sheaf.OpenEmbeddingCohomology.restriction_rightAdjoint
+#check TopCat.Sheaf.OpenEmbeddingCohomology.restriction_leftAdjoint
+#print axioms TopCat.Sheaf.OpenEmbeddingCohomology.restriction_leftAdjoint
+#check TopCat.Sheaf.OpenEmbeddingCohomology.restriction_preservesFiniteLimits
+#print axioms TopCat.Sheaf.OpenEmbeddingCohomology.restriction_preservesFiniteLimits
+#check TopCat.Sheaf.OpenEmbeddingCohomology.restriction_preservesFiniteColimits
+#print axioms TopCat.Sheaf.OpenEmbeddingCohomology.restriction_preservesFiniteColimits
+#check TopCat.Sheaf.OpenEmbeddingCohomology.rawRestrictionHom
+#print axioms TopCat.Sheaf.OpenEmbeddingCohomology.rawRestrictionHom
+#check TopCat.Sheaf.OpenEmbeddingCohomology.restrictionHom
+#print axioms TopCat.Sheaf.OpenEmbeddingCohomology.restrictionHom
+#check TopCat.Sheaf.OpenEmbeddingCohomology.unit_restrictionHom
+#print axioms TopCat.Sheaf.OpenEmbeddingCohomology.unit_restrictionHom
+#check TopCat.Sheaf.OpenEmbeddingCohomology.restrictionHom_app_unit
+#print axioms TopCat.Sheaf.OpenEmbeddingCohomology.restrictionHom_app_unit
+#check TopCat.Sheaf.OpenEmbeddingCohomology.restrictionHom_isIso
+#print axioms TopCat.Sheaf.OpenEmbeddingCohomology.restrictionHom_isIso
+#check TopCat.Sheaf.OpenEmbeddingCohomology.cohomologyMap
+#print axioms TopCat.Sheaf.OpenEmbeddingCohomology.cohomologyMap
+#check TopCat.Sheaf.OpenEmbeddingCohomology.cohomologyMap_naturality
+#print axioms TopCat.Sheaf.OpenEmbeddingCohomology.cohomologyMap_naturality
+#check TopCat.Sheaf.OpenEmbeddingCohomology.constantPullback
+#print axioms TopCat.Sheaf.OpenEmbeddingCohomology.constantPullback
+
+/-! ## `Lib.Topology.Sheaves.FiniteClosedPushforward.Composition` -/
+
+#check TopCat.ConstantSheaf.pushforwardHom_comp
+#print axioms TopCat.ConstantSheaf.pushforwardHom_comp
+#check TopCat.FiniteClosedPushforward.cohomologyForward_comp
+#print axioms TopCat.FiniteClosedPushforward.cohomologyForward_comp
+#check TopCat.ConstantSheafCohomology.pullback_comp
+#print axioms TopCat.ConstantSheafCohomology.pullback_comp
+
+/-! ## `Lib.CategoryTheory.Sites.Leray.FibreStalkEvaluation.OpenRestrictionComposition` -/
+
+#check CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.induced
+#print axioms CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.induced
+#check CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.induced_apply
+#print axioms CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.induced_apply
+#check CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.induced_comp_inclusion
+#print axioms CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.induced_comp_inclusion
+#check CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.induced_isClosedMap
+#print axioms CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.induced_isClosedMap
+#check CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.induced_finite_fibres
+#print axioms CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.induced_finite_fibres
+#check CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.openImage_preimage_obj
+#print axioms CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.openImage_preimage_obj
+#check CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.openImage_preimage
+#print axioms CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.openImage_preimage
+#check CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.restrictionPushforwardIso
+#print axioms CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.restrictionPushforwardIso
+#check CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.restrictionPushforwardIso_hom_app
+#print axioms CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.restrictionPushforwardIso_hom_app
+#check CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.restrictionPushforwardIso_global
+#print axioms CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.restrictionPushforwardIso_global
+#check CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.restrictionPushforwardIso_neighborhoodUnit
+#print axioms CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.restrictionPushforwardIso_neighborhoodUnit
+#check CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.neighborhoodCohomologyForward_openRestriction
+#print axioms CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.neighborhoodCohomologyForward_openRestriction
+
+/-! ## `Lib.CategoryTheory.Sites.Leray.FibreStalkEvaluation.ConstantNormalization` -/
+
+#check CategoryTheory.Sheaf.Leray.ConstantFibreEvaluationNormalization.openConstantRestrictionHom
+#print axioms CategoryTheory.Sheaf.Leray.ConstantFibreEvaluationNormalization.openConstantRestrictionHom
+#check CategoryTheory.Sheaf.Leray.ConstantFibreEvaluationNormalization.openConstantRestrictionHom_isIso
+#print axioms CategoryTheory.Sheaf.Leray.ConstantFibreEvaluationNormalization.openConstantRestrictionHom_isIso
+#check CategoryTheory.Sheaf.Leray.ConstantFibreEvaluationNormalization.openConstantRestriction_coefficient
+#print axioms CategoryTheory.Sheaf.Leray.ConstantFibreEvaluationNormalization.openConstantRestriction_coefficient
+#check CategoryTheory.Sheaf.Leray.ConstantFibreEvaluationNormalization.intrinsicOpenClass
+#print axioms CategoryTheory.Sheaf.Leray.ConstantFibreEvaluationNormalization.intrinsicOpenClass
+#check CategoryTheory.Sheaf.Leray.ConstantFibreEvaluationNormalization.cohomologyEvaluation_forward_open
+#print axioms CategoryTheory.Sheaf.Leray.ConstantFibreEvaluationNormalization.cohomologyEvaluation_forward_open
+#check CategoryTheory.Sheaf.Leray.ConstantFibreEvaluationNormalization.intrinsicOpenClass_coefficient
+#print axioms CategoryTheory.Sheaf.Leray.ConstantFibreEvaluationNormalization.intrinsicOpenClass_coefficient
+#check CategoryTheory.Sheaf.Leray.ConstantFibreEvaluationNormalization.canonicalConstantEvaluation
+#print axioms CategoryTheory.Sheaf.Leray.ConstantFibreEvaluationNormalization.canonicalConstantEvaluation
+#check CategoryTheory.Sheaf.Leray.ConstantFibreEvaluationNormalization.intrinsicConstantPullback
+#print axioms CategoryTheory.Sheaf.Leray.ConstantFibreEvaluationNormalization.intrinsicConstantPullback
+#check CategoryTheory.Sheaf.Leray.ConstantFibreEvaluationNormalization.fibreCohomology_eq_of_forward_eq
+#print axioms CategoryTheory.Sheaf.Leray.ConstantFibreEvaluationNormalization.fibreCohomology_eq_of_forward_eq
+#check CategoryTheory.Sheaf.Leray.ConstantFibreEvaluationNormalization.canonicalConstantEvaluation_forward
+#print axioms CategoryTheory.Sheaf.Leray.ConstantFibreEvaluationNormalization.canonicalConstantEvaluation_forward
+
+/-! ## `Lib.CategoryTheory.Sites.Leray.FibreStalkEvaluation.ConstantNormalizationConsequences` -/
+
+#check CategoryTheory.Sheaf.Leray.ConstantFibreEvaluationNormalization.canonicalConstantEvaluation_eq_intrinsicConstantPullback
+#print axioms CategoryTheory.Sheaf.Leray.ConstantFibreEvaluationNormalization.canonicalConstantEvaluation_eq_intrinsicConstantPullback
+
+/-! ## `Lib.CategoryTheory.Sites.Leray.FibreStalkEvaluation.ConstantEvaluationBijective` -/
+
+#check CategoryTheory.Sheaf.Leray.ConstantFibreEvaluationNormalization.intrinsicOpenClass_bijective
+#print axioms CategoryTheory.Sheaf.Leray.ConstantFibreEvaluationNormalization.intrinsicOpenClass_bijective
+#check CategoryTheory.Sheaf.Leray.ConstantFibreEvaluationNormalization.canonicalConstantEvaluation_bijective_of_pullback_isIso
+#print axioms CategoryTheory.Sheaf.Leray.ConstantFibreEvaluationNormalization.canonicalConstantEvaluation_bijective_of_pullback_isIso
+
+/-! ## `Lib.Topology.Sheaves.NestedOpenCohomology` -/
+
+#check TopCat.Sheaf.NestedOpenCohomology.inclusion
+#print axioms TopCat.Sheaf.NestedOpenCohomology.inclusion
+#check TopCat.Sheaf.NestedOpenCohomology.inclusion_apply
+#print axioms TopCat.Sheaf.NestedOpenCohomology.inclusion_apply
+#check TopCat.Sheaf.NestedOpenCohomology.inclusion_isOpenEmbedding
+#print axioms TopCat.Sheaf.NestedOpenCohomology.inclusion_isOpenEmbedding
+#check TopCat.Sheaf.NestedOpenCohomology.inclusion_comp_ambientInclusion
+#print axioms TopCat.Sheaf.NestedOpenCohomology.inclusion_comp_ambientInclusion
+#check TopCat.Sheaf.NestedOpenCohomology.openImage_comp_obj
+#print axioms TopCat.Sheaf.NestedOpenCohomology.openImage_comp_obj
+#check TopCat.Sheaf.NestedOpenCohomology.openImage_comp
+#print axioms TopCat.Sheaf.NestedOpenCohomology.openImage_comp
+#check TopCat.Sheaf.NestedOpenCohomology.restrictionIso
+#print axioms TopCat.Sheaf.NestedOpenCohomology.restrictionIso
+#check TopCat.Sheaf.NestedOpenCohomology.restrictionIso_hom_app
+#print axioms TopCat.Sheaf.NestedOpenCohomology.restrictionIso_hom_app
+#check TopCat.Sheaf.NestedOpenCohomology.constantRestrictionHom_comp
+#print axioms TopCat.Sheaf.NestedOpenCohomology.constantRestrictionHom_comp
+#check TopCat.Sheaf.NestedOpenCohomology.representingUnit_app_unit
+#print axioms TopCat.Sheaf.NestedOpenCohomology.representingUnit_app_unit
+#check TopCat.Sheaf.NestedOpenCohomology.integralHomGlobalEquiv_eq_app_unit
+#print axioms TopCat.Sheaf.NestedOpenCohomology.integralHomGlobalEquiv_eq_app_unit
+#check TopCat.Sheaf.NestedOpenCohomology.representingUnit_comp
+#print axioms TopCat.Sheaf.NestedOpenCohomology.representingUnit_comp
+#check TopCat.Sheaf.NestedOpenCohomology.cohomologyEquiv_restrict
+#print axioms TopCat.Sheaf.NestedOpenCohomology.cohomologyEquiv_restrict
+#check TopCat.Sheaf.NestedOpenCohomology.intrinsicOpenClass_restrict
+#print axioms TopCat.Sheaf.NestedOpenCohomology.intrinsicOpenClass_restrict
+
+/-! ## `Lib.Topology.Sheaves.FiniteClosedOpenRestriction` -/
+
+#check TopCat.Sheaf.FiniteClosedOpenRestriction.openImage_preimage_obj
+#print axioms TopCat.Sheaf.FiniteClosedOpenRestriction.openImage_preimage_obj
+#check TopCat.Sheaf.FiniteClosedOpenRestriction.openImage_preimage
+#print axioms TopCat.Sheaf.FiniteClosedOpenRestriction.openImage_preimage
+#check TopCat.Sheaf.FiniteClosedOpenRestriction.restrictionPushforwardIso
+#print axioms TopCat.Sheaf.FiniteClosedOpenRestriction.restrictionPushforwardIso
+#check TopCat.Sheaf.FiniteClosedOpenRestriction.restrictionPushforwardIso_hom_app
+#print axioms TopCat.Sheaf.FiniteClosedOpenRestriction.restrictionPushforwardIso_hom_app
+#check TopCat.Sheaf.FiniteClosedOpenRestriction.restrictionPushforwardIso_restrictionHom
+#print axioms TopCat.Sheaf.FiniteClosedOpenRestriction.restrictionPushforwardIso_restrictionHom
+#check TopCat.Sheaf.FiniteClosedOpenRestriction.cohomologyForward_openRestriction
+#print axioms TopCat.Sheaf.FiniteClosedOpenRestriction.cohomologyForward_openRestriction
+#check TopCat.Sheaf.FiniteClosedOpenRestriction.sandwichCoefficient
+#print axioms TopCat.Sheaf.FiniteClosedOpenRestriction.sandwichCoefficient
+#check TopCat.Sheaf.FiniteClosedOpenRestriction.openRestrictionThenCoefficient
+#print axioms TopCat.Sheaf.FiniteClosedOpenRestriction.openRestrictionThenCoefficient
+#check TopCat.Sheaf.FiniteClosedOpenRestriction.closedPullbackThenRestriction
+#print axioms TopCat.Sheaf.FiniteClosedOpenRestriction.closedPullbackThenRestriction
+#check TopCat.Sheaf.FiniteClosedOpenRestriction.pullback_openRestriction
+#print axioms TopCat.Sheaf.FiniteClosedOpenRestriction.pullback_openRestriction
+#check TopCat.Sheaf.FiniteClosedOpenRestriction.constantPullback_sandwich
+#print axioms TopCat.Sheaf.FiniteClosedOpenRestriction.constantPullback_sandwich
+
+/-! ## `Lib.Topology.Sheaves.OpenFiniteClosedFactorization` -/
+
+#check TopCat.Sheaf.OpenFiniteClosedFactorization.openImage_preimage_obj
+#print axioms TopCat.Sheaf.OpenFiniteClosedFactorization.openImage_preimage_obj
+#check TopCat.Sheaf.OpenFiniteClosedFactorization.openImage_preimage
+#print axioms TopCat.Sheaf.OpenFiniteClosedFactorization.openImage_preimage
+#check TopCat.Sheaf.OpenFiniteClosedFactorization.restrictionPushforwardIso
+#print axioms TopCat.Sheaf.OpenFiniteClosedFactorization.restrictionPushforwardIso
+#check TopCat.Sheaf.OpenFiniteClosedFactorization.restrictionPushforwardIso_hom_app
+#print axioms TopCat.Sheaf.OpenFiniteClosedFactorization.restrictionPushforwardIso_hom_app
+#check TopCat.Sheaf.OpenFiniteClosedFactorization.restrictionPushforwardIso_restrictionHom
+#print axioms TopCat.Sheaf.OpenFiniteClosedFactorization.restrictionPushforwardIso_restrictionHom
+#check TopCat.Sheaf.OpenFiniteClosedFactorization.cohomologyForward_openRestriction
+#print axioms TopCat.Sheaf.OpenFiniteClosedFactorization.cohomologyForward_openRestriction
+#check TopCat.Sheaf.OpenFiniteClosedFactorization.normalizedCoefficient
+#print axioms TopCat.Sheaf.OpenFiniteClosedFactorization.normalizedCoefficient
+#check TopCat.Sheaf.OpenFiniteClosedFactorization.normalizedOpenPullback_forward
+#print axioms TopCat.Sheaf.OpenFiniteClosedFactorization.normalizedOpenPullback_forward
+#check TopCat.Sheaf.OpenFiniteClosedFactorization.directPullback_forward_open
+#print axioms TopCat.Sheaf.OpenFiniteClosedFactorization.directPullback_forward_open
+#check TopCat.Sheaf.OpenFiniteClosedFactorization.constantPullback_factorization
+#print axioms TopCat.Sheaf.OpenFiniteClosedFactorization.constantPullback_factorization
+
+/-! ## `Lib.Algebra.Module.FreeIntSubmodule` -/
+
+#check Module.FreeIntSubmodule.FinsuppModel.initialSubmodule
+#print axioms Module.FreeIntSubmodule.FinsuppModel.initialSubmodule
+#check Module.FreeIntSubmodule.FinsuppModel.mem_initialSubmodule_iff
+#print axioms Module.FreeIntSubmodule.FinsuppModel.mem_initialSubmodule_iff
+#check Module.FreeIntSubmodule.FinsuppModel.leadingIdeal
+#print axioms Module.FreeIntSubmodule.FinsuppModel.leadingIdeal
+#check Module.FreeIntSubmodule.FinsuppModel.exists_leadingVector
+#print axioms Module.FreeIntSubmodule.FinsuppModel.exists_leadingVector
+#check Module.FreeIntSubmodule.FinsuppModel.leadingVector
+#print axioms Module.FreeIntSubmodule.FinsuppModel.leadingVector
+#check Module.FreeIntSubmodule.FinsuppModel.leadingVector_above
+#print axioms Module.FreeIntSubmodule.FinsuppModel.leadingVector_above
+#check Module.FreeIntSubmodule.FinsuppModel.leadingVector_diagonal
+#print axioms Module.FreeIntSubmodule.FinsuppModel.leadingVector_diagonal
+#check Module.FreeIntSubmodule.FinsuppModel.generator_dvd_coefficient
+#print axioms Module.FreeIntSubmodule.FinsuppModel.generator_dvd_coefficient
+#check Module.FreeIntSubmodule.FinsuppModel.LeadingIndex
+#print axioms Module.FreeIntSubmodule.FinsuppModel.LeadingIndex
+#check Module.FreeIntSubmodule.FinsuppModel.leadingFamily
+#print axioms Module.FreeIntSubmodule.FinsuppModel.leadingFamily
+#check Module.FreeIntSubmodule.FinsuppModel.leadingFamily_diagonal_ne_zero
+#print axioms Module.FreeIntSubmodule.FinsuppModel.leadingFamily_diagonal_ne_zero
+#check Module.FreeIntSubmodule.FinsuppModel.leadingFamily_above
+#print axioms Module.FreeIntSubmodule.FinsuppModel.leadingFamily_above
+#check Module.FreeIntSubmodule.exists_largest_support
+#print axioms Module.FreeIntSubmodule.exists_largest_support
+#check Module.FreeIntSubmodule.triangular_linearIndependent
+#print axioms Module.FreeIntSubmodule.triangular_linearIndependent
+#check Module.FreeIntSubmodule.FinsuppModel.leadingFamily_linearIndependent
+#print axioms Module.FreeIntSubmodule.FinsuppModel.leadingFamily_linearIndependent
+#check Module.FreeIntSubmodule.FinsuppModel.mem_span_leadingFamily_of_bounded
+#print axioms Module.FreeIntSubmodule.FinsuppModel.mem_span_leadingFamily_of_bounded
+#check Module.FreeIntSubmodule.FinsuppModel.leadingFamily_span_eq_top
+#print axioms Module.FreeIntSubmodule.FinsuppModel.leadingFamily_span_eq_top
+#check Module.FreeIntSubmodule.FinsuppModel.leadingBasis
+#print axioms Module.FreeIntSubmodule.FinsuppModel.leadingBasis
+#check Module.FreeIntSubmodule.finsupp_submodule_free_int
+#print axioms Module.FreeIntSubmodule.finsupp_submodule_free_int
+#check Module.FreeIntSubmodule.submodule_free_int
+#print axioms Module.FreeIntSubmodule.submodule_free_int
+#check Module.FreeIntSubmodule.submodule_projective_int_with_module
+#print axioms Module.FreeIntSubmodule.submodule_projective_int_with_module
+#check Module.FreeIntSubmodule.submodule_projective_int
+#print axioms Module.FreeIntSubmodule.submodule_projective_int
+
+/-! ## `Lib.AlgebraicTopology.SingularCochains.DualEvaluation` -/
+
+#check AlgebraicTopology.SingularCochains.DualEvaluation.PositiveCocycle
+#print axioms AlgebraicTopology.SingularCochains.DualEvaluation.PositiveCocycle
+#check AlgebraicTopology.SingularCochains.DualEvaluation.positiveCocycleClass
+#print axioms AlgebraicTopology.SingularCochains.DualEvaluation.positiveCocycleClass
+#check AlgebraicTopology.SingularCochains.DualEvaluation.positiveCocycleClass_surjective
+#print axioms AlgebraicTopology.SingularCochains.DualEvaluation.positiveCocycleClass_surjective
+#check AlgebraicTopology.SingularCochains.DualEvaluation.mapPositiveCocycles
+#print axioms AlgebraicTopology.SingularCochains.DualEvaluation.mapPositiveCocycles
+#check AlgebraicTopology.SingularCochains.DualEvaluation.mapPositiveCocycles_val
+#print axioms AlgebraicTopology.SingularCochains.DualEvaluation.mapPositiveCocycles_val
+#check AlgebraicTopology.SingularCochains.DualEvaluation.homologyMap_positiveCocycleClass
+#print axioms AlgebraicTopology.SingularCochains.DualEvaluation.homologyMap_positiveCocycleClass
+#check AlgebraicTopology.SingularCochains.DualEvaluation.IsClosedFunctional
+#print axioms AlgebraicTopology.SingularCochains.DualEvaluation.IsClosedFunctional
+#check AlgebraicTopology.SingularCochains.DualEvaluation.boundaryRange_le_ker
+#print axioms AlgebraicTopology.SingularCochains.DualEvaluation.boundaryRange_le_ker
+#check AlgebraicTopology.SingularCochains.DualEvaluation.ChainClass
+#print axioms AlgebraicTopology.SingularCochains.DualEvaluation.ChainClass
+#check AlgebraicTopology.SingularCochains.DualEvaluation.chainClassModule
+#print axioms AlgebraicTopology.SingularCochains.DualEvaluation.chainClassModule
+#check AlgebraicTopology.SingularCochains.DualEvaluation.homologyToChainClass
+#print axioms AlgebraicTopology.SingularCochains.DualEvaluation.homologyToChainClass
+#check AlgebraicTopology.SingularCochains.DualEvaluation.evaluationOfClosed
+#print axioms AlgebraicTopology.SingularCochains.DualEvaluation.evaluationOfClosed
+#check AlgebraicTopology.SingularCochains.DualEvaluation.evaluationOfClosed_cycleClass
+#print axioms AlgebraicTopology.SingularCochains.DualEvaluation.evaluationOfClosed_cycleClass
+#check AlgebraicTopology.SingularCochains.DualEvaluation.cochainAddHom
+#print axioms AlgebraicTopology.SingularCochains.DualEvaluation.cochainAddHom
+#check AlgebraicTopology.SingularCochains.DualEvaluation.cochainLinear
+#print axioms AlgebraicTopology.SingularCochains.DualEvaluation.cochainLinear
+#check AlgebraicTopology.SingularCochains.DualEvaluation.normalizedPositiveScIso
+#print axioms AlgebraicTopology.SingularCochains.DualEvaluation.normalizedPositiveScIso
+#check AlgebraicTopology.SingularCochains.DualEvaluation.positiveCocycleValue
+#print axioms AlgebraicTopology.SingularCochains.DualEvaluation.positiveCocycleValue
+#check AlgebraicTopology.SingularCochains.DualEvaluation.positiveCocycleValue_eq_val
+#print axioms AlgebraicTopology.SingularCochains.DualEvaluation.positiveCocycleValue_eq_val
+#check AlgebraicTopology.SingularCochains.DualEvaluation.positiveCocycleValue_eq_literal_val
+#print axioms AlgebraicTopology.SingularCochains.DualEvaluation.positiveCocycleValue_eq_literal_val
+#check AlgebraicTopology.SingularCochains.DualEvaluation.linearCochain
+#print axioms AlgebraicTopology.SingularCochains.DualEvaluation.linearCochain
+#check AlgebraicTopology.SingularCochains.DualEvaluation.cochainLinear_linearCochain
+#print axioms AlgebraicTopology.SingularCochains.DualEvaluation.cochainLinear_linearCochain
+#check AlgebraicTopology.SingularCochains.DualEvaluation.normalizedLinearCochain
+#print axioms AlgebraicTopology.SingularCochains.DualEvaluation.normalizedLinearCochain
+#check AlgebraicTopology.SingularCochains.DualEvaluation.normalizedLinearCochain_apply
+#print axioms AlgebraicTopology.SingularCochains.DualEvaluation.normalizedLinearCochain_apply
+#check AlgebraicTopology.SingularCochains.DualEvaluation.mkPositiveCocycleOfClosed
+#print axioms AlgebraicTopology.SingularCochains.DualEvaluation.mkPositiveCocycleOfClosed
+#check AlgebraicTopology.SingularCochains.DualEvaluation.mkPositiveCocycleOfClosed_val
+#print axioms AlgebraicTopology.SingularCochains.DualEvaluation.mkPositiveCocycleOfClosed_val
+#check AlgebraicTopology.SingularCochains.DualEvaluation.positiveCocycleValue_mkPositiveCocycleOfClosed
+#print axioms AlgebraicTopology.SingularCochains.DualEvaluation.positiveCocycleValue_mkPositiveCocycleOfClosed
+#check AlgebraicTopology.SingularCochains.DualEvaluation.positiveCocycleValue_zero
+#print axioms AlgebraicTopology.SingularCochains.DualEvaluation.positiveCocycleValue_zero
+#check AlgebraicTopology.SingularCochains.DualEvaluation.positiveCocycleValue_add
+#print axioms AlgebraicTopology.SingularCochains.DualEvaluation.positiveCocycleValue_add
+#check AlgebraicTopology.SingularCochains.DualEvaluation.dualComplex_d_apply_apply
+#print axioms AlgebraicTopology.SingularCochains.DualEvaluation.dualComplex_d_apply_apply
+#check AlgebraicTopology.SingularCochains.DualEvaluation.positiveCocycle_isClosedFunctional
+#print axioms AlgebraicTopology.SingularCochains.DualEvaluation.positiveCocycle_isClosedFunctional
+#check AlgebraicTopology.SingularCochains.DualEvaluation.evaluationOfPositiveCocycle
+#print axioms AlgebraicTopology.SingularCochains.DualEvaluation.evaluationOfPositiveCocycle
+#check AlgebraicTopology.SingularCochains.DualEvaluation.evaluationOfPositiveCocycle_cycleClass
+#print axioms AlgebraicTopology.SingularCochains.DualEvaluation.evaluationOfPositiveCocycle_cycleClass
+#check AlgebraicTopology.SingularCochains.DualEvaluation.evaluationOfPositiveCocycle_zero
+#print axioms AlgebraicTopology.SingularCochains.DualEvaluation.evaluationOfPositiveCocycle_zero
+#check AlgebraicTopology.SingularCochains.DualEvaluation.evaluationOfPositiveCocycle_add
+#print axioms AlgebraicTopology.SingularCochains.DualEvaluation.evaluationOfPositiveCocycle_add
+#check AlgebraicTopology.SingularCochains.DualEvaluation.positiveCocycleEvaluation
+#print axioms AlgebraicTopology.SingularCochains.DualEvaluation.positiveCocycleEvaluation
+#check AlgebraicTopology.SingularCochains.DualEvaluation.positiveCocycleEvaluation_cycleClass
+#print axioms AlgebraicTopology.SingularCochains.DualEvaluation.positiveCocycleEvaluation_cycleClass
+#check AlgebraicTopology.SingularCochains.DualEvaluation.previousCochainValue
+#print axioms AlgebraicTopology.SingularCochains.DualEvaluation.previousCochainValue
+#check AlgebraicTopology.SingularCochains.DualEvaluation.positiveSc_f_apply
+#print axioms AlgebraicTopology.SingularCochains.DualEvaluation.positiveSc_f_apply
+#check AlgebraicTopology.SingularCochains.DualEvaluation.positiveCocycleEvaluation_abToCycles
+#print axioms AlgebraicTopology.SingularCochains.DualEvaluation.positiveCocycleEvaluation_abToCycles
+#check AlgebraicTopology.SingularCochains.DualEvaluation.positiveCoboundaryRange_le_ker
+#print axioms AlgebraicTopology.SingularCochains.DualEvaluation.positiveCoboundaryRange_le_ker
+#check AlgebraicTopology.SingularCochains.DualEvaluation.cohomologyEvaluation
+#print axioms AlgebraicTopology.SingularCochains.DualEvaluation.cohomologyEvaluation
+#check AlgebraicTopology.SingularCochains.DualEvaluation.positiveCocycleClass_abToCycles
+#print axioms AlgebraicTopology.SingularCochains.DualEvaluation.positiveCocycleClass_abToCycles
+#check AlgebraicTopology.SingularCochains.DualEvaluation.cohomologyEvaluation_positiveCocycleClass
+#print axioms AlgebraicTopology.SingularCochains.DualEvaluation.cohomologyEvaluation_positiveCocycleClass
+#check AlgebraicTopology.SingularCochains.DualEvaluation.cohomologyEvaluation_cocycle_cycle
+#print axioms AlgebraicTopology.SingularCochains.DualEvaluation.cohomologyEvaluation_cocycle_cycle
+#check AlgebraicTopology.SingularCochains.DualEvaluation.dualMap_cochainAddHom_apply
+#print axioms AlgebraicTopology.SingularCochains.DualEvaluation.dualMap_cochainAddHom_apply
+#check AlgebraicTopology.SingularCochains.DualEvaluation.positiveCocycleEvaluation_natural
+#print axioms AlgebraicTopology.SingularCochains.DualEvaluation.positiveCocycleEvaluation_natural
+#check AlgebraicTopology.SingularCochains.DualEvaluation.cohomologyEvaluation_natural
+#print axioms AlgebraicTopology.SingularCochains.DualEvaluation.cohomologyEvaluation_natural
+#check AlgebraicTopology.SingularCochains.DualEvaluation.LocalUCT.exists_section
+#print axioms AlgebraicTopology.SingularCochains.DualEvaluation.LocalUCT.exists_section
+#check AlgebraicTopology.SingularCochains.DualEvaluation.LocalUCT.exists_kernel_retraction
+#print axioms AlgebraicTopology.SingularCochains.DualEvaluation.LocalUCT.exists_kernel_retraction
+#check AlgebraicTopology.SingularCochains.DualEvaluation.LocalUCT.exists_extension_from_kernel
+#print axioms AlgebraicTopology.SingularCochains.DualEvaluation.LocalUCT.exists_extension_from_kernel
+#check AlgebraicTopology.SingularCochains.DualEvaluation.LocalUCT.exists_factor_through_range
+#print axioms AlgebraicTopology.SingularCochains.DualEvaluation.LocalUCT.exists_factor_through_range
+#check AlgebraicTopology.SingularCochains.DualEvaluation.LocalUCT.addHomToIntLinear
+#print axioms AlgebraicTopology.SingularCochains.DualEvaluation.LocalUCT.addHomToIntLinear
+#check AlgebraicTopology.SingularCochains.DualEvaluation.LocalUCT.addHomIntLinearEquiv
+#print axioms AlgebraicTopology.SingularCochains.DualEvaluation.LocalUCT.addHomIntLinearEquiv
+#check AlgebraicTopology.SingularCochains.DualEvaluation.LocalUCT.addHomIntLinearEquiv_apply
+#print axioms AlgebraicTopology.SingularCochains.DualEvaluation.LocalUCT.addHomIntLinearEquiv_apply
+#check AlgebraicTopology.SingularCochains.DualEvaluation.LocalUCT.OutgoingImage
+#print axioms AlgebraicTopology.SingularCochains.DualEvaluation.LocalUCT.OutgoingImage
+#check AlgebraicTopology.SingularCochains.DualEvaluation.LocalUCT.outgoingImageModule
+#print axioms AlgebraicTopology.SingularCochains.DualEvaluation.LocalUCT.outgoingImageModule
+#check AlgebraicTopology.SingularCochains.DualEvaluation.LocalUCT.IncomingImage
+#print axioms AlgebraicTopology.SingularCochains.DualEvaluation.LocalUCT.IncomingImage
+#check AlgebraicTopology.SingularCochains.DualEvaluation.LocalUCT.incomingImageModule
+#print axioms AlgebraicTopology.SingularCochains.DualEvaluation.LocalUCT.incomingImageModule
+#check AlgebraicTopology.SingularCochains.DualEvaluation.LocalUCT.boundaryCycle
+#print axioms AlgebraicTopology.SingularCochains.DualEvaluation.LocalUCT.boundaryCycle
+#check AlgebraicTopology.SingularCochains.DualEvaluation.LocalUCT.boundaryCycle_val
+#print axioms AlgebraicTopology.SingularCochains.DualEvaluation.LocalUCT.boundaryCycle_val
+#check AlgebraicTopology.SingularCochains.DualEvaluation.LocalUCT.cycleClass_boundaryCycle
+#print axioms AlgebraicTopology.SingularCochains.DualEvaluation.LocalUCT.cycleClass_boundaryCycle
+#check AlgebraicTopology.SingularCochains.DualEvaluation.LocalUCT.normalizedPreviousLinearCochain
+#print axioms AlgebraicTopology.SingularCochains.DualEvaluation.LocalUCT.normalizedPreviousLinearCochain
+#check AlgebraicTopology.SingularCochains.DualEvaluation.LocalUCT.previousLinearCochain
+#print axioms AlgebraicTopology.SingularCochains.DualEvaluation.LocalUCT.previousLinearCochain
+#check AlgebraicTopology.SingularCochains.DualEvaluation.LocalUCT.positiveCocycleValue_abToCycles_previousLinearCochain
+#print axioms AlgebraicTopology.SingularCochains.DualEvaluation.LocalUCT.positiveCocycleValue_abToCycles_previousLinearCochain
+#check AlgebraicTopology.SingularCochains.DualEvaluation.LocalUCT.positiveCocycleValue_abToCycles_previousLinearCochain_apply
+#print axioms AlgebraicTopology.SingularCochains.DualEvaluation.LocalUCT.positiveCocycleValue_abToCycles_previousLinearCochain_apply
+#check AlgebraicTopology.SingularCochains.DualEvaluation.LocalUCT.exists_cycle_retraction
+#print axioms AlgebraicTopology.SingularCochains.DualEvaluation.LocalUCT.exists_cycle_retraction
+#check AlgebraicTopology.SingularCochains.DualEvaluation.LocalUCT.exists_extension_from_cycles
+#print axioms AlgebraicTopology.SingularCochains.DualEvaluation.LocalUCT.exists_extension_from_cycles
+#check AlgebraicTopology.SingularCochains.DualEvaluation.LocalUCT.cohomologyEvaluation_surjective_of_outgoing_projective
+#print axioms AlgebraicTopology.SingularCochains.DualEvaluation.LocalUCT.cohomologyEvaluation_surjective_of_outgoing_projective
+#check AlgebraicTopology.SingularCochains.DualEvaluation.LocalUCT.exists_cycle_section
+#print axioms AlgebraicTopology.SingularCochains.DualEvaluation.LocalUCT.exists_cycle_section
+#check AlgebraicTopology.SingularCochains.DualEvaluation.LocalUCT.exists_boundary_retraction
+#print axioms AlgebraicTopology.SingularCochains.DualEvaluation.LocalUCT.exists_boundary_retraction
+#check AlgebraicTopology.SingularCochains.DualEvaluation.LocalUCT.exists_coboundary_of_vanishing_on_cycles
+#print axioms AlgebraicTopology.SingularCochains.DualEvaluation.LocalUCT.exists_coboundary_of_vanishing_on_cycles
+#check AlgebraicTopology.SingularCochains.DualEvaluation.LocalUCT.cohomologyEvaluation_injective_of_local_projective
+#print axioms AlgebraicTopology.SingularCochains.DualEvaluation.LocalUCT.cohomologyEvaluation_injective_of_local_projective
+#check AlgebraicTopology.SingularCochains.DualEvaluation.LocalUCT.cohomologyEvaluation_bijective_of_local_projective
+#print axioms AlgebraicTopology.SingularCochains.DualEvaluation.LocalUCT.cohomologyEvaluation_bijective_of_local_projective
+#check AlgebraicTopology.SingularCochains.DualEvaluation.LocalUCT.cohomologyEvaluation_isIso_of_local_projective
+#print axioms AlgebraicTopology.SingularCochains.DualEvaluation.LocalUCT.cohomologyEvaluation_isIso_of_local_projective
+
+/-! ## `Lib.AlgebraicTopology.SingularCochains.DualEvaluation.Free` -/
+
+#check AlgebraicTopology.SingularCochains.DualEvaluation.LocalUCT.outgoingImage_projective
+#print axioms AlgebraicTopology.SingularCochains.DualEvaluation.LocalUCT.outgoingImage_projective
+#check AlgebraicTopology.SingularCochains.DualEvaluation.LocalUCT.cohomologyEvaluation_isIso_of_free_of_projective
+#print axioms AlgebraicTopology.SingularCochains.DualEvaluation.LocalUCT.cohomologyEvaluation_isIso_of_free_of_projective
+#check AlgebraicTopology.SingularCochains.DualEvaluation.LocalUCT.cohomologyEvaluationLinear
+#print axioms AlgebraicTopology.SingularCochains.DualEvaluation.LocalUCT.cohomologyEvaluationLinear
+#check AlgebraicTopology.SingularCochains.DualEvaluation.LocalUCT.cohomologyEvaluationLinear_apply
+#print axioms AlgebraicTopology.SingularCochains.DualEvaluation.LocalUCT.cohomologyEvaluationLinear_apply
+#check AlgebraicTopology.SingularCochains.DualEvaluation.LocalUCT.cohomologyEvaluationAlong
+#print axioms AlgebraicTopology.SingularCochains.DualEvaluation.LocalUCT.cohomologyEvaluationAlong
+#check AlgebraicTopology.SingularCochains.DualEvaluation.LocalUCT.cohomologyEvaluationAlong_apply
+#print axioms AlgebraicTopology.SingularCochains.DualEvaluation.LocalUCT.cohomologyEvaluationAlong_apply
+#check AlgebraicTopology.SingularCochains.DualEvaluation.LocalUCT.cohomologyEvaluationLinear_isIso_of_free_of_projective
+#print axioms AlgebraicTopology.SingularCochains.DualEvaluation.LocalUCT.cohomologyEvaluationLinear_isIso_of_free_of_projective
+#check AlgebraicTopology.SingularCochains.DualEvaluation.LocalUCT.cohomologyEvaluationAlong_isIso_of_free_of_projective
+#print axioms AlgebraicTopology.SingularCochains.DualEvaluation.LocalUCT.cohomologyEvaluationAlong_isIso_of_free_of_projective
+#check AlgebraicTopology.SingularCochains.DualEvaluation.LocalUCT.singularChains_free
+#print axioms AlgebraicTopology.SingularCochains.DualEvaluation.LocalUCT.singularChains_free
+#check AlgebraicTopology.SingularCochains.DualEvaluation.LocalUCT.singularH1Evaluation_isIso
+#print axioms AlgebraicTopology.SingularCochains.DualEvaluation.LocalUCT.singularH1Evaluation_isIso
+#check AlgebraicTopology.SingularCochains.DualEvaluation.LocalUCT.singularH1EvaluationAlong_isIso
+#print axioms AlgebraicTopology.SingularCochains.DualEvaluation.LocalUCT.singularH1EvaluationAlong_isIso
+
+/-! ## `Lib.AlgebraicTopology.SingularCochains.DualEvaluation.CoefficientNormalization` -/
+
+#check AlgebraicTopology.SingularCochains.DualEvaluation.LocalUCT.dualCoefficientEquiv
+#print axioms AlgebraicTopology.SingularCochains.DualEvaluation.LocalUCT.dualCoefficientEquiv
+#check AlgebraicTopology.SingularCochains.DualEvaluation.LocalUCT.dualCoefficientEquiv_apply_apply
+#print axioms AlgebraicTopology.SingularCochains.DualEvaluation.LocalUCT.dualCoefficientEquiv_apply_apply
+#check AlgebraicTopology.SingularCochains.DualEvaluation.LocalUCT.precomposeLinear
+#print axioms AlgebraicTopology.SingularCochains.DualEvaluation.LocalUCT.precomposeLinear
+#check AlgebraicTopology.SingularCochains.DualEvaluation.LocalUCT.precomposeLinear_apply
+#print axioms AlgebraicTopology.SingularCochains.DualEvaluation.LocalUCT.precomposeLinear_apply
+#check AlgebraicTopology.SingularCochains.DualEvaluation.LocalUCT.precomposeLinear_int_eq_dualMap
+#print axioms AlgebraicTopology.SingularCochains.DualEvaluation.LocalUCT.precomposeLinear_int_eq_dualMap
+#check AlgebraicTopology.SingularCochains.DualEvaluation.LocalUCT.cohomologyEvaluationAlongCoefficient
+#print axioms AlgebraicTopology.SingularCochains.DualEvaluation.LocalUCT.cohomologyEvaluationAlongCoefficient
+#check AlgebraicTopology.SingularCochains.DualEvaluation.LocalUCT.cohomologyEvaluationAlongCoefficient_apply
+#print axioms AlgebraicTopology.SingularCochains.DualEvaluation.LocalUCT.cohomologyEvaluationAlongCoefficient_apply
+#check AlgebraicTopology.SingularCochains.DualEvaluation.LocalUCT.cohomologyEvaluationAlongCoefficient_natural
+#print axioms AlgebraicTopology.SingularCochains.DualEvaluation.LocalUCT.cohomologyEvaluationAlongCoefficient_natural
+#check AlgebraicTopology.SingularCochains.DualEvaluation.LocalUCT.cohomologyEvaluationAlongCoefficient_isIso_of_free_of_projective
+#print axioms AlgebraicTopology.SingularCochains.DualEvaluation.LocalUCT.cohomologyEvaluationAlongCoefficient_isIso_of_free_of_projective
+#check AlgebraicTopology.SingularCochains.DualEvaluation.LocalUCT.uliftIntCoefficientEquiv
+#print axioms AlgebraicTopology.SingularCochains.DualEvaluation.LocalUCT.uliftIntCoefficientEquiv
+#check AlgebraicTopology.SingularCochains.DualEvaluation.LocalUCT.uliftIntCohomologyEvaluation
+#print axioms AlgebraicTopology.SingularCochains.DualEvaluation.LocalUCT.uliftIntCohomologyEvaluation
+#check AlgebraicTopology.SingularCochains.DualEvaluation.LocalUCT.uliftIntCohomologyEvaluation_apply
+#print axioms AlgebraicTopology.SingularCochains.DualEvaluation.LocalUCT.uliftIntCohomologyEvaluation_apply
+#check AlgebraicTopology.SingularCochains.DualEvaluation.LocalUCT.uliftIntCohomologyEvaluation_natural
+#print axioms AlgebraicTopology.SingularCochains.DualEvaluation.LocalUCT.uliftIntCohomologyEvaluation_natural
+#check AlgebraicTopology.SingularCochains.DualEvaluation.LocalUCT.singularUliftIntCohomologyEvaluation_isIso_of_projective
+#print axioms AlgebraicTopology.SingularCochains.DualEvaluation.LocalUCT.singularUliftIntCohomologyEvaluation_isIso_of_projective
+#check AlgebraicTopology.SingularCochains.DualEvaluation.LocalUCT.uliftIntDualHomologyMap_injective_of_homologyMap_surjective
+#print axioms AlgebraicTopology.SingularCochains.DualEvaluation.LocalUCT.uliftIntDualHomologyMap_injective_of_homologyMap_surjective
+
+/-! ## `Lib.Topology.Homotopy.QuotientCoveringSpace` -/
+
+#check IsLocalHomeomorph.locallyPathConnectedSpace
+#print axioms IsLocalHomeomorph.locallyPathConnectedSpace
+#check IsQuotientCoveringMap.simplyConnectedSpace_of_fundamentalGroupToMulOpposite_injective
+#print axioms IsQuotientCoveringMap.simplyConnectedSpace_of_fundamentalGroupToMulOpposite_injective
+
+/-! ## `Lib.Topology.Homotopy.EquivariantCoveringLift` -/
+
+#check IsQuotientCoveringMap.lift_eq_smul_of_eq_at
+#print axioms IsQuotientCoveringMap.lift_eq_smul_of_eq_at
+#check IsQuotientCoveringMap.lift_equivariant_of_eq_at
+#print axioms IsQuotientCoveringMap.lift_equivariant_of_eq_at
+
+/-! ## `Lib.AlgebraicTopology.SingularCochains.DualEvaluation.CoordinateChange` -/
+
+#check AlgebraicTopology.SingularCochains.DualEvaluation.LocalUCT.cohomologyEvaluationAlong_trans_apply
+#print axioms AlgebraicTopology.SingularCochains.DualEvaluation.LocalUCT.cohomologyEvaluationAlong_trans_apply
+#check AlgebraicTopology.SingularCochains.DualEvaluation.LocalUCT.cohomologyEvaluationAlong_trans
+#print axioms AlgebraicTopology.SingularCochains.DualEvaluation.LocalUCT.cohomologyEvaluationAlong_trans
+
+/-! ## `Lib.AlgebraicTopology.SingularCochains.DualEvaluation.HomeomorphCoordinates` -/
+
+#check AlgebraicTopology.SingularCochains.DualEvaluation.HomeomorphCoordinates.A
+#print axioms AlgebraicTopology.SingularCochains.DualEvaluation.HomeomorphCoordinates.A
+#check AlgebraicTopology.SingularCochains.DualEvaluation.HomeomorphCoordinates.uliftDownHomEquiv
+#print axioms AlgebraicTopology.SingularCochains.DualEvaluation.HomeomorphCoordinates.uliftDownHomEquiv
+#check AlgebraicTopology.SingularCochains.DualEvaluation.HomeomorphCoordinates.evaluationTargetEquiv
+#print axioms AlgebraicTopology.SingularCochains.DualEvaluation.HomeomorphCoordinates.evaluationTargetEquiv
+#check AlgebraicTopology.SingularCochains.DualEvaluation.HomeomorphCoordinates.coordinateEvaluation
+#print axioms AlgebraicTopology.SingularCochains.DualEvaluation.HomeomorphCoordinates.coordinateEvaluation
+#check AlgebraicTopology.SingularCochains.DualEvaluation.HomeomorphCoordinates.coordinateEvaluation_pullback
+#print axioms AlgebraicTopology.SingularCochains.DualEvaluation.HomeomorphCoordinates.coordinateEvaluation_pullback
+#check AlgebraicTopology.SingularCochains.DualEvaluation.HomeomorphCoordinates.coordinateEvaluationPositive
+#print axioms AlgebraicTopology.SingularCochains.DualEvaluation.HomeomorphCoordinates.coordinateEvaluationPositive
+#check AlgebraicTopology.SingularCochains.DualEvaluation.HomeomorphCoordinates.coordinateEvaluationPositive_pullback
+#print axioms AlgebraicTopology.SingularCochains.DualEvaluation.HomeomorphCoordinates.coordinateEvaluationPositive_pullback
+#check AlgebraicTopology.SingularCochains.DualEvaluation.HomeomorphCoordinates.pullback_comp_coordinateEvaluationPositive_eq_of_homologyMap_eq
+#print axioms AlgebraicTopology.SingularCochains.DualEvaluation.HomeomorphCoordinates.pullback_comp_coordinateEvaluationPositive_eq_of_homologyMap_eq
+
+/-! ## `Lib.Topology.Sheaves.ConstantProductH1FibreIndependence` -/
+
+#check TopCat.ConstantProductH1.basedFibreInclusion_homotopic
+#print axioms TopCat.ConstantProductH1.basedFibreInclusion_homotopic
+#check TopCat.ConstantProductH1.nativePullback_basedFibreInclusion_eq
+#print axioms TopCat.ConstantProductH1.nativePullback_basedFibreInclusion_eq
+
+/-! ## `Lib.Topology.Sheaves.OpenRestrictionStalk` -/
+
+#check TopCat.Sheaf.OpenRestriction.presheafStalkIso
+#print axioms TopCat.Sheaf.OpenRestriction.presheafStalkIso
+#check TopCat.Sheaf.OpenRestriction.stalkIso
+#print axioms TopCat.Sheaf.OpenRestriction.stalkIso
+#check TopCat.Sheaf.OpenRestriction.inclusion_mem_openImage
+#print axioms TopCat.Sheaf.OpenRestriction.inclusion_mem_openImage
+#check TopCat.Sheaf.OpenRestriction.stalkIso_inv_germ
+#print axioms TopCat.Sheaf.OpenRestriction.stalkIso_inv_germ
+
+/-! ## `Lib.Topology.Sheaves.OpenRestriction.NearbyRestrictionGerm` -/
+
+#check TopCat.Sheaf.OpenRestriction.nearbyRestrictionUnit_app
+#print axioms TopCat.Sheaf.OpenRestriction.nearbyRestrictionUnit_app
+#check TopCat.Sheaf.OpenRestriction.germ_stalkIso_hom_nearbyRestrictionUnit
+#print axioms TopCat.Sheaf.OpenRestriction.germ_stalkIso_hom_nearbyRestrictionUnit
+#check TopCat.Sheaf.OpenRestriction.stalkIso_inv_germ_nearbyRestrictionUnit
+#print axioms TopCat.Sheaf.OpenRestriction.stalkIso_inv_germ_nearbyRestrictionUnit
+
+/-! ## `Lib.Topology.Sheaves.OpenRestriction.StalkCriterion` -/
+
+#check TopCat.Sheaf.OpenRestriction.nearbyStalkPushforward
+#print axioms TopCat.Sheaf.OpenRestriction.nearbyStalkPushforward
+#check TopCat.Sheaf.OpenRestriction.nearbyStalkPushforward_isIso
+#print axioms TopCat.Sheaf.OpenRestriction.nearbyStalkPushforward_isIso
+#check TopCat.Sheaf.OpenRestriction.nearbyStalkUnit_comp_nearbyStalkPushforward
+#print axioms TopCat.Sheaf.OpenRestriction.nearbyStalkUnit_comp_nearbyStalkPushforward
+#check TopCat.Sheaf.OpenRestriction.nearbyStalkUnit_isIso_of_mem
+#print axioms TopCat.Sheaf.OpenRestriction.nearbyStalkUnit_isIso_of_mem
+#check TopCat.Sheaf.OpenRestriction.nearbyRestrictionUnit_app_isIso_of_isIso_outside
+#print axioms TopCat.Sheaf.OpenRestriction.nearbyRestrictionUnit_app_isIso_of_isIso_outside
+#check TopCat.Sheaf.OpenRestriction.globalRestrictionIsoOfIsIsoOutside
+#print axioms TopCat.Sheaf.OpenRestriction.globalRestrictionIsoOfIsIsoOutside
+
+/-! ## `Lib.Topology.Sheaves.SheafificationLocalGerm` -/
+
+#check TopCat.SheafificationLocal.inv_unit_stalk_map_iso_germ_eq_germ_of_localRepresentative
+#print axioms TopCat.SheafificationLocal.inv_unit_stalk_map_iso_germ_eq_germ_of_localRepresentative
+
+/-! ## `Lib.CategoryTheory.Sites.Leray.SheafificationNeighborhoodGerm` -/
+
+#check CategoryTheory.Sheaf.Leray.derivedNeighborhoodGerm_eq_germ_of_localRepresentative
+#print axioms CategoryTheory.Sheaf.Leray.derivedNeighborhoodGerm_eq_germ_of_localRepresentative
+
+/-! ## `Lib.CategoryTheory.Sites.Leray.CanonicalPositiveNeighborhoodSection` -/
+
+#check CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.canonicalDerivedNeighborhoodSectionPositive
+#print axioms CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.canonicalDerivedNeighborhoodSectionPositive
+#check CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.canonicalDerivedNeighborhoodSectionPositive_comp_germ
+#print axioms CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.canonicalDerivedNeighborhoodSectionPositive_comp_germ
+
+/-! ## `Lib.AlgebraicTopology.SingularCochains.PositivePrimitives` -/
+
+#check AlgebraicTopology.SingularCochains.pointCochain_exactAt_positive
+#print axioms AlgebraicTopology.SingularCochains.pointCochain_exactAt_positive
+#check AlgebraicTopology.SingularCochains.pointCocycle_boundary
+#print axioms AlgebraicTopology.SingularCochains.pointCocycle_boundary
+#check AlgebraicTopology.SingularCochains.nullhomotopic_pullback_closed_succ
+#print axioms AlgebraicTopology.SingularCochains.nullhomotopic_pullback_closed_succ
+
+/-! ## `Lib.Topology.Sheaves.SingularCochainSheaf.LocalExactPositive` -/
+
+#check TopCat.SingularCochainSheaf.initialComplex_exact
+#print axioms TopCat.SingularCochainSheaf.initialComplex_exact
+#check TopCat.SingularCochainSheaf.complexSheaf_exactAt_succ
+#print axioms TopCat.SingularCochainSheaf.complexSheaf_exactAt_succ
+
+/-! ## `Lib.Topology.Sheaves.SingularCochainSheaf.OpenRestriction` -/
+
+#check TopCat.SingularCochainSheaf.OpenRestriction.extendByZero
+#print axioms TopCat.SingularCochainSheaf.OpenRestriction.extendByZero
+#check TopCat.SingularCochainSheaf.OpenRestriction.restrict_extendByZero
+#print axioms TopCat.SingularCochainSheaf.OpenRestriction.restrict_extendByZero
+#check TopCat.SingularCochainSheaf.OpenRestriction.extendByZeroAlong
+#print axioms TopCat.SingularCochainSheaf.OpenRestriction.extendByZeroAlong
+#check TopCat.SingularCochainSheaf.OpenRestriction.map_extendByZeroAlong
+#print axioms TopCat.SingularCochainSheaf.OpenRestriction.map_extendByZeroAlong
+#check TopCat.SingularCochainSheaf.OpenRestriction.presheaf_map_surjective
+#print axioms TopCat.SingularCochainSheaf.OpenRestriction.presheaf_map_surjective
+#check TopCat.SingularCochainSheaf.OpenRestriction.openImageHomeomorph
+#print axioms TopCat.SingularCochainSheaf.OpenRestriction.openImageHomeomorph
+#check TopCat.SingularCochainSheaf.OpenRestriction.openImageMap
+#print axioms TopCat.SingularCochainSheaf.OpenRestriction.openImageMap
+#check TopCat.SingularCochainSheaf.OpenRestriction.openImageMapInv
+#print axioms TopCat.SingularCochainSheaf.OpenRestriction.openImageMapInv
+#check TopCat.SingularCochainSheaf.OpenRestriction.openImageCochainIso
+#print axioms TopCat.SingularCochainSheaf.OpenRestriction.openImageCochainIso
+#check TopCat.SingularCochainSheaf.OpenRestriction.restrictedPresheaf
+#print axioms TopCat.SingularCochainSheaf.OpenRestriction.restrictedPresheaf
+#check TopCat.SingularCochainSheaf.OpenRestriction.presheafIso
+#print axioms TopCat.SingularCochainSheaf.OpenRestriction.presheafIso
+#check TopCat.SingularCochainSheaf.OpenRestriction.sheafIso
+#print axioms TopCat.SingularCochainSheaf.OpenRestriction.sheafIso
+#check TopCat.SingularCochainSheaf.OpenRestriction.unit_sheafIso_hom
+#print axioms TopCat.SingularCochainSheaf.OpenRestriction.unit_sheafIso_hom
+#check TopCat.SingularCochainSheaf.OpenRestriction.unit_sheafIso_hom_app
+#print axioms TopCat.SingularCochainSheaf.OpenRestriction.unit_sheafIso_hom_app
+#check TopCat.SingularCochainSheaf.OpenRestriction.unit_app_surjective
+#print axioms TopCat.SingularCochainSheaf.OpenRestriction.unit_app_surjective
+#check TopCat.SingularCochainSheaf.OpenRestriction.isFlasque_of_open_normal_paracompact
+#print axioms TopCat.SingularCochainSheaf.OpenRestriction.isFlasque_of_open_normal_paracompact
+#check TopCat.SingularCochainSheaf.OpenRestriction.isFlasque_of_metrizable
+#print axioms TopCat.SingularCochainSheaf.OpenRestriction.isFlasque_of_metrizable
+
+/-! ## `Lib.Topology.Sheaves.Cohomology.FlasqueAcyclic` -/
+
+#check TopCat.Sheaf.OpenRestriction.freeOpenFunctor
+#print axioms TopCat.Sheaf.OpenRestriction.freeOpenFunctor
+#check TopCat.Sheaf.OpenRestriction.freeOpenFunctor_map_mono
+#print axioms TopCat.Sheaf.OpenRestriction.freeOpenFunctor_map_mono
+#check TopCat.Sheaf.IsFlasque.of_injective
+#print axioms TopCat.Sheaf.IsFlasque.of_injective
+#check TopCat.SheafCohomology.subsingleton_h_succ_of_isFlasque
+#print axioms TopCat.SheafCohomology.subsingleton_h_succ_of_isFlasque
+#check TopCat.SheafCohomology.subsingleton_h_of_isFlasque
+#print axioms TopCat.SheafCohomology.subsingleton_h_of_isFlasque
+
+/-! ## `Lib.Algebra.Homology.DerivedCategory.Ext.AcyclicResolution` -/
+
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.Hom.evaluatedLocalHomology_naturality_assoc
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.Hom.evaluatedLocalHomology_naturality_assoc
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.Hom.evaluatedLocalHomology_naturality
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.Hom.evaluatedLocalHomology_naturality
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.shortExact
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.shortExact
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.localExtIso_hom_one
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.localExtIso_hom_one
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.complex_X
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.complex_X
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.X
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.X
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.Hom.shiftIso_naturality
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.Hom.shiftIso_naturality
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.complex_d
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.complex_d
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.i_d_assoc
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.i_d_assoc
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.p
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.p
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.Hom.comp_z
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.Hom.comp_z
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.shiftIso
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.shiftIso
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.Hom.d_naturality
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.Hom.d_naturality
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.noConfusionType
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.noConfusionType
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.Hom.evaluatedWindowIso_inv_naturality
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.Hom.evaluatedWindowIso_inv_naturality
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.Hom.tail
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.Hom.tail
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.Hom.complexMap_id
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.Hom.complexMap_id
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.IsAcyclicFor
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.IsAcyclicFor
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.Hom.id_x
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.Hom.id_x
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.augmentedStep
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.augmentedStep
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.Hom.id_z
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.Hom.id_z
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.complex
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.complex
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.d_p_assoc
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.d_p_assoc
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.Hom.mk.inj
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.Hom.mk.inj
+#check CategoryTheory.Abelian.Ext.connecting_injective
+#print axioms CategoryTheory.Abelian.Ext.connecting_injective
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.Hom.recOn
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.Hom.recOn
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.localExtIso
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.localExtIso
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.Hom.x
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.Hom.x
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.tail_Z
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.tail_Z
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.Hom.evaluatedLocalIso_naturality
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.Hom.evaluatedLocalIso_naturality
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.mk.noConfusion
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.mk.noConfusion
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.Hom.shiftIso_naturality_assoc
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.Hom.shiftIso_naturality_assoc
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.Hom.complexMap
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.Hom.complexMap
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.Hom.z
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.Hom.z
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.trunc_X₃
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.trunc_X₃
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.Hom.evaluatedComplexMap_id
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.Hom.evaluatedComplexMap_id
+#check CategoryTheory.Abelian.Ext.connectingIso_hom_naturality_assoc
+#print axioms CategoryTheory.Abelian.Ext.connectingIso_hom_naturality_assoc
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.tail_p
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.tail_p
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.Hom.mk.injEq
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.Hom.mk.injEq
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.finiteStaircaseHomTwo
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.finiteStaircaseHomTwo
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.Hom.localExtIso_naturality_assoc
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.Hom.localExtIso_naturality_assoc
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.Hom.extIsoHomology_naturality_assoc
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.Hom.extIsoHomology_naturality_assoc
+#check CategoryTheory.Abelian.Ext.connectingIso
+#print axioms CategoryTheory.Abelian.Ext.connectingIso
+#check CategoryTheory.Abelian.Ext.connectingIso_inv_naturality
+#print axioms CategoryTheory.Abelian.Ext.connectingIso_inv_naturality
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.i
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.i
+#check CategoryTheory.Abelian.Ext.connectingIso_hom_naturality
+#print axioms CategoryTheory.Abelian.Ext.connectingIso_hom_naturality
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.Hom.comm_p_assoc
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.Hom.comm_p_assoc
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.Hom.extIsoHomology_naturality
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.Hom.extIsoHomology_naturality
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.Z
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.Z
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.d
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.d
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.trunc_X₂
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.trunc_X₂
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.Hom.comm_p_assoc_assoc
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.Hom.comm_p_assoc_assoc
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.tail_i
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.tail_i
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.i_d
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.i_d
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.Hom.noConfusion
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.Hom.noConfusion
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.mk.inj
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.mk.inj
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.Hom.evaluatedWindowIso_inv_naturality_assoc
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.Hom.evaluatedWindowIso_inv_naturality_assoc
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.Hom.casesOn
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.Hom.casesOn
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.trunc_X₁
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.trunc_X₁
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.isAcyclicFor_tail
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.isAcyclicFor_tail
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.rec
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.rec
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.recOn
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.recOn
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.zero
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.zero
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.Hom.stepMap
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.Hom.stepMap
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.finiteStaircaseHomOne
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.finiteStaircaseHomOne
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.noConfusion
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.noConfusion
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.Hom.evaluatedLocalIso_naturality_assoc
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.Hom.evaluatedLocalIso_naturality_assoc
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.Hom.mk.noConfusion
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.Hom.mk.noConfusion
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.evaluatedComplex
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.evaluatedComplex
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.shiftIso_zero
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.shiftIso_zero
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.d_p
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.d_p
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.Hom.d_naturality_assoc
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.Hom.d_naturality_assoc
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.d_comp_d
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.d_comp_d
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.Hom.comm_i
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.Hom.comm_i
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.evaluatedComplex_d
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.evaluatedComplex_d
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.Hom.ctorIdx
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.Hom.ctorIdx
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.shiftIso_succ
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.shiftIso_succ
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.trunc_F
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.trunc_F
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.localExtIso_hom_zero
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.localExtIso_hom_zero
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.Hom
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.Hom
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.Hom.comp_x
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.Hom.comp_x
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.mk.injEq
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.mk.injEq
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.Hom.noConfusionType
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.Hom.noConfusionType
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.evaluatedLocalIso
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.evaluatedLocalIso
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.d_comp_d_assoc
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.d_comp_d_assoc
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.Hom.evaluatedComplexMap
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.Hom.evaluatedComplexMap
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.Hom.comm_i_assoc
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.Hom.comm_i_assoc
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.Hom.localExtIso_naturality
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.Hom.localExtIso_naturality
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.Hom.comp
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.Hom.comp
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.Hom.truncMap
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.Hom.truncMap
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.tail
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.tail
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.extIsoHomology
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.extIsoHomology
+#check CategoryTheory.Abelian.Ext.connecting_bijective
+#print axioms CategoryTheory.Abelian.Ext.connecting_bijective
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.trunc
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.trunc
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.localExtIso_hom_two
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.localExtIso_hom_two
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.ctorIdx
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.ctorIdx
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.Hom.mk
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.Hom.mk
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.Hom.id
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.Hom.id
+#check CategoryTheory.Abelian.Ext.AcyclicResolution
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.localComplex_exact
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.localComplex_exact
+#check CategoryTheory.Abelian.Ext.connectingIso_inv_naturality_assoc
+#print axioms CategoryTheory.Abelian.Ext.connectingIso_inv_naturality_assoc
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.augmentedStep_exact
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.augmentedStep_exact
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.Hom.complexMap_comp
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.Hom.complexMap_comp
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.Hom.rec
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.Hom.rec
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.localComplex
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.localComplex
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.finiteStaircaseHomZero
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.finiteStaircaseHomZero
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.tail_X
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.tail_X
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.casesOn
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.casesOn
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.Hom.comm_p
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.Hom.comm_p
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.mk
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.mk
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.Hom.comm_i_assoc_assoc
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.Hom.comm_i_assoc_assoc
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.Hom.evaluatedComplexMap_comp
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.Hom.evaluatedComplexMap_comp
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.step
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.step
+
+/-! ## `Lib.Algebra.Homology.DerivedCategory.Ext.AcyclicResolutionH2H3` -/
+
+#check CategoryTheory.Abelian.Ext.AcyclicResolutionH2.tail
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolutionH2.tail
+#check CategoryTheory.Abelian.Ext.AcyclicResolutionH3.mk
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolutionH3.mk
+#check CategoryTheory.Abelian.Ext.AcyclicResolutionH3.extThreeIso
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolutionH3.extThreeIso
+#check CategoryTheory.Abelian.Ext.AcyclicResolutionH2
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolutionH2
+#check CategoryTheory.Abelian.Ext.AcyclicResolutionH2.extTwoIso
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolutionH2.extTwoIso
+#check CategoryTheory.Abelian.Ext.AcyclicResolutionH3.rec
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolutionH3.rec
+#check CategoryTheory.Abelian.Ext.AcyclicResolutionH3.mk.inj
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolutionH3.mk.inj
+#check CategoryTheory.Abelian.Ext.AcyclicResolutionH3
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolutionH3
+#check CategoryTheory.Abelian.Ext.AcyclicResolutionH2.X₄
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolutionH2.X₄
+#check CategoryTheory.Abelian.Ext.AcyclicResolutionH3.zero₃
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolutionH3.zero₃
+#check CategoryTheory.Abelian.Ext.AcyclicResolutionH2.d₂
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolutionH2.d₂
+#check CategoryTheory.Abelian.Ext.AcyclicResolutionH3.mk.injEq
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolutionH3.mk.injEq
+#check CategoryTheory.Abelian.Ext.AcyclicResolutionH2.mk.inj
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolutionH2.mk.inj
+#check CategoryTheory.Abelian.Ext.AcyclicResolutionH2.recOn
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolutionH2.recOn
+#check CategoryTheory.Abelian.Ext.AcyclicResolutionH3.noConfusion
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolutionH3.noConfusion
+#check CategoryTheory.Abelian.Ext.AcyclicResolutionH3.d₃
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolutionH3.d₃
+#check CategoryTheory.Abelian.Ext.AcyclicResolutionH2.noConfusion
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolutionH2.noConfusion
+#check CategoryTheory.Abelian.Ext.AcyclicResolutionH3.recOn
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolutionH3.recOn
+#check CategoryTheory.Abelian.Ext.AcyclicResolutionH2.mk.injEq
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolutionH2.mk.injEq
+#check CategoryTheory.Abelian.Ext.AcyclicResolutionH3.X₅
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolutionH3.X₅
+#check CategoryTheory.Abelian.Ext.AcyclicResolutionH2.mk.noConfusion
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolutionH2.mk.noConfusion
+#check CategoryTheory.Abelian.Ext.AcyclicResolutionH2.trunc
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolutionH2.trunc
+#check CategoryTheory.Abelian.Ext.AcyclicResolutionH2.ctorIdx
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolutionH2.ctorIdx
+#check CategoryTheory.Abelian.Ext.AcyclicResolutionH2.zero₂
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolutionH2.zero₂
+#check CategoryTheory.Abelian.Ext.AcyclicResolutionH2.casesOn
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolutionH2.casesOn
+#check CategoryTheory.Abelian.Ext.AcyclicResolutionH2.mk
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolutionH2.mk
+#check CategoryTheory.Abelian.Ext.AcyclicResolutionH3.mk.noConfusion
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolutionH3.mk.noConfusion
+#check CategoryTheory.Abelian.Ext.AcyclicResolutionH3.casesOn
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolutionH3.casesOn
+#check CategoryTheory.Abelian.Ext.AcyclicResolutionH2.rec
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolutionH2.rec
+#check CategoryTheory.Abelian.Ext.AcyclicResolutionH2.exact₂
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolutionH2.exact₂
+#check CategoryTheory.Abelian.Ext.AcyclicResolutionH2.noConfusionType
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolutionH2.noConfusionType
+#check CategoryTheory.Abelian.Ext.AcyclicResolutionH3.ctorIdx
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolutionH3.ctorIdx
+#check CategoryTheory.Abelian.Ext.AcyclicResolutionH3.noConfusionType
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolutionH3.noConfusionType
+#check CategoryTheory.Abelian.Ext.AcyclicResolutionH3.toAcyclicResolutionH2
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolutionH3.toAcyclicResolutionH2
+#check CategoryTheory.Abelian.Ext.AcyclicResolutionH3.tail
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolutionH3.tail
+#check CategoryTheory.Abelian.Ext.AcyclicResolutionH3.exact₃
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolutionH3.exact₃
+
+/-! ## `Lib.Algebra.Homology.DerivedCategory.Ext.AcyclicResolutionFiniteCompatibility` -/
+
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.iIsKernel
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.iIsKernel
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.stepToFirst_τ₃
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.stepToFirst_τ₃
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.stepToKernelFirst_τ₃
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.stepToKernelFirst_τ₃
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.toAcyclicResolutionH2_tail
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.toAcyclicResolutionH2_tail
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.localExtIso_two_legacy_compatibility
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.localExtIso_two_legacy_compatibility
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.legacyExtThreeHom_compatibility
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.legacyExtThreeHom_compatibility
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.p_nextCycleIso
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.p_nextCycleIso
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.stepToKernelFirst
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.stepToKernelFirst
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.legacyExtTwoHom
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.legacyExtTwoHom
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.legacyExtTwoHom_compatibility
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.legacyExtTwoHom_compatibility
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.kernelTrunc
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.kernelTrunc
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.nextCycleIso_hom_kernel_ι
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.nextCycleIso_hom_kernel_ι
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.stepToFirst
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.stepToFirst
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.stepToFirst_τ₁
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.stepToFirst_τ₁
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.truncToKernelTrunc
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.truncToKernelTrunc
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.toAcyclicResolutionH2
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.toAcyclicResolutionH2
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.nextCycleIso
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.nextCycleIso
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.toAcyclicResolutionH3
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.toAcyclicResolutionH3
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.stepToKernelFirst_τ₁
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.stepToKernelFirst_τ₁
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.toAcyclicResolutionH3_secondTail
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.toAcyclicResolutionH3_secondTail
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.nextCycleIso_hom_kernel_ι_assoc
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.nextCycleIso_hom_kernel_ι_assoc
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.localExtIso_one_legacy_compatibility
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.localExtIso_one_legacy_compatibility
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.toAcyclicResolutionH2_trunc
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.toAcyclicResolutionH2_trunc
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.legacyExtThreeHom
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.legacyExtThreeHom
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.toAcyclicResolutionH3_firstTail
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.toAcyclicResolutionH3_firstTail
+
+/-! ## `Lib.Topology.Sheaves.FiniteSupport.SkyscraperGlobalSections` -/
+
+#check TopCat.Sheaf.FiniteSupport.skyscraperAt
+#print axioms TopCat.Sheaf.FiniteSupport.skyscraperAt
+#check TopCat.Sheaf.FiniteSupport.skyscraperAtTopIso
+#print axioms TopCat.Sheaf.FiniteSupport.skyscraperAtTopIso
+#check TopCat.Sheaf.FiniteSupport.sectionsBiprodIso
+#print axioms TopCat.Sheaf.FiniteSupport.sectionsBiprodIso
+#check TopCat.Sheaf.FiniteSupport.globalSectionsIsoOfSkyscraperBiprodIso
+#print axioms TopCat.Sheaf.FiniteSupport.globalSectionsIsoOfSkyscraperBiprodIso
+#check TopCat.Sheaf.FiniteSupport.globalSectionsEquivOfSkyscraperBiprodIso
+#print axioms TopCat.Sheaf.FiniteSupport.globalSectionsEquivOfSkyscraperBiprodIso
+
+/-! ## `Lib.Topology.Sheaves.FiniteSupport.SkyscraperReconstruction` -/
+
+#check TopCat.Sheaf.FiniteSupport.toSkyscraperAt
+#print axioms TopCat.Sheaf.FiniteSupport.toSkyscraperAt
+#check TopCat.Sheaf.FiniteSupport.skyscraperAtTopIso_hom_eqToHom
+#print axioms TopCat.Sheaf.FiniteSupport.skyscraperAtTopIso_hom_eqToHom
+#check TopCat.Sheaf.FiniteSupport.toSkyscraperAt_top
+#print axioms TopCat.Sheaf.FiniteSupport.toSkyscraperAt_top
+#check TopCat.Sheaf.FiniteSupport.toSkyscraperBiprod
+#print axioms TopCat.Sheaf.FiniteSupport.toSkyscraperBiprod
+#check TopCat.Sheaf.FiniteSupport.skyscraperBiprodIsoOfStalkwiseIso
+#print axioms TopCat.Sheaf.FiniteSupport.skyscraperBiprodIsoOfStalkwiseIso
+#check TopCat.Sheaf.FiniteSupport.globalSectionsIsoOfStalkwiseSkyscraperBiprod_hom_comp_fst
+#print axioms TopCat.Sheaf.FiniteSupport.globalSectionsIsoOfStalkwiseSkyscraperBiprod_hom_comp_fst
+#check TopCat.Sheaf.FiniteSupport.globalSectionsIsoOfStalkwiseSkyscraperBiprod_hom_comp_snd
+#print axioms TopCat.Sheaf.FiniteSupport.globalSectionsIsoOfStalkwiseSkyscraperBiprod_hom_comp_snd
+#check TopCat.Sheaf.FiniteSupport.globalSectionsEquivOfStalkwiseSkyscraperBiprod_apply
+#print axioms TopCat.Sheaf.FiniteSupport.globalSectionsEquivOfStalkwiseSkyscraperBiprod_apply
+
+/-! ## `Lib.AlgebraicTopology.SingularSmallChains.CochainHomotopy` -/
+
+#check TopCat.SingularSmallChains.smallCochain_boundary_of_restriction_boundary_succ
+#print axioms TopCat.SingularSmallChains.smallCochain_boundary_of_restriction_boundary_succ
+#check TopCat.SingularSmallChains.smallCochain_cocycle_lift_exact_succ
+#print axioms TopCat.SingularSmallChains.smallCochain_cocycle_lift_exact_succ
+#check TopCat.SingularSmallChains.cochainRestriction_homologyMap_isIso
+#print axioms TopCat.SingularSmallChains.cochainRestriction_homologyMap_isIso
+
+/-! ## `Lib.Algebra.Homology.Homotopy.CocycleEvaluation` -/
+
+#check CochainComplex.homotopy_on_cocycle_succ
+#print axioms CochainComplex.homotopy_on_cocycle_succ
+
+/-! ## `Lib.Algebra.Homology.DerivedCategory.Ext.ExactAugmentedCochainComplex` -/
+
+#check CategoryTheory.Abelian.Ext.ExactAugmentedCochainComplex.initialExact
+#print axioms CategoryTheory.Abelian.Ext.ExactAugmentedCochainComplex.initialExact
+#check CategoryTheory.Abelian.Ext.ExactAugmentedCochainComplex.p_i
+#print axioms CategoryTheory.Abelian.Ext.ExactAugmentedCochainComplex.p_i
+#check CategoryTheory.Abelian.Ext.ExactAugmentedCochainComplex.step_shortExact
+#print axioms CategoryTheory.Abelian.Ext.ExactAugmentedCochainComplex.step_shortExact
+#check CategoryTheory.Abelian.Ext.ExactAugmentedCochainComplex.recOn
+#print axioms CategoryTheory.Abelian.Ext.ExactAugmentedCochainComplex.recOn
+#check CategoryTheory.Abelian.Ext.ExactAugmentedCochainComplex.zero
+#print axioms CategoryTheory.Abelian.Ext.ExactAugmentedCochainComplex.zero
+#check CategoryTheory.Abelian.Ext.ExactAugmentedCochainComplex.rec
+#print axioms CategoryTheory.Abelian.Ext.ExactAugmentedCochainComplex.rec
+#check CategoryTheory.Abelian.Ext.ExactAugmentedCochainComplex.toAcyclicResolution_d
+#print axioms CategoryTheory.Abelian.Ext.ExactAugmentedCochainComplex.toAcyclicResolution_d
+#check CategoryTheory.Abelian.Ext.ExactAugmentedCochainComplex.toAcyclicResolution_X
+#print axioms CategoryTheory.Abelian.Ext.ExactAugmentedCochainComplex.toAcyclicResolution_X
+#check CategoryTheory.Abelian.Ext.ExactAugmentedCochainComplex.resolutionComplexIso
+#print axioms CategoryTheory.Abelian.Ext.ExactAugmentedCochainComplex.resolutionComplexIso
+#check CategoryTheory.Abelian.Ext.ExactAugmentedCochainComplex.F
+#print axioms CategoryTheory.Abelian.Ext.ExactAugmentedCochainComplex.F
+#check CategoryTheory.Abelian.Ext.ExactAugmentedCochainComplex.ι
+#print axioms CategoryTheory.Abelian.Ext.ExactAugmentedCochainComplex.ι
+#check CategoryTheory.Abelian.Ext.ExactAugmentedCochainComplex
+#print axioms CategoryTheory.Abelian.Ext.ExactAugmentedCochainComplex
+#check CategoryTheory.Abelian.Ext.ExactAugmentedCochainComplex.Z
+#print axioms CategoryTheory.Abelian.Ext.ExactAugmentedCochainComplex.Z
+#check CategoryTheory.Abelian.Ext.ExactAugmentedCochainComplex.i
+#print axioms CategoryTheory.Abelian.Ext.ExactAugmentedCochainComplex.i
+#check CategoryTheory.Abelian.Ext.ExactAugmentedCochainComplex.mono_i
+#print axioms CategoryTheory.Abelian.Ext.ExactAugmentedCochainComplex.mono_i
+#check CategoryTheory.Abelian.Ext.ExactAugmentedCochainComplex.epi_p
+#print axioms CategoryTheory.Abelian.Ext.ExactAugmentedCochainComplex.epi_p
+#check CategoryTheory.Abelian.Ext.ExactAugmentedCochainComplex.noConfusion
+#print axioms CategoryTheory.Abelian.Ext.ExactAugmentedCochainComplex.noConfusion
+#check CategoryTheory.Abelian.Ext.ExactAugmentedCochainComplex.mono_ι
+#print axioms CategoryTheory.Abelian.Ext.ExactAugmentedCochainComplex.mono_ι
+#check CategoryTheory.Abelian.Ext.ExactAugmentedCochainComplex.toAcyclicResolution_i_zero
+#print axioms CategoryTheory.Abelian.Ext.ExactAugmentedCochainComplex.toAcyclicResolution_i_zero
+#check CategoryTheory.Abelian.Ext.ExactAugmentedCochainComplex.unfactoredStep
+#print axioms CategoryTheory.Abelian.Ext.ExactAugmentedCochainComplex.unfactoredStep
+#check CategoryTheory.Abelian.Ext.ExactAugmentedCochainComplex.stepToUnfactored
+#print axioms CategoryTheory.Abelian.Ext.ExactAugmentedCochainComplex.stepToUnfactored
+#check CategoryTheory.Abelian.Ext.ExactAugmentedCochainComplex.toAcyclicResolution_Z_zero
+#print axioms CategoryTheory.Abelian.Ext.ExactAugmentedCochainComplex.toAcyclicResolution_Z_zero
+#check CategoryTheory.Abelian.Ext.ExactAugmentedCochainComplex.i_p
+#print axioms CategoryTheory.Abelian.Ext.ExactAugmentedCochainComplex.i_p
+#check CategoryTheory.Abelian.Ext.ExactAugmentedCochainComplex.noConfusionType
+#print axioms CategoryTheory.Abelian.Ext.ExactAugmentedCochainComplex.noConfusionType
+#check CategoryTheory.Abelian.Ext.ExactAugmentedCochainComplex.step_exact
+#print axioms CategoryTheory.Abelian.Ext.ExactAugmentedCochainComplex.step_exact
+#check CategoryTheory.Abelian.Ext.ExactAugmentedCochainComplex.p
+#print axioms CategoryTheory.Abelian.Ext.ExactAugmentedCochainComplex.p
+#check CategoryTheory.Abelian.Ext.ExactAugmentedCochainComplex.unfactoredStep_exact
+#print axioms CategoryTheory.Abelian.Ext.ExactAugmentedCochainComplex.unfactoredStep_exact
+#check CategoryTheory.Abelian.Ext.ExactAugmentedCochainComplex.step
+#print axioms CategoryTheory.Abelian.Ext.ExactAugmentedCochainComplex.step
+#check CategoryTheory.Abelian.Ext.ExactAugmentedCochainComplex.mk
+#print axioms CategoryTheory.Abelian.Ext.ExactAugmentedCochainComplex.mk
+#check CategoryTheory.Abelian.Ext.ExactAugmentedCochainComplex.toAcyclicResolution
+#print axioms CategoryTheory.Abelian.Ext.ExactAugmentedCochainComplex.toAcyclicResolution
+#check CategoryTheory.Abelian.Ext.ExactAugmentedCochainComplex.casesOn
+#print axioms CategoryTheory.Abelian.Ext.ExactAugmentedCochainComplex.casesOn
+#check CategoryTheory.Abelian.Ext.ExactAugmentedCochainComplex.mk.injEq
+#print axioms CategoryTheory.Abelian.Ext.ExactAugmentedCochainComplex.mk.injEq
+#check CategoryTheory.Abelian.Ext.ExactAugmentedCochainComplex.p_i_assoc
+#print axioms CategoryTheory.Abelian.Ext.ExactAugmentedCochainComplex.p_i_assoc
+#check CategoryTheory.Abelian.Ext.ExactAugmentedCochainComplex.ctorIdx
+#print axioms CategoryTheory.Abelian.Ext.ExactAugmentedCochainComplex.ctorIdx
+#check CategoryTheory.Abelian.Ext.ExactAugmentedCochainComplex.positiveExact
+#print axioms CategoryTheory.Abelian.Ext.ExactAugmentedCochainComplex.positiveExact
+#check CategoryTheory.Abelian.Ext.ExactAugmentedCochainComplex.mk.noConfusion
+#print axioms CategoryTheory.Abelian.Ext.ExactAugmentedCochainComplex.mk.noConfusion
+#check CategoryTheory.Abelian.Ext.ExactAugmentedCochainComplex.complex
+#print axioms CategoryTheory.Abelian.Ext.ExactAugmentedCochainComplex.complex
+#check CategoryTheory.Abelian.Ext.ExactAugmentedCochainComplex.i_p_assoc
+#print axioms CategoryTheory.Abelian.Ext.ExactAugmentedCochainComplex.i_p_assoc
+#check CategoryTheory.Abelian.Ext.ExactAugmentedCochainComplex.mk.inj
+#print axioms CategoryTheory.Abelian.Ext.ExactAugmentedCochainComplex.mk.inj
+
+/-! ## `Lib.Algebra.Homology.DerivedCategory.Ext.ShortExactAcyclicQuotient` -/
+
+#check CategoryTheory.Abelian.Ext.postcomp_f_two_bijective_of_subsingleton_quotient
+#print axioms CategoryTheory.Abelian.Ext.postcomp_f_two_bijective_of_subsingleton_quotient
+#check CategoryTheory.Abelian.Ext.extTwoEquivMiddleOfSubsingletonQuotient
+#print axioms CategoryTheory.Abelian.Ext.extTwoEquivMiddleOfSubsingletonQuotient
+#check CategoryTheory.Abelian.Ext.extTwoEquivMiddleOfSubsingletonQuotient_apply
+#print axioms CategoryTheory.Abelian.Ext.extTwoEquivMiddleOfSubsingletonQuotient_apply
+
+/-! ## `Lib.Algebra.Homology.DerivedCategory.Ext.ShortExactDegreeOne` -/
+
+#check CategoryTheory.Abelian.Ext.postcompFZeroToKerPostcompG
+#print axioms CategoryTheory.Abelian.Ext.postcompFZeroToKerPostcompG
+#check CategoryTheory.Abelian.Ext.postcompFZeroToKerPostcompG_bijective
+#print axioms CategoryTheory.Abelian.Ext.postcompFZeroToKerPostcompG_bijective
+#check CategoryTheory.Abelian.Ext.extZeroEquivKerPostcompG
+#print axioms CategoryTheory.Abelian.Ext.extZeroEquivKerPostcompG
+#check CategoryTheory.Abelian.Ext.extZeroEquivKerPostcompG_apply
+#print axioms CategoryTheory.Abelian.Ext.extZeroEquivKerPostcompG_apply
+#check CategoryTheory.Abelian.Ext.range_postcomp_g_zero_eq_ker_connecting
+#print axioms CategoryTheory.Abelian.Ext.range_postcomp_g_zero_eq_ker_connecting
+#check CategoryTheory.Abelian.Ext.connecting_zero_one_surjective_of_subsingleton_middle
+#print axioms CategoryTheory.Abelian.Ext.connecting_zero_one_surjective_of_subsingleton_middle
+#check CategoryTheory.Abelian.Ext.quotientRangePostcompGEquivExtOne
+#print axioms CategoryTheory.Abelian.Ext.quotientRangePostcompGEquivExtOne
+#check CategoryTheory.Abelian.Ext.quotientRangePostcompGEquivExtOne_mk
+#print axioms CategoryTheory.Abelian.Ext.quotientRangePostcompGEquivExtOne_mk
+#check CategoryTheory.Abelian.Ext.subsingleton_ext_one_iff_postcomp_g_zero_surjective
+#print axioms CategoryTheory.Abelian.Ext.subsingleton_ext_one_iff_postcomp_g_zero_surjective
+
+/-! ## `Lib.Topology.Sheaves.Cohomology.ShortExactAcyclicQuotient` -/
+
+#check TopCat.SheafCohomology.AcyclicInDegreesOneTwo
+#print axioms TopCat.SheafCohomology.AcyclicInDegreesOneTwo
+#check TopCat.SheafCohomology.AcyclicInDegreesOneTwo.mk
+#print axioms TopCat.SheafCohomology.AcyclicInDegreesOneTwo.mk
+#check TopCat.SheafCohomology.AcyclicInDegreesOneTwo.hOne
+#print axioms TopCat.SheafCohomology.AcyclicInDegreesOneTwo.hOne
+#check TopCat.SheafCohomology.AcyclicInDegreesOneTwo.hTwo
+#print axioms TopCat.SheafCohomology.AcyclicInDegreesOneTwo.hTwo
+#check TopCat.SheafCohomology.AcyclicInDegreesOneTwo.rec
+#print axioms TopCat.SheafCohomology.AcyclicInDegreesOneTwo.rec
+#check TopCat.SheafCohomology.AcyclicInDegreesOneTwo.recOn
+#print axioms TopCat.SheafCohomology.AcyclicInDegreesOneTwo.recOn
+#check TopCat.SheafCohomology.AcyclicInDegreesOneTwo.casesOn
+#print axioms TopCat.SheafCohomology.AcyclicInDegreesOneTwo.casesOn
+#check TopCat.SheafCohomology.hTwoMap_bijective_of_subsingleton_quotient
+#print axioms TopCat.SheafCohomology.hTwoMap_bijective_of_subsingleton_quotient
+#check TopCat.SheafCohomology.hTwoEquivMiddleOfSubsingletonQuotient
+#print axioms TopCat.SheafCohomology.hTwoEquivMiddleOfSubsingletonQuotient
+#check TopCat.SheafCohomology.hTwoEquivMiddleOfAcyclicQuotient
+#print axioms TopCat.SheafCohomology.hTwoEquivMiddleOfAcyclicQuotient
+#check TopCat.SheafCohomology.hTwoEquivMiddleOfSubsingletonQuotient_apply
+#print axioms TopCat.SheafCohomology.hTwoEquivMiddleOfSubsingletonQuotient_apply
+
+/-! ## `Lib.Topology.Sheaves.Cohomology.ShortExactDegreeOne` -/
+
+#check TopCat.SheafCohomology.hZeroMap_surjective_iff_globalSections_surjective
+#print axioms TopCat.SheafCohomology.hZeroMap_surjective_iff_globalSections_surjective
+#check TopCat.SheafCohomology.subsingleton_hOne_iff_globalSections_surjective
+#print axioms TopCat.SheafCohomology.subsingleton_hOne_iff_globalSections_surjective
+
+/-! ## `Lib.Topology.Sheaves.Cohomology.ShortExactDegreeZeroSections` -/
+
+#check TopCat.SheafCohomology.GlobalSections
+#print axioms TopCat.SheafCohomology.GlobalSections
+#check TopCat.SheafCohomology.topSectionsMap
+#print axioms TopCat.SheafCohomology.topSectionsMap
+#check TopCat.SheafCohomology.globalSectionsSubobjectEquivKer
+#print axioms TopCat.SheafCohomology.globalSectionsSubobjectEquivKer
+#check TopCat.SheafCohomology.globalSectionsSubobjectEquivKer_apply_val
+#print axioms TopCat.SheafCohomology.globalSectionsSubobjectEquivKer_apply_val
+
+/-! ## `Lib.Topology.Sheaves.FiniteSupport.SkyscraperSupport` -/
+
+#check TopCat.Sheaf.FiniteSupport.stalkSkyscraperAtIso
+#print axioms TopCat.Sheaf.FiniteSupport.stalkSkyscraperAtIso
+#check TopCat.Sheaf.FiniteSupport.stalkMap_toSkyscraperAt_comp_counit
+#print axioms TopCat.Sheaf.FiniteSupport.stalkMap_toSkyscraperAt_comp_counit
+#check TopCat.Sheaf.FiniteSupport.sheafStalkBiprodIso
+#print axioms TopCat.Sheaf.FiniteSupport.sheafStalkBiprodIso
+#check TopCat.Sheaf.FiniteSupport.stalkMap_toSkyscraperBiprod_comp_mapBiprod
+#print axioms TopCat.Sheaf.FiniteSupport.stalkMap_toSkyscraperBiprod_comp_mapBiprod
+#check TopCat.Sheaf.FiniteSupport.stalkMap_toSkyscraperBiprod_comp_mapBiprod_assoc
+#print axioms TopCat.Sheaf.FiniteSupport.stalkMap_toSkyscraperBiprod_comp_mapBiprod_assoc
+#check TopCat.Sheaf.FiniteSupport.skyscraperAt_stalk_isZero_of_ne
+#print axioms TopCat.Sheaf.FiniteSupport.skyscraperAt_stalk_isZero_of_ne
+#check TopCat.Sheaf.FiniteSupport.isIso_stalkFunctor_map_toSkyscraperBiprod_at_left
+#print axioms TopCat.Sheaf.FiniteSupport.isIso_stalkFunctor_map_toSkyscraperBiprod_at_left
+#check TopCat.Sheaf.FiniteSupport.isIso_stalkFunctor_map_toSkyscraperBiprod_at_right
+#print axioms TopCat.Sheaf.FiniteSupport.isIso_stalkFunctor_map_toSkyscraperBiprod_at_right
+#check TopCat.Sheaf.FiniteSupport.isIso_stalkFunctor_map_toSkyscraperBiprod
+#print axioms TopCat.Sheaf.FiniteSupport.isIso_stalkFunctor_map_toSkyscraperBiprod
+#check TopCat.Sheaf.FiniteSupport.skyscraperBiprodIsoOfTwoPointSupport
+#print axioms TopCat.Sheaf.FiniteSupport.skyscraperBiprodIsoOfTwoPointSupport
+
+/-! ## `Lib.Algebra.Homology.DerivedCategory.Ext.AcyclicResolutionExactFunctor` -/
+
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.map
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.map
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.map_Z
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.map_Z
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.map_X
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.map_X
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.map_i
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.map_i
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.map_p
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.map_p
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.map_d
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.map_d
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.comparisonHom
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.comparisonHom
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.evaluatedComplexMap
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.evaluatedComplexMap
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.isAcyclicFor_map_of_surjective
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.isAcyclicFor_map_of_surjective
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.shiftIso_naturality
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.shiftIso_naturality
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.shiftIso_naturality_assoc
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.shiftIso_naturality_assoc
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.truncComparison
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.truncComparison
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.truncExtZeroMap
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.truncExtZeroMap
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.truncExtOneIso_naturality
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.truncExtOneIso_naturality
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.localExtIso_naturality
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.localExtIso_naturality
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.localExtIso_naturality_assoc
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.localExtIso_naturality_assoc
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.truncExtZeroMap_evaluatedLocalIso
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.truncExtZeroMap_evaluatedLocalIso
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.truncExtZeroMap_evaluatedLocalIso_assoc
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.truncExtZeroMap_evaluatedLocalIso_assoc
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.truncExtZeroHomology_naturality
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.truncExtZeroHomology_naturality
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.truncExtZeroHomology_naturality_assoc
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.truncExtZeroHomology_naturality_assoc
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.evaluatedWindowIso_inv_naturality
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.evaluatedWindowIso_inv_naturality
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.evaluatedWindowIso_inv_naturality_assoc
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.evaluatedWindowIso_inv_naturality_assoc
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.extIsoHomology_naturality
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.extIsoHomology_naturality
+#check CategoryTheory.Abelian.Ext.AcyclicResolution.extIsoHomology_naturality_assoc
+#print axioms CategoryTheory.Abelian.Ext.AcyclicResolution.extIsoHomology_naturality_assoc
+
+/-! ## `Lib.AlgebraicTopology.SingularCochains.Vanishing` -/
+
+#check AlgebraicTopology.SingularCochains.cohomology_subsingleton_of_homotopyEquiv
+#print axioms AlgebraicTopology.SingularCochains.cohomology_subsingleton_of_homotopyEquiv
+#check AlgebraicTopology.SingularCochains.cohomology_subsingleton_iff_of_homotopyEquiv
+#print axioms AlgebraicTopology.SingularCochains.cohomology_subsingleton_iff_of_homotopyEquiv
+#check AlgebraicTopology.SingularCochains.cohomology_subsingleton_iff_of_homeomorph
+#print axioms AlgebraicTopology.SingularCochains.cohomology_subsingleton_iff_of_homeomorph
+#check AlgebraicTopology.SingularCochains.pointCohomology_subsingleton
+#print axioms AlgebraicTopology.SingularCochains.pointCohomology_subsingleton
+#check AlgebraicTopology.SingularCochains.contractibleCohomology_subsingleton
+#print axioms AlgebraicTopology.SingularCochains.contractibleCohomology_subsingleton
+#check AlgebraicTopology.SingularCochains.uliftIntCohomology_subsingleton_of_projective_of_homology
+#print axioms AlgebraicTopology.SingularCochains.uliftIntCohomology_subsingleton_of_projective_of_homology
+#check AlgebraicTopology.SingularCochains.uliftIntCohomology_subsingleton_of_adjacent_homology
+#print axioms AlgebraicTopology.SingularCochains.uliftIntCohomology_subsingleton_of_adjacent_homology
+
+/-! ## `Lib.Topology.Sheaves.SingularCochainSheaf.GlobalUnitPositive` -/
+
+#check TopCat.SingularCochainSheaf.globalCochainComparison_cycle_lift_succ
+#print axioms TopCat.SingularCochainSheaf.globalCochainComparison_cycle_lift_succ
+#check TopCat.SingularCochainSheaf.globalCochainComparison_boundary_detect_succ
+#print axioms TopCat.SingularCochainSheaf.globalCochainComparison_boundary_detect_succ
+#check TopCat.SingularCochainSheaf.globalCochainComparison_homology_isIso_succ_of_small_chains
+#print axioms TopCat.SingularCochainSheaf.globalCochainComparison_homology_isIso_succ_of_small_chains
+#check TopCat.SingularCochainSheaf.globalCochainComparison_homology_isIso_succ
+#print axioms TopCat.SingularCochainSheaf.globalCochainComparison_homology_isIso_succ
+
+/-! ## `Lib.Topology.Sheaves.Cohomology.AcyclicResolution` -/
+
+#check TopCat.SheafCohomology.AcyclicResolution.Resolution
+#print axioms TopCat.SheafCohomology.AcyclicResolution.Resolution
+#check TopCat.SheafCohomology.AcyclicResolution.globalComplex
+#print axioms TopCat.SheafCohomology.AcyclicResolution.globalComplex
+#check TopCat.SheafCohomology.AcyclicResolution.IsAcyclic
+#print axioms TopCat.SheafCohomology.AcyclicResolution.IsAcyclic
+#check TopCat.SheafCohomology.AcyclicResolution.isAcyclicFor
+#print axioms TopCat.SheafCohomology.AcyclicResolution.isAcyclicFor
+#check TopCat.SheafCohomology.AcyclicResolution.extZeroGlobalIso
+#print axioms TopCat.SheafCohomology.AcyclicResolution.extZeroGlobalIso
+#check TopCat.SheafCohomology.AcyclicResolution.extIsoGlobalHomology
+#print axioms TopCat.SheafCohomology.AcyclicResolution.extIsoGlobalHomology
+#check TopCat.SheafCohomology.AcyclicResolution.Hom.globalComplexMap
+#print axioms TopCat.SheafCohomology.AcyclicResolution.Hom.globalComplexMap
+#check TopCat.SheafCohomology.AcyclicResolution.Hom.globalComplexMap_id
+#print axioms TopCat.SheafCohomology.AcyclicResolution.Hom.globalComplexMap_id
+#check TopCat.SheafCohomology.AcyclicResolution.Hom.globalComplexMap_comp
+#print axioms TopCat.SheafCohomology.AcyclicResolution.Hom.globalComplexMap_comp
+#check TopCat.SheafCohomology.AcyclicResolution.Hom.extZeroGlobalIso_naturality
+#print axioms TopCat.SheafCohomology.AcyclicResolution.Hom.extZeroGlobalIso_naturality
+#check TopCat.SheafCohomology.AcyclicResolution.Hom.extZeroGlobalIso_naturality_assoc
+#print axioms TopCat.SheafCohomology.AcyclicResolution.Hom.extZeroGlobalIso_naturality_assoc
+#check TopCat.SheafCohomology.AcyclicResolution.Hom.extIsoGlobalHomology_naturality
+#print axioms TopCat.SheafCohomology.AcyclicResolution.Hom.extIsoGlobalHomology_naturality
+
+/-! ## `Lib.Topology.Sheaves.SingularCochainSheaf.ResolutionPositive` -/
+
+#check TopCat.SingularCochainSheaf.exactAugmentedComplex
+#print axioms TopCat.SingularCochainSheaf.exactAugmentedComplex
+#check TopCat.SingularCochainSheaf.resolution
+#print axioms TopCat.SingularCochainSheaf.resolution
+#check TopCat.SingularCochainSheaf.resolution_Z_zero
+#print axioms TopCat.SingularCochainSheaf.resolution_Z_zero
+#check TopCat.SingularCochainSheaf.resolution_X
+#print axioms TopCat.SingularCochainSheaf.resolution_X
+#check TopCat.SingularCochainSheaf.resolution_d
+#print axioms TopCat.SingularCochainSheaf.resolution_d
+#check TopCat.SingularCochainSheaf.resolution_isAcyclic
+#print axioms TopCat.SingularCochainSheaf.resolution_isAcyclic
+#check TopCat.SingularCochainSheaf.resolutionGlobalComplexIso
+#print axioms TopCat.SingularCochainSheaf.resolutionGlobalComplexIso
+
+/-! ## `Lib.Topology.Sheaves.SingularCochainSheaf.ComparisonPositive` -/
+
+#check TopCat.SingularCochainSheaf.constantSheafGlobalIso
+#print axioms TopCat.SingularCochainSheaf.constantSheafGlobalIso
+#check TopCat.SingularCochainSheaf.globalCochainComparison_homology_isIso_succ_of_metrizable
+#print axioms TopCat.SingularCochainSheaf.globalCochainComparison_homology_isIso_succ_of_metrizable
+#check TopCat.SingularCochainSheaf.constantSheafCohomologyIsoSingular
+#print axioms TopCat.SingularCochainSheaf.constantSheafCohomologyIsoSingular
+#check TopCat.SingularCochainSheaf.constantSheafCohomologyIsoSingular_global
+#print axioms TopCat.SingularCochainSheaf.constantSheafCohomologyIsoSingular_global
+#check TopCat.SingularCochainSheaf.constantSheafCohomologyIsoSingular_global_assoc
+#print axioms TopCat.SingularCochainSheaf.constantSheafCohomologyIsoSingular_global_assoc
+#check TopCat.SingularCochainSheaf.constantSheafCohomologyIsoSingular_naturality_of_global
+#print axioms TopCat.SingularCochainSheaf.constantSheafCohomologyIsoSingular_naturality_of_global
+
+/-! ## `Lib.Topology.Sheaves.SingularCochainSheaf.Vanishing` -/
+
+#check TopCat.SingularCochainSheaf.constantSheafCohomology_subsingleton_iff_singular
+#print axioms TopCat.SingularCochainSheaf.constantSheafCohomology_subsingleton_iff_singular
+#check TopCat.SingularCochainSheaf.constantSheafCohomology_succ_subsingleton_of_contractible
+#print axioms TopCat.SingularCochainSheaf.constantSheafCohomology_succ_subsingleton_of_contractible
+
+/-! ## `Lib.Topology.Sheaves.FiniteClosedPushforward.AcyclicResolution` -/
+
+#check TopCat.FiniteClosedPushforward.mapIndexedResolution
+#print axioms TopCat.FiniteClosedPushforward.mapIndexedResolution
+#check TopCat.FiniteClosedPushforward.mapIndexedResolution_d
+#print axioms TopCat.FiniteClosedPushforward.mapIndexedResolution_d
+#check TopCat.FiniteClosedPushforward.mapIndexedResolution_isAcyclic
+#print axioms TopCat.FiniteClosedPushforward.mapIndexedResolution_isAcyclic
+#check TopCat.FiniteClosedPushforward.indexedEvaluatedComplexForwardMap
+#print axioms TopCat.FiniteClosedPushforward.indexedEvaluatedComplexForwardMap
+#check TopCat.FiniteClosedPushforward.indexedGlobalComplexIso
+#print axioms TopCat.FiniteClosedPushforward.indexedGlobalComplexIso
+#check TopCat.FiniteClosedPushforward.indexedExtZeroGlobal_forward
+#print axioms TopCat.FiniteClosedPushforward.indexedExtZeroGlobal_forward
+#check TopCat.FiniteClosedPushforward.pushedIndexedGlobalIso
+#print axioms TopCat.FiniteClosedPushforward.pushedIndexedGlobalIso
+#check TopCat.FiniteClosedPushforward.indexedGlobal_forward
+#print axioms TopCat.FiniteClosedPushforward.indexedGlobal_forward
+
+/-! ## `Lib.Topology.Sheaves.SingularCochainSheaf.Pullback.FiniteClosedPositive` -/
+
+#check TopCat.SingularCochainSheaf.resolutionCyclePullback
+#print axioms TopCat.SingularCochainSheaf.resolutionCyclePullback
+#check TopCat.SingularCochainSheaf.resolutionCyclePullback_i
+#print axioms TopCat.SingularCochainSheaf.resolutionCyclePullback_i
+#check TopCat.SingularCochainSheaf.resolutionCyclePullback_i_assoc
+#print axioms TopCat.SingularCochainSheaf.resolutionCyclePullback_i_assoc
+#check TopCat.SingularCochainSheaf.resolutionPullback
+#print axioms TopCat.SingularCochainSheaf.resolutionPullback
+#check TopCat.SingularCochainSheaf.resolutionPullback_globalComplex
+#print axioms TopCat.SingularCochainSheaf.resolutionPullback_globalComplex
+#check TopCat.SingularCochainSheaf.constantSheafGlobalIso_naturality
+#print axioms TopCat.SingularCochainSheaf.constantSheafGlobalIso_naturality
+#check TopCat.SingularCochainSheaf.constantSheafCohomologyIsoSingular_naturality
+#print axioms TopCat.SingularCochainSheaf.constantSheafCohomologyIsoSingular_naturality
+#check TopCat.SingularCochainSheaf.constantSheafCohomology_pullback_isIso_of_singular
+#print axioms TopCat.SingularCochainSheaf.constantSheafCohomology_pullback_isIso_of_singular
+
+/-! ## `Lib.Topology.Sheaves.ConstantProductPositiveFibreIndependence` -/
+
+#check TopCat.ConstantProductPositive.nativePullback_isIso_of_comparison
+#print axioms TopCat.ConstantProductPositive.nativePullback_isIso_of_comparison
+#check TopCat.ConstantProductPositive.nativePullback_basedFibreInclusion_isIso_of_comparison_naturality
+#print axioms TopCat.ConstantProductPositive.nativePullback_basedFibreInclusion_isIso_of_comparison_naturality
+#check TopCat.ConstantProductPositive.nativePullback_basedFibreInclusion_isIso
+#print axioms TopCat.ConstantProductPositive.nativePullback_basedFibreInclusion_isIso
+#check TopCat.ConstantProductPositive.nativePullback_basedFibreInclusion_eq_of_comparison_naturality
+#print axioms TopCat.ConstantProductPositive.nativePullback_basedFibreInclusion_eq_of_comparison_naturality
+#check TopCat.ConstantProductPositive.nativePullback_basedFibreInclusion_eq
+#print axioms TopCat.ConstantProductPositive.nativePullback_basedFibreInclusion_eq
+
+/-! ## `Lib.CategoryTheory.Sites.Leray.FibreStalkEvaluation.CofinalCriterion` -/
+
+#check CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.canonicalDerivedStalkEvaluation_isIso_of_cofinal_bijectivePositive
+#print axioms CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.canonicalDerivedStalkEvaluation_isIso_of_cofinal_bijectivePositive
+#check CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.ConstantPointFibre.canonicalStalkToFibrePositive_isIso_of_cofinal_bijective
+#print axioms CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.ConstantPointFibre.canonicalStalkToFibrePositive_isIso_of_cofinal_bijective
+
+/-! ## `Lib.Topology.Sheaves.StalkwiseSectionLift` -/
+
+#check TopCat.Sheaf.exists_preimage_of_stalkwise_mem_range
+#print axioms TopCat.Sheaf.exists_preimage_of_stalkwise_mem_range
+
+/-! ## `Lib.LinearAlgebra.RankOneInt` -/
+
+#check LinearMap.domainEquivIntOfInjectiveOfNonzero
+#print axioms LinearMap.domainEquivIntOfInjectiveOfNonzero
+#check LinearMap.ne_zero_iff_apply_equivInt_symm_one
+#print axioms LinearMap.ne_zero_iff_apply_equivInt_symm_one
+
+/-! ## `Lib.Topology.Sheaves.StalkwiseSectionRange` -/
+
+#check TopCat.Presheaf.app_exists_preimage_iff_stalkwise_exists_preimage
+#print axioms TopCat.Presheaf.app_exists_preimage_iff_stalkwise_exists_preimage
+
+/-! ## `Lib.Topology.Sheaves.Cohomology.Cech.OpenCover` -/
+
+#check TopologicalSpace.IsOpenCover.presheafCechComplexFunctor
+#print axioms TopologicalSpace.IsOpenCover.presheafCechComplexFunctor
+#check TopologicalSpace.IsOpenCover.sheafCechComplexFunctor
+#print axioms TopologicalSpace.IsOpenCover.sheafCechComplexFunctor
+#check TopologicalSpace.IsOpenCover.presheafCechCohomologyFunctor
+#print axioms TopologicalSpace.IsOpenCover.presheafCechCohomologyFunctor
+#check TopologicalSpace.IsOpenCover.sheafCechCohomologyFunctor
+#print axioms TopologicalSpace.IsOpenCover.sheafCechCohomologyFunctor
+#check TopologicalSpace.IsOpenCover.presheafCechComplexFunctor_obj
+#print axioms TopologicalSpace.IsOpenCover.presheafCechComplexFunctor_obj
+#check TopologicalSpace.IsOpenCover.sheafCechComplexFunctor_obj
+#print axioms TopologicalSpace.IsOpenCover.sheafCechComplexFunctor_obj
+#check TopologicalSpace.IsOpenCover.presheafCechCohomologyFunctor_obj
+#print axioms TopologicalSpace.IsOpenCover.presheafCechCohomologyFunctor_obj
+#check TopologicalSpace.IsOpenCover.sheafCechCohomologyFunctor_obj
+#print axioms TopologicalSpace.IsOpenCover.sheafCechCohomologyFunctor_obj
+
+/-! ## `Lib.Topology.Sheaves.Cohomology.Cech.Ordered` -/
+
+#check TopologicalSpace.OpenCover.OrderedSimplex
+#print axioms TopologicalSpace.OpenCover.OrderedSimplex
+#check TopologicalSpace.OpenCover.OrderedSimplex.face
+#print axioms TopologicalSpace.OpenCover.OrderedSimplex.face
+#check TopologicalSpace.OpenCover.OrderedSimplex.face_apply
+#print axioms TopologicalSpace.OpenCover.OrderedSimplex.face_apply
+#check TopologicalSpace.OpenCover.OrderedSimplex.face_face_swap
+#print axioms TopologicalSpace.OpenCover.OrderedSimplex.face_face_swap
+#check TopologicalSpace.OpenCover.OrderedSimplex.intersection
+#print axioms TopologicalSpace.OpenCover.OrderedSimplex.intersection
+#check TopologicalSpace.OpenCover.OrderedSimplex.coe_intersection
+#print axioms TopologicalSpace.OpenCover.OrderedSimplex.coe_intersection
+#check TopologicalSpace.OpenCover.OrderedSimplex.mem_intersection_iff
+#print axioms TopologicalSpace.OpenCover.OrderedSimplex.mem_intersection_iff
+#check TopologicalSpace.OpenCover.OrderedSimplex.intersection_le
+#print axioms TopologicalSpace.OpenCover.OrderedSimplex.intersection_le
+#check TopologicalSpace.OpenCover.OrderedSimplex.intersection_le_face
+#print axioms TopologicalSpace.OpenCover.OrderedSimplex.intersection_le_face
+#check TopologicalSpace.OpenCover.OrderedSimplex.faceHom
+#print axioms TopologicalSpace.OpenCover.OrderedSimplex.faceHom
+#check TopologicalSpace.OpenCover.OrderedCech.object
+#print axioms TopologicalSpace.OpenCover.OrderedCech.object
+#check TopologicalSpace.OpenCover.OrderedCech.π
+#print axioms TopologicalSpace.OpenCover.OrderedCech.π
+#check TopologicalSpace.OpenCover.OrderedCech.coface
+#print axioms TopologicalSpace.OpenCover.OrderedCech.coface
+#check TopologicalSpace.OpenCover.OrderedCech.coface_π
+#print axioms TopologicalSpace.OpenCover.OrderedCech.coface_π
+#check TopologicalSpace.OpenCover.OrderedCech.coface_comp_coface
+#print axioms TopologicalSpace.OpenCover.OrderedCech.coface_comp_coface
+#check TopologicalSpace.OpenCover.OrderedCech.differential
+#print axioms TopologicalSpace.OpenCover.OrderedCech.differential
+#check TopologicalSpace.OpenCover.OrderedCech.differential_π
+#print axioms TopologicalSpace.OpenCover.OrderedCech.differential_π
+#check TopologicalSpace.OpenCover.OrderedCech.differential_comp_differential
+#print axioms TopologicalSpace.OpenCover.OrderedCech.differential_comp_differential
+#check TopologicalSpace.OpenCover.OrderedCech.complex
+#print axioms TopologicalSpace.OpenCover.OrderedCech.complex
+#check TopologicalSpace.OpenCover.OrderedCech.complex_X
+#print axioms TopologicalSpace.OpenCover.OrderedCech.complex_X
+#check TopologicalSpace.OpenCover.OrderedCech.complex_d
+#print axioms TopologicalSpace.OpenCover.OrderedCech.complex_d
+
+/-! ## `Lib.Topology.Sheaves.Cohomology.Cech.Refinement` -/
+
+#check TopologicalSpace.OpenCover.IndexTuple.intersection
+#print axioms TopologicalSpace.OpenCover.IndexTuple.intersection
+#check TopologicalSpace.OpenCover.IndexTuple.face
+#print axioms TopologicalSpace.OpenCover.IndexTuple.face
+#check TopologicalSpace.OpenCover.IndexTuple.intersection_le_face
+#print axioms TopologicalSpace.OpenCover.IndexTuple.intersection_le_face
+#check TopologicalSpace.OpenCover.IndexTuple.faceHom
+#print axioms TopologicalSpace.OpenCover.IndexTuple.faceHom
+#check TopologicalSpace.OpenCover.IndexTuple.intersection_comp_equiv
+#print axioms TopologicalSpace.OpenCover.IndexTuple.intersection_comp_equiv
+#check TopologicalSpace.OpenCover.IndexTuple.deletePerm
+#print axioms TopologicalSpace.OpenCover.IndexTuple.deletePerm
+#check TopologicalSpace.OpenCover.IndexTuple.succAbove_deletePerm
+#print axioms TopologicalSpace.OpenCover.IndexTuple.succAbove_deletePerm
+#check TopologicalSpace.OpenCover.IndexTuple.sign_deletePerm
+#print axioms TopologicalSpace.OpenCover.IndexTuple.sign_deletePerm
+#check TopologicalSpace.OpenCover.IndexTuple.deletePerm_sort_eq_sort_face
+#print axioms TopologicalSpace.OpenCover.IndexTuple.deletePerm_sort_eq_sort_face
+#check TopologicalSpace.OpenCover.IndexTuple.sign_sort_face
+#print axioms TopologicalSpace.OpenCover.IndexTuple.sign_sort_face
+#check TopologicalSpace.OpenCover.IndexTuple.sortedSimplex
+#print axioms TopologicalSpace.OpenCover.IndexTuple.sortedSimplex
+#check TopologicalSpace.OpenCover.IndexTuple.sortedSimplex_apply
+#print axioms TopologicalSpace.OpenCover.IndexTuple.sortedSimplex_apply
+#check TopologicalSpace.OpenCover.IndexTuple.sortedSimplex_intersection
+#print axioms TopologicalSpace.OpenCover.IndexTuple.sortedSimplex_intersection
+#check TopologicalSpace.OpenCover.IndexTuple.sortedSimplex_coe
+#print axioms TopologicalSpace.OpenCover.IndexTuple.sortedSimplex_coe
+#check TopologicalSpace.OpenCover.IndexTuple.sortedSimplex_face
+#print axioms TopologicalSpace.OpenCover.IndexTuple.sortedSimplex_face
+#check TopologicalSpace.OpenCover.Refinement.intersection_le
+#print axioms TopologicalSpace.OpenCover.Refinement.intersection_le
+#check TopologicalSpace.OpenCover.Refinement.intersectionHom
+#print axioms TopologicalSpace.OpenCover.Refinement.intersectionHom
+#check TopologicalSpace.OpenCover.Refinement.orderedIntersectionHom
+#print axioms TopologicalSpace.OpenCover.Refinement.orderedIntersectionHom
+#check TopologicalSpace.OpenCover.OrderedCech.alternatingEvaluation
+#print axioms TopologicalSpace.OpenCover.OrderedCech.alternatingEvaluation
+#check TopologicalSpace.OpenCover.OrderedCech.alternatingEvaluation_of_not_injective
+#print axioms TopologicalSpace.OpenCover.OrderedCech.alternatingEvaluation_of_not_injective
+#check TopologicalSpace.OpenCover.OrderedCech.alternatingEvaluation_of_injective
+#print axioms TopologicalSpace.OpenCover.OrderedCech.alternatingEvaluation_of_injective
+#check TopologicalSpace.OpenCover.OrderedCech.alternatingEvaluation_ordered
+#print axioms TopologicalSpace.OpenCover.OrderedCech.alternatingEvaluation_ordered
+#check TopologicalSpace.OpenCover.OrderedCech.alternatingEvaluation_comp_equiv
+#print axioms TopologicalSpace.OpenCover.OrderedCech.alternatingEvaluation_comp_equiv
+#check TopologicalSpace.OpenCover.OrderedCech.differential_comp_alternatingEvaluation
+#print axioms TopologicalSpace.OpenCover.OrderedCech.differential_comp_alternatingEvaluation
+#check TopologicalSpace.OpenCover.OrderedCech.refinementMapDegree
+#print axioms TopologicalSpace.OpenCover.OrderedCech.refinementMapDegree
+#check TopologicalSpace.OpenCover.OrderedCech.refinementMapDegree_π
+#print axioms TopologicalSpace.OpenCover.OrderedCech.refinementMapDegree_π
+#check TopologicalSpace.OpenCover.OrderedCech.refinementMapDegree_comp_differential
+#print axioms TopologicalSpace.OpenCover.OrderedCech.refinementMapDegree_comp_differential
+#check TopologicalSpace.OpenCover.OrderedCech.refinementMap
+#print axioms TopologicalSpace.OpenCover.OrderedCech.refinementMap
+#check TopologicalSpace.OpenCover.OrderedCech.refinementMap_f
+#print axioms TopologicalSpace.OpenCover.OrderedCech.refinementMap_f
+#check TopologicalSpace.OpenCover.OrderedCech.refinementMap_f_π
+#print axioms TopologicalSpace.OpenCover.OrderedCech.refinementMap_f_π
+/-! ## `Lib.Topology.Sheaves.Cohomology.Cech.RefinementHomotopy` -/
+
+#check TopologicalSpace.OpenCover.IndexTuple.prism
+#print axioms TopologicalSpace.OpenCover.IndexTuple.prism
+#check TopologicalSpace.OpenCover.IndexTuple.face_prism_zero_zero
+#print axioms TopologicalSpace.OpenCover.IndexTuple.face_prism_zero_zero
+#check TopologicalSpace.OpenCover.IndexTuple.face_prism_last_last
+#print axioms TopologicalSpace.OpenCover.IndexTuple.face_prism_last_last
+#check TopologicalSpace.OpenCover.IndexTuple.face_prism_succ_of_le
+#print axioms TopologicalSpace.OpenCover.IndexTuple.face_prism_succ_of_le
+#check TopologicalSpace.OpenCover.IndexTuple.face_prism_succ_eq_face_prism_castSucc
+#print axioms TopologicalSpace.OpenCover.IndexTuple.face_prism_succ_eq_face_prism_castSucc
+#check TopologicalSpace.OpenCover.IndexTuple.face_prism_castSucc_of_lt
+#print axioms TopologicalSpace.OpenCover.IndexTuple.face_prism_castSucc_of_lt
+#check TopologicalSpace.OpenCover.IndexTuple.Subordinate
+#print axioms TopologicalSpace.OpenCover.IndexTuple.Subordinate
+#check TopologicalSpace.OpenCover.IndexTuple.Subordinate.intersection_le
+#print axioms TopologicalSpace.OpenCover.IndexTuple.Subordinate.intersection_le
+#check TopologicalSpace.OpenCover.IndexTuple.Subordinate.face
+#print axioms TopologicalSpace.OpenCover.IndexTuple.Subordinate.face
+#check TopologicalSpace.OpenCover.IndexTuple.Subordinate.prism
+#print axioms TopologicalSpace.OpenCover.IndexTuple.Subordinate.prism
+#check TopologicalSpace.OpenCover.Refinement.orderedSubordinate
+#print axioms TopologicalSpace.OpenCover.Refinement.orderedSubordinate
+#check TopologicalSpace.OpenCover.OrderedCech.restrictedAlternatingEvaluation
+#print axioms TopologicalSpace.OpenCover.OrderedCech.restrictedAlternatingEvaluation
+#check TopologicalSpace.OpenCover.OrderedCech.restrictedAlternatingEvaluation_congr
+#print axioms TopologicalSpace.OpenCover.OrderedCech.restrictedAlternatingEvaluation_congr
+#check TopologicalSpace.OpenCover.OrderedCech.restrictedAlternatingEvaluation_comp_map
+#print axioms TopologicalSpace.OpenCover.OrderedCech.restrictedAlternatingEvaluation_comp_map
+#check TopologicalSpace.OpenCover.OrderedCech.differential_comp_restrictedAlternatingEvaluation
+#print axioms TopologicalSpace.OpenCover.OrderedCech.differential_comp_restrictedAlternatingEvaluation
+#check TopologicalSpace.OpenCover.OrderedCech.prismComponent
+#print axioms TopologicalSpace.OpenCover.OrderedCech.prismComponent
+#check TopologicalSpace.OpenCover.OrderedCech.prismComponent_comp_map
+#print axioms TopologicalSpace.OpenCover.OrderedCech.prismComponent_comp_map
+#check TopologicalSpace.OpenCover.OrderedCech.prismComponent_congr
+#print axioms TopologicalSpace.OpenCover.OrderedCech.prismComponent_congr
+#check TopologicalSpace.OpenCover.OrderedCech.differential_comp_prismComponent_zero
+#print axioms TopologicalSpace.OpenCover.OrderedCech.differential_comp_prismComponent_zero
+#check TopologicalSpace.OpenCover.OrderedCech.differential_comp_prismComponent_succ
+#print axioms TopologicalSpace.OpenCover.OrderedCech.differential_comp_prismComponent_succ
+#check TopologicalSpace.OpenCover.OrderedCech.refinementPrismDegree
+#print axioms TopologicalSpace.OpenCover.OrderedCech.refinementPrismDegree
+#check TopologicalSpace.OpenCover.OrderedCech.refinementPrismDegree_π
+#print axioms TopologicalSpace.OpenCover.OrderedCech.refinementPrismDegree_π
+#check TopologicalSpace.OpenCover.OrderedCech.differential_comp_refinementPrismDegree_zero
+#print axioms TopologicalSpace.OpenCover.OrderedCech.differential_comp_refinementPrismDegree_zero
+#check TopologicalSpace.OpenCover.OrderedCech.differential_comp_refinementPrismDegree_succ
+#print axioms TopologicalSpace.OpenCover.OrderedCech.differential_comp_refinementPrismDegree_succ
+#check TopologicalSpace.OpenCover.OrderedCech.refinementPrismHom
+#print axioms TopologicalSpace.OpenCover.OrderedCech.refinementPrismHom
+#check TopologicalSpace.OpenCover.OrderedCech.refinementPrismHom_succ
+#print axioms TopologicalSpace.OpenCover.OrderedCech.refinementPrismHom_succ
+#check TopologicalSpace.OpenCover.OrderedCech.refinementPrismHom_zero
+#print axioms TopologicalSpace.OpenCover.OrderedCech.refinementPrismHom_zero
+#check TopologicalSpace.OpenCover.OrderedCech.refinementMapHomotopy
+#print axioms TopologicalSpace.OpenCover.OrderedCech.refinementMapHomotopy
+#check TopologicalSpace.OpenCover.OrderedCech.refinementMap_homologyMap_eq
+#print axioms TopologicalSpace.OpenCover.OrderedCech.refinementMap_homologyMap_eq
+
+/-! ## `Lib.Topology.Sheaves.Cohomology.Cech.DirectedSystem` -/
+
+#check TopologicalSpace.OpenCover.SetOpenCover
+#print axioms TopologicalSpace.OpenCover.SetOpenCover
+#check TopologicalSpace.OpenCover.SetOpenCover.Index
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.Index
+#check TopologicalSpace.OpenCover.SetOpenCover.family
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.family
+#check TopologicalSpace.OpenCover.SetOpenCover.refinementOfLE
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.refinementOfLE
+#check TopologicalSpace.OpenCover.SetOpenCover.singletonTop
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.singletonTop
+#check TopologicalSpace.OpenCover.SetOpenCover.commonRefinement
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.commonRefinement
+#check TopologicalSpace.OpenCover.SetOpenCover.commonRefinementLeft
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.commonRefinementLeft
+#check TopologicalSpace.OpenCover.SetOpenCover.commonRefinementRight
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.commonRefinementRight
+
+/-! ## `Lib.Topology.Sheaves.Cohomology.Cech.RangeCover` -/
+
+#check TopologicalSpace.OpenCover.SetOpenCover.rangeCover
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.rangeCover
+#check TopologicalSpace.OpenCover.SetOpenCover.rangeCoverRefinement
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.rangeCoverRefinement
+#check TopologicalSpace.OpenCover.SetOpenCover.rangeCover_multiplicityLE
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.rangeCover_multiplicityLE
+#check HasCoveringDimensionLE.exists_multiplicityLE_refinement
+#print axioms HasCoveringDimensionLE.exists_multiplicityLE_refinement
+
+/-! ## `Lib.Topology.Sheaves.Cohomology.Cech.LocallyFiniteRefinement` -/
+
+#check TopologicalSpace.OpenCover.SetOpenCover.IsLocallyFinite
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.IsLocallyFinite
+#check TopologicalSpace.OpenCover.SetOpenCover.rangeCover_isLocallyFinite
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.rangeCover_isLocallyFinite
+#check TopologicalSpace.OpenCover.SetOpenCover.exists_isLocallyFinite_refinement
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.exists_isLocallyFinite_refinement
+
+/-! ## `Lib.Topology.Sheaves.Cohomology.Cech.ShrinkableRefinement` -/
+
+#check TopologicalSpace.OpenCover.Shrinking
+#print axioms TopologicalSpace.OpenCover.Shrinking
+#check TopologicalSpace.OpenCover.Shrinking.family
+#print axioms TopologicalSpace.OpenCover.Shrinking.family
+#check TopologicalSpace.OpenCover.Shrinking.isOpenCover
+#print axioms TopologicalSpace.OpenCover.Shrinking.isOpenCover
+#check TopologicalSpace.OpenCover.Shrinking.closure_subset
+#print axioms TopologicalSpace.OpenCover.Shrinking.closure_subset
+#check TopologicalSpace.OpenCover.Shrinking.refinement
+#print axioms TopologicalSpace.OpenCover.Shrinking.refinement
+#check TopologicalSpace.OpenCover.exists_shrinking_of_isLocallyFinite
+#print axioms TopologicalSpace.OpenCover.exists_shrinking_of_isLocallyFinite
+#check TopologicalSpace.OpenCover.SetOpenCover.ShrinkableRefinement
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.ShrinkableRefinement
+#check TopologicalSpace.OpenCover.SetOpenCover.ShrinkableRefinement.fine
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.ShrinkableRefinement.fine
+#check TopologicalSpace.OpenCover.SetOpenCover.ShrinkableRefinement.refines
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.ShrinkableRefinement.refines
+#check TopologicalSpace.OpenCover.SetOpenCover.ShrinkableRefinement.locallyFinite
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.ShrinkableRefinement.locallyFinite
+#check TopologicalSpace.OpenCover.SetOpenCover.ShrinkableRefinement.shrinking
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.ShrinkableRefinement.shrinking
+#check TopologicalSpace.OpenCover.SetOpenCover.exists_isLocallyFinite_shrinkable_refinement
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.exists_isLocallyFinite_shrinkable_refinement
+
+/-! ## `Lib.Topology.Sheaves.Cohomology.Cech.CohomologySystem` -/
+
+#check TopologicalSpace.OpenCover.OrderedCech.refinementMap_refl
+#print axioms TopologicalSpace.OpenCover.OrderedCech.refinementMap_refl
+#check TopologicalSpace.OpenCover.OrderedCech.refinementMapDegree_comp_alternatingEvaluation
+#print axioms TopologicalSpace.OpenCover.OrderedCech.refinementMapDegree_comp_alternatingEvaluation
+#check TopologicalSpace.OpenCover.OrderedCech.refinementMap_comp
+#print axioms TopologicalSpace.OpenCover.OrderedCech.refinementMap_comp
+#check TopologicalSpace.OpenCover.SetOpenCover.normalizedCechComplex
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.normalizedCechComplex
+#check TopologicalSpace.OpenCover.SetOpenCover.normalizedCechComplex_X
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.normalizedCechComplex_X
+#check TopologicalSpace.OpenCover.SetOpenCover.normalizedCechCohomology
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.normalizedCechCohomology
+#check TopologicalSpace.OpenCover.SetOpenCover.normalizedCechCohomologyMap
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.normalizedCechCohomologyMap
+#check TopologicalSpace.OpenCover.SetOpenCover.normalizedCechCohomologyMap_eq
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.normalizedCechCohomologyMap_eq
+#check TopologicalSpace.OpenCover.SetOpenCover.normalizedCechCohomologyFunctor
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.normalizedCechCohomologyFunctor
+#check TopologicalSpace.OpenCover.SetOpenCover.normalizedCechCohomologyFunctor_obj
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.normalizedCechCohomologyFunctor_obj
+#check TopologicalSpace.OpenCover.SetOpenCover.normalizedCechCohomologyFunctor_map
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.normalizedCechCohomologyFunctor_map
+
+/-! ## `Lib.Topology.Sheaves.Cohomology.Cech.LocallyZeroCochain` -/
+
+#check TopCat.Presheaf.IsLocallyZero
+#print axioms TopCat.Presheaf.IsLocallyZero
+#check TopologicalSpace.OpenCover.SetOpenCover.exists_refinement_pullback_eq_zero_of_isLocallyZero_of_isZero_empty
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.exists_refinement_pullback_eq_zero_of_isLocallyZero_of_isZero_empty
+
+/-! ## `Lib.Topology.Sheaves.Cohomology.Cech.Coefficients` -/
+
+#check TopologicalSpace.OpenCover.OrderedCech.coefficientMapDegree
+#print axioms TopologicalSpace.OpenCover.OrderedCech.coefficientMapDegree
+#check TopologicalSpace.OpenCover.OrderedCech.coefficientMapDegree_zero
+#print axioms TopologicalSpace.OpenCover.OrderedCech.coefficientMapDegree_zero
+#check TopologicalSpace.OpenCover.OrderedCech.coefficientMapDegree_add
+#print axioms TopologicalSpace.OpenCover.OrderedCech.coefficientMapDegree_add
+#check TopologicalSpace.OpenCover.OrderedCech.coefficientMap
+#print axioms TopologicalSpace.OpenCover.OrderedCech.coefficientMap
+#check TopologicalSpace.OpenCover.OrderedCech.coefficientMap_id
+#print axioms TopologicalSpace.OpenCover.OrderedCech.coefficientMap_id
+#check TopologicalSpace.OpenCover.OrderedCech.coefficientMap_comp
+#print axioms TopologicalSpace.OpenCover.OrderedCech.coefficientMap_comp
+#check TopologicalSpace.OpenCover.OrderedCech.coefficientMap_comp_refinementMap
+#print axioms TopologicalSpace.OpenCover.OrderedCech.coefficientMap_comp_refinementMap
+#check TopologicalSpace.OpenCover.SetOpenCover.normalizedCechComplexMap
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.normalizedCechComplexMap
+#check TopologicalSpace.OpenCover.SetOpenCover.normalizedCechCohomologyCoefficientMap
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.normalizedCechCohomologyCoefficientMap
+#check TopologicalSpace.OpenCover.SetOpenCover.normalizedCechCohomologyCoefficientMap_comp_refinement
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.normalizedCechCohomologyCoefficientMap_comp_refinement
+#check TopologicalSpace.OpenCover.SetOpenCover.normalizedCechCohomologyCoefficientMap_id
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.normalizedCechCohomologyCoefficientMap_id
+#check TopologicalSpace.OpenCover.SetOpenCover.normalizedCechCohomologyCoefficientMap_comp
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.normalizedCechCohomologyCoefficientMap_comp
+#check TopologicalSpace.OpenCover.SetOpenCover.normalizedCechCohomologyCoefficientMap_zero
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.normalizedCechCohomologyCoefficientMap_zero
+#check TopologicalSpace.OpenCover.SetOpenCover.normalizedCechCohomologyCoefficientMap_add
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.normalizedCechCohomologyCoefficientMap_add
+#check TopologicalSpace.OpenCover.SetOpenCover.normalizedCechCohomologyCoefficientFunctor
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.normalizedCechCohomologyCoefficientFunctor
+
+/-! ## `Lib.Topology.Sheaves.Cohomology.Cech.LocalLifting` -/
+
+#check TopCat.Sheaf.sectionQuotientPresheaf
+#print axioms TopCat.Sheaf.sectionQuotientPresheaf
+#check TopCat.Sheaf.sectionQuotientPresheafProjection
+#print axioms TopCat.Sheaf.sectionQuotientPresheafProjection
+#check TopCat.Sheaf.sectionQuotientPresheaf_isLocallyZero
+#print axioms TopCat.Sheaf.sectionQuotientPresheaf_isLocallyZero
+#check TopCat.Sheaf.sectionQuotientPresheaf_empty_isZero
+#print axioms TopCat.Sheaf.sectionQuotientPresheaf_empty_isZero
+#check TopologicalSpace.OpenCover.SetOpenCover.exists_refinement_sectionQuotient_cochain_eq_zero
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.exists_refinement_sectionQuotient_cochain_eq_zero
+#check TopologicalSpace.OpenCover.SetOpenCover.exists_refinement_cochain_lift
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.exists_refinement_cochain_lift
+
+/-! ## `Lib.Topology.Sheaves.Cohomology.Cech.MultiplicityVanishing` -/
+
+#check TopologicalSpace.OpenCover.OrderedSimplex.intersection_eq_bot_of_multiplicityLE
+#print axioms TopologicalSpace.OpenCover.OrderedSimplex.intersection_eq_bot_of_multiplicityLE
+#check TopologicalSpace.OpenCover.OrderedCech.object_isZero_of_multiplicityLE
+#print axioms TopologicalSpace.OpenCover.OrderedCech.object_isZero_of_multiplicityLE
+#check TopologicalSpace.OpenCover.OrderedCech.normalizedCechCochain_isZero_of_multiplicityLE
+#print axioms TopologicalSpace.OpenCover.OrderedCech.normalizedCechCochain_isZero_of_multiplicityLE
+#check TopologicalSpace.OpenCover.OrderedCech.homology_isZero_of_multiplicityLE
+#print axioms TopologicalSpace.OpenCover.OrderedCech.homology_isZero_of_multiplicityLE
+#check TopologicalSpace.OpenCover.SetOpenCover.normalizedCechCohomology_isZero_of_multiplicityLE
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.normalizedCechCohomology_isZero_of_multiplicityLE
+#check TopologicalSpace.OpenCover.SetOpenCover.normalizedCechCohomology_subsingleton_of_multiplicityLE
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.normalizedCechCohomology_subsingleton_of_multiplicityLE
+
+/-! ## `Lib.Topology.Sheaves.Cohomology.Cech.Colimit` -/
+
+#check TopologicalSpace.OpenCover.SetOpenCover.cechCohomology
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.cechCohomology
+#check TopologicalSpace.OpenCover.SetOpenCover.toCechCohomology
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.toCechCohomology
+#check TopologicalSpace.OpenCover.SetOpenCover.normalizedCechCohomologyMap_comp_toCechCohomology
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.normalizedCechCohomologyMap_comp_toCechCohomology
+#check TopologicalSpace.OpenCover.SetOpenCover.cechCohomologyCocone
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.cechCohomologyCocone
+#check TopologicalSpace.OpenCover.SetOpenCover.cechCohomologyDesc
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.cechCohomologyDesc
+#check TopologicalSpace.OpenCover.SetOpenCover.toCechCohomology_comp_cechCohomologyDesc
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.toCechCohomology_comp_cechCohomologyDesc
+#check TopologicalSpace.OpenCover.SetOpenCover.cechCohomology_hom_ext
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.cechCohomology_hom_ext
+#check TopologicalSpace.OpenCover.SetOpenCover.cechCohomologyDesc_unique
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.cechCohomologyDesc_unique
+#check TopologicalSpace.OpenCover.SetOpenCover.cechCohomology_exists_rep
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.cechCohomology_exists_rep
+#check TopologicalSpace.OpenCover.SetOpenCover.toCechCohomology_apply_eq_iff
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.toCechCohomology_apply_eq_iff
+#check TopologicalSpace.OpenCover.SetOpenCover.toCechCohomology_apply_eq_iff_exists_refinement
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.toCechCohomology_apply_eq_iff_exists_refinement
+#check TopologicalSpace.OpenCover.SetOpenCover.toCechCohomology_apply_eq_zero_iff
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.toCechCohomology_apply_eq_zero_iff
+#check TopologicalSpace.OpenCover.SetOpenCover.toCechCohomology_apply_eq_zero_of_refinement
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.toCechCohomology_apply_eq_zero_of_refinement
+
+/-! ## `Lib.Topology.Sheaves.Cohomology.Cech.ColimitCoefficients` -/
+
+#check TopologicalSpace.OpenCover.SetOpenCover.cechCohomologyCoefficientMap
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.cechCohomologyCoefficientMap
+#check TopologicalSpace.OpenCover.SetOpenCover.toCechCohomology_comp_cechCohomologyCoefficientMap
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.toCechCohomology_comp_cechCohomologyCoefficientMap
+#check TopologicalSpace.OpenCover.SetOpenCover.cechCohomologyCoefficientMap_id
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.cechCohomologyCoefficientMap_id
+#check TopologicalSpace.OpenCover.SetOpenCover.cechCohomologyCoefficientMap_comp
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.cechCohomologyCoefficientMap_comp
+#check TopologicalSpace.OpenCover.SetOpenCover.cechCohomologyCoefficientMap_zero
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.cechCohomologyCoefficientMap_zero
+#check TopologicalSpace.OpenCover.SetOpenCover.cechCohomologyCoefficientMap_add
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.cechCohomologyCoefficientMap_add
+#check TopologicalSpace.OpenCover.SetOpenCover.cechCohomologyCoefficientFunctor
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.cechCohomologyCoefficientFunctor
+#check TopologicalSpace.OpenCover.SetOpenCover.sheafCechCohomologyCoefficientFunctor
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.sheafCechCohomologyCoefficientFunctor
+#check TopologicalSpace.OpenCover.SetOpenCover.sheafCechCohomologyCoefficientFunctor_additive
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.sheafCechCohomologyCoefficientFunctor_additive
+#check TopologicalSpace.OpenCover.SetOpenCover.sheafCechCohomologyAdditiveFunctor
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.sheafCechCohomologyAdditiveFunctor
+
+/-! ## `Lib.Topology.Sheaves.Cohomology.Cech.ConnectingHom` -/
+
+#check TopologicalSpace.OpenCover.SetOpenCover.cochainShortComplex
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.cochainShortComplex
+#check TopologicalSpace.OpenCover.SetOpenCover.cochainShortComplex_exact
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.cochainShortComplex_exact
+#check TopologicalSpace.OpenCover.SetOpenCover.cochain_f_injective
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.cochain_f_injective
+#check TopologicalSpace.OpenCover.SetOpenCover.CechCocycle
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.CechCocycle
+#check TopologicalSpace.OpenCover.SetOpenCover.cocycleKernelEquiv
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.cocycleKernelEquiv
+#check TopologicalSpace.OpenCover.SetOpenCover.cocycleClass
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.cocycleClass
+#check TopologicalSpace.OpenCover.SetOpenCover.BoundaryPresentation
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.BoundaryPresentation
+#check TopologicalSpace.OpenCover.SetOpenCover.BoundaryPresentation.cover
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.BoundaryPresentation.cover
+#check TopologicalSpace.OpenCover.SetOpenCover.BoundaryPresentation.refinement
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.BoundaryPresentation.refinement
+#check TopologicalSpace.OpenCover.SetOpenCover.BoundaryPresentation.lift
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.BoundaryPresentation.lift
+#check TopologicalSpace.OpenCover.SetOpenCover.BoundaryPresentation.descended
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.BoundaryPresentation.descended
+#check TopologicalSpace.OpenCover.SetOpenCover.BoundaryPresentation.lift_eq
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.BoundaryPresentation.lift_eq
+#check TopologicalSpace.OpenCover.SetOpenCover.BoundaryPresentation.descended_eq
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.BoundaryPresentation.descended_eq
+#check TopologicalSpace.OpenCover.SetOpenCover.BoundaryPresentation.descended_isCocycle
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.BoundaryPresentation.descended_isCocycle
+#check TopologicalSpace.OpenCover.SetOpenCover.BoundaryPresentation.descendedCocycle
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.BoundaryPresentation.descendedCocycle
+#check TopologicalSpace.OpenCover.SetOpenCover.BoundaryPresentation.cechClass
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.BoundaryPresentation.cechClass
+#check TopologicalSpace.OpenCover.SetOpenCover.exists_boundaryPresentation
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.exists_boundaryPresentation
+#check TopologicalSpace.OpenCover.SetOpenCover.chosenBoundaryPresentation
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.chosenBoundaryPresentation
+#check TopologicalSpace.OpenCover.SetOpenCover.cocycleClass_eq_zero_iff
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.cocycleClass_eq_zero_iff
+#check TopologicalSpace.OpenCover.SetOpenCover.cocycleClass_eq_of_sub_eq_differential
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.cocycleClass_eq_of_sub_eq_differential
+#check TopologicalSpace.OpenCover.SetOpenCover.refineCocycle
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.refineCocycle
+#check TopologicalSpace.OpenCover.SetOpenCover.homologyMap_cocycleClass
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.homologyMap_cocycleClass
+#check TopologicalSpace.OpenCover.SetOpenCover.normalizedCechCohomologyMap_cocycleClass
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.normalizedCechCohomologyMap_cocycleClass
+#check TopologicalSpace.OpenCover.SetOpenCover.BoundaryPresentation.refine
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.BoundaryPresentation.refine
+#check TopologicalSpace.OpenCover.SetOpenCover.BoundaryPresentation.refine_descendedCocycle
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.BoundaryPresentation.refine_descendedCocycle
+#check TopologicalSpace.OpenCover.SetOpenCover.BoundaryPresentation.cechClass_refine
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.BoundaryPresentation.cechClass_refine
+#check TopologicalSpace.OpenCover.SetOpenCover.BoundaryPresentation.cechClass_eq
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.BoundaryPresentation.cechClass_eq
+#check TopologicalSpace.OpenCover.SetOpenCover.boundaryClass
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.boundaryClass
+#check TopologicalSpace.OpenCover.SetOpenCover.boundaryClass_eq_cechClass
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.boundaryClass_eq_cechClass
+#check TopologicalSpace.OpenCover.SetOpenCover.boundaryClass_zero
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.boundaryClass_zero
+#check TopologicalSpace.OpenCover.SetOpenCover.boundaryClass_add
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.boundaryClass_add
+#check TopologicalSpace.OpenCover.SetOpenCover.boundaryCocycleMap
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.boundaryCocycleMap
+#check TopologicalSpace.OpenCover.SetOpenCover.boundaryCocycleMap_apply
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.boundaryCocycleMap_apply
+#check TopologicalSpace.OpenCover.SetOpenCover.BoundaryPresentation.ofRefinedCocycle
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.BoundaryPresentation.ofRefinedCocycle
+#check TopologicalSpace.OpenCover.SetOpenCover.BoundaryPresentation.ofRefinedCocycle_cechClass
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.BoundaryPresentation.ofRefinedCocycle_cechClass
+#check TopologicalSpace.OpenCover.SetOpenCover.boundaryClass_refine
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.boundaryClass_refine
+#check TopologicalSpace.OpenCover.SetOpenCover.boundaryClass_eq_zero_of_eq_differential
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.boundaryClass_eq_zero_of_eq_differential
+#check TopologicalSpace.OpenCover.SetOpenCover.boundaryClass_eq_of_sub_eq_differential
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.boundaryClass_eq_of_sub_eq_differential
+#check TopologicalSpace.OpenCover.SetOpenCover.boundaryClass_eq_of_cocycleClass_eq
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.boundaryClass_eq_of_cocycleClass_eq
+#check TopologicalSpace.OpenCover.SetOpenCover.cyclesCocycleEquiv
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.cyclesCocycleEquiv
+#check TopologicalSpace.OpenCover.SetOpenCover.cocycleClass_cyclesCocycleEquiv
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.cocycleClass_cyclesCocycleEquiv
+#check TopologicalSpace.OpenCover.SetOpenCover.boundaryCyclesMap
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.boundaryCyclesMap
+#check TopologicalSpace.OpenCover.SetOpenCover.boundaryCyclesMap_apply
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.boundaryCyclesMap_apply
+#check TopologicalSpace.OpenCover.SetOpenCover.toCycles_comp_boundaryCyclesMap
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.toCycles_comp_boundaryCyclesMap
+#check TopologicalSpace.OpenCover.SetOpenCover.fixedCoverBoundaryHom
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.fixedCoverBoundaryHom
+#check TopologicalSpace.OpenCover.SetOpenCover.fixedCoverBoundaryHom_cocycleClass
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.fixedCoverBoundaryHom_cocycleClass
+#check TopologicalSpace.OpenCover.SetOpenCover.cocycleClass_surjective
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.cocycleClass_surjective
+#check TopologicalSpace.OpenCover.SetOpenCover.normalizedCechCohomologyMap_comp_fixedCoverBoundaryHom
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.normalizedCechCohomologyMap_comp_fixedCoverBoundaryHom
+#check TopologicalSpace.OpenCover.SetOpenCover.connectingHom
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.connectingHom
+#check TopologicalSpace.OpenCover.SetOpenCover.toCechCohomology_comp_connectingHom
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.toCechCohomology_comp_connectingHom
+#check TopologicalSpace.OpenCover.SetOpenCover.connectingHom_cocycleClass
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.connectingHom_cocycleClass
+#check TopologicalSpace.OpenCover.SetOpenCover.connectingHom_cocycleClass_eq_cechClass
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.connectingHom_cocycleClass_eq_cechClass
+#check TopologicalSpace.OpenCover.SetOpenCover.boundaryClass_eq_of_directLimit_rep_eq
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.boundaryClass_eq_of_directLimit_rep_eq
+#check TopologicalSpace.OpenCover.SetOpenCover.cechCohomology_exists_cocycle_rep
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.cechCohomology_exists_cocycle_rep
+#check TopologicalSpace.OpenCover.SetOpenCover.connectingHom_exists_boundaryPresentation
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.connectingHom_exists_boundaryPresentation
+#check TopologicalSpace.OpenCover.SetOpenCover.connectingHom_zero
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.connectingHom_zero
+#check TopologicalSpace.OpenCover.SetOpenCover.connectingHom_add
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.connectingHom_add
+#check TopologicalSpace.OpenCover.SetOpenCover.BoundaryPresentation.descended_unique
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.BoundaryPresentation.descended_unique
+
+/-! ## `Lib.Topology.Sheaves.Cohomology.Cech.DegreeZero` -/
+
+#check TopologicalSpace.OpenCover.SetOpenCover.globalToZeroCochain
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.globalToZeroCochain
+#check TopologicalSpace.OpenCover.SetOpenCover.globalToZeroCochain_π
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.globalToZeroCochain_π
+#check TopologicalSpace.OpenCover.SetOpenCover.globalToZeroCochain_comp_differential
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.globalToZeroCochain_comp_differential
+#check TopologicalSpace.OpenCover.SetOpenCover.globalToZeroCycles
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.globalToZeroCycles
+#check TopologicalSpace.OpenCover.SetOpenCover.globalToZeroCycles_iCycles
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.globalToZeroCycles_iCycles
+#check TopologicalSpace.OpenCover.SetOpenCover.globalToZeroCycles_isIso
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.globalToZeroCycles_isIso
+#check TopologicalSpace.OpenCover.SetOpenCover.normalizedCechCohomologyZeroIsoGlobalSections
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.normalizedCechCohomologyZeroIsoGlobalSections
+#check TopologicalSpace.OpenCover.SetOpenCover.normalizedCechCohomologyMap_comp_zeroIsoGlobalSections
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.normalizedCechCohomologyMap_comp_zeroIsoGlobalSections
+#check TopologicalSpace.OpenCover.SetOpenCover.normalizedCechCohomologyCoefficientMap_comp_zeroIsoGlobalSections
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.normalizedCechCohomologyCoefficientMap_comp_zeroIsoGlobalSections
+#check TopologicalSpace.OpenCover.SetOpenCover.cechCohomologyZeroToGlobalSections
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.cechCohomologyZeroToGlobalSections
+#check TopologicalSpace.OpenCover.SetOpenCover.cechCohomologyZeroToGlobalSections_isIso
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.cechCohomologyZeroToGlobalSections_isIso
+#check TopologicalSpace.OpenCover.SetOpenCover.cechCohomologyZeroIsoGlobalSections
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.cechCohomologyZeroIsoGlobalSections
+#check TopologicalSpace.OpenCover.SetOpenCover.toCechCohomology_comp_zeroIsoGlobalSections
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.toCechCohomology_comp_zeroIsoGlobalSections
+#check TopologicalSpace.OpenCover.SetOpenCover.cechCohomologyCoefficientMap_comp_zeroIsoGlobalSections
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.cechCohomologyCoefficientMap_comp_zeroIsoGlobalSections
+
+/-! ## `Lib.Topology.Sheaves.Cohomology.Cech.LongExact` -/
+
+#check TopologicalSpace.OpenCover.SetOpenCover.initialCoefficientMap_injective
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.initialCoefficientMap_injective
+#check TopologicalSpace.OpenCover.SetOpenCover.initialCechShortComplex
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.initialCechShortComplex
+#check TopologicalSpace.OpenCover.SetOpenCover.initialCechShortComplex_exact
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.initialCechShortComplex_exact
+#check TopologicalSpace.OpenCover.SetOpenCover.coefficientCocycle
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.coefficientCocycle
+#check TopologicalSpace.OpenCover.SetOpenCover.coefficientCocycle_apply_coe
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.coefficientCocycle_apply_coe
+#check TopologicalSpace.OpenCover.SetOpenCover.coefficientCocycle_refine
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.coefficientCocycle_refine
+#check TopologicalSpace.OpenCover.SetOpenCover.normalizedCechCohomologyCoefficientMap_cocycleClass
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.normalizedCechCohomologyCoefficientMap_cocycleClass
+#check TopologicalSpace.OpenCover.SetOpenCover.cechCohomologyCoefficientMap_cocycleClass
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.cechCohomologyCoefficientMap_cocycleClass
+#check TopologicalSpace.OpenCover.SetOpenCover.exists_refinement_cocycle_eq_differential
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.exists_refinement_cocycle_eq_differential
+#check TopologicalSpace.OpenCover.SetOpenCover.cocycle_eq_zero_of_cocycleClass_eq_zero_degree_zero
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.cocycle_eq_zero_of_cocycleClass_eq_zero_degree_zero
+#check TopologicalSpace.OpenCover.SetOpenCover.exists_refinement_cocycle_eq_zero_degree_zero
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.exists_refinement_cocycle_eq_zero_degree_zero
+#check TopologicalSpace.OpenCover.SetOpenCover.exists_refinement_coefficientCocycle_eq_differential
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.exists_refinement_coefficientCocycle_eq_differential
+#check TopologicalSpace.OpenCover.SetOpenCover.exists_refinement_coefficientCocycle_eq_zero_degree_zero
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.exists_refinement_coefficientCocycle_eq_zero_degree_zero
+#check TopologicalSpace.OpenCover.SetOpenCover.existsUnique_leftCocycle_of_middleKernel
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.existsUnique_leftCocycle_of_middleKernel
+#check TopologicalSpace.OpenCover.SetOpenCover.middleKernelCorrection
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.middleKernelCorrection
+#check TopologicalSpace.OpenCover.SetOpenCover.middleKernelCorrection_coe
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.middleKernelCorrection_coe
+#check TopologicalSpace.OpenCover.SetOpenCover.middleKernelCorrection_map_eq_zero
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.middleKernelCorrection_map_eq_zero
+#check TopologicalSpace.OpenCover.SetOpenCover.middleKernelCorrection_class
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.middleKernelCorrection_class
+#check TopologicalSpace.OpenCover.SetOpenCover.exists_left_preimage_succ
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.exists_left_preimage_succ
+#check TopologicalSpace.OpenCover.SetOpenCover.exists_left_preimage_degree_zero
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.exists_left_preimage_degree_zero
+#check TopologicalSpace.OpenCover.SetOpenCover.coefficientMaps_comp_zero
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.coefficientMaps_comp_zero
+#check TopologicalSpace.OpenCover.SetOpenCover.exactAtMiddle_function
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.exactAtMiddle_function
+#check TopologicalSpace.OpenCover.SetOpenCover.coefficientCechShortComplex
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.coefficientCechShortComplex
+#check TopologicalSpace.OpenCover.SetOpenCover.coefficientCechShortComplex_exact
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.coefficientCechShortComplex_exact
+#check TopologicalSpace.OpenCover.SetOpenCover.boundaryPresentationOfMiddleCocycle
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.boundaryPresentationOfMiddleCocycle
+#check TopologicalSpace.OpenCover.SetOpenCover.boundaryPresentationOfMiddleCocycle_cechClass_eq_zero
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.boundaryPresentationOfMiddleCocycle_cechClass_eq_zero
+#check TopologicalSpace.OpenCover.SetOpenCover.coefficientMap_comp_connectingHom
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.coefficientMap_comp_connectingHom
+#check TopologicalSpace.OpenCover.SetOpenCover.exists_refinement_descended_eq_differential
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.exists_refinement_descended_eq_differential
+#check TopologicalSpace.OpenCover.SetOpenCover.correctedLiftCocycle
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.correctedLiftCocycle
+#check TopologicalSpace.OpenCover.SetOpenCover.correctedLiftCocycle_coe
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.correctedLiftCocycle_coe
+#check TopologicalSpace.OpenCover.SetOpenCover.correctedLiftCocycle_map
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.correctedLiftCocycle_map
+#check TopologicalSpace.OpenCover.SetOpenCover.exists_middle_preimage_of_boundaryPresentation_eq_zero
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.exists_middle_preimage_of_boundaryPresentation_eq_zero
+#check TopologicalSpace.OpenCover.SetOpenCover.exists_middle_preimage_of_boundaryPresentation_eq_zero_degree_zero
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.exists_middle_preimage_of_boundaryPresentation_eq_zero_degree_zero
+#check TopologicalSpace.OpenCover.SetOpenCover.exactAtRight_function
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.exactAtRight_function
+#check TopologicalSpace.OpenCover.SetOpenCover.coefficientConnectingCechShortComplex
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.coefficientConnectingCechShortComplex
+#check TopologicalSpace.OpenCover.SetOpenCover.coefficientConnectingCechShortComplex_exact
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.coefficientConnectingCechShortComplex_exact
+#check TopologicalSpace.OpenCover.SetOpenCover.BoundaryPresentation.cechClass_coefficient_eq_zero
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.BoundaryPresentation.cechClass_coefficient_eq_zero
+#check TopologicalSpace.OpenCover.SetOpenCover.connectingHom_comp_coefficientMap
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.connectingHom_comp_coefficientMap
+#check TopologicalSpace.OpenCover.SetOpenCover.rightCocycleOfLeftBoundary
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.rightCocycleOfLeftBoundary
+#check TopologicalSpace.OpenCover.SetOpenCover.rightCocycleOfLeftBoundary_coe
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.rightCocycleOfLeftBoundary_coe
+#check TopologicalSpace.OpenCover.SetOpenCover.boundaryPresentationOfLeftBoundary
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.boundaryPresentationOfLeftBoundary
+#check TopologicalSpace.OpenCover.SetOpenCover.boundaryPresentationOfLeftBoundary_cechClass
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.boundaryPresentationOfLeftBoundary_cechClass
+#check TopologicalSpace.OpenCover.SetOpenCover.exists_connecting_preimage_succ
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.exists_connecting_preimage_succ
+#check TopologicalSpace.OpenCover.SetOpenCover.exists_connecting_preimage_degree_zero
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.exists_connecting_preimage_degree_zero
+#check TopologicalSpace.OpenCover.SetOpenCover.exactAtLeftSucc_function
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.exactAtLeftSucc_function
+#check TopologicalSpace.OpenCover.SetOpenCover.connectingCoefficientCechShortComplex
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.connectingCoefficientCechShortComplex
+#check TopologicalSpace.OpenCover.SetOpenCover.connectingCoefficientCechShortComplex_exact
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.connectingCoefficientCechShortComplex_exact
+#check TopologicalSpace.OpenCover.SetOpenCover.cechLongExactSegment
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.cechLongExactSegment
+#check TopologicalSpace.OpenCover.SetOpenCover.cechLongExactSegment_exact
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.cechLongExactSegment_exact
+#check TopologicalSpace.OpenCover.SetOpenCover.cechLongExactInitialSegment
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.cechLongExactInitialSegment
+#check TopologicalSpace.OpenCover.SetOpenCover.cechLongExactInitialSegment_exact
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.cechLongExactInitialSegment_exact
+
+/-! ## `Lib.Topology.Sheaves.Cohomology.Cech.DeltaFunctor` -/
+
+#check TopologicalSpace.OpenCover.SetOpenCover.coefficientCocycle_comp
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.coefficientCocycle_comp
+#check TopologicalSpace.OpenCover.SetOpenCover.BoundaryPresentation.map
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.BoundaryPresentation.map
+#check TopologicalSpace.OpenCover.SetOpenCover.BoundaryPresentation.map_refine
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.BoundaryPresentation.map_refine
+#check TopologicalSpace.OpenCover.SetOpenCover.BoundaryPresentation.map_descendedCocycle
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.BoundaryPresentation.map_descendedCocycle
+#check TopologicalSpace.OpenCover.SetOpenCover.BoundaryPresentation.map_cechClass
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.BoundaryPresentation.map_cechClass
+#check TopologicalSpace.OpenCover.SetOpenCover.normalizedCechCohomologyCoefficientMap_comp_fixedCoverBoundaryHom
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.normalizedCechCohomologyCoefficientMap_comp_fixedCoverBoundaryHom
+#check TopologicalSpace.OpenCover.SetOpenCover.connectingHom_naturality
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.connectingHom_naturality
+#check TopologicalSpace.OpenCover.SetOpenCover.cechCohomologyDeltaFunctor
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.cechCohomologyDeltaFunctor
+#check TopologicalSpace.OpenCover.SetOpenCover.cechCohomologyDeltaFunctorZeroIsoGlobalSections
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.cechCohomologyDeltaFunctorZeroIsoGlobalSections
+#check TopologicalSpace.OpenCover.SetOpenCover.cechCohomologyDeltaFunctor_zeroIsoGlobalSections
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.cechCohomologyDeltaFunctor_zeroIsoGlobalSections
+
+/-! ## `Lib.Topology.Sheaves.Cohomology.Cech.CochainSheafResolution` -/
+
+#check TopologicalSpace.OpenCover.OrderedCech.pushedRestrictionSheafIso
+#print axioms TopologicalSpace.OpenCover.OrderedCech.pushedRestrictionSheafIso
+#check TopologicalSpace.OpenCover.OrderedCech.cochainSheaf
+#print axioms TopologicalSpace.OpenCover.OrderedCech.cochainSheaf
+#check TopologicalSpace.OpenCover.OrderedCech.cochainSheafDifferential
+#print axioms TopologicalSpace.OpenCover.OrderedCech.cochainSheafDifferential
+#check TopologicalSpace.OpenCover.OrderedCech.cochainSheafAugmentation
+#print axioms TopologicalSpace.OpenCover.OrderedCech.cochainSheafAugmentation
+#check TopologicalSpace.OpenCover.OrderedCech.cochainSheafAugmentation_comp_differential
+#print axioms TopologicalSpace.OpenCover.OrderedCech.cochainSheafAugmentation_comp_differential
+#check TopologicalSpace.OpenCover.OrderedCech.cochainSheafComplex
+#print axioms TopologicalSpace.OpenCover.OrderedCech.cochainSheafComplex
+#check TopologicalSpace.OpenCover.OrderedCech.cochainSheafSectionsIso
+#print axioms TopologicalSpace.OpenCover.OrderedCech.cochainSheafSectionsIso
+#check TopologicalSpace.OpenCover.OrderedCech.cochainSheafDifferential_app_comp_sectionsIso
+#print axioms TopologicalSpace.OpenCover.OrderedCech.cochainSheafDifferential_app_comp_sectionsIso
+#check TopologicalSpace.OpenCover.OrderedCech.terminalInsertion_contraction
+#print axioms TopologicalSpace.OpenCover.OrderedCech.terminalInsertion_contraction
+#check TopologicalSpace.OpenCover.OrderedCech.insertionHomotopy
+#print axioms TopologicalSpace.OpenCover.OrderedCech.insertionHomotopy
+#check TopologicalSpace.OpenCover.OrderedCech.insertionHomotopy_contraction_zero
+#print axioms TopologicalSpace.OpenCover.OrderedCech.insertionHomotopy_contraction_zero
+#check TopologicalSpace.OpenCover.OrderedCech.insertionHomotopy_contraction
+#print axioms TopologicalSpace.OpenCover.OrderedCech.insertionHomotopy_contraction
+#check TopologicalSpace.OpenCover.OrderedCech.sheafShortComplex_exact_of_local_kernels
+#print axioms TopologicalSpace.OpenCover.OrderedCech.sheafShortComplex_exact_of_local_kernels
+#check TopologicalSpace.OpenCover.OrderedCech.augmentedCochainSheafComplex_exact
+#print axioms TopologicalSpace.OpenCover.OrderedCech.augmentedCochainSheafComplex_exact
+#check TopologicalSpace.OpenCover.OrderedCech.augmentedCochainSheafComplex
+#print axioms TopologicalSpace.OpenCover.OrderedCech.augmentedCochainSheafComplex
+
+/-! ## `Lib.Topology.Sheaves.Cohomology.Cech.FlasqueAcyclic` -/
+
+#check TopologicalSpace.OpenCover.OrderedCech.intersectionSectionsSheaf_isFlasque
+#print axioms TopologicalSpace.OpenCover.OrderedCech.intersectionSectionsSheaf_isFlasque
+#check TopologicalSpace.OpenCover.OrderedCech.cochainSheaf_isFlasque
+#print axioms TopologicalSpace.OpenCover.OrderedCech.cochainSheaf_isFlasque
+#check TopologicalSpace.OpenCover.OrderedCech.augmentedCochainSheafCycle_isFlasque
+#print axioms TopologicalSpace.OpenCover.OrderedCech.augmentedCochainSheafCycle_isFlasque
+#check TopologicalSpace.OpenCover.OrderedCech.cocycle_boundary_of_isFlasque
+#print axioms TopologicalSpace.OpenCover.OrderedCech.cocycle_boundary_of_isFlasque
+#check TopologicalSpace.OpenCover.OrderedCech.exactAt_succ_of_isFlasque
+#print axioms TopologicalSpace.OpenCover.OrderedCech.exactAt_succ_of_isFlasque
+#check TopologicalSpace.OpenCover.OrderedCech.homology_isZero_of_isFlasque
+#print axioms TopologicalSpace.OpenCover.OrderedCech.homology_isZero_of_isFlasque
+#check TopologicalSpace.OpenCover.SetOpenCover.normalizedCechCohomology_isZero_of_isFlasque
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.normalizedCechCohomology_isZero_of_isFlasque
+#check TopologicalSpace.OpenCover.SetOpenCover.normalizedCechCohomology_subsingleton_of_isFlasque
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.normalizedCechCohomology_subsingleton_of_isFlasque
+
+/-! ## `Lib.Topology.Sheaves.Cohomology.Cech.Effacement` -/
+
+#check TopologicalSpace.OpenCover.SetOpenCover.cechCohomology_isZero_godementEnvelope
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.cechCohomology_isZero_godementEnvelope
+#check TopologicalSpace.OpenCover.SetOpenCover.cechCohomology_germEmbedding_eq_zero
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.cechCohomology_germEmbedding_eq_zero
+#check TopologicalSpace.OpenCover.SetOpenCover.cechCohomologyDeltaFunctor_effaceable
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.cechCohomologyDeltaFunctor_effaceable
+
+/-! ## `Lib.Topology.Sheaves.Cohomology.Cech.CoveringDimensionVanishing` -/
+
+#check TopologicalSpace.OpenCover.SetOpenCover.cechCohomology_subsingleton_of_coveringDimensionLE
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.cechCohomology_subsingleton_of_coveringDimensionLE
+#check TopologicalSpace.OpenCover.SetOpenCover.cechCohomology_isZero_of_coveringDimensionLE
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.cechCohomology_isZero_of_coveringDimensionLE
+/-! ## `Lib.CategoryTheory.Abelian.CohomologicalDeltaFunctor.Basic` -/
+
+#check CategoryTheory.CohomologicalDeltaFunctor
+#print axioms CategoryTheory.CohomologicalDeltaFunctor
+#check CategoryTheory.CohomologicalDeltaFunctor.Hom
+#print axioms CategoryTheory.CohomologicalDeltaFunctor.Hom
+#check CategoryTheory.CohomologicalDeltaFunctor.Hom.ext
+#print axioms CategoryTheory.CohomologicalDeltaFunctor.Hom.ext
+#check CategoryTheory.CohomologicalDeltaFunctor.Hom.id
+#print axioms CategoryTheory.CohomologicalDeltaFunctor.Hom.id
+#check CategoryTheory.CohomologicalDeltaFunctor.Hom.comp
+#print axioms CategoryTheory.CohomologicalDeltaFunctor.Hom.comp
+#check CategoryTheory.CohomologicalDeltaFunctor.Hom.id_app
+#print axioms CategoryTheory.CohomologicalDeltaFunctor.Hom.id_app
+#check CategoryTheory.CohomologicalDeltaFunctor.Hom.comp_app
+#print axioms CategoryTheory.CohomologicalDeltaFunctor.Hom.comp_app
+#check CategoryTheory.CohomologicalDeltaFunctor.EffaceableAt
+#print axioms CategoryTheory.CohomologicalDeltaFunctor.EffaceableAt
+#check CategoryTheory.CohomologicalDeltaFunctor.Effaceable
+#print axioms CategoryTheory.CohomologicalDeltaFunctor.Effaceable
+#check CategoryTheory.CohomologicalDeltaFunctor.IsUniversal
+#print axioms CategoryTheory.CohomologicalDeltaFunctor.IsUniversal
+#check CategoryTheory.CohomologicalDeltaFunctor.IsUniversal.extend
+#print axioms CategoryTheory.CohomologicalDeltaFunctor.IsUniversal.extend
+#check CategoryTheory.CohomologicalDeltaFunctor.IsUniversal.extend_app_zero
+#print axioms CategoryTheory.CohomologicalDeltaFunctor.IsUniversal.extend_app_zero
+#check CategoryTheory.CohomologicalDeltaFunctor.IsUniversal.hom_ext
+#print axioms CategoryTheory.CohomologicalDeltaFunctor.IsUniversal.hom_ext
+#check CategoryTheory.CohomologicalDeltaFunctor.Effacement
+#print axioms CategoryTheory.CohomologicalDeltaFunctor.Effacement
+#check CategoryTheory.CohomologicalDeltaFunctor.Effacement.shortComplex
+#print axioms CategoryTheory.CohomologicalDeltaFunctor.Effacement.shortComplex
+#check CategoryTheory.CohomologicalDeltaFunctor.Effacement.shortExact
+#print axioms CategoryTheory.CohomologicalDeltaFunctor.Effacement.shortExact
+#check CategoryTheory.CohomologicalDeltaFunctor.EffaceableAt.effacement
+#print axioms CategoryTheory.CohomologicalDeltaFunctor.EffaceableAt.effacement
+#check CategoryTheory.CohomologicalDeltaFunctor.Effacement.epi_δ
+#print axioms CategoryTheory.CohomologicalDeltaFunctor.Effacement.epi_δ
+#check CategoryTheory.CohomologicalDeltaFunctor.Effacement.map_comp_δ_zero
+#print axioms CategoryTheory.CohomologicalDeltaFunctor.Effacement.map_comp_δ_zero
+#check CategoryTheory.CohomologicalDeltaFunctor.Effacement.component
+#print axioms CategoryTheory.CohomologicalDeltaFunctor.Effacement.component
+#check CategoryTheory.CohomologicalDeltaFunctor.Effacement.δ_component
+#print axioms CategoryTheory.CohomologicalDeltaFunctor.Effacement.δ_component
+#check CategoryTheory.CohomologicalDeltaFunctor.Effacement.comm_comp_π
+#print axioms CategoryTheory.CohomologicalDeltaFunctor.Effacement.comm_comp_π
+#check CategoryTheory.CohomologicalDeltaFunctor.Effacement.homOfComm
+#print axioms CategoryTheory.CohomologicalDeltaFunctor.Effacement.homOfComm
+#check CategoryTheory.CohomologicalDeltaFunctor.Effacement.component_comm
+#print axioms CategoryTheory.CohomologicalDeltaFunctor.Effacement.component_comm
+#check CategoryTheory.CohomologicalDeltaFunctor.Effacement.biprod_map_eq_zero
+#print axioms CategoryTheory.CohomologicalDeltaFunctor.Effacement.biprod_map_eq_zero
+#check CategoryTheory.CohomologicalDeltaFunctor.Effacement.biprod
+#print axioms CategoryTheory.CohomologicalDeltaFunctor.Effacement.biprod
+#check CategoryTheory.CohomologicalDeltaFunctor.Effacement.component_biprod_left
+#print axioms CategoryTheory.CohomologicalDeltaFunctor.Effacement.component_biprod_left
+#check CategoryTheory.CohomologicalDeltaFunctor.Effacement.component_biprod_right
+#print axioms CategoryTheory.CohomologicalDeltaFunctor.Effacement.component_biprod_right
+#check CategoryTheory.CohomologicalDeltaFunctor.Effacement.component_eq
+#print axioms CategoryTheory.CohomologicalDeltaFunctor.Effacement.component_eq
+#check CategoryTheory.CohomologicalDeltaFunctor.Effacement.graph_map_eq_zero
+#print axioms CategoryTheory.CohomologicalDeltaFunctor.Effacement.graph_map_eq_zero
+#check CategoryTheory.CohomologicalDeltaFunctor.Effacement.graph
+#print axioms CategoryTheory.CohomologicalDeltaFunctor.Effacement.graph
+#check CategoryTheory.CohomologicalDeltaFunctor.Effacement.component_graph
+#print axioms CategoryTheory.CohomologicalDeltaFunctor.Effacement.component_graph
+#check CategoryTheory.CohomologicalDeltaFunctor.Effacement.component_naturality
+#print axioms CategoryTheory.CohomologicalDeltaFunctor.Effacement.component_naturality
+#check CategoryTheory.CohomologicalDeltaFunctor.nextApp
+#print axioms CategoryTheory.CohomologicalDeltaFunctor.nextApp
+#check CategoryTheory.CohomologicalDeltaFunctor.nextApp_app
+#print axioms CategoryTheory.CohomologicalDeltaFunctor.nextApp_app
+#check CategoryTheory.CohomologicalDeltaFunctor.nextApp_app_eq_component
+#print axioms CategoryTheory.CohomologicalDeltaFunctor.nextApp_app_eq_component
+#check CategoryTheory.CohomologicalDeltaFunctor.Effacement.ofShortExact_map_eq_zero
+#print axioms CategoryTheory.CohomologicalDeltaFunctor.Effacement.ofShortExact_map_eq_zero
+#check CategoryTheory.CohomologicalDeltaFunctor.Effacement.ofShortExact
+#print axioms CategoryTheory.CohomologicalDeltaFunctor.Effacement.ofShortExact
+#check CategoryTheory.CohomologicalDeltaFunctor.Effacement.f_comp_comp_π
+#print axioms CategoryTheory.CohomologicalDeltaFunctor.Effacement.f_comp_comp_π
+#check CategoryTheory.CohomologicalDeltaFunctor.Effacement.homOfShortExact
+#print axioms CategoryTheory.CohomologicalDeltaFunctor.Effacement.homOfShortExact
+#check CategoryTheory.CohomologicalDeltaFunctor.nextApp_comm
+#print axioms CategoryTheory.CohomologicalDeltaFunctor.nextApp_comm
+#check CategoryTheory.CohomologicalDeltaFunctor.nextApp_unique
+#print axioms CategoryTheory.CohomologicalDeltaFunctor.nextApp_unique
+#check CategoryTheory.CohomologicalDeltaFunctor.Effaceable.extendApp
+#print axioms CategoryTheory.CohomologicalDeltaFunctor.Effaceable.extendApp
+#check CategoryTheory.CohomologicalDeltaFunctor.Effaceable.extendApp_zero
+#print axioms CategoryTheory.CohomologicalDeltaFunctor.Effaceable.extendApp_zero
+#check CategoryTheory.CohomologicalDeltaFunctor.Effaceable.extendApp_succ
+#print axioms CategoryTheory.CohomologicalDeltaFunctor.Effaceable.extendApp_succ
+#check CategoryTheory.CohomologicalDeltaFunctor.Effaceable.extendHom
+#print axioms CategoryTheory.CohomologicalDeltaFunctor.Effaceable.extendHom
+#check CategoryTheory.CohomologicalDeltaFunctor.Effaceable.extendHom_app_zero
+#print axioms CategoryTheory.CohomologicalDeltaFunctor.Effaceable.extendHom_app_zero
+#check CategoryTheory.CohomologicalDeltaFunctor.Effaceable.hom_eq_extendHom
+#print axioms CategoryTheory.CohomologicalDeltaFunctor.Effaceable.hom_eq_extendHom
+#check CategoryTheory.CohomologicalDeltaFunctor.Effaceable.isUniversal
+#print axioms CategoryTheory.CohomologicalDeltaFunctor.Effaceable.isUniversal
+/-! ## `Lib.Topology.Dimension.CubeBoundaryThreeCells` -/
+
+#check TopologicalSpace.CubeBoundaryThree.vertices
+#print axioms TopologicalSpace.CubeBoundaryThree.vertices
+#check TopologicalSpace.CubeBoundaryThree.vertex_mem_boundary
+#print axioms TopologicalSpace.CubeBoundaryThree.vertex_mem_boundary
+#check TopologicalSpace.CubeBoundaryThree.edges
+#print axioms TopologicalSpace.CubeBoundaryThree.edges
+#check TopologicalSpace.CubeBoundaryThree.edge_presentation
+#print axioms TopologicalSpace.CubeBoundaryThree.edge_presentation
+#check TopologicalSpace.CubeBoundaryThree.squares
+#print axioms TopologicalSpace.CubeBoundaryThree.squares
+#check TopologicalSpace.CubeBoundaryThree.squareRelInterior
+#print axioms TopologicalSpace.CubeBoundaryThree.squareRelInterior
+#check TopologicalSpace.CubeBoundaryThree.square_presentation
+#print axioms TopologicalSpace.CubeBoundaryThree.square_presentation
+#check TopologicalSpace.CubeBoundaryThree.edgeEndpoints
+#print axioms TopologicalSpace.CubeBoundaryThree.edgeEndpoints
+#check TopologicalSpace.CubeBoundaryThree.finite_vertices
+#print axioms TopologicalSpace.CubeBoundaryThree.finite_vertices
+#check TopologicalSpace.CubeBoundaryThree.finite_edges
+#print axioms TopologicalSpace.CubeBoundaryThree.finite_edges
+#check TopologicalSpace.CubeBoundaryThree.finite_squares
+#print axioms TopologicalSpace.CubeBoundaryThree.finite_squares
+#check TopologicalSpace.CubeBoundaryThree.edge_endpoints_vertices
+#print axioms TopologicalSpace.CubeBoundaryThree.edge_endpoints_vertices
+#check TopologicalSpace.CubeBoundaryThree.square_coordinate_description
+#print axioms TopologicalSpace.CubeBoundaryThree.square_coordinate_description
+#check TopologicalSpace.CubeBoundaryThree.exists_square_mem
+#print axioms TopologicalSpace.CubeBoundaryThree.exists_square_mem
+#check TopologicalSpace.CubeBoundaryThree.square_eq_of_relInterior_inter_nonempty
+#print axioms TopologicalSpace.CubeBoundaryThree.square_eq_of_relInterior_inter_nonempty
+#check TopologicalSpace.CubeBoundaryThree.square_boundary_edges
+#print axioms TopologicalSpace.CubeBoundaryThree.square_boundary_edges
+#check TopologicalSpace.CubeBoundaryThree.vertex_separation
+#print axioms TopologicalSpace.CubeBoundaryThree.vertex_separation
+#check TopologicalSpace.CubeBoundaryThree.edge_common_endpoint_geometry
+#print axioms TopologicalSpace.CubeBoundaryThree.edge_common_endpoint_geometry
+#check TopologicalSpace.CubeBoundaryThree.edge_dist_ge_mesh_of_no_common_endpoint
+#print axioms TopologicalSpace.CubeBoundaryThree.edge_dist_ge_mesh_of_no_common_endpoint
+
+/-! ## `Lib.Topology.Dimension.CubeBoundaryThreeBricks` -/
+
+#check TopologicalSpace.CubeBoundaryThree.BrickIndex
+#print axioms TopologicalSpace.CubeBoundaryThree.BrickIndex
+#check TopologicalSpace.CubeBoundaryThree.BrickIndex.vertex
+#print axioms TopologicalSpace.CubeBoundaryThree.BrickIndex.vertex
+#check TopologicalSpace.CubeBoundaryThree.BrickIndex.edge
+#print axioms TopologicalSpace.CubeBoundaryThree.BrickIndex.edge
+#check TopologicalSpace.CubeBoundaryThree.BrickIndex.square
+#print axioms TopologicalSpace.CubeBoundaryThree.BrickIndex.square
+#check TopologicalSpace.CubeBoundaryThree.finite_brickIndex
+#print axioms TopologicalSpace.CubeBoundaryThree.finite_brickIndex
+#check TopologicalSpace.CubeBoundaryThree.vertexBrick
+#print axioms TopologicalSpace.CubeBoundaryThree.vertexBrick
+#check TopologicalSpace.CubeBoundaryThree.edgeBrick
+#print axioms TopologicalSpace.CubeBoundaryThree.edgeBrick
+#check TopologicalSpace.CubeBoundaryThree.squareBrick
+#print axioms TopologicalSpace.CubeBoundaryThree.squareBrick
+#check TopologicalSpace.CubeBoundaryThree.brickSet
+#print axioms TopologicalSpace.CubeBoundaryThree.brickSet
+#check TopologicalSpace.CubeBoundaryThree.mem_vertexBrick
+#print axioms TopologicalSpace.CubeBoundaryThree.mem_vertexBrick
+#check TopologicalSpace.CubeBoundaryThree.mem_edgeBrick
+#print axioms TopologicalSpace.CubeBoundaryThree.mem_edgeBrick
+#check TopologicalSpace.CubeBoundaryThree.mem_squareBrick
+#print axioms TopologicalSpace.CubeBoundaryThree.mem_squareBrick
+#check TopologicalSpace.CubeBoundaryThree.brickSet_vertex
+#print axioms TopologicalSpace.CubeBoundaryThree.brickSet_vertex
+#check TopologicalSpace.CubeBoundaryThree.brickSet_edge
+#print axioms TopologicalSpace.CubeBoundaryThree.brickSet_edge
+#check TopologicalSpace.CubeBoundaryThree.brickSet_square
+#print axioms TopologicalSpace.CubeBoundaryThree.brickSet_square
+
+/-! Lemma 4.2: the exact open brick family. -/
+
+#check TopologicalSpace.CubeBoundaryThree.brickOpens
+#print axioms TopologicalSpace.CubeBoundaryThree.brickOpens
+#check TopologicalSpace.CubeBoundaryThree.coe_brickOpens
+#print axioms TopologicalSpace.CubeBoundaryThree.coe_brickOpens
+#check TopologicalSpace.CubeBoundaryThree.mem_brickOpens
+#print axioms TopologicalSpace.CubeBoundaryThree.mem_brickOpens
+#check TopologicalSpace.CubeBoundaryThree.coe_brickOpens_vertex
+#print axioms TopologicalSpace.CubeBoundaryThree.coe_brickOpens_vertex
+#check TopologicalSpace.CubeBoundaryThree.coe_brickOpens_edge
+#print axioms TopologicalSpace.CubeBoundaryThree.coe_brickOpens_edge
+#check TopologicalSpace.CubeBoundaryThree.coe_brickOpens_square
+#print axioms TopologicalSpace.CubeBoundaryThree.coe_brickOpens_square
+#check TopologicalSpace.CubeBoundaryThree.mem_brickOpens_vertex
+#print axioms TopologicalSpace.CubeBoundaryThree.mem_brickOpens_vertex
+#check TopologicalSpace.CubeBoundaryThree.mem_brickOpens_edge
+#print axioms TopologicalSpace.CubeBoundaryThree.mem_brickOpens_edge
+#check TopologicalSpace.CubeBoundaryThree.mem_brickOpens_square
+#print axioms TopologicalSpace.CubeBoundaryThree.mem_brickOpens_square
+#check TopologicalSpace.CubeBoundaryThree.brickRefinement
+#print axioms TopologicalSpace.CubeBoundaryThree.brickRefinement
+#check TopologicalSpace.CubeBoundaryThree.brickOpens_isOpenCover
+#print axioms TopologicalSpace.CubeBoundaryThree.brickOpens_isOpenCover
+#check TopologicalSpace.CubeBoundaryThree.brickOpens_multiplicityLE_three
+#print axioms TopologicalSpace.CubeBoundaryThree.brickOpens_multiplicityLE_three
+#check TopologicalSpace.CubeBoundaryThree.hasCoveringDimensionLE_two
+#print axioms TopologicalSpace.CubeBoundaryThree.hasCoveringDimensionLE_two
+#check TopologicalSpace.SphereTwo.hasCoveringDimensionLE_two
+#print axioms TopologicalSpace.SphereTwo.hasCoveringDimensionLE_two
+#check TopologicalSpace.SphereTwo.hasCoveringDimensionLE_two_of_homeomorph
+#print axioms TopologicalSpace.SphereTwo.hasCoveringDimensionLE_two_of_homeomorph
+
+/-! ## Additivity of computed right-derived functors (PD-L04) -/
+
+#check CategoryTheory.Functor.rightDerived_additive
+#print axioms CategoryTheory.Functor.rightDerived_additive
+
+/-! ## Specified-endpoint injective biproduct embedding (PD-L05) -/
+
+#check CategoryTheory.ShortComplex.ShortExact.exists_injective_biprod_embedding
+#print axioms CategoryTheory.ShortComplex.ShortExact.exists_injective_biprod_embedding
+#check CategoryTheory.ShortComplex.ShortExact.injective_biprod_cokernel_successor
+#print axioms CategoryTheory.ShortComplex.ShortExact.injective_biprod_cokernel_successor
+#check CategoryTheory.ShortComplex.ShortExact.exists_extension_to_split_injective
+#print axioms CategoryTheory.ShortComplex.ShortExact.exists_extension_to_split_injective
+
+-- PD-L07: the shared recursive presentations retain their actual injective resolutions.
+#check CategoryTheory.InjectiveResolution.exists_recursive_injective_presentations
+#print axioms CategoryTheory.InjectiveResolution.exists_recursive_injective_presentations
+
+-- PD-L08: strict sequence on the supplied recursive injective presentations.
+#check CategoryTheory.InjectiveResolution.strict_sequence_of_recursive_presentations
+#print axioms CategoryTheory.InjectiveResolution.strict_sequence_of_recursive_presentations
+#check CategoryTheory.InjectiveResolution.exists_presentations_of_compatible_resolutions
+#print axioms CategoryTheory.InjectiveResolution.exists_presentations_of_compatible_resolutions
+#check CategoryTheory.InjectiveResolution.exists_recursive_comparison
+#print axioms CategoryTheory.InjectiveResolution.exists_recursive_comparison
+#check CategoryTheory.InjectiveResolution.exists_strict_comparison_of_compatible_resolutions
+#print axioms CategoryTheory.InjectiveResolution.exists_strict_comparison_of_compatible_resolutions
+
+-- PD-L21: one fixed-derived boundary and computation by every compatible choice.
+#check CategoryTheory.Functor.rightDerivedConnecting
+#print axioms CategoryTheory.Functor.rightDerivedConnecting
+#check CategoryTheory.Functor.rightDerivedConnecting_eq
+#print axioms CategoryTheory.Functor.rightDerivedConnecting_eq
+
+-- PD-L22: naturality of the fixed-derived connecting morphism.
+#check CategoryTheory.Functor.rightDerivedConnecting_naturality
+#print axioms CategoryTheory.Functor.rightDerivedConnecting_naturality
+
+-- PD-L23: all fixed-derived exactness positions, boundary zeros and initial injection.
+#check CategoryTheory.Functor.comp_rightDerivedConnecting
+#print axioms CategoryTheory.Functor.comp_rightDerivedConnecting
+#check CategoryTheory.Functor.rightDerivedConnecting_comp
+#print axioms CategoryTheory.Functor.rightDerivedConnecting_comp
+#check CategoryTheory.Functor.rightDerived_exact₁
+#print axioms CategoryTheory.Functor.rightDerived_exact₁
+#check CategoryTheory.Functor.rightDerived_exact₂
+#print axioms CategoryTheory.Functor.rightDerived_exact₂
+#check CategoryTheory.Functor.rightDerived_exact₃
+#print axioms CategoryTheory.Functor.rightDerived_exact₃
+#check CategoryTheory.Functor.rightDerived_zero_injective
+#print axioms CategoryTheory.Functor.rightDerived_zero_injective
+
+-- PD-L24: the same derived family and boundary, assembled as a delta functor.
+#check CategoryTheory.CohomologicalDeltaFunctor.ofRightDerived
+#print axioms CategoryTheory.CohomologicalDeltaFunctor.ofRightDerived
+#check CategoryTheory.CohomologicalDeltaFunctor.ofRightDerived_T_obj
+#print axioms CategoryTheory.CohomologicalDeltaFunctor.ofRightDerived_T_obj
+#check CategoryTheory.CohomologicalDeltaFunctor.ofRightDerived_δ
+#print axioms CategoryTheory.CohomologicalDeltaFunctor.ofRightDerived_δ
+
+-- M00-D: injective effacement and universality of the same derived source.
+#check CategoryTheory.CohomologicalDeltaFunctor.ofRightDerived_effaceable
+#print axioms CategoryTheory.CohomologicalDeltaFunctor.ofRightDerived_effaceable
+#check CategoryTheory.CohomologicalDeltaFunctor.ofRightDerived_isUniversal
+#print axioms CategoryTheory.CohomologicalDeltaFunctor.ofRightDerived_isUniversal
+
+-- M00-D: literal derived global sections, normalization and source universality.
+#check TopCat.SheafCohomology.derivedGlobalSectionsDeltaFunctor
+#print axioms TopCat.SheafCohomology.derivedGlobalSectionsDeltaFunctor
+#check TopCat.SheafCohomology.derivedGlobalSectionsDegree
+#print axioms TopCat.SheafCohomology.derivedGlobalSectionsDegree
+#check TopCat.SheafCohomology.derivedGlobalSectionsBoundary
+#print axioms TopCat.SheafCohomology.derivedGlobalSectionsBoundary
+#check TopCat.SheafCohomology.derivedGlobalSectionsDegreeZeroIso
+#print axioms TopCat.SheafCohomology.derivedGlobalSectionsDegreeZeroIso
+#check TopCat.SheafCohomology.derivedGlobalSectionsEffaceable
+#print axioms TopCat.SheafCohomology.derivedGlobalSectionsEffaceable
+#check TopCat.SheafCohomology.derivedGlobalSectionsIsUniversal
+#print axioms TopCat.SheafCohomology.derivedGlobalSectionsIsUniversal
+
+-- M02: native Ext and the actual injective-resolution Hom-cohomology model.
+#check CategoryTheory.InjectiveResolution.extHomologyIso
+#print axioms CategoryTheory.InjectiveResolution.extHomologyIso
+#check CategoryTheory.InjectiveResolution.extHomologyIso_hom_extMk
+#print axioms CategoryTheory.InjectiveResolution.extHomologyIso_hom_extMk
+#check CategoryTheory.InjectiveResolution.extHomologyIso_hom_naturality
+#print axioms CategoryTheory.InjectiveResolution.extHomologyIso_hom_naturality
+#check CategoryTheory.Abelian.extFunctorObjIsoRightDerived
+#print axioms CategoryTheory.Abelian.extFunctorObjIsoRightDerived
+#check CategoryTheory.Abelian.extFunctorObjIsoRightDerived_hom_app
+#print axioms CategoryTheory.Abelian.extFunctorObjIsoRightDerived_hom_app
+
+-- M07-G: canonical native Ext degree zero and original augmentation normalization.
+#check CategoryTheory.Abelian.extFunctorObjZeroIsoCoyoneda
+#print axioms CategoryTheory.Abelian.extFunctorObjZeroIsoCoyoneda
+#check CategoryTheory.InjectiveResolution.extFunctorObjZeroIsoCoyoneda_hom_app_extMk
+#print axioms CategoryTheory.InjectiveResolution.extFunctorObjZeroIsoCoyoneda_hom_app_extMk
+
+-- M04: native Ext boundary and positive arbitrary-resolution computation.
+#check CategoryTheory.Abelian.extConnecting
+#print axioms CategoryTheory.Abelian.extConnecting
+#check CategoryTheory.Abelian.extConnecting_eq
+#print axioms CategoryTheory.Abelian.extConnecting_eq
+
+-- M05: all three native Ext exactness positions and initial injection.
+#check CategoryTheory.Abelian.comp_extConnecting
+#print axioms CategoryTheory.Abelian.comp_extConnecting
+#check CategoryTheory.Abelian.extConnecting_comp
+#print axioms CategoryTheory.Abelian.extConnecting_comp
+#check CategoryTheory.Abelian.ext_exact₁
+#print axioms CategoryTheory.Abelian.ext_exact₁
+#check CategoryTheory.Abelian.ext_exact₂
+#print axioms CategoryTheory.Abelian.ext_exact₂
+#check CategoryTheory.Abelian.ext_exact₃
+#print axioms CategoryTheory.Abelian.ext_exact₃
+#check CategoryTheory.Abelian.ext_zero_injective
+#print axioms CategoryTheory.Abelian.ext_zero_injective
+
+-- M09-G: original-resolution derived transport and canonical degree-zero coherence.
+#check CategoryTheory.NatIso.rightDerived
+#print axioms CategoryTheory.NatIso.rightDerived
+#check CategoryTheory.NatIso.rightDerived_hom
+#print axioms CategoryTheory.NatIso.rightDerived_hom
+#check CategoryTheory.NatIso.rightDerived_inv
+#print axioms CategoryTheory.NatIso.rightDerived_inv
+#check CategoryTheory.NatIso.rightDerived_zero_hom
+#print axioms CategoryTheory.NatIso.rightDerived_zero_hom
+
+-- M06-N: native Ext boundary naturality for every original short exact sequence morphism.
+#check CategoryTheory.Abelian.extConnecting_naturality
+#print axioms CategoryTheory.Abelian.extConnecting_naturality
+
+-- Canonical degree-zero Ext comparison: fixed defining composition.
+#check CategoryTheory.Abelian.extFunctorObjZeroIsoCoyoneda_eq
+#print axioms CategoryTheory.Abelian.extFunctorObjZeroIsoCoyoneda_eq
+
+-- Native Ext: whole additive degree functors and the same positive boundary.
+#check CategoryTheory.CohomologicalDeltaFunctor.ofExt
+#print axioms CategoryTheory.CohomologicalDeltaFunctor.ofExt
+#check CategoryTheory.CohomologicalDeltaFunctor.ofExt_T_obj
+#print axioms CategoryTheory.CohomologicalDeltaFunctor.ofExt_T_obj
+#check CategoryTheory.CohomologicalDeltaFunctor.ofExt_δ
+#print axioms CategoryTheory.CohomologicalDeltaFunctor.ofExt_δ
+
+-- Native Ext and derived global sections: the same normalized evaluation comparison.
+#check TopCat.SheafCohomology.extFunctorObjIsoDerivedGlobalSections
+#print axioms TopCat.SheafCohomology.extFunctorObjIsoDerivedGlobalSections
+#check TopCat.SheafCohomology.extFunctorObjIsoDerivedGlobalSections_eq
+#print axioms TopCat.SheafCohomology.extFunctorObjIsoDerivedGlobalSections_eq
+#check TopCat.SheafCohomology.extFunctorObjIsoDerivedGlobalSections_zero
+#print axioms TopCat.SheafCohomology.extFunctorObjIsoDerivedGlobalSections_zero
+
+-- Native positive Ext effacement and source universality.
+#check CategoryTheory.CohomologicalDeltaFunctor.ofExt_effaceable
+#print axioms CategoryTheory.CohomologicalDeltaFunctor.ofExt_effaceable
+#check CategoryTheory.CohomologicalDeltaFunctor.ofExt_isUniversal
+#print axioms CategoryTheory.CohomologicalDeltaFunctor.ofExt_isUniversal
+
+-- Normalized Čech/native Ext arrows, each from its universal source.
+#check TopologicalSpace.OpenCover.SetOpenCover.cechCohomologyToExt
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.cechCohomologyToExt
+#check TopologicalSpace.OpenCover.SetOpenCover.extToCechCohomology
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.extToCechCohomology
+#check TopologicalSpace.OpenCover.SetOpenCover.cechCohomologyToExt_app_zero
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.cechCohomologyToExt_app_zero
+#check TopologicalSpace.OpenCover.SetOpenCover.extToCechCohomology_app_zero
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.extToCechCohomology_app_zero
+
+-- Forward and inverse derived transport preserve the positive connecting map.
+#check CategoryTheory.NatIso.rightDerived_hom_connecting
+#print axioms CategoryTheory.NatIso.rightDerived_hom_connecting
+#check CategoryTheory.NatIso.rightDerived_inv_connecting
+#print axioms CategoryTheory.NatIso.rightDerived_inv_connecting
+
+-- Paired derived delta morphisms, their whole degree maps and both inverse laws.
+#check CategoryTheory.CohomologicalDeltaFunctor.ofRightDerivedHom
+#print axioms CategoryTheory.CohomologicalDeltaFunctor.ofRightDerivedHom
+#check CategoryTheory.CohomologicalDeltaFunctor.ofRightDerivedInv
+#print axioms CategoryTheory.CohomologicalDeltaFunctor.ofRightDerivedInv
+#check CategoryTheory.CohomologicalDeltaFunctor.ofRightDerivedHom_app
+#print axioms CategoryTheory.CohomologicalDeltaFunctor.ofRightDerivedHom_app
+#check CategoryTheory.CohomologicalDeltaFunctor.ofRightDerivedInv_app
+#print axioms CategoryTheory.CohomologicalDeltaFunctor.ofRightDerivedInv_app
+#check CategoryTheory.CohomologicalDeltaFunctor.ofRightDerivedHom_comp_inv
+#print axioms CategoryTheory.CohomologicalDeltaFunctor.ofRightDerivedHom_comp_inv
+#check CategoryTheory.CohomologicalDeltaFunctor.ofRightDerivedInv_comp_hom
+#print axioms CategoryTheory.CohomologicalDeltaFunctor.ofRightDerivedInv_comp_hom
+
+-- Both independently source-normalized Čech/native Ext composite identities.
+#check TopologicalSpace.OpenCover.SetOpenCover.cechCohomologyToExt_comp_extToCechCohomology
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.cechCohomologyToExt_comp_extToCechCohomology
+#check TopologicalSpace.OpenCover.SetOpenCover.extToCechCohomology_comp_cechCohomologyToExt
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.extToCechCohomology_comp_cechCohomologyToExt
+
+-- The fixed native Ext boundary's defining right-derived conjugation.
+#check CategoryTheory.Abelian.extConnecting_eq_rightDerived
+#print axioms CategoryTheory.Abelian.extConnecting_eq_rightDerived
+
+-- Both positive boundary squares for the fixed native Ext/global-sections comparison.
+#check TopCat.SheafCohomology.extFunctorObjIsoDerivedGlobalSections_hom_connecting
+#print axioms TopCat.SheafCohomology.extFunctorObjIsoDerivedGlobalSections_hom_connecting
+#check TopCat.SheafCohomology.extFunctorObjIsoDerivedGlobalSections_inv_connecting
+#print axioms TopCat.SheafCohomology.extFunctorObjIsoDerivedGlobalSections_inv_connecting
+
+-- The fixed native Ext/derived-sections delta isomorphism and source-normalized canonicity.
+#check TopCat.SheafCohomology.extDerivedGlobalSectionsHom
+#print axioms TopCat.SheafCohomology.extDerivedGlobalSectionsHom
+#check TopCat.SheafCohomology.extDerivedGlobalSectionsInv
+#print axioms TopCat.SheafCohomology.extDerivedGlobalSectionsInv
+#check TopCat.SheafCohomology.extDerivedGlobalSectionsHom_app
+#print axioms TopCat.SheafCohomology.extDerivedGlobalSectionsHom_app
+#check TopCat.SheafCohomology.extDerivedGlobalSectionsInv_app
+#print axioms TopCat.SheafCohomology.extDerivedGlobalSectionsInv_app
+#check TopCat.SheafCohomology.extDerivedGlobalSectionsHom_comp_inv
+#print axioms TopCat.SheafCohomology.extDerivedGlobalSectionsHom_comp_inv
+#check TopCat.SheafCohomology.extDerivedGlobalSectionsInv_comp_hom
+#print axioms TopCat.SheafCohomology.extDerivedGlobalSectionsInv_comp_hom
+#check TopCat.SheafCohomology.extDerivedGlobalSectionsHom_app_zero
+#print axioms TopCat.SheafCohomology.extDerivedGlobalSectionsHom_app_zero
+#check TopCat.SheafCohomology.extDerivedGlobalSectionsHom_unique
+#print axioms TopCat.SheafCohomology.extDerivedGlobalSectionsHom_unique
+
+-- The fixed normalized Čech comparison through Ext, with both inverse identities.
+#check TopologicalSpace.OpenCover.SetOpenCover.cechDerivedGlobalSectionsHom
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.cechDerivedGlobalSectionsHom
+#check TopologicalSpace.OpenCover.SetOpenCover.cechDerivedGlobalSectionsInv
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.cechDerivedGlobalSectionsInv
+#check TopologicalSpace.OpenCover.SetOpenCover.cechDerivedGlobalSectionsHom_app
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.cechDerivedGlobalSectionsHom_app
+#check TopologicalSpace.OpenCover.SetOpenCover.cechDerivedGlobalSectionsInv_app
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.cechDerivedGlobalSectionsInv_app
+#check TopologicalSpace.OpenCover.SetOpenCover.cechDerivedGlobalSectionsHom_comp_inv
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.cechDerivedGlobalSectionsHom_comp_inv
+#check TopologicalSpace.OpenCover.SetOpenCover.cechDerivedGlobalSectionsInv_comp_hom
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.cechDerivedGlobalSectionsInv_comp_hom
+#check TopologicalSpace.OpenCover.SetOpenCover.cechDerivedGlobalSectionsHom_app_zero
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.cechDerivedGlobalSectionsHom_app_zero
+#check TopologicalSpace.OpenCover.SetOpenCover.cechDerivedGlobalSectionsHom_unique
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.cechDerivedGlobalSectionsHom_unique
+
+-- The original two-source Čech/derived comparison, natural isomorphism and canonicity.
+#check TopologicalSpace.OpenCover.SetOpenCover.cechToDerivedGlobalSections
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.cechToDerivedGlobalSections
+#check TopologicalSpace.OpenCover.SetOpenCover.derivedGlobalSectionsToCech
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.derivedGlobalSectionsToCech
+#check TopologicalSpace.OpenCover.SetOpenCover.cechToDerivedGlobalSections_app_zero
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.cechToDerivedGlobalSections_app_zero
+#check TopologicalSpace.OpenCover.SetOpenCover.derivedGlobalSectionsToCech_app_zero
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.derivedGlobalSectionsToCech_app_zero
+#check TopologicalSpace.OpenCover.SetOpenCover.cechToDerivedGlobalSections_comp_reverse
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.cechToDerivedGlobalSections_comp_reverse
+#check TopologicalSpace.OpenCover.SetOpenCover.derivedGlobalSectionsToCech_comp_forward
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.derivedGlobalSectionsToCech_comp_forward
+#check TopologicalSpace.OpenCover.SetOpenCover.cechCohomologyIsoDerivedGlobalSections
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.cechCohomologyIsoDerivedGlobalSections
+#check TopologicalSpace.OpenCover.SetOpenCover.cechCohomologyIsoDerivedGlobalSections_hom
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.cechCohomologyIsoDerivedGlobalSections_hom
+#check TopologicalSpace.OpenCover.SetOpenCover.cechCohomologyIsoDerivedGlobalSections_inv
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.cechCohomologyIsoDerivedGlobalSections_inv
+#check TopologicalSpace.OpenCover.SetOpenCover.cechToDerivedGlobalSections_unique
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.cechToDerivedGlobalSections_unique
+#check TopologicalSpace.OpenCover.SetOpenCover.cechToDerivedGlobalSections_eq_fixed
+#print axioms TopologicalSpace.OpenCover.SetOpenCover.cechToDerivedGlobalSections_eq_fixed
+
+-- Covering dimension bounds actual derived global sections for arbitrary abelian sheaves.
+#check TopCat.SheafCohomology.derivedGlobalSections_isZero_of_coveringDimensionLE
+#print axioms TopCat.SheafCohomology.derivedGlobalSections_isZero_of_coveringDimensionLE
+#check TopCat.SheafCohomology.derivedGlobalSections_subsingleton_of_coveringDimensionLE
+#print axioms TopCat.SheafCohomology.derivedGlobalSections_subsingleton_of_coveringDimensionLE
+
+/-! ## Preserved textbook-extraction audit outputs -/
+
+#print axioms AnalyticRootCover.exists_analytic_square_root
+#print axioms AnalyticRootCover.exists_analytic_square_root_ball
+#print axioms AnalyticRootCover.exists_analytic_square_root_on_of_even_zeros
+#print axioms DiskCube.boundary_iff
+#print axioms DiskCube.homeomorph
+#print axioms HolomorphicCousin.exists_normalized_holomorphic_cocycle_solution
+#print axioms Hurewicz.exists_basepoint_adjustment
+#print axioms Hurewicz.hurewiczLinearEquiv
+#print axioms Hurewicz.hurewiczLinearEquivOfTwoLE
+#print axioms Hurewicz.hurewiczLinearEquivOfTwoLE_natural
+#print axioms Hurewicz.pi_subsingleton_of_homology_vanishing
+#print axioms Hurewicz.right_inverse_is_left_inverse
+#print axioms Hurewicz.sphere_homotopicRel_of_topClass_eq
+#print axioms Hurewicz.sphere_homotopic_id_of_topClass
+#print axioms Hurewicz.sphere_pi_subsingleton_of_lt
+#print axioms Hurewicz.subsingleton_singularHomology_of_lt
+#print axioms LinearSphereAction.homology_eq_sign_smul
+#print axioms ManifoldMorse.SignedMorseChart.exists_attachingUnionHomeomorph_with_level_and_orbits
+#print axioms ManifoldMorse.exists_morse_function
+#print axioms ManifoldMorse.nonempty_homeomorphSphere_of_two_critical_points
+#print axioms MappingTorusHomology.monodromyHomologyMap
+#print axioms MorseCancellation.cancel_of_transverse_level_isotopy
+#print axioms MorseCancellation.exists_excellent_indexed_morse_birth
+#print axioms MorseCells.built_of_compact_smooth_manifold
+#print axioms MorseRearrangement.exists_morse_rearrangement_of_no_connection
+#print axioms RiemannMapping.exists_bijOn_unitBall_deriv_ne_zero_map_eq_zero
+#print axioms SingularMayerVietoris.exact_at_ambient
+#print axioms SmoothMorseLemma.exists_signed_morse_chart_of_contDiffOn
+#print axioms SphereHomology.unitSphere_homology_subsingleton
+#print axioms SplitGroupExtension.mulEquiv
+#print axioms exists_tubularNeighborhood_in_open_of_embedded_closedBall
+#print axioms simplyConnectedSpace_of_open_cover
+
+/-! ## `Lib.Topology.Homotopy.ConvexContraction` -/
+
+#check Convex.basedLoopContraction
+#print axioms Convex.basedLoopContraction
+#check Convex.basedLoopContraction_apply
+#print axioms Convex.basedLoopContraction_apply
+
+/-! ## `Lib.Algebra.Group.DeterminingFamily` -/
+
+#check DeterminingFamily.commute_all_of_hom_ext
+#print axioms DeterminingFamily.commute_all_of_hom_ext
+#check DeterminingFamily.commute_all_of_lattice_image_eq_zpow
+#print axioms DeterminingFamily.commute_all_of_lattice_image_eq_zpow

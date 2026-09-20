@@ -1,0 +1,38 @@
+{
+ "source_revision": "53c0d47ab30b4cd0ed2d2f17b1746768d50a87f4",
+ "group": "BD2-probe-tails",
+ "declarations": [
+  {
+   "name": "Mathoverflow1973.simplyConnectedSpace_of_open_cover",
+   "source": "Hopf/Hurewicz.lean",
+   "start": 187,
+   "end": 227,
+   "sha256": "0e32105ce84b2983fc6d6b8cabe22ae3aadd9ca85f2ae926a55f6236b503e828",
+   "target": "Lib/AlgebraicTopology/FundamentalGroup/SimplyConnectedCover.lean"
+  },
+  {
+   "name": "Mathoverflow1973.FlowConstruction.exists_regularSublevelHomotopyEquiv",
+   "source": "Hopf/SphereTopology.lean",
+   "start": 4528,
+   "end": 4535,
+   "sha256": "308f6d7c99777de5b88ae3db78655e79d0e04cc0e9f4848d5764b1288cd77805",
+   "target": "Lib/Geometry/Manifold/Morse/CellStructure.lean"
+  },
+  {
+   "name": "Mathoverflow1973.MorseCells.built_upper_sublevels",
+   "source": "Hopf/Recognition.lean",
+   "start": 790,
+   "end": 851,
+   "sha256": "b478bc771a5f1b3b2459278619067ea3bb7bf741096a815284060d7dbaf1f462",
+   "target": "Lib/Geometry/Manifold/Morse/CellStructure.lean"
+  },
+  {
+   "name": "Mathoverflow1973.MorseCells.built_of_compact_smooth_manifold",
+   "source": "Hopf/Recognition.lean",
+   "start": 853,
+   "end": 879,
+   "sha256": "9597d267eb3a6f37310d334f3888141847b12b618af6e324da04fc128cb644fb",
+   "target": "Lib/Geometry/Manifold/Morse/CellStructure.lean"
+  }
+ ]
+}

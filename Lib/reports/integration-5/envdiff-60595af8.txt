@@ -1,0 +1,51 @@
+constants before 31465 after 31524 (keys 30964 31019 )
+lost 77 added 134 of which source declarations: 0 0 ; names with changed type 72 of which source: 3
+  PROOF-NAMING Mathoverflow1973.ManifoldMorse.MorseSurgeryData.exists_belt_whitney_cancellation_of_opposite_signs
+  PROOF-NAMING Mathoverflow1973.ManifoldMorse.MorseSurgeryData.exists_signed_belt_cancellation_step
+  PROOF-NAMING Mathoverflow1973.MorseCancellation.last_index_two_collapse_is_primitive
+  ACCEPTED-ADDED Diffeomorph.toPartialDiffeomorphUniv {'Lib.Geometry.Manifold.LocalDiffeomorph': 1}
+  ACCEPTED-ADDED IsLocalDiffeomorph.diffeomorphOfBijective' {'Lib.Geometry.Manifold.LocalDiffeomorph': 1}
+  ACCEPTED-ADDED IsLocalDiffeomorphAt.exists_partialDiffeomorph {'Lib.Geometry.Manifold.LocalDiffeomorph': 1}
+  ACCEPTED-ADDED IsLocalDiffeomorphAt.of_eqOn {'Lib.Geometry.Manifold.LocalDiffeomorph': 1}
+auxiliary lost/added/changed (not judged): 77 134 69
+module moves (source declarations, 1-to-1):
+       1  Hopf.DifferentialTopology -> Lib.Geometry.Manifold.Immersion.Relative
+       1  Hopf.DifferentialTopology -> Lib.Geometry.Manifold.Morse.Cancellation
+       4  Hopf.Hurewicz -> Hopf.Proof.Hurewicz
+       5  Hopf.LCP.BoundaryTopology -> Lib.AlgebraicTopology.SingularHomology.TorusCoordinates
+      16  Hopf.LCP.CuspFilling -> Lib.AlgebraicTopology.SingularHomology.FirstHurewicz
+       7  Hopf.LCP.CuspFilling -> Lib.AlgebraicTopology.SingularHomology.TorusCoordinates
+       1  Hopf.LCP.IntegralHomology -> Lib.Topology.MappingTorus.Wang
+       3  Hopf.LCP.PeriodConstruction -> Lib.Geometry.Manifold.Quotient.Atlas
+       1  Hopf.LCP.PeriodConstruction -> Lib.Geometry.Manifold.Quotient.LocalOrbit
+      15  Hopf.LCP.Specialization -> Lib.AlgebraicTopology.SingularHomology.Pontryagin
+      42  Hopf.LCP.Specialization -> Lib.AlgebraicTopology.SingularHomology.TorusCoordinates
+       2  Hopf.LCP.Specialization -> Lib.Geometry.Manifold.Quotient.Atlas
+      73  Hopf.Proof.LCP.IntegralHomology -> Lib.Topology.MappingTorus.Wang
+      16  Hopf.Proof.LCP.Specialization -> Lib.AlgebraicTopology.SingularHomology.Torus
+      21  Hopf.Recognition -> Lib.AlgebraicTopology.Hurewicz.DegreeSix
+       7  Hopf.Recognition -> Lib.AlgebraicTopology.SingularHomology.LocalContributionsNaturality
+      69  Hopf.Recognition -> Lib.Geometry.Manifold.Morse.CutTransport
+      31  Hopf.Recognition -> Lib.Geometry.Manifold.Morse.MiddleBlocks
+      58  Hopf.SingularHomology -> Lib.Geometry.Manifold.Morse.BeltCancellation
+      56  Hopf.SingularHomology -> Lib.Geometry.Manifold.Morse.CircleGluing
+      76  Hopf.SingularHomology -> Lib.Geometry.Manifold.Whitney.AnnularExtension
+     193  Hopf.SingularHomology -> Lib.Geometry.Manifold.Whitney.CleanStrips
+      88  Hopf.SingularHomology -> Lib.Geometry.Manifold.Whitney.EmbeddedArcs
+     121  Hopf.SingularHomology -> Lib.Geometry.Manifold.Whitney.FrameField
+     269  Hopf.SingularHomology -> Lib.Geometry.Manifold.Whitney.RankThreeModel
+      77  Hopf.SphereTopology -> Lib.AlgebraicTopology.SingularHomology.LocalDegreeNeighborhoods
+      48  Hopf.SphereTopology -> Lib.AlgebraicTopology.SingularHomology.OnePointCover
+      17  Hopf.SphereTopology -> Lib.Geometry.Manifold.Morse.AdaptedWindows
+      86  Hopf.SphereTopology -> Lib.Geometry.Manifold.Morse.OrderedCancellation
+      35  Hopf.SphereTopology -> Lib.Geometry.Manifold.Morse.RearrangementAmbient
+     231  Hopf.SphereTopology -> Lib.Geometry.Manifold.Morse.SurgeryCollapse
+      85  Hopf.SphereTopology -> Lib.Geometry.Manifold.Morse.SurgeryHomology
+      68  Lib.Geometry.Manifold.Morse.Cancellation -> Lib.Geometry.Manifold.Morse.Connection
+     143  Lib.Geometry.Manifold.Morse.Cancellation -> Lib.Geometry.Manifold.Morse.Cubic
+     107  Lib.Geometry.Manifold.Morse.Cancellation -> Lib.Geometry.Manifold.Morse.CubicFlow
+     108  Lib.Geometry.Manifold.Morse.ConnectionCancellation -> Lib.Geometry.Manifold.Morse.Cancellation
+     198  Lib.Geometry.Manifold.Morse.ConnectionCancellation -> Lib.Geometry.Manifold.Morse.Connection
+ambiguous module changes: 0
+auxiliary constants that changed module: 1209
+VERDICT PASS

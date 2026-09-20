@@ -1,0 +1,208 @@
+⚠ [8792/8817] Replayed Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition
+warning: Lib/AlgebraicTopology/Hurewicz/CubeChainDecomposition.lean:1398:56: This simp argument is unused:
+  Function.update_of_ne hj
+
+Hint: Omit it from the simp argument list.
+  [apply] simp [Hurewicz.cubeScaleLeft, ContinuousMap.coe_mk, Hurewicz.cubeCoordinates_succ]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+warning: Lib/AlgebraicTopology/Hurewicz/CubeChainDecomposition.lean:1414:57: This simp argument is unused:
+  Function.update_of_ne hj
+
+Hint: Omit it from the simp argument list.
+  [apply] simp [Hurewicz.cubeScaleRight, ContinuousMap.coe_mk, Hurewicz.cubeCoordinates_succ]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+warning: Lib/AlgebraicTopology/Hurewicz/CubeChainDecomposition.lean:1534:81: This simp argument is unused:
+  hri
+
+Hint: Omit it from the simp argument list.
+  [apply] simp [Hurewicz.cubeScaleRight, ContinuousMap.coe_mk, Function.update_self, ht0]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+warning: Lib/AlgebraicTopology/Hurewicz/CubeChainDecomposition.lean:1783:72: This simp argument is unused:
+  ContinuousMap.const_comp
+
+Hint: Omit it from the simp argument list.
+  [apply] simp [SingularChains.pointChain, SingularChains.inducedChain_simplex]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+⚠ [8793/8817] Replayed Lib.AlgebraicTopology.Hurewicz.Straightening
+warning: Lib/AlgebraicTopology/Hurewicz/Straightening.lean:797:6: Try this: 
+  haveI̵
+
+The goal is a proposition, so `have` is preferred over `haveI`.
+The difference between `have` and `haveI` is that `haveI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Lib/AlgebraicTopology/Hurewicz/Straightening.lean:833:2: Try this: 
+  haveI̵
+
+The goal is a proposition, so `have` is preferred over `haveI`.
+The difference between `have` and `haveI` is that `haveI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+⚠ [8794/8817] Replayed Lib.AlgebraicTopology.Hurewicz.CubeSphere
+warning: Lib/AlgebraicTopology/Hurewicz/CubeSphere.lean:580:32: This simp argument is unused:
+  Submodule.coe_sub
+
+Hint: Omit it from the simp argument list.
+  [apply] simp only [Submodule.coe_add, Hurewicz.cubeCycle_val, map_sub, hWextra]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+warning: Lib/AlgebraicTopology/Hurewicz/CubeSphere.lean:785:4: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Lib/AlgebraicTopology/Hurewicz/CubeSphere.lean:793:4: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Lib/AlgebraicTopology/Hurewicz/CubeSphere.lean:935:21: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+⚠ [8801/8817] Replayed Lib.AlgebraicTopology.Hurewicz.HopfDegree
+warning: Lib/AlgebraicTopology/Hurewicz/HopfDegree.lean:84:4: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Lib/AlgebraicTopology/Hurewicz/HopfDegree.lean:85:4: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Lib/AlgebraicTopology/Hurewicz/HopfDegree.lean:102:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Lib/AlgebraicTopology/Hurewicz/HopfDegree.lean:272:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+⚠ [8802/8817] Replayed Lib.AlgebraicTopology.Hurewicz.Naturality
+warning: Lib/AlgebraicTopology/Hurewicz/Naturality.lean:231:4: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Lib/AlgebraicTopology/Hurewicz/Naturality.lean:232:4: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+ℹ [8817/8817] Built Lib.AxiomAudit (2.4s)
+info: Lib/AxiomAudit.lean:10:0: 'Module.End.cyclicAverage' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Lib/AxiomAudit.lean:11:0: 'Module.End.mul_sum_powers_eq_sum_powers' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Lib/AxiomAudit.lean:12:0: 'Module.End.sum_powers_mul_eq_sum_powers' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Lib/AxiomAudit.lean:13:0: 'Module.End.mul_cyclicAverage' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Lib/AxiomAudit.lean:14:0: 'Module.End.cyclicAverage_mul' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Lib/AxiomAudit.lean:15:0: 'Module.End.cyclicAverage_apply_of_fixed' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Lib/AxiomAudit.lean:16:0: 'Module.End.isProj_cyclicAverage' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Lib/AxiomAudit.lean:17:0: 'Module.End.isIdempotentElem_cyclicAverage' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Lib/AxiomAudit.lean:18:0: 'Module.End.range_cyclicAverage' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Lib/AxiomAudit.lean:19:0: 'Module.End.comp_cyclicAverage' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Lib/AxiomAudit.lean:21:0: 'Matrix.natAbs_det_eq_natCard_quotient_range_toLin'' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Lib/AxiomAudit.lean:22:0: 'Matrix.quotientRangeToLin'EquivZModOfIsCoprime' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Lib/AxiomAudit.lean:23:0: 'Matrix.quotientRangeToLinEquivZModOfIsCoprime' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Lib/AxiomAudit.lean:25:0: 'Module.End.oneAddSMul' depends on axioms: [propext, Quot.sound]
+info: Lib/AxiomAudit.lean:26:0: 'Module.End.oneAddSMul_zero' depends on axioms: [propext, Quot.sound]
+info: Lib/AxiomAudit.lean:27:0: 'Module.End.oneAddSMul_apply' depends on axioms: [propext, Quot.sound]
+info: Lib/AxiomAudit.lean:28:0: 'Module.End.oneAddSMul_mul_oneAddSMul' depends on axioms: [propext, Quot.sound]
+info: Lib/AxiomAudit.lean:29:0: 'Module.End.oneAddSMulEquiv' depends on axioms: [propext, Quot.sound]
+info: Lib/AxiomAudit.lean:30:0: 'Module.End.oneAddSMulEquiv_toLinearMap' depends on axioms: [propext, Quot.sound]
+info: Lib/AxiomAudit.lean:31:0: 'Module.End.oneAddSMulEquiv_apply' depends on axioms: [propext, Quot.sound]
+info: Lib/AxiomAudit.lean:32:0: 'Module.End.oneAddSMulEquiv_symm_toLinearMap' depends on axioms: [propext, Quot.sound]
+info: Lib/AxiomAudit.lean:33:0: 'Module.End.quadratic_term_eq_zero' depends on axioms: [propext, Quot.sound]
+info: Lib/AxiomAudit.lean:34:0: 'Module.End.oneAddSMul_preserves_bilin' depends on axioms: [propext, Quot.sound]
+info: Lib/AxiomAudit.lean:35:0: 'Module.End.oneAddSMul_preserves_bilin_of_isSkewAdjoint' depends on axioms: [propext, Quot.sound]
+info: Lib/AxiomAudit.lean:37:0: 'Abelianization.mapMulAut' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Lib/AxiomAudit.lean:38:0: 'SemidirectProduct.abelianizationRepresentation' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Lib/AxiomAudit.lean:39:0: 'SemidirectProduct.AbelianizationCoinvariants' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Lib/AxiomAudit.lean:40:0: 'SemidirectProduct.coinvariantsMk' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Lib/AxiomAudit.lean:41:0: 'SemidirectProduct.coinvariantsMk_action' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Lib/AxiomAudit.lean:42:0: 'SemidirectProduct.abelianizationMulEquiv' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Lib/AxiomAudit.lean:43:0: 'SemidirectProduct.abelianizationMulEquiv_apply_of_inl' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Lib/AxiomAudit.lean:44:0: 'SemidirectProduct.abelianizationMulEquiv_apply_of_inr' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Lib/AxiomAudit.lean:45:0: 'SemidirectProduct.abelianizationMulEquiv_symm_apply_inl' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Lib/AxiomAudit.lean:46:0: 'SemidirectProduct.abelianizationMulEquiv_symm_apply_inr' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Lib/AxiomAudit.lean:47:0: 'GroupExtension.Splitting.abelianizationMulEquiv' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Lib/AxiomAudit.lean:49:0: 'Subgroup.isMulCommutative_of_closure_eq_top' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Lib/AxiomAudit.lean:50:0: 'AddSubgroup.isAddCommutative_of_closure_eq_top' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Lib/AxiomAudit.lean:51:0: 'AddSubgroup.eq_of_le_of_quotient_subsingleton' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Lib/AxiomAudit.lean:52:0: 'AddSubgroup.eq_top_of_le_of_quotient_subsingleton' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Lib/AxiomAudit.lean:55:0: 'SingularMayerVietoris.exact_at_ambient' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Lib/AxiomAudit.lean:56:0: 'SphereHomology.unitSphere_homology_subsingleton' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Lib/AxiomAudit.lean:57:0: 'LinearSphereAction.homology_eq_sign_smul' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Lib/AxiomAudit.lean:60:0: 'ManifoldMorse.exists_morse_function' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Lib/AxiomAudit.lean:61:0: 'SmoothMorseLemma.exists_signed_morse_chart_of_contDiffOn' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Lib/AxiomAudit.lean:62:0: 'ManifoldMorse.SignedMorseChart.exists_attachingUnionHomeomorph_with_level_and_orbits' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+info: Lib/AxiomAudit.lean:63:0: 'ManifoldMorse.nonempty_homeomorphSphere_of_two_critical_points' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+info: Lib/AxiomAudit.lean:66:0: 'RiemannMapping.exists_bijOn_unitBall_deriv_ne_zero_map_eq_zero' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+info: Lib/AxiomAudit.lean:67:0: 'HolomorphicCousin.exists_normalized_holomorphic_cocycle_solution' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+info: Lib/AxiomAudit.lean:68:0: 'AnalyticRootCover.exists_analytic_square_root' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Lib/AxiomAudit.lean:69:0: 'AnalyticRootCover.exists_analytic_square_root_ball' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Lib/AxiomAudit.lean:72:0: 'exists_tubularNeighborhood_in_open_of_embedded_closedBall' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Lib/AxiomAudit.lean:75:0: 'SplitGroupExtension.mulEquiv' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Lib/AxiomAudit.lean:76:0: 'MappingTorusHomology.monodromyHomologyMap' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Lib/AxiomAudit.lean:79:0: 'Hurewicz.hurewiczLinearEquiv' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Lib/AxiomAudit.lean:80:0: 'Hurewicz.hurewiczLinearEquivOfTwoLE' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Lib/AxiomAudit.lean:81:0: 'Hurewicz.pi_subsingleton_of_homology_vanishing' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Lib/AxiomAudit.lean:82:0: 'Hurewicz.sphere_pi_subsingleton_of_lt' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Lib/AxiomAudit.lean:83:0: 'Hurewicz.sphere_homotopicRel_of_topClass_eq' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Lib/AxiomAudit.lean:84:0: 'Hurewicz.sphere_homotopic_id_of_topClass' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Lib/AxiomAudit.lean:85:0: 'Hurewicz.right_inverse_is_left_inverse' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Lib/AxiomAudit.lean:86:0: 'Hurewicz.exists_basepoint_adjustment' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Lib/AxiomAudit.lean:87:0: 'Hurewicz.hurewiczLinearEquivOfTwoLE_natural' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Lib/AxiomAudit.lean:88:0: 'Hurewicz.subsingleton_singularHomology_of_lt' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Lib/AxiomAudit.lean:89:0: 'DiskCube.homeomorph' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Lib/AxiomAudit.lean:90:0: 'DiskCube.boundary_iff' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Lib/AxiomAudit.lean:92:0: 'MorseCancellation.cancel_of_transverse_level_isotopy' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Lib/AxiomAudit.lean:93:0: 'MorseRearrangement.exists_morse_rearrangement_of_no_connection' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+info: Lib/AxiomAudit.lean:94:0: 'MorseCancellation.exists_excellent_indexed_morse_birth' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Lib/AxiomAudit.lean:95:0: 'simplyConnectedSpace_of_open_cover' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Lib/AxiomAudit.lean:96:0: 'MorseCells.built_of_compact_smooth_manifold' depends on axioms: [propext, Classical.choice, Quot.sound]
+info: Lib/AxiomAudit.lean:97:0: 'AnalyticRootCover.exists_analytic_square_root_on_of_even_zeros' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+Build completed successfully (8817 jobs).

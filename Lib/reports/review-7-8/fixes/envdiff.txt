@@ -1,0 +1,35 @@
+constants before 38254 after 38248 (keys 38152 38146 )
+lost 56 added 50 of which source declarations: 5 3 ; names with changed type 47 of which source: 38
+  LOST Fin.tailHeadAddEquiv {'Lib.Algebra.Module.IntegerPresentation': 1}
+  LOST TopCat.SingularSmallChains.cochainRestriction_homologyMap_isIso_one {'Lib.AlgebraicTopology.SingularSmallChains.Basic': 1}
+  LOST TopCat.SingularSmallChains.homotopy_on_cocycle_one {'Lib.AlgebraicTopology.SingularSmallChains.Basic': 1}
+  LOST TopCat.SingularSmallChains.smallCochain_boundary_of_restriction_boundary_one {'Lib.AlgebraicTopology.SingularSmallChains.Basic': 1}
+  LOST TopCat.SingularSmallChains.smallCochain_cocycle_lift_exact_one {'Lib.AlgebraicTopology.SingularSmallChains.Basic': 1}
+  ADDED FreeGroup.forall_apply_eq_self_iff {'Lib.GroupTheory.FreeGroup.Invariant': 1}
+  ADDED LinearEquiv.coordMatrix_eq_toMatrix {'Lib.LinearAlgebra.Matrix.TransvectionReduction': 1}
+  ADDED MonoidHom.apply_eq_apply_of_ker_le {'Lib.Algebra.Group.Ker': 1}
+  PROOF-NAMING AdaptedWindows.exists_relative_level_surgery_system
+  PROOF-NAMING AdaptedWindows.not_backward_basin_on_upper_level
+  PROOF-NAMING AdaptedWindows.reaches_lower_in_regular_band
+  PROOF-NAMING AdaptedWindows.reaches_lower_of_excluded_critical_limit
+  PROOF-NAMING AdaptedWindows.reaches_old_lower_of_belt_avoidance
+  PROOF-NAMING AdaptedWindows.transported_backward_basin_image
+  PROOF-NAMING AlgebraicTopology.SingularCochains.cohomology_subsingleton_iff_of_homeomorph
+  PROOF-NAMING AlgebraicTopology.SingularCochains.cohomology_subsingleton_iff_of_homotopyEquiv
+  PROOF-NAMING AlgebraicTopology.SingularCochains.cohomology_subsingleton_of_homotopyEquiv
+  PROOF-NAMING AlgebraicTopology.SingularCochains.contractibleCohomology_subsingleton
+  PROOF-NAMING AlgebraicTopology.SingularCochains.dualHomotopyEquiv
+  PROOF-NAMING AlgebraicTopology.SingularCochains.dualPointSingle_exactAt
+  PROOF-NAMING AlgebraicTopology.SingularCochains.nullhomotopic_pullback_closed_succ
+  PROOF-NAMING AlgebraicTopology.SingularCochains.pointCochainHomotopyEquiv
+  PROOF-NAMING AlgebraicTopology.SingularCochains.pointCochain_exactAt_positive
+  PROOF-NAMING AlgebraicTopology.SingularCochains.pointCocycle_boundary
+  PROOF-NAMING AlgebraicTopology.SingularCochains.pointCohomology_subsingleton
+  PROOF-NAMING AlgebraicTopology.SingularCochains.pullback_closed_succ
+  PROOF-NAMING Coproduct.homologyBiproductEquiv
+  PROOF-NAMING Coproduct.homologyBiproductEquiv_desc
+auxiliary lost/added/changed (not judged): 51 47 9
+module moves (source declarations, 1-to-1):
+ambiguous module changes: 0
+auxiliary constants that changed module: 0
+VERDICT FAIL

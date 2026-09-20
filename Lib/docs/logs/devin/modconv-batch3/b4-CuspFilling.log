@@ -1,0 +1,217 @@
+Hopf/LCP/CuspFilling.lean:13675:2: error(lean.unknownIdentifier): Unknown identifier `crossProductHomology`
+Hopf/LCP/CuspFilling.lean:13686:9: error: Function expected at
+  crossProductCycles
+but this term has type
+  ?m.1
+
+Note: Expected a function because this term is being applied to the argument
+  (PeriodTorusHigherHomology.CircleTopology.Circle)
+
+Hint: The identifier `crossProductCycles` is unknown, and Lean's `autoImplicit` option causes an unknown identifier to be treated as an implicitly bound variable with an unknown type. However, the unknown type cannot be a function, and a function is what Lean expects here. This is often the result of a typo or a missing `import` or `open` statement.
+Hopf/LCP/CuspFilling.lean:13695:4: error(lean.unknownIdentifier): Unknown identifier `crossProductHomology`
+Hopf/LCP/CuspFilling.lean:13815:63: error: Function expected at
+  crossProductEdge
+but this term has type
+  ?m.1
+
+Note: Expected a function because this term is being applied to the argument
+  X
+
+Hint: The identifier `crossProductEdge` is unknown, and Lean's `autoImplicit` option causes an unknown identifier to be treated as an implicitly bound variable with an unknown type. However, the unknown type cannot be a function, and a function is what Lean expects here. This is often the result of a typo or a missing `import` or `open` statement.
+Hopf/LCP/CuspFilling.lean:13816:6: error: Function expected at
+  crossProductZeroLeft
+but this term has type
+  ?m.2
+
+Note: Expected a function because this term is being applied to the argument
+  X
+
+Hint: The identifier `crossProductZeroLeft` is unknown, and Lean's `autoImplicit` option causes an unknown identifier to be treated as an implicitly bound variable with an unknown type. However, the unknown type cannot be a function, and a function is what Lean expects here. This is often the result of a typo or a missing `import` or `open` statement.
+Hopf/LCP/CuspFilling.lean:13818:18: error(lean.unknownIdentifier): Unknown identifier `crossProductEdge_boundary_zero`
+Hopf/LCP/CuspFilling.lean:13825:15: error(lean.unknownIdentifier): Unknown identifier `crossProductEdge_boundary`
+Hopf/LCP/CuspFilling.lean:13831:9: error: Function expected at
+  crossProductEdge
+but this term has type
+  ?m.1
+
+Note: Expected a function because this term is being applied to the argument
+  X
+
+Hint: The identifier `crossProductEdge` is unknown, and Lean's `autoImplicit` option causes an unknown identifier to be treated as an implicitly bound variable with an unknown type. However, the unknown type cannot be a function, and a function is what Lean expects here. This is often the result of a typo or a missing `import` or `open` statement.
+Hopf/LCP/CuspFilling.lean:13836:4: error(lean.unknownIdentifier): Unknown identifier `crossProductZeroLeft`
+Hopf/LCP/CuspFilling.lean:13855:5: error(lean.unknownIdentifier): Unknown identifier `crossProductEdge`
+Hopf/LCP/CuspFilling.lean:13864:5: error(lean.unknownIdentifier): Unknown identifier `crossProductEdge`
+Hopf/LCP/CuspFilling.lean:13871:49: error: unsolved goals
+case p
+X : Type
+inst✝ : TopologicalSpace X
+n : ℕ
+b : ↥(SingularMayerVietoris.ModuleHomology.Cycle (singularComplex X) n)
+⊢ Path CirclePaths.quarterU CirclePaths.threeQuarterU
+
+X : Type
+inst✝ : TopologicalSpace X
+n : ℕ
+b : ↥(SingularMayerVietoris.ModuleHomology.Cycle (singularComplex X) n)
+⊢ Sort ?u.25
+
+X : Type
+inst✝ : TopologicalSpace X
+n : ℕ
+b : ↥(SingularMayerVietoris.ModuleHomology.Cycle (singularComplex X) n)
+⊢ ?m.46
+Hopf/LCP/CuspFilling.lean:13872:6: warning: declaration uses `sorry`
+Hopf/LCP/CuspFilling.lean:13891:51: error: unsolved goals
+case p
+X : Type
+inst✝ : TopologicalSpace X
+n : ℕ
+b : ↥(SingularMayerVietoris.ModuleHomology.Cycle (singularComplex X) n)
+⊢ Path CirclePaths.threeQuarterV CirclePaths.quarterV
+
+X : Type
+inst✝ : TopologicalSpace X
+n : ℕ
+b : ↥(SingularMayerVietoris.ModuleHomology.Cycle (singularComplex X) n)
+⊢ Sort ?u.26
+
+X : Type
+inst✝ : TopologicalSpace X
+n : ℕ
+b : ↥(SingularMayerVietoris.ModuleHomology.Cycle (singularComplex X) n)
+⊢ ?m.48
+Hopf/LCP/CuspFilling.lean:13892:6: warning: declaration uses `sorry`
+Hopf/LCP/CuspFilling.lean:13909:6: error: Function expected at
+  crossProductEdge
+but this term has type
+  ?m.1
+
+Note: Expected a function because this term is being applied to the argument
+  (PeriodTorusHigherHomology.CircleTopology.Circle)
+
+Hint: The identifier `crossProductEdge` is unknown, and Lean's `autoImplicit` option causes an unknown identifier to be treated as an implicitly bound variable with an unknown type. However, the unknown type cannot be a function, and a function is what Lean expects here. This is often the result of a typo or a missing `import` or `open` statement.
+Hopf/LCP/CuspFilling.lean:13920:4: error(lean.unknownIdentifier): Unknown identifier `crossProductEdge_natural`
+Hopf/LCP/CuspFilling.lean:13910:65: error: unsolved goals
+x✝ : Sort u_1
+crossProductEdge : x✝
+X : Type
+inst✝ : TopologicalSpace X
+n : ℕ
+b : ↥(SingularMayerVietoris.ModuleHomology.Cycle (singularComplex X) n)
+hi :
+  (CircleTopology.productUInclusion X).comp ↑(CircleTopology.productUHomeomorph X).symm =
+    { toFun := Subtype.val, continuous_toFun := ⋯ }.prodMap (ContinuousMap.id X)
+⊢ (inducedChain ({ toFun := Subtype.val, continuous_toFun := ⋯ }.prodMap (ContinuousMap.id X)) (n + 1)) sorry = sorry
+Hopf/LCP/CuspFilling.lean:13919:6: warning: declaration uses `sorry`
+Hopf/LCP/CuspFilling.lean:13927:6: error: Function expected at
+  crossProductEdge
+but this term has type
+  ?m.1
+
+Note: Expected a function because this term is being applied to the argument
+  (PeriodTorusHigherHomology.CircleTopology.Circle)
+
+Hint: The identifier `crossProductEdge` is unknown, and Lean's `autoImplicit` option causes an unknown identifier to be treated as an implicitly bound variable with an unknown type. However, the unknown type cannot be a function, and a function is what Lean expects here. This is often the result of a typo or a missing `import` or `open` statement.
+Hopf/LCP/CuspFilling.lean:13938:4: error(lean.unknownIdentifier): Unknown identifier `crossProductEdge_natural`
+Hopf/LCP/CuspFilling.lean:13928:65: error: unsolved goals
+x✝ : Sort u_1
+crossProductEdge : x✝
+X : Type
+inst✝ : TopologicalSpace X
+n : ℕ
+b : ↥(SingularMayerVietoris.ModuleHomology.Cycle (singularComplex X) n)
+hi :
+  (CircleTopology.productVInclusion X).comp ↑(CircleTopology.productVHomeomorph X).symm =
+    { toFun := Subtype.val, continuous_toFun := ⋯ }.prodMap (ContinuousMap.id X)
+⊢ (inducedChain ({ toFun := Subtype.val, continuous_toFun := ⋯ }.prodMap (ContinuousMap.id X)) (n + 1)) sorry = sorry
+Hopf/LCP/CuspFilling.lean:13937:6: warning: declaration uses `sorry`
+Hopf/LCP/CuspFilling.lean:13947:6: error: Function expected at
+  crossProductEdge
+but this term has type
+  ?m.1
+
+Note: Expected a function because this term is being applied to the argument
+  (PeriodTorusHigherHomology.CircleTopology.Circle)
+
+Hint: The identifier `crossProductEdge` is unknown, and Lean's `autoImplicit` option causes an unknown identifier to be treated as an implicitly bound variable with an unknown type. However, the unknown type cannot be a function, and a function is what Lean expects here. This is often the result of a typo or a missing `import` or `open` statement.
+Hopf/LCP/CuspFilling.lean:14205:6: error: Function expected at
+  crossProductEdge
+but this term has type
+  ?m.1
+
+Note: Expected a function because this term is being applied to the argument
+  (PeriodTorusHigherHomology.CircleTopology.Circle)
+
+Hint: The identifier `crossProductEdge` is unknown, and Lean's `autoImplicit` option causes an unknown identifier to be treated as an implicitly bound variable with an unknown type. However, the unknown type cannot be a function, and a function is what Lean expects here. This is often the result of a typo or a missing `import` or `open` statement.
+Hopf/LCP/CuspFilling.lean:14221:6: error: Function expected at
+  crossProductCycles
+but this term has type
+  ?m.1
+
+Note: Expected a function because this term is being applied to the argument
+  (PeriodTorusHigherHomology.CircleTopology.Circle)
+
+Hint: The identifier `crossProductCycles` is unknown, and Lean's `autoImplicit` option causes an unknown identifier to be treated as an implicitly bound variable with an unknown type. However, the unknown type cannot be a function, and a function is what Lean expects here. This is often the result of a typo or a missing `import` or `open` statement.
+Hopf/LCP/CuspFilling.lean:14240:9: error: don't know how to synthesize implicit argument `crossProductCycles`
+  @positiveCircleCross_arcSum_cycleClass ?m.36 ?m.37 X inst✝ n b
+context:
+X : Type
+inst✝ : TopologicalSpace X
+n : ℕ
+b : ↥(SingularMayerVietoris.ModuleHomology.Cycle (singularComplex X) n)
+⊢ ?m.36
+Hopf/LCP/CuspFilling.lean:14240:9: error: don't know how to synthesize implicit argument
+  @positiveCircleCross_arcSum_cycleClass ?m.36 ?m.37 X inst✝ n b
+context:
+X : Type
+inst✝ : TopologicalSpace X
+n : ℕ
+b : ↥(SingularMayerVietoris.ModuleHomology.Cycle (singularComplex X) n)
+⊢ Sort ?u.29
+Hopf/LCP/CuspFilling.lean:14238:2: error: unsolved goals
+X : Type
+inst✝ : TopologicalSpace X
+n : ℕ
+b : ↥(SingularMayerVietoris.ModuleHomology.Cycle (singularComplex X) n)
+⊢ (SingularMayerVietoris.ModuleHomology.cycleClass (singularComplex (CircleTopology.Circle × X)) (n + 1)) sorry =
+    (positiveCircleCross X n) ((SingularMayerVietoris.ModuleHomology.cycleClass (singularComplex X) n) b)
+
+X : Type
+inst✝ : TopologicalSpace X
+n : ℕ
+b : ↥(SingularMayerVietoris.ModuleHomology.Cycle (singularComplex X) n)
+⊢ Sort ?u.28
+
+X : Type
+inst✝ : TopologicalSpace X
+n : ℕ
+b : ↥(SingularMayerVietoris.ModuleHomology.Cycle (singularComplex X) n)
+⊢ ?m.29
+Hopf/LCP/CuspFilling.lean:14300:2: error: Type mismatch
+  crossProductHomology_snd n (SingularChains.loopHomologyClass CirclePaths.positiveLoop) b
+has type
+  (SingularMayerVietoris.singularHomologyMap ContinuousMap.snd (n + 1))
+      (((SingularHomology.crossProductHomology CircleTopology.Circle X n)
+          (SingularChains.loopHomologyClass CirclePaths.positiveLoop))
+        b) =
+    0
+but is expected to have type
+  (circleProjectionHomology X (n + 1)) ((positiveCircleCross X n) b) = 0
+Hopf/LCP/CuspFilling.lean:14347:27: error(lean.unknownIdentifier): Unknown constant `PeriodTorusHigherHomology.integerLinearMapModule`
+Hopf/LCP/CuspFilling.lean:14353:27: error(lean.unknownIdentifier): Unknown constant `PeriodTorusHigherHomology.integerLinearMapModule`
+Hopf/LCP/CuspFilling.lean:14359:27: error(lean.unknownIdentifier): Unknown constant `PeriodTorusHigherHomology.integerLinearMapModule`
+Hopf/LCP/CuspFilling.lean:14366:27: error(lean.unknownIdentifier): Unknown constant `PeriodTorusHigherHomology.integerLinearMapModule`
+Hopf/LCP/CuspFilling.lean:14373:27: error(lean.unknownIdentifier): Unknown constant `PeriodTorusHigherHomology.integerLinearMapModule`
+Hopf/LCP/CuspFilling.lean:14383:27: error(lean.unknownIdentifier): Unknown constant `PeriodTorusHigherHomology.integerLinearMapModule`
+Hopf/LCP/CuspFilling.lean:14398:6: error(lean.unknownIdentifier): Unknown identifier `PeriodTorusHigherHomology.crossProductHomology`
+Hopf/LCP/CuspFilling.lean:14405:27: error(lean.unknownIdentifier): Unknown constant `PeriodTorusHigherHomology.integerLinearMapModule`
+Hopf/LCP/CuspFilling.lean:14443:27: error(lean.unknownIdentifier): Unknown constant `PeriodTorusHigherHomology.integerLinearMapModule`
+Hopf/LCP/CuspFilling.lean:14484:27: error(lean.unknownIdentifier): Unknown constant `PeriodTorusHigherHomology.integerLinearMapModule`
+Hopf/LCP/CuspFilling.lean:14518:27: error(lean.unknownIdentifier): Unknown constant `PeriodTorusHigherHomology.integerLinearMapModule`
+Hopf/LCP/CuspFilling.lean:14524:27: error(lean.unknownIdentifier): Unknown constant `PeriodTorusHigherHomology.integerLinearMapModule`
+Hopf/LCP/CuspFilling.lean:14535:27: error(lean.unknownIdentifier): Unknown constant `PeriodTorusHigherHomology.integerLinearMapModule`
+Hopf/LCP/CuspFilling.lean:14547:27: error(lean.unknownIdentifier): Unknown constant `PeriodTorusHigherHomology.integerLinearMapModule`
+Hopf/LCP/CuspFilling.lean:14556:27: error(lean.unknownIdentifier): Unknown constant `PeriodTorusHigherHomology.integerLinearMapModule`
+Hopf/LCP/CuspFilling.lean:14566:27: error(lean.unknownIdentifier): Unknown constant `PeriodTorusHigherHomology.integerLinearMapModule`
+Hopf/LCP/CuspFilling.lean:14584:27: error(lean.unknownIdentifier): Unknown constant `PeriodTorusHigherHomology.integerLinearMapModule`
+Hopf/LCP/CuspFilling.lean:14596:27: error(lean.unknownIdentifier): Unknown constant `PeriodTorusHigherHomology.integerLinearMapModule`

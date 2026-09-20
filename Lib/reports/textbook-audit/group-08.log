@@ -1,0 +1,611 @@
+# group-08 — head f0e28a82 — 2026-09-20
+
+## Lib/Geometry/Manifold/Whitney/FrameField.lean  (121 declarations, 2548 lines)
+verdict: C (project residue in the mathematics: rank-three specialisation, verbatim stock move, no docstrings)
+twin: Milnor, Lectures on the h-cobordism theorem §§5–6 (Whitney trick, named in docstring); no Mathlib twin (genuine gap for the frame-field/complement lemmas)
+findings:
+- l.15–19 module docstring says "Moved verbatim from the project stock file `Hopf/SingularHomology.lean`" and that declarations "keep their historical dotted names and their order"; no `## Main results`, no statement of the theorem the file proves
+- 121/121 declarations without docstring
+- l.1357–1815, l.2248–2400 `rankThreePairCoordinates`, `exists_rankThree_*`, `rankThreeSheetPairDet`, `ManifoldMorse.MorseSurgeryData.beltSheetNormal`: the complement/frame arguments (l.455 `exists_smooth_complement_near_starConvex_on`, l.869 `exists_smooth_invertible_join_of_finrank_two`) are general, but the later half hard-codes normal rank 3 and the project's `MorseSurgeryData`; Milnor's argument is for any `k+l = n ≥ 5`
+- l.46–70 `WhitneyPairModel.lowerBoundaryArc`/`upperBoundaryArc` and l.261–360 `PlanarFrame.area/quarterTurn/determinant`: ad-hoc 2×2 linear algebra on `PlaneImmersion.Plane` that duplicates `Matrix.det_fin_two`/`LinearMap.det`
+- file mixes six namespaces (`FrameField`, `PlanarFrame`, `IntersectionCoordinates`, `DiskFraming`, `StripNormalData`, `NativeSheetCoordinates`) with no section structure; no Mathlib-style `Foo.bar_of_baz` naming (`det_of_zero_lower_left`, `same_sign_frames_iff_coefficients`)
+- l.33 `set_option maxSynthPendingDepth 3`, l.37–40 kitchen-sink `open scoped … Modular UpperHalfPlane`, l.42 `universe u v` unused, `import Mathlib`
+suggestion: split the general frame-field/complement lemmas (l.179–1268) into a documented `Whitney/FrameField.lean` and move the rank-three and `MorseSurgeryData` material to the project proof tree, adding docstrings throughout
+
+## Lib/Geometry/Manifold/Whitney/RankThreeModel.lean  (160 declarations, 2860 lines)
+verdict: C (project residue in the mathematics: dimension fixed at rank three, verbatim stock move, no docstrings)
+twin: Milnor, Lectures on the h-cobordism theorem §6 (Whitney's lemma / cancellation of intersection points); no Mathlib twin (genuine gap)
+findings:
+- l.12–19 module docstring is one run-on sentence plus "Moved verbatim from the project stock file `Hopf/SingularHomology.lean`"; no `## Main results`; the seven families are listed by name only
+- 160/160 declarations without docstring
+- l.427–445 `RankThreeWhitneyModel.Lower/Upper/Space/LowerSheet/UpperSheet` abbrevs fix the model to `ℝ × ℝ × ℝ`-type spaces; l.651, l.1802, l.2401 `TubularBigon.RankThree{TangentAdapted,SheetParametrized,Compatible}Chart` and l.2832 `exists_rankThree_relative_cancellation` are the project's dimension case of Milnor's general Whitney lemma (arbitrary `k + l = n`)
+- l.46–420 `WhitneyPairModel.GraphMotion`/`graphStep`/`exists_supported_graph_height`: the planar model isotopy is general and reusable; it sits in the same file as the rank-three charts (two topics)
+- l.2617–2660 `SupportedDiffeomorph.image_inter_eq_diff`, `preimage_target_eq_diff_of_relative_removal`, `eventuallyEq_comp_of_fixed_off_closed` are pure set/filter lemmas about `X ≃ X` misplaced in a manifold file
+- l.33 `set_option maxSynthPendingDepth 3`, l.37–40 `open scoped … Modular UpperHalfPlane`, l.42 `universe u v` unused, `import Mathlib`
+suggestion: keep the planar `WhitneyPairModel.GraphMotion` section as a documented library file and move the `RankThree*` charts and cancellation (l.427–2860) to the project's proof tree until they are stated for general `k + l = n`
+
+## Lib/Geometry/Manifold/WhitneyEmbedding.lean  (52 declarations, 852 lines)
+verdict: C (file mixes four topics; project vocabulary `Native`; main existence statement is Mathlib's)
+twin: Lee, Introduction to Smooth Manifolds Thm 6.15 (named); Mathlib/Geometry/Manifold/WhitneyEmbedding.lean (`exists_embedding_euclidean_of_compact`, which l.576 `nonempty_nativeEuclideanEmbedding` merely repackages)
+findings:
+- l.41 docstring promises `NativeEuclideanEmbedding.exists_tubularNeighborhood_in_open_of_embedded_closedBall` "in Collar.lean's sibling block"; the declaration does not exist anywhere in Lib (grep: only docs/E2.md) — stale
+- l.99–320 partial-diffeomorph inverse-function lemmas (`exists_partialDiffeomorph_into_manifold`, `partialDiffeomorphOfInjectiveLocal`, `exists_partialDiffeomorph_near_compact`), l.321–405 `CollarHeight.heightChange`, l.409–560 `RegularLevel.*`, l.567–852 `NativeEuclideanEmbedding` normal bundle: four subjects, only the last matches the file name; the first block belongs next to Mathlib/Geometry/Manifold/LocalDiffeomorph.lean
+- l.567 `NativeEuclideanEmbedding` ("native form used by the source development", l.30–31) is project vocabulary; Mathlib would state the normal-bundle lemmas for any `f` with `ContMDiff`, `IsClosedEmbedding`, injective `mfderiv` rather than a bespoke structure
+- l.605–660 `realAdjoint`, `gramOperator`, `gramProjection`, `gramProjection_eq_starProjection`: generic inner-product-space lemmas (orthogonal projection onto the range of an injective map) misplaced in a manifold file; `gramProjection_eq_starProjection` shows they reduce to Mathlib's `Submodule.starProjection`
+- l.75 `ManifoldMorse.exists_separated_value_radii` is an unrelated real-analysis lemma at the top of the file
+- 2/52 declarations without docstring; l.55 `set_option maxSynthPendingDepth 3`, l.59–62 `open scoped … Modular UpperHalfPlane`, l.64 `universe u v` unused, l.68–70 `local infixr ≫ₚ`/`local notation … SlashAction.map` unused, `import Mathlib` alongside the specific `Mathlib.Geometry.Manifold.LocalDiffeomorph`
+suggestion: delete the stale `exists_tubularNeighborhood…` bullet, move the partial-diffeomorph block to `Geometry/Manifold/LocalDiffeomorph` and the Gram-projection block to `Analysis/InnerProductSpace`, and restate the normal-bundle results for a plain `f` with the three hypotheses instead of `NativeEuclideanEmbedding`
+
+## Lib/GroupTheory/Abelianization/SemidirectProduct.lean  (10 declarations, 215 lines)
+verdict: A (textbook-ready)
+twin: `H₁(K ⋊ Q) ≅ H₁(Q) ⊕ H₁(K)_Q` (standard; e.g. Brown, Cohomology of Groups, Ch. II Ex./LHS in low degree); no Mathlib twin (nearest: Mathlib/GroupTheory/SemidirectProduct.lean, Mathlib/GroupTheory/Abelianization/Defs.lean, Mathlib/RepresentationTheory/Coinvariants.lean)
+findings:
+- l.11–29 module docstring names the result, lists the four main declarations (all exist), uses Mathlib's `Representation.Coinvariants` rather than a homemade quotient
+- l.38 `Abelianization.mapMulAut`, l.56 `abelianizationRepresentation`, l.104 `abelianizationMulEquiv` with `_apply_of_inl/inr` and `_symm_apply_inl/inr` simp-style lemmas (l.185–215): Mathlib naming and API shape
+- specific imports (three files), `universe u v` both used, no scoped-open residue; 0/10 missing docstrings
+- l.63 `AbelianizationCoinvariants` as an `abbrev` of `Representation.Coinvariants` is the only debatable choice (Mathlib might inline it)
+suggestion: add `## References` with the textbook citation for the `H₁` formula and propose upstream as is
+
+## Lib/GroupTheory/FreeGroup/ZpowersPrimitiveDetector.lean  (4 declarations, 79 lines)
+verdict: B (minor: docs/names)
+twin: none found (nearest: Mathlib/GroupTheory/FreeGroup/Basic.lean `FreeGroup.lift`, Mathlib/GroupTheory/OrderOfElement.lean `Subgroup.zpowers`)
+findings:
+- l.31–33 docstring of `zpowers_eq_of_mem_of_multiplicativeInt_detector` says "useful for identifying local monodromy images without choosing a preferred fundamental-group generator": project motivation in a group-theory docstring
+- l.34 name `zpowers_eq_of_mem_of_multiplicativeInt_detector` is not Mathlib-shaped; the statement is "if `χ g = 1 ∈ ℤ` and `g ∈ zpowers a` then `zpowers a = zpowers g`", i.e. `Subgroup.zpowers_eq_zpowers_of_mem_of_map_eq_one`-style; a cleaner form is `a = g ∨ a = g⁻¹`
+- l.63 `FreeGroup.generatorExponent x` is the exponent-sum homomorphism, standard; l.67 `@[simp] generatorExponent_of` present; no `generatorExponent_of_ne` companion
+- l.12–18 module docstring has no `## Main results`/references; l.22–23 `set_option warningAsError true`/`autoImplicit false` are project settings, not Mathlib file content; 0/4 missing docstrings, specific imports
+suggestion: rename the detector lemma to `Subgroup.zpowers_eq_of_mem_of_map_eq_ofAdd_one` (or state `a = g ∨ a = g⁻¹`), strip the monodromy sentence, and drop the two `set_option`s
+
+## Lib/GroupTheory/GeneratingSet.lean  (1 declarations, 33 lines)
+verdict: B (minor: one-lemma file, placement)
+twin: Mathlib/GroupTheory/Subgroup/Centralizer.lean `Subgroup.isMulCommutative_closure` (used in the proof; this is its `closure s = ⊤` corollary)
+findings:
+- l.23 `Subgroup.isMulCommutative_of_closure_eq_top` with `@[to_additive]`: Mathlib naming and attribute, generic `[Group G]`, docstring present
+- the file is a three-line corollary of `Subgroup.isMulCommutative_closure` (l.26) plus `Subgroup.topEquiv`; Mathlib would append it to Centralizer.lean rather than open `GroupTheory/GeneratingSet.lean` (a file name that suggests a theory of generating sets)
+- l.10–15 module docstring has no references (none needed) but the file name promises more than one lemma
+suggestion: propose the lemma as an addition to Mathlib's `Subgroup/Centralizer.lean` immediately after `isMulCommutative_closure` rather than as a separate file
+
+## Lib/GroupTheory/GroupExtension/Abelianization.lean  (1 declarations, 45 lines)
+verdict: A (textbook-ready)
+twin: corollary of `H₁(K ⋊ Q) ≅ H₁(Q) ⊕ H₁(K)_Q` via Mathlib/GroupTheory/GroupExtension/Basic.lean `GroupExtension.Splitting.semidirectProductMulEquiv`
+findings:
+- l.35 `GroupExtension.Splitting.abelianizationMulEquiv` is a two-line composite of Mathlib's `semidirectProductMulEquiv` and `SemidirectProduct.abelianizationMulEquiv`, in the namespace Mathlib uses, with docstring
+- l.24 `universe u v w` all used; specific imports; no preamble residue; 0/1 missing docstrings
+- l.11–20 docstring states the result and its two ingredients; no `## References` (would inherit the semidirect-product file's)
+suggestion: merge into `Abelianization/SemidirectProduct.lean` as a final section (one declaration does not need its own file) or leave as is
+
+## Lib/GroupTheory/PresentedGroup/CentralTwist.lean  (20 declarations, 170 lines)
+verdict: D (not library material: a single project-specific presented group)
+twin: none: the group `⟨c, x, y | c central, xy = cᵃ, x³ = cᵇ, y⁴ = cᵈ⟩` has no textbook name; nearest Mathlib API is Mathlib/GroupTheory/PresentedGroup.lean (`PresentedGroup.toGroup`, `generated_by`)
+findings:
+- l.9–15 module docstring: "associated with the central twist data of an exceptional gluing … (presentation taken from the project's gluing data)": the object is defined by the project's proof, not by any textbook
+- l.39 `twistRelators`, l.46 `TwistGroup a b d`: the exponents `3` and `4` (l.43) are hard-coded from the project's gluing; l.118 `TwistGroup.generated_by_c` shows the group is cyclic on `c`, so the file's content is the computation `x = c^(4a-b-d)`, `y = c^(-3a+b+d)` (l.98, l.108) — a one-off
+- l.134–170 `realizationImages`, `realizationHom`, `realizationHom_c/x/y`: the universal property, generic in `G`, but only meaningful for this presentation
+- l.7 `import Lib.GroupTheory.SplitExtension` unused by any statement; `import Mathlib`; l.19 `set_option maxSynthPendingDepth 3`; l.21–26 `open scoped … Modular UpperHalfPlane`; l.28 `universe u v` unused; l.32–34 `local infixr ≫ₚ`/`SlashAction.map` notation unused
+- 0/20 missing docstrings; top-level names `twistRelators`/`TwistGroup` without a namespace
+suggestion: move the file to the project's proof tree (`Hopf/Proof/…`) next to the gluing that produces the presentation; nothing here generalises
+
+## Lib/GroupTheory/Pushout/EquivOfCocone.lean  (3 declarations, 77 lines)
+verdict: B (minor: docs)
+twin: Mathlib/GroupTheory/PushoutI.lean (`Monoid.PushoutI.lift`, `hom_ext_nonempty`); the statement is the standard "a cocone with a two-sided inverse on generators is the pushout"
+findings:
+- l.13–15 module docstring: "isolates the final algebraic step of a pushout argument. A consumer supplies…" describes the project's use, not the mathematics; no `## Main definitions`, no references
+- l.28 `Monoid.PushoutI.equivOfCocone` with `@[simp]` `equivOfCocone_apply_of` (l.55) and `equivOfCocone_symm_apply_f` (l.66): Mathlib naming, generic `[Monoid]` over an index family, `[Nonempty ι]` as in Mathlib's `hom_ext_nonempty`
+- l.33 `hom_ext` hypothesis quantifies over `K →* K` only; the natural hypothesis is `∀ {L} (a b : K →* L)`, or better, `back` surjectivity/`f` jointly epimorphic — fine but slightly ad hoc
+- specific import, no scoped-open residue; 0/3 missing docstrings
+suggestion: rewrite the docstring as a mathematical statement ("a cocone `f, k` under `phi` together with a retraction `back` … is a pushout") and add `## Main definitions`
+
+## Lib/GroupTheory/SplitExtension.lean  (13 declarations, 152 lines)
+verdict: D (not library material: Mathlib already has the statement)
+twin: Mathlib/GroupTheory/GroupExtension/Basic.lean `GroupExtension.Splitting.semidirectProductMulEquiv` (the split extension `≃* N ⋊[conjAct] H`); Weibel, Homological Algebra Ex. 6.1 / Robinson, Theory of Groups 10.1 (named in docstring)
+findings:
+- l.108 `SplitGroupExtension.mulEquiv i p s φ hi hs hex hconj : N ⋊[φ] H ≃* E` is exactly `GroupExtension.Splitting.semidirectProductMulEquiv` with the extension unpacked into eight explicit hypotheses; `Lib/GroupTheory/GroupExtension/Abelianization.lean` (l.39) already uses the Mathlib version, so this file is dead weight
+- l.39–150 every statement repeats `{N E H} [Group N] [Group E] [Group H] (i p s φ hi hs hex hconj)`; Mathlib bundles these as `GroupExtension K E Q` + `Splitting`
+- l.55 `projection_inclusion`, l.62 `projection_section`: trivial rewrites of `MonoidHom.mem_ker`/`DFunLike.congr_fun` exposed as named lemmas
+- l.6 `import Mathlib`; l.19 `set_option maxSynthPendingDepth 3`; l.21–26 `open scoped … Modular UpperHalfPlane`; l.28 `universe u v` unused; l.32–34 `local infixr ≫ₚ`/`SlashAction.map` notation unused; docstring indented with two spaces (l.9–14)
+- 0/13 missing docstrings, `SplitGroupExtension.` namespace is fine but not Mathlib's
+suggestion: delete the file and replace its uses by `GroupExtension.Splitting.semidirectProductMulEquiv` (plus `Splitting.conjAct`), keeping at most `mulEquiv_inl/inr` if Mathlib lacks those simp lemmas
+
+## Lib/LinearAlgebra/ColumnKernel.lean  (4 declarations, 79 lines)
+verdict: C (project residue in the mathematics: `ℤ`-only statement of a general fact, `Center…` textbook-file citations)
+twin: the kernel of `LinearMap.coprod f e` with `e` an isomorphism is the graph of `-e⁻¹ ∘ f`; nearest Mathlib: Mathlib/Algebra/Module/Submodule/Ker.lean, `LinearMap.coprod`, `LinearEquiv.ofBijective` (no named twin)
+findings:
+- l.5–8 module docstring cites `CENTER_COLUMN_KERNEL_TEXTBOOK.md`, "CK1–CK7", `CENTER_NATIVE_H5_INJECTIVITY_TEXTBOOK.md`, "HI7": project notes, not a textbook; l.14–15 docstring of `kerEquivOfColumnIso` repeats "(textbook CK1–CK6)"
+- l.16–24, l.71–73 every statement is over `ℤ` (`[Module ℤ A]`, `→ₗ[ℤ]`); the argument is for any semiring `R`
+- l.19, l.23 `[Module ℤ (A × B)]` and `[Module ℤ (LinearMap.ker F)]` are taken as extra instance arguments although both are inferred; a second, possibly non-defeq instance is a latent bug for users
+- l.16 `LinearMap.kerEquivOfColumnIso` takes `F` and an equation `hF : ∀ a b, F (a, b) = f a + e b` instead of stating the result for `LinearMap.coprod f e`
+- 0/4 missing docstrings; specific imports; `universe u v w` used
+suggestion: restate as `LinearMap.kerCoprodEquivOfRight (f : A →ₗ[R] D) (e : B ≃ₗ[R] D) : ker (f.coprod e) ≃ₗ[R] A` over any `[Semiring R]`, dropping the spurious instance arguments and the `CK`/`HI` citations
+
+## Lib/LinearAlgebra/CyclicAverage.lean  (10 declarations, 111 lines)
+verdict: A (textbook-ready)
+twin: averaging projector for a finite-order endomorphism (Serre, Linear Representations of Finite Groups §2.2 / Maschke's trick for a cyclic group); nearest Mathlib: Mathlib/RepresentationTheory/Maschke.lean (`LinearMap.averageMap`), Mathlib/LinearAlgebra/Projection.lean (`LinearMap.IsProj`)
+findings:
+- l.31 `Module.End.cyclicAverage m A := ⅟m • ∑ A^k` over `[CommRing K]` with `[Invertible (m : K)]`, no finiteness assumed; l.72 `isProj_cyclicAverage`, l.91 `range_cyclicAverage`, l.97 `comp_cyclicAverage`: standard names, `LinearMap.IsProj` API reused
+- l.36, l.44 `mul_sum_powers_eq_sum_powers`/`sum_powers_mul_eq_sum_powers` hold in any ring with `A ^ m = 1`; they are stated for `Module.End K M` only (could be `[Ring R]`)
+- l.11–17 module docstring states the result; no `## Main definitions`/`## References` section; 0/10 missing docstrings; specific imports
+suggestion: state the two geometric-sum lemmas for a general `[Ring R]` (or use Mathlib's `geom_sum_mul`/`mul_geom_sum` inline) and add a `## References` line to Serre §2.2
+
+## Lib/LinearAlgebra/CyclicKernel.lean  (2 declarations, 43 lines)
+verdict: C (project residue: a `ℤ`-only lemma that exists to feed one proof step)
+twin: `Submodule.span_singleton_le_iff_mem`/`LinearMap.ker_le_iff` (a map vanishes on a cyclic submodule iff on its generator); nearest Mathlib: Mathlib/Algebra/Module/Submodule/Ker.lean
+findings:
+- l.11–15 module docstring: "small strict integer-linear helper: to prove that a linear character vanishes on a kernel identified with `ℤ`, it suffices to evaluate it on the chosen generator" — describes the project's use; no reference
+- l.28 `ker_le_of_cyclic_generator_zero (f : M →ₗ[ℤ] N) (χ) (e : ker f ≃ₗ[ℤ] ℤ) (hgen : χ (e.symm 1) = 0) : f.ker ≤ χ.ker`: over `ℤ` only, and phrased via a chosen equivalence `e` rather than `ker f = span {v}`; the general statement is `span R {v} ≤ ker χ ↔ χ v = 0` over any ring
+- l.21 `eq_equiv_smul_generator (e : M ≃ₗ[ℤ] ℤ) (x) : x = e x • e.symm 1` is a one-line consequence of `LinearEquiv.map_smul`; fine as a private helper
+- both declarations are top-level without a namespace (`LinearMap.` or `Submodule.` expected); 0/2 missing docstrings
+suggestion: replace by `Submodule.span_singleton_le_iff_mem`-style usage (`ker f = span {v}` hypothesis) over a general ring and put the file under `Submodule`
+
+## Lib/LinearAlgebra/Dual/Contragredient.lean  (7 declarations, 108 lines)
+verdict: D (not library material: the main definition is Mathlib's `Representation.dual`; the rest is `Multiplicative`-tag glue)
+twin: Mathlib/RepresentationTheory/Basic.lean `Representation.dual` (`ρ.dual g = (ρ g⁻¹).dualMap`); Mathlib/Algebra/Group/Equiv/TypeTags.lean for the tag conversions
+findings:
+- l.61 `LinearRepresentation.contragredient (ρ : G →* (N ≃ₗ[R] N)) : G →* (Dual R N ≃ₗ[R] Dual R N)` with `toFun g := (ρ g⁻¹).dualMap` is `Representation.dual` repackaged for `≃ₗ`-valued homomorphisms; the namespace `LinearRepresentation` does not exist in Mathlib (`Representation R G V` does)
+- l.34, l.45 `ofMultiplicativeEquiv`, `ofMultiplicative`: conversion from `MulAut (Multiplicative M)` to `M ≃ₗ[ℤ] M`; the docstring (l.14–16) says it is "used when a geometric monodromy action is first constructed on a multiplicatively tagged abelian group" — project motivation
+- l.87 `freeGroup_invariant_iff` (invariance under `FreeGroup A` iff under generators) is generic and reusable, but belongs with `FreeGroup.lift`/`Subgroup.closure_induction`, not in a duality file
+- 0/7 missing docstrings; specific imports; `import Mathlib.GroupTheory.FreeGroup.Basic` only for the last lemma
+suggestion: replace `contragredient` by `Representation.dual` (composing with `LinearEquiv.toLinearMap`) and move `freeGroup_invariant_iff` to a `FreeGroup` file; the tag conversions can be inlined at their single use
+
+## Lib/LinearAlgebra/Dual/SurjectiveSpecialization.lean  (8 declarations, 134 lines)
+verdict: B (minor: docs/names; file name is project vocabulary)
+twin: `Hom(M_G, N) ≅ Hom(M, N)^G` in the cyclic case (Brown, Cohomology of Groups, Ch. III §1 / coinvariants–invariants duality); Mathlib/LinearAlgebra/Dual/Lemmas.lean (`range_dualMap_eq_dualAnnihilator_ker_of_surjective`, used), Mathlib/LinearAlgebra/FixedSubmodule.lean
+findings:
+- l.14–20 module docstring is defensive ("makes no claim about homology, cohomology, UCT, monodromy of a particular family, or an analytic specialization … The new residue merely rewrites…"): project residue in prose; no `## Main results`, no reference
+- file name `SurjectiveSpecialization` names the project's map; the content is "the dual of `M/(A-1)M` is the fixed submodule of `Aᵀ`", i.e. `Dual/Coinvariants`
+- l.37 `dualMap_sub`, l.43 `dualAnnihilator_range_sub_eq_ker_sub_dualMap`, l.48 `dualAnnihilator_range_sub_id_eq_fixedSubmodule`, l.68 `dualEquivFixedSubmoduleOfSurjectiveOfKerEqRangeSubId`: generic `[CommRing R]`, Mathlib-shaped (if long) names; `dualMap_sub` may already be Mathlib's `LinearMap.dualMap_sub` (not checked)
+- l.94 `injective_of_duality_naturality_of_surjective`, l.116 `map_range_eq_fixedSubmodule_of_duality_naturality`: transport through two "duality" isomorphisms `C ≃ Dual M`, `D ≃ Dual N` with a naturality square — the shape of the project's UCT step; generic but with no textbook counterpart as stated
+- 0/8 missing docstrings; specific imports; `variable` blocks used properly
+suggestion: rename the file to `Dual/Coinvariants.lean`, rewrite the docstring as a statement of the duality `Dual (coker (A-1)) ≃ fixedSubmodule Aᵀ`, and phrase the two naturality lemmas as `LinearEquiv.trans`/`congr` of the main equivalence
+
+## Lib/LinearAlgebra/Dual/TriangularRankTwo.lean  (3 declarations, 91 lines)
+verdict: C (project residue: rank-two `(1, m)` computation that feeds one proof step)
+twin: none found (nearest Mathlib: Mathlib/LinearAlgebra/Dual/Lemmas.lean `LinearMap.range_dualMap_eq_dualAnnihilator_ker`, `Matrix.dualMap` for `Fin 2`)
+findings:
+- l.12–19 module docstring: "used when a specialization map has triangular integral coordinates … No topology, homology, sheaf, or proof-specific data occur here" — the disclaimer itself is project residue; no reference
+- l.52 `finTwoSecondCoordinate : Dual R (Fin 2 → R) := LinearMap.proj 1` is a named alias for `LinearMap.proj 1`
+- l.57 `smul_finTwoSecondCoordinate_mem_range_dualMap_iff (F) (m z) (hfirst : F ![1,0] = ![1,0]) (hsecond : ∀ v, F v 1 = m * v 1) : z • proj 1 ∈ range F.dualMap ↔ m ∣ z`: a hand computation for one triangular 2×2 matrix; a textbook would state the image of the dual of a diagonalisable/Smith-form map in general (`range (Matrix.diagonal d).dualMap`)
+- l.35 `dualMap_mem_range_comp_iff_of_surjective` is a general, reusable lemma (`φ ∈ range (g ∘ f)ᵀ ↔ φ ∈ range gᵀ` for `f` surjective) hidden in a rank-two file
+- generic `[CommSemiring R]`; 0/3 missing docstrings; specific imports
+suggestion: keep `dualMap_mem_range_comp_iff_of_surjective` in `Dual/Lemmas`-style file and move the `(1, m)` computation to the project proof that uses it (or generalise to `Matrix.diagonal`)
+
+## Lib/LinearAlgebra/Dual/TriangularRankTwoInjective.lean  (1 declarations, 57 lines)
+verdict: C (project residue: one `ℤ²` lemma feeding one proof step)
+twin: "an injective endomorphism of a finite free `ℤ`-module has injective dual" (torsion-freeness of `Dual`); nearest Mathlib: `LinearMap.dualMap_injective_of_surjective` (needs surjectivity), `Matrix.det_ne_zero` / `Module.Free.finite` (no direct twin)
+findings:
+- l.11–15 module docstring: "the elementary torsion-free argument needed when a finite-index specialization is dualized to cohomology" — project motivation; no reference
+- l.27 `LinearMap.dualMap_injective_of_finTwo_triangular (F : (Fin 2 → ℤ) →ₗ[ℤ] (Fin 2 → ℤ)) (m) (hfirst) (hsecond) (hm : m ≠ 0) : Injective F.dualMap`: the hypotheses fix a triangular `2×2` integer matrix with diagonal `(1, m)`; the textbook statement is `Injective F → Injective F.dualMap` for `F` an endomorphism of `ℤⁿ` (or any `R`-module map with `R`-torsion-free target and `range F` of finite index)
+- one declaration, imports only the sibling rank-two file; 0/1 missing docstrings
+suggestion: prove the general `LinearMap.dualMap_injective_of_injective_of_finite_index`-style statement (over a domain, `Dual R N` torsion-free) and derive the `(1, m)` case at the use site
+
+## Lib/LinearAlgebra/ExteriorPower/ExteriorProductCoordinates.lean  (7 declarations, 115 lines)
+verdict: B (minor: docs)
+twin: Bourbaki, Algebra III §8.5 (multiplication of exterior powers on a basis, `e_S ∧ e_T = ±e_{S∪T}`); nearest Mathlib: Mathlib/LinearAlgebra/ExteriorPower/Basis.lean, Mathlib/LinearAlgebra/ExteriorAlgebra/Basis.lean (no graded-multiplication-on-basis twin: genuine gap)
+findings:
+- l.30 `exteriorPower.wedge R p q : ⋀^p M →ₗ ⋀^q M →ₗ ⋀^(p+q) M` via `SetLike.GradedMul`: generic `[CommRing R]`, arbitrary `M`; Mathlib would name it `exteriorPower.mul` or reuse `GradedMonoid` API — check for an existing `⋀[R]^p M → ⋀[R]^q M → ⋀[R]^(p+q) M` before upstreaming
+- l.63, l.84 `finBasis_wedge_of_not_disjoint`/`finBasis_wedge_of_disjoint` with sign `(Set.powersetCard.permOfDisjoint h).sign` and l.76, l.104 the coordinate versions: the textbook formula, standard names
+- l.11–16 module docstring: no `## Main definitions`, no `## References`; the sign convention (which permutation) is documented only through `PowersetShuffle.lean`
+- 0/7 missing docstrings; specific imports; `universe u v` used
+suggestion: add a `## References` (Bourbaki A III §8.5) and a one-line description of the sign convention to the module docstring
+
+## Lib/LinearAlgebra/ExteriorPower/MatrixCoordinates.lean  (7 declarations, 98 lines)
+verdict: B (minor: docs)
+twin: Bourbaki, Algebra III §8.5–8.6 (the matrix of `⋀ⁿ A` is the matrix of `n×n` minors; compound matrix); Mathlib/LinearAlgebra/ExteriorPower/Basis.lean (`Basis.exteriorPower`, used), no compound-matrix twin (genuine gap)
+findings:
+- l.16–18 module docstring: "extracted and generalized from the integral rank-four development in `Hopf/LCP/Specialization.lean`, itself move-only extracted from `Solution.lean` at `9ac8a456…` (original monolith lines 133802--148196)": provenance residue, delete
+- l.35 `exteriorPower.finBasis R m n`, l.63 `finMatrix R n A` (compound matrix of minors), l.70 `toMatrix_map`, l.78 `finCoordinates`, l.89 `finCoordinates_map`: generic `[CommRing R]`, Mathlib naming; `finMatrix` would be called `Matrix.compound` or `exteriorPower.matrixOfMinors` in a textbook
+- l.40 `finBasis_map_coefficient` is the key lemma ("coefficient = minor"), docstring present
+- no `## Main definitions`/`## References`; 0/7 missing docstrings; specific import; `universe u` used
+suggestion: replace the provenance paragraph with `## Main definitions` and a Bourbaki reference, and consider naming `finMatrix` as the compound matrix (`Matrix.compound n A`)
+
+## Lib/LinearAlgebra/ExteriorPower/MinorCoordinates.lean  (15 declarations, 197 lines)
+verdict: C (project residue in the mathematics: `ℤ`-only duplicate of the generic sibling, project namespace)
+twin: Cauchy–Binet for compound matrices (Bourbaki A III §8.6; Horn–Johnson §0.8.7); sibling `Lib/LinearAlgebra/ExteriorPower/MatrixCoordinates.lean` already has `finBasis`/`finMatrix`/`toMatrix_map` over any `[CommRing R]`
+findings:
+- l.36 `namespace PeriodTorusHigherHomologyExterior`: project vocabulary as the namespace of generic linear algebra
+- l.12–14 module docstring: "extracted from the rank-4 `squareBasis`/`squareCoordinates`/`exteriorSquare` constructions of `Hopf/LCP/Specialization.lean` (boundary J-A of `Lib/docs/J.md`)": provenance, not a reference
+- l.91 `standardExteriorBasis`, l.97 `standardExterior_map_coefficient`, l.136 `exteriorMinorMatrix`, l.151 `exteriorPowerMap_toMatrix` restate `exteriorPower.finBasis R m n`, `finBasis_map_coefficient`, `finMatrix`, `toMatrix_map` of `MatrixCoordinates.lean` with `R := ℤ`; two copies of the same theory in one directory
+- l.41–90 `SortedSubset`, `powersetCardFinEquiv`, `powersetCardFinEquiv_lt_iff`: the enumeration `powersetCard (Fin m) n ≃ Fin (m.choose n)` in lexicographic order is generic combinatorics belonging under `Order/Hom/PowersetCard` or `Data/Finset/Sort`, not in an exterior-power file
+- l.182 `cauchyBinet_minors` (compound matrix of a product) is the one statement not in the sibling; it is textbook and should be stated for general `R`
+- 2/15 missing docstrings (l.41 `SortedSubset`, l.43 instance); specific imports
+suggestion: delete the `ℤ` duplicates in favour of `exteriorPower.finBasis`/`finMatrix`, move the lex enumeration to an order file, and keep only `cauchyBinet_minors` here, generalised to `[CommRing R]` and renamed `exteriorPower.finMatrix_mul`
+
+## Lib/LinearAlgebra/ExteriorPower/PowersetShuffle.lean  (4 declarations, 98 lines)
+verdict: B (minor: docs)
+twin: the shuffle permutation `e_S ∧ e_T = sign(σ) e_{S ⊔ T}` (Bourbaki A III §8.5); Mathlib/Order/Hom/PowersetCard.lean (`Set.powersetCard.permOfDisjoint`, `disjUnion`, `orderIsoOfFin`, all used)
+findings:
+- l.13–16 module docstring: "make small shuffle-sign certificates kernel-reducible without a native evaluation oracle" — tooling motivation, not mathematics; no `## Main results`, no reference
+- l.25, l.39 `orderIsoOfFin_permOfDisjoint_castAdd/natAdd`: the two block-evaluation lemmas, generic `[LinearOrder I]`, correct Mathlib names in the `Set.powersetCard` namespace
+- l.54 `permOfDisjoint_eq`, l.76 `permOfDisjoint_eq_of_orderEmbOfFin`: uniqueness/characterisation of the shuffle permutation from its block values; 2/4 missing docstrings (these two)
+- specific single import; no preamble residue
+suggestion: add docstrings to the two characterisation lemmas and rewrite the module docstring as "how `permOfDisjoint` acts on the two blocks" with the Bourbaki reference
+
+## Lib/LinearAlgebra/ExteriorPower/ReindexedCoordinates.lean  (9 declarations, 116 lines)
+verdict: B (minor: docs)
+twin: `Module.Basis.reindex` transport of the compound-matrix formula; Mathlib/LinearAlgebra/Basis/Basic.lean (`Basis.reindex`, `Basis.equivFun`), sibling `MatrixCoordinates.lean`
+findings:
+- l.31 `exteriorPower.reindexedFinBasis R e`, l.44 `reindexedFinCoordinates`, l.65 `reindexedFinMatrix`, l.89 `toMatrix_map_reindexed`, l.103 `reindexedFinCoordinates_map`: generic `[CommRing R]`, arbitrary index types in their own universes `v₁ v₂`, Mathlib naming
+- the whole file is `Basis.reindex` + `LinearMap.toMatrix_reindex`; Mathlib would express `reindexedFinMatrix` as `(finMatrix R n A).reindex e₂.symm e₁.symm` and derive the rest by `Matrix.reindex` lemmas rather than restating five declarations
+- l.11–15 module docstring has no `## Main definitions`/`## References`; 0/9 missing docstrings; specific import
+suggestion: define `reindexedFinMatrix` as `Matrix.reindex` of `finMatrix` (or drop the file and use `Basis.reindex` at the use site) and add a `## Main definitions` list
+
+## Lib/LinearAlgebra/FreeModule/Finite/CardQuotient.lean  (1 declarations, 39 lines)
+verdict: B (minor: single corollary of the Mathlib file it is named after)
+twin: Mathlib/LinearAlgebra/FreeModule/Finite/CardQuotient.lean (`Submodule.natAbs_det_equiv`, `Submodule.natAbs_det_basis_change`: `|det| = card (M ⧸ N)`)
+findings:
+- l.24 `Matrix.natAbs_det_eq_natCard_quotient_range_toLin' (B : Matrix ι ι ℤ) (hB : B.det ≠ 0) : B.det.natAbs = Nat.card ((ι → ℤ) ⧸ range (toLin' B))`: the `ℤ`-matrix corollary of Mathlib's `natAbs_det_basis_change`; Mathlib-style name, docstring, generic `ι`, specific import
+- the file name coincides with the Mathlib file it imports, which suggests an addition to that file rather than a separate module
+- l.11–16 module docstring: statement only, no `## Main results`, no reference
+suggestion: propose the lemma upstream as an addition to Mathlib's `CardQuotient.lean` (it is the natural `Matrix` corollary there)
+
+## Lib/LinearAlgebra/FreeModule/Finite/FullRankImage.lean  (1 declarations, 46 lines)
+verdict: B (minor: single lemma, `ℤ`-only where a PID/domain statement is natural)
+twin: injective endomorphism of a finite free module over a domain has torsion cokernel; Mathlib/LinearAlgebra/FreeModule/Finite/Quotient.lean, `LinearMap.finrank_range_of_inj` (used)
+findings:
+- l.27 `LinearMap.exists_ne_zero_smul_mem_range_of_injective (f : M →ₗ[ℤ] M) (hf) (x) : ∃ a ≠ 0, a • x ∈ range f`: correct Mathlib name shape, docstring, `variable` block for `[Module.Free ℤ M] [Module.Finite ℤ M]`
+- stated over `ℤ`; the argument (`finrank (range f) = finrank M` ⇒ quotient is torsion) works over any commutative domain with `Module.Free`/`Module.Finite` (or via `Module.IsTorsion (M ⧸ range f)`)
+- l.11–16 module docstring: no `## Main results`, no reference; specific import
+suggestion: generalise to `[CommRing R] [IsDomain R]` and state the cokernel as `Module.IsTorsion R (M ⧸ range f)` with this lemma as a corollary
+
+## Lib/LinearAlgebra/FreeModule/RankTwoCokernel.lean  (2 declarations, 97 lines)
+verdict: C (project residue in the mathematics: `Fin 2`, `ℤ`, primitive-first-row special case of Smith normal form)
+twin: Smith normal form over a PID (Jacobson, Basic Algebra I §3.7; Mathlib/LinearAlgebra/FreeModule/PID.lean `Basis.SmithNormalForm`, `Submodule.smithNormalForm`); cokernel of a `2×2` matrix `≅ ZMod d₁ × ZMod d₂`
+findings:
+- l.32 `Matrix.quotientRangeToLin'EquivZModOfIsCoprime (A : Matrix (Fin 2) (Fin 2) ℤ) (hprim : IsCoprime (A 0 0) (A 0 1)) : (Fin 2 → ℤ) ⧸ range (toLin' A) ≃ₗ[ℤ] ZMod A.det.natAbs`: the hypothesis "first row primitive" is the project's situation; the textbook result is the Smith form `ZMod d₁ × ZMod d₂` with `d₁ ∣ d₂`, of which this is the case `d₁ = 1`
+- l.79 `quotientRangeToLinEquivZModOfIsCoprime` transports the same across a basis `b : Basis (Fin 2) ℤ M`
+- 2/2 missing docstrings (both defs); l.11–17 module docstring has no reference; proof uses `hprim.choose` (l.36) making the equivalence noncanonical
+- specific imports; `open Module`
+suggestion: derive from Mathlib's `Submodule.smithNormalForm` (cokernel `≅ ∏ ZMod dᵢ`) and state the primitive-row case as a corollary `quotient_equiv_zmod_of_isCoprime_row` with docstrings
+
+## Lib/LinearAlgebra/Matrix/TransvectionReduction.lean  (10 declarations, 216 lines)
+verdict: C (project residue: `MorseCancellation.*` namespace, verbatim stock move, 9/10 undocumented)
+twin: Milnor, Lectures on the h-cobordism theorem §7 (algebra of Thm 7.6: a unimodular row is column-reducible to one containing `±1`); Mathlib/LinearAlgebra/Matrix/Transvection.lean (`Matrix.transvection`, `Pivot.exists_list_transvec_mul_mul_list_transvec_eq_diagonal`)
+findings:
+- l.11–16 "## Provenance: Moved verbatim from `Hopf/Recognition.lean` (lane F0a). The declarations keep their `MorseCancellation.*` names … the upstream-shaped rename to `Matrix.*` is a separate commit" — the file documents its own residue
+- l.22–205 every declaration is `MorseCancellation.*` (project vocabulary for `ℤ`-matrix lemmas); `classCoordinateMatrix B v` (l.22) is `LinearMap.toMatrix`-style coordinate matrix under a nonstandard name; `{A : Type}` (l.22, 164, 187) pins universe 0
+- l.87 `primitive_row_has_unit_after_column_additions` is the mathematical content (Euclidean reduction of a unimodular `1×n` row); its statement via `List (Fin n × Fin n × ℤ)` of operations mirrors Mathlib's `Pivot` machinery but is not connected to it
+- l.164, l.187, l.201 `functional_class_row_surjective`, `transported_classes_of_matrix_product`, `functional_rows_of_matrix_product`: transport lemmas shaped for one consumer, no textbook counterpart
+- 9/10 missing docstrings; `import Mathlib`
+suggestion: rename to `Matrix.*`, generalise `Type` to `Type*`, document each lemma, and re-derive the row reduction from Mathlib's `Matrix.Pivot`/Smith-form API where possible
+
+## Lib/LinearAlgebra/RankOneInt.lean  (2 declarations, 93 lines)
+verdict: B (minor: `ℤ`-specific where a PID statement is natural; project settings)
+twin: every nonzero subgroup of `ℤ` is infinite cyclic (`Int.subgroup_cyclic`, `AddSubgroup.zmultiples`); Mathlib/GroupTheory/Archimedean.lean (imported), Mathlib/Algebra/Module/Submodule/Equiv.lean
+findings:
+- l.31 `LinearMap.domainEquivIntOfInjectiveOfNonzero (f : A →ₗ[ℤ] ℤ) (hf) (hne : ∃ a, f a ≠ 0) : A ≃ₗ[ℤ] ℤ`: correct, docstring notes noncanonicity; over a PID the same holds with `ℤ` replaced by `R` (`Submodule.IsPrincipal`)
+- l.71 `ne_zero_iff_apply_equivInt_symm_one (f : A →ₗ[ℤ] B) (e : A ≃ₗ[ℤ] ℤ) : f ≠ 0 ↔ f (e.symm 1) ≠ 0`: a two-line consequence of `e.symm 1` generating `A`; feeder-shaped but harmless
+- l.9–15 module docstring: no `## Main definitions`, no reference; l.22–23 `set_option warningAsError true`/`autoImplicit false` project settings; specific imports; 0/2 missing docstrings
+suggestion: generalise to `[CommRing R] [IsPrincipalIdealRing R] [IsDomain R]` (`f : A →ₗ[R] R`) and drop the two `set_option`s
+
+## Lib/LinearAlgebra/SquareZero.lean  (11 declarations, 105 lines)
+verdict: A (textbook-ready)
+twin: `exp(sN) = 1 + sN` for `N² = 0` and invariance of a bilinear form under the one-parameter group of a skew-adjoint nilpotent (any Lie-group text; Mathlib/LinearAlgebra/SesquilinearForm/Basic.lean `LinearMap.BilinForm.IsSkewAdjoint`, no direct twin)
+findings:
+- l.28 `Module.End.oneAddSMul N s := 1 + s • N`, l.41 `oneAddSMul_mul_oneAddSMul` (`N² = 0` ⇒ additive in `s`), l.51 `oneAddSMulEquiv`, l.87/l.97 `oneAddSMul_preserves_bilin(_of_isSkewAdjoint)`: generic `[CommRing R]`, Mathlib naming, `@[simp]` lemmas at l.32–38 and l.68
+- 0/11 missing docstrings; specific imports; `variable` block; no residue
+- l.10–15 module docstring names the result but has no `## Main definitions`/`## References`
+suggestion: add a `## Main definitions` list; otherwise propose upstream (Mathlib/LinearAlgebra/SesquilinearForm or `Module.End`) as is
+
+## Lib/RepresentationTheory/FreeGroupCoinvariants.lean  (2 declarations, 67 lines)
+verdict: B (minor: docs)
+twin: `M_F = M / ⟨(x_a − 1)m⟩` for a free group `F = F(A)` (Brown, Cohomology of Groups II.3 / coinvariants presented by generators); Mathlib/RepresentationTheory/Coinvariants.lean (`Representation.Coinvariants.ker`)
+findings:
+- l.16–17 module docstring: "This reusable module contains no center family, monodromy matrix, sheaf, cohomology group, spectral sequence, or world predicate" — a project-audit disclaimer, not documentation
+- l.37 `Representation.freeGroupGeneratorRelations ρ := span (range fun (a, v) ↦ ρ (of a) v - v)`, l.42 `coinvariants_ker_eq_freeGroupGeneratorRelations : Coinvariants.ker ρ = …`: generic `[CommRing R]`, universes `u v w`, Mathlib naming, docstrings present
+- the statement holds for any generating set of any group (`Subgroup.closure S = ⊤` ⇒ `Coinvariants.ker` is spanned by `ρ s v - v`, `s ∈ S`); the free-group form is the special case where the generating set is `range of`
+- l.25–26 `set_option warningAsError true`/`autoImplicit false`; specific imports; 0/2 missing docstrings
+suggestion: state the general `Coinvariants.ker_eq_span_of_closure_eq_top` for a generating set and derive the free-group case; delete the disclaimer sentence
+
+## Lib/RepresentationTheory/FreeGroupGeneratorCokernel.lean  (8 declarations, 135 lines)
+verdict: B (minor: docs; the `orientation` parameter is a project convenience)
+twin: `H₀(F(A); M) ≅ M_F ≅ coker(⊕ₐ M → M, (mₐ) ↦ Σ (xₐ − 1)mₐ)` (Brown, Cohomology of Groups II.3, Ex.; the start of the free resolution of `ℤ` over `ℤF`); Mathlib/RepresentationTheory/Homological/GroupHomology/LowDegree.lean (`groupHomology.H0`, used)
+findings:
+- l.11–20 module docstring: "as happens when cellular edge orientations or slit-cover transitions are changed … the algebraic endpoint needed by a future cellular or local-coefficient Poincare-duality comparison. It contains no topology, sheaf, spectral sequence, or application-specific monodromy representation" — project planning and disclaimers in a library docstring
+- l.40 `orientedFreeGenerator (orientation : A → Bool)`, l.44 `freeGroupOrientedGeneratorDifference rho orientation : (A → V) →ₗ[R] V`: the `Bool`-valued orientation lets each generator be replaced by its inverse; the textbook map has no such parameter (the result for `orientation = fun _ => false` is the standard one, and the general case follows from `range (ρ x⁻¹ - 1) = range (ρ x - 1)`)
+- l.107 `FreeGroupGeneratorCokernel` abbrev, l.112 `…EquivCoinvariants`, l.126 `…EquivGroupHomologyH0 {S B M : Type u}`: the H₀ statement forces one universe for ring, index and module (Mathlib's `groupHomology` restriction), not documented
+- 1/8 missing docstrings (l.40 `orientedFreeGenerator`); l.27–28 `set_option warningAsError`/`autoImplicit`; specific imports; namespace `Representation` correct
+suggestion: state the unoriented map `freeGroupGeneratorDifference` as the primary object with the standard `H₀`/coinvariants identification, and obtain the oriented variant by a one-line `range` equality; delete the planning paragraph
+
+## Lib/Topology/Algebra/FreeActionLocus.lean  (13 declarations, 148 lines)
+verdict: B (minor: docs/names; manifold material mixed in)
+twin: Forster, Lectures on Riemann Surfaces §1 (named in docstring; no theorem number); nearest Mathlib: Mathlib/Topology/Algebra/ProperlyDiscontinuous… (`ProperlyDiscontinuousSMul`), `MulAction.stabilizer`, `IsCancelSMul`
+findings:
+- l.9–14 module docstring is three indented lines; no `## Main definitions`, no `## Tags`
+- l.39 `FreeActionLocus.locus G X := {x | ∀ g, g • x = x → g = 1}` duplicates `MulAction.stabilizer G x = ⊥`; no `mem_locus_iff_stabilizer_eq_bot` bridge; l.43 `Space` as an `abbrev` subtype instead of `↥(locus G X)`
+- l.64–95 instances `mulAction`, `isCancelSMul`, `continuousConstSMul`, `properlyDiscontinuousSMul` on the locus and l.106 `isOpen_locus` (properly discontinuous action on a locally compact Hausdorff space has open free locus): the textbook content, generic, documented
+- l.123 `chartedSpace` and l.130 `smul_contMDiff` (with `[NormedSpace ℂ E]` and `n : ℕ∞ω`) mix complex-manifold structure into a `Topology/Algebra` file: two subjects
+- l.8 `import Mathlib`; l.19 `set_option maxSynthPendingDepth 3`; l.21–26 `open scoped … Modular UpperHalfPlane`; l.28 `universe u v` unused; l.32–34 `local infixr ≫ₚ`/`SlashAction.map` notation unused; 0/13 missing docstrings
+suggestion: define `locus` as `{x | stabilizer G x = ⊥}` (or add the bridge lemma), move `chartedSpace`/`smul_contMDiff` to a `Geometry/Manifold` file, and trim the preamble
+
+## Lib/Topology/ClosedRefinement.lean  (7 declarations, 93 lines)
+verdict: B (minor: docs/names, odd namespace)
+twin: shrinking lemma for paracompact normal spaces (Munkres §41 / Engelking 5.1.6); Mathlib/Topology/ShrinkingLemma.lean (`exists_subset_iUnion_closure_subset`), Mathlib/Topology/PartitionOfUnity.lean (`BumpCovering.exists_isSubordinate`, used)
+findings:
+- l.29 `namespace TopCat`: the structure and lemmas are point-set topology on a `TopologicalSpace X`, not about the category `TopCat`; Mathlib would use `TopologicalSpace.` or root
+- l.34 `ClosedRefinement U` (closed, locally finite, subordinate supports covering `X`) and l.42 `exists_closedRefinement [NormalSpace X] [ParacompactSpace X]`: generic, correct hypotheses; the existence is close to Mathlib's shrinking lemma plus local finiteness of a subordinate bump covering
+- l.11–14 module docstring: "point-set topology input used to patch arbitrary-coefficient singular cochains" — project motivation; no reference
+- l.61 `index x := (R.covers x).choose` with l.63, l.66 `mem_support_index`, `mem_open_index`: a chosen index function, feeder-shaped; 2/7 missing docstrings (l.63, l.66); l.75 `exists_controlled_neighborhood` documented
+- l.21–22 `set_option warningAsError true`/`autoImplicit false`; specific imports
+suggestion: move out of `namespace TopCat`, replace the docstring motivation by the shrinking-lemma reference, and document `index`/`mem_support_index`
+
+## Lib/Topology/Covering/DiagonalQuotient.lean  (78 declarations, 975 lines)
+verdict: C (project residue in the mathematics: three topics in one file, nonstandard object name, generic lemmas buried)
+twin: the associated bundle `B ×_G F` of a principal `G`-cover (Steenrod, Topology of Fibre Bundles §9; Hatcher §1.3 for the covering, §4.2 for the long exact sequence of a fibration with section); Mathlib/Topology/Covering/Quotient.lean (`IsQuotientCoveringMap`), Mathlib/Topology/FiberBundle (no associated-bundle twin: genuine gap)
+findings:
+- l.9–14 module docstring ("Diagonal quotients: the quotient … the orbit relation of a group action or a family of maps, its universal property") does not describe the file: `Space G B F` (l.153) is the associated bundle `(B × F)/G`, and "family of maps"/"universal property" material does not exist here
+- l.38–148 `fibreHomeomorphOfLocalTrivializations`, `proper_of_localTrivializations`, `t2Space_of_localTrivializations`: generic lemmas on locally trivial maps (`Mathlib/Topology/FiberBundle/Basic`-material) under the `DiagonalQuotient` namespace
+- l.149–433 the associated bundle: `Space`, `projection`, `patchHomeomorph` (local triviality), `quotient_isCoveringMap`, `projection_proper`, `spaceT2Space`, `spaceSecondCountable`: the textbook content, generic `G B F`, all documented
+- l.440–975 fundamental-group sequence for the bundle with the `zeroSection`: `fibreFundamentalGroupHom_injective`, `…_range_eq_ker`, `sectionFundamentalGroupHom_conjugate_fibre`, `fibreFundamentalGroupHom_baseChange`; l.440 `fundamentalGroup_basepoint_change_apply` (root namespace), l.733 `fundamentalGroup_conjugation_of_homotopy`, l.753 `fundamentalGroup_mapOfEq_comp` are general `FundamentalGroup` lemmas misfiled
+- names `Space`, `BaseSpace`, `patch`, `zeroSection c` (requires a `G`-fixed `c : F`) are ad hoc; Mathlib would say `AssociatedBundle G B F` or `MulAction.orbitRel.Quotient (B × F)`
+- l.6 `import Mathlib`; l.18 `set_option maxSynthPendingDepth 3`; l.20–25 `open scoped … Modular UpperHalfPlane`; l.27 `universe u v` unused; l.31–33 `local infixr ≫ₚ`/`SlashAction.map` unused; 0/78 missing docstrings
+suggestion: split into `Topology/FiberBundle/LocalTrivialization` (l.38–148), `Topology/Covering/AssociatedBundle` (l.149–433) and `Topology/Homotopy/FundamentalGroup/AssociatedBundle` (l.440–975), renaming `DiagonalQuotient.Space` to the associated bundle and moving the three general `FundamentalGroup` lemmas to Mathlib's `FundamentalGroupoid` files
+
+## Lib/Topology/Covering/FiberFrameCentralizer.lean  (2 declarations, 66 lines)
+verdict: B (minor: docs/names)
+twin: deck transformations of a normal cover commute with the monodromy of a loop fixing the frame (Hatcher §1.3, Prop. 1.39 vicinity); Mathlib/Topology/Covering/Quotient.lean (`IsQuotientCoveringMap.toPermFiber`, `fiberEquivGroup`, `monodromy_toPermFiber`, all used)
+findings:
+- l.35 `IsQuotientCoveringMap.commute_of_monodromy_eq_toPermFiber`, l.53 `commute_fiberEquivGroup_of_monodromy_eq`: stated in Mathlib's namespace against Mathlib's API, generic `G E X` with three universes, docstrings present
+- "fibre frame" (file name, docstring l.14–15 "displayed deck transformation … fibre frames") is project vocabulary for "a point of the fibre"; the mathematics is `Commute a h` when `h` carries `e` to `e'` and `a` is the monodromy at both
+- l.11–15 module docstring: no `## Main results`, no reference; l.20–21 `set_option warningAsError`/`autoImplicit`; specific import
+suggestion: rename the file to `Covering/MonodromyCommute.lean`, drop "frame" from the prose, and add a Hatcher reference
+
+## Lib/Topology/Covering/InvariantSubset.lean  (19 declarations, 228 lines)
+verdict: C (project residue in the mathematics: two unrelated topics; ad-hoc `[MulAction G S]` + compatibility hypothesis instead of `SubMulAction`)
+twin: restriction of a quotient covering to an invariant subset (Forster §1, named); Mathlib/Topology/Covering/Quotient.lean (`IsQuotientCoveringMap`), Mathlib/GroupTheory/GroupAction/SubMulAction.lean
+findings:
+- l.53, l.67, l.74, l.110 `InvariantSubsetQuotient.preimage_image_eq`, `preimageImageHomeomorph`, `imageProject_isCoveringMap`, `imageProject_isQuotientCoveringMap` take `[MulAction G S]` on the subtype plus `hcompat : ∀ g x, ((g • x : S) : M) = g • (x : M)`; the textbook hypothesis is "`S` is `G`-invariant" (`SubMulAction G M` or `∀ g, g • S ⊆ S`), from which the action on `S` is induced
+- l.131–180 `quotientEquiv`, `quotientHomeomorph`, `isClosed_image`: the restricted quotient `S/G ≃ₜ q '' S`, the actual result, documented
+- l.191–228 `ProductRestriction.productPreimageHomeomorph`, `productRestriction`, `…_isClosedMap`, `…_surjective`: a separate topic (restricting a map `K × X → Y` to `K × B → C`) sharing the file only by the project's use
+- l.9–13 module docstring is three indented lines ("Sections 1-2"), no `## Main results`; l.6 `import Mathlib`; l.17 `set_option maxSynthPendingDepth 3`; l.19–24 `open scoped … Modular UpperHalfPlane`; l.26 `universe u v` unused; l.30–32 `local infixr ≫ₚ`/`SlashAction.map` unused; 0/19 missing docstrings
+suggestion: restate with `(S : SubMulAction G M)` (or `hS : ∀ g, g • S ⊆ S`) and the induced action, and move `ProductRestriction.*` to its own file under `Topology/Constructions`
+
+## Lib/Topology/Covering/Quotient.lean  (38 declarations, 544 lines)
+verdict: C (project residue in the mathematics: complex-manifold structure hard-wired, three topics, file path collides with Mathlib's)
+twin: Forster, Lectures on Riemann Surfaces §§1–3 (named: quotient by a properly discontinuous group of automorphisms is a Riemann surface; `ℂ/Λ`); Mathlib/Topology/Covering/Quotient.lean (`IsQuotientCoveringMap`, same path as this file), Mathlib/Geometry/Manifold/Instances (no quotient-manifold twin: genuine gap)
+findings:
+- the file `Lib/Topology/Covering/Quotient.lean` shadows Mathlib's `Mathlib/Topology/Covering/Quotient.lean` in name while its content (charts, `IsManifold`, `contMDiff`) is `Geometry/Manifold` material
+- l.38 `contDiffOn_of_sub_mem_discrete … [NormedSpace ℂ E]`, l.98–330 `CoveringQuotient.contMDiffOn_lift`, `chart`, `chartedSpace`, `isManifold`, `contMDiff_project`, `localInverse_holomorphic`, `project_isLocalDiffeomorph`: the induced smooth structure on `M/G` is stated only over `ℂ` (`𝓘(ℂ, E)`); the argument is for any field `𝕜` and any `IsManifold I n M` (Lee, Smooth Manifolds Thm 21.13 is the real case)
+- l.345–490 `DiscreteQuotient.*` (`E ⧸ L` for a discrete `Submodule ℤ E` with `NormedSpace ℂ E`: charted space, `isManifold`, `lieAddGroup`, `linearBiholomorph`): a second topic (complex tori), also `ℂ`-only; would be a corollary of the first once `G = L` acting by translation
+- l.496–544 `CoveringOrthant.localChart`: a third topic (charts of a quotient adapted to a subgroup `H`), no textbook counterpart as stated
+- l.68 `CoveringQuotient.representative x := (hq.surjective x).choose` and l.353 `DiscreteQuotient.representative`: chosen lifts baked into chart definitions (fine, but undocumented as noncanonical)
+- l.9–14 module docstring three indented lines; l.6 `import Mathlib`; l.18 `set_option maxSynthPendingDepth 3`; l.20–25 `open scoped … Modular UpperHalfPlane`; l.27 `universe u v` unused; l.31–33 `local infixr ≫ₚ`/`SlashAction.map` unused; 0/38 missing docstrings
+suggestion: generalise the quotient-manifold construction to `𝕜`/`IsManifold I n M` under `Geometry/Manifold/Quotient.lean`, derive `DiscreteQuotient` from it, and move `CoveringOrthant` to the project tree
+
+## Lib/Topology/Covering/QuotientConnectedness.lean  (1 declarations, 62 lines)
+verdict: A (textbook-ready)
+twin: Hatcher §1.3 (a normal cover with transitive monodromy on the fibre is connected; converse of `IsQuotientCoveringMap.fundamentalGroupToMulOpposite_surjective`); Mathlib/Topology/Covering/Quotient.lean, Mathlib/Topology/Homotopy/Lifting.lean
+findings:
+- l.32 `IsQuotientCoveringMap.pathConnectedSpace_of_fundamentalGroupToMulOpposite_surjective (hp) [PathConnectedSpace X] (e : p ⁻¹' {x}) (hsurj) : PathConnectedSpace E`: Mathlib namespace, naming and API (`monodromy`, `liftPathQuotient`, `exists_toPermFiber_eq`), generic universes, docstring present
+- l.11–17 module docstring states the result and its Mathlib converse; no `## References` line
+- specific import; no preamble residue; 0/1 missing docstrings
+suggestion: propose upstream into Mathlib's `Topology/Covering/Quotient.lean` next to `fundamentalGroupToMulOpposite_surjective`, adding a Hatcher reference
+
+## Lib/Topology/Dimension/Covering.lean  (15 declarations, 223 lines)
+verdict: B (minor: docs; project proof-ledger labels in docstrings and comments)
+twin: Lebesgue covering dimension (Engelking, Dimension Theory §1.6 / Hurewicz–Wallman Ch. V; Munkres §50); no Mathlib twin (genuine gap: Mathlib has no covering dimension)
+findings:
+- l.46 `TopologicalSpace.OpenCover.Refinement V U` (with a chosen index map), l.98 `MultiplicityLE U m`, l.163 `HasCoveringDimensionLE X n` (every open cover has a refinement of multiplicity `≤ n+1`, indices in the space's universe as for `ParacompactSpace`): the textbook definitions, generic, documented; l.111/l.128 `iff_iInter_eq_empty(_of_card_eq_succ)` the finite-intersection reformulation
+- l.189 `HasCoveringDimensionLE.of_homeomorph` docstring: "Textbook Lemma 6.1 (CD12C-T) …" and proof comments `-- T01` … `-- T06`: project ledger labels in a library docstring
+- l.11–22 module docstring closes with "No separation axiom, compactness assumption, or sheaf theory is involved" — disclaimer; no `## Main definitions`, no reference
+- naming: `MultiplicityLE` (Mathlib would say `Order ≤ m` or `IsOfMultiplicityLE`), `HasCoveringDimensionLE X n` fine; `Refinement` as a structure with data is a reasonable choice but differs from Mathlib's `IsRefinement`-style Props
+- l.29–30 `set_option warningAsError`/`autoImplicit`; specific imports; universes `u v w t z` all used; 0/15 missing docstrings
+suggestion: strip the `CD12C-T`/`T0n` labels and the disclaimer, add an Engelking reference, and consider a `Prop`-valued `IsRefinement` alongside the data-carrying structure
+
+## Lib/Topology/Dimension/CubeBoundaryThree.lean  (26 declarations, 216 lines)
+verdict: C (project residue in the mathematics: dimension fixed at 3 where the argument is for `Fin n`)
+twin: `∂[-1,1]ⁿ ≃ₜ Sⁿ⁻¹` by radial projection (any topology text); Mathlib/Analysis/Convex/GaugeRescale.lean (`exists_homeomorph_image_eq`, `gaugeRescaleHomeomorph`) gives the homeomorphism of any two convex bodies' frontiers
+findings:
+- l.9–11 module docstring: "This file translates `TEXTBOOK.md`, lines 1249--1325: the notation, Definitions 1.1 and 1.3, and Lemmas 1.2 and 1.4" — the "textbook" is the project's own proof document
+- l.23 `Ambient := EuclideanSpace ℝ (Fin 3)`, l.26 `maxAbs x := max |x 0| (max |x 1| |x 2|)`, l.68 `boundary := {x | maxAbs x = 1}`, l.208 `homeomorphSphere : Boundary ≃ₜ sphere 0 1`: every statement is for `n = 3`; `maxAbs` is the sup norm `‖x‖_∞` (Mathlib's `PiLp 1`/`Pi.norm` or `‖WithLp.equiv … x‖`) rewritten by hand
+- l.148–208 `toSphere`/`fromSphere` radial maps are the standard argument; the general result is `Metric.sphere ≃ₜ frontier (closedBall in sup norm)` for any `n`, or the `GaugeRescale` homeomorphism between the two unit balls restricted to frontiers
+- 0/26 missing docstrings; specific imports; `set_option autoImplicit false`
+suggestion: replace by a general `n` statement `frontier (Pi closedBall) ≃ₜ Metric.sphere 0 1` (via `gaugeRescaleHomeomorph`) and specialise to `Fin 3` at the use site
+
+## Lib/Topology/Dimension/CubeBoundaryThreeBricks.lean  (57 declarations, 688 lines)
+verdict: C (project residue in the mathematics: dimension fixed at 3, explicit brick cover of `∂[-1,1]³`)
+twin: Engelking, Dimension Theory Thm 1.8.2 / Hurewicz–Wallman Thm IV 1 (`dim Iⁿ ≤ n` via a brick/cell cover of multiplicity `n+1`); no Mathlib twin
+findings:
+- l.45–61 `vertexBrick`, `edgeBrick`, `squareBrick`, `brickSet N h epsilon` (open neighbourhoods of the vertices, edges and open squares of the mesh-`h` subdivision of `∂[-1,1]³`), l.258 `brickOpens`, l.580 `brickRefinement`, l.682 `brickOpens_isOpenCover`: the standard "thicken the cells of a subdivision" cover, hard-wired to three coordinates and three cell types
+- l.320–458 diameter estimates (`vertexBrick_diam_le`, `edgeBrick_diam_le`, `squareBrick_diam_le`, `brick_diam_lt`) and l.481–558 nonemptiness lemmas: metric bookkeeping with explicit constants (`3 * epsilon < h/2`, `sqrt 2`), private, one-use
+- 36 of 57 declarations are `private`; 1/57 missing docstrings; l.4–11 imports its two siblings plus `Lib.Topology.Dimension.Covering`
+- namespace `TopologicalSpace.CubeBoundaryThree` with `N h epsilon lambda` parameters repeated through every statement rather than a `variable`/structure
+suggestion: fold into a general-`n` cell-thickening construction (`CubeBoundary n`), or keep the file under the project's proof tree until the `Fin 3` case is generalised
+
+## Lib/Topology/Dimension/CubeBoundaryThreeCells.lean  (213 declarations, 2328 lines)
+verdict: C (project residue in the mathematics: dimension-3 cell bookkeeping with proof-ledger labels; not library material as written)
+twin: cell structure of the subdivided cube boundary (Engelking §1.8, Hurewicz–Wallman Ch. IV); no Mathlib twin
+findings:
+- l.11–19 module docstring: "Textbook Section 3, Definition 3.1 and coherence expansion, canonical lines 1368–1620. The declarations below follow the reviewed order L0–L4, D1–D3, C01–C22, H2/H1, F1–F3, E0 …" and l.1399 "CD10C-I implements ordinary textbook Lemma 3.4 (I1, lines 1658–1668)": the file is organised by the project's proof ledger; docstrings begin with labels ("I1 representation: …")
+- l.23 `lattice N h`, l.125 `vertices`, l.142 `squareGeom h v j k`, l.714 `edgeParamSet`, l.824 `edgeMidpoint`, l.1791 `square_boundary_edges`, l.1967 `edge_common_endpoint_geometry`: mesh combinatorics of `∂[-1,1]³` in `EuclideanSpace ℝ (Fin 3)` with `Fin 3` case splits (`fin_cases i <;> fin_cases j …`, l.1416); nothing is stated for general `n`
+- l.1079 `floor_real_bounds`, l.1115 `normalizedFloorInput_bounds`, l.1173 `ordinary_floor_enclosure`: real-arithmetic lemmas about `⌊·⌋` that belong in `Algebra/Order/Floor`, if not already there
+- 53 `private` declarations; 0/213 missing docstrings; two `namespace TopologicalSpace.CubeBoundaryThree` blocks (l.10, l.773); reading stopped at the pattern (sampled every sixth statement)
+suggestion: move to the project's proof tree (`Hopf/Proof/Dimension`), extracting only the floor lemmas; a library version would be a cubical-complex structure on `∂[-1,1]ⁿ`
+
+## Lib/Topology/Dimension/CubeBoundaryThreeDimension.lean  (21 declarations, 286 lines)
+verdict: C (project residue in the mathematics: `dim ∂[-1,1]³ ≤ 2` where the textbook proves `dim ∂Iⁿ ≤ n−1`)
+twin: Engelking, Dimension Theory Thm 1.8.2 (`dim Iⁿ ≤ n`); Hurewicz–Wallman Thm IV 1; no Mathlib twin
+findings:
+- l.281 `CubeBoundaryThree.hasCoveringDimensionLE_two : HasCoveringDimensionLE Boundary 2`: the file's result, correct and documented, but for `n = 3` only
+- l.215 `brickOpens_multiplicityLE_three`: multiplicity `≤ 3` of the brick cover via l.118–199 `vertexIndexPart`/`edgeIndexPart`/`squareIndexPart` (`card_le_one` each): the counting argument by cell type, hard-wired to three tiers
+- l.230 `private structure FiniteBrickRefinement {ι : Type}` and l.264 `exists_finiteBrickRefinement {ι : Type}`: index universe pinned to `Type` (universe 0) inside the proof of a `Type u`-general definition (see `Covering.lean` l.163)
+- 18 of 21 declarations `private`; 0/21 missing docstrings; no module docstring at all (file starts at `module` l.1 with no `/-! … -/` header)
+suggestion: add a module docstring, and generalise the tiered multiplicity count to `Fin n` cells or move the file under the project tree next to its use
+
+## Lib/Topology/Dimension/CubeBoundaryThreeLebesgue.lean  (2 declarations, 63 lines)
+verdict: C (project residue: two glue lemmas for the `Fin 3` cube boundary, cited to the project's proof text)
+twin: Lebesgue number lemma (Munkres Lemma 27.5); Mathlib/Topology/MetricSpace/… `lebesgue_number_lemma`, `Lib/Topology/MetricSpace/LebesgueNumber.lean` (imported)
+findings:
+- l.10–13 module docstring: "This file translates Section 2 of the canonical textbook proof, lines 1348--1366" — the project's proof document, not a textbook
+- l.28 `diam_coe_image (A : Set Boundary) : diam (Subtype.val '' A) = diam A` is the general fact `Metric.diam_image_subtype_val`-style (holds for any subtype of a metric space; check Mathlib `Metric.diam_coe`/`Subtype.diam`) stated for `Boundary` only
+- l.34 `exists_cover_mesh_scale {ι : Type v}`: bundles a Lebesgue number with the mesh estimates from `Lib/Analysis/Real/MeshScale` for one consumer
+- 0/2 missing docstrings; `set_option warningAsError`/`autoImplicit`; specific imports
+suggestion: replace `diam_coe_image` by the general subtype lemma (Mathlib or `Topology/MetricSpace`) and inline `exists_cover_mesh_scale` at its single use
+
+## Lib/Topology/Dimension/SphereTwo.lean  (2 declarations, 28 lines)
+verdict: C (project residue: the `S²` special case of `dim Sⁿ = n`, universe pinned to `Type`)
+twin: `dim Sⁿ = n` (Engelking, Dimension Theory 1.8.3/1.8.6; Hurewicz–Wallman Thm IV 1 + Ch. IV §4); no Mathlib twin
+findings:
+- l.12 `SphereTwo.hasCoveringDimensionLE_two : HasCoveringDimensionLE (sphere (0 : EuclideanSpace ℝ (Fin 3)) 1) 2`: correct transport of the cube-boundary bound; only `n = 2`
+- l.22 `hasCoveringDimensionLE_two_of_homeomorph {B : Type} … (g : B ≃ₜ sphere …)`: `B` pinned to universe 0; docstring (l.17–20) explains "Type0 space … common-universe-zero formal scope … separate index-universe receipt": project ledger language for a limitation that `HasCoveringDimensionLE.of_homeomorph {X Y : Type u}` does not have (it is universe-polymorphic)
+- docstrings cite "Corollary 6.2/6.3" of the project's proof text; no module docstring
+suggestion: state `hasCoveringDimensionLE_two_of_homeomorph` for `{B : Type u}` (the transport lemma already allows it) and add a module docstring with the Engelking reference
+
+## Lib/Topology/FiberBundle/TwoOpenTransition.lean  (46 declarations, 433 lines)
+verdict: B (minor: docs/preamble; the two-chart clutching is textbook)
+twin: clutching construction / mapping torus (Hatcher Example 1.46, named; Steenrod §18 "clutching"); Mathlib/Topology/FiberBundle/Basic.lean (`FiberBundleCore`, used at l.134 `core`), Mathlib/Topology/Covering/Quotient.lean (`IsQuotientCoveringMap`)
+findings:
+- l.37 `TwoOpenTransition X G` (two opens covering `X`, a transition `X → G` continuous on the overlap), l.90 `coordChange`, l.134 `core : FiberBundleCore Bool X G`, l.207 `isCoveringMap`, l.302 `isQuotientCoveringMap`, l.417 `fundamentalGroupToMulOpposite`: the `Bool`-indexed `FiberBundleCore` with fibre `G` acting on itself, generic `X G`, all documented
+- the `Bool`-indexed cocycle is trivially satisfied (l.104 `coordChange_comp`); Mathlib would obtain everything from `FiberBundleCore` with `ι := Bool` and the principal-bundle structure, so `core` should be the primary definition and the rest derived
+- l.9–14 module docstring three indented lines ("the atlas-level precursor of the mapping torus"), no `## Main definitions`
+- l.6 `import Mathlib`; l.17 `set_option maxSynthPendingDepth 3`; l.19–24 `open scoped … Modular UpperHalfPlane`; l.26 `universe u v` unused; l.30–32 `local infixr ≫ₚ`/`SlashAction.map` unused; 2/46 missing docstrings (l.310, l.320 private)
+suggestion: make `core : FiberBundleCore Bool X G` the definition and derive `TotalSpace`/`proj`/`localTriv*` from Mathlib's `FiberBundleCore` API; trim the preamble
+
+## Lib/Topology/Gluing/OverBase.lean  (40 declarations, 421 lines)
+verdict: C (project residue in the mathematics: `ThreefoldGluing`/`SpecialPeriods.Threefold.Star` names for a generic construction; 31/40 undocumented)
+twin: gluing of spaces along open subsets over a base (Mathlib/Topology/Gluing.lean `TopCat.GlueData`, used at l.65 `gluingCore`); the star-cover specialisation is the "cover by a distinguished open and its complements' pieces" with no textbook name
+findings:
+- l.32 `structure ThreefoldGluing.Data (B : Type u)` and l.217 `structure SpecialPeriods.Threefold.Star.Input (B I : Type u)`: namespaces are project vocabulary (`Threefold`, `SpecialPeriods`); the contents (pieces with maps to `B`, transitions preserving the base, `projection`, `patchHomeomorph`) are a generic "glue data over a base"
+- l.10–14 module docstring: "move-only extraction from `Hopf/LCP/GlobalAssembly.lean` at `fdab1700…`; historical declaration names are retained"; l.150–152 section comment cites `CENTER_GENERIC_PATCH_HOMEOMORPH_TEXTBOOK.md`, "GP1–GP7"
+- l.122 `representative x` chosen lift, l.156 `projection`, l.170 `projection_continuous`, l.204 `patchHomeomorph`: the textbook content (each piece embeds as an open over its image in `B`)
+- l.232–407 `Star.Input.transition_*` (`none`/`some` case analysis of an `Option I`-indexed cover), `transition_cocycle`, `toData`: a specific cover shape (one central piece plus `I` disjoint satellites) with 12 case lemmas
+- `universe u` with `{B I : Type u}` pins all pieces to one universe; 31/40 missing docstrings; specific imports; no `set_option` residue
+suggestion: rename to `GlueData.OverBase` (drop `Threefold`/`SpecialPeriods`), document every declaration, and present the star cover as an instance/constructor `GlueData.OverBase.ofStar` rather than a second namespace
+
+## Lib/Topology/Homeomorph/DiskCube.lean  (12 declarations, 165 lines)
+verdict: B (minor: docs; depends on project-named `DiskCylinder.Disk`)
+twin: closed ball `≃ₜ` cube (any convex body is homeomorphic to the ball; Mathlib/Analysis/Convex/GaugeRescale.lean `exists_homeomorph_image_eq`, used and cited)
+findings:
+- l.134 `DiskCube.homeomorph (L : V ≃L[ℝ] (Fin n → ℝ)) : DiskCylinder.Disk (E := V) ≃ₜ (Fin n → unitInterval)`, l.142 `boundary_iff`, l.161 `symm_boundary_iff`: correct, generic in `V` and `n`, documented with an outline and `## Main definitions and results`
+- the statement is phrased through `DiskCylinder.Disk` (a project name for `Metric.closedBall 0 1`) and `Cube.boundary` from `Lib/AlgebraicTopology/Hurewicz/SimplexCube`; Mathlib would state `Metric.closedBall (0 : V) 1 ≃ₜ (Fin n → unitInterval)`
+- l.50 `## References` lists `Lib/docs/C15-DISKCUBE.md (typed ledger and extraction provenance)`; l.36 "This file uses plain imports until its dependencies support the module system" — housekeeping in the docstring
+- l.60–125 `target`, `ambient`, `ambient_image`, `ambient_frontier`, `ambient_mem_iff` are construction steps exposed as public API; fine but could be private
+- 0/12 missing docstrings; imports `Lib.Topology.Homotopy.HandleRetraction` (a 676-line homotopy file) only for `DiskCylinder.Disk`
+suggestion: restate for `Metric.closedBall (0 : V) 1` (with a `DiskCylinder.Disk` alias if needed), drop the ledger reference and the module-system sentence
+
+## Lib/Topology/Homotopy/BasedDiskLifting.lean  (2 declarations, 205 lines)
+verdict: B (minor: docs/names)
+twin: lifting of disks against a map surjective on `π_n` (the standard step in the Whitehead theorem / cellular approximation, Hatcher Lemma 4.6 vicinity, "compression lemma"); no Mathlib twin
+findings:
+- l.55 `BasedDiskLifting.exists_based_disk_lift_of_surjective` and l.132 `TopCellLifting.exists_disk_lift_of_boundary_nullhomotopic`: two theorems in two different namespaces, neither a Mathlib-style namespace (`ContinuousMap.`/`HomotopyGroup.` expected)
+- l.11–24 module docstring is clear about hypotheses ("The source and target are arbitrary topological spaces … This is not an exact lifting theorem") but has no `## Main results`, no reference; `Nonempty (Fin n)` for `0 < n` explained
+- statements go through `DiskCylinder.Disk`, `DiskCube.homeomorph L` and a supplied `L : V ≃L[ℝ] (Fin n → ℝ)`; the textbook statement uses `Metric.closedBall`/`Sphere` directly; the linear identification is an artefact of the `Fin n → unitInterval` model of `HomotopyGroup`
+- 0/2 missing docstrings; specific imports (plain `import` because of dependencies); `universe u` used
+suggestion: put both theorems in one namespace (`HomotopyGroup` or `ContinuousMap`), add the Hatcher reference, and state for `Metric.closedBall` once `DiskCube` is restated
+
+## Lib/Topology/Homotopy/CellAttachment.lean  (132 declarations, 1377 lines)
+verdict: C (project residue in the mathematics: eight namespaces/topics in one file, Morse and singular-homology imports for a point-set result)
+twin: Milnor, Morse Theory Thm 3.2 / Hatcher Prop 0.16–0.18 ("attaching a handle is attaching a cell up to homotopy"); no Mathlib twin (genuine gap)
+findings:
+- l.8–18 imports `Morse.Handle`, `Morse.SublevelSets`, `Morse.Index`, `Collar`, `WhitneyEmbedding`, `MorseLemma`, `SingularHomology.{Chains,MayerVietoris,HomotopyInvariance,SphereHomology}` for a file whose statements are about `Dⁿ × Dᵖ` and closed covers; the dependency graph is the project's, not the theorem's
+- namespaces `RadialCoreShrink` (l.63), `HandleCoreDeformation` (l.140), `ClosedCover` (l.336), `HandleCoreAttachment` (l.378–604, the deformation retraction `homotopyEquiv`), `ClosedHandleCore` (l.641), `EmbeddedCellAttachment` (l.744–1377), `OuterDisk` (l.873), `DiskAnnulus` (l.1188–1329, `sphereHomotopyEquiv`): at least three separable subjects (radial deformations of a disk, pasting over closed covers, the handle/cell comparison)
+- l.336 `ClosedCover.mapOfClosedPieces_left` is the pasting lemma for finitely many closed pieces (`ContinuousMap` gluing, Mathlib `ContinuousMap.mk` over `IsClosed` pieces / `continuousOn_of_locallyFinite_closed`) buried mid-file
+- names such as `retraction_old`, `old_closed`, `handle_mem_old_iff`, `oldInclusion`, `oldRetraction` (l.439–1046) use the project's "old manifold" vocabulary
+- l.43 `set_option maxSynthPendingDepth 3`; l.45–50 `open scoped … Modular UpperHalfPlane`; l.52 `universe u v` unused; l.56–58 `local infixr ≫ₚ`/`SlashAction.map` unused; 0/132 missing docstrings; module docstring has `## Main results`/`## References`/`## Tags`
+suggestion: split into `Topology/Homotopy/DiskDeformations` (radial shrink, `OuterDisk`, `DiskAnnulus`), `Topology/ContinuousMap/ClosedCover` (pasting) and `Topology/Homotopy/HandleToCell`, importing only topology, and rename the `old*` declarations
+
+## Lib/Topology/Homotopy/CellFilling.lean  (6 declarations, 206 lines)
+verdict: C (project residue: every statement pinned to universe `Type`)
+twin: extension of a sphere map over the disk when `π_k` vanish (Hatcher §4.1, Lemma 4.6-style / obstruction in one dimension); no Mathlib twin
+findings:
+- l.62, l.82, l.98, l.145, l.169 all take `{Z X : Type}`, `{V : Type}`, `{V X : Type}`: universe 0, where the argument is universe-polymorphic (possibly inherited from `Lib/AlgebraicTopology/Hurewicz/CubeSphere`); the module docstring does not mention the restriction
+- l.98 `Sphere.boundary_homotopic_const_of_pi`, l.145 `Sphere.exists_boundary_extension_of_pi` (`Subsingleton (π_ n X x)` for `0 < n < d`, `finrank ℝ V ≤ d`), l.169 `CylinderFilling.exists_filling`: correct generic hypotheses, clear docstrings, `## Outline`, `## Main results`, `## References`
+- l.74 `Sphere.real_unitSphere_finite : (sphere (0:ℝ) 1).Finite` is a stray Mathlib-level fact (`Metric.sphere` in `ℝ` is `{-1, 1}`)
+- references cite `Lib/docs/C.md §5.2 and §16.2` next to Hatcher; statements go through `DiskCylinder.Sphere`/`Disk` project names
+- l.52 `set_option maxSynthPendingDepth 3`; l.54 `open … Manifold` unused; 0/6 missing docstrings
+suggestion: lift the universe restriction to `Type*` (or document why `Hurewicz` forces it) and state for `Metric.sphere`/`closedBall` directly
+
+## Lib/Topology/Homotopy/ConvexContraction.lean  (2 declarations, 63 lines)
+verdict: B (minor: possible overlap with Mathlib's affine homotopies)
+twin: straight-line homotopy in a convex set (Hatcher §0, first example); Mathlib/Topology/Homotopy/Affine.lean (imported), `Convex.contractibleSpace`, `ContinuousMap.Homotopy.affine`-style constructions
+findings:
+- l.32 `Convex.basedLoopContraction` (a `Path.Homotopy` from a loop in a convex `s` to the constant loop, rel basepoint) with l.54 `_apply`: generic real normed space, no finite-dimensionality, docstring
+- Mathlib already has the affine homotopy between any two maps into a convex set (`ContinuousMap.Homotopy` via `Convex`); check whether `Path.Homotopy.ofConvex`/`Convex.contractibleSpace` + `SimplyConnectedSpace` make this redundant before upstreaming
+- l.11–20 module docstring is a full paragraph of prose, no `## Main definitions`, no reference; `universe u` used; specific imports
+suggestion: derive from Mathlib's affine homotopy (`ContinuousMap.Homotopy` on convex sets) or upstream as the `Path.Homotopy` companion with a Hatcher §0 reference
+
+## Lib/Topology/Homotopy/CylinderHEP.lean  (40 declarations, 599 lines)
+verdict: C (project residue in the mathematics: six topics, Morse/singular-homology imports, `import Mathlib`)
+twin: HEP for `(I × X, ∂I × X ∪ I × A)` / `(Dⁿ, Sⁿ⁻¹)` (Hatcher Prop 0.16 and Example 0.15); no Mathlib twin (genuine gap: Mathlib has `ContinuousMap.HomotopyRel` but no HEP)
+findings:
+- l.8–18 `import Mathlib` plus `Morse.Handle`, `MorseLemma`, `Morse.SublevelSets`, `Morse.Index`, `Flow.HeightTranslating`, `SingularHomology.*`, `HandleRetraction`, `SphereHomology`: none of these is needed for an HEP statement about `I × Disk V`
+- namespaces `CylinderBall` (l.49–159, `I × Dⁿ ≃ₜ Dⁿ⁺¹` with boundary), `CylinderBoundary` (l.166–307, gluing bottom/top/side maps), `MappingPaths` (l.320–360, `Over` relation on homotopies), `BoundaryPathTransport` (l.373), `CylinderBoundaryFamilies` (l.406–469), `CylinderHEP.exists_extension` (l.487, the result), `SideRectification` (l.520–535): six topics in one file
+- l.9–14 module docstring three indented lines ("Proposition 0.16-adjacent"), no `## Main results`; the result `CylinderHEP.exists_extension` is not named in it
+- statements use `DiskCylinder.Disk (E := V)` (project alias of `closedBall 0 1`) and `unitInterval × …`; Mathlib would state HEP for the pair `(closedBall, sphere)` and derive the cylinder version
+- l.29 `set_option maxSynthPendingDepth 3`; l.31–36 `open scoped … Modular UpperHalfPlane`; l.38 `universe u v` unused; l.42–44 `local infixr ≫ₚ`/`SlashAction.map` unused; 0/40 missing docstrings
+suggestion: reduce imports to topology, split `CylinderBall` and `MappingPaths` into their own files, and rewrite the docstring around `CylinderHEP.exists_extension` with Hatcher Prop 0.16
+
+## Lib/Topology/Homotopy/EquivariantCoveringLift.lean  (2 declarations, 73 lines)
+verdict: A (textbook-ready)
+twin: uniqueness of lifts + deck equivariance (Hatcher Prop 1.34 and §1.3, normal covers); Mathlib/Topology/Covering/Quotient.lean (`IsQuotientCoveringMap`), Mathlib `IsCoveringMap.existsUnique_continuousMap_lifts` (cited in docstring)
+findings:
+- l.45 `IsQuotientCoveringMap.lift_eq_smul_of_eq_at`, l.63 `lift_equivariant_of_eq_at`: Mathlib namespace and naming, six universes `uG uH uE uE' uX uY`, docstrings, docstring explains the relation to Mathlib's existence/uniqueness lemma
+- l.11–21 module docstring states the result; no `## References` line; specific import (`Lib/Topology/Homotopy/QuotientCoveringSpace`)
+- l.8 depends on a Lib file; check that `QuotientCoveringSpace` is itself upstreamable before proposing
+suggestion: add the Hatcher reference and propose upstream with its dependency
+
+## Lib/Topology/Homotopy/HandleRetraction.lean  (68 declarations, 676 lines)
+verdict: C (project residue in the mathematics: four topics, `MorseHandle.UnitDisk` dependency, `import Mathlib` preamble)
+twin: deformation retraction of `Dⁿ × Dᵖ` onto `Dⁿ × {0} ∪ Sⁿ⁻¹ × Dᵖ` and the cone/cylinder retractions (Hatcher Prop 0.16, Example 0.15; Milnor, Morse Theory §3); no Mathlib twin
+findings:
+- l.54 `Handle.Space := MorseHandle.UnitDisk N × MorseHandle.UnitDisk P` ties a topological file to the Morse-theory `MorseHandle` namespace; l.241 `DiskCylinder.Disk` (alias of `closedBall 0 1`) is then re-exported to five other Lib files
+- namespaces `Handle` (l.54–192, the handle retraction `faceCore`), `DiskCylinder` (l.241–468, the retraction of `I × D` onto bottom ∪ side), `DiskCone` (l.497–596, `radial` quotient `I × S → D`), `UnitSphereEquiv` (l.625–676): four topics; module docstring names only the first and last
+- l.10–12 docstring "the topological half of 'attaching a handle is attaching a cell'" and "§2.3's matrix rows": project phrasing; `## Main definitions` lists `Handle.Space` and `UnitSphereEquiv.*` but not `DiskCylinder.retraction`/`DiskCone.radial`, the reusable results
+- l.8 `import Mathlib`; l.34 `set_option maxSynthPendingDepth 3`; l.36–41 `open scoped … Modular UpperHalfPlane`; l.43 `universe u v` unused; l.47–49 `local infixr ≫ₚ`/`SlashAction.map` unused; 0/68 missing docstrings
+suggestion: move `DiskCylinder` and `DiskCone` to `Topology/Homotopy/DiskCylinder.lean` stated for `Metric.closedBall`, and define `Handle.Space` without `MorseHandle`
+
+## Lib/Topology/Homotopy/LocalCollapse.lean  (11 declarations, 187 lines)
+verdict: C (project residue: an ad-hoc `Collapse` notion with no textbook counterpart, feeding one gluing step)
+twin: none found (docstring says "Hatcher Prop 0.17-style glueing"; the notion of a collapse along a sublevel of `f : C(X, ℝ)` is the project's)
+findings:
+- l.67 `structure LocalCollapse.Collapse (f : C(X, ℝ))` with l.78 `identity`, l.90 `comp`, l.129 `combine`, and l.151–179 `exists_localCollapse_covering_zero(_of_local)`, `exists_small_sublevel_localCollapse`: bespoke bookkeeping for gluing deformations on sublevels `{f ≤ η}`; no textbook states this
+- l.37 `zeroSet_isCompact`, l.46 `exists_positive_sublevel_subset_open`: generic and reusable ("a compact zero set has small sublevel neighbourhoods"), Mathlib-level lemmas under a project namespace
+- l.9–14 module docstring three indented lines; no `## Main definitions`; the "Proposition 0.17-style" reference is vague
+- l.6 `import Mathlib`; l.17 `set_option maxSynthPendingDepth 3`; l.19–24 `open scoped … Modular UpperHalfPlane`; l.26 `universe u v` unused; l.30–32 `local infixr ≫ₚ`/`SlashAction.map` unused; 0/11 missing docstrings
+suggestion: keep the two sublevel lemmas (renamed under `IsCompact`/`ContinuousMap`) and move `Collapse` to the proof that consumes it
+
+## Lib/Topology/Homotopy/LocallyContractible.lean  (4 declarations, 108 lines)
+verdict: A (textbook-ready)
+twin: local contractibility is inherited by retracts and descends along local homeomorphisms (folklore; e.g. Hatcher §0 / Spanier 1.? on locally contractible spaces); Mathlib/Topology/Homotopy/LocallyContractible.lean (`LocallyContractibleSpace`, `StronglyLocallyContractibleSpace`, imported)
+findings:
+- l.30 `locallyContractibleSpace_of_retract`, l.67 `LocallyContractibleSpace.of_retract`, l.76 `StronglyLocallyContractibleSpace.of_open_neighborhoods`, l.97 `IsLocalHomeomorph.stronglyLocallyContractibleSpace_of_surjective`: Mathlib namespaces and names, generic `X Y`, `variable` block, docstrings present
+- l.10–15 module docstring states the three results; no `## Main results`, no reference (none standard)
+- specific imports; no preamble residue; 0/4 missing docstrings
+suggestion: propose upstream as additions to Mathlib's `Topology/Homotopy/LocallyContractible.lean`
+
+## Lib/Topology/Homotopy/LoopSubdivision.lean  (8 declarations, 181 lines)
+verdict: B (minor: preamble; two unrelated `PartialEquiv` lemmas at the top)
+twin: Hatcher, proof of Thm 1.20 (van Kampen: subdivide a loop by a Lebesgue number); Mathlib `exists_monotone_Icc_subset_open_cover_unitInterval` (used), Mathlib/Topology/Homotopy/Path.lean
+findings:
+- l.56 `Path.exists_partition_unitInterval_of_open_cover`, l.75 `Path.exists_path_range_of_isPathConnected_inter`, l.100 `Path.Homotopic.concat_trans_trans_symm`, l.130 `Path.Homotopic.exists_loops_homotopic_concat_of_open_cover`: `_root_.Path.*` Mathlib naming, generic `X : Type u`, `ι : Type v`, docstrings on public lemmas (2/8 missing are `private`)
+- l.41, l.48 `PartialEquiv.image_source_minus_singleton_eq`, `symm_image_target_minus_singleton_eq`: unrelated `PartialEquiv` facts (belong in Mathlib/Logic/Equiv/PartialEquiv.lean)
+- l.9–14 module docstring three indented lines; no `## Main results`
+- l.8 `import Mathlib`; l.20 `set_option maxSynthPendingDepth 3`; l.22–27 `open scoped … Modular UpperHalfPlane`; l.29 `universe u v` used; l.33–35 `local infixr ≫ₚ`/`SlashAction.map` unused
+suggestion: move the two `PartialEquiv` lemmas out, replace `import Mathlib` by `Mathlib.Topology.Homotopy.Path` + the unit-interval cover lemma, and drop the scoped opens
+
+## Lib/Topology/Homotopy/OpenNullhomotopy.lean  (1 declarations, 38 lines)
+verdict: B (minor: one-lemma file that unfolds the Mathlib definition into `Opens`/`TopCat` language)
+twin: Mathlib/Topology/Homotopy/LocallyContractible.lean (`LocallyContractibleSpace` is exactly "every neighbourhood contains a smaller one with nullhomotopic inclusion")
+findings:
+- l.27 `TopCat.exists_open_nullhomotopic_inclusion (X : TopCat.{u}) (hLC : LocallyContractibleSpace X) (U : Opens X) (x) (hx) : ∃ V ≤ U, x ∈ V ∧ Nullhomotopic ((Opens.toTopCat X).map (homOfLE hVU)).hom`: a five-line restatement of the definition in the categorical `Opens`/`TopCat` form used by a sheaf argument; docstring present
+- `hLC` is taken as an explicit hypothesis rather than an instance `[LocallyContractibleSpace X]`
+- l.12 module docstring is one line; l.16–17 `set_option warningAsError`/`autoImplicit`; specific imports
+suggestion: make `LocallyContractibleSpace X` an instance argument and either inline at the use site or append to Mathlib's file as `LocallyContractibleSpace.exists_opens_nullhomotopic_inclusion`
+
+## Lib/Topology/Homotopy/PuncturedCyclicCover.lean  (1 declarations, 52 lines)
+verdict: B (minor: docs/namespace)
+twin: van Kampen for two simply connected opens with a two-component overlap gives `π₁ ≅ ℤ` (Hatcher Thm 1.20 + Example 1.22-style); depends on `Lib/AlgebraicTopology/FundamentalGroup/VanKampen/TwoSimplyConnectedCover`; no Mathlib twin (van Kampen absent)
+findings:
+- l.30 `…TwoSimplyConnectedCover.zpowers_switchClass_eq_top`: generic criterion (overlap has at most the basepoint component and one other), docstring present
+- namespace `FundamentalGroup.VanKampen.Cocone.TwoSimplyConnectedCover` (five levels) inherited from the Lib van Kampen file; the file name `PuncturedCyclicCover` describes the application, the docstring (l.13–14) admits "Although this criterion is used for punctured-space calculations, its statement and proof are generic"
+- l.10–15 module docstring: no `## Main results`, no reference; l.21–22 `set_option warningAsError`/`autoImplicit`
+suggestion: rename the file after its content (`VanKampen/TwoComponentOverlap.lean`) and cite Hatcher Thm 1.20
+
+## Lib/Topology/Homotopy/PuncturedPlaneCyclic.lean  (68 declarations, 486 lines)
+verdict: C (project residue in the mathematics: `π₁(ℂ∖0)` stated as a range theorem "for local monodromy", hand-built slit cover, 48/68 undocumented)
+twin: `π₁(ℂ∖{0}) ≅ ℤ` (Hatcher Thm 1.7 via `S¹`, or Example 1.22); Mathlib: `Circle`/`Complex.exp` covering (Mathlib/Analysis/SpecialFunctions/Complex/Circle.lean is an `IsQuotientCoveringMap` — a direct route to `π₁ ≅ ℤ` not used here)
+findings:
+- l.11–17 module docstring: "deliberately formulated as a range theorem, which is the form needed for local monodromy calculations … contains no application cover, local system, or paper-specific monodromy assertion": project motivation and disclaimer; the textbook statement is an isomorphism `π₁(ℂ∖0, 1) ≃* ℤ` (or `Multiplicative ℤ`), not `range = zpowers meridian` (l.394 `range_eq_zpowers_meridian`, l.452 `puncturedBall_range_eq_zpowers_meridian`)
+- l.37–376 `planeOpen`, `lowerSet`/`upperSet` slits, `slitConjugation`, `upperContraction`, `base := ?`, `opposite := -1/2`, `meridianHalfCircle`, `upperPath`, `lowerPath`, `meridian`: an explicit two-slit van Kampen cover with numeric basepoints; a textbook proof would use the exponential covering or a deformation retraction to `S¹`
+- l.408–452 `ballHomeomorph`, `PuncturedBall r`, `puncturedBallHomeomorph`, `puncturedBallFundamentalGroupEquiv`: transport to punctured balls of radius `r` — the form the project's local computation needs
+- 48/68 missing docstrings; namespace `PuncturedPlaneCyclic` (not `Complex.` or `FundamentalGroup.`); `abbrev PuncturedBall` undocumented; l.28–29 `set_option warningAsError`/`autoImplicit`; specific imports
+suggestion: prove `π₁(ℂ∖0) ≃* Multiplicative ℤ` from Mathlib's `Complex.exp` quotient covering (`IsQuotientCoveringMap.fundamentalGroupToMulOpposite` bijective for a simply connected total space) and derive the range/ball statements as corollaries; document the remaining declarations
+# done 60 files

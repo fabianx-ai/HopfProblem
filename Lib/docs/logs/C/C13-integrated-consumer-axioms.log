@@ -1,0 +1,8 @@
+CMD: PATH=/tmp/shared-lean-copy/toolchain-v4.33.0/bin:$PATH lake env lean C13_IntegratedConsumerAudit.lean
+start 04:16:35 epoch 1789265795
+'Mathoverflow1973.sphere_homotopicRel_of_topClass_eq' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Mathoverflow1973.Sphere.homotopic_id_of_topClass' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Mathoverflow1973.threefoldHomotopyEquiv' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Mathoverflow1973.mathoverflow_1973' depends on axioms: [propext, Classical.choice, Quot.sound]
+exit 0
+end 04:16:38 epoch 1789265798
