@@ -11,9 +11,14 @@ public import Lib.Topology.Sheaves.SingularCochainSheaf.GlobalResolutionH1
 /-!
 # The global singular-cochain sheafification unit
 
-This is the literal map from native singular cochains on a space to global sections of the
-sheafified native cochain presheaf.  It is only a structural comparison here: no quasi-isomorphism
-claim is made in this module.
+The comparison map `S^•(X; A) → Γ(X, 𝒮^•(·; A))` from singular cochains on `X` to global sections
+of the sheafified singular-cochain presheaf, as a map of cochain complexes (Bredon, *Sheaf Theory*
+III.1).
+
+## Main definitions
+
+* `TopCat.SingularCochainSheaf.globalCochainUnit`: the comparison map in a fixed degree.
+* `TopCat.SingularCochainSheaf.globalCochainComparison`: the comparison as a map of complexes.
 -/
 
 @[expose] public section
@@ -29,7 +34,8 @@ namespace TopCat.SingularCochainSheaf
 
 variable (X : TopCat.{0}) (A : AddCommGrpCat.{0})
 
-/-- A native global cochain followed by restriction to the top open and sheafification. -/
+/-- The degree-`n` comparison map `S^n(X; A) → Γ(X, 𝒮^n(·; A))`: restrict a singular cochain to
+the top open set and take its image under the sheafification unit. -/
 def globalCochainUnit (n : ℕ) :
     (AlgebraicTopology.SingularCochains.complex X A).X n ⟶
       (sheaf X A n).obj.obj (op ⊤) :=
@@ -37,7 +43,8 @@ def globalCochainUnit (n : ℕ) :
     (⟨Subtype.val, continuous_subtype_val⟩ : C((⊤ : Opens X), X))).f n ≫
     (unit X A n).app (op ⊤)
 
-/-- The global unit is a map of the actual native cochain complexes. -/
+/-- The comparison `S^•(X; A) → Γ(X, 𝒮^•(·; A))` as a map of cochain complexes: the degreewise
+maps commute with the differentials. -/
 def globalCochainComparison :
     AlgebraicTopology.SingularCochains.complex X A ⟶ globalCochainComplex X A where
   f n := globalCochainUnit X A n
@@ -63,8 +70,10 @@ def globalCochainComparison :
       _ = _ := congrArg (fun k => k ≫ (unit X A j).app (op ⊤))
         ((AlgebraicTopology.SingularCochains.pullback A f).comm i j)
 
+/-- In each degree the comparison map of complexes is the degreewise comparison map. -/
 @[simp]
 theorem globalCochainComparison_f (n : ℕ) :
+
     (globalCochainComparison X A).f n = globalCochainUnit X A n := rfl
 
 end TopCat.SingularCochainSheaf
