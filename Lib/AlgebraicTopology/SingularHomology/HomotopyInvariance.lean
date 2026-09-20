@@ -87,7 +87,10 @@ theorem SingularHomology.singularHomologyMap_comp {X Y Z : Type} [TopologicalSpa
       (TopCat.ofHom f) (TopCat.ofHom g)
   exact congrArg ModuleCat.Hom.hom h
 
-/-- A homotopy of maps induces a chain homotopy of singular chain maps. -/
+/-- A homotopy between two continuous maps induces a chain homotopy between the two singular
+chain maps.  This repackages Mathlib's
+`TopCat.Homotopy.singularChainComplexFunctorObjMap` for the singular chain complex of
+`SingularChains.singularComplex`. -/
 def SingularHomology.singularChainHomotopy {X Y : Type} [TopologicalSpace X]
     [TopologicalSpace Y] {f g : C(X, Y)} (H : f.Homotopy g) :
     _root_.Homotopy (SingularChains.singularChainMap f) (SingularChains.singularChainMap g) :=
@@ -101,7 +104,8 @@ theorem SingularHomology.homotopy_homologyMap {X Y : Type} [TopologicalSpace X]
       SingularMayerVietoris.singularHomologyMap g n :=
   congrArg ModuleCat.Hom.hom ((singularChainHomotopy H).homologyMap_eq n)
 
-/-- Maps related by a homotopy induce equal homology maps. -/
+/-- **Homotopy invariance of singular homology** (Hatcher, Theorem 2.10): homotopic maps
+induce the same map on singular homology. -/
 theorem SingularHomology.homotopic_homologyMap {X Y : Type} [TopologicalSpace X]
     [TopologicalSpace Y] {f g : C(X, Y)} (h : f.Homotopic g) (n : ℕ) :
     SingularMayerVietoris.singularHomologyMap f n =
@@ -131,7 +135,8 @@ def SingularHomology.homotopyInverseHomologyEquiv {X Y : Type} [TopologicalSpace
     rw [singularHomologyMap_comp, singularHomologyMap_id] at h
     exact LinearMap.congr_fun h a
 
-/-- A homotopy equivalence induces a linear equivalence of singular homology groups. -/
+/-- A homotopy equivalence induces a linear equivalence of singular homology groups
+(Hatcher, Corollary 2.11). -/
 def SingularHomology.homotopyEquivHomologyEquiv {X Y : Type} [TopologicalSpace X]
     [TopologicalSpace Y] (e : X ≃ₕ Y) (n : ℕ) :
     SingularMayerVietoris.SingularHomology X n ≃ₗ[ℤ] SingularMayerVietoris.SingularHomology Y n :=
