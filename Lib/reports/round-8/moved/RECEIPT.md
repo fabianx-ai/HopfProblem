@@ -38,10 +38,18 @@ general ring. That is a rewrite of the file's main construction.
 ### 3. `Lib/AlgebraicTopology/SingularHomology/LocalContributionsNaturality.lean` — done (commit `6efb0582`)
 
 Verdict B, "docs only". No declaration name in the file is project vocabulary
-(`CoverOverlapHomology`, `CoverLocalContributions` are descriptive), and the docstrings the
-auditors ask for were added on this branch's base. The remaining "moved verbatim" paragraph
-(a qualifier-retarget receipt) is deleted and replaced by the reference for the result
-(Hatcher §2.2, naturality of Mayer-Vietoris for maps of covers). No declaration changed.
+(`CoverOverlapHomology`, `CoverLocalContributions` are descriptive).  **(corrected)** this item
+originally also claimed that "the docstrings the auditors ask for were added on this branch's base".
+That is **false**: at base `4e15a034` the file has 7 declarations and **0** `/--` docstrings
+(`git show 4e15a034:… | grep -c '/--'` → 0; the lines preceding each `theorem`/`def` are blank,
+`noncomputable section`, or proof lines), and at head `39f1d12b` it is still 0 — the only later
+touch, `a3c8ce9c` on `r8/dup-hom`, retargets four qualifiers.  The packet's finding "7 of 7
+declarations lack docstrings" was therefore **still open** when this receipt recorded it as closed,
+and verdict B was not actually executed.  **The seven docstrings are being added now**
+(`Lib/reviews/REVIEW-7-8.md` §3, moved).  What this item did do is right: the remaining "moved
+verbatim" paragraph (a qualifier-retarget receipt) is deleted and replaced by the reference for the
+result (Hatcher §2.2, naturality of Mayer-Vietoris for maps of covers).  No declaration changed.
+A sentence of the form "X was already done on the base" must carry the command that shows it.
 
 Not done: merging the file into `LocalContributions.lean`. The packet restricts file surgery
 to *splits* the entry asks for; this is a merge.
@@ -59,7 +67,7 @@ namespace and are now written out (`FlowSuspension.exists_native_whole_level_hol
 Consumer updated: `Lib/Geometry/Manifold/Morse/MiddleBlocks.lean`.
 
 `nativeMorseIndex` is used here but defined outside the packet
-(`MorseCancellation.nativeMorseIndex`, ~100 uses across `Morse/*`); renaming it is another
+(`MorseCancellation.nativeMorseIndex`, **226 matching lines at head (corrected; the receipt said ~100 uses)** across `Morse/*`); renaming it is another
 seat's file, so it is untouched.
 
 **`AdaptedWindows.exists_ordered_index_cut` left in place — reason.** The auditors ask for it
@@ -68,7 +76,7 @@ change and, as stated, not a true generalisation: the last conjunct
 (`∀ z, f z ≤ a → index z ≤ k`) needs that no *other* critical point shares the value `f r`,
 which `S` supplies (`S.distinct`, `S.toSurgeryWindows.isolated`). `IsMorse` + `Finite` does not
 give it; supplying it would be adding a hypothesis, which the rules forbid. Moving it to
-`Hopf/Proof/` instead is impossible: its only consumer is `Hopf/SphereTopology.lean:898`, and
+`Hopf/Proof/` instead is impossible: its only consumer is `Hopf/SphereTopology.lean:899` **(corrected; the receipt said l.898)**, and
 `Hopf/Proof/SphereTopology.lean` *imports* `Hopf/SphereTopology.lean`, so `Hopf/Proof` is
 downstream of the consumer.
 
@@ -209,8 +217,18 @@ auxiliary constants that changed module: 12
 VERDICT PASS
 ```
 
-* **lost/added 0 source, 39 auxiliary**: the auxiliary churn is equation lemmas and `_proof_n`
-  abstractions realized in a different module after the two file splits.
+* **lost/added 0 source, 39 auxiliary**: **(corrected)** this explanation — "equation lemmas and
+  `_proof_n` abstractions realized in a different module after the two file splits" — does not fit
+  the data.  In `envdiff.json`, **22 of the 39 on each side are the `TubularBigon` family**
+  (`TubularBigon`, `.mk`, 15 projections, `_sizeOf_inst`, `ctorIdx`, `mk._flat_ctor`,
+  `mk.noConfusion`, `mk.sizeOf_spec`): the same names with new hashes, listed again under
+  `changed_type_all` (22) / `changed_type_proof_naming` (17).  Of the remaining 17, **8 come from the
+  rename commits** (`Fin.tailHeadAddEquiv._proof_3/_4` have different hashes from
+  `integerCoordinateSplit._proof_3/_4`; `LinearEquiv.coordMatrix.eq_1`; the `_simp_1_n` of the
+  transvection lemmas) and **9 from the `IndexDisorder` split**; **nothing from the `CircleGluing`
+  split appears in lost/added at all** (its 12 auxiliaries are `auxiliary_moved`).  The conclusion —
+  0 source declarations lost, and all 17 source type changes are `TubularBigon`'s
+  `optParam ℕ 4 → ℕ` — is right; only the sentence explaining the 39 was not.
 * **17 changed types, all `TubularBigon`**: the only type change in the packet, and it is the
   binder change of item 7 — the parameter `n` of the structure went from `optParam ℕ 4` to a
   plain `ℕ` binder, which changes the recorded type of `TubularBigon`, of `TubularBigon.mk` and
@@ -256,3 +274,57 @@ python3 scripts/lib_stock_census.py --check
 | `ade17473` | `Lib/Geometry/Manifold/Morse/CircleGluing.lean` (+ new `Lib/Geometry/Manifold/Curve/CircleGluing.lean`) |
 | `7236c088` | `Lib/Geometry/Manifold/Morse/RearrangementAmbient.lean` (+ new `Lib/Combinatorics/IndexDisorder.lean`) |
 | `6b1c40f1` | `Lib/Geometry/Manifold/Whitney/AnnularExtension.lean` |
+
+## Corrections after the reviewer pass (2026-09-21)
+
+Independent review: `Lib/reports/review-7-8/r8-moved.md` (ACCEPT WITH FINDINGS; all 34 renames and
+both splits are exact — statements byte-identical up to the name, old names absent, new names
+present exactly once, and the split files partition the source declarations — and both "not done"
+reasons hold up, including the `SimplyConnectedSpace` refusal, where the swap really would add
+path-connectedness as a hypothesis).  These corrections are to this receipt's text only; no Lean
+file was changed by them.
+
+1. **Item 3's docstring claim is false (finding 1)**, corrected in item 3.
+   `Lib/AlgebraicTopology/SingularHomology/LocalContributionsNaturality.lean` has **0** declaration
+   docstrings at base `4e15a034` and **0** at head `39f1d12b`, for 7 declarations; the packet's
+   finding was recorded as closed while it was still open.  The seven docstrings are being added by
+   a fix agent (`Lib/reviews/REVIEW-7-8.md` §3, moved).
+
+2. **The branch left duplicate `import` lines, and one commit touches files its message does not name
+   (finding 2), recorded here.**  Each of `ade17473`, `7236c088` and `6b1c40f1` re-adds an import
+   that is already present.  At the branch tip and still at head `39f1d12b`: `Lib.lean` imports
+   `Lib.Geometry.Manifold.Curve.CircleGluing` **three** times and `Lib.Combinatorics.IndexDisorder`
+   twice; `Hopf/Recognition.lean` and `Lib/Geometry/Manifold/Morse/SurgeryCollapse.lean` each import
+   `Lib.Combinatorics.IndexDisorder` twice.  The commit that adds the second and third copies is
+   `6b1c40f1`, "AnnularExtension: make the Whitney bigon codimension explicit" — none of the three
+   files it touches has anything to do with the bigon, so both this receipt's "one commit per packet
+   file" and that commit message are inaccurate for it.  Lean accepts duplicate imports, so nothing
+   breaks; removing the five lines is on the fix list.  Commits that touch `Lib.lean` or consumer
+   imports must say so in the message.
+
+3. **Two new names duplicate Mathlib declarations and the receipt does not say so (finding 3).**  All
+   29 distinct new short names were checked against Mathlib: **zero collisions** (good), but two have
+   twins.  `LinearEquiv.coordMatrix B v = (Module.Basis.ofEquivFun B.symm).toMatrix v` (closes by
+   `ext i j; simp [LinearEquiv.coordMatrix, Module.Basis.toMatrix,
+   Module.Basis.ofEquivFun_repr_apply]`), so `coordMatrix_mulVec` /
+   `surjective_coordMatrix_mulVec` are restatements of `Basis.toMatrix` lemmas; and
+   `Fin.tailHeadAddEquiv n v = LinearEquiv.prodComm ℤ ℤ _ ((Fin.consLinearEquiv ℤ _).symm v)` holds
+   by `rfl`, while the new name sits in `Fin` but is ℤ-specific with no type argument where
+   Mathlib's is generic.  The packet had already flagged the first
+   ("`LinearMap.toMatrix`-style coordinate matrix under a nonstandard name"), so the rename gave it a
+   Mathlib-shaped name without pointing at the Mathlib twin.  Two further names over-promise:
+   `LinearMap.exists_split_of_ker_eq_range` reads as a general splitting lemma but is only for
+   `p : B →ₗ[R] R` (the old name said `rank_one_extension`), and `LinearEquiv.natAbs_apply_one` is
+   about `ℤ ≃ₗ[ℤ] ℤ` only, with no `Int` in the name.  Replacing the two by their Mathlib twins, or
+   documenting the twins, and renaming the two over-promising ones are on the
+   `Lib/reviews/REVIEW-7-8.md` §3 list.  The other names were judged reasonable.
+
+4. **The envdiff paragraph is corrected in place (finding 4)**: 22 of the 39 lost/added on each side
+   are the `TubularBigon` family reappearing with new hashes, 8 come from the rename commits and 9
+   from the `IndexDisorder` split, and nothing from the `CircleGluing` split is in lost/added.  The
+   conclusion was right; the explanation was not.  (The tool invites the mistake: names that are both
+   lost/added by a hash change *and* changed-type should be printed in one bucket.)
+
+5. **Two small figures (finding 5), corrected in place.**  `nativeMorseIndex` has **226** matching
+   lines at head, not "~100 uses"; the consumer of `exists_ordered_index_cut` is
+   `Hopf/SphereTopology.lean:**899**`, not 898.
