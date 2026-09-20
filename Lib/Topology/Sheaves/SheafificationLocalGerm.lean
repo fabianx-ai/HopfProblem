@@ -15,9 +15,10 @@ If a section of a sheaf identified with the sheafification of a presheaf is repr
 presheaf section after shrinking, its stalk value becomes the literal presheaf germ after
 applying that identification and undoing the sheafification unit on the stalk.
 
-This is the compatibility of germs with the sheafification unit
-(`TopCat.Presheaf.stalkFunctor_map_germ`, which is an isomorphism for sheafification), read
-through a local representative.
+This is the compatibility of germs with the sheafification unit — the stalk map of a presheaf
+morphism sends a germ to the germ of the image section, `TopCat.Presheaf.stalkFunctor_map_germ` —
+combined with the fact that for the unit `P ⟶ (sheaf P).presheaf` that stalk map is an
+isomorphism, read through a local representative.
 -/
 
 @[expose] public section
