@@ -64,6 +64,7 @@ Original source lines 211736--237524; see PROVENANCE.md.
 import Hopf.LibShims
 import Lib.LinearAlgebra.ColumnKernel
 import Lib.Data.Int.SignedResidual
+import Lib.Algebra.Group.Prod
 import Hopf.LCP.IntegralHomology
 import Hopf.Proof.LCP.BoundaryTopology
 import Lib.AlgebraicTopology.SingularHomology.CirclePaths
@@ -11966,25 +11967,15 @@ theorem ThreefoldHomology.CapElimination.regularFibreIntoSpace_homology_surjecti
 theorem ThreefoldHomology.CapElimination.starLeft_surjective_of_nativeCapKernel (n : ℕ)
     (h : Function.Surjective (nativeCapKernelRegularMap n)) :
     Function.Surjective (ThreefoldHomology.starLeftHomologyMap n) := by
-  intro p
-  obtain ⟨b, hb⟩ := starOverlapToFillingsHomologyMap_surjective n (-p.2)
-  have hrel :
-    p.1 - ThreefoldHomology.starOverlapToRegularHomologyMap n b ∈
-      LinearMap.range (nativeCapKernelRegularMap n) :=
-    h (p.1 - ThreefoldHomology.starOverlapToRegularHomologyMap n b)
+  apply AddMonoidHom.surjective_signed_prod_of_surjective_ker
+    (ThreefoldHomology.starOverlapToRegularHomologyMap n).toAddMonoidHom
+    (ThreefoldHomology.starOverlapToFillingsHomologyMap n).toAddMonoidHom
+    (starOverlapToFillingsHomologyMap_surjective n)
+  intro a
+  have hrel : a ∈ LinearMap.range (nativeCapKernelRegularMap n) := h a
   rw [nativeCapKernelRegularMap_range] at hrel
   obtain ⟨c, hc⟩ := hrel
-  have hc' :
-    ThreefoldHomology.starOverlapToRegularHomologyMap n c.val =
-      p.1 - ThreefoldHomology.starOverlapToRegularHomologyMap n b :=
-    hc
-  refine ⟨c.val + b, ?_⟩
-  rw [starLeft_regular_fillings]
-  apply Prod.ext
-  · change ThreefoldHomology.starOverlapToRegularHomologyMap n (c.val + b) = p.1
-    rw [map_add, hc', sub_add_cancel]
-  · change -ThreefoldHomology.starOverlapToFillingsHomologyMap n (c.val + b) = p.2
-    rw [map_add, c.property, zero_add, hb, neg_neg]
+  exact ⟨⟨c.val, c.property⟩, hc⟩
 
 theorem ThreefoldHomology.SecondDegree.regularFibre_homologyTwo_surjective :
     Function.Surjective
