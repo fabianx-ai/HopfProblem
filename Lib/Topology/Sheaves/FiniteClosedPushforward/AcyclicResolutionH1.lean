@@ -14,7 +14,9 @@ public import Lib.Topology.Sheaves.FiniteClosedPushforward.Cohomology
 # H¹ acyclic resolutions under finite closed pushforward
 
 Finite closed pushforward carries a low-degree acyclic resolution to another such resolution.
-The native Ext comparison commutes with the canonical H¹/global-sections comparison.
+The native Ext comparison commutes with the canonical H¹/global-sections comparison.  This is the
+degree-one case of `Lib.Topology.Sheaves.FiniteClosedPushforward.AcyclicResolution`; see
+Hartshorne, *Algebraic Geometry*, III.1.2A.
 -/
 
 @[expose] public section
