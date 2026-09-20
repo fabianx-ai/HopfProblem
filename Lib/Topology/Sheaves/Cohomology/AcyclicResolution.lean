@@ -21,7 +21,8 @@ comparison is natural in the resolution.
 
 * R. Hartshorne, *Algebraic Geometry*, III, Proposition 1.2A
 * R. Godement, *Topologie algébrique et théorie des faisceaux*, II.4.7
-* C. Weibel, *An Introduction to Homological Algebra*, Theorem 2.4.6
+* C. Weibel, *An Introduction to Homological Algebra*, §2.4 (cf. §2.5 for the right-derived
+  case)
 -/
 
 @[expose] public section
