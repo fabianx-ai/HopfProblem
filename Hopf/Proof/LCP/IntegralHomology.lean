@@ -63,6 +63,7 @@ Original source lines 211736--237524; see PROVENANCE.md.
 
 import Hopf.LibShims
 import Lib.LinearAlgebra.ColumnKernel
+import Lib.Data.Int.SignedResidual
 import Hopf.LCP.IntegralHomology
 import Hopf.Proof.LCP.BoundaryTopology
 import Lib.AlgebraicTopology.SingularHomology.CirclePaths
@@ -22038,12 +22039,6 @@ theorem ThreefoldHomology.FourthFibre.fibre_range_le :
   rintro _ ⟨a, rfl⟩
   exact fibre_mem_range a
 
-theorem ThreefoldHomology.FifthDegree.signed_residual_coordinate_zero (k u v d : ℤ)
-    (hthree : 3 * u = k) (hfour : -4 * v = k) (hregular : u + v = d * k) : k = 0 := by
-  have h : (12 * d - 1) * k = 0 := by linear_combination 4 * hthree - 3 * hfour - 12 * hregular
-  have hn : 12 * d - 1 ≠ 0 := by omega
-  exact (mul_eq_zero.mp h).resolve_left hn
-
 theorem ThreefoldHomology.TopDegree.connecting_five_injective :
     Function.Injective (ThreefoldHomology.starConnectingHomomorphism 5) := by
   have := ThreefoldHomology.Finiteness.starPairHomology_subsingleton (by decide : 5 < 6)
@@ -23063,7 +23058,7 @@ theorem ThreefoldHomology.FifthDegree.fifthWangCoordinate_vanishes
       cuspResidualCoefficient * ThreefoldHomology.FourthWang.fifthWangCoordinate a := by
     linear_combination hsum - hcusp
   exact
-    signed_residual_coordinate_zero (ThreefoldHomology.FourthWang.fifthWangCoordinate a)
+    Int.signed_residual_coordinate_zero (ThreefoldHomology.FourthWang.fifthWangCoordinate a)
       (PeriodTorusHigherHomology.realTorusH4Equiv (b (Option.some .three)))
       (PeriodTorusHigherHomology.realTorusH4Equiv (b (Option.some .four))) cuspResidualCoefficient
       hthree hfour hregular
