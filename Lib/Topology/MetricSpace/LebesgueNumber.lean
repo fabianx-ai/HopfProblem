@@ -3,6 +3,20 @@ module
 public import Mathlib.Topology.MetricSpace.Bounded
 public import Mathlib.Topology.Sets.OpenCover
 
+/-!
+# A same-radius diameter form of the Lebesgue number lemma
+
+The Lebesgue number lemma for a compact metric space: every open cover admits a radius `δ > 0`
+such that every ball of radius `δ` lies in one member of the cover.  Here the same radius `δ` is
+used unchanged to control every nonempty subset of diameter smaller than `δ`, which is the form
+in which the lemma is applied to meshes of a subdivision.
+
+## References
+
+* J. R. Munkres, *Topology*, Lemma 27.5 (the Lebesgue number lemma)
+* Mathlib's `lebesgue_number_lemma_of_metric`, the ball form used here
+-/
+
 @[expose] public section
 
 set_option warningAsError true
@@ -14,31 +28,23 @@ universe u v
 
 namespace Metric
 
-/-!
-# A same-radius diameter form of the Lebesgue number lemma
-
-This file translates the ball-form Lebesgue number lemma and canonical Corollary 2.1 from
-`TEXTBOOK.md`, lines 1329--1346.  For a compact metric space, the radius chosen for the ball
-cover is used unchanged to control every nonempty subset of smaller diameter.
--/
-
--- Positivity is retained in the textbook interface; the diameter argument does not use it.
+-- The positivity hypothesis is part of the interface; the diameter argument does not use it.
 set_option linter.unusedVariables false in
-/-- Canonical Corollary 2.1: a nonempty set whose diameter is smaller than a fixed ball-cover
-radius lies in one member of the cover, at that same radius. -/
+/-- A nonempty set whose diameter is smaller than a fixed ball-cover radius lies in one member of
+the cover, at that same radius (Munkres, *Topology*, Lemma 27.5). -/
 public theorem subset_cover_of_diam_lt_of_ball_cover
     {X : Type u} [MetricSpace X] [CompactSpace X] {ι : Type v}
     (U : ι → TopologicalSpace.Opens X) (δ : ℝ) (hδ : 0 < δ)
     (hball : ∀ x : X, ∃ i : ι, Metric.ball x δ ⊆ U i)
     (A : Set X) (hA : A.Nonempty) (hdiam : Metric.diam A < δ) :
     ∃ i : ι, A ⊆ U i := by
-  -- L-01: choose the textbook point `a ∈ A` and the cover member containing `B(a, δ)`.
+  -- Choose a point `a ∈ A` and the cover member containing `B(a, δ)`.
   rcases hA with ⟨a, ha⟩
   rcases hball a with ⟨i, hai⟩
   refine ⟨i, ?_⟩
-  -- L-02: compactness supplies the boundedness needed by the real-diameter inequality.
+  -- Compactness supplies the boundedness needed by the real-diameter inequality.
   have hbounded : Bornology.IsBounded A := Metric.isBounded_of_compactSpace
-  -- L-03: `d(a,b) ≤ diam A < δ`, so every `b ∈ A` lies in the chosen ball and cover member.
+  -- `d(a,b) ≤ diam A < δ`, so every `b ∈ A` lies in the chosen ball and cover member.
   intro b hb
   have hab : dist a b ≤ Metric.diam A :=
     Metric.dist_le_diam_of_mem hbounded ha hb
@@ -48,15 +54,16 @@ public theorem subset_cover_of_diam_lt_of_ball_cover
   have hbball : b ∈ Metric.ball a δ := Metric.mem_ball.mpr hbaδ
   exact hai hbball
 
-/-- The ball-form Lebesgue lemma together with canonical Corollary 2.1: one positive radius works
-simultaneously for the ball clause and for every nonempty subset of smaller diameter. -/
+/-- The Lebesgue number lemma in diameter form: on a compact metric space one positive radius
+works simultaneously for the ball clause and for every nonempty subset of smaller diameter
+(Munkres, *Topology*, Lemma 27.5). -/
 public theorem exists_lebesgue_number_diam
     {X : Type u} [MetricSpace X] [CompactSpace X] {ι : Type v}
     (U : ι → TopologicalSpace.Opens X) (hU : TopologicalSpace.IsOpenCover U) :
     ∃ δ : ℝ, 0 < δ ∧
       (∀ x : X, ∃ i : ι, Metric.ball x δ ⊆ U i) ∧
       (∀ A : Set X, A.Nonempty → Metric.diam A < δ → ∃ i : ι, A ⊆ U i) := by
-  -- L-05: specialize Mathlib's ball-form lemma to the whole compact metric space.
+  -- Specialize Mathlib's ball-form lemma to the whole compact metric space.
   rcases lebesgue_number_lemma_of_metric
       (s := (Set.univ : Set X)) (c := fun i ↦ (U i : Set X))
       isCompact_univ (fun i ↦ (U i).isOpen)
@@ -64,7 +71,7 @@ public theorem exists_lebesgue_number_diam
   have hball' : ∀ x : X, ∃ i : ι, Metric.ball x δ ⊆ U i := by
     simpa only [Set.mem_univ, forall_const] using hball
   refine ⟨δ, hδ, hball', ?_⟩
-  -- L-06: apply Corollary 2.1 without halving or reselecting the ball-form radius.
+  -- Apply the diameter clause without halving or reselecting the ball-form radius.
   intro A hA hdiam
   exact subset_cover_of_diam_lt_of_ball_cover U δ hδ hball' A hA hdiam
 

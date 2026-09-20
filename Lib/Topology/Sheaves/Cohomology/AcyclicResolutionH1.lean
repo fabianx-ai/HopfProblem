@@ -12,9 +12,18 @@ public import Lib.Topology.Sheaves.Cohomology.AddCommGroup
 /-!
 # Sheaf H¹ from an acyclic resolution
 
-This specializes the generic degree-one acyclic-resolution comparison to abelian sheaves on a
-topological space.  Mathlib's canonical degree-zero sheaf-cohomology equivalence identifies the
-degree-zero Ext complex with literal global sections.
+For a short exact sequence `0 → F → A → B → 0` of abelian sheaves whose middle term is acyclic,
+the first cohomology group `H¹(X, F)` is the homology of the three-term complex of global
+sections.  This is the degree-one case of "acyclic resolutions compute sheaf cohomology".
+
+The file also records the identification of degree-zero sheaf cohomology with global sections,
+`H⁰(X, F) ≅ Γ(X, F)`, and its naturality in `F`.
+
+## References
+
+* R. Hartshorne, *Algebraic Geometry*, III, Proposition 1.2A
+* R. Godement, *Topologie algébrique et théorie des faisceaux*, II.4.7
+* C. Weibel, *An Introduction to Homological Algebra*, Theorem 2.4.6
 -/
 
 @[expose] public section
@@ -36,6 +45,7 @@ def globalSectionsFunctor :
     TopCat.Sheaf AddCommGrpCat.{0} X ⥤ AddCommGrpCat.{0} :=
   (sheafSections (Opens.grothendieckTopology X) AddCommGrpCat.{0}).obj (op ⊤)
 
+/-- Evaluation of an abelian sheaf on the top open is an additive functor. -/
 instance globalSectionsFunctor_additive : (globalSectionsFunctor X).Additive where
   map_add := by intros; rfl
 
@@ -53,6 +63,7 @@ def h0GlobalIso (F : TopCat.Sheaf AddCommGrpCat.{0} X) :
   (CategoryTheory.Sheaf.H.equiv₀ F
     (show IsTerminal (⊤ : Opens X) from isTerminalTop)).toAddCommGrpIso
 
+/-- The identification `H⁰(X, F) ≅ Γ(X, F)` is natural in the sheaf `F`. -/
 theorem h0GlobalIso_naturality {F G : TopCat.Sheaf AddCommGrpCat.{0} X} (f : F ⟶ G) :
     (extFunctorObj (unitSheaf X) 0).map f ≫ (h0GlobalIso G).hom =
       (h0GlobalIso F).hom ≫ (globalSectionsFunctor X).map f := by

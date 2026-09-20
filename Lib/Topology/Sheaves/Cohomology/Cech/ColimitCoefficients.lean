@@ -12,13 +12,15 @@ public import Lib.Topology.Sheaves.Cohomology.Cech.Colimit
 /-!
 # Coefficient functoriality of direct-limit Cech cohomology
 
-This file continues the coefficient-functorial part of textbook section CD-05. The fixed-cover
-coefficient maps commute with refinement, so the colimit universal property gives a canonical map
-on refinement-directed Cech cohomology. These maps preserve identities and composition and hence
-make direct-limit Cech cohomology functorial in presheaf, and therefore sheaf, coefficients.
+Direct-limit Cech cohomology is functorial in the coefficients.  The fixed-cover coefficient
+maps commute with refinement, so the colimit universal property gives a canonical map on
+refinement-directed Cech cohomology; these maps preserve identities and composition and hence
+make `Ȟⁿ(X, -)` a functor on presheaves, and therefore on sheaves, of coefficients.
 
-No effaceability assertion, long exact sequence, or comparison with derived sheaf cohomology is
-made here.
+## References
+
+* R. Godement, *Topologie algébrique et théorie des faisceaux*, II.5
+* G. E. Bredon, *Sheaf Theory*, III.4
 -/
 
 @[expose] public section
@@ -132,11 +134,14 @@ noncomputable def cechCohomologyCoefficientFunctor (n : ℕ) :
   map_id P := cechCohomologyCoefficientMap_id P n
   map_comp f g := cechCohomologyCoefficientMap_comp f g n
 
+/-- The coefficient functor sends a presheaf to its direct-limit Cech cohomology. -/
 @[simp]
 theorem cechCohomologyCoefficientFunctor_obj (n : ℕ) (P : TopCat.Presheaf A X) :
     (cechCohomologyCoefficientFunctor (A := A) n).obj P = cechCohomology P n :=
   rfl
 
+/-- The coefficient functor sends a morphism of presheaves to the induced map on direct-limit
+Cech cohomology. -/
 @[simp]
 theorem cechCohomologyCoefficientFunctor_map
     (n : ℕ) {P Q : TopCat.Presheaf A X} (f : P ⟶ Q) :
@@ -150,6 +155,8 @@ noncomputable def sheafCechCohomologyCoefficientFunctor (n : ℕ) :
     TopCat.Sheaf A X ⥤ A :=
   TopCat.Sheaf.forget A X ⋙ cechCohomologyCoefficientFunctor (A := A) n
 
+/-- The sheaf-valued coefficient functor sends a sheaf to the direct-limit Cech cohomology of its
+underlying presheaf. -/
 @[simp]
 theorem sheafCechCohomologyCoefficientFunctor_obj
     (n : ℕ) (F : TopCat.Sheaf A X) :
@@ -157,6 +164,8 @@ theorem sheafCechCohomologyCoefficientFunctor_obj
       cechCohomology F.presheaf n :=
   rfl
 
+/-- The sheaf-valued coefficient functor sends a morphism of sheaves to the map induced by the
+underlying morphism of presheaves. -/
 @[simp]
 theorem sheafCechCohomologyCoefficientFunctor_map
     (n : ℕ) {F G : TopCat.Sheaf A X} (f : F ⟶ G) :

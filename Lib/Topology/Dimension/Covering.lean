@@ -13,15 +13,31 @@ public import Mathlib.Topology.Sets.OpenCover
 /-!
 # Lebesgue covering dimension: open-cover vocabulary
 
-This file records the elementary open-cover notions used in the definition of Lebesgue covering
-dimension. A refinement includes a chosen function from the finer indices to the coarser indices.
-The multiplicity bound says that no point lies in more than the prescribed number of cover
-members; equivalently, every intersection of too many distinct members is empty.
+A space has Lebesgue covering dimension at most `n` when every open cover admits an open
+refinement in which no point lies in more than `n + 1` members.  This file records the
+elementary open-cover vocabulary behind that definition: a refinement carries a chosen function
+from the finer indices to the coarser indices, and the multiplicity bound says that no point
+lies in more than the prescribed number of cover members, equivalently that every intersection
+of too many distinct members is empty.
 
-The vocabulary, its elementary finite-intersection reformulations, and transport of dimension
-bounds along homeomorphisms are developed here. Transport uses a common arbitrary universe for
-the two spaces and their cover indices. No separation axiom, compactness assumption, or sheaf
-theory is involved.
+## Main definitions
+
+* `TopologicalSpace.OpenCover.Refinement V U`: a chosen refinement of the family `U` by `V`.
+* `TopologicalSpace.OpenCover.MultiplicityLE U m`: no point lies in more than `m` members of `U`.
+* `HasCoveringDimensionLE X n`: the Lebesgue covering dimension of `X` is at most `n`.
+
+## Main results
+
+* `HasCoveringDimensionLE.of_homeomorph`: covering dimension is a topological invariant.
+
+As in Mathlib's definition of `ParacompactSpace`, cover indices live in the same universe as the
+space, and transport along a homeomorphism therefore uses a common universe for the two spaces.
+
+## References
+
+* R. Engelking, *Dimension Theory*, §1.6
+* W. Hurewicz and H. Wallman, *Dimension Theory*, Chapter V
+* J. R. Munkres, *Topology*, §50
 -/
 
 @[expose] public section
@@ -64,25 +80,30 @@ def comp (r : Refinement V U) (s : Refinement W V) : Refinement W U where
   index j := r.index (s.index j)
   le j := (s.le j).trans (r.le (s.index j))
 
+/-- The identity refinement assigns each index to itself. -/
 @[simp]
 theorem refl_index (U : ι → Opens X) (i : ι) : (refl U).index i = i :=
   rfl
 
+/-- The index function of a composite refinement is the composite of the index functions. -/
 @[simp]
 theorem comp_index (r : Refinement V U) (s : Refinement W V) (k : μ) :
     (r.comp s).index k = r.index (s.index k) :=
   rfl
 
+/-- Composing with the identity refinement on the left changes nothing. -/
 @[simp]
 theorem refl_comp (r : Refinement V U) : (refl U).comp r = r := by
   ext
   rfl
 
+/-- Composing with the identity refinement on the right changes nothing. -/
 @[simp]
 theorem comp_refl (r : Refinement V U) : r.comp (refl V) = r := by
   ext
   rfl
 
+/-- Composition of chosen refinements is associative. -/
 @[simp]
 theorem comp_assoc {Z : Type z} {T : Z → Opens X}
     (r : Refinement V U) (s : Refinement W V) (t : Refinement T W) :
@@ -159,7 +180,7 @@ refinement of multiplicity at most `n + 1`. The refinement carries the chosen in
 to compare the finer cover with the original one.
 
 As in Mathlib's definition of `ParacompactSpace`, cover indices live in the same universe as the
-space. -/
+space (Engelking, *Dimension Theory*, §1.6; Hurewicz--Wallman, Chapter V). -/
 def HasCoveringDimensionLE (n : ℕ) : Prop :=
   ∀ {ι : Type u} (U : ι → TopologicalSpace.Opens X), TopologicalSpace.IsOpenCover U →
     ∃ (κ : Type u) (V : κ → TopologicalSpace.Opens X)
@@ -178,20 +199,16 @@ theorem mono (hmn : m ≤ n) (h : HasCoveringDimensionLE X m) :
   exact ⟨κ, V, r, hV, hmult.mono (Nat.add_le_add_right hmn 1)⟩
 
 open TopologicalSpace in
-/-- Transport a covering-dimension bound along a homeomorphism between spaces in a common
-arbitrary universe, using the existing convention that cover indices share the space universe.
-
-Textbook Lemma 6.1 (CD12C-T): push an arbitrary indexed open cover forward, choose a refinement
-on the target, and pull that refinement back. The original and refinement index types and the
-chosen assignment are unchanged. Membership of a point in a finite family pulls back to
-membership of its image in the same finite family, preserving the index-counting multiplicity.
-No separation, compactness, metric, nonemptiness, or finite-cover hypothesis is required. -/
+/-- Lebesgue covering dimension is a topological invariant: a bound transports along a
+homeomorphism between spaces in a common universe, the convention being that cover indices share
+the space universe.  No separation, compactness, metric, nonemptiness, or finite-cover hypothesis
+is required (Engelking, *Dimension Theory*, §1.6). -/
 theorem of_homeomorph {X Y : Type u}
     [TopologicalSpace X] [TopologicalSpace Y]
     (g : X ≃ₜ Y) {n : ℕ} (hY : HasCoveringDimensionLE Y n) :
     HasCoveringDimensionLE X n := by
   intro ι U hU
-  -- T01: image openness and surjectivity give a cover on the same original indices.
+  -- Image openness and surjectivity give a cover on the same original indices.
   let U' : ι → Opens Y :=
     fun i => ⟨g '' (U i : Set X), g.isOpenMap _ (U i).isOpen⟩
   have hImageUnion : (⋃ i, g '' (U i : Set X)) = Set.univ := by
@@ -199,13 +216,13 @@ theorem of_homeomorph {X Y : Type u}
     exact Set.image_univ_of_surjective g.surjective
   have hImage : IsOpenCover U' :=
     IsOpenCover.of_sets (fun i => g.isOpenMap _ (U i).isOpen) hImageUnion
-  -- T02: choose the target refinement once, with its actual assignment.
+  -- Choose the target refinement once, with its actual assignment.
   obtain ⟨κ, V', r, hV', hM'⟩ := hY U' hImage
-  -- T03: continuous preimages form a cover on those same refinement indices.
+  -- Continuous preimages form a cover on those same refinement indices.
   let f : C(X, Y) := ⟨g, g.continuous⟩
   let V : κ → Opens X := fun j => (V' j).comap f
   have hV : IsOpenCover V := hV'.comap f
-  -- T04: preimage monotonicity and injective cancellation retain the assignment.
+  -- Preimage monotonicity and injective cancellation retain the assignment.
   have hContain : ∀ j, V j ≤ U (r.index j) := by
     intro j
     change g ⁻¹' (V' j : Set Y) ⊆ (U (r.index j) : Set X)
@@ -213,11 +230,11 @@ theorem of_homeomorph {X Y : Type u}
       Set.preimage_mono (r.le j)
     simpa only [g.preimage_image] using hpre
   let rX : OpenCover.Refinement V U := ⟨r.index, hContain⟩
-  -- T05: the same finite index family at x meets the target cover at g x.
+  -- The same finite index family at `x` meets the target cover at `g x`.
   have hM : OpenCover.MultiplicityLE V (n + 1) := by
     intro x s hs
     exact hM' (g x) s hs
-  -- T06: these witnesses satisfy the original arbitrary-cover criterion.
+  -- These witnesses satisfy the original arbitrary-cover criterion.
   exact ⟨κ, V, rX, hV, hM⟩
 
 end HasCoveringDimensionLE

@@ -15,9 +15,8 @@ public import Mathlib.Topology.Sheaves.Flasque
 # Flasque acyclicity for normalized fixed-cover Čech cohomology
 
 For an arbitrary set-indexed open cover and a flasque sheaf of abelian groups, every
-positive-degree cocycle in the normalized ordered Čech complex has an actual primitive.  The
-proof follows the direct cochain-sheaf argument of textbook section CD-05D, equations
-(C9), (C15), and (C16).
+positive-degree cocycle in the normalized ordered Čech complex has an actual primitive: a flasque
+sheaf is Čech-acyclic for every cover.  The proof is the direct cochain-sheaf argument.
 
 The sheaf of degree-`n` cochains is flasque because it is a product of flasque
 intersection-section factors.  The exact augmented cochain-sheaf resolution then presents its
@@ -27,6 +26,11 @@ Lifting a global cycle through that map produces the required normalized Čech p
 
 No local-finiteness, separation, or paracompactness hypothesis is used, and no cohomology
 comparison theorem enters the proof.
+
+## References
+
+* R. Godement, *Topologie algébrique et théorie des faisceaux*, II.5.2.3
+* R. Hartshorne, *Algebraic Geometry*, III, Proposition 2.5 and Lemma 4.2
 -/
 
 @[expose] public section

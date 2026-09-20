@@ -14,26 +14,18 @@ public import Mathlib.CategoryTheory.Limits.Shapes.ConcreteCategory
 /-!
 # Locally zero presheaf cochains
 
-This file formalizes textbook section CD-05F.  A presheaf of abelian groups is locally zero when
-each section restricts to zero on some neighborhood of every point of its domain.  If its value
-on the empty open is zero as a separate hypothesis, then every normalized Cech cochain becomes
-literally zero after passage to a suitable set-valued open refinement.
+A presheaf of abelian groups is locally zero when each section restricts to zero on some
+neighborhood of every point of its domain.  On a paracompact Hausdorff space, if the value of
+such a presheaf on the empty open is zero as a separate hypothesis, then every normalized Cech
+cochain becomes literally zero after passage to a suitable set-valued open refinement.
 
-The proof uses a locally finite refinement `U` and a shrinking `V`.  At each point `x`, local
-finiteness supplies an open neighborhood `N_x` and a finite incidence set `F_x`.  The constructed
-open `W_x` has `N_x` as an explicit intersection factor, hence `W_x ⊆ N_x`.  For indices inside
-`F_x`, it uses
-the relevant cover member or the complement of the closure of its shrinking; for indices outside
-`F_x`, the containment `W_x ⊆ N_x` gives the required avoidance.  Finally it intersects the
-finitely many local-vanishing neighborhoods for the relevant ordered simplices.
+This is the step which makes a locally zero cochain die after refinement in the construction of
+the long exact Cech sequence.
 
-For a fine simplex, repeated target indices vanish by normalized alternation.  With distinct
-targets and nonempty fine intersection, the avoidance property reduces the component to one of
-the chosen local restrictions.  With distinct targets and empty fine intersection, the separate
-empty-open `IsZero` hypothesis applies.  The point-indexed family is then replaced by its range,
-retaining a chosen refinement assignment into the original cover.
+## References
 
-Only this reusable cochain-refinement result is developed here.
+* R. Godement, *Topologie algébrique et théorie des faisceaux*, II.5.10
+* G. E. Bredon, *Sheaf Theory*, III.4
 -/
 
 @[expose] public section
@@ -309,6 +301,19 @@ theorem exists_refinement_pullback_eq_zero_of_isLocallyZero_of_isZero_empty
     (a : OrderedCech.object (A := AddCommGrpCat.{max u v}) (X := X) P A.family q) :
     ∃ (W : SetOpenCover X) (r : Refinement W.family A.family),
       OrderedCech.refinementMapDegree P r q a = 0 := by
+  -- The proof uses a locally finite refinement `U` and a shrinking `V`.  At each point `x`,
+  -- local finiteness supplies an open neighborhood `N_x` and a finite incidence set `F_x`.  The
+  -- constructed open `W_x` has `N_x` as an explicit intersection factor, hence `W_x ⊆ N_x`.  For
+  -- indices inside `F_x` it uses the relevant cover member or the complement of the closure of
+  -- its shrinking; for indices outside `F_x` the containment `W_x ⊆ N_x` gives the required
+  -- avoidance.  Finally it intersects the finitely many local-vanishing neighborhoods for the
+  -- relevant ordered simplices.
+  --
+  -- For a fine simplex, repeated target indices vanish by normalized alternation.  With distinct
+  -- targets and nonempty fine intersection, the avoidance property reduces the component to one
+  -- of the chosen local restrictions.  With distinct targets and empty fine intersection, the
+  -- separate empty-open `IsZero` hypothesis applies.  The point-indexed family is then replaced
+  -- by its range, retaining a chosen refinement assignment into the original cover.
   obtain ⟨R⟩ := A.exists_isLocallyFinite_shrinkable_refinement
   let rAU : Refinement R.fine.family A.family := refinementOfLE R.refines
   let b : OrderedCech.object (A := AddCommGrpCat.{max u v}) (X := X) P R.fine.family q :=

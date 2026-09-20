@@ -13,9 +13,9 @@ public import Mathlib.Topology.Sheaves.SheafCondition.UniqueGluing
 /-!
 # Degree-zero Cech cohomology and global sections
 
-This file formalizes textbook section CD-05A, equations (C7)--(C8). For every topological space,
-abelian sheaf, and set-valued open cover, the normalized degree-zero Cech cocycles are exactly the
-compatible families of local sections. The sheaf gluing and uniqueness axioms therefore identify
+For every topological space, abelian sheaf, and set-valued open cover, the normalized
+degree-zero Cech cocycles are exactly the compatible families of local sections, so
+`Ȟ⁰(𝔘, F) = Γ(X, F)`. The sheaf gluing and uniqueness axioms therefore identify
 fixed-cover degree-zero Cech cohomology with global sections. The identification commutes with
 every refinement transition and with morphisms of coefficient sheaves, so it descends to a
 coefficient-natural isomorphism from refinement-directed degree-zero Cech cohomology to global
@@ -23,6 +23,11 @@ sections.
 
 No separation or paracompactness hypothesis is used, and no positive-degree comparison with
 derived sheaf cohomology is made here.
+
+## References
+
+* R. Godement, *Topologie algébrique et théorie des faisceaux*, II.5.2
+* R. Hartshorne, *Algebraic Geometry*, III, Lemma 4.1
 -/
 
 @[expose] public section
@@ -121,12 +126,15 @@ noncomputable def globalToZeroCochain :
       OrderedCech.object F.presheaf U.family 0 :=
   Limits.Pi.lift fun _σ => F.presheaf.map (homOfLE le_top).op
 
+/-- The component of the restricted global section at an ordered zero-simplex is the restriction
+map to that simplex's intersection. -/
 @[reassoc (attr := simp)]
 theorem globalToZeroCochain_π (σ : OrderedSimplex U.Index 0) :
     globalToZeroCochain F U ≫ OrderedCech.π F.presheaf U.family 0 σ =
       F.presheaf.map (homOfLE le_top : σ.intersection U.family ⟶ ⊤).op := by
   exact Limits.Pi.lift_π _ _
 
+/-- The restriction of a global section is a Cech cocycle: its Cech differential vanishes. -/
 theorem globalToZeroCochain_comp_differential :
     globalToZeroCochain F U ≫ OrderedCech.differential F.presheaf U.family 0 = 0 := by
   apply Limits.Pi.hom_ext
@@ -158,6 +166,8 @@ noncomputable def globalToZeroCycles :
       simpa only [normalizedCechComplex, OrderedCech.complex_d] using
         globalToZeroCochain_comp_differential F U)
 
+/-- The degree-zero cocycle attached to a global section has the restricted section as its
+underlying cochain. -/
 @[reassoc (attr := simp)]
 theorem globalToZeroCycles_iCycles :
     globalToZeroCycles F U ≫
@@ -418,6 +428,8 @@ private theorem globalToZeroCycles_bijective :
     Function.Bijective (globalToZeroCycles F U) :=
   ⟨globalToZeroCycles_injective F U, globalToZeroCycles_surjective F U⟩
 
+/-- Restriction of global sections to degree-zero Cech cocycles is an isomorphism: this is the
+sheaf axiom, gluing and uniqueness of compatible families (Godement II.5.2; Hartshorne III.4.1). -/
 theorem globalToZeroCycles_isIso :
     IsIso (globalToZeroCycles F U) :=
   (ConcreteCategory.isIso_iff_bijective _).mpr

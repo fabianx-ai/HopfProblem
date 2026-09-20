@@ -10,10 +10,14 @@ public import Mathlib.Topology.Homotopy.Lifting
 /-!
 # Elementary transfer and recognition results for covering spaces
 
-This dependency snapshot is owned by the parallel Core-A topology workstream.  It records two
-standard facts needed by the equivariant free-cover lift: local path-connectedness transfers to
-the source of a local homeomorphism, and a path-connected principal cover with faithful monodromy
-is simply connected.
+Two standard facts about covering spaces: local path-connectedness transfers to the source of a
+local homeomorphism, and a path-connected principal cover whose deck monodromy acts faithfully
+on the fibre is simply connected.  The second is the recognition criterion for the universal
+cover.
+
+## References
+
+* A. Hatcher, *Algebraic Topology*, Propositions 1.31 and 1.39
 -/
 
 @[expose] public section
@@ -28,7 +32,8 @@ namespace IsLocalHomeomorph
 
 variable {E : Type u} {X : Type v} [TopologicalSpace E] [TopologicalSpace X]
 
-/-- Local path-connectedness pulls back through a local homeomorphism. -/
+/-- Local path-connectedness pulls back through a local homeomorphism: if the base is locally
+path-connected, so is the source. -/
 theorem locallyPathConnectedSpace
     [LocallyPathConnectedSpace X] {p : E → X} (hp : IsLocalHomeomorph p) :
     LocallyPathConnectedSpace E := by
@@ -57,7 +62,8 @@ variable {X : Type u} {E : Type v} {G : Type w}
   [Group G] [MulAction G E]
   {p : E → X}
 
-/-- A path-connected principal cover with faithful deck monodromy is simply connected. -/
+/-- A path-connected principal cover with faithful deck monodromy is simply connected: this is
+the recognition criterion for the universal cover (Hatcher, *Algebraic Topology*, Prop. 1.39). -/
 theorem simplyConnectedSpace_of_fundamentalGroupToMulOpposite_injective
     (hp : IsQuotientCoveringMap p G) [PathConnectedSpace E]
     {x : X} (e : p ⁻¹' {x})

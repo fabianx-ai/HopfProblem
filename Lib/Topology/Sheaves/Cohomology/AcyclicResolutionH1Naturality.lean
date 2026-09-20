@@ -11,6 +11,15 @@ public import Lib.Topology.Sheaves.Cohomology.AcyclicResolutionH1
 
 /-!
 # Naturality of the sheaf H¹ acyclic-resolution comparison
+
+The isomorphism between `H¹(X, F)` and the homology of the three-term complex of global
+sections of an acyclic resolution of `F` commutes with every map of augmented resolutions.
+This is the naturality half of the statement that acyclic resolutions compute sheaf cohomology.
+
+## References
+
+* R. Hartshorne, *Algebraic Geometry*, III, Proposition 1.2A
+* R. Godement, *Topologie algébrique et théorie des faisceaux*, II.4.7
 -/
 
 @[expose] public section
@@ -44,6 +53,8 @@ variable (φ : CategoryTheory.Abelian.Ext.AcyclicResolutionH1.Hom R S)
 def globalMap : globalComplex R ⟶ globalComplex S :=
   (globalSectionsFunctor X).mapShortComplex.map φ.complex
 
+/-- The degree-zero comparison between the Ext short complex and the short complex of global
+sections commutes with every map of augmented resolutions. -/
 theorem extZeroGlobalIso_naturality :
     φ.extZeroMap (unitSheaf X) ≫ (extZeroGlobalIso S).hom =
       (extZeroGlobalIso R).hom ≫ globalMap φ := by

@@ -11,13 +11,16 @@ public import Lib.Topology.Sheaves.Cohomology.Cech.DirectedSystem
 /-!
 # Normalized Cech cohomology over the refinement-directed cover category
 
-This file completes the functorial part of textbook section CD-04.  Refinement pullbacks are
-strictly compatible with identity and composition before passing to cohomology.  Since two
-choices of a refinement function induce the same homology map, a classical choice of refinement
-for each arrow in the thin cover category then defines the degreewise normalized Cech cohomology
-functor.
+Normalized Cech cohomology in a fixed degree is a functor on the refinement-preordered category
+of set-valued open covers.  Refinement pullbacks are strictly compatible with identities and with
+composition already at the level of cochains, and two choices of a refinement function induce the
+same map on cohomology, so a classical choice of refinement for each arrow of the thin cover
+category defines the degreewise normalized Cech cohomology functor.
 
-No colimit and no comparison with derived sheaf cohomology is defined here.
+## References
+
+* R. Godement, *Topologie algébrique et théorie des faisceaux*, II.5.7
+* G. E. Bredon, *Sheaf Theory*, III.4
 -/
 
 @[expose] public section
@@ -196,6 +199,8 @@ noncomputable def normalizedCechComplex (P : TopCat.Presheaf A X)
     (U : SetOpenCover X) : CochainComplex A ℕ :=
   OrderedCech.complex P U.family
 
+/-- The degree-`n` term of the normalized Cech complex of a cover is the normalized Cech object
+of its underlying family. -/
 @[simp]
 theorem normalizedCechComplex_X (P : TopCat.Presheaf A X)
     (U : SetOpenCover X) (n : ℕ) :
@@ -255,12 +260,15 @@ noncomputable def normalizedCechCohomologyFunctor (P : TopCat.Presheaf A X) (n :
             normalizedCechCohomologyMap P (leOfHom g) n := by
         rfl
 
+/-- The Cech cohomology functor sends a cover to the normalized Cech cohomology of that cover. -/
 @[simp]
 theorem normalizedCechCohomologyFunctor_obj (P : TopCat.Presheaf A X)
     (n : ℕ) (U : SetOpenCover X) :
     (normalizedCechCohomologyFunctor P n).obj U = normalizedCechCohomology P U n :=
   rfl
 
+/-- The Cech cohomology functor sends a refinement arrow to the refinement map on normalized
+Cech cohomology. -/
 @[simp]
 theorem normalizedCechCohomologyFunctor_map (P : TopCat.Presheaf A X)
     (n : ℕ) {U V : SetOpenCover X} (f : U ⟶ V) :

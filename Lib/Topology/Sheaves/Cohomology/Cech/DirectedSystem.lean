@@ -13,14 +13,20 @@ public import Mathlib.SetTheory.Cardinal.Order
 /-!
 # The refinement-directed system of open covers
 
-This file continues textbook section CD-04 after refinement-choice independence.  It uses the
-set-sized presentation of an open cover as a set of open subsets, indexed by its subtype.  Arrows
-point from a coarse cover to a finer cover.  Pairwise intersections give a common refinement, so
-this preorder is nonempty and filtered.
+The open covers of a space, preordered by refinement, form a nonempty filtered category.  This
+is the directed index category over which Cech cohomology is formed as a direct limit.  A cover
+is presented set-sized, as a set of open subsets indexed by its subtype; an arrow points from a
+coarse cover to a finer one, and the pairwise intersections of two covers give a common
+refinement.
 
 Each cover subtype is equipped noncomputably with the well-order supplied by the well-ordering
 theorem.  This is only the arbitrary total order required by the normalized alternating Cech
 complex; it does not order open subsets by inclusion.
+
+## References
+
+* R. Godement, *Topologie algébrique et théorie des faisceaux*, II.5.7
+* G. E. Bredon, *Sheaf Theory*, III.4
 -/
 
 @[expose] public section
@@ -64,7 +70,7 @@ noncomputable instance indexLinearOrder (U : SetOpenCover X) : LinearOrder U.Ind
 
 /-- The refinement preorder: `U ≤ V` means that the cover `V` refines the cover `U`.
 The witness is truncated because arrows should remember only the existence of a refinement
-function; CD-04 proves that its choice is invisible on cohomology. -/
+function, and the induced map on Cech cohomology is independent of that choice. -/
 instance instPreorder : Preorder (SetOpenCover X) where
   le U V := Nonempty (Refinement V.family U.family)
   le_refl U := ⟨Refinement.refl U.family⟩
@@ -82,6 +88,8 @@ def singletonTop : SetOpenCover X where
     rw [TopologicalSpace.IsOpenCover]
     simp
 
+/-- Every space carries at least one set-valued open cover, namely the singleton cover by the
+whole space. -/
 instance instNonempty : Nonempty (SetOpenCover X) :=
   ⟨singletonTop⟩
 

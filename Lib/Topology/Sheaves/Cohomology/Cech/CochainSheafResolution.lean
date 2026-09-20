@@ -26,8 +26,13 @@ sheaves.  The later part of the file proves exactness by the textbook local inse
 near a point one chooses a cover member containing it and inserts that index into alternating
 cochains.  In particular, the proof never commutes a stalk with the possibly infinite product.
 
-This is textbook section CD-05C, equations (C11)--(C14).  It assumes no local-finiteness,
-flasqueness, separation, or paracompactness hypothesis.
+It assumes no local-finiteness, flasqueness, separation, or paracompactness hypothesis.
+
+## References
+
+* R. Godement, *Topologie algébrique et théorie des faisceaux*, II.5.2 (exactness of the Čech
+  resolution `𝒞•(𝔘, F)` of a sheaf)
+* R. Hartshorne, *Algebraic Geometry*, III, Lemma 4.2
 -/
 
 @[expose] public section
@@ -102,6 +107,7 @@ def pushedRestrictionSheafIso
     pushedRestrictionSheaf F V ≅ intersectionSectionsSheaf F V :=
   ObjectProperty.isoMk _ (pushedRestrictionPresheafIso F V)
 
+/-- Sections of `F(- ⊓ V)` over an open `W` are the sections of `F` over `W ⊓ V`. -/
 @[simp]
 theorem intersectionSectionsSheaf_obj
     (F : TopCat.Sheaf AddCommGrpCat.{u} X) (V W : Opens X) :
@@ -124,6 +130,8 @@ def intersectionSectionsMap
         rw [← F.presheaf.map_comp, ← F.presheaf.map_comp]
         congr 1 }
 
+/-- The map `F(- ⊓ V) ⟶ F(- ⊓ W)` induced by `V ≤ W` is, on each open, the restriction map of
+`F` along `Z ⊓ V ≤ Z ⊓ W`. -/
 @[reassoc (attr := simp)]
 theorem intersectionSectionsMap_app
     (F : TopCat.Sheaf AddCommGrpCat.{u} X)
@@ -146,6 +154,7 @@ def toIntersectionSectionsSheaf
         rw [← F.presheaf.map_comp, ← F.presheaf.map_comp]
         congr 1 }
 
+/-- The canonical map `F ⟶ F(- ⊓ V)` is, on each open `Z`, restriction along `Z ⊓ V ≤ Z`. -/
 @[reassoc (attr := simp)]
 theorem toIntersectionSectionsSheaf_app
     (F : TopCat.Sheaf AddCommGrpCat.{u} X) (V : Opens X)
@@ -154,6 +163,7 @@ theorem toIntersectionSectionsSheaf_app
       (homOfLE inf_le_left : Z.unop ⊓ V ⟶ Z.unop).op :=
   rfl
 
+/-- The canonical maps `F ⟶ F(- ⊓ V)` are compatible with the maps induced by `V ≤ W`. -/
 @[reassoc (attr := simp)]
 theorem toIntersectionSectionsSheaf_comp
     (F : TopCat.Sheaf AddCommGrpCat.{u} X)
@@ -214,6 +224,8 @@ def cochainSheafAugmentation (F : TopCat.Sheaf AddCommGrpCat.{u} X)
     (U : ι → Opens X) : F ⟶ cochainSheaf F U 0 :=
   Limits.Pi.lift fun σ => toIntersectionSectionsSheaf F (σ.intersection U)
 
+/-- The component of the augmentation `F ⟶ 𝒞⁰(𝔘, F)` at an ordered zero-simplex `σ` is the
+canonical map to the sections over the intersection of `σ`. -/
 @[reassoc (attr := simp)]
 theorem cochainSheafAugmentation_π (F : TopCat.Sheaf AddCommGrpCat.{u} X)
     (U : ι → Opens X) (σ : OrderedSimplex ι 0) :
@@ -256,12 +268,14 @@ def cochainSheafComplex (F : TopCat.Sheaf AddCommGrpCat.{u} X)
     CochainComplex (TopCat.Sheaf AddCommGrpCat.{u} X) ℕ :=
   complex (intersectionSectionsSheafPresheaf F) U
 
+/-- The degree-`n` term of the cochain-sheaf complex is the degree-`n` Čech cochain sheaf. -/
 @[simp]
 theorem cochainSheafComplex_X (F : TopCat.Sheaf AddCommGrpCat.{u} X)
     (U : ι → Opens X) (n : ℕ) :
     (cochainSheafComplex F U).X n = cochainSheaf F U n :=
   rfl
 
+/-- The differential of the cochain-sheaf complex is the alternating Čech differential. -/
 @[simp]
 theorem cochainSheafComplex_d (F : TopCat.Sheaf AddCommGrpCat.{u} X)
     (U : ι → Opens X) (n : ℕ) :
@@ -277,6 +291,7 @@ def sheafSectionsFunctor (W : Opens X) :
   TopCat.Sheaf.forget AddCommGrpCat X ⋙
     (CategoryTheory.evaluation (Opens X)ᵒᵖ AddCommGrpCat).obj (op W)
 
+/-- Evaluating an abelian sheaf on a fixed open is an additive functor. -/
 instance sheafSectionsFunctor_additive (W : Opens X) :
     (sheafSectionsFunctor W).Additive := by
   constructor
@@ -321,6 +336,8 @@ def cochainSheafSectionsProductIso (F : TopCat.Sheaf AddCommGrpCat.{u} X)
         (TopCat.Sheaf.forget AddCommGrpCat X).obj
           (intersectionSectionsSheaf F (σ.intersection U)))
 
+/-- The comparison between the sections of the product cochain sheaf and the product of the
+sections is compatible with the projection to each ordered simplex. -/
 @[reassoc (attr := simp)]
 theorem cochainSheafSectionsProductIso_hom_π
     (F : TopCat.Sheaf AddCommGrpCat.{u} X) (U : ι → Opens X)
@@ -372,6 +389,8 @@ def cochainSheafSectionsIso (F : TopCat.Sheaf AddCommGrpCat.{u} X)
   cochainSheafSectionsProductIso F U n W ≪≫
     Limits.Pi.mapIso (fun σ => cochainSheafSectionFactorIso F U n W σ)
 
+/-- Sections of the degree-`n` cochain sheaf over `W` are the degree-`n` Čech cochains of the
+restricted family `W ⊓ U`, compatibly with the projection to each ordered simplex. -/
 @[reassoc (attr := simp)]
 theorem cochainSheafSectionsIso_hom_limit_π
     (F : TopCat.Sheaf AddCommGrpCat.{u} X) (U : ι → Opens X)
@@ -391,6 +410,7 @@ theorem cochainSheafSectionsIso_hom_limit_π
     cochainSheafSectionsProductIso_hom_π]
   rfl
 
+/-- The same comparison, stated with the Čech projection of the restricted family. -/
 @[reassoc (attr := simp)]
 theorem cochainSheafSectionsIso_hom_π
     (F : TopCat.Sheaf AddCommGrpCat.{u} X) (U : ι → Opens X)
@@ -405,6 +425,8 @@ theorem cochainSheafSectionsIso_hom_π
         F.presheaf.obj (op (τ.intersection (restrictedFamily W U)))) σ = _
   exact cochainSheafSectionsIso_hom_limit_π F U n W σ
 
+/-- On sections over an open `W`, the cochain-sheaf differential is the alternating sum of the
+face restrictions. -/
 @[reassoc]
 theorem cochainSheafDifferential_app_π
     (F : TopCat.Sheaf AddCommGrpCat.{u} X) (U : ι → Opens X)
@@ -455,6 +477,8 @@ theorem intersectionSectionsMap_app_comp_factorIso
   rw [← F.presheaf.map_comp, ← F.presheaf.map_comp]
   congr 1
 
+/-- The Čech differential of the restricted family `W ⊓ U` is the alternating sum of the face
+restrictions. -/
 @[reassoc]
 theorem differential_restrictedFamily_limit_π
     (F : TopCat.Sheaf AddCommGrpCat.{u} X) (U : ι → Opens X)
@@ -529,6 +553,8 @@ def prependIndex (i : ι) {n : ℕ} (f : Fin (n + 1) → ι) : Fin (n + 2) → �
   Fin.cons i f
 
 omit [LinearOrder ι] in
+/-- Deleting the zeroth vertex of a tuple with an index prepended gives back the original
+tuple. -/
 @[simp]
 theorem face_prependIndex_zero (i : ι) {n : ℕ} (f : Fin (n + 1) → ι) :
     IndexTuple.face (prependIndex i f) 0 = f := by
@@ -536,6 +562,8 @@ theorem face_prependIndex_zero (i : ι) {n : ℕ} (f : Fin (n + 1) → ι) :
   simp [IndexTuple.face, prependIndex]
 
 omit [LinearOrder ι] in
+/-- Deleting a later vertex of a tuple with an index prepended prepends the index to the
+corresponding face of the original tuple. -/
 @[simp]
 theorem face_prependIndex_succ (i : ι) {n : ℕ} (f : Fin (n + 2) → ι)
     (k : Fin (n + 2)) :
@@ -581,6 +609,8 @@ def terminalInsertion (F : TopCat.Sheaf AddCommGrpCat.{u} X)
     restrictedAlternatingEvaluation F.presheaf V (n + 1) (σ.intersection V)
       (prependIndex i σ) (prependIndex_subordinate V i hi σ)
 
+/-- The component of the insertion homotopy at an ordered simplex `σ` is the evaluation of the
+cochain at `σ` with the distinguished index prepended. -/
 @[reassoc (attr := simp)]
 theorem terminalInsertion_π (F : TopCat.Sheaf AddCommGrpCat.{u} X)
     (V : ι → Opens X) (i : ι) (hi : ∀ j, V j ≤ V i)
@@ -599,6 +629,8 @@ theorem prependFace_subordinate (V : ι → Opens X) (i : ι)
   fun j => (σ.intersection_le_face V k).trans
     (prependIndex_subordinate V i hi (σ.face k) j)
 
+/-- Composing the insertion homotopy with the Čech differential gives the alternating sum of the
+evaluations at the faces of `σ` with the distinguished index prepended. -/
 @[reassoc]
 theorem terminalInsertion_comp_differential_π
     (F : TopCat.Sheaf AddCommGrpCat.{u} X) (V : ι → Opens X)
@@ -707,10 +739,12 @@ def vertexSimplex (i : ι) : OrderedSimplex ι 0 :=
     intro a b h
     omega)
 
+/-- Every vertex of the ordered zero-simplex on an index is that index. -/
 @[simp]
 theorem vertexSimplex_apply (i : ι) (j : Fin 1) : vertexSimplex i j = i :=
   rfl
 
+/-- The intersection over the ordered zero-simplex on an index `i` is the cover member `V i`. -/
 @[simp]
 theorem vertexSimplex_intersection (V : ι → Opens X) (i : ι) :
     (vertexSimplex i).intersection V = V i := by
@@ -738,6 +772,8 @@ def terminalAugmentation (F : TopCat.Sheaf AddCommGrpCat.{u} X)
   Limits.Pi.lift fun σ => F.presheaf.map
     (homOfLE (intersection_le_vertexSimplex V i hi σ)).op
 
+/-- The component of the augmentation for a cover with a largest member is the restriction from
+that largest member to the intersection of the given zero-simplex. -/
 @[reassoc (attr := simp)]
 theorem terminalAugmentation_π (F : TopCat.Sheaf AddCommGrpCat.{u} X)
     (V : ι → Opens X) (i : ι) (hi : ∀ j, V j ≤ V i)
@@ -853,6 +889,8 @@ def terminalSectionIso (F : TopCat.Sheaf AddCommGrpCat.{u} X)
   F.presheaf.mapIso (eqToIso
     (congrArg op (vertexSimplex_intersection_restrictedFamily U W i hW)).symm)
 
+/-- On sections over an open `W`, the component of the augmentation at an ordered zero-simplex
+`σ` is restriction along `W ⊓ σ.intersection U ≤ W`. -/
 @[reassoc]
 theorem cochainSheafAugmentation_app_comp_projection
     (F : TopCat.Sheaf AddCommGrpCat.{u} X) (U : ι → Opens X)

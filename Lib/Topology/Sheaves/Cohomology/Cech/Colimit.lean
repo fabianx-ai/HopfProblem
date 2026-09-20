@@ -14,18 +14,20 @@ public import Mathlib.CategoryTheory.Limits.ConcreteCategory.Basic
 /-!
 # Cech cohomology as a refinement-directed colimit
 
-This file completes textbook section CD-04.  For a coefficient presheaf and a degree, Cech
-cohomology is the colimit of normalized ordered Cech cohomology over the filtered preorder of
-set-valued open covers.  It exposes the canonical map from each fixed cover, its compatibility
-with refinement, and the colimit universal property.
+For a coefficient presheaf and a degree, Cech cohomology `Ȟⁿ(X, P)` is the colimit of normalized
+ordered Cech cohomology over the filtered preorder of set-valued open covers.  This file defines
+that colimit and exposes the canonical map from each fixed cover, its compatibility with
+refinement, and the colimit universal property.
 
 For concrete target categories whose forgetful functor preserves this filtered colimit, the final
-section records the elementwise form used by the covering-dimension argument: two classes from a
-fixed cover have the same image precisely when they agree after a refinement.  For abelian-group
-coefficients, a class maps to zero precisely when it dies after a refinement.
+section records the elementwise description of a filtered colimit: two classes from a fixed cover
+have the same image precisely when they agree after a refinement, and for abelian-group
+coefficients a class maps to zero precisely when it dies after a refinement.
 
-No comparison with derived sheaf cohomology and no multiplicity-vanishing theorem is introduced
-here.
+## References
+
+* R. Godement, *Topologie algébrique et théorie des faisceaux*, II.5.8
+* G. E. Bredon, *Sheaf Theory*, III.4
 -/
 
 @[expose] public section
