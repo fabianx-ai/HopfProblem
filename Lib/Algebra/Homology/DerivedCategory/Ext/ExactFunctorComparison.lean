@@ -24,7 +24,7 @@ comparison becomes an equivalence in every degree when the source has enough inj
 
 ## References
 
-* [C. A. Weibel, *An introduction to homological algebra*][weibel94], Exercise 2.4.x.
+* [C. A. Weibel, *An introduction to homological algebra*][weibel94], §2.4 (derived functors).
 * [A. Grothendieck, *Sur quelques points d'algèbre homologique*][grothendieck57], §2
   (comparison of δ-functors).
 
