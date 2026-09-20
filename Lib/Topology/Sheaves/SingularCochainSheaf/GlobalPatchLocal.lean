@@ -9,10 +9,12 @@ module
 public import Lib.Topology.Sheaves.SingularCochainSheaf.GlobalPatch
 
 /-!
-# Local agreement of patched native cochains
+# Local agreement of the patched cochain with its local representatives
 
-The locally finite closed-refinement selector is locally controlled.  Hence compatible local
-cochain representatives agree literally with the patched native cochain after shrinking.
+Because the selector attached to a locally finite closed refinement is locally constant in the
+relevant sense, compatible local cochains agree with the patched global cochain on a
+neighbourhood of every point.  This is a step in the proof of Bredon, *Sheaf Theory*,
+III Prop. 1.1.
 -/
 
 @[expose] public section
@@ -29,10 +31,11 @@ namespace TopCat.SingularCochainSheaf
 open AlgebraicTopology.SingularCochains
 
 variable {X : TopCat.{0}} (A : AddCommGrpCat.{0}) (n : ℕ)
-variable {ι : Type} (U : ι → Opens X) (R : ClosedRefinement U)
+variable {ι : Type*} (U : ι → Opens X) (R : ClosedRefinement U)
   (t : ∀ i, Cochains (U i) A n)
 
-/-- Compatible representatives agree with the patched cochain on a controlled neighborhood. -/
+/-- On an open `W` controlled by the refinement, the patched cochain restricts to the given
+local cochain, provided the local cochains agree on `W`. -/
 theorem patchedCochain_restrict_of_compatible
     (x : X) (W : Opens X) (j : ι) (hj : W ≤ U j)
     (hcontrol : ∀ y ∈ W, ∀ i, y ∈ R.support i → x ∈ R.support i)
@@ -75,8 +78,8 @@ theorem patchedCochain_restrict_of_compatible
         (presheaf X A n).map (homOfLE hj).op (t j))
           (TopCat.SingularSmallChains.simplexChain W n sigma) := hvalues
 
-/-- Germwise agreement of local representatives gives a neighborhood on which the patched
-native cochain agrees literally with one selected representative. -/
+/-- If the local cochains agree near `x` after shrinking, there is a neighbourhood of `x` on
+which the patched cochain restricts to one of them. -/
 theorem exists_neighborhood_patchedCochain_eq
     (x : X) (j : ι) (hxj : x ∈ R.support j)
     (hlocal : ∀ i, x ∈ R.support i →
