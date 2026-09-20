@@ -5376,8 +5376,6 @@ is an evidence command rather than library content.
 #print axioms AlgebraicTopology.SingularCochains.pointCochain_exactAt_positive
 #check AlgebraicTopology.SingularCochains.pointCocycle_boundary
 #print axioms AlgebraicTopology.SingularCochains.pointCocycle_boundary
-#check AlgebraicTopology.SingularCochains.homotopy_on_cocycle_succ
-#print axioms AlgebraicTopology.SingularCochains.homotopy_on_cocycle_succ
 #check AlgebraicTopology.SingularCochains.nullhomotopic_pullback_closed_succ
 #print axioms AlgebraicTopology.SingularCochains.nullhomotopic_pullback_closed_succ
 
@@ -5835,8 +5833,11 @@ is an evidence command rather than library content.
 #print axioms TopCat.SingularSmallChains.smallCochain_cocycle_lift_exact_succ
 #check TopCat.SingularSmallChains.cochainRestriction_homologyMap_isIso
 #print axioms TopCat.SingularSmallChains.cochainRestriction_homologyMap_isIso
-#check TopCat.SingularSmallChains.homotopy_on_cocycle_succ
-#print axioms TopCat.SingularSmallChains.homotopy_on_cocycle_succ
+
+/-! ## `Lib.Algebra.Homology.Homotopy.CocycleEvaluation` -/
+
+#check CochainComplex.homotopy_on_cocycle_succ
+#print axioms CochainComplex.homotopy_on_cocycle_succ
 
 /-! ## `Lib.Algebra.Homology.DerivedCategory.Ext.ExactAugmentedCochainComplex` -/
 

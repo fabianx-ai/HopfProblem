@@ -6,6 +6,7 @@ SPDX-License-Identifier: Apache-2.0
 -/
 module
 
+public import Lib.Algebra.Homology.Homotopy.CocycleEvaluation
 public import Lib.AlgebraicTopology.SingularCochains
 public import Mathlib.Algebra.Category.Grp.Zero
 public import Mathlib.Algebra.Homology.AlternatingConst
@@ -29,8 +30,6 @@ stated for an arbitrary coefficient group.
   of a point is exact in every positive degree.
 * `AlgebraicTopology.SingularCochains.pointCocycle_boundary` : a positive-degree cocycle on
   a point is a coboundary.
-* `AlgebraicTopology.SingularCochains.homotopy_on_cocycle_succ` : chain-homotopic maps of
-  cochain complexes agree on a cocycle up to an explicit coboundary.
 * `AlgebraicTopology.SingularCochains.nullhomotopic_pullback_closed_succ` : the pullback of a
   positive-degree cocycle along a nullhomotopic map is a coboundary.
 
@@ -118,24 +117,6 @@ theorem pointCocycle_boundary (A : AddCommGrpCat.{0}) (n : ℕ)
     ShortComplex.ab_exact_iff] at hexact
   exact hexact c hc
 
-/-- If `f` and `g` are chain homotopic maps of cochain complexes of abelian groups, then on a
-cocycle `c` in degree `n + 1` they differ by the explicit coboundary `d (h c)`. -/
-theorem homotopy_on_cocycle_succ {K L : CochainComplex AddCommGrpCat.{u} ℕ}
-    {f g : K ⟶ L} (h : _root_.Homotopy f g) (n : ℕ)
-    (c : K.X (n + 1)) (hc : K.d (n + 1) (n + 2) c = 0) :
-    f.f (n + 1) c =
-      L.d n (n + 1) (h.hom (n + 1) n c) + g.f (n + 1) c := by
-  have he := h.comm (n + 1)
-  rw [dNext_eq h.hom
-      (show (ComplexShape.up ℕ).Rel (n + 1) (n + 2) from rfl),
-    prevD_eq h.hom
-      (show (ComplexShape.up ℕ).Rel n (n + 1) from rfl)] at he
-  have hv := ConcreteCategory.congr_hom he c
-  change f.f (n + 1) c = h.hom (n + 2) (n + 1)
-      (K.d (n + 1) (n + 2) c) +
-        L.d n (n + 1) (h.hom (n + 1) n c) + g.f (n + 1) c at hv
-  simpa only [hc, map_zero, zero_add] using hv
-
 /-- A cochain map commutes with consecutive positive differentials on elements. -/
 private theorem cochainMap_d_succ {K L : CochainComplex AddCommGrpCat.{u} ℕ}
     (f : K ⟶ L) (n : ℕ) (c : K.X (n + 1)) :
@@ -181,7 +162,7 @@ theorem nullhomotopic_pullback_closed_succ {X Y : Type}
     (congrArg (fun t : complex Y A ⟶ complex X A => t.f (n + 1)) hcomp) c
   change (pullback A (ContinuousMap.const X y)).f (n + 1) c =
     (pullback A p).f (n + 1) cPoint at happ
-  have he := homotopy_on_cocycle_succ h n c hc
+  have he := CochainComplex.homotopy_on_cocycle_succ h n c hc
   rw [happ] at he
   exact he.symm
 
