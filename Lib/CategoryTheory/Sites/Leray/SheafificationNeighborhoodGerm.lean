@@ -33,11 +33,13 @@ noncomputable section
 
 open CategoryTheory CategoryTheory.Limits Opposite TopologicalSpace
 
+universe u
+
 namespace CategoryTheory.Sheaf.Leray
 
 open FibreStalkEvaluation
 
-variable {X Y : TopCat.{0}}
+variable {X Y : TopCat.{u}}
 
 set_option backward.defeqAttrib.useBackward true in
 set_option backward.isDefEq.respectTransparency false in

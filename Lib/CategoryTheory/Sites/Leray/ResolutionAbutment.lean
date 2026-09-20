@@ -47,11 +47,13 @@ noncomputable section
 
 open TopologicalSpace Opposite CategoryTheory CategoryTheory.Limits CategoryTheory.Abelian
 
+universe u
+
 namespace CategoryTheory.Sheaf.Leray
 
 attribute [local instance] HasDerivedCategory.standard
 
-variable {X Y : TopCat.{0}} (f : X ⟶ Y)
+variable {X Y : TopCat.{u}} (f : X ⟶ Y)
 
 /-- The integer-graded complex obtained by applying sheaf pushforward degreewise to an injective
 resolution. -/
@@ -71,15 +73,15 @@ def mappedExtendedResolutionIso {F : AbelianSheaf X} (I : InjectiveResolution F)
 exact inverse image `f⁻¹` (Weibel 2.3.10). -/
 theorem pushforwardPreservesInjectiveObjects :
     (pushforward f).PreservesInjectiveObjects := by
-  let _ : PreservesFiniteLimits (TopCat.Sheaf.pullback AddCommGrpCat.{0} f) := by
-    change PreservesFiniteLimits ((Opens.map f).sheafPullback AddCommGrpCat.{0}
+  let _ : PreservesFiniteLimits (TopCat.Sheaf.pullback AddCommGrpCat.{u} f) := by
+    change PreservesFiniteLimits ((Opens.map f).sheafPullback AddCommGrpCat.{u}
       (Opens.grothendieckTopology Y) (Opens.grothendieckTopology X))
-    exact Functor.sheafPullbackConstruction.preservesFiniteLimits (Opens.map f) AddCommGrpCat.{0}
+    exact Functor.sheafPullbackConstruction.preservesFiniteLimits (Opens.map f) AddCommGrpCat.{u}
       (Opens.grothendieckTopology Y) (Opens.grothendieckTopology X)
   let _ := preservesMonomorphisms_of_preservesLimitsOfShape
-    (TopCat.Sheaf.pullback AddCommGrpCat.{0} f)
+    (TopCat.Sheaf.pullback AddCommGrpCat.{u} f)
   exact Functor.preservesInjectiveObjects_of_adjunction_of_preservesMonomorphisms
-    (TopCat.Sheaf.pullbackPushforwardAdjunction AddCommGrpCat.{0} f)
+    (TopCat.Sheaf.pullbackPushforwardAdjunction AddCommGrpCat.{u} f)
 
 /-- The degreewise pushforward of an injective resolution, extended to integer degrees, is
 K-injective. -/
@@ -136,7 +138,7 @@ def integralCoyonedaPushforwardHomologyIso
 def resolutionDerivedHomCohomologyEquiv {F : AbelianSheaf X}
     (I : InjectiveResolution F) (n : ℕ) :
     (integralDerivedObject Y ⟶ (pushedResolutionDerivedObject f I)⟦(n : ℤ)⟧) ≃
-      CategoryTheory.Sheaf.H.{0} F n := by
+      CategoryTheory.Sheaf.H.{u} F n := by
   let K := mappedExtendedResolution f I
   let eK : K ≅ (pushedResolution f I).extend ComplexShape.embeddingUpNat :=
     mappedExtendedResolutionIso f I
@@ -145,12 +147,12 @@ def resolutionDerivedHomCohomologyEquiv {F : AbelianSheaf X}
         (integralDerivedObject Y ⟶ (DerivedCategory.Q.obj K)⟦(n : ℤ)⟧) :=
     ((shiftFunctor (DerivedCategory (AbelianSheaf Y)) (n : ℤ)).mapIso
       (DerivedCategory.Q.mapIso eK)).homToEquiv.symm
-  letI : CategoryTheory.Localization.HasSmallLocalizedShiftedHom.{1}
+  letI : CategoryTheory.Localization.HasSmallLocalizedShiftedHom.{u + 1}
       (HomologicalComplex.quasiIso (AbelianSheaf Y) (.up ℤ)) ℤ
       ((CochainComplex.singleFunctor (AbelianSheaf Y) 0).obj (integralSheaf Y)) K :=
     fun _ _ => CategoryTheory.Localization.hasSmallLocalizedHom_of_isLocalization
       (HomologicalComplex.quasiIso (AbelianSheaf Y) (.up ℤ)) DerivedCategory.Q
-  let e₂ := DerivedCategory.homEquivCoyonedaHomologyOfIsKInjective.{1}
+  let e₂ := DerivedCategory.homEquivCoyonedaHomologyOfIsKInjective.{u + 1}
     (integralSheaf Y) K (n : ℤ)
   let e₃ := (integralCoyonedaPushforwardHomologyIso f I.cochainComplex (n : ℤ))
     |>.addCommGroupIsoToAddEquiv.toEquiv
@@ -164,7 +166,7 @@ def resolutionPostnikovTotalCohomologyEquiv {F : AbelianSheaf X}
     (I : InjectiveResolution F) (n : ℕ) :
     (((resolutionPostnikovSpectralObject f I).H (n : ℤ)).obj
       (ComposableArrows.mk₁ (homOfLE (bot_le : (⊥ : EInt) ≤ ⊤)))) ≃
-      CategoryTheory.Sheaf.H.{0} F n :=
+      CategoryTheory.Sheaf.H.{u} F n :=
   (resolutionPostnikovTotalIso f I (n : ℤ)).addCommGroupIsoToAddEquiv.toEquiv.trans
     (resolutionDerivedHomCohomologyEquiv f I n)
 

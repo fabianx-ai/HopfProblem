@@ -56,7 +56,7 @@ universe u
 abbrev AbelianSheaf (X : TopCat.{u}) := TopCat.Sheaf AddCommGrpCat.{u} X
 
 /-- Compatibility spelling for the canonical integral constant sheaf. -/
-abbrev integralSheaf (X : TopCat.{0}) : AbelianSheaf X :=
+abbrev integralSheaf (X : TopCat.{u}) : AbelianSheaf X :=
   TopCat.ConstantSheaf.integralSheaf X
 
 /-- Compatibility spelling for the canonical `HasExt` instance on small abelian sheaves. -/
@@ -64,8 +64,8 @@ theorem abelianSheafHasExt (X : TopCat.{u}) : HasExt.{u} (AbelianSheaf.{u} X) :=
   IsGrothendieckAbelian.hasExt _
 
 /-- Compatibility spelling for the canonical additive group on sheaf cohomology. -/
-abbrev sheafCohomologyAddCommGroup {X : TopCat.{0}} (F : AbelianSheaf X) (n : ℕ) :
-    AddCommGroup (CategoryTheory.Sheaf.H.{0} F n) :=
+abbrev sheafCohomologyAddCommGroup {X : TopCat.{u}} (F : AbelianSheaf X) (n : ℕ) :
+    AddCommGroup (CategoryTheory.Sheaf.H.{u} F n) :=
   CategoryTheory.Sheaf.cohomologyAddCommGroup F n
 
 /-- The actual pushforward of abelian sheaves along a continuous map. -/
@@ -73,7 +73,7 @@ abbrev pushforward {X Y : TopCat.{u}} (f : X ⟶ Y) :
     AbelianSheaf X ⥤ AbelianSheaf Y :=
   TopCat.Sheaf.pushforward AddCommGrpCat f
 
-variable {X Y : TopCat.{0}} (f : X ⟶ Y)
+variable {X Y : TopCat.{u}} (f : X ⟶ Y)
 
 /-- Compatibility spelling for additivity of abelian-sheaf pushforward.
 
@@ -103,11 +103,11 @@ abbrev pushedResolution {F : AbelianSheaf X} (I : InjectiveResolution F) :
 
 /-- The actual sheaf-cohomological group `Hᵃ(Y, Rᵇf_*F)`. -/
 abbrev E₂ (F : AbelianSheaf X) (a b : ℕ) :=
-  CategoryTheory.Sheaf.H.{0} (higherDirectImageSheaf f F b) a
+  CategoryTheory.Sheaf.H.{u} (higherDirectImageSheaf f F b) a
 
 /-- Cohomology of resolution homology is cohomology of the corresponding higher direct image. -/
 def resolutionCohomologyIso {F : AbelianSheaf X} (I : InjectiveResolution F) (q p : ℕ) :
-    AddCommGrpCat.of (CategoryTheory.Sheaf.H.{0} ((pushedResolution f I).homology q) p) ≅
+    AddCommGrpCat.of (CategoryTheory.Sheaf.H.{u} ((pushedResolution f I).homology q) p) ≅
       AddCommGrpCat.of (E₂ f F p q) :=
   (CategoryTheory.Sheaf.functorH (Opens.grothendieckTopology Y) p).mapIso
     (higherDirectImageResolutionIso f F I q).symm
@@ -117,7 +117,7 @@ the map from resolution homology to the genuine higher direct image. -/
 @[simp]
 lemma resolutionCohomologyIso_hom_apply {F : AbelianSheaf X}
     (I : InjectiveResolution F) (q p : ℕ)
-    (x : Ext.{0} (integralSheaf Y) ((pushedResolution f I).homology q) p) :
+    (x : Ext.{u} (integralSheaf Y) ((pushedResolution f I).homology q) p) :
     (resolutionCohomologyIso f I q p).hom.hom x =
       x.comp (Ext.mk₀ (higherDirectImageResolutionIso f F I q).inv) (add_zero p) := by
   rfl
@@ -165,7 +165,8 @@ def resolutionTransgressionMorphismOfResolution {F : AbelianSheaf X}
     (I : InjectiveResolution F) (n : ℕ) :
     AddCommGrpCat.of (E₂ f F 0 (n + 1)) ⟶ AddCommGrpCat.of (E₂ f F 2 n) :=
   (resolutionExtZeroIso f I (n + 1)).hom ≫
-    ExtTransgression.cochainTransgression (pushedResolution f I) n (integralSheaf Y) ≫
+    ExtTransgression.cochainTransgression (C := AbelianSheaf Y)
+        (pushedResolution f I) n (integralSheaf Y) ≫
       (extFunctorObj (integralSheaf Y) 2).map ((pushedResolution f I).homologyπ n) ≫
         (resolutionCohomologyIso f I n 2).hom
 
@@ -180,11 +181,11 @@ lemma resolutionTransgressionMorphismOfResolution_eq_connectingTwo
           (Y := (pushedResolution f I).homology (n + 1))).toAddCommGrpIso.inv ≫
         AddCommGrpCat.ofHom
           ((ExtTransgression.homologyTwoStepResolution
-            (pushedResolution f I) n).connectingTwo (integralSheaf Y)) ≫
+            (C := AbelianSheaf Y) (pushedResolution f I) n).connectingTwo (integralSheaf Y)) ≫
         (resolutionCohomologyIso f I n 2).hom := by
   dsimp [resolutionTransgressionMorphismOfResolution]
   rw [← Category.assoc
-    (ExtTransgression.cochainTransgression
+    (ExtTransgression.cochainTransgression (C := AbelianSheaf Y)
       (pushedResolution f I) n (integralSheaf Y))
     ((extFunctorObj (integralSheaf Y) 2).map
       ((pushedResolution f I).homologyπ n))
@@ -216,7 +217,7 @@ lemma resolutionTransgressionAddOfResolution_apply_eq_connectingTwo
     resolutionTransgressionAddOfResolution f I n x =
       (resolutionCohomologyIso f I n 2).hom.hom
         ((ExtTransgression.homologyTwoStepResolution
-          (pushedResolution f I) n).connectingTwo (integralSheaf Y)
+          (C := AbelianSheaf Y) (pushedResolution f I) n).connectingTwo (integralSheaf Y)
             (Ext.mk₀ ((resolutionExtZeroIso f I (n + 1)).hom.hom x))) := by
   change (resolutionTransgressionMorphismOfResolution f I n).hom x = _
   rw [resolutionTransgressionMorphismOfResolution_eq_connectingTwo]
@@ -230,7 +231,7 @@ lemma resolutionTransgressionAddOfResolution_apply_ne_zero_iff_connectingTwo
     (x : E₂ f F 0 (n + 1)) :
     resolutionTransgressionAddOfResolution f I n x ≠ 0 ↔
       (ExtTransgression.homologyTwoStepResolution
-        (pushedResolution f I) n).connectingTwo (integralSheaf Y)
+        (C := AbelianSheaf Y) (pushedResolution f I) n).connectingTwo (integralSheaf Y)
           (Ext.mk₀ ((resolutionExtZeroIso f I (n + 1)).hom.hom x)) ≠ 0 := by
   rw [resolutionTransgressionAddOfResolution_apply_eq_connectingTwo]
   constructor
@@ -266,6 +267,7 @@ lemma resolutionTransgression_apply_ne_zero_iff_connectingTwo
     (F : AbelianSheaf X) (n : ℕ) (x : E₂ f F 0 (n + 1)) :
     resolutionTransgression f F n x ≠ 0 ↔
       (ExtTransgression.homologyTwoStepResolution
+        (C := AbelianSheaf Y)
         (pushedResolution f (injectiveResolution F)) n).connectingTwo (integralSheaf Y)
           (Ext.mk₀ ((resolutionExtZeroIso f (injectiveResolution F) (n + 1)).hom.hom x)) ≠
             0 := by

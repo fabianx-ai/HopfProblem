@@ -30,27 +30,29 @@ noncomputable section
 
 open CategoryTheory CategoryTheory.Limits Opposite TopologicalSpace
 
+universe u
+
 namespace TopCat.SheafificationLocal
 
-variable {X : TopCat.{0}}
+variable {X : TopCat.{u}}
 
-abbrev sheaf (P : TopCat.Presheaf AddCommGrpCat.{0} X) :
-    TopCat.Sheaf AddCommGrpCat.{0} X :=
-  (presheafToSheaf (Opens.grothendieckTopology X) AddCommGrpCat.{0}).obj P
+abbrev sheaf (P : TopCat.Presheaf AddCommGrpCat.{u} X) :
+    TopCat.Sheaf AddCommGrpCat.{u} X :=
+  (presheafToSheaf (Opens.grothendieckTopology X) AddCommGrpCat.{u}).obj P
 
-def unit (P : TopCat.Presheaf AddCommGrpCat.{0} X) : P ⟶ (sheaf P).obj :=
+def unit (P : TopCat.Presheaf AddCommGrpCat.{u} X) : P ⟶ (sheaf P).obj :=
   toSheafify (Opens.grothendieckTopology X) P
 
-instance unit_stalk_isIso (P : TopCat.Presheaf AddCommGrpCat.{0} X) (x : X) :
+instance unit_stalk_isIso (P : TopCat.Presheaf AddCommGrpCat.{u} X) (x : X) :
     IsIso ((TopCat.Presheaf.stalkFunctor AddCommGrpCat x).map (unit P)) :=
   TopCat.Presheaf.stalkFunctor_map_unit_toSheafify_isIso x AddCommGrpCat P
 
-theorem unit_stalk_injective (P : TopCat.Presheaf AddCommGrpCat.{0} X) (x : X) :
+theorem unit_stalk_injective (P : TopCat.Presheaf AddCommGrpCat.{u} X) (x : X) :
     Function.Injective ((TopCat.Presheaf.stalkFunctor AddCommGrpCat x).map (unit P)) :=
   ((ConcreteCategory.isIso_iff_bijective _).mp (unit_stalk_isIso P x)).injective
 
 /-- Every sheafified section has a presheaf representative near each point. -/
-theorem exists_local_representative (P : TopCat.Presheaf AddCommGrpCat.{0} X)
+theorem exists_local_representative (P : TopCat.Presheaf AddCommGrpCat.{u} X)
     (U : Opens X) (s : (sheaf P).obj.obj (op U)) (x : X) (hx : x ∈ U) :
     ∃ (V : Opens X) (hVU : V ≤ U) (t : P.obj (op V)), x ∈ V ∧
       (unit P).app (op V) t = (sheaf P).obj.map (homOfLE hVU).op s := by
@@ -63,7 +65,7 @@ theorem exists_local_representative (P : TopCat.Presheaf AddCommGrpCat.{0} X)
   exact ⟨V, hVU, t, hxV, ht⟩
 
 /-- Equality of unit germs is equality of the original presheaf germs. -/
-theorem germ_unit_eq_iff (P : TopCat.Presheaf AddCommGrpCat.{0} X)
+theorem germ_unit_eq_iff (P : TopCat.Presheaf AddCommGrpCat.{u} X)
     (U V : Opens X) (x : X) (hxU : x ∈ U) (hxV : x ∈ V)
     (s : P.obj (op U)) (t : P.obj (op V)) :
     TopCat.Presheaf.germ (sheaf P).obj U x hxU ((unit P).app (op U) s) =
@@ -75,7 +77,7 @@ theorem germ_unit_eq_iff (P : TopCat.Presheaf AddCommGrpCat.{0} X)
 
 /-- Equal unit germs have literally equal restrictions on a common smaller neighborhood. -/
 theorem exists_restriction_eq_of_germ_unit_eq
-    (P : TopCat.Presheaf AddCommGrpCat.{0} X)
+    (P : TopCat.Presheaf AddCommGrpCat.{u} X)
     (U V : Opens X) (x : X) (hxU : x ∈ U) (hxV : x ∈ V)
     (s : P.obj (op U)) (t : P.obj (op V))
     (h : TopCat.Presheaf.germ (sheaf P).obj U x hxU ((unit P).app (op U) s) =

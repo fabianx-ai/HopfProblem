@@ -28,6 +28,8 @@ noncomputable section
 
 open TopologicalSpace Opposite CategoryTheory CategoryTheory.Limits CategoryTheory.Abelian
 
+universe u
+
 namespace CategoryTheory.Sheaf.Leray.FibreStalkEvaluation
 
 open TopCat.FiniteClosedPushforward
@@ -35,7 +37,7 @@ open TopCat.Sheaf.OpenRestriction
 
 section Positive
 
-variable {T X Y : TopCat.{0}} [T2Space T] (i : T ⟶ X)
+variable {T X Y : TopCat.{u}} [T2Space T] (i : T ⟶ X)
   (hi : IsClosedMap i) (hfinite : ∀ x : X, (i ⁻¹' ({x} : Set X)).Finite)
   {F : AbelianSheaf X} {G : AbelianSheaf T} (κ : F ⟶ (pushforward i).obj G)
   (f : X ⟶ Y) (y : Y) (hfi : ∀ t : T, f (i t) = y)
@@ -58,7 +60,7 @@ def canonicalDerivedStalkIsoPositive (I : InjectiveResolution F) (n : ℕ) :
 /-- Positive-degree derived-stalk evaluation with the proved presheaf normalization supplied. -/
 def canonicalDerivedStalkEvaluationPositive (I : InjectiveResolution F) (n : ℕ) :
     TopCat.Presheaf.stalk (higherDirectImageSheaf f F (n + 1)).obj y ⟶
-      AddCommGrpCat.of (CategoryTheory.Sheaf.H.{0} G (n + 1)) :=
+      AddCommGrpCat.of (CategoryTheory.Sheaf.H.{u} G (n + 1)) :=
   derivedStalkEvaluation i hi hfinite κ f y hfi I (n + 1)
     (canonicalResolutionCohomologyNormalizationPositive f I n)
 
@@ -66,7 +68,7 @@ def canonicalDerivedStalkEvaluationPositive (I : InjectiveResolution F) (n : ℕ
 presheaf normalization. -/
 def canonicalDerivedNeighborhoodGermPositive (I : InjectiveResolution F) (n : ℕ)
     (U : Opens Y) (hy : y ∈ U) :
-    CategoryTheory.Sheaf.H'.{0} F (n + 1) ((Opens.map f).obj U) ⟶
+    CategoryTheory.Sheaf.H'.{u} F (n + 1) ((Opens.map f).obj U) ⟶
       TopCat.Presheaf.stalk (higherDirectImageSheaf f F (n + 1)).obj y :=
   derivedNeighborhoodGerm f y I (n + 1)
     (canonicalResolutionCohomologyNormalizationPositive f I n) U hy
@@ -87,13 +89,13 @@ theorem canonicalDerivedStalkEvaluation_germPositive
 higher-direct-image stalk evaluation an isomorphism. -/
 theorem canonicalDerivedStalkEvaluation_isIso_of_local_lift_killPositive
     (I : InjectiveResolution F) (n : ℕ)
-    (hlift : ∀ b : CategoryTheory.Sheaf.H.{0} G (n + 1),
+    (hlift : ∀ b : CategoryTheory.Sheaf.H.{u} G (n + 1),
       ∃ (U : Opens Y) (hy : y ∈ U)
-        (a : CategoryTheory.Sheaf.H'.{0} F (n + 1) ((Opens.map f).obj U)),
+        (a : CategoryTheory.Sheaf.H'.{u} F (n + 1) ((Opens.map f).obj U)),
         cohomologyEvaluation i hi hfinite κ ((Opens.map f).obj U)
           (fibre_mem_preimage i f y hfi U hy) (n + 1) a = b)
     (hkill : ∀ (U : Opens Y) (hy : y ∈ U)
-        (a : CategoryTheory.Sheaf.H'.{0} F (n + 1) ((Opens.map f).obj U)),
+        (a : CategoryTheory.Sheaf.H'.{u} F (n + 1) ((Opens.map f).obj U)),
       cohomologyEvaluation i hi hfinite κ ((Opens.map f).obj U)
           (fibre_mem_preimage i f y hfi U hy) (n + 1) a = 0 →
         ∃ (V : Opens Y) (hVU : V ≤ U) (_hyV : y ∈ V),
@@ -108,18 +110,18 @@ end Positive
 
 namespace ConstantPointFibre
 
-variable {X Y : TopCat.{0}} (f : X ⟶ Y) (y : Y)
+variable {X Y : TopCat.{u}} (f : X ⟶ Y) (y : Y)
 variable [T2Space X] [T1Space Y]
 
 /-- Constant-coefficient evaluation on the literal point fibre in positive degree, with the
 proved presheaf normalization supplied. -/
-def canonicalStalkToFibrePositive (A : AddCommGrpCat.{0})
+def canonicalStalkToFibrePositive (A : AddCommGrpCat.{u})
     (I : InjectiveResolution (TopCat.ConstantSheaf.sheaf X A)) (n : ℕ) :=
   stalkToFibre f y A I (n + 1)
     (canonicalResolutionCohomologyNormalizationPositive f I n)
 
 /-- The positive-degree neighborhood germ used by the normalized literal-fibre map. -/
-def canonicalNeighborhoodGermPositive (A : AddCommGrpCat.{0})
+def canonicalNeighborhoodGermPositive (A : AddCommGrpCat.{u})
     (I : InjectiveResolution (TopCat.ConstantSheaf.sheaf X A)) (n : ℕ)
     (U : Opens Y) (hy : y ∈ U) :=
   neighborhoodGerm f y A I (n + 1)
@@ -128,15 +130,15 @@ def canonicalNeighborhoodGermPositive (A : AddCommGrpCat.{0})
 /-- On a positive-degree neighborhood germ, the normalized literal-fibre map is exactly the
 native finite-closed-fibre Ext restriction. -/
 theorem canonicalStalkToFibre_neighborhoodGermPositive
-    (A : AddCommGrpCat.{0})
+    (A : AddCommGrpCat.{u})
     (I : InjectiveResolution (TopCat.ConstantSheaf.sheaf X A)) (n : ℕ)
     (U : Opens Y) (hy : y ∈ U) :
     canonicalNeighborhoodGermPositive f y A I n U hy ≫
       canonicalStalkToFibrePositive f y A I n =
         @AddCommGrpCat.ofHom
-          (CategoryTheory.Sheaf.H'.{0} (TopCat.ConstantSheaf.sheaf X A) (n + 1)
+          (CategoryTheory.Sheaf.H'.{u} (TopCat.ConstantSheaf.sheaf X A) (n + 1)
             ((Opens.map f).obj U))
-          (CategoryTheory.Sheaf.H.{0}
+          (CategoryTheory.Sheaf.H.{u}
             (TopCat.ConstantSheaf.sheaf (TopCat.of (Fibre f y)) A) (n + 1))
           Ext.instAddCommGroup
           (CategoryTheory.Sheaf.cohomologyAddCommGroup

@@ -35,11 +35,13 @@ noncomputable section
 
 open CategoryTheory CategoryTheory.Limits CategoryTheory.Abelian
 
+universe u
+
 namespace CategoryTheory.Sheaf.Leray
 
 attribute [local instance] HasDerivedCategory.standard
 
-variable {X Y : TopCat.{0}} (f : X ⟶ Y)
+variable {X Y : TopCat.{u}} (f : X ⟶ Y)
 
 /-- The literal page-two differential of the pushed-resolution Postnikov spectral sequence is
 the homological connecting map of the adjacent Postnikov two-slice triangle, under the canonical

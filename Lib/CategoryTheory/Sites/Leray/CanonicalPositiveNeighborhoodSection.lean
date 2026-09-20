@@ -34,9 +34,11 @@ noncomputable section
 
 open CategoryTheory CategoryTheory.Abelian Opposite TopologicalSpace
 
+universe u
+
 namespace CategoryTheory.Sheaf.Leray.FibreStalkEvaluation
 
-variable {X Y : TopCat.{0}} {F : AbelianSheaf X}
+variable {X Y : TopCat.{u}} {F : AbelianSheaf X}
 
 /-- The actual higher-direct-image section canonically represented by a normalized positive-
 degree Ext class on one neighborhood. -/

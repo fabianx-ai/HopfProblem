@@ -30,14 +30,16 @@ noncomputable section
 
 open CategoryTheory TopologicalSpace
 
+universe u
+
 namespace CategoryTheory.Sheaf.Leray.ConstantFibreEvaluationNormalization
 
 open CategoryTheory.Sheaf.Leray.FibreStalkEvaluation
 
 /-- Normalizing an ambient open-cohomology class to intrinsic constant-sheaf cohomology of the
 open subspace is bijective in every degree. -/
-theorem intrinsicOpenClass_bijective {X : TopCat.{0}} (U : Opens X)
-    [LocallyConnectedSpace (TopCat.of U)] (A : AddCommGrpCat.{0}) (n : ℕ) :
+theorem intrinsicOpenClass_bijective {X : TopCat.{u}} (U : Opens X)
+    [LocallyConnectedSpace (TopCat.of U)] (A : AddCommGrpCat.{u}) (n : ℕ) :
     Function.Bijective (intrinsicOpenClass U A n) := by
   letI : IsIso (openConstantRestrictionHom U A) :=
     openConstantRestrictionHom_isIso U A
@@ -64,11 +66,11 @@ theorem intrinsicOpenClass_bijective {X : TopCat.{0}} (U : Opens X)
 open subspace is an isomorphism, then canonical evaluation of ambient open-cohomology classes on
 that source is bijective. -/
 theorem canonicalConstantEvaluation_bijective_of_pullback_isIso
-    {T X : TopCat.{0}} [T2Space T]
+    {T X : TopCat.{u}} [T2Space T]
     (i : T ⟶ X) (U : Opens X) (hU : ∀ t : T, i t ∈ U)
     (hi : IsClosedMap i) (hfinite : ∀ x : X, (i ⁻¹' ({x} : Set X)).Finite)
     [LocallyConnectedSpace (TopCat.of U)]
-    (A : AddCommGrpCat.{0}) (n : ℕ)
+    (A : AddCommGrpCat.{u}) (n : ℕ)
     [IsIso (TopCat.ConstantSheafCohomology.pullback (induced i U hU)
       (induced_isClosedMap i U hU hi)
       (induced_finite_fibres i U hU hfinite) A n)] :

@@ -56,11 +56,13 @@ noncomputable section
 
 open CategoryTheory CategoryTheory.Limits CategoryTheory.Abelian
 
+universe u
+
 namespace CategoryTheory.Sheaf.Leray
 
 attribute [local instance] HasDerivedCategory.standard
 
-variable {X Y : TopCat.{0}} (f : X ⟶ Y)
+variable {X Y : TopCat.{u}} (f : X ⟶ Y)
 
 /-- The derived object on `Y` represented by the pushed injective resolution `f_* I`, after
 extending its natural-number grading by zero to an integer grading. -/
@@ -69,7 +71,7 @@ def pushedResolutionDerivedObject {F : AbelianSheaf X} (I : InjectiveResolution 
   DerivedCategory.Q.obj ((pushedResolution f I).extend ComplexShape.embeddingUpNat)
 
 /-- The integral sheaf in degree zero, as an object of the derived category. -/
-abbrev integralDerivedObject (Y : TopCat.{0}) : DerivedCategory (AbelianSheaf Y) :=
+abbrev integralDerivedObject (Y : TopCat.{u}) : DerivedCategory (AbelianSheaf Y) :=
   (DerivedCategory.singleFunctor (AbelianSheaf Y) 0).obj (integralSheaf Y)
 
 /-- A pushed natural-number-graded resolution represents a nonnegative derived object. -/
@@ -177,7 +179,7 @@ has large morphism types. -/
 def resolutionPostnikovE₂Iso {F : AbelianSheaf X}
     (I : InjectiveResolution F) (p q : ℕ) :
     ((resolutionPostnikovSpectralSequence f I).page 2).X (p, q) ≅
-      AddCommGrpCat.of (ULift.{1} (E₂ f F p q)) :=
+      AddCommGrpCat.of (ULift.{u + 1} (E₂ f F p q)) :=
   resolutionPostnikovE₂PageIso f I p q ≪≫
     (preadditiveCoyoneda.obj (Opposite.op (integralDerivedObject Y))).mapIso
       (resolutionPostnikovShiftedSliceHigherDirectImageIso f I p q) ≪≫

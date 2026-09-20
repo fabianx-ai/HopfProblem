@@ -155,7 +155,7 @@ def sheafHomologyIsoSheafification (K : CochainComplex (AbelianSheaf X) ℕ) (n 
 
 end Generic
 
-variable {X Y : TopCat.{0}} (f : X ⟶ Y)
+variable {X Y : TopCat.{u}} (f : X ⟶ Y)
 
 /-- Hartshorne III.8.1: the genuine higher direct image `Rⁿf_*F` is the sheafification of the
 homology presheaf `U ↦ Hⁿ(Γ(f⁻¹U, I))` of any pushed injective resolution `I` of `F`. -/
@@ -169,7 +169,7 @@ def higherDirectImageResolutionSheafificationIso (F : AbelianSheaf X)
 /-- The source injective resolution evaluated on the inverse image of an actual open subset. -/
 abbrev inverseImageResolutionSections {F : AbelianSheaf X} (I : InjectiveResolution F)
     (U : Opens Y) : CochainComplex AddCommGrpCat ℕ := by
-  let E : AbelianSheaf X ⥤ AddCommGrpCat.{0} :=
+  let E : AbelianSheaf X ⥤ AddCommGrpCat.{u} :=
     TopCat.Sheaf.forget AddCommGrpCat X ⋙
       (evaluation (Opens X)ᵒᵖ AddCommGrpCat).obj (op ((Opens.map f).obj U))
   let _ : E.Additive := ⟨by intros; rfl⟩
@@ -181,15 +181,15 @@ def higherDirectImageResolutionPresheafObjIso {F : AbelianSheaf X}
     (I : InjectiveResolution F) (n : ℕ) (U : Opens Y) :
     (homologyPresheaf (pushedResolution f I) n).obj (op U) ≅
       (inverseImageResolutionSections f I U).homology n := by
-  let E : TopCat.Presheaf AddCommGrpCat.{0} Y ⥤ AddCommGrpCat.{0} :=
+  let E : TopCat.Presheaf AddCommGrpCat.{u} Y ⥤ AddCommGrpCat.{u} :=
     (evaluation (Opens Y)ᵒᵖ AddCommGrpCat).obj (op U)
   let _ : E.Additive := ⟨by intros; rfl⟩
   let _ : PreservesFiniteLimits E := inferInstanceAs
     (PreservesFiniteLimits
-      ((evaluation (Opens Y)ᵒᵖ AddCommGrpCat.{0}).obj (op U)))
+      ((evaluation (Opens Y)ᵒᵖ AddCommGrpCat.{u}).obj (op U)))
   let _ : PreservesFiniteColimits E := inferInstanceAs
     (PreservesFiniteColimits
-      ((evaluation (Opens Y)ᵒᵖ AddCommGrpCat.{0}).obj (op U)))
+      ((evaluation (Opens Y)ᵒᵖ AddCommGrpCat.{u}).obj (op U)))
   exact (mapComplexHomologyIso
     (underlyingPresheafComplex (pushedResolution f I)) E n).symm
 
@@ -199,8 +199,8 @@ def higherDirectImageResolutionStalkIso (F : AbelianSheaf X)
     (I : InjectiveResolution F) (n : ℕ) (y : Y) :
     TopCat.Presheaf.stalk (higherDirectImageSheaf f F n).obj y ≅
       TopCat.Presheaf.stalk (homologyPresheaf (pushedResolution f I) n) y :=
-  (TopCat.Sheaf.forget AddCommGrpCat Y ⋙
-      TopCat.Presheaf.stalkFunctor AddCommGrpCat y).mapIso
+  (TopCat.Sheaf.forget AddCommGrpCat.{u} Y ⋙
+      TopCat.Presheaf.stalkFunctor AddCommGrpCat.{u} y).mapIso
       (higherDirectImageResolutionIso f F I n) ≪≫
     stalkHomologyPresheafIso y (pushedResolution f I) n
 

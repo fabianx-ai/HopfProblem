@@ -29,17 +29,19 @@ noncomputable section
 
 open CategoryTheory CategoryTheory.Limits Opposite TopologicalSpace
 
+universe u
+
 namespace TopCat.SheafificationLocal
 
-variable {X : TopCat.{0}}
+variable {X : TopCat.{u}}
 
 set_option backward.defeqAttrib.useBackward true in
 set_option backward.isDefEq.respectTransparency false in
 /-- A local sheafification representative gives the expected literal presheaf germ after
 inverting the sheafification unit on the stalk. -/
 theorem inv_unit_stalk_map_iso_germ_eq_germ_of_localRepresentative
-    (P : TopCat.Presheaf AddCommGrpCat.{0} X)
-    (F : TopCat.Sheaf AddCommGrpCat.{0} X)
+    (P : TopCat.Presheaf AddCommGrpCat.{u} X)
+    (F : TopCat.Sheaf AddCommGrpCat.{u} X)
     (e : F ≅ sheaf P)
     {U V : Opens X} (hVU : V ≤ U)
     (s : F.obj.obj (op U)) (t : P.obj (op V))

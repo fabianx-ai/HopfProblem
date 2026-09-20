@@ -32,17 +32,19 @@ noncomputable section
 open CategoryTheory CategoryTheory.Limits CategoryTheory.Abelian
 open TopologicalSpace Opposite
 
+universe u
+
 namespace CategoryTheory.Sheaf.Leray.ConstantFibreEvaluationNormalization
 
 open TopCat.FiniteClosedPushforward
 open TopCat.Sheaf.OpenRestriction
 open CategoryTheory.Sheaf.Leray.FibreStalkEvaluation
 
-variable {T X : TopCat.{0}} (i : T ⟶ X) (U : Opens X)
+variable {T X : TopCat.{u}} (i : T ⟶ X) (U : Opens X)
   (hU : ∀ t : T, i t ∈ U)
 
 /-- The canonical constant-sheaf morphism for restriction to a literal open subspace. -/
-abbrev openConstantRestrictionHom (A : AddCommGrpCat.{0}) :
+abbrev openConstantRestrictionHom (A : AddCommGrpCat.{u}) :
     TopCat.ConstantSheaf.sheaf (TopCat.of U) A ⟶
       (restriction U).obj (TopCat.ConstantSheaf.sheaf X A) :=
   TopCat.Sheaf.OpenEmbeddingCohomology.restrictionHom
@@ -51,14 +53,14 @@ abbrev openConstantRestrictionHom (A : AddCommGrpCat.{0}) :
 /-- On a locally connected open subspace, literal restriction preserves every constant
 coefficient sheaf up to the canonical isomorphism. -/
 theorem openConstantRestrictionHom_isIso [LocallyConnectedSpace (TopCat.of U)]
-    (A : AddCommGrpCat.{0}) : IsIso (openConstantRestrictionHom U A) :=
+    (A : AddCommGrpCat.{u}) : IsIso (openConstantRestrictionHom U A) :=
   TopCat.Sheaf.OpenEmbeddingCohomology.restrictionHom_isIso
     (inclusion U) (inclusion_isOpenEmbedding U) A
 
 /-- Restricting an ambient constant sheaf to an open containing the finite source and then
 evaluating on that source is the native constant-sheaf morphism for the induced map.  No
 injectivity assumption on the original map is needed. -/
-theorem openConstantRestriction_coefficient (A : AddCommGrpCat.{0}) :
+theorem openConstantRestriction_coefficient (A : AddCommGrpCat.{u}) :
     openConstantRestrictionHom U A ≫
         (restriction U).map (TopCat.ConstantSheaf.pushforwardHom A i) ≫
         (restrictionPushforwardIso i U hU).hom.app
@@ -66,7 +68,7 @@ theorem openConstantRestriction_coefficient (A : AddCommGrpCat.{0}) :
       TopCat.ConstantSheaf.pushforwardHom A (induced i U hU) := by
   apply CategoryTheory.Sheaf.hom_ext
   exact CategoryTheory.sheafify_hom_ext (Opens.grothendieckTopology (TopCat.of U)) _ _
-    ((TopCat.Sheaf.pushforward AddCommGrpCat.{0} (induced i U hU)).obj
+    ((TopCat.Sheaf.pushforward AddCommGrpCat.{u} (induced i U hU)).obj
       (TopCat.ConstantSheaf.sheaf T A)).property (by
       apply NatTrans.ext
       funext W
@@ -100,9 +102,9 @@ theorem openConstantRestriction_coefficient (A : AddCommGrpCat.{0}) :
 /-- The normalized class on the literal open subspace represented by an ambient open-cohomology
 class. -/
 def intrinsicOpenClass [LocallyConnectedSpace (TopCat.of U)]
-    (A : AddCommGrpCat.{0}) (n : ℕ)
-    (x : CategoryTheory.Sheaf.H'.{0} (TopCat.ConstantSheaf.sheaf X A) n U) :
-    CategoryTheory.Sheaf.H.{0} (TopCat.ConstantSheaf.sheaf (TopCat.of U) A) n :=
+    (A : AddCommGrpCat.{u}) (n : ℕ)
+    (x : CategoryTheory.Sheaf.H'.{u} (TopCat.ConstantSheaf.sheaf X A) n U) :
+    CategoryTheory.Sheaf.H.{u} (TopCat.ConstantSheaf.sheaf (TopCat.of U) A) n :=
   CategoryTheory.Sheaf.H.map
     (inv (openConstantRestrictionHom U A)
       (I := openConstantRestrictionHom_isIso U A)) n
@@ -113,8 +115,8 @@ map induced by restricting the coefficient morphism to the open, in every degree
 theorem cohomologyEvaluation_forward_open
     [T2Space T]
     (hi : IsClosedMap i) (hfinite : ∀ x : X, (i ⁻¹' ({x} : Set X)).Finite)
-    (A : AddCommGrpCat.{0}) (n : ℕ)
-    (x : CategoryTheory.Sheaf.H'.{0} (TopCat.ConstantSheaf.sheaf X A) n U) :
+    (A : AddCommGrpCat.{u}) (n : ℕ)
+    (x : CategoryTheory.Sheaf.H'.{u} (TopCat.ConstantSheaf.sheaf X A) n U) :
     cohomologyForward (induced i U hU)
         (induced_isClosedMap i U hU hi)
         (induced_finite_fibres i U hU hfinite)
@@ -152,8 +154,8 @@ theorem cohomologyEvaluation_forward_open
 the same coefficient map as restriction followed by finite-source evaluation. -/
 theorem intrinsicOpenClass_coefficient
     [LocallyConnectedSpace (TopCat.of U)]
-    (A : AddCommGrpCat.{0}) (n : ℕ)
-    (x : CategoryTheory.Sheaf.H'.{0} (TopCat.ConstantSheaf.sheaf X A) n U) :
+    (A : AddCommGrpCat.{u}) (n : ℕ)
+    (x : CategoryTheory.Sheaf.H'.{u} (TopCat.ConstantSheaf.sheaf X A) n U) :
     CategoryTheory.Sheaf.H.map
         ((restriction U).map (TopCat.ConstantSheaf.pushforwardHom A i) ≫
           (restrictionPushforwardIso i U hU).hom.app
@@ -187,9 +189,9 @@ theorem intrinsicOpenClass_coefficient
 def canonicalConstantEvaluation
     [T2Space T]
     (hi : IsClosedMap i) (hfinite : ∀ x : X, (i ⁻¹' ({x} : Set X)).Finite)
-    (A : AddCommGrpCat.{0}) (n : ℕ)
-    (x : CategoryTheory.Sheaf.H'.{0} (TopCat.ConstantSheaf.sheaf X A) n U) :
-    CategoryTheory.Sheaf.H.{0} (TopCat.ConstantSheaf.sheaf T A) n :=
+    (A : AddCommGrpCat.{u}) (n : ℕ)
+    (x : CategoryTheory.Sheaf.H'.{u} (TopCat.ConstantSheaf.sheaf X A) n U) :
+    CategoryTheory.Sheaf.H.{u} (TopCat.ConstantSheaf.sheaf T A) n :=
   cohomologyEvaluation i hi hfinite
     (TopCat.ConstantSheaf.pushforwardHom A i) U hU n x
 
@@ -198,9 +200,9 @@ to the open subspace. -/
 def intrinsicConstantPullback
     [T2Space T] [LocallyConnectedSpace (TopCat.of U)]
     (hi : IsClosedMap i) (hfinite : ∀ x : X, (i ⁻¹' ({x} : Set X)).Finite)
-    (A : AddCommGrpCat.{0}) (n : ℕ)
-    (x : CategoryTheory.Sheaf.H'.{0} (TopCat.ConstantSheaf.sheaf X A) n U) :
-    CategoryTheory.Sheaf.H.{0} (TopCat.ConstantSheaf.sheaf T A) n :=
+    (A : AddCommGrpCat.{u}) (n : ℕ)
+    (x : CategoryTheory.Sheaf.H'.{u} (TopCat.ConstantSheaf.sheaf X A) n U) :
+    CategoryTheory.Sheaf.H.{u} (TopCat.ConstantSheaf.sheaf T A) n :=
   TopCat.ConstantSheafCohomology.pullback (induced i U hU)
     (induced_isClosedMap i U hU hi)
     (induced_finite_fibres i U hU hfinite) A n
@@ -211,8 +213,8 @@ comparison. -/
 theorem fibreCohomology_eq_of_forward_eq
     [T2Space T]
     (hi : IsClosedMap i) (hfinite : ∀ x : X, (i ⁻¹' ({x} : Set X)).Finite)
-    (A : AddCommGrpCat.{0}) (n : ℕ)
-    {a b : CategoryTheory.Sheaf.H.{0} (TopCat.ConstantSheaf.sheaf T A) n}
+    (A : AddCommGrpCat.{u}) (n : ℕ)
+    {a b : CategoryTheory.Sheaf.H.{u} (TopCat.ConstantSheaf.sheaf T A) n}
     (hab : cohomologyForward (induced i U hU)
         (induced_isClosedMap i U hU hi)
         (induced_finite_fibres i U hU hfinite)
@@ -230,8 +232,8 @@ theorem fibreCohomology_eq_of_forward_eq
 theorem canonicalConstantEvaluation_forward
     [T2Space T]
     (hi : IsClosedMap i) (hfinite : ∀ x : X, (i ⁻¹' ({x} : Set X)).Finite)
-    (A : AddCommGrpCat.{0}) (n : ℕ)
-    (x : CategoryTheory.Sheaf.H'.{0} (TopCat.ConstantSheaf.sheaf X A) n U) :
+    (A : AddCommGrpCat.{u}) (n : ℕ)
+    (x : CategoryTheory.Sheaf.H'.{u} (TopCat.ConstantSheaf.sheaf X A) n U) :
     cohomologyForward (induced i U hU)
         (induced_isClosedMap i U hU hi)
         (induced_finite_fibres i U hU hfinite)
