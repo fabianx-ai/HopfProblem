@@ -26,20 +26,22 @@ noncomputable section
 
 open CategoryTheory Opposite TopologicalSpace
 
+universe u
+
 namespace TopCat.Sheaf.OpenRestriction
 
 set_option backward.isDefEq.respectTransparency false in
 /-- On sections, the sheaf pullback unit transported to literal open restriction is the
 presheaf pullback unit followed by the open-map pullback comparison. -/
 theorem nearbyRestrictionUnit_app
-    {X : TopCat} (U : Opens X) (F : TopCat.Sheaf AddCommGrpCat X)
+    {X : TopCat.{u}} (U : Opens X) (F : TopCat.Sheaf AddCommGrpCat.{u} X)
     (V : Opens X) :
     ((nearbyRestrictionUnit U).app F).hom.app (op V) =
-      ((TopCat.Presheaf.pullbackPushforwardAdjunction AddCommGrpCat (inclusion U)).unit.app
+      ((TopCat.Presheaf.pullbackPushforwardAdjunction AddCommGrpCat.{u} (inclusion U)).unit.app
         F.presheaf).app (op V) ≫
         ((inclusion_isOpenEmbedding U).isOpenMap.pullbackObjIso F.presheaf).hom.app
           (op (preimageOpen U V)) := by
-  let adj₁ := TopCat.Sheaf.pullbackPushforwardAdjunction AddCommGrpCat (inclusion U)
+  let adj₁ := TopCat.Sheaf.pullbackPushforwardAdjunction AddCommGrpCat.{u} (inclusion U)
   let _ : (Opens.map (inclusion U)).IsContinuous
       (Opens.grothendieckTopology X)
       (Opens.grothendieckTopology (TopCat.of U)) := by
@@ -47,29 +49,29 @@ theorem nearbyRestrictionUnit_app
     · exact compatiblePreserving_opens_map (inclusion U)
     · exact coverPreserving_opens_map (inclusion U)
   let adj₂ := CategoryTheory.Functor.sheafPullbackConstruction.sheafAdjunctionContinuous
-    (Opens.map (inclusion U)) AddCommGrpCat
+    (Opens.map (inclusion U)) AddCommGrpCat.{u}
     (Opens.grothendieckTopology X) (Opens.grothendieckTopology (TopCat.of U))
   have hleft := adj₁.unit_leftAdjointUniq_hom_app adj₂ F
   have hconstruction := Adjunction.map_restrictFullyFaithful_unit_app
-    (((Opens.map (inclusion U)).op.lanAdjunction AddCommGrpCat).comp
+    (((Opens.map (inclusion U)).op.lanAdjunction AddCommGrpCat.{u}).comp
       (sheafificationAdjunction (Opens.grothendieckTopology (TopCat.of U))
-        AddCommGrpCat))
-    (fullyFaithfulSheafToPresheaf (Opens.grothendieckTopology X) AddCommGrpCat)
+        AddCommGrpCat.{u}))
+    (fullyFaithfulSheafToPresheaf (Opens.grothendieckTopology X) AddCommGrpCat.{u})
     (Functor.FullyFaithful.id _)
     (L := CategoryTheory.Functor.sheafPullbackConstruction.sheafPullback
-      (Opens.map (inclusion U)) AddCommGrpCat
+      (Opens.map (inclusion U)) AddCommGrpCat.{u}
       (Opens.grothendieckTopology X)
       (Opens.grothendieckTopology (TopCat.of U)))
-    (R := (Opens.map (inclusion U)).sheafPushforwardContinuous AddCommGrpCat
+    (R := (Opens.map (inclusion U)).sheafPushforwardContinuous AddCommGrpCat.{u}
       (Opens.grothendieckTopology X)
       (Opens.grothendieckTopology (TopCat.of U)))
     (Iso.refl _) (Iso.refl _) F
   have hconstructionApp := congrArg (fun k ↦ k.app (op V)) hconstruction
   change (adj₂.unit.app F).hom.app (op V) = _ at hconstructionApp
   have hleft' :
-      (TopCat.Sheaf.pullbackPushforwardAdjunction AddCommGrpCat (inclusion U)).unit.app F ≫
-          (TopCat.Sheaf.pushforward AddCommGrpCat (inclusion U)).map
-            (((TopCat.Sheaf.pullbackPushforwardAdjunction AddCommGrpCat
+      (TopCat.Sheaf.pullbackPushforwardAdjunction AddCommGrpCat.{u} (inclusion U)).unit.app F ≫
+          (TopCat.Sheaf.pushforward AddCommGrpCat.{u} (inclusion U)).map
+            (((TopCat.Sheaf.pullbackPushforwardAdjunction AddCommGrpCat.{u}
                 (inclusion U)).leftAdjointUniq adj₂).hom.app F) =
         adj₂.unit.app F := by
     simpa only [adj₁] using hleft
@@ -102,9 +104,9 @@ theorem nearbyRestrictionUnit_app
   let e := (inclusion_isOpenEmbedding U).isOpenMap.pullbackObjIso F.presheaf
   have hsheaf :
       (sheafificationAdjunction (Opens.grothendieckTopology (TopCat.of U))
-          AddCommGrpCat).unit.app P ≫
+          AddCommGrpCat.{u}).unit.app P ≫
           ((presheafToSheaf (Opens.grothendieckTopology (TopCat.of U))
-            AddCommGrpCat).map e.hom).hom ≫
+            AddCommGrpCat.{u}).map e.hom).hom ≫
           sheafifyLift (Opens.grothendieckTopology (TopCat.of U))
             (𝟙 ((restriction U).obj F).obj) ((restriction U).obj F).property =
         e.hom := by
@@ -114,7 +116,7 @@ theorem nearbyRestrictionUnit_app
     (fun k ↦ k.app (op (preimageOpen U V))) hsheaf
   have he :
       ((inclusion_isOpenEmbedding U).isOpenMap.pullbackIso
-        (C := AddCommGrpCat)).hom.app F.presheaf = e.hom := by
+        (C := AddCommGrpCat.{u})).hom.app F.presheaf = e.hom := by
     rfl
   rw [he]
   simpa only [P, e, NatTrans.comp_app, Functor.whiskeringLeft_obj_map,
@@ -129,55 +131,55 @@ set_option backward.isDefEq.respectTransparency false in
 /-- An ambient germ followed by the canonical open-restriction stalk comparison is represented
 by applying the open-restriction unit on the same ambient neighborhood. -/
 theorem germ_stalkIso_hom_nearbyRestrictionUnit
-    {X : TopCat} (U : Opens X) (F : TopCat.Sheaf AddCommGrpCat X)
+    {X : TopCat.{u}} (U : Opens X) (F : TopCat.Sheaf AddCommGrpCat.{u} X)
     (V : Opens X) (x : U) (hx : (inclusion U) x ∈ V) :
     F.presheaf.germ V ((inclusion U) x) hx ≫ (stalkIso U F x).hom =
       ((nearbyRestrictionUnit U).app F).hom.app (op V) ≫
         ((restriction U).obj F).presheaf.germ (preimageOpen U V) x hx := by
   let f := inclusion U
-  let P := (TopCat.Presheaf.pullback AddCommGrpCat f).obj F.presheaf
+  let P := (TopCat.Presheaf.pullback AddCommGrpCat.{u} f).obj F.presheaf
   let e := (inclusion_isOpenEmbedding U).isOpenMap.pullbackObjIso F.presheaf
-  let a := TopCat.Presheaf.stalkPullbackHom AddCommGrpCat f F.presheaf x
-  let b := (TopCat.Presheaf.stalkFunctor AddCommGrpCat x).map e.hom
+  let a := TopCat.Presheaf.stalkPullbackHom AddCommGrpCat.{u} f F.presheaf x
+  let b := (TopCat.Presheaf.stalkFunctor AddCommGrpCat.{u} x).map e.hom
   have h₁ := TopCat.Presheaf.germ_stalkPullbackHom
-    AddCommGrpCat f F.presheaf x V hx
+    AddCommGrpCat.{u} f F.presheaf x V hx
   have h₂ := TopCat.Presheaf.stalkFunctor_map_germ
     ((Opens.map f).obj V) x hx e.hom
   have hraw :
       (F.presheaf.germ V (f x) hx ≫ a) ≫ b =
-        (((TopCat.Presheaf.pullbackPushforwardAdjunction AddCommGrpCat f).unit.app
+        (((TopCat.Presheaf.pullbackPushforwardAdjunction AddCommGrpCat.{u} f).unit.app
           F.presheaf).app (op V) ≫ e.hom.app (op ((Opens.map f).obj V))) ≫
           TopCat.Presheaf.germ
             ((openImage U).op ⋙ F.presheaf :
-              TopCat.Presheaf AddCommGrpCat (TopCat.of U))
+              TopCat.Presheaf AddCommGrpCat.{u} (TopCat.of U))
             ((Opens.map f).obj V) x hx := by
     calc
-      _ = ((((TopCat.Presheaf.pullbackPushforwardAdjunction AddCommGrpCat f).unit.app
+      _ = ((((TopCat.Presheaf.pullbackPushforwardAdjunction AddCommGrpCat.{u} f).unit.app
             F.presheaf).app (op V) ≫ P.germ ((Opens.map f).obj V) x hx)) ≫ b := by
         exact congrArg (fun k ↦ k ≫ b) h₁
-      _ = ((TopCat.Presheaf.pullbackPushforwardAdjunction AddCommGrpCat f).unit.app
+      _ = ((TopCat.Presheaf.pullbackPushforwardAdjunction AddCommGrpCat.{u} f).unit.app
             F.presheaf).app (op V) ≫
           (P.germ ((Opens.map f).obj V) x hx ≫ b) := Category.assoc _ _ _
-      _ = ((TopCat.Presheaf.pullbackPushforwardAdjunction AddCommGrpCat f).unit.app
+      _ = ((TopCat.Presheaf.pullbackPushforwardAdjunction AddCommGrpCat.{u} f).unit.app
             F.presheaf).app (op V) ≫
           (e.hom.app (op ((Opens.map f).obj V)) ≫
             TopCat.Presheaf.germ
               ((openImage U).op ⋙ F.presheaf :
-                TopCat.Presheaf AddCommGrpCat (TopCat.of U))
+                TopCat.Presheaf AddCommGrpCat.{u} (TopCat.of U))
               ((Opens.map f).obj V) x hx) := by
         exact congrArg
-          (fun k ↦ ((TopCat.Presheaf.pullbackPushforwardAdjunction AddCommGrpCat f).unit.app
+          (fun k ↦ ((TopCat.Presheaf.pullbackPushforwardAdjunction AddCommGrpCat.{u} f).unit.app
             F.presheaf).app (op V) ≫ k) h₂
       _ = _ := (Category.assoc _ _ _).symm
   rw [nearbyRestrictionUnit_app U F V]
   change _ =
-    (((TopCat.Presheaf.pullbackPushforwardAdjunction AddCommGrpCat
+    (((TopCat.Presheaf.pullbackPushforwardAdjunction AddCommGrpCat.{u}
         (inclusion U)).unit.app F.presheaf).app (op V) ≫
       ((inclusion_isOpenEmbedding U).isOpenMap.pullbackObjIso
         F.presheaf).hom.app (op (preimageOpen U V))) ≫
       TopCat.Presheaf.germ
         ((openImage U).op ⋙ F.presheaf :
-          TopCat.Presheaf AddCommGrpCat (TopCat.of U))
+          TopCat.Presheaf AddCommGrpCat.{u} (TopCat.of U))
         (preimageOpen U V) x hx
   simpa [f, P, e, a, b, stalkIso, presheafStalkIso,
     TopCat.Presheaf.stalkPullbackIso] using hraw
@@ -186,7 +188,7 @@ set_option backward.isDefEq.respectTransparency false in
 /-- The inverse stalk comparison carries the restricted germ of the open-restriction unit back
 to the original ambient germ. -/
 theorem stalkIso_inv_germ_nearbyRestrictionUnit
-    {X : TopCat} (U : Opens X) (F : TopCat.Sheaf AddCommGrpCat X)
+    {X : TopCat.{u}} (U : Opens X) (F : TopCat.Sheaf AddCommGrpCat.{u} X)
     (V : Opens X) (x : U) (hx : (inclusion U) x ∈ V)
     (s : F.obj.obj (op V)) :
     (stalkIso U F x).inv
