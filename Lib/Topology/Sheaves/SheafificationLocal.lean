@@ -15,12 +15,41 @@ public import Mathlib.Topology.Sheaves.LocallySurjective
 public import Mathlib.Topology.Sheaves.Sheafify
 
 /-!
-# Local representatives in concrete sheafification
+# Local representatives for concrete sheafification
 
-Concrete sheafification is locally surjective, and its unit is an isomorphism on stalks.  These
-facts let us retain literal presheaf representatives after shrinking an open neighborhood.
+Let `P` be a presheaf of abelian groups on a topological space `X` and let `P⁺` be its
+sheafification, with unit `η : P ⟶ P⁺`.  Two standard facts drive this file: `η` is locally
+surjective, and `η` induces an isomorphism on every stalk.  Together they say that a section
+of `P⁺` is, after shrinking the open set around any given point, literally a section of `P`,
+and that two sections of `P` become equal in `P⁺` exactly when they already agreed on some
+smaller open set.
+
+## Main results
+
+* `TopCat.SheafificationLocal.exists_local_representative`: every section of the
+  sheafification restricts, on some smaller open neighbourhood of a given point, to the image
+  of a section of the original presheaf.
+* `TopCat.SheafificationLocal.germ_unit_eq_iff`: the unit is injective on germs, so germs of
+  sheafified sections agree iff the germs of their presheaf representatives agree.
+* `TopCat.SheafificationLocal.exists_restriction_eq_of_germ_unit_eq`: equal germs after
+  sheafification means literally equal restrictions to a common smaller open set.
+
+## References
+
+The two inputs are Mathlib's:
+
+* `CategoryTheory.Presheaf.isLocallySurjective_toSheafify`
+  (`Mathlib/CategoryTheory/Sites/LocallySurjective.lean`), read through the site-free
+  criterion `TopCat.Presheaf.isLocallySurjective_iff`
+  (`Mathlib/Topology/Sheaves/LocallySurjective.lean`);
+* `TopCat.Presheaf.stalkFunctor_map_unit_toSheafify_isIso`
+  (`Mathlib/Topology/Sheaves/Stalks.lean`), together with `TopCat.Presheaf.germ_eq` from the
+  same file.
+
+Mathlib does not state the three results above in this shrink-the-neighbourhood form; that is
+what this file adds.  Everything is at `TopCat.{0}` with `AddCommGrpCat.{0}` coefficients,
+which is the only shape used downstream.
 -/
-
 @[expose] public section
 
 set_option warningAsError true
@@ -34,17 +63,27 @@ namespace TopCat.SheafificationLocal
 
 variable {X : TopCat.{0}}
 
+/-- The sheafification of `P`, as an object of `TopCat.Sheaf AddCommGrpCat X`: an
+abbreviation for `(presheafToSheaf (Opens.grothendieckTopology X) AddCommGrpCat).obj P`. -/
 abbrev sheaf (P : TopCat.Presheaf AddCommGrpCat.{0} X) :
     TopCat.Sheaf AddCommGrpCat.{0} X :=
   (presheafToSheaf (Opens.grothendieckTopology X) AddCommGrpCat.{0}).obj P
 
+/-- The unit of the sheafification adjunction at `P`, i.e. Mathlib's
+`CategoryTheory.toSheafify (Opens.grothendieckTopology X) P`, viewed as a morphism of
+presheaves from `P` to the underlying presheaf of `sheaf P`. -/
 def unit (P : TopCat.Presheaf AddCommGrpCat.{0} X) : P ⟶ (sheaf P).obj :=
   toSheafify (Opens.grothendieckTopology X) P
 
+/-- Sheafification does not change stalks: the unit induces an isomorphism on the stalk at
+every point.  This is Mathlib's `TopCat.Presheaf.stalkFunctor_map_unit_toSheafify_isIso`
+restated for `unit`. -/
 instance unit_stalk_isIso (P : TopCat.Presheaf AddCommGrpCat.{0} X) (x : X) :
     IsIso ((TopCat.Presheaf.stalkFunctor AddCommGrpCat x).map (unit P)) :=
   TopCat.Presheaf.stalkFunctor_map_unit_toSheafify_isIso x AddCommGrpCat P
 
+/-- The injectivity half of `unit_stalk_isIso`: distinct germs of `P` stay distinct after
+sheafification. -/
 theorem unit_stalk_injective (P : TopCat.Presheaf AddCommGrpCat.{0} X) (x : X) :
     Function.Injective ((TopCat.Presheaf.stalkFunctor AddCommGrpCat x).map (unit P)) :=
   ((ConcreteCategory.isIso_iff_bijective _).mp (unit_stalk_isIso P x)).injective
