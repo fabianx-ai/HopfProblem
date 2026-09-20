@@ -73,7 +73,6 @@ def globalCochainComparison :
 /-- In each degree the comparison map of complexes is the degreewise comparison map. -/
 @[simp]
 theorem globalCochainComparison_f (n : ℕ) :
-
     (globalCochainComparison X A).f n = globalCochainUnit X A n := rfl
 
 end TopCat.SingularCochainSheaf

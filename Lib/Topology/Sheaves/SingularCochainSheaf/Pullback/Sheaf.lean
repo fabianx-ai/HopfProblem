@@ -98,7 +98,6 @@ def cochainPullbackComplex : complexSheaf Y A ⟶
 /-- In each degree the pullback map of complexes is the degreewise pullback. -/
 @[simp]
 theorem cochainPullbackComplex_f (n : ℕ) :
-
     (cochainPullbackComplex f A).f n = cochainPullback f A n := rfl
 
 end TopCat.SingularCochainSheaf

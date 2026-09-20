@@ -136,7 +136,6 @@ theorem globalCochainComparison_homology_isIso_succ_of_small_chains (n : ℕ)
 on cohomology in every positive degree, given the small-chain homotopy equivalences for open
 covers of `X` (Bredon, *Sheaf Theory* III Thm. 1.1). -/
 theorem globalCochainComparison_homology_isIso_succ
-
     [NormalSpace X] [ParacompactSpace X]
     (hsmall : HasSmallChainEquivalences X) (n : ℕ) :
     IsIso (HomologicalComplex.homologyMap (globalCochainComparison X A) (n + 1)) :=
