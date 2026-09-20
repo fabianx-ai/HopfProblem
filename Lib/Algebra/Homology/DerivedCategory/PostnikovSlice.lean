@@ -21,8 +21,16 @@ the Postnikov slice `τ_[n,n+1) K` with `Hⁿ(K)` and obtains an object-level is
 ` τ_[n,n+1) K ≅ Hⁿ(K)[-n] `.
 
 The single-object isomorphism uses classical choice from Mathlib's existence theorem and is
-normalized to induce the identity on degree-`n` homology.  The downstream naturality owner proves
-both its single-degree naturality and the naturality of the resulting complete Postnikov adapter.
+normalized to induce the identity on degree-`n` homology.  Its naturality, and the naturality of
+the resulting Postnikov adapter, are proved in
+`Lib/Algebra/Homology/DerivedCategory/PostnikovSliceNaturality.lean`.
+
+## References
+
+* [A. A. Beilinson, J. Bernstein, P. Deligne, *Faisceaux pervers*][bbd82], §1.3 (`τ_[n,n+1) K ≅
+  Hⁿ(K)[-n]` for the canonical t-structure).
+* [M. Kashiwara, P. Schapira, *Categories and sheaves*][kashiwaraSchapira06], §10.1.
+
 -/
 
 @[expose] public section
@@ -41,8 +49,8 @@ universe w v u
 variable {C : Type u} [Category.{v} C] [Abelian C] [HasDerivedCategory.{w} C]
 
 /-- A derived object concentrated in degree `n` is isomorphic to the single object on its
-degree-`n` homology.  Its normalization and naturality are proved in the downstream naturality
-owner. -/
+degree-`n` homology.  Its normalization and naturality are proved in
+`PostnikovSliceNaturality.lean`. -/
 def isoSingleFunctorHomology (K : DerivedCategory C) (n : ℤ)
     [K.IsGE n] [K.IsLE n] :
     K ≅ (singleFunctor C n).obj ((homologyFunctor C n).obj K) := by
@@ -98,7 +106,7 @@ def postnikovSliceHomologyIso (K : DerivedCategory C) (n : ℤ) :
     asIso ((homologyFunctor C n).map ((TStructure.t.truncLTι (n + 1)).app K))
 
 /-- The Postnikov slice `τ_[n,n+1) K` is isomorphic to the single object on `Hⁿ(K)`.
-Its naturality is proved in the downstream naturality owner. -/
+Its naturality is proved in `PostnikovSliceNaturality.lean`. -/
 def postnikovSliceIso (K : DerivedCategory C) (n : ℤ) :
     (TStructure.t.truncGE n).obj ((TStructure.t.truncLT (n + 1)).obj K) ≅
       (singleFunctor C n).obj ((homologyFunctor C n).obj K) :=
