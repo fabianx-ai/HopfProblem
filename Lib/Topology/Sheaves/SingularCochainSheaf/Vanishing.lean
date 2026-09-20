@@ -12,7 +12,7 @@ public import Lib.Topology.Sheaves.SingularCochainSheaf.ComparisonPositive
 /-!
 # Vanishing of constant-sheaf cohomology in positive degrees
 
-On a locally contractible paracompact space the comparison isomorphism
+On a locally contractible metrizable (hence paracompact) space the comparison isomorphism
 `H^{n+1}(X; A_X) ≅ H^{n+1}_sing(X; A)` (Bredon, *Sheaf Theory* III Thm. 1.1) turns vanishing of
 singular cohomology into vanishing of constant-sheaf cohomology.  In particular constant-sheaf
 cohomology of a contractible space vanishes in every positive degree.
