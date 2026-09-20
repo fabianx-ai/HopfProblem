@@ -1,12 +1,31 @@
 module
 public import Lib.Topology.Dimension.CubeBoundaryThreeBricks
 
+/-!
+# Covering dimension of the boundary of the three-cube
+
+The boundary of the cube `[-1,1]³` has Lebesgue covering dimension at most two.  Given an open
+cover, the mesh-`h` subdivision of the boundary supplies a finite open cover by thickened cells
+-- one brick around each vertex, each edge and each open square -- which refines the given cover
+and in which no point lies in more than three members, one of each cell type.
+
+This is the case `n = 3` of `dim ∂Iⁿ ≤ n - 1`, the boundary form of `dim Iⁿ ≤ n`.
+
+## References
+
+* R. Engelking, *Dimension Theory*, Theorem 1.8.2
+* W. Hurewicz and H. Wallman, *Dimension Theory*, Theorem IV 1
+-/
+
 set_option autoImplicit false
 set_option warningAsError true
 open Set
+
+universe r
+
 namespace TopologicalSpace.CubeBoundaryThree
 
-/- Lemma 5.1(a): two vertex radii give distance below eight epsilon, hence below
+/- two vertex radii give distance below eight epsilon, hence below
 the mesh; distinct vertices have distance at least the mesh. -/
 private theorem vertex_eq_of_mem_vertexBrick
     {N : ℕ} {h epsilon : ℝ} (hN : 0 < N) (hh : h = 2 / (N : ℝ))
@@ -24,7 +43,7 @@ private theorem vertex_eq_of_mem_vertexBrick
     exact hsep.1.trans hsep.2
   linarith
 
-/- The nearby-point witnesses in Lemma 5.1(b) lie in actual edges. Each edge is
+/- The nearby-point witnesses lie in actual edges. Each edge is
 a closed segment, whose first endpoint supplies its nonemptiness. -/
 private theorem edge_nonempty_for_tier
     {N : ℕ} {h : ℝ} (hN : 0 < N) (hh : h = 2 / (N : ℝ))
@@ -32,7 +51,7 @@ private theorem edge_nonempty_for_tier
   obtain ⟨a, j, _, _, _, heq, _⟩ := edge_presentation hN hh e.property
   exact ⟨a, heq.symm ▸ left_mem_segment ℝ a (a + h • EuclideanSpace.single j 1)⟩
 
-/- Lemma 5.1(b): the strict tube inequality for a nonempty edge gives an actual
+/- the strict tube inequality for a nonempty edge gives an actual
 point of that edge at distance strictly below epsilon. No minimizing point is needed. -/
 private theorem edge_near_point_of_mem_brick
     {N : ℕ} {h epsilon : ℝ} (hN : 0 < N) (hh : h = 2 / (N : ℝ))
@@ -42,7 +61,7 @@ private theorem edge_near_point_of_mem_brick
   exact (Metric.infDist_lt_iff (edge_nonempty_for_tier hN hh e)).mp
     ((mem_edgeBrick e x).mp hx).1
 
-/- Lemma 5.1(b), common endpoint: the edge geometry bounds p-to-w by p-to-q.
+/- the edge geometry bounds p-to-w by p-to-q.
 The two nearby points give p-to-q below two epsilon, then x-to-w below three
 epsilon, contradicting the exclusion at that same intrinsic endpoint. -/
 private theorem edge_common_endpoint_brick_contradiction
@@ -64,7 +83,7 @@ private theorem edge_common_endpoint_brick_contradiction
   have hexcl := ((mem_edgeBrick e x).mp hx).2 w hw
   linarith
 
-/- Lemma 5.1(b), no common endpoint: actual points of the two edges have distance
+/- actual points of the two edges have distance
 at least the mesh. The same nearby witnesses give distance below two epsilon,
 which is strictly below that mesh. -/
 private theorem edge_disjoint_endpoints_brick_contradiction
@@ -81,7 +100,7 @@ private theorem edge_disjoint_endpoints_brick_contradiction
   rw [dist_comm p (x : Ambient)] at hpq
   linarith
 
-/- Lemma 5.1(b): choose the two strict nearby witnesses once. Distinct edges either
+/- choose the two strict nearby witnesses once. Distinct edges either
 have disjoint intrinsic endpoint sets or share an endpoint; each case contradicts
 the corresponding distance estimate, so the actual edges coincide. -/
 private theorem edge_eq_of_mem_edgeBrick
@@ -99,7 +118,7 @@ private theorem edge_eq_of_mem_edgeBrick
     exact edge_common_endpoint_brick_contradiction hN hh e f hef x he hf w hw hw'
       p q hp hq hxp hxq
 
-/- Lemma 5.1(c): the same point lies in both intrinsic square interiors. Their
+/- the same point lies in both intrinsic square interiors. Their
 established disjointness forces equality of the actual squares. -/
 private theorem square_eq_of_mem_squareBrick
     {N : ℕ} {h : ℝ} (hN : 0 < N) (hh : h = 2 / (N : ℝ))
@@ -114,22 +133,22 @@ end TopologicalSpace.CubeBoundaryThree
 namespace TopologicalSpace.CubeBoundaryThree
 open scoped Classical
 
-/- Proposition 5.2: the vertex part filters the original finite set by its vertex tag. -/
+/- the vertex part filters the original finite set by its vertex tag. -/
 private noncomputable def vertexIndexPart {N : ℕ} {h : ℝ}
     (T : Finset (BrickIndex N h)) : Finset (BrickIndex N h) :=
   T.filter fun c => ∃ v : {v : Ambient // v ∈ vertices N h}, c = .vertex v
 
-/- Proposition 5.2: the edge part retains the original indices carrying actual edges. -/
+/- the edge part retains the original indices carrying actual edges. -/
 private noncomputable def edgeIndexPart {N : ℕ} {h : ℝ}
     (T : Finset (BrickIndex N h)) : Finset (BrickIndex N h) :=
   T.filter fun c => ∃ e : {e : Set Ambient // e ∈ edges N h}, c = .edge e
 
-/- Proposition 5.2: the square part retains the original indices carrying actual squares. -/
+/- the square part retains the original indices carrying actual squares. -/
 private noncomputable def squareIndexPart {N : ℕ} {h : ℝ}
     (T : Finset (BrickIndex N h)) : Finset (BrickIndex N h) :=
   T.filter fun c => ∃ s : {s : Set Ambient // s ∈ squares N h}, c = .square s
 
-/- Proposition 5.2: distinct tags make the three filtered parts disjoint. Every
+/- distinct tags make the three filtered parts disjoint. Every
 original index has one of the three tags, so their union is exactly the original set. -/
 private theorem brickIndex_parts_partition {N : ℕ} {h : ℝ}
     (T : Finset (BrickIndex N h)) :
@@ -152,7 +171,7 @@ private theorem brickIndex_parts_partition {N : ℕ} {h : ℝ}
     intro c
     cases c <;> simp [vertexIndexPart, edgeIndexPart, squareIndexPart]
 
-/- Proposition 5.2: two indices in the vertex part give two vertex bricks at x.
+/- two indices in the vertex part give two vertex bricks at x.
 Vertex uniqueness identifies the actual vertices and therefore their original tags. -/
 private theorem vertexIndexPart_card_le_one
     {N : ℕ} {h epsilon : ℝ} (hN : 0 < N) (hh : h = 2 / (N : ℝ))
@@ -166,7 +185,7 @@ private theorem vertexIndexPart_card_le_one
   have hw : x ∈ vertexBrick epsilon w := by simpa only [brickSet_vertex] using hT (.vertex w) hb
   exact congrArg BrickIndex.vertex (vertex_eq_of_mem_vertexBrick hN hh h8 v w x hv hw)
 
-/- Proposition 5.2: the established edge uniqueness identifies any two actual edge
+/- the established edge uniqueness identifies any two actual edge
 indices in the edge part whose bricks contain x, so this part has at most one index. -/
 private theorem edgeIndexPart_card_le_one
     {N : ℕ} {h epsilon : ℝ} (hN : 0 < N) (hh : h = 2 / (N : ℝ))
@@ -180,7 +199,7 @@ private theorem edgeIndexPart_card_le_one
   have hf : x ∈ edgeBrick epsilon f := by simpa only [brickSet_edge] using hT (.edge f) hb
   exact congrArg BrickIndex.edge (edge_eq_of_mem_edgeBrick hN hh h2 e f x he hf)
 
-/- Proposition 5.2: two square-tagged members containing x have identical actual
+/- two square-tagged members containing x have identical actual
 squares by intrinsic-interior uniqueness, hence identical original indices. -/
 private theorem squareIndexPart_card_le_one
     {N : ℕ} {h epsilon : ℝ} (hN : 0 < N) (hh : h = 2 / (N : ℝ))
@@ -194,7 +213,7 @@ private theorem squareIndexPart_card_le_one
   have ht : x ∈ squareBrick t := by simpa only [brickSet_square] using hT (.square t) hb
   exact congrArg BrickIndex.square (square_eq_of_mem_squareBrick hN hh s t x hs ht)
 
-/- Proposition 5.2: the disjoint union formula adds the cardinalities of the three
+/- the disjoint union formula adds the cardinalities of the three
 tag parts of the same finite T. Each is at most one, so T has at most three indices. -/
 private theorem brickIndex_card_le_three
     {N : ℕ} {h epsilon : ℝ} (hN : 0 < N) (hh : h = 2 / (N : ℝ))
@@ -210,8 +229,9 @@ private theorem brickIndex_card_le_three
   have hS := squareIndexPart_card_le_one hN hh x T hT
   omega
 
-/-- Proposition 5.2: the existing open brick family has index-counting multiplicity
-at most three. Open/raw membership conversion retains the same finite index set. -/
+/-- The open brick family of the mesh-`h` subdivision has multiplicity at most three: a point of
+the cube boundary lies in at most one vertex brick, at most one edge brick and at most one square
+brick (Engelking, *Dimension Theory*, Theorem 1.8.2). -/
 public theorem brickOpens_multiplicityLE_three
     {N : ℕ} {h epsilon : ℝ} (hN : 0 < N) (hh : h = 2 / (N : ℝ))
     (h8 : 8 * epsilon < h) (h2 : 2 * epsilon < h) :
@@ -225,9 +245,9 @@ end TopologicalSpace.CubeBoundaryThree
 
 namespace TopologicalSpace.CubeBoundaryThree
 
-/- Proposition 5.3: retain the finite actual brick index, its open covering family,
+/- retain the finite actual brick index, its open covering family,
 the chosen refinement and multiplicity at the same mesh. -/
-private structure FiniteBrickRefinement {ι : Type} (U : ι → Opens Boundary) where
+private structure FiniteBrickRefinement {ι : Type r} (U : ι → Opens Boundary) where
   N : ℕ
   h : ℝ
   epsilon : ℝ
@@ -238,9 +258,9 @@ private structure FiniteBrickRefinement {ι : Type} (U : ι → Opens Boundary) 
   refinement : OpenCover.Refinement (brickOpens hN hh epsilon) U
   multiplicity : OpenCover.MultiplicityLE (brickOpens hN hh epsilon) 3
 
-/- Proposition 5.3: assemble the previously proved receipts at one supplied scale.
+/- assemble the previously proved receipts at one supplied scale.
 Every component uses the same original cover and the same mesh-indexed brick family. -/
-private noncomputable def finiteBrickRefinementOfScale {ι : Type}
+private noncomputable def finiteBrickRefinementOfScale {ι : Type r}
     {N : ℕ} {h epsilon lambda : ℝ} (U : ι → Opens Boundary)
     (hN : 0 < N) (hh : h = 2 / (N : ℝ))
     (hepsilon : 0 < epsilon) (heps : epsilon = h / 9)
@@ -259,25 +279,26 @@ private noncomputable def finiteBrickRefinementOfScale {ι : Type}
   refinement := brickRefinement U hN hh hepsilon heps hv he hs hcontain
   multiplicity := brickOpens_multiplicityLE_three hN hh h8 h2
 
-/- Proposition 5.3: for an arbitrary original cover, choose the established mesh
+/- for an arbitrary original cover, choose the established mesh
 package once and assemble its finite brick refinement without reselecting any scale. -/
-private theorem exists_finiteBrickRefinement {ι : Type}
+private theorem exists_finiteBrickRefinement {ι : Type r}
     (U : ι → Opens Boundary) (hU : IsOpenCover U) : Nonempty (FiniteBrickRefinement U) := by
   obtain ⟨lambda, _hlambda, _hball, hcontain, _hι, N, hN, _hNlambda,
     h, epsilon, hh, heps, _hhpos, hepsilon, _hhhalf, h8, h2, hs, he, hv⟩ :=
     exists_cover_mesh_scale U hU
   exact ⟨finiteBrickRefinementOfScale U hN hh hepsilon heps h8 h2 hv he hs hcontain⟩
 
-/- Proposition 5.3: the same family, refinement and multiplicity meet the existing
+/- the same family, refinement and multiplicity meet the existing
 criterion. It does not request the extra finite-index field retained in the record. -/
-private theorem FiniteBrickRefinement.toCriterion {ι : Type} {U : ι → Opens Boundary}
+private theorem FiniteBrickRefinement.toCriterion {ι : Type r} {U : ι → Opens Boundary}
     (p : FiniteBrickRefinement U) :
     ∃ (κ : Type) (V : κ → Opens Boundary) (_ : OpenCover.Refinement V U),
       IsOpenCover V ∧ OpenCover.MultiplicityLE V (2 + 1) :=
   ⟨BrickIndex p.N p.h, brickOpens p.hN p.hh p.epsilon, p.refinement, p.cover, p.multiplicity⟩
 
-/-- Proposition 5.3: the boundary of the three-cube has covering dimension at most two.
-Every indexed open cover receives the constructed brick refinement of multiplicity three. -/
+/-- The boundary of the three-cube has Lebesgue covering dimension at most two: every open cover
+has an open refinement of multiplicity at most three (Engelking, *Dimension Theory*,
+Theorem 1.8.2). -/
 public theorem hasCoveringDimensionLE_two : HasCoveringDimensionLE Boundary 2 := by
   intro ι U hU
   obtain ⟨p⟩ := exists_finiteBrickRefinement U hU
