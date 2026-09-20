@@ -386,7 +386,7 @@ relative isotopy `D` of a regular level `f⁻¹(c)` is realised by a new window 
 arbitrarily small window radii, with the same Morse charts, with the same field near the critical
 points, with unchanged backward limits, with forward limits composed with `D`, and with unchanged
 orbits over the set where `D` is the identity. -/
-theorem AdaptedWindows.exists_relative_level_surgery_system {E M : Type} [NormedAddCommGroup E]
+theorem AdaptedWindows.exists_relative_level_surgery_system {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {f : M → ℝ} (S : AdaptedWindows E f)
     (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f) (hm : ManifoldMorse.IsMorse E f) {c : ℝ}
@@ -453,7 +453,7 @@ theorem AdaptedWindows.exists_relative_level_surgery_system {E M : Type} [Normed
 
 /-- In a band `[a, b]` containing at most the critical point `p`, a point of the level `b` whose
 forward orbit does not converge to `p` flows down to the level `a`. -/
-theorem AdaptedWindows.reaches_lower_of_excluded_critical_limit {E M : Type}
+theorem AdaptedWindows.reaches_lower_of_excluded_critical_limit {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {f : M → ℝ}
     (S : AdaptedWindows E f) (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f) {a b : ℝ} (hab : a < b)
@@ -480,7 +480,7 @@ theorem AdaptedWindows.reaches_lower_of_excluded_critical_limit {E M : Type}
 
 /-- A point of the upper level of the window around `p` whose transported image avoids the belt
 sphere of `p` flows down, in the transported system, to the lower level of that window. -/
-theorem AdaptedWindows.reaches_old_lower_of_belt_avoidance {E M : Type} [NormedAddCommGroup E]
+theorem AdaptedWindows.reaches_old_lower_of_belt_avoidance {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {f : M → ℝ} (S T : AdaptedWindows E f)
     (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f) (p : ManifoldMorse.criticalPoints E f)
@@ -501,7 +501,7 @@ theorem AdaptedWindows.reaches_old_lower_of_belt_avoidance {E M : Type} [NormedA
 
 /-- No point of the upper level of the window around `p` has its backward orbit converging to
 `p`: the ascending sphere of `p` meets that level, but backward orbits leave the window. -/
-theorem AdaptedWindows.not_backward_basin_on_upper_level {E M : Type} [NormedAddCommGroup E]
+theorem AdaptedWindows.not_backward_basin_on_upper_level {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {f : M → ℝ} (S : AdaptedWindows E f)
     (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f) (p : ManifoldMorse.criticalPoints E f)
@@ -518,7 +518,7 @@ theorem AdaptedWindows.not_backward_basin_on_upper_level {E M : Type} [NormedAdd
 
 /-- Flowing a family from a regular level `a` down to a lower regular level `b` preserves the
 description of its image as the set of points whose backward orbit converges to `p`. -/
-theorem AdaptedWindows.transported_backward_basin_image {E M X : Type} [NormedAddCommGroup E]
+theorem AdaptedWindows.transported_backward_basin_image {E M X : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {f : M → ℝ} (S : AdaptedWindows E f)
     (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f) {a b : ℝ} (hab : b < a)
@@ -561,7 +561,7 @@ theorem AdaptedWindows.transported_backward_basin_image {E M X : Type} [NormedAd
 
 /-- If the band `[b, a]` contains no critical value, every point of the level `a` flows down to
 the level `b`. -/
-theorem AdaptedWindows.reaches_lower_in_regular_band {E M : Type} [NormedAddCommGroup E]
+theorem AdaptedWindows.reaches_lower_in_regular_band {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {f : M → ℝ} (S : AdaptedWindows E f)
     (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f) {a b : ℝ} (hab : b < a)
