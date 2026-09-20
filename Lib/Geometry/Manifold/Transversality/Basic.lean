@@ -37,7 +37,8 @@ set and the germs they realise, smooth radial deformations, and the shrinking of
   (Hirsch, Ch. 3).
 * `SupportedGerms.Realizes` and `SupportedGerms.realizes_local_germ` : a germ of a diffeomorphism
   at the origin with derivative of determinant one is the germ of a diffeomorphism isotopic to the
-  identity through diffeomorphisms supported in a prescribed neighbourhood.
+  identity through diffeomorphisms supported in a prescribed neighbourhood. The ambient space is
+  assumed of dimension at least two (the basis is indexed by a `Finite`, `Nontrivial` type).
 * `SmoothRadial.radialMap`, `SmoothRadial.diffeomorph`, `DiskShrinking.family` : the radial maps
   `x ↦ φ(‖x‖²) • x`, when they are diffeomorphisms, and the isotopy shrinking the unit disc by a
   factor `a` while fixing the complement of a larger ball.
@@ -1805,8 +1806,9 @@ theorem SupportedGerms.realizes_specialLinear {ι : Type*} [Fintype ι] [Decidab
   · exact fun i j hij a => realizes_transvection hU h0 hij a
   · exact hmul
 
-/-- The germ of a linear automorphism of determinant one of a finite-dimensional space is realised
-by a supported diffeomorphism.
+/-- The germ of a linear automorphism of determinant one of a finite-dimensional space of dimension
+at least two (the basis `b` is indexed by a `Finite`, `Nontrivial` type) is realised by a
+supported diffeomorphism.
 -/
 theorem SupportedGerms.realizes_det_one {ι : Type*} [Finite ι] [Nontrivial ι] {E : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] (b : Module.Basis ι ℝ E)
@@ -2204,7 +2206,9 @@ theorem SmallPerturbation.exists_relative_germ_linearization_isotopy {E F : Type
   rw [hx, C.apply_symm_apply]
 
 /-- A germ at the origin of a smooth map fixing the origin whose derivative is bijective of
-determinant one is realised by a diffeomorphism supported in any prescribed neighbourhood.
+determinant one is realised by a diffeomorphism supported in any prescribed neighbourhood. The
+space is assumed of dimension at least two (the basis `b` is indexed by a `Finite`, `Nontrivial`
+type).
 -/
 theorem SupportedGerms.realizes_local_germ {E ι : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [Finite ι] [Nontrivial ι] (b : Module.Basis ι ℝ E)
@@ -2952,8 +2956,9 @@ theorem SupportedDiffeomorph.exists_supported_isotopy_extension {E F H H' X Y : 
     exact extendMap_chart Φ (fun z => A (t, z)) hx
 
 /-- In a chart whose source contains the unit disc of the first factor there is a diffeomorphism of
-the manifold, isotopic to the identity through diffeomorphisms supported near the image of the
-disc and fixing its centre, which contracts that disc by the factor `a`.
+the manifold, isotopic to the identity through diffeomorphisms supported in some compact subset
+`K ⊆ Φ.target` of the chart and fixing its centre `Φ (0, 0)`, which contracts that disc by the
+factor `a`.
 -/
 theorem DiskShrinking.exists_chart_disk_shrinking {D Z E H M : Type*}
     [NormedAddCommGroup D] [InnerProductSpace ℝ D] [FiniteDimensional ℝ D] [NormedAddCommGroup Z]
