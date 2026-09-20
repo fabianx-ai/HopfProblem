@@ -13,13 +13,18 @@ public import Lib.Topology.Sheaves.Cohomology.Cech.RangeCover
 /-!
 # Direct-limit Cech vanishing from covering dimension
 
-This file implements the Cech-colimit half of textbook section CD-07. If a space has covering
-dimension at most `n`, every representative of a direct-limit Cech class can be refined to a
-set-valued cover of multiplicity at most `n + 1`. In every degree `a > n`, CD-06 makes the
-fixed-cover class zero there, so the original class is zero in the refinement-directed colimit.
+If a space has Lebesgue covering dimension at most `n`, then its Cech cohomology with
+coefficients in any sheaf of abelian groups vanishes in every degree above `n`.  Indeed every
+representative of a direct-limit Cech class can be refined to a cover of multiplicity at most
+`n + 1`, on which a normalized cochain of degree `a > n` already vanishes, so the original class
+dies in the refinement-directed colimit.
 
-The result applies to every sheaf of abelian groups. No separation, compactness,
-paracompactness, or comparison with derived sheaf cohomology is used here.
+No separation, compactness or paracompactness hypothesis is used.
+
+## References
+
+* R. Godement, *Topologie algébrique et théorie des faisceaux*, II.5.12
+* R. Engelking, *Dimension Theory*, §1.6 (Lebesgue covering dimension)
 -/
 
 @[expose] public section
