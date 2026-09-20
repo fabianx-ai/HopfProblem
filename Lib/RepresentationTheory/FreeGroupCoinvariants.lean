@@ -24,8 +24,8 @@ further relations.
 
 ## References
 
-* [Kenneth S. Brown, *Cohomology of Groups*][brown1982], II.3 (coinvariants presented by a set of
-  generators; `H₀(F(A); M) = M_F`).
+* [Kenneth S. Brown, *Cohomology of Groups*][brown1982], II.2 (coinvariants presented by a set of
+  generators) and III.1 (homology with coefficients, `H₀(G; M) = M_G`).
 -/
 
 @[expose] public section
