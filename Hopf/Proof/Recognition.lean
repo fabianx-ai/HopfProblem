@@ -529,62 +529,10 @@ theorem TopCellLifting.exists_top_disk_lift {V : Type} [NormedAddCommGroup V]
         (∀ z, G (0, z) = SpecialPeriods.Threefold.SphereHomologyEquivalence.sphereMap x (v z)) ∧
           (∀ z, G (1, z) = u z) ∧ ∀ t s, G (t, DiskCylinder.boundaryToDisk s) = H (t, s) :=
   by
-  let F := SpecialPeriods.Threefold.SphereHomologyEquivalence.sphereMap x
-  let c : C(DiskCylinder.Sphere (E := V), SixSphereCube.StandardSphere) :=
-    ContinuousMap.const _ SixSphereCube.sphereBasePoint
-  obtain ⟨Ac⟩ := (Sphere.boundary_homotopic_const hd a SixSphereCube.sphereBasePoint).symm
-  let A : Path c a := MappingPaths.ofHomotopy Ac
-  let FA : Path (F.comp c) (F.comp a) := A.map (ContinuousMap.continuous_postcomp F)
-  let HP : Path (F.comp a) (u.comp DiskCylinder.boundaryToDisk) :=
-    { toContinuousMap := H.curry
-      source' := ContinuousMap.ext h0
-      target' := ContinuousMap.ext h1 }
-  let K := HP.symm.trans FA.symm
-  obtain ⟨u₀, E, hE, hu₀⟩ := BoundaryPathTransport.exists_transport u K rfl
-  have hu₀' :
-    ∀ z : DiskCylinder.Disk (E := V),
-      ‖(z : V)‖ = 1 → u₀ z = F SixSphereCube.sphereBasePoint := by
-    intro z hz
-    exact ContinuousMap.congr_fun hu₀ ⟨z.val, mem_sphere_zero_iff_norm.mpr hz⟩
-  obtain ⟨p, hp, ⟨B⟩⟩ := BasedDiskLifting.exists_based_disk_lift x L u₀ hu₀'
-  have hp' : p.comp DiskCylinder.boundaryToDisk = c := by
-    apply ContinuousMap.ext
-    intro s
-    exact hp (DiskCylinder.boundaryToDisk s) (mem_sphere_zero_iff_norm.mp s.property)
-  obtain ⟨v, P, hP, hv⟩ := BoundaryPathTransport.exists_transport p A hp'
-  let FP : Path (F.comp p) (F.comp v) := P.map (ContinuousMap.continuous_postcomp F)
-  let BP := MappingPaths.ofHomotopy B.toHomotopy
-  have hFP :
-    MappingPaths.Over
-      (fun w : C(DiskCylinder.Disk (E := V), SpecialPeriods.Threefold.Space) =>
-        w.comp DiskCylinder.boundaryToDisk)
-      FP FA := by
-    intro t
-    apply ContinuousMap.ext
-    intro s
-    exact congrArg F (ContinuousMap.congr_fun (hP t) s)
-  have hBP :
-    MappingPaths.Over
-      (fun w : C(DiskCylinder.Disk (E := V), SpecialPeriods.Threefold.Space) =>
-        w.comp DiskCylinder.boundaryToDisk)
-      BP (Path.refl (F.comp c)) := by
-    intro t
-    apply ContinuousMap.ext
-    intro s
-    have hs : ‖(DiskCylinder.boundaryToDisk s : V)‖ = 1 :=
-      mem_sphere_zero_iff_norm.mp s.property
-    exact (B.eq_fst t hs).trans (congrArg F (hp (DiskCylinder.boundaryToDisk s) hs))
-  let R := FP.symm.trans (BP.trans E.symm)
-  let Q := FA.symm.trans ((Path.refl (F.comp c)).trans K.symm)
-  have hR :
-    MappingPaths.Over
-      (fun w : C(DiskCylinder.Disk (E := V), SpecialPeriods.Threefold.Space) =>
-        w.comp DiskCylinder.boundaryToDisk)
-      R Q :=
-    hFP.symm.trans (hBP.trans hE.symm)
-  have hQ : Q.Homotopic HP := MappingPaths.normalization_cancellation FA HP
-  obtain ⟨G, hG0, hG1, hGside⟩ := SideRectification.exists_rectification R Q HP hR hQ
-  exact ⟨v, G, fun s => ContinuousMap.congr_fun hv s, hG0, hG1, hGside⟩
+  exact TopCellLifting.exists_disk_lift_of_boundary_nullhomotopic
+    (n := 6) (SpecialPeriods.Threefold.SphereHomologyEquivalence.sphereMap x)
+    SixSphereCube.sphereBasePoint (sphereMap_piSix_bijective x).2 L a
+    (Sphere.boundary_homotopic_const hd a SixSphereCube.sphereBasePoint) u H h0 h1
 
 theorem TopCellLifting.sphereMap_relativeDiskLifting_six
     (x : SpecialPeriods.Threefold.Space) :
