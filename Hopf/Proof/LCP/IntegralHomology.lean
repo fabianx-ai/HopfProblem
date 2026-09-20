@@ -22449,14 +22449,6 @@ theorem ThreefoldHomology.TopDegree.ellipticAttachmentFifthEquiv_toLinearMap :
   change regularFifthEquiv (regularFifthEquiv.symm (ellipticFifthCoordinates a)) = _
   rw [LinearEquiv.apply_symm_apply, ellipticAttachmentFifth_coordinates]
 
-theorem ThreefoldHomologyTopDegreeAlgebra.surjective_of_columnIso {A B D : Type*} [AddCommGroup A]
-    [AddCommGroup B] [AddCommGroup D] [Module ℤ A] [Module ℤ B] [Module ℤ D] [Module ℤ (A × B)]
-    (F : (A × B) →ₗ[ℤ] D) (f : A →ₗ[ℤ] D) (e : B ≃ₗ[ℤ] D) (hF : ∀ a b, F (a, b) = f a + e b) :
-    Function.Surjective F := by
-  intro d
-  refine ⟨(0, e.symm d), ?_⟩
-  rw [hF, map_zero, LinearEquiv.apply_symm_apply, zero_add]
-
 theorem ThreefoldHomology.TopDegree.groupedAttachmentFifth_columnIso
     (a :
       SingularMayerVietoris.SingularHomology (SpecialPeriods.Threefold.RegularOverlap Option.none)
@@ -22527,7 +22519,7 @@ theorem ThreefoldHomology.TopDegree.eq_smul_topClass
 theorem ThreefoldHomology.FifthDegree.regularAttachment_five_surjective :
     Function.Surjective (ThreefoldHomology.starOverlapToRegularHomologyMap 5) := by
   have hs :=
-    ThreefoldHomologyTopDegreeAlgebra.surjective_of_columnIso
+    LinearMap.surjective_of_columnIso
       ThreefoldHomology.TopDegree.groupedAttachmentFifth
       (SingularMayerVietoris.singularHomologyMap
         (ThreefoldHomology.overlapToRegularFamily Option.none) 5)
