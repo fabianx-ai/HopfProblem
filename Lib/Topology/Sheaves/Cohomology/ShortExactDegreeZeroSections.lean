@@ -15,9 +15,9 @@ For `0 ⟶ F ⟶ G ⟶ Q ⟶ 0`, left exactness identifies `F(X)` with the kerne
 `G(X) ⟶ Q(X)`. This file packages that familiar degree-zero statement as an additive
 equivalence, with the forward map characterized by the literal sheaf morphism on the top open.
 
-This FREE owner is only a generic repackaging of degree-zero exactness and the standard
-identification of sheaf `H⁰` with global sections. It introduces no constructibility, page,
-geometric, or application-specific assertion.
+This is the left exactness of the global-sections functor (Hartshorne, *Algebraic Geometry*,
+II Ex. 1.8; Godement, *Topologie algébrique et théorie des faisceaux*, II.2), combined with the
+standard identification of sheaf `H⁰` with global sections.
 -/
 
 @[expose] public section
@@ -33,9 +33,12 @@ namespace TopCat.SheafCohomology
 
 variable {X : TopCat.{0}}
 
+/-- The abelian group of global sections of a sheaf, as a type: the value of `F` on the top
+open. -/
 abbrev GlobalSections (F : TopCat.Sheaf AddCommGrpCat.{0} X) :=
   (F.obj.obj (op (⊤ : Opens X)) : Type)
 
+/-- The additive map on global sections induced by a morphism of sheaves. -/
 def topSectionsMap {F G : TopCat.Sheaf AddCommGrpCat.{0} X} (f : F ⟶ G) :
     GlobalSections F →+ GlobalSections G :=
   (f.hom.app (op (⊤ : Opens X))).hom
@@ -79,6 +82,8 @@ def globalSectionsSubobjectEquivKer
   exact (CategoryTheory.Sheaf.H.equiv₀ S.X₁ isTerminalTop).symm.trans
     (eExt.trans eSections)
 
+/-- The equivalence of `globalSectionsSubobjectEquivKer` is given by the sheaf morphism `S.f`
+evaluated on the top open. -/
 @[simp]
 theorem globalSectionsSubobjectEquivKer_apply_val
     {S : ShortComplex (TopCat.Sheaf AddCommGrpCat.{0} X)}
