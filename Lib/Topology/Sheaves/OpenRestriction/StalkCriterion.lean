@@ -14,7 +14,7 @@ public import Lib.Topology.Sheaves.OpenRestriction.NearbyRestrictionGerm
 For the inclusion `j : U → X` of an open subspace the unit `F ⟶ j_*j^*F` is always an isomorphism
 on stalks at points of `U`, so it is an isomorphism as soon as its stalk maps at the points of the
 complement are isomorphisms; a morphism of sheaves is an isomorphism iff it is one on every stalk
-(Iversen, *Cohomology of Sheaves*, II.6; Kashiwara–Schapira, *Sheaves on Manifolds*, Prop. 2.3.6;
+(Iversen, *Cohomology of Sheaves*, II.6; cf. Kashiwara–Schapira, *Sheaves on Manifolds*, §2.3;
 Mathlib `TopCat.Presheaf.isIso_of_stalkFunctor_map_iso`).  In that case the restriction map from
 global sections of `F` to sections over `U` is an isomorphism.
 -/

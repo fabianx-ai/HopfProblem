@@ -10,11 +10,12 @@ public import Lib.Topology.Sheaves.H1Vanishing.Flasque
 public import Lib.Topology.Sheaves.SingularCochainSheaf.DegreeZeroFunctions
 
 /-!
-# Acyclicity of the degree-zero singular-cochain sheaf
+# Acyclicity of the degree-zero singular-cochain sheaf in degree one
 
 The degree-zero singular-cochain presheaf `S^0(X; A)` is the sheaf of all `A`-valued functions on
 `X` (Bredon, *Sheaf Theory*, III §1; Warner 5.31).  That sheaf is flasque, and flasque sheaves are
-acyclic (Bredon II §5; Godement II.3.1), so the degree-zero cochain sheaf has vanishing `H¹`.
+acyclic (Bredon II §5; Godement II §§3–4).  Only the degree-one instance is proved here:
+`zeroCochainSheaf_h1_subsingleton` says that `H¹` of the degree-zero cochain sheaf vanishes.
 -/
 
 @[expose] public section
@@ -80,7 +81,7 @@ instance zeroCochainSheaf_isFlasque : (sheaf X A 0).IsFlasque where
     infer_instance
 
 /-- The degree-zero singular-cochain sheaf is acyclic in degree one: `H¹(X, 𝒮^0(X; A)) = 0`
-(flasque sheaves are acyclic, Godement II.3.1). -/
+(flasque sheaves are acyclic, Godement II §§3–4). -/
 theorem zeroCochainSheaf_h1_subsingleton :
     Subsingleton (CategoryTheory.Sheaf.H.{0} (sheaf X A 0) 1) :=
   TopCat.SheafH1.subsingleton_h1_of_isFlasque (sheaf X A 0)

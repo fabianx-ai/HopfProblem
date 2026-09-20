@@ -19,11 +19,12 @@ public import Mathlib.Topology.Sheaves.Functors
 
 For a finite map `f : X → Y` (here: a closed map with finite fibres and Hausdorff source) the
 pushforward functor `f_*` on sheaves of abelian groups is exact, because `(f_*F)_y = ⊕_{x ∈ f⁻¹(y)}
-F_x` (Hartshorne, *Algebraic Geometry*, II Ex. 1.19 and III Ex. 8.2; Iversen, *Cohomology of
-Sheaves*, II).
+F_x` (Iversen, *Cohomology of Sheaves*, II; cf. Hartshorne, *Algebraic Geometry*, II Ex. 1.19,
+which is the special case of a closed embedding, where the fibres have at most one point).
 
-Independently of finiteness, `f_*` preserves injective objects because its left adjoint `f^{-1}` is
-exact, hence preserves monomorphisms (Hartshorne III Prop. 2.4 and its proof).
+Independently of finiteness, `f_*` preserves injective objects: its left adjoint `f^{-1}` preserves
+finite limits, hence monomorphisms, and the right adjoint of a functor preserving monomorphisms
+preserves injective objects (cf. Hartshorne III Lemma 6.1, the same argument for `j^*`).
 -/
 
 @[expose] public section
@@ -47,8 +48,9 @@ theorem pullback_preservesFiniteLimits :
   exact Functor.sheafPullbackConstruction.preservesFiniteLimits (Opens.map f) AddCommGrpCat.{u}
     (Opens.grothendieckTopology Y) (Opens.grothendieckTopology X)
 
-/-- For any continuous map, `f_*` preserves injective sheaves, since its left adjoint `f^{-1}` is
-exact (Hartshorne III Prop. 2.4). -/
+/-- For any continuous map, `f_*` preserves injective sheaves: its left adjoint `f^{-1}` preserves
+finite limits, hence monomorphisms, and a right adjoint of such a functor preserves injective
+objects (cf. Hartshorne III Lemma 6.1). -/
 theorem pushforward_preservesInjectiveObjects :
     (TopCat.Sheaf.pushforward AddCommGrpCat.{u} f).PreservesInjectiveObjects := by
   let _ := pullback_preservesFiniteLimits f
@@ -62,7 +64,7 @@ variable [T2Space X] (hf : IsClosedMap f) (hfinite : ∀ y : Y, (f ⁻¹' {y}).F
 include hf hfinite
 
 /-- For a finite closed map, `f_*` is exact: it takes exact short complexes of sheaves of abelian
-groups to exact short complexes (Hartshorne II Ex. 1.19). -/
+groups to exact short complexes (cf. Hartshorne II Ex. 1.19 for the closed-embedding case). -/
 theorem pushforward_exact
     (S : ShortComplex (TopCat.Sheaf AddCommGrpCat.{u} X)) (hS : S.Exact) :
     (S.map (TopCat.Sheaf.pushforward AddCommGrpCat.{u} f)).Exact := by

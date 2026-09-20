@@ -16,7 +16,7 @@ public import Lib.Topology.Sheaves.FiniteClosedPushforward.Exact
 
 For a finite map `f : X → Y` (here: a closed map with finite fibres and Hausdorff source) the
 pushforward `f_*` is exact and preserves injective objects, so `H^n(X, F) ≅ H^n(Y, f_*F)` in every
-degree (Hartshorne, *Algebraic Geometry*, III Ex. 4.1 and III Ex. 8.2; Iversen, *Cohomology of
+degree (Hartshorne, *Algebraic Geometry*, III Ex. 8.1 (Leray); Iversen, *Cohomology of
 Sheaves*, II).
 -/
 
@@ -45,7 +45,7 @@ def cohomologyForward (F : TopCat.Sheaf AddCommGrpCat.{u} X) (n : ℕ) :
     (TopCat.ConstantSheaf.pushforwardHom (AddCommGrpCat.of (ULift.{u} ℤ)) f) F n
 
 /-- For a finite closed map the comparison `H^n(X, F) → H^n(Y, f_*F)` is bijective in every
-degree (Hartshorne III Ex. 8.2). -/
+degree (Hartshorne III Ex. 8.1 (Leray)). -/
 theorem cohomologyForward_bijective (F : TopCat.Sheaf AddCommGrpCat.{u} X) (n : ℕ) :
     Function.Bijective (cohomologyForward f hf hfinite F n) := by
   let _ := (pushforward_preservesFiniteLimitsAndColimits f hf hfinite).1
@@ -57,7 +57,7 @@ theorem cohomologyForward_bijective (F : TopCat.Sheaf AddCommGrpCat.{u} X) (n : 
     (TopCat.ConstantSheaf.integralPushforwardHom_comp_bijective f) F n
 
 /-- For a finite closed map, `H^n(Y, f_*F) ≅ H^n(X, F)` as additive groups in every degree
-(Hartshorne III Ex. 8.2). -/
+(Hartshorne III Ex. 8.1 (Leray)). -/
 def cohomologyEquiv (F : TopCat.Sheaf AddCommGrpCat.{u} X) (n : ℕ) :
     CategoryTheory.Sheaf.H.{u}
         ((TopCat.Sheaf.pushforward AddCommGrpCat.{u} f).obj F) n ≃+

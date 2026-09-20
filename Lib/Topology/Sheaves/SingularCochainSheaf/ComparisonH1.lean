@@ -13,7 +13,7 @@ public import Lib.Topology.Sheaves.SingularCochainSheaf.GlobalUnit
 
 For a locally contractible space `X` and an abelian group `A` the first cohomology group of the
 constant sheaf `A_X` is isomorphic to the first singular cohomology group `H¹(X; A)`
-(Bredon, *Sheaf Theory*, III Thm. 1.1; Warner, *Foundations of Differentiable Manifolds and Lie
+(Bredon, *Sheaf Theory*, III §1; Warner, *Foundations of Differentiable Manifolds and Lie
 Groups*, 5.32).  The isomorphism is obtained from the singular-cochain sheafification unit, whose
 degree-one homology map is assumed invertible.
 -/
@@ -31,8 +31,11 @@ namespace TopCat.SingularCochainSheaf
 
 variable (X : TopCat.{0}) (A : AddCommGrpCat.{0})
 
-/-- For a locally contractible space `X`, the first cohomology group of the constant sheaf `A_X`
-is isomorphic to the first singular cohomology group `H¹(X; A)` (Bredon III Thm. 1.1). -/
+/-- Given a locally contractible space `X` and the hypothesis, taken as an instance, that the
+degree-one homology map of the singular-cochain sheafification unit `globalCochainComparison X A`
+is an isomorphism, the first cohomology group of the constant sheaf `A_X` is isomorphic to the
+first singular cohomology group `H¹(X; A)`.  Invertibility of that homology map is the content of
+the comparison theorem (Bredon III §1) and is assumed here, not proved. -/
 def h1Comparison (hLC : LocallyContractibleSpace X)
     [IsIso (HomologicalComplex.homologyMap (globalCochainComparison X A) 1)] :
     AddCommGrpCat.of (CategoryTheory.Sheaf.H.{0}
