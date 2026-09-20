@@ -14,43 +14,45 @@ public import Lib.Geometry.Manifold.Morse.SurgeryWindows
 public import Lib.Geometry.Manifold.Morse.CubicFlow
 public import Mathlib.Geometry.Manifold.LocalDiffeomorph
 /-!
-# Transversality basics: submersions, regular values, and supported perturbations
+# Transversality: submersions, regular values, and supported perturbations
 
-The elementary transversality toolkit: native submersions and their
-derivatives, regular values, transverse coordinates, the
-`NativeTransversality` relation, chart-map perturbations with compact
-support, small perturbations, supported germs, supported diffeomorphisms,
-smooth radial deformations and disk shrinking (Hirsch, *Differential
-Topology*, Ch. 2-3; Guillemin-Pollack, *Differential Topology*, Ch. 2).
-
-## Outline
-
-1. `NativeSubmersion` and `RegularValues`: the surjectivity
-   criterion and the regular-value open condition.
-2. `TransverseCoordinates` and `NativeTransversality`: the
-   transversality relation for charts, with its `Patch` structure.
-3. Perturbation machinery: `ChartMapPerturbation`,
-   `SmallPerturbation`, `WeightedPerturbation` and the
-   `GeneralPosition` avoidance lemmas with the `NoExotic` dimension
-   cluster.
-4. `SupportedDiffeomorph`, `SupportedGerms`,
-   `DiskShrinking` and `SmoothRadial`: supported diffeomorphisms,
-   germ control and the disc theorem.
+The elementary transversality toolkit: the surjectivity of a derivative read in a chart, regular
+values and the null set of critical values, the transversality relation for two maps into a common
+manifold, perturbation of a map by a translation in a chart, diffeomorphisms supported in a compact
+set and the germs they realise, smooth radial deformations, and the shrinking of an embedded disc.
 
 ## Main definitions and results
 
-* `NativeSubmersion.surjective_fderiv_sourceChart_iff`.
-* `NativeTransversality.Patch` - finite compatible transversality data.
-* `DiskShrinking` - the smooth shrinking of discs (disc theorem).
+* `NativeSubmersion.surjective_fderiv_sourceChart_iff`,
+  `NativeSubmersion.isOpen_surjective_nativeDerivative` : being a submersion is a chart-independent
+  and open condition.
+* `RegularValues.exists_null_exceptional_values_manifold` : the set of critical values of a smooth
+  map between manifolds of equal dimension is null (Sard's theorem in the equidimensional case).
+* `NativeTransversality.At` : the transversality relation `f ⋔ g` at a pair of points, i.e. the
+  surjectivity of `d f_x ⊕ d g_y` whenever `g y = f x` (Guillemin–Pollack, §2.3), together with its
+  chart description, its openness in a smooth family, and its invariance under a diffeomorphism of
+  the target.
+* `TransverseCoordinates.dense_native_translations` : the translations making two maps into a
+  finite-dimensional vector space transverse are dense — the parametric transversality theorem
+  (Hirsch, Ch. 3).
+* `SupportedGerms.Realizes` and `SupportedGerms.realizes_local_germ` : a germ of a diffeomorphism
+  at the origin with derivative of determinant one is the germ of a diffeomorphism isotopic to the
+  identity through diffeomorphisms supported in a prescribed neighbourhood.
+* `SmoothRadial.radialMap`, `SmoothRadial.diffeomorph`, `DiskShrinking.family` : the radial maps
+  `x ↦ φ(‖x‖²) • x`, when they are diffeomorphisms, and the isotopy shrinking the unit disc by a
+  factor `a` while fixing the complement of a larger ball.
+* `DiskShrinking.exists_embedded_disk_isotopy_of_same_center` : the disc theorem — two embedded
+  discs of positive codimension with the same centre in a manifold of dimension at least two are
+  carried onto one another by a diffeomorphism isotopic to the identity (Hirsch, Thm 8.3.1; Palais).
 
 ## References
 
-* [hirsch76] M. Hirsch, *Differential Topology*, Ch. 2-3.
-* [gp74] V. Guillemin, A. Pollack, *Differential Topology*, Ch. 2.
+* [M. Hirsch, *Differential Topology*][hirsch76], Ch. 2–3 and Thm 8.3.1.
+* [V. Guillemin, A. Pollack, *Differential Topology*][gp74], Ch. 2.
 
 ## Tags
 
-transversality, general-position, perturbation, disc-theorem
+transversality, general position, perturbation, isotopy, disc theorem
 -/
 
 open Set Function Filter Manifold Topology
@@ -117,6 +119,9 @@ def IsLocalDiffeomorph.diffeomorph' {E F H H' M N : Type*} [NormedAddCommGroup E
         heq).contMDiffAt
       ((hf ((Equiv.ofBijective f hf').symm y)).localInverse_open_source.mem_nhds hmem)
 
+/-- Being a submersion is a chart-independent condition: the derivative of `f` read in a chart `c`
+is surjective at `z` exactly when the manifold derivative of `f` is surjective at `c.symm z`.
+-/
 theorem NativeSubmersion.surjective_fderiv_sourceChart_iff {E F H X : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [NormedAddCommGroup F] [NormedSpace ℝ F]
     [TopologicalSpace H] {I : ModelWithCorners ℝ E H} [TopologicalSpace X] [ChartedSpace H X]
@@ -139,6 +144,9 @@ theorem NativeSubmersion.surjective_fderiv_sourceChart_iff {E F H X : Type*}
   · intro h
     exact h.comp hB
 
+/-- In a smooth family of maps between manifolds of equal dimension, the set of parameters and
+points at which the derivative is surjective is open.
+-/
 theorem NativeSubmersion.isOpen_surjective_nativeDerivative {E F H X : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [NormedAddCommGroup F] [NormedSpace ℝ F]
     [TopologicalSpace H] {I : ModelWithCorners ℝ E H} [TopologicalSpace X] [ChartedSpace H X]
@@ -207,6 +215,10 @@ theorem NativeSubmersion.isOpen_surjective_nativeDerivative {E F H X : Type*}
   refine ⟨?_, hleft' ▸ hsurj⟩
   rwa [hleft'] at hmem
 
+/-- Sard's theorem for a differentiable self-map of a finite-dimensional space in the
+equidimensional case: outside a null set of values the derivative at every preimage in `s` is
+bijective.
+-/
 theorem RegularValues.exists_null_exceptional_values_on {E : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [MeasurableSpace E] [BorelSpace E]
     (μ : MeasureTheory.Measure E) [MeasureTheory.Measure.IsAddHaarMeasure μ] {f : E → E}
@@ -222,6 +234,9 @@ theorem RegularValues.exists_null_exceptional_values_on {E : Type*} [NormedAddCo
   intro hdet
   exact hfx ⟨x, ⟨hx, hdet⟩, rfl⟩
 
+/-- The critical values of a smooth map on the source of one chart, between manifolds of equal
+dimension, form a null set.
+-/
 theorem RegularValues.exists_null_exceptional_values_in_chart {E F H X : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [NormedAddCommGroup F]
     [NormedSpace ℝ F] [FiniteDimensional ℝ F] [TopologicalSpace H] {I : ModelWithCorners ℝ E H}
@@ -276,6 +291,9 @@ theorem RegularValues.exists_null_exceptional_values_in_chart {E F H X : Type*}
     exact ⟨mfderiv 𝓘(ℝ, F) I (c.symm ∘ L.symm) z v, hv⟩
   exact hpoint ▸ hsurj
 
+/-- Sard's theorem, equidimensional case: for a smooth map from a Lindelöf manifold to a manifold of
+the same dimension, the set of critical values is null, so almost every value is regular.
+-/
 theorem RegularValues.exists_null_exceptional_values_manifold {E F H X : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [NormedAddCommGroup F]
     [NormedSpace ℝ F] [FiniteDimensional ℝ F] [TopologicalSpace H] {I : ModelWithCorners ℝ E H}
@@ -302,6 +320,9 @@ theorem RegularValues.exists_null_exceptional_values_manifold {E F H X : Type*}
   intro hi
   exact hfx (Set.mem_iUnion.mpr ⟨⟨i, hit⟩, hi⟩)
 
+/-- The derivative of the difference map `(x, y) ↦ g y - f x` is the coproduct of `-d f_x` and
+`d g_y`.
+-/
 theorem TransverseCoordinates.mfderiv_sheetDifference {D Z F H K X Y : Type*}
     [NormedAddCommGroup D] [NormedSpace ℝ D] [NormedAddCommGroup Z] [NormedSpace ℝ Z]
     [NormedAddCommGroup F] [NormedSpace ℝ F] [TopologicalSpace H] [TopologicalSpace K]
@@ -326,6 +347,9 @@ theorem TransverseCoordinates.mfderiv_sheetDifference {D Z F H K X Y : Type*}
   change B v.2 - A v.1 = -(A v.1) + B v.2
   abel
 
+/-- The difference map `(x, y) ↦ g y - f x` is a submersion at `(x, y)` exactly when `f` and `g` are
+transverse there, that is when `d f_x ⊕ d g_y` is surjective.
+-/
 theorem TransverseCoordinates.surjective_sheetDifference_iff {D Z F H K X Y : Type*}
     [NormedAddCommGroup D] [NormedSpace ℝ D] [NormedAddCommGroup Z] [NormedSpace ℝ Z]
     [NormedAddCommGroup F] [NormedSpace ℝ F] [TopologicalSpace H] [TopologicalSpace K]
@@ -353,6 +377,10 @@ theorem TransverseCoordinates.surjective_sheetDifference_iff {D Z F H K X Y : Ty
     change A v.1 + B v.2 = w at hv
     simpa only [map_neg, neg_neg] using hv
 
+/-- For maps into a finite-dimensional space, the translations `a` for which `f` and `g + a` fail to
+be transverse form a null set; this is the measure-theoretic form of the parametric
+transversality theorem (Hirsch, Differential Topology, Ch. 3).
+-/
 theorem TransverseCoordinates.exists_null_exceptional_native_translations
     {D Z F H K X Y : Type*} [NormedAddCommGroup D] [NormedSpace ℝ D] [FiniteDimensional ℝ D]
     [NormedAddCommGroup Z] [NormedSpace ℝ Z] [FiniteDimensional ℝ Z] [NormedAddCommGroup F]
@@ -403,6 +431,9 @@ theorem TransverseCoordinates.exists_null_exceptional_native_translations
   change -(A v.1) + B' v.2 = w at hv
   simpa only [map_neg] using hv
 
+/-- The translations making two maps into a finite-dimensional space transverse form a dense set: a
+generic translate of one map is transverse to the other.
+-/
 theorem TransverseCoordinates.dense_native_translations {D Z F H K X Y : Type*}
     [NormedAddCommGroup D] [NormedSpace ℝ D] [FiniteDimensional ℝ D] [NormedAddCommGroup Z]
     [NormedSpace ℝ Z] [FiniteDimensional ℝ Z] [NormedAddCommGroup F] [NormedSpace ℝ F]
@@ -429,6 +460,7 @@ theorem TransverseCoordinates.dense_native_translations {D Z F H K X Y : Type*}
     simpa only [Set.mem_compl_iff, Classical.not_not, Set.ofPred_mem_eq] using hT
   exact hdense.mono hgood
 
+/-- Translating a map by a constant near a point does not change its derivative there. -/
 theorem ChartMapPerturbation.mfderiv_eq_of_translation_germ {D F H X : Type*}
     [NormedAddCommGroup D] [NormedSpace ℝ D] [NormedAddCommGroup F] [NormedSpace ℝ F]
     [TopologicalSpace H] {I : ModelWithCorners ℝ D H} [TopologicalSpace X] [ChartedSpace H X]
@@ -445,6 +477,9 @@ theorem ChartMapPerturbation.mfderiv_eq_of_translation_germ {D F H X : Type*}
   rw [hC] at hh
   exact hevent.mfderiv_eq.trans (hh.trans (add_zero A))
 
+/-- Transversality can be tested in a chart of the target: if the two maps composed with a chart are
+transverse at a pair of points, so are the maps themselves.
+-/
 theorem ChartMapPerturbation.transverse_of_chart {D Z G F H H' K X Y N : Type*}
     [NormedAddCommGroup D] [NormedSpace ℝ D] [NormedAddCommGroup Z] [NormedSpace ℝ Z]
     [NormedAddCommGroup G] [NormedSpace ℝ G] [NormedAddCommGroup F] [NormedSpace ℝ F]
@@ -482,6 +517,9 @@ theorem ChartMapPerturbation.transverse_of_chart {D Z G F H H' K X Y N : Type*}
   obtain ⟨v, hv⟩ := ht (C w)
   exact ⟨v, hC hv⟩
 
+/-- The converse: transversality of the two maps implies transversality of their compositions with a
+chart of the target.
+-/
 theorem ChartMapPerturbation.transverse_in_chart {D Z G F H H' K X Y N : Type*}
     [NormedAddCommGroup D] [NormedSpace ℝ D] [NormedAddCommGroup Z] [NormedSpace ℝ Z]
     [NormedAddCommGroup G] [NormedSpace ℝ G] [NormedAddCommGroup F] [NormedSpace ℝ F]
@@ -517,6 +555,10 @@ theorem ChartMapPerturbation.transverse_in_chart {D Z G F H H' K X Y N : Type*}
   rw [← C.map_add]
   exact (congrArg C hv).trans hz
 
+/-- The transversality relation `f ⋔ g` at a pair of points: whenever `g y = f x`, the coproduct
+`d f_x ⊕ d g_y` of the two derivatives is surjective (Guillemin–Pollack, Differential Topology,
+§2.3).
+-/
 def NativeTransversality.At {D Z G H H' K X Y N : Type*} [NormedAddCommGroup D]
     [NormedSpace ℝ D] [NormedAddCommGroup Z] [NormedSpace ℝ Z] [NormedAddCommGroup G]
     [NormedSpace ℝ G] [TopologicalSpace H] [TopologicalSpace H'] [TopologicalSpace K]
@@ -526,6 +568,9 @@ def NativeTransversality.At {D Z G H H' K X Y N : Type*} [NormedAddCommGroup D]
   g y = f x →
     Function.Surjective ((mfderiv I J f x : D →L[ℝ] G).coprod (mfderiv I' J g y : Z →L[ℝ] G))
 
+/-- In a chart of the target, transversality at `(x, y)` is the surjectivity of the derivative of
+the difference `(x, y) ↦ c (g y) - c (f x)`.
+-/
 theorem NativeTransversality.at_iff_chart_difference {D Z G H H' K X Y N : Type*}
     [NormedAddCommGroup D] [NormedSpace ℝ D] [NormedAddCommGroup Z] [NormedSpace ℝ Z]
     [NormedAddCommGroup G] [NormedSpace ℝ G] [TopologicalSpace H] [TopologicalSpace H']
@@ -549,6 +594,9 @@ theorem NativeTransversality.at_iff_chart_difference {D Z G H H' K X Y N : Type*
   · intro h _
     exact ChartMapPerturbation.transverse_of_chart c hf hg hxy hx (hdiff.mp h)
 
+/-- Transversality is an open condition in a smooth family: the set of parameters and pairs of
+points at which `f b` is transverse to `g` is open.
+-/
 theorem NativeTransversality.isOpen_at_family {D Z G H H' K X Y N : Type*}
     [NormedAddCommGroup D] [NormedSpace ℝ D] [NormedAddCommGroup Z] [NormedSpace ℝ Z]
     [NormedAddCommGroup G] [NormedSpace ℝ G] [TopologicalSpace H] [TopologicalSpace H']
@@ -629,6 +677,9 @@ theorem NativeTransversality.isOpen_at_family {D Z G H H' K X Y N : Type*}
     intro hxy
     exact False.elim (hr.2 hxy)
 
+/-- Transversality along a compact set persists under small changes of the parameter: if `f a` is
+transverse to `g` on a compact set, so is `f b` for all `b` near `a`.
+-/
 theorem NativeTransversality.eventually_on_compact {D Z G H H' K X Y N : Type*}
     [NormedAddCommGroup D] [NormedSpace ℝ D] [NormedAddCommGroup Z] [NormedSpace ℝ Z]
     [NormedAddCommGroup G] [NormedSpace ℝ G] [TopologicalSpace H] [TopologicalSpace H']
@@ -649,6 +700,9 @@ theorem NativeTransversality.eventually_on_compact {D Z G H H' K X Y N : Type*}
   filter_upwards [hn] with b hb z hz
   exact (hb z hz).2
 
+/-- Transversality is invariant under a diffeomorphism of the target: `f ⋔ g` at `(x, y)` exactly
+when `P ∘ f ⋔ P ∘ g` there.
+-/
 theorem TransverseGerms.native_transversality_partial_diffeomorph_iff
     {A B Z E HA HB HZ HE X Y N M : Type*} [NormedAddCommGroup A] [NormedSpace ℝ A]
     [NormedAddCommGroup B] [NormedSpace ℝ B] [NormedAddCommGroup Z] [NormedSpace ℝ Z]
@@ -693,6 +747,9 @@ theorem TransverseGerms.native_transversality_partial_diffeomorph_iff
     rw [C.map_add]
     exact hv
 
+/-- The ambient handle map carries the unit sphere of the first factor into the level
+`-‖·‖² + ‖·‖² = -ρ²` of the Morse quadratic form.
+-/
 theorem MorseHandle.ambientMap_lower_sphere {N P : Type*} [NormedAddCommGroup N]
     [NormedSpace ℝ N] [NormedAddCommGroup P] [NormedSpace ℝ P] {ρ : ℝ} (hρ : 0 < ρ)
     (u : Metric.sphere (0 : N) 1) (v : P) :
@@ -703,6 +760,9 @@ theorem MorseHandle.ambientMap_lower_sphere {N P : Type*} [NormedAddCommGroup N]
     Real.sq_sqrt (show 0 ≤ 1 + ‖v‖ ^ 2 by positivity)]
   ring
 
+/-- The ambient handle map carries the unit sphere times a ball of radius `3/2` into the product of
+two balls of radius `2 ρ`.
+-/
 theorem MorseHandle.ambientMap_sphere_mem_product {N P : Type*} [NormedAddCommGroup N]
     [NormedSpace ℝ N] [NormedAddCommGroup P] [NormedSpace ℝ P] {ρ : ℝ} (hρ : 0 < ρ)
     (u : Metric.sphere (0 : N) 1) (v : P) (hv : ‖v‖ ≤ (3 / 2 : ℝ)) :
@@ -725,6 +785,9 @@ theorem MorseHandle.ambientMap_sphere_mem_product {N P : Type*} [NormedAddCommGr
     have hm := mul_le_mul_of_nonneg_left hv hρ.le
     linarith
 
+/-- On the level `-‖z.1‖² + ‖z.2‖² = -ρ²` the first component of the inverse handle map is a unit
+vector.
+-/
 theorem MorseHandle.norm_ambientInverse_fst_of_lower {N P : Type*} [NormedAddCommGroup N]
     [NormedSpace ℝ N] [NormedAddCommGroup P] [NormedSpace ℝ P] {ρ : ℝ} (hρ : 0 < ρ) (z : N × P)
     (hz : -‖z.1‖ ^ 2 + ‖z.2‖ ^ 2 = -(ρ ^ 2)) : ‖(ambientInverse ρ z).1‖ = 1 := by
@@ -736,6 +799,10 @@ theorem MorseHandle.norm_ambientInverse_fst_of_lower {N P : Type*} [NormedAddCom
   rw [norm_smul, Real.norm_eq_abs, abs_of_pos (inv_pos.mpr hA), hn, inv_mul_cancel₀ hA.ne']
 
 attribute [local instance 100] Classical.propDecidable in
+/-- The belt coordinates of a signed Morse chart before restriction: the ambient handle map applied
+to a unit vector in the positive directions and a vector in the negative directions, with the
+two factors exchanged.
+-/
 def ManifoldMorse.SignedMorseChart.beltRawCoordinates {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ} {p : M}
     (c : ManifoldMorse.SignedMorseChart (E := E) f p) (ρ : ℝ)
@@ -744,6 +811,7 @@ def ManifoldMorse.SignedMorseChart.beltRawCoordinates {E M : Type*} [NormedAddCo
   (MorseHandle.ambientMap ρ ((z.1 : c.PositiveCoordinates), z.2)).swap
 
 attribute [local instance 100] Classical.propDecidable in
+/-- The raw belt coordinates are continuous for positive radius. -/
 theorem ManifoldMorse.SignedMorseChart.continuous_beltRawCoordinates {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ}
     {p : M} (c : ManifoldMorse.SignedMorseChart (E := E) f p) (ρ : ℝ) (hρ : 0 < ρ) :
@@ -753,6 +821,9 @@ theorem ManifoldMorse.SignedMorseChart.continuous_beltRawCoordinates {E M : Type
       ((continuous_subtype_val.comp continuous_fst).prodMk continuous_snd))
 
 attribute [local instance 100] Classical.propDecidable in
+/-- The open set of unit vectors and normal vectors whose raw belt coordinates lie in the target of
+the splitting chart.
+-/
 def ManifoldMorse.SignedMorseChart.beltSource {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ} {p : M}
     (c : ManifoldMorse.SignedMorseChart (E := E) f p) (ρ : ℝ) (hρ : 0 < ρ) :
@@ -762,6 +833,7 @@ def ManifoldMorse.SignedMorseChart.beltSource {E M : Type*} [NormedAddCommGroup 
     c.splitChart.open_target.preimage (c.continuous_beltRawCoordinates ρ hρ)⟩
 
 attribute [local instance 100] Classical.propDecidable in
+/-- The open subset of the upper level set lying in the source of the splitting chart. -/
 def ManifoldMorse.SignedMorseChart.beltTarget {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ} {p : M}
     (c : ManifoldMorse.SignedMorseChart (E := E) f p) (ρ : ℝ) :
@@ -769,6 +841,9 @@ def ManifoldMorse.SignedMorseChart.beltTarget {E M : Type*} [NormedAddCommGroup 
   ⟨Subtype.val ⁻¹' c.splitChart.source, c.splitChart.open_source.preimage continuous_subtype_val⟩
 
 attribute [local instance 100] Classical.propDecidable in
+/-- The parametrisation of a neighbourhood of the belt sphere inside the upper level set, by the
+unit sphere of the positive directions times the negative directions.
+-/
 def ManifoldMorse.SignedMorseChart.beltNeighborhoodMap {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ} {p : M}
     (c : ManifoldMorse.SignedMorseChart (E := E) f p) (ρ : ℝ) (hρ : 0 < ρ)
@@ -784,6 +859,7 @@ def ManifoldMorse.SignedMorseChart.beltNeighborhoodMap {E M : Type*} [NormedAddC
     c.splitChart.map_target' z.property⟩
 
 attribute [local instance 100] Classical.propDecidable in
+/-- The belt neighbourhood parametrisation is continuous. -/
 theorem ManifoldMorse.SignedMorseChart.continuous_beltNeighborhoodMap {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ}
     {p : M} (c : ManifoldMorse.SignedMorseChart (E := E) f p) (ρ : ℝ) (hρ : 0 < ρ) :
@@ -795,6 +871,9 @@ theorem ManifoldMorse.SignedMorseChart.continuous_beltNeighborhoodMap {E M : Typ
   exact (hc.subtype_mk _).subtype_mk _
 
 attribute [local instance 100] Classical.propDecidable in
+/-- The inverse belt coordinates of a point of the manifold, read through the splitting chart and
+the inverse handle map.
+-/
 def ManifoldMorse.SignedMorseChart.beltInverseCoordinates {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ}
     {p : M} (c : ManifoldMorse.SignedMorseChart (E := E) f p) (ρ : ℝ) (y : M) :
@@ -802,6 +881,7 @@ def ManifoldMorse.SignedMorseChart.beltInverseCoordinates {E M : Type*}
   MorseHandle.ambientInverse ρ (c.splitChart y).swap
 
 attribute [local instance 100] Classical.propDecidable in
+/-- The inverse belt coordinates are continuous on the source of the splitting chart. -/
 theorem ManifoldMorse.SignedMorseChart.continuousOn_beltInverseCoordinates {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ}
     {p : M} (c : ManifoldMorse.SignedMorseChart (E := E) f p) (ρ : ℝ) (hρ : 0 < ρ) :
@@ -810,6 +890,7 @@ theorem ManifoldMorse.SignedMorseChart.continuousOn_beltInverseCoordinates {E M 
     (continuous_swap.comp_continuousOn c.splitChart.contMDiffOn_toFun.continuousOn)
 
 attribute [local instance 100] Classical.propDecidable in
+/-- The inverse belt coordinates undo the belt neighbourhood parametrisation. -/
 theorem ManifoldMorse.SignedMorseChart.beltInverseCoordinates_neighborhoodMap {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ}
     {p : M} (c : ManifoldMorse.SignedMorseChart (E := E) f p) (ρ : ℝ) (hρ : 0 < ρ)
@@ -828,6 +909,7 @@ theorem ManifoldMorse.SignedMorseChart.beltInverseCoordinates_neighborhoodMap {E
   exact MorseHandle.ambientInverse_ambientMap hρ _
 
 attribute [local instance 100] Classical.propDecidable in
+/-- On the upper level set the first inverse belt coordinate is a unit vector. -/
 theorem ManifoldMorse.SignedMorseChart.norm_beltInverseCoordinates_fst {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ}
     {p : M} (c : ManifoldMorse.SignedMorseChart (E := E) f p) (ρ : ℝ) (hρ : 0 < ρ)
@@ -840,6 +922,7 @@ theorem ManifoldMorse.SignedMorseChart.norm_beltInverseCoordinates_fst {E M : Ty
   linarith
 
 attribute [local instance 100] Classical.propDecidable in
+/-- The inverse of the belt neighbourhood parametrisation. -/
 def ManifoldMorse.SignedMorseChart.beltNeighborhoodInverse {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ}
     {p : M} (c : ManifoldMorse.SignedMorseChart (E := E) f p) (ρ : ℝ) (hρ : 0 < ρ)
@@ -856,6 +939,7 @@ def ManifoldMorse.SignedMorseChart.beltNeighborhoodInverse {E M : Type*}
   exact c.splitChart.map_source' y.property
 
 attribute [local instance 100] Classical.propDecidable in
+/-- The inverse belt neighbourhood parametrisation is continuous. -/
 theorem ManifoldMorse.SignedMorseChart.continuous_beltNeighborhoodInverse {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ}
     {p : M} (c : ManifoldMorse.SignedMorseChart (E := E) f p) (ρ : ℝ) (hρ : 0 < ρ) :
@@ -866,6 +950,10 @@ theorem ManifoldMorse.SignedMorseChart.continuous_beltNeighborhoodInverse {E M :
   exact ((hc.fst.subtype_mk _).prodMk hc.snd).subtype_mk _
 
 attribute [local instance 100] Classical.propDecidable in
+/-- The belt neighbourhood parametrisation as a homeomorphism: a neighbourhood of the belt sphere in
+the upper level set is the product of the belt sphere with a disc of normal directions (Milnor,
+h-cobordism theorem, §3).
+-/
 def ManifoldMorse.SignedMorseChart.beltNeighborhoodHomeomorph {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ}
     {p : M} (c : ManifoldMorse.SignedMorseChart (E := E) f p) (ρ : ℝ) (hρ : 0 < ρ) :
@@ -896,6 +984,9 @@ def ManifoldMorse.SignedMorseChart.beltNeighborhoodHomeomorph {E M : Type*}
   continuous_invFun := c.continuous_beltNeighborhoodInverse ρ hρ
 
 attribute [local instance 100] Classical.propDecidable in
+/-- If the splitting chart contains the block of radius `2 ρ`, its belt source contains the whole
+unit sphere times the closed ball of radius `3/2`.
+-/
 theorem ManifoldMorse.SignedMorseChart.enlarged_closed_belt_subset_source {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ}
     {p : M} (c : ManifoldMorse.SignedMorseChart (E := E) f p) (ρ : ℝ) (hρ : 0 < ρ)
@@ -912,6 +1003,9 @@ theorem ManifoldMorse.SignedMorseChart.enlarged_closed_belt_subset_source {E M :
   exact hblock ⟨hh.2, hh.1⟩
 
 attribute [local instance 100] Classical.propDecidable in
+/-- The negative split coordinate of a point of the belt neighbourhood is `ρ` times its normal
+parameter; so the second factor of the parametrisation is the normal coordinate.
+-/
 theorem ManifoldMorse.SignedMorseChart.beltNeighborhoodHomeomorph_normal {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ}
     {p : M} (c : ManifoldMorse.SignedMorseChart (E := E) f p) (ρ : ℝ) (hρ : 0 < ρ)
@@ -926,24 +1020,32 @@ theorem ManifoldMorse.SignedMorseChart.beltNeighborhoodHomeomorph_normal {E M : 
   rfl
 
 attribute [local instance 100] Classical.propDecidable in
+/-- The part of the upper level set lying in the source of the splitting chart, where the belt
+normal coordinate is defined.
+-/
 def ManifoldMorse.MorseSurgeryData.beltNormalDomain {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ} {p : M}
     (d : ManifoldMorse.MorseSurgeryData E f p) : Set d.UpperLevel :=
   (Subtype.val : d.UpperLevel → M) ⁻¹' d.chart.splitChart.source
 
 attribute [local instance 100] Classical.propDecidable in
+/-- The normal coordinate of the belt sphere: the negative component of the splitting chart, which
+cuts the belt sphere out of the upper level set.
+-/
 def ManifoldMorse.MorseSurgeryData.beltNormal {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ} {p : M}
     (d : ManifoldMorse.MorseSurgeryData E f p) :
     d.UpperLevel → d.chart.NegativeCoordinates := fun x => (d.chart.splitChart (x : M)).1
 
 attribute [local instance 100] Classical.propDecidable in
+/-- The domain of the belt normal coordinate is open. -/
 theorem ManifoldMorse.MorseSurgeryData.isOpen_beltNormalDomain {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ}
     {p : M} (d : ManifoldMorse.MorseSurgeryData E f p) : IsOpen d.beltNormalDomain :=
   d.chart.splitChart.open_source.preimage continuous_subtype_val
 
 attribute [local instance 100] Classical.propDecidable in
+/-- The model points of the belt sphere lie in the target of the splitting chart. -/
 theorem ManifoldMorse.MorseSurgeryData.belt_model_mem_target {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ}
     {p : M} (d : ManifoldMorse.MorseSurgeryData E f p)
@@ -959,6 +1061,7 @@ theorem ManifoldMorse.MorseSurgeryData.belt_model_mem_target {E M : Type*}
     linarith [d.radius_pos]
 
 attribute [local instance 100] Classical.propDecidable in
+/-- The belt sphere lies in the domain of the belt normal coordinate. -/
 theorem ManifoldMorse.MorseSurgeryData.belt_mem_normalDomain {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ}
     {p : M} (d : ManifoldMorse.MorseSurgeryData E f p)
@@ -969,6 +1072,9 @@ theorem ManifoldMorse.MorseSurgeryData.belt_mem_normalDomain {E M : Type*}
   exact d.chart.splitChart.map_target' (d.belt_model_mem_target v)
 
 attribute [local instance 100] Classical.propDecidable in
+/-- The split coordinates of a point of the belt sphere are `(0, radius • v)`: the belt sphere is
+the sphere of radius `radius` in the positive directions.
+-/
 theorem ManifoldMorse.MorseSurgeryData.belt_split_coordinates {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ}
     {p : M} (d : ManifoldMorse.MorseSurgeryData E f p)
@@ -979,6 +1085,7 @@ theorem ManifoldMorse.MorseSurgeryData.belt_split_coordinates {E M : Type*}
   exact d.chart.splitChart.right_inv' (d.belt_model_mem_target v)
 
 attribute [local instance 100] Classical.propDecidable in
+/-- The belt normal coordinate vanishes on the belt sphere. -/
 theorem ManifoldMorse.MorseSurgeryData.beltNormal_belt {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ} {p : M}
     (d : ManifoldMorse.MorseSurgeryData E f p)
@@ -988,6 +1095,9 @@ theorem ManifoldMorse.MorseSurgeryData.beltNormal_belt {E M : Type*} [NormedAddC
   rw [d.belt_split_coordinates]
 
 attribute [local instance 100] Classical.propDecidable in
+/-- On its domain the belt normal coordinate vanishes exactly on the belt sphere, so the belt sphere
+is cut out cleanly by that coordinate.
+-/
 theorem ManifoldMorse.MorseSurgeryData.beltNormal_eq_zero_iff {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ}
     {p : M} (d : ManifoldMorse.MorseSurgeryData E f p) {x : d.UpperLevel}
@@ -1015,6 +1125,7 @@ theorem ManifoldMorse.MorseSurgeryData.beltNormal_eq_zero_iff {E M : Type*}
     exact d.beltNormal_belt v
 
 attribute [local instance 100] Classical.propDecidable in
+/-- The belt normal coordinate is smooth on its domain. -/
 theorem ManifoldMorse.MorseSurgeryData.contMDiffOn_beltNormal {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ}
     {p : M} (d : ManifoldMorse.MorseSurgeryData E f p) [FiniteDimensional ℝ E]
@@ -1032,6 +1143,9 @@ theorem ManifoldMorse.MorseSurgeryData.contMDiffOn_beltNormal {E M : Type*}
   exact contDiff_fst.contMDiff.comp_contMDiffOn hcoords
 
 attribute [local instance 100] Classical.propDecidable in
+/-- The derivative of the belt normal coordinate annihilates the tangent space of the belt sphere,
+that coordinate being constant along it.
+-/
 theorem ManifoldMorse.MorseSurgeryData.beltNormal_derivative_comp_belt {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ}
     {p : M} (d : ManifoldMorse.MorseSurgeryData E f p) [FiniteDimensional ℝ E]
@@ -1056,6 +1170,7 @@ theorem ManifoldMorse.MorseSurgeryData.beltNormal_derivative_comp_belt {E M : Ty
       ((d.belt_smooth hf n).mdifferentiableAt (by simp))
   exact hchain.symm.trans hzero
 
+/-- Translation by a vector, as a diffeomorphism of a normed space. -/
 def NativeParametrization.translation {D : Type*} [NormedAddCommGroup D] [NormedSpace ℝ D]
     (a : D) : Diffeomorph 𝓘(ℝ, D) 𝓘(ℝ, D) D D ∞
     where
@@ -1067,12 +1182,16 @@ def NativeParametrization.translation {D : Type*} [NormedAddCommGroup D] [Normed
   contMDiff_toFun := (contDiff_id.add contDiff_const).contMDiff
   contMDiff_invFun := (contDiff_id.sub contDiff_const).contMDiff
 
+/-- The chart of a manifold at a point `x`, translated so that `0` is sent to `x`; a parametrisation
+of a neighbourhood of `x` centred at the origin.
+-/
 def NativeParametrization.centered {D : Type*} [NormedAddCommGroup D] [NormedSpace ℝ D]
     {N : Type*} [TopologicalSpace N] [ChartedSpace D N] [IsManifold 𝓘(ℝ, D) ∞ N] (x : N) :
     PartialDiffeomorph 𝓘(ℝ, D) 𝓘(ℝ, D) D N ∞ :=
   let c := modelChartPartialDiffeomorph (I := 𝓘(ℝ, D)) x
   (translation (c x)).toPartialDiffeomorph'.trans c.symm
 
+/-- The origin lies in the source of the centred parametrisation. -/
 theorem NativeParametrization.zero_mem_centered_source {D : Type*} [NormedAddCommGroup D]
     [NormedSpace ℝ D] {N : Type*} [TopologicalSpace N] [ChartedSpace D N] [IsManifold 𝓘(ℝ, D) ∞ N]
     (x : N) : (0 : D) ∈ (centered (D := D) x).source := by
@@ -1082,6 +1201,7 @@ theorem NativeParametrization.zero_mem_centered_source {D : Type*} [NormedAddCom
   rw [zero_add]
   exact c.map_source' (mem_extChartAt_source x)
 
+/-- The centred parametrisation sends the origin to the given point. -/
 theorem NativeParametrization.centered_zero {D : Type*} [NormedAddCommGroup D]
     [NormedSpace ℝ D] {N : Type*} [TopologicalSpace N] [ChartedSpace D N] [IsManifold 𝓘(ℝ, D) ∞ N]
     (x : N) : centered (D := D) x (0 : D) = x := by
@@ -1090,12 +1210,14 @@ theorem NativeParametrization.centered_zero {D : Type*} [NormedAddCommGroup D]
   rw [zero_add]
   exact c.left_inv' (mem_extChartAt_source x)
 
+/-- The given point lies in the target of its centred parametrisation. -/
 theorem NativeParametrization.mem_centered_target {D : Type*} [NormedAddCommGroup D]
     [NormedSpace ℝ D] {N : Type*} [TopologicalSpace N] [ChartedSpace D N] [IsManifold 𝓘(ℝ, D) ∞ N]
     (x : N) : x ∈ (centered (D := D) x).target := by
   have hx := (centered (D := D) x).map_source' (zero_mem_centered_source (D := D) x)
   rwa [centered_zero] at hx
 
+/-- An isotopy supported in `K` preserves every set containing `K`. -/
 theorem SupportedDiffeomorph.SupportedRelativeIsotopy.mapsTo_superset {E H X : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace H] {I : ModelWithCorners ℝ E H}
     [TopologicalSpace X] [ChartedSpace H X] {e : Diffeomorph I I X X ∞} {K S : Set X}
@@ -1110,6 +1232,10 @@ theorem SupportedDiffeomorph.SupportedRelativeIsotopy.mapsTo_superset {E H X : T
   rw [← hd]
   exact SupportedDiffeomorph.mapsTo_of_fixed_outside d.toEquiv hfix hx
 
+/-- The transport of a compactly supported relative isotopy through a partial diffeomorphism:
+extending by the identity outside the image of the support gives a relative isotopy of the
+target.
+-/
 def SupportedDiffeomorph.SupportedRelativeIsotopy.extension {E F H H' X Y : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace H] {I : ModelWithCorners ℝ E H}
     [NormedAddCommGroup F] [NormedSpace ℝ F] [TopologicalSpace H'] {J : ModelWithCorners ℝ F H'}
@@ -1153,12 +1279,17 @@ def SupportedDiffeomorph.SupportedRelativeIsotopy.extension {E F H H' X Y : Type
       exact hi
     · exact SupportedDiffeomorph.extendMap_of_notMem Φ _ hyt
 
+/-- The isotopy of `M × P` which, in the chart `Φ`, translates the `M` coordinate by `-β(x) • b(u)`
+at time `smoothTransition t` and leaves the `P` coordinate fixed; a fibrewise bump translation
+of a chart.
+-/
 def SupportedDiffeomorph.normalBumpFamily {E F H M P : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [NormedAddCommGroup F] [NormedSpace ℝ F] [TopologicalSpace H]
     {J : ModelWithCorners ℝ F H} [TopologicalSpace M] [ChartedSpace H M]
     (Φ : PartialDiffeomorph 𝓘(ℝ, E) J E M ∞) (β : E → ℝ) (b : P → E) (p : ℝ × (M × P)) : M × P :=
   (bumpFamily Φ β (-(Real.smoothTransition p.1 • b p.2.2), p.2.1), p.2.2)
 
+/-- The bump translation leaves the second factor fixed. -/
 theorem SupportedDiffeomorph.normalBumpFamily_normal {E F H M P : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [NormedAddCommGroup F] [NormedSpace ℝ F]
     [TopologicalSpace H] {J : ModelWithCorners ℝ F H} [TopologicalSpace M] [ChartedSpace H M]
@@ -1166,6 +1297,7 @@ theorem SupportedDiffeomorph.normalBumpFamily_normal {E F H M P : Type*}
     (normalBumpFamily Φ β b (t, z)).2 = z.2 :=
   rfl
 
+/-- The bump translation is the identity at time zero. -/
 theorem SupportedDiffeomorph.normalBumpFamily_zero {E F H M P : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [NormedAddCommGroup F] [NormedSpace ℝ F]
     [TopologicalSpace H] {J : ModelWithCorners ℝ F H} [TopologicalSpace M] [ChartedSpace H M]
@@ -1176,6 +1308,7 @@ theorem SupportedDiffeomorph.normalBumpFamily_zero {E F H M P : Type*}
     rw [Real.smoothTransition.zero, zero_smul, neg_zero, bumpFamily_zero]
   · rfl
 
+/-- The bump translation fixes every fibre over a parameter where the translating field vanishes. -/
 theorem SupportedDiffeomorph.normalBumpFamily_fixed_fiber {E F H M P : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [NormedAddCommGroup F] [NormedSpace ℝ F]
     [TopologicalSpace H] {J : ModelWithCorners ℝ F H} [TopologicalSpace M] [ChartedSpace H M]
@@ -1186,6 +1319,9 @@ theorem SupportedDiffeomorph.normalBumpFamily_fixed_fiber {E F H M P : Type*}
     rw [hu, smul_zero, neg_zero, bumpFamily_zero]
   · rfl
 
+/-- The bump translation is the identity outside the product of the two supports; it is compactly
+supported.
+-/
 theorem SupportedDiffeomorph.normalBumpFamily_fixed_outside {E F H M P : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [NormedAddCommGroup F] [NormedSpace ℝ F]
     [TopologicalSpace H] {J : ModelWithCorners ℝ F H} [TopologicalSpace M] [ChartedSpace H M]
@@ -1200,6 +1336,7 @@ theorem SupportedDiffeomorph.normalBumpFamily_fixed_outside {E F H M P : Type*}
       exact hu (subset_tsupport b hb)
     exact normalBumpFamily_fixed_fiber Φ β b hb t z.1
 
+/-- At time one the bump translation reads in the chart as the translation `x ↦ x - β x • b u`. -/
 theorem SupportedDiffeomorph.normalBumpFamily_chart {E F H M P : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [NormedAddCommGroup F] [NormedSpace ℝ F]
     [TopologicalSpace H] {J : ModelWithCorners ℝ F H} [TopologicalSpace M] [ChartedSpace H M]
@@ -1211,6 +1348,10 @@ theorem SupportedDiffeomorph.normalBumpFamily_chart {E F H M P : Type*}
       sub_eq_add_neg]
   · rfl
 
+/-- For a compactly supported bump function in a chart there is a radius `ε` such that every
+translating field of norm less than `ε` yields a bump translation which is smooth, a
+diffeomorphism at each time, and compactly supported.
+-/
 theorem SupportedDiffeomorph.exists_radius_normalBumpFamily {E F H M P : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [NormedAddCommGroup F] [NormedSpace ℝ F]
     [TopologicalSpace H] {J : ModelWithCorners ℝ F H} [TopologicalSpace M] [ChartedSpace H M]
@@ -1289,6 +1430,9 @@ theorem SupportedDiffeomorph.exists_radius_normalBumpFamily {E F H M P : Type*}
             (Φ.contMDiffOn_toFun.continuousOn.mono hsupport)).prod
         hbcompact.isCompact
 
+/-- A smooth map vanishing at the origin agrees near the origin with a compactly supported smooth
+map of arbitrarily small norm, supported in a prescribed neighbourhood.
+-/
 theorem exists_small_supported_germ {P E : Type*} [NormedAddCommGroup P] [NormedSpace ℝ P]
     [FiniteDimensional ℝ P] [NormedAddCommGroup E] [NormedSpace ℝ E] {L : P → E} {U : Set P}
     (hU : IsOpen U) (hzero : (0 : P) ∈ U) (hL : ContDiffOn ℝ ∞ L U) (hLzero : L 0 = 0) {ε : ℝ}
@@ -1342,6 +1486,9 @@ theorem exists_small_supported_germ {P E : Type*} [NormedAddCommGroup P] [Normed
     ⟨b, hsmooth, hcompact, hsupport.trans (hβsupport.trans Set.inter_subset_left), hsmall, hgerm,
       hgerm.eq_of_nhds.trans hLzero⟩
 
+/-- Every linear shear `(x, y) ↦ (x + L y, y)` is, near the origin, the time-one map of a compactly
+supported isotopy which preserves the second coordinate and fixes the subspace `y = 0`.
+-/
 theorem SupportedDiffeomorph.exists_supported_shear_isotopy {E F : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [NormedAddCommGroup F]
     [NormedSpace ℝ F] [FiniteDimensional ℝ F] (L : F →L[ℝ] E) {U : Set (E × F)} (hU : IsOpen U)
@@ -1399,6 +1546,10 @@ theorem SupportedDiffeomorph.exists_supported_shear_isotopy {E F : Type*}
   change A (1, p) = (p.1 - β p.1 • b p.2, p.2) at hh
   rwa [hp₁, one_smul, hp₂, sub_neg_eq_add] at hh
 
+/-- The germ at the origin of a map `f` is realised by a diffeomorphism supported in `U`: there is a
+diffeomorphism agreeing with `f` near the origin which is isotopic to the identity through
+diffeomorphisms supported in a compact subset of `U` and fixing the origin.
+-/
 def SupportedGerms.Realizes {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     (U : Set E) (f : E → E) : Prop :=
   ∃ (d : Diffeomorph 𝓘(ℝ, E) 𝓘(ℝ, E) E E ∞) (K : Set E),
@@ -1407,6 +1558,7 @@ def SupportedGerms.Realizes {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ 
         Nonempty (SupportedDiffeomorph.SupportedRelativeIsotopy d K {0}) ∧
           (d : E → E) =ᶠ[𝓝 (0 : E)] f
 
+/-- Germs realised by supported diffeomorphisms are closed under composition. -/
 theorem SupportedGerms.Realizes.comp {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     {U : Set E} {f g : E → E} (hf : SupportedGerms.Realizes U f)
     (hg : SupportedGerms.Realizes U g) : SupportedGerms.Realizes U (f ∘ g) := by
@@ -1441,6 +1593,9 @@ theorem SupportedGerms.Realizes.comp {E : Type*} [NormedAddCommGroup E] [NormedS
   change d (e x) = f (g x)
   exact hx.trans (congrArg f hy)
 
+/-- Realisability is invariant under conjugation by a linear isomorphism, the neighbourhood being
+transported along.
+-/
 theorem SupportedGerms.Realizes.conj {E F : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [NormedAddCommGroup F] [NormedSpace ℝ F] (c : E ≃L[ℝ] F) {U : Set E} {f : E → E}
     (hf : SupportedGerms.Realizes U f) :
@@ -1478,6 +1633,7 @@ theorem SupportedGerms.Realizes.conj {E F : Type*} [NormedAddCommGroup E] [Norme
   filter_upwards [hd.comp_tendsto ht] with y hy
   exact congrArg c hy
 
+/-- The germ of a linear shear is realised by a supported diffeomorphism. -/
 theorem SupportedGerms.realizes_shear {E F : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [NormedAddCommGroup F] [NormedSpace ℝ F] [FiniteDimensional ℝ E]
     [FiniteDimensional ℝ F] (L : F →L[ℝ] E) {U : Set (E × F)} (hU : IsOpen U)
@@ -1495,6 +1651,9 @@ theorem SupportedGerms.realizes_shear {E F : Type*} [NormedAddCommGroup E]
   filter_upwards [hgerm] with x hx
   exact (hd x).trans hx
 
+/-- The elementary diagonal matrix `diag(a, a⁻¹)` in the coordinates `i, j` is a product of six
+transvections.
+-/
 theorem LinearFramePaths.diag2n_decompose {ι : Type*} [Fintype ι] [DecidableEq ι] {i j : ι}
     (hij : i ≠ j) (a : ℝ) (ha : a ≠ 0) :
     Matrix.SpecialLinearGroup.diag2n hij a ha =
@@ -1518,6 +1677,7 @@ theorem LinearFramePaths.diag2n_decompose {ι : Type*} [Fintype ι] [DecidableEq
       by_cases hlj : l = j <;>
     simp_all [Matrix.diagonal_apply, Matrix.one_apply, Matrix.single_apply, eq_comm]
 
+/-- Every transvection is joined to the identity by a path in `SL(n, ℝ)`. -/
 theorem LinearFramePaths.joined_one_transvection {ι : Type*} [Fintype ι] [DecidableEq ι]
     {i j : ι} (hij : i ≠ j) (a : ℝ) :
     Joined (1 : Matrix.SpecialLinearGroup ι ℝ) (Matrix.SpecialLinearGroup.transvection hij a) := by
@@ -1539,6 +1699,9 @@ theorem LinearFramePaths.joined_one_transvection {ι : Type*} [Fintype ι] [Deci
   · simp only [h, ite_false]
     fun_prop
 
+/-- `SL(n, ℝ)` is path connected for `n ≥ 2`: every matrix of determinant one is joined to the
+identity.
+-/
 theorem LinearFramePaths.joined_one_specialLinear {ι : Type*} [Fintype ι] [DecidableEq ι]
     [Nontrivial ι] (A : Matrix.SpecialLinearGroup ι ℝ) :
     Joined (1 : Matrix.SpecialLinearGroup ι ℝ) A := by
@@ -1562,6 +1725,7 @@ theorem LinearFramePaths.joined_one_specialLinear {ι : Type*} [Fintype ι] [Dec
   · intro A B hA hB
     simpa only [one_mul] using hA.mul hB
 
+/-- The linear isomorphism splitting `ι → ℝ` into the `i`-th coordinate and the remaining ones. -/
 def SupportedGerms.coordinateSplit {ι : Type*} [Fintype ι] [DecidableEq ι] (i : ι) :
     (ι → ℝ) ≃L[ℝ] ℝ × ({ j : ι // j ≠ i } → ℝ) :=
   LinearEquiv.toContinuousLinearEquiv
@@ -1580,6 +1744,9 @@ def SupportedGerms.coordinateSplit {ι : Type*} [Fintype ι] [DecidableEq ι] (i
       map_add' := fun _ _ => rfl
       map_smul' := fun _ _ => rfl }
 
+/-- The germ of a transvection is realised by a supported diffeomorphism, a transvection being a
+shear in suitable coordinates.
+-/
 theorem SupportedGerms.realizes_transvection {ι : Type*} [Fintype ι] [DecidableEq ι]
     {U : Set (ι → ℝ)} (hU : IsOpen U) (h0 : (0 : ι → ℝ) ∈ U) {i j : ι} (hij : i ≠ j) (a : ℝ) :
     Realizes U
@@ -1607,6 +1774,7 @@ theorem SupportedGerms.realizes_transvection {ι : Type*} [Fintype ι] [Decidabl
     simp [c, coordinateSplit, L]
   · simp [c, coordinateSplit, L, hk]
 
+/-- The germ of any matrix of determinant one is realised by a supported diffeomorphism. -/
 theorem SupportedGerms.realizes_specialLinear {ι : Type*} [Fintype ι] [DecidableEq ι]
     [Nontrivial ι] {U : Set (ι → ℝ)} (hU : IsOpen U) (h0 : (0 : ι → ℝ) ∈ U)
     (A : Matrix.SpecialLinearGroup ι ℝ) : Realizes U (Matrix.SpecialLinearGroup.toLin' A) := by
@@ -1637,6 +1805,9 @@ theorem SupportedGerms.realizes_specialLinear {ι : Type*} [Fintype ι] [Decidab
   · exact fun i j hij a => realizes_transvection hU h0 hij a
   · exact hmul
 
+/-- The germ of a linear automorphism of determinant one of a finite-dimensional space is realised
+by a supported diffeomorphism.
+-/
 theorem SupportedGerms.realizes_det_one {ι : Type*} [Finite ι] [Nontrivial ι] {E : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] (b : Module.Basis ι ℝ E)
     (C : E ≃L[ℝ] E) (hdet : C.toLinearMap.det = 1) {U : Set E} (hU : IsOpen U)
@@ -1661,6 +1832,9 @@ theorem SupportedGerms.realizes_det_one {ι : Type*} [Finite ι] [Nontrivial ι]
   rw [c.symm_apply_apply]
   exact (LinearMap.toMatrix_mulVec_repr b b C.toLinearMap x).symm
 
+/-- A cut-off of a bounded Lipschitz map is Lipschitz, with constant `a + b R` in terms of the
+Lipschitz constants and the bound.
+-/
 theorem SmallPerturbation.lipschitzWith_cutoff_smul {P E : Type*} [PseudoMetricSpace P]
     [NormedAddCommGroup E] [NormedSpace ℝ E] {u : P → E} {β : P → ℝ} {S : Set P} {a b R : ℝ≥0}
     (hu : LipschitzOnWith a u S) (hbound : ∀ x ∈ S, ‖u x‖ ≤ R) (hβ : LipschitzWith b β)
@@ -1708,6 +1882,9 @@ theorem SmallPerturbation.lipschitzWith_cutoff_smul {P E : Type*} [PseudoMetricS
     · rw [hzero x hx, hzero y hy, zero_smul, zero_smul, dist_self]
       positivity
 
+/-- A smooth map whose derivative vanishes at the origin is Lipschitz with arbitrarily small
+constant on some closed ball around the origin.
+-/
 theorem SmallPerturbation.exists_closedBall_small_lipschitz_of_fderiv_zero {P E : Type*}
     [NormedAddCommGroup P] [NormedSpace ℝ P] [NormedAddCommGroup E] [NormedSpace ℝ E] {u : P → E}
     {U : Set P} (hU : IsOpen U) (hzero : (0 : P) ∈ U) (hu : ContDiffOn ℝ ∞ u U)
@@ -1730,6 +1907,10 @@ theorem SmallPerturbation.exists_closedBall_small_lipschitz_of_fderiv_zero {P E 
   · intro x hx
     exact (hball hx).2.le
 
+/-- A smooth map vanishing to first order at the origin agrees near the origin with a compactly
+supported map that is globally Lipschitz with arbitrarily small constant and is pointwise a
+scalar multiple of it between `0` and `1`.
+-/
 theorem SmallPerturbation.exists_lipschitz_supported_germ {P E : Type*}
     [NormedAddCommGroup P] [NormedSpace ℝ P] [FiniteDimensional ℝ P] [NormedAddCommGroup E]
     [NormedSpace ℝ E] {u : P → E} {U : Set P} (hU : IsOpen U) (hzero : (0 : P) ∈ U)
@@ -1820,6 +2001,9 @@ theorem SmallPerturbation.exists_lipschitz_supported_germ {P E : Type*}
   intro x
   exact ⟨βρ x, hβrange _, rfl⟩
 
+/-- A smooth map fixing the origin whose derivative there is the identity agrees near the origin
+with the time-one map of a compactly supported isotopy of diffeomorphisms.
+-/
 theorem SmallPerturbation.exists_supported_tangent_identity_isotopy {E : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] {f : E → E} {U : Set E}
     (hU : IsOpen U) (hzero : (0 : E) ∈ U) (hf : ContDiffOn ℝ ∞ f U) (hf₀ : f 0 = 0)
@@ -1897,6 +2081,9 @@ theorem SmallPerturbation.exists_supported_tangent_identity_isotopy {E : Type*}
     change x + (f x - x) = f x
     abel
 
+/-- The relative form of the previous statement: the isotopy can be taken to preserve a linear
+functional `Q` that the map preserves and to fix a set `S` that the map fixes.
+-/
 theorem SmallPerturbation.exists_relative_tangent_identity_isotopy {E F : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [NormedAddCommGroup F]
     [NormedSpace ℝ F] {f : E → E} {U S : Set E} (hU : IsOpen U) (hzero : (0 : E) ∈ U)
@@ -1925,6 +2112,7 @@ theorem SmallPerturbation.exists_relative_tangent_identity_isotopy {E F : Type*}
       rw [heq, hS x ⟨hx, hxS⟩, sub_self, smul_zero, add_zero]
     · exact hfix t x (fun h => hx (hKU h))
 
+/-- A map preserving a linear projection `Q` near the origin has derivative preserving `Q`. -/
 theorem SmallPerturbation.fderiv_preserves_projection {E F : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [NormedAddCommGroup F] [NormedSpace ℝ F] {f : E → E} {U : Set E}
     (hU : IsOpen U) (hzero : (0 : E) ∈ U) (hf : DifferentiableAt ℝ f 0) (Q : E →L[ℝ] F)
@@ -1936,6 +2124,7 @@ theorem SmallPerturbation.fderiv_preserves_projection {E F : Type*} [NormedAddCo
     (Q.hasFDerivAt.comp 0 hf.hasFDerivAt).fderiv
   exact hc.symm.trans (heq.fderiv_eq.trans Q.fderiv)
 
+/-- A map fixing a subspace near the origin has derivative fixing that subspace. -/
 theorem SmallPerturbation.fderiv_fixes_subspace {E : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] {f : E → E} {U : Set E} (hU : IsOpen U) (hzero : (0 : E) ∈ U)
     (hf : DifferentiableAt ℝ f 0) (S : Submodule ℝ E) (hS : ∀ x ∈ U ∩ (S : Set E), f x = x) :
@@ -1952,6 +2141,11 @@ theorem SmallPerturbation.fderiv_fixes_subspace {E : Type*} [NormedAddCommGroup 
   intro x hx
   exact congrArg (fun A : S →L[ℝ] E => A ⟨x, hx⟩) hlinear
 
+/-- Germ linearisation: a smooth map fixing the origin with bijective derivative there factors near
+the origin as its derivative composed with the time-one map of a compactly supported isotopy;
+the linear part and the isotopy inherit the map's preservation of a functional `Q` and of a
+subspace `S`.
+-/
 theorem SmallPerturbation.exists_relative_germ_linearization_isotopy {E F : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [NormedAddCommGroup F]
     [NormedSpace ℝ F] {f : E → E} {U : Set E} (hU : IsOpen U) (hzero : (0 : E) ∈ U)
@@ -2009,6 +2203,9 @@ theorem SmallPerturbation.exists_relative_germ_linearization_isotopy {E F : Type
   change A (1, x) = C.symm (f x) at hx
   rw [hx, C.apply_symm_apply]
 
+/-- A germ at the origin of a smooth map fixing the origin whose derivative is bijective of
+determinant one is realised by a diffeomorphism supported in any prescribed neighbourhood.
+-/
 theorem SupportedGerms.realizes_local_germ {E ι : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [Finite ι] [Nontrivial ι] (b : Module.Basis ι ℝ E)
     {f : E → E} {U : Set E} (hU : IsOpen U) (h0 : (0 : E) ∈ U) (hf : ContDiffOn ℝ ∞ f U)
@@ -2038,13 +2235,16 @@ theorem SupportedGerms.realizes_local_germ {E ι : Type*} [NormedAddCommGroup E]
   obtain ⟨D, L, hL, hLU, hH, hDgerm⟩ := (realizes_det_one b C hCdet hU h0).comp hdreal
   exact ⟨D, L, hL, hLU, hH, hDgerm.trans hgerm.symm⟩
 
+/-- The diagonal matrix with entry `a` in position `i` and `1` elsewhere. -/
 def LinearFramePaths.scalarDiagonal {ι : Type*} [DecidableEq ι] (i : ι) (a : ℝ) :
     Matrix ι ι ℝ :=
   Matrix.diagonal (fun k => if k = i then a else 1)
 
+/-- The determinant of the elementary scalar diagonal matrix is its entry. -/
 theorem LinearFramePaths.det_scalarDiagonal {ι : Type*} [Fintype ι] [DecidableEq ι] (i : ι)
     (a : ℝ) : Matrix.det (scalarDiagonal i a) = a := by simp [scalarDiagonal, Matrix.det_diagonal]
 
+/-- Elementary scalar diagonal matrices multiply by multiplying their entries. -/
 theorem LinearFramePaths.scalarDiagonal_mul {ι : Type*} [Fintype ι] [DecidableEq ι] (i : ι)
     (a b : ℝ) : scalarDiagonal i a * scalarDiagonal i b = scalarDiagonal i (a * b) := by
   rw [scalarDiagonal, scalarDiagonal, Matrix.diagonal_mul_diagonal]
@@ -2052,9 +2252,11 @@ theorem LinearFramePaths.scalarDiagonal_mul {ι : Type*} [Fintype ι] [Decidable
   funext k
   by_cases h : k = i <;> simp [h]
 
+/-- The elementary scalar diagonal matrix with entry one is the identity. -/
 theorem LinearFramePaths.scalarDiagonal_one {ι : Type*} [DecidableEq ι] (i : ι) :
     scalarDiagonal i 1 = 1 := by simp [scalarDiagonal]
 
+/-- The elementary scalar diagonal matrix depends continuously on its entry. -/
 theorem LinearFramePaths.continuous_scalarDiagonal {ι : Type*} [DecidableEq ι] (i : ι) :
     Continuous (scalarDiagonal i) := by
   apply continuous_pi
@@ -2072,11 +2274,17 @@ theorem LinearFramePaths.continuous_scalarDiagonal {ι : Type*} [DecidableEq ι]
   · simp only [hkl, ite_false]
     fun_prop
 
+/-- The open set of matrices whose determinant has a prescribed sign, one of the two components of
+`GL(n, ℝ)` when `σ = ±1`.
+-/
 def LinearFramePaths.determinantComponent {ι : Type*} [Fintype ι] [DecidableEq ι] (σ : ℝ) :
     TopologicalSpace.Opens (Matrix ι ι ℝ) :=
   ⟨{A | 0 < σ * Matrix.det A},
     isOpen_lt continuous_const (continuous_const.mul continuous_id.matrix_det)⟩
 
+/-- The elementary scalar diagonal matrix with the same determinant as the given matrix, a normal
+form in its determinant component.
+-/
 def LinearFramePaths.diagonalPoint {ι : Type*} [Fintype ι] [DecidableEq ι] (i : ι) {σ : ℝ}
     (A : determinantComponent (ι := ι) σ) : determinantComponent (ι := ι) σ :=
   ⟨scalarDiagonal i (Matrix.det (A : Matrix ι ι ℝ)),
@@ -2085,6 +2293,9 @@ def LinearFramePaths.diagonalPoint {ι : Type*} [Fintype ι] [DecidableEq ι] (i
     rw [det_scalarDiagonal]
     exact A.property⟩
 
+/-- For `n ≥ 2` a matrix is joined inside its determinant component to the elementary scalar
+diagonal matrix of the same determinant.
+-/
 theorem LinearFramePaths.joined_diagonal_to_matrix {ι : Type*} [Fintype ι] [DecidableEq ι]
     [Nontrivial ι] (i : ι) {σ : ℝ} (A : determinantComponent (ι := ι) σ) :
     Joined (diagonalPoint i A) A := by
@@ -2118,6 +2329,9 @@ theorem LinearFramePaths.joined_diagonal_to_matrix {ι : Type*} [Fintype ι] [De
   have h := (joined_one_specialLinear N).map hψ
   rwa [h0, h1] at h
 
+/-- Two elementary scalar diagonal matrices in the same determinant component are joined by a path
+in it.
+-/
 theorem LinearFramePaths.joined_diagonal_points {ι : Type*} [Fintype ι] [DecidableEq ι]
     (i : ι) {σ : ℝ} (A B : determinantComponent (ι := ι) σ) :
     Joined (diagonalPoint i A) (diagonalPoint i B) := by
@@ -2155,6 +2369,9 @@ theorem LinearFramePaths.joined_diagonal_points {ι : Type*} [Fintype ι] [Decid
   · apply Subtype.ext
     simp [g, diagonalPoint]
 
+/-- For `n ≥ 2` the set of matrices of a given determinant sign is path connected; so `GL(n, ℝ)` has
+exactly the two components cut out by the sign of the determinant.
+-/
 theorem LinearFramePaths.joined_determinantComponent {ι : Type*} [Fintype ι]
     [DecidableEq ι] [Nontrivial ι] {σ : ℝ} (A B : determinantComponent (ι := ι) σ) : Joined A B :=
   by
@@ -2163,6 +2380,9 @@ theorem LinearFramePaths.joined_determinantComponent {ι : Type*} [Fintype ι]
     (joined_diagonal_to_matrix i A).symm.trans
       ((joined_diagonal_points i A B).trans (joined_diagonal_to_matrix i B))
 
+/-- Every nonzero real number is the determinant of a linear automorphism of a finite-dimensional
+space.
+-/
 theorem SupportedGerms.exists_linearEquiv_with_det {B ι : Type*} [NormedAddCommGroup B]
     [NormedSpace ℝ B] [FiniteDimensional ℝ B] [Finite ι] (b : Module.Basis ι ℝ B) (i : ι) {r : ℝ}
     (hr : r ≠ 0) : ∃ R : B ≃L[ℝ] B, R.toLinearMap.det = r := by
@@ -2186,6 +2406,9 @@ theorem SupportedGerms.exists_linearEquiv_with_det {B ι : Type*} [NormedAddComm
     ⟨hi, (LinearMap.injective_iff_surjective_of_finrank_eq_finrank rfl).mp hi⟩
   exact ⟨(LinearEquiv.ofBijective L hbij).toContinuousLinearEquiv, hdet⟩
 
+/-- An automorphism of `A × B` can be corrected to determinant one by an automorphism of the second
+factor alone.
+-/
 theorem SupportedGerms.exists_normal_det_correction {A B ι : Type*} [NormedAddCommGroup A]
     [NormedSpace ℝ A] [FiniteDimensional ℝ A] [NormedAddCommGroup B] [NormedSpace ℝ B]
     [FiniteDimensional ℝ B] [Finite ι] (b : Module.Basis ι ℝ B) (i : ι)
@@ -2203,6 +2426,10 @@ theorem SupportedGerms.exists_normal_det_correction {A B ι : Type*} [NormedAddC
   rw [LinearMap.det_comp, LinearMap.det_prodMap, LinearMap.det_id, one_mul, hR,
     inv_mul_cancel₀ hne]
 
+/-- A chart of `A × B` fixing the origin can be straightened along the first factor: there is a
+diffeomorphism supported near the origin and isotopic to the identity carrying the germ of
+`x ↦ Φ (x, 0)` to the germ of the inclusion `x ↦ (x, 0)`.
+-/
 theorem SupportedGerms.exists_supported_disk_germ_alignment {A B ι κ : Type*}
     [NormedAddCommGroup A] [NormedSpace ℝ A] [FiniteDimensional ℝ A] [NormedAddCommGroup B]
     [NormedSpace ℝ B] [FiniteDimensional ℝ B] [Finite ι] [Finite κ] [Nontrivial κ]
@@ -2263,6 +2490,11 @@ theorem SupportedGerms.exists_supported_disk_germ_alignment {A B ι κ : Type*}
   rw [hinv]
   simp [T]
 
+/-- Two charts of a manifold with the same centre agree along the first factor after a supported
+diffeomorphism: there is a diffeomorphism of `M`, isotopic to the identity through
+diffeomorphisms supported in a compact subset of the target of `Ψ`, carrying the germ of
+`x ↦ Φ (x, 0)` to the germ of `x ↦ Ψ (x, 0)`.
+-/
 theorem SupportedGerms.exists_native_disk_germ_alignment {A B E H M ι κ : Type*}
     [NormedAddCommGroup A] [NormedSpace ℝ A] [FiniteDimensional ℝ A] [NormedAddCommGroup B]
     [NormedSpace ℝ B] [FiniteDimensional ℝ B] [NormedAddCommGroup E] [NormedSpace ℝ E]
@@ -2314,20 +2546,26 @@ theorem SupportedGerms.exists_native_disk_germ_alignment {A B E H M ι κ : Type
           (Ψ.map_target' ht))
       _ = Ψ (x, 0) := congrArg Ψ hx
 
+/-- The radial map `x ↦ φ(‖x‖²) • x` determined by a real function `φ`. -/
 def SmoothRadial.radialMap {N : Type*} [NormedAddCommGroup N] [NormedSpace ℝ N] (φ : ℝ → ℝ)
     (x : N) : N :=
   φ (‖x‖ ^ 2) • x
 
+/-- For a positive `φ` the radial map multiplies norms by `φ(‖x‖²)`. -/
 theorem SmoothRadial.norm_radialMap {N : Type*} [NormedAddCommGroup N] [NormedSpace ℝ N]
     {φ : ℝ → ℝ} (hpos : ∀ s, 0 < φ s) (x : N) : ‖radialMap φ x‖ = φ (‖x‖ ^ 2) * ‖x‖ := by
   rw [radialMap, norm_smul, Real.norm_eq_abs, abs_of_pos (hpos _)]
 
+/-- For a positive monotone `φ` the radius function `r ↦ φ(r²) r` is strictly increasing on
+`[0, ∞)`.
+-/
 theorem SmoothRadial.radius_strictMono {φ : ℝ → ℝ} (hpos : ∀ s, 0 < φ s)
     (hmono : Monotone φ) : StrictMonoOn (fun r => φ (r ^ 2) * r) (Set.Ici 0) := by
   intro r hr s hs hrs
   have hsq : r ^ 2 ≤ s ^ 2 := (sq_le_sq₀ hr hs).mpr hrs.le
   exact (mul_lt_mul_of_pos_left hrs (hpos _)).trans_le (mul_le_mul_of_nonneg_right (hmono hsq) hs)
 
+/-- For a positive monotone `φ` the radial map is injective. -/
 theorem SmoothRadial.radialMap_injective {N : Type*} [NormedAddCommGroup N]
     [NormedSpace ℝ N] {φ : ℝ → ℝ} (hpos : ∀ s, 0 < φ s) (hmono : Monotone φ) :
     Function.Injective (radialMap (N := N) φ) := by
@@ -2339,6 +2577,7 @@ theorem SmoothRadial.radialMap_injective {N : Type*} [NormedAddCommGroup N]
   rw [hn] at hxy
   exact smul_right_injective N (hpos _).ne' hxy
 
+/-- A continuous `φ` equal to `1` beyond radius `R` gives a surjective radial map. -/
 theorem SmoothRadial.radialMap_surjective {N : Type*} [NormedAddCommGroup N]
     [NormedSpace ℝ N] {φ : ℝ → ℝ} (hc : Continuous φ) {R : ℝ} (hR : 0 < R)
     (hout : ∀ s, R ^ 2 ≤ s → φ s = 1) : Function.Surjective (radialMap (N := N) φ) := by
@@ -2366,11 +2605,13 @@ theorem SmoothRadial.radialMap_surjective {N : Type*} [NormedAddCommGroup N]
   change φ (‖x‖ ^ 2) • ((r / ‖y‖) • y) = y
   rw [hnorm, smul_smul, ← mul_div_assoc, hradius, div_self hypos.ne', one_smul]
 
+/-- The radial map of a smooth `φ` is smooth on an inner product space. -/
 theorem SmoothRadial.contDiff_radialMap {N : Type*} [NormedAddCommGroup N]
     [InnerProductSpace ℝ N] {φ : ℝ → ℝ} (hφ : ContDiff ℝ ∞ φ) :
     ContDiff ℝ ∞ (radialMap (N := N) φ) :=
   (hφ.comp (contDiff_id.norm_sq ℝ)).smul contDiff_id
 
+/-- The derivative of the radial map: `v ↦ φ(‖x‖²) • v + 2 φ'(‖x‖²) ⟪x, v⟫ • x`. -/
 theorem SmoothRadial.fderiv_radialMap_apply {N : Type*} [NormedAddCommGroup N]
     [InnerProductSpace ℝ N] {φ : ℝ → ℝ} (hφ : ContDiff ℝ ∞ φ) (x v : N) :
     fderiv ℝ (radialMap φ) x v =
@@ -2386,6 +2627,7 @@ theorem SmoothRadial.fderiv_radialMap_apply {N : Type*} [NormedAddCommGroup N]
   congr 1
   ring_nf
 
+/-- For a positive monotone smooth `φ` the radial map has injective derivative everywhere. -/
 theorem SmoothRadial.fderiv_radialMap_injective {N : Type*} [NormedAddCommGroup N]
     [InnerProductSpace ℝ N] {φ : ℝ → ℝ} (hφ : ContDiff ℝ ∞ φ) (hpos : ∀ s, 0 < φ s)
     (hmono : Monotone φ) (x : N) : Function.Injective (fderiv ℝ (radialMap φ) x) := by
@@ -2405,6 +2647,7 @@ theorem SmoothRadial.fderiv_radialMap_injective {N : Type*} [NormedAddCommGroup 
   have hsub : fderiv ℝ (radialMap φ) x (v - w) = 0 := by rw [map_sub, hvw, sub_self]
   exact sub_eq_zero.mp (hzero (v - w) hsub)
 
+/-- In finite dimension the derivative of such a radial map is invertible everywhere. -/
 theorem SmoothRadial.isInvertible_fderiv_radialMap {N : Type*} [NormedAddCommGroup N]
     [InnerProductSpace ℝ N] [FiniteDimensional ℝ N] {φ : ℝ → ℝ} (hφ : ContDiff ℝ ∞ φ)
     (hpos : ∀ s, 0 < φ s) (hmono : Monotone φ) (x : N) :
@@ -2414,6 +2657,9 @@ theorem SmoothRadial.isInvertible_fderiv_radialMap {N : Type*} [NormedAddCommGro
         (fderiv_radialMap_injective hφ hpos hmono x)).toContinuousLinearEquiv
   exact ⟨L, by ext v; rfl⟩
 
+/-- A positive monotone smooth `φ` equal to `1` beyond radius `R` makes the radial map a
+diffeomorphism of the whole space, the identity outside the ball of radius `R`.
+-/
 def SmoothRadial.diffeomorph {N : Type*} [NormedAddCommGroup N] [InnerProductSpace ℝ N]
     [FiniteDimensional ℝ N] {φ : ℝ → ℝ} (hφ : ContDiff ℝ ∞ φ) (hpos : ∀ s, 0 < φ s)
     (hmono : Monotone φ) {R : ℝ} (hR : 0 < R) (hout : ∀ s, R ^ 2 ≤ s → φ s = 1) :
@@ -2429,9 +2675,13 @@ def SmoothRadial.diffeomorph {N : Type*} [NormedAddCommGroup N] [InnerProductSpa
     IsLocalDiffeomorph.diffeomorph' hlocal
       ⟨radialMap_injective hpos hmono, radialMap_surjective hφ.continuous hR hout⟩
 
+/-- The time profile `t ↦ 1 + (a - 1) smoothTransition t` of the disc shrinking, running smoothly
+from `1` at time `0` to `a` at time `1`.
+-/
 def SmoothRadial.shrinkTimeFactor (a t : ℝ) : ℝ :=
   1 + (a - 1) * Real.smoothTransition t
 
+/-- For `a ≤ 1` the time profile stays between `a` and `1`. -/
 theorem SmoothRadial.shrinkTimeFactor_bounds {a : ℝ} (ha₁ : a ≤ 1) (t : ℝ) :
     a ≤ shrinkTimeFactor a t ∧ shrinkTimeFactor a t ≤ 1 := by
   have ht₀ := Real.smoothTransition.nonneg t
@@ -2439,30 +2689,39 @@ theorem SmoothRadial.shrinkTimeFactor_bounds {a : ℝ} (ha₁ : a ≤ 1) (t : �
   unfold shrinkTimeFactor
   constructor <;> nlinarith
 
+/-- The time profile is `1` at time zero. -/
 theorem SmoothRadial.shrinkTimeFactor_zero (a : ℝ) : shrinkTimeFactor a 0 = 1 := by
   simp only [shrinkTimeFactor, Real.smoothTransition.zero, MulZeroClass.mul_zero, add_zero]
 
+/-- The time profile is `a` at time one. -/
 theorem SmoothRadial.shrinkTimeFactor_one (a : ℝ) : shrinkTimeFactor a 1 = a := by
   simp only [shrinkTimeFactor, Real.smoothTransition.one, mul_one]
   ring
 
+/-- The time profile is smooth. -/
 theorem SmoothRadial.contDiff_shrinkTimeFactor (a : ℝ) :
     ContDiff ℝ ∞ (shrinkTimeFactor a) :=
   contDiff_const.add (contDiff_const.mul (Real.smoothTransition.contDiff (n := ⊤)))
 
+/-- The radial profile of the disc shrinking: equal to `a` on the unit ball and to `1` beyond radius
+`R`, interpolating smoothly in between.
+-/
 def DiskShrinking.scale (R a s : ℝ) : ℝ :=
   a + (1 - a) * Real.smoothTransition ((s - 1) / (R ^ 2 - 1))
 
+/-- The radial profile is smooth. -/
 theorem DiskShrinking.contDiff_scale (R a : ℝ) : ContDiff ℝ ∞ (scale R a) :=
   contDiff_const.add
     (contDiff_const.mul
       ((Real.smoothTransition.contDiff (n := ⊤)).comp
         ((contDiff_id.sub contDiff_const).div_const _)))
 
+/-- The radial profile is positive. -/
 theorem DiskShrinking.scale_pos {a : ℝ} (ha : 0 < a) (ha₁ : a ≤ 1) (R s : ℝ) :
     0 < scale R a s :=
   add_pos_of_pos_of_nonneg ha (mul_nonneg (sub_nonneg.mpr ha₁) (Real.smoothTransition.nonneg _))
 
+/-- For `1 < R` and `a ≤ 1` the radial profile is monotone. -/
 theorem DiskShrinking.scale_monotone {R a : ℝ} (hR : 1 < R) (ha₁ : a ≤ 1) :
     Monotone (scale R a) := by
   have hden : 0 < R ^ 2 - 1 := by nlinarith
@@ -2475,6 +2734,7 @@ theorem DiskShrinking.scale_monotone {R a : ℝ} (hR : 1 < R) (ha₁ : a ≤ 1) 
         (sub_nonneg.mpr ha₁))
       a
 
+/-- On the unit ball the radial profile equals `a`. -/
 theorem DiskShrinking.scale_inner {R : ℝ} (hR : 1 < R) (a : ℝ) {s : ℝ} (hs : s ≤ 1) :
     scale R a s = a := by
   have hden : 0 < R ^ 2 - 1 := by nlinarith
@@ -2483,19 +2743,26 @@ theorem DiskShrinking.scale_inner {R : ℝ} (hR : 1 < R) (a : ℝ) {s : ℝ} (hs
       (div_nonpos_of_nonpos_of_nonneg (sub_nonpos.mpr hs) hden.le)]
   simp only [MulZeroClass.mul_zero, add_zero]
 
+/-- Beyond radius `R` the radial profile equals `1`. -/
 theorem DiskShrinking.scale_outer {R : ℝ} (hR : 1 < R) (a : ℝ) {s : ℝ} (hs : R ^ 2 ≤ s) :
     scale R a s = 1 := by
   have hden : 0 < R ^ 2 - 1 := by nlinarith
   rw [scale, Real.smoothTransition.one_of_one_le ((le_div_iff₀ hden).mpr (by linarith))]
   ring
 
+/-- The radial profile for `a = 1` is constant `1`. -/
 theorem DiskShrinking.scale_one (R s : ℝ) : scale R 1 s = 1 := by
   simp only [scale, sub_self, MulZeroClass.zero_mul, add_zero]
 
+/-- The disc-shrinking isotopy: the radial map with profile `scale R (shrinkTimeFactor a t)`, which
+at time one contracts the unit ball by the factor `a` and is the identity outside the ball of
+radius `R`.
+-/
 def DiskShrinking.family {N : Type*} [NormedAddCommGroup N] [InnerProductSpace ℝ N]
     (R a : ℝ) (p : ℝ × N) : N :=
   SmoothRadial.radialMap (scale R (SmoothRadial.shrinkTimeFactor a p.1)) p.2
 
+/-- The disc-shrinking isotopy is smooth in time and space. -/
 theorem DiskShrinking.contMDiff_family {N : Type*} [NormedAddCommGroup N]
     [InnerProductSpace ℝ N] [FiniteDimensional ℝ N] (R a : ℝ) :
     ContMDiff (𝓘(ℝ, ℝ).prod 𝓘(ℝ, N)) 𝓘(ℝ, N) ∞ (family (N := N) R a) := by
@@ -2517,11 +2784,13 @@ theorem DiskShrinking.contMDiff_family {N : Type*} [NormedAddCommGroup N]
             ((Real.smoothTransition.contDiff (n := ⊤)).contMDiff.comp hz))).smul
       contMDiff_snd
 
+/-- The disc-shrinking isotopy is the identity at time zero. -/
 theorem DiskShrinking.family_zero {N : Type*} [NormedAddCommGroup N]
     [InnerProductSpace ℝ N] [FiniteDimensional ℝ N] (R a : ℝ) (x : N) : family R a (0, x) = x := by
   simp only [family, SmoothRadial.shrinkTimeFactor_zero, SmoothRadial.radialMap,
     scale_one, one_smul]
 
+/-- Each time slice of the disc-shrinking isotopy is a diffeomorphism. -/
 theorem DiskShrinking.family_slices {N : Type*} [NormedAddCommGroup N]
     [InnerProductSpace ℝ N] [FiniteDimensional ℝ N] {R a : ℝ} (hR : 1 < R) (ha : 0 < a)
     (ha₁ : a ≤ 1) (t : ℝ) :
@@ -2532,22 +2801,30 @@ theorem DiskShrinking.family_slices {N : Type*} [NormedAddCommGroup N]
         (scale_monotone hR ht.2) (zero_lt_one.trans hR) (fun _ hs => scale_outer hR _ hs),
       fun _ => rfl⟩
 
+/-- The disc-shrinking isotopy is the identity outside the ball of radius `R`, hence compactly
+supported.
+-/
 theorem DiskShrinking.family_outer {N : Type*} [NormedAddCommGroup N]
     [InnerProductSpace ℝ N] [FiniteDimensional ℝ N] {R : ℝ} (hR : 1 < R) (a t : ℝ) {x : N}
     (hx : R ≤ ‖x‖) : family R a (t, x) = x := by
   rw [family, SmoothRadial.radialMap,
     scale_outer hR _ ((sq_le_sq₀ (zero_lt_one.trans hR).le (norm_nonneg x)).mpr hx), one_smul]
 
+/-- At time one the disc-shrinking isotopy is the scaling by `a` on the unit ball. -/
 theorem DiskShrinking.family_one_inner {N : Type*} [NormedAddCommGroup N]
     [InnerProductSpace ℝ N] [FiniteDimensional ℝ N] {R : ℝ} (hR : 1 < R) (a : ℝ) {x : N}
     (hx : ‖x‖ ≤ 1) : family R a (1, x) = a • x := by
   rw [family, SmoothRadial.radialMap, SmoothRadial.shrinkTimeFactor_one,
     scale_inner hR a (by nlinarith [norm_nonneg x])]
 
+/-- The disc-shrinking isotopy fixes the origin. -/
 theorem DiskShrinking.family_origin {N : Type*} [NormedAddCommGroup N]
     [InnerProductSpace ℝ N] [FiniteDimensional ℝ N] (R a t : ℝ) : family R a (t, (0 : N)) = 0 := by
   simp only [family, SmoothRadial.radialMap, smul_zero]
 
+/-- An open set containing the closed unit ball contains a closed ball of radius strictly bigger
+than one.
+-/
 theorem DiskShrinking.exists_larger_closedBall_subset {D : Type*} [NormedAddCommGroup D]
     [InnerProductSpace ℝ D] [FiniteDimensional ℝ D] {U : Set D} (hU : IsOpen U)
     (hunit : Metric.closedBall (0 : D) 1 ⊆ U) :
@@ -2578,6 +2855,9 @@ theorem DiskShrinking.exists_larger_closedBall_subset {D : Type*} [NormedAddComm
   have hh := hRT (R⁻¹ • x) (mem_closedBall_zero_iff.mpr hnorm)
   simpa only [smul_inv_smul₀ hRpos.ne'] using hh
 
+/-- An open set of `D × Z` containing the unit disc of the first factor contains the image of a ball
+of radius `R > 1` under a linear isomorphism restricting to the inclusion of that disc.
+-/
 theorem DiskShrinking.exists_disk_ellipsoid_in_open {D Z : Type*} [NormedAddCommGroup D]
     [InnerProductSpace ℝ D] [FiniteDimensional ℝ D] [NormedAddCommGroup Z] [InnerProductSpace ℝ Z]
     [FiniteDimensional ℝ Z] {U : Set (D × Z)} (hU : IsOpen U)
@@ -2621,6 +2901,10 @@ theorem DiskShrinking.exists_disk_ellipsoid_in_open {D Z : Type*} [NormedAddComm
           hδ.le
       _ = ε := div_mul_cancel₀ ε hRpos.ne'
 
+/-- Isotopy extension through a chart: a compactly supported isotopy on the source of a partial
+diffeomorphism extends to a compactly supported isotopy of the target intertwined with it by the
+chart.
+-/
 theorem SupportedDiffeomorph.exists_supported_isotopy_extension {E F H H' X Y : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace H] {I : ModelWithCorners ℝ E H}
     [NormedAddCommGroup F] [NormedSpace ℝ F] [TopologicalSpace H'] {J : ModelWithCorners ℝ F H'}
@@ -2667,6 +2951,10 @@ theorem SupportedDiffeomorph.exists_supported_isotopy_extension {E F H H' X Y : 
   · intro t x hx
     exact extendMap_chart Φ (fun z => A (t, z)) hx
 
+/-- In a chart whose source contains the unit disc of the first factor there is a diffeomorphism of
+the manifold, isotopic to the identity through diffeomorphisms supported near the image of the
+disc and fixing its centre, which contracts that disc by the factor `a`.
+-/
 theorem DiskShrinking.exists_chart_disk_shrinking {D Z E H M : Type*}
     [NormedAddCommGroup D] [InnerProductSpace ℝ D] [FiniteDimensional ℝ D] [NormedAddCommGroup Z]
     [InnerProductSpace ℝ Z] [FiniteDimensional ℝ Z] [NormedAddCommGroup E] [NormedSpace ℝ E]
@@ -2721,6 +3009,7 @@ theorem DiskShrinking.exists_chart_disk_shrinking {D Z E H M : Type*}
       rw [smul_zero]
     rw [← hΨ x, hP, hchart 1 _ hs, family_one_inner hR a hn, hsmul, hΨ]
 
+/-- The inverse of a diffeomorphism isotopic to the identity is isotopic to the identity. -/
 theorem SupportedDiffeomorph.IsotopicToIdentity.symm {F H M : Type*} [NormedAddCommGroup F]
     [NormedSpace ℝ F] [TopologicalSpace H] {J : ModelWithCorners ℝ F H} [TopologicalSpace M]
     [ChartedSpace H M] {e : Diffeomorph J J M M ∞}
@@ -2746,6 +3035,9 @@ theorem SupportedDiffeomorph.IsotopicToIdentity.symm {F H M : Type*} [NormedAddC
     change e.symm (A (1 - t, x)) = e.symm (d x)
     rw [hd]
 
+/-- Two charts with the same centre carry the unit disc of the first factor to discs that agree
+after a diffeomorphism isotopic to the identity.
+-/
 theorem SupportedGerms.exists_disk_chart_isotopy {A B E H M ι κ : Type*}
     [NormedAddCommGroup A] [InnerProductSpace ℝ A] [FiniteDimensional ℝ A] [NormedAddCommGroup B]
     [InnerProductSpace ℝ B] [FiniteDimensional ℝ B] [NormedAddCommGroup E] [NormedSpace ℝ E]
@@ -2782,6 +3074,11 @@ theorem SupportedGerms.exists_disk_chart_isotopy {A B E H M ι κ : Type*}
   change Q.symm (D (P (Φ (x, 0)))) = Ψ (x, 0)
   rw [hP x hn, heq, ← hQ x hn, Q.symm_apply_apply]
 
+/-- The disc theorem: two smooth embeddings of the closed unit disc into a compact manifold of
+dimension at least two, of the same positive codimension and with the same centre, are carried
+onto one another by a diffeomorphism isotopic to the identity (Hirsch, Differential Topology,
+Thm 8.3.1; Palais).
+-/
 theorem DiskShrinking.exists_embedded_disk_isotopy_of_same_center {D E M : Type*}
     [NormedAddCommGroup D] [InnerProductSpace ℝ D] [FiniteDimensional ℝ D] [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
@@ -2827,6 +3124,9 @@ theorem DiskShrinking.exists_embedded_disk_isotopy_of_same_center {D E M : Type*
   intro x hx
   rw [← hΦzero x hx, hformula x hx, hΨzero x hx]
 
+/-- Homogeneity in a chart: points close enough to a given point of a chart can be moved onto its
+image by a compactly supported isotopy of the manifold that is the identity outside the chart.
+-/
 theorem SupportedDiffeomorph.exists_supported_pointMoving {E F H M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [NormedAddCommGroup F]
     [NormedSpace ℝ F] [TopologicalSpace H] {J : ModelWithCorners ℝ F H} [TopologicalSpace M]
@@ -2862,6 +3162,10 @@ theorem SupportedDiffeomorph.exists_supported_pointMoving {E F H M : Type*}
       have hxy : x + (y - x) = y := by abel
       exact hterminal.trans (congrArg Φ hxy)
 
+/-- Homogeneity of a manifold: every point of an open set has a neighbourhood in it each of whose
+points is the image of that point under a diffeomorphism that is the identity outside the open
+set.
+-/
 theorem SupportedDiffeomorph.exists_open_pointMoving {E H M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace H] {J : ModelWithCorners ℝ E H}
     [J.Boundaryless] [TopologicalSpace M] [ChartedSpace H M] [IsManifold J ∞ M] [T2Space M]
