@@ -4,6 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Fabian Franz
 -/
 import Mathlib
+import Lib.Combinatorics.IndexDisorder
 import Lib.Geometry.Manifold.Morse.Handle
 import Lib.Analysis.Calculus.MorseLemma
 import Lib.Geometry.Manifold.Flow.Compact
@@ -2464,7 +2465,7 @@ theorem MorseCancellation.exists_index_ordered_morse_system_preserving_critical_
     by_contra hnot
     let _ := S.finite.fintype
     obtain ⟨p, q, hpq, hconsecutive, hinversion⟩ :=
-      MorseRearrangement.exists_adjacent_index_inversion (h :=
+      IndexDisorder.exists_adjacent_index_inversion (h :=
         fun x : ManifoldMorse.criticalPoints E f => f x)
         (fun x y h => Subtype.ext (hinj x.property y.property h))
         (fun x : ManifoldMorse.criticalPoints E f => nativeMorseIndex E f x) hnot

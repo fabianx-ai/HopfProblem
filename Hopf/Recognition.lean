@@ -81,6 +81,7 @@ import Lib.Geometry.Manifold.Immersion.Relative
 import Lib.Geometry.Manifold.Morse.Rearrangement
 import Lib.Geometry.Manifold.Morse.Connection
 import Mathlib
+import Lib.Combinatorics.IndexDisorder
 import Lib.Topology.Homotopy.HandleRetraction
 import Lib.Algebra.Homology.MayerVietorisShortExact
 import Lib.AlgebraicTopology.SingularHomology.Chains
@@ -996,10 +997,10 @@ theorem AdaptedWindows.exists_first_middle_pivot {E M : Type} [NormedAddCommGrou
                                     a <
                                       T.toSurgeryWindows.lower
                                         ⟨(p j).val, hc.symm ▸ (p j).property⟩) ∧
-                                  MorseRearrangement.beforeValueRank (fun j => g (p j)) q =
+                                  IndexDisorder.beforeValueRank (fun j => g (p j)) q =
                                     m
   have hex : ∃ m, P m :=
-    ⟨MorseRearrangement.beforeValueRank (fun j => f (p j)) q, f, hf, hm, rfl, fun _ =>
+    ⟨IndexDisorder.beforeValueRank (fun j => f (p j)) q, f, hf, hm, rfl, fun _ =>
       Iff.rfl, fun _ => Iff.rfl, ha, S₀, horder, fun _ _ => rfl, fun _ _ _ => rfl, rfl, rfl,
       fun _ _ => Filter.EventuallyEq.rfl, hlower, rfl⟩
   obtain
@@ -1053,17 +1054,17 @@ theorem AdaptedWindows.exists_first_middle_pivot {E M : Type} [NormedAddCommGrou
       T.exists_middle_family_value_exchange hg hmg hga hgorder pg hpg hglower Bg γg hfamily hgsurj
         i q hiq hglobal
     have hdecrease :
-      MorseRearrangement.beforeValueRank (fun k => u (p k)) q <
-        MorseRearrangement.beforeValueRank (fun k => g (p k)) q := by
+      IndexDisorder.beforeValueRank (fun k => u (p k)) q <
+        IndexDisorder.beforeValueRank (fun k => g (p k)) q := by
       apply
-        MorseRearrangement.beforeValueRank_exchange_lt hvalueinj hiq hconsecutive hui huq
+        IndexDisorder.beforeValueRank_exchange_lt hvalueinj hiq hconsecutive hui huq
       intro k hki hkq
       apply huothers (pg k) (pg k).property
       · exact fun heq => hki (hpinj (Subtype.ext heq))
       · exact fun heq => hkq (hpinj (Subtype.ext heq))
     have hminimal :=
       Nat.find_min' hex
-        (show P (MorseRearrangement.beforeValueRank (fun k => u (p k)) q) from
+        (show P (IndexDisorder.beforeValueRank (fun k => u (p k)) q) from
           ⟨u, hu, hmu, hcu.trans hcrit, fun y => (hus y).trans (hsub y), fun y =>
             (hul y).trans (hlevel y), hua, U, huorder, fun z hz =>
             (huindices z (hcrit.symm ▸ hz)).trans (hindices z hz), fun z hz hzoutside =>

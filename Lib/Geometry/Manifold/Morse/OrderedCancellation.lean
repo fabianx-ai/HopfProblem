@@ -4,6 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Fabian Franz
 -/
 import Mathlib
+import Lib.Combinatorics.IndexDisorder
 import Lib.Geometry.Manifold.Morse.Handle
 import Lib.Analysis.Calculus.MorseLemma
 import Lib.Geometry.Manifold.Flow.Compact
@@ -792,11 +793,11 @@ theorem MorseCancellation.exists_flow_preserving_consecutive_pair {E M : Type*} 
                             ∀ᶠ y in 𝓝 x, V y = c.descentField y) ∧
                         (∀ x ∈ ManifoldMorse.criticalPoints E f₀,
                             nativeMorseIndex E f x = nativeMorseIndex E f₀ x) ∧
-                          MorseRearrangement.beforeValueRank
+                          IndexDisorder.beforeValueRank
                               (fun x : ManifoldMorse.criticalPoints E f₀ => f x) q =
                             n
   have hex : ∃ n, P n :=
-    ⟨MorseRearrangement.beforeValueRank
+    ⟨IndexDisorder.beforeValueRank
         (fun x : ManifoldMorse.criticalPoints E f₀ => f₀ x) q,
       f₀, hf₀, hm₀, rfl, hinj₀, rfl, rfl, hpq, hdesc₀, hmodels₀, fun _ _ => rfl, rfl⟩
   obtain ⟨f, hf, hm, hcrit, hinj, hfp, hfr, hfpq, hdesc, hmodels, hindices, hrank⟩ :=
@@ -805,7 +806,7 @@ theorem MorseCancellation.exists_flow_preserving_consecutive_pair {E M : Type*} 
     by_contra hnot
     push Not at hnot
     obtain ⟨z, hpz, hzq, hbefore⟩ :=
-      MorseRearrangement.exists_consecutive_below_of_intermediate (h :=
+      IndexDisorder.exists_consecutive_below_of_intermediate (h :=
         fun x : ManifoldMorse.criticalPoints E f₀ => f x) (p := p) (q := q) hnot
     have hzp : z.val ≠ p.val := fun h => (ne_of_lt hpz) (congrArg f h).symm
     have hzq' : z.val ≠ q.val := fun h => (ne_of_lt hzq) (congrArg f h)
@@ -841,12 +842,12 @@ theorem MorseCancellation.exists_flow_preserving_consecutive_pair {E M : Type*} 
       nativeMorseIndex E g x = nativeMorseIndex E f₀ x :=
       (hindicesg x (by rw [hcrit]; exact hx)).trans (hindices x hx)
     have hdecrease :
-      MorseRearrangement.beforeValueRank
+      IndexDisorder.beforeValueRank
           (fun x : ManifoldMorse.criticalPoints E f₀ => g x) q <
-        MorseRearrangement.beforeValueRank
+        IndexDisorder.beforeValueRank
           (fun x : ManifoldMorse.criticalPoints E f₀ => f x) q := by
       apply
-        MorseRearrangement.beforeValueRank_exchange_lt (h :=
+        IndexDisorder.beforeValueRank_exchange_lt (h :=
           fun x : ManifoldMorse.criticalPoints E f₀ => f x) (g :=
           fun x : ManifoldMorse.criticalPoints E f₀ => g x) (p := z) (q := q)
           (fun x y h =>
@@ -1348,7 +1349,7 @@ def MorseCancellation.nativeIndexDisorder (E : Type*) [NormedAddCommGroup E] [No
     {M : Type*} [TopologicalSpace M] [ChartedSpace E M] (f : M → ℝ) : ℕ :=
   if hfinite : (ManifoldMorse.criticalPoints E f).Finite then
     let _ := hfinite.fintype
-    MorseRearrangement.finiteIndexDisorder
+    IndexDisorder.finiteIndexDisorder
       (fun x : ManifoldMorse.criticalPoints E f => f x)
       (fun x : ManifoldMorse.criticalPoints E f => nativeMorseIndex E f x)
   else 0
@@ -1358,7 +1359,7 @@ theorem MorseCancellation.nativeIndexDisorder_eq_of_finite {E M : Type*} [Normed
     (hfinite : (ManifoldMorse.criticalPoints E f).Finite) :
     letI := hfinite.fintype
     nativeIndexDisorder E f =
-      MorseRearrangement.finiteIndexDisorder
+      IndexDisorder.finiteIndexDisorder
         (fun x : ManifoldMorse.criticalPoints E f => f x)
         (fun x : ManifoldMorse.criticalPoints E f => nativeMorseIndex E f x) := by
   classical simp only [nativeIndexDisorder, dif_pos hfinite]
@@ -1372,7 +1373,7 @@ theorem MorseCancellation.nativeIndexDisorder_transport {E M : Type*} [NormedAdd
         nativeMorseIndex E g x = nativeMorseIndex E f x) :
     letI := hfinite.fintype
     nativeIndexDisorder E g =
-      MorseRearrangement.finiteIndexDisorder
+      IndexDisorder.finiteIndexDisorder
         (fun x : ManifoldMorse.criticalPoints E f => g x)
         (fun x : ManifoldMorse.criticalPoints E f => nativeMorseIndex E f x) := by
   classical
@@ -1383,7 +1384,7 @@ theorem MorseCancellation.nativeIndexDisorder_transport {E M : Type*} [NormedAdd
     Equiv.setCongr hcrit.symm
   rw [nativeIndexDisorder_eq_of_finite hgfinite]
   rw [←
-    MorseRearrangement.finiteIndexDisorder_comp_equiv
+    IndexDisorder.finiteIndexDisorder_comp_equiv
       (fun x : ManifoldMorse.criticalPoints E g => g x)
       (fun x : ManifoldMorse.criticalPoints E g => nativeMorseIndex E g x) e]
   have hw :
@@ -1431,7 +1432,7 @@ theorem MorseCancellation.nativeIndexDisorder_exchange_lt {E M : Type*} [NormedA
   have hi : Function.Injective (fun x : ManifoldMorse.criticalPoints E f => f x) :=
     fun x y h => Subtype.ext (hinj x.property y.property h)
   exact
-    MorseRearrangement.finiteIndexDisorder_swap_lt (h :=
+    IndexDisorder.finiteIndexDisorder_swap_lt (h :=
       fun x : ManifoldMorse.criticalPoints E f => f x) hi
       (fun x : ManifoldMorse.criticalPoints E f => nativeMorseIndex E f x) (p := p) (q := q)
       hpq hconsecutive hindexlt
