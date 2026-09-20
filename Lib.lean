@@ -307,7 +307,6 @@ import Lib.Topology.Sheaves.Cohomology.GodementEnvelope
 import Lib.Topology.Sheaves.Cohomology.DiscreteProjectiveDimension
 import Lib.Topology.Sheaves.Cohomology.HomeomorphProjectiveDimension
 import Lib.Topology.Sheaves.DependentFunctionSheaf
-import Lib.Topology.Sheaves.FunctionSheaf
 import Lib.Topology.Sheaves.H1Vanishing.Flasque
 import Lib.Topology.Sheaves.ConstantPushforward
 import Lib.Topology.Sheaves.ConstantPushforward.GlobalSections

@@ -3436,27 +3436,6 @@ is an evidence command rather than library content.
 #check HasCoveringDimensionLE.of_homeomorph
 #print axioms HasCoveringDimensionLE.of_homeomorph
 
-/-! ## `Lib.Topology.Sheaves.FunctionSheaf` -/
-
-#check TopCat.FunctionSheaf.presheaf
-#print axioms TopCat.FunctionSheaf.presheaf
-#check TopCat.FunctionSheaf.presheaf_obj
-#print axioms TopCat.FunctionSheaf.presheaf_obj
-#check TopCat.FunctionSheaf.presheaf_map_apply
-#print axioms TopCat.FunctionSheaf.presheaf_map_apply
-#check TopCat.FunctionSheaf.forgetIso
-#print axioms TopCat.FunctionSheaf.forgetIso
-#check TopCat.FunctionSheaf.isSheaf
-#print axioms TopCat.FunctionSheaf.isSheaf
-#check TopCat.FunctionSheaf.sheaf
-#print axioms TopCat.FunctionSheaf.sheaf
-#check TopCat.FunctionSheaf.extendByZero
-#print axioms TopCat.FunctionSheaf.extendByZero
-#check TopCat.FunctionSheaf.restrict_extendByZero
-#print axioms TopCat.FunctionSheaf.restrict_extendByZero
-#check TopCat.FunctionSheaf.sheaf_isFlasque
-#print axioms TopCat.FunctionSheaf.sheaf_isFlasque
-
 /-! ## `Lib.Topology.Sheaves.DependentFunctionSheaf` -/
 
 #check TopCat.DependentFunctionSheaf.presheaf
