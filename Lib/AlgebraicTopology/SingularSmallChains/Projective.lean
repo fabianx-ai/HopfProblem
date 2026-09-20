@@ -15,7 +15,9 @@ public import Mathlib.Algebra.Homology.DerivedCategory.KProjective
 The native chain groups and cover-small chain groups have explicit simplex bases, hence are
 projective.  Consequently it is enough for barycentric subdivision to prove that the literal
 cover-small inclusion is a quasi-isomorphism.  Mathlib then upgrades that same map to a chain
-homotopy equivalence.
+homotopy equivalence via `ChainComplex.quasiIso_iff_of_projective`: a quasi-isomorphism
+between bounded-below complexes of projectives is a homotopy equivalence
+(Weibel, *An Introduction to Homological Algebra*, Theorem 10.4.8).
 -/
 
 @[expose] public section
@@ -58,6 +60,8 @@ def inclusionHomotopyEquivOfQuasiIso
       homotopyHomInvId := he ▸ e.homotopyHomInvId
       homotopyInvHomId := he ▸ e.homotopyInvHomId }
 
+/-- The forward map of `inclusionHomotopyEquivOfQuasiIso` is the cover-small inclusion
+itself. -/
 @[simp]
 theorem inclusionHomotopyEquivOfQuasiIso_hom
     {X : Type} [TopologicalSpace X] {I : Type} (U : I → Set X)
