@@ -1,0 +1,435 @@
+{
+ "Lib/Algebra/Homology/MayerVietorisShortExact.lean": {
+  "keep": [
+   "CategoryTheory"
+  ],
+  "error": ""
+ },
+ "Lib/AlgebraicTopology/FundamentalGroupoid/SimplyConnectedSphere.lean": {
+  "keep": [
+   "EuclideanSpace"
+  ],
+  "error": ""
+ },
+ "Lib/AlgebraicTopology/SingularHomology/Chains.lean": {
+  "keep": [
+   "CategoryTheory"
+  ],
+  "error": ""
+ },
+ "Lib/AlgebraicTopology/SingularHomology/CircleProduct.lean": {
+  "keep": [
+   "ContinuousMap"
+  ],
+  "error": ""
+ },
+ "Lib/AlgebraicTopology/SingularHomology/Coproduct.lean": {
+  "keep": [
+   "CategoryTheory"
+  ],
+  "error": ""
+ },
+ "Lib/AlgebraicTopology/SingularHomology/HomotopyInvariance.lean": {
+  "keep": [
+   "ContinuousMap"
+  ],
+  "error": ""
+ },
+ "Lib/AlgebraicTopology/SingularHomology/LocalDegree.lean": {
+  "keep": [
+   "ContDiff"
+  ],
+  "error": ""
+ },
+ "Lib/AlgebraicTopology/SingularHomology/LocalDegreeNeighborhoods.lean": {
+  "keep": [
+   "ContDiff"
+  ],
+  "error": ""
+ },
+ "Lib/AlgebraicTopology/SingularHomology/MayerVietoris.lean": {
+  "keep": [
+   "CategoryTheory"
+  ],
+  "error": ""
+ },
+ "Lib/AlgebraicTopology/SingularHomology/ModuleHomology.lean": {
+  "keep": [
+   "CategoryTheory"
+  ],
+  "error": ""
+ },
+ "Lib/AlgebraicTopology/SingularHomology/Naturality.lean": {
+  "keep": [
+   "CategoryTheory",
+   "ContinuousMap"
+  ],
+  "error": ""
+ },
+ "Lib/AlgebraicTopology/SingularHomology/OnePointCover.lean": {
+  "keep": [
+   "ContDiff"
+  ],
+  "error": ""
+ },
+ "Lib/AlgebraicTopology/SingularHomology/Sum.lean": {
+  "keep": [
+   "CategoryTheory"
+  ],
+  "error": ""
+ },
+ "Lib/Analysis/Calculus/MorseLemma.lean": {
+  "keep": [
+   "ContDiff",
+   "Convolution"
+  ],
+  "error": ""
+ },
+ "Lib/Analysis/Complex/Cousin.lean": {
+  "keep": [
+   "ContDiff",
+   "Convolution"
+  ],
+  "error": ""
+ },
+ "Lib/Analysis/Complex/Mobius.lean": {
+  "keep": [
+   "ComplexConjugate",
+   "ContDiff"
+  ],
+  "error": ""
+ },
+ "Lib/Analysis/Complex/RiemannMapping.lean": {
+  "keep": [
+   "ComplexConjugate",
+   "ContDiff",
+   "Interval",
+   "NNReal",
+   "UniformConvergence",
+   "Uniformity"
+  ],
+  "error": ""
+ },
+ "Lib/Analysis/Complex/RiemannMapping/Steps.lean": {
+  "keep": [
+   "Complex.UnitDisc",
+   "ComplexConjugate"
+  ],
+  "error": ""
+ },
+ "Lib/Analysis/Complex/SchwarzReflection.lean": {
+  "keep": [
+   "Interval"
+  ],
+  "error": ""
+ },
+ "Lib/Analysis/Complex/SquareRoot.lean": {
+  "keep": [
+   "UpperHalfPlane"
+  ],
+  "error": ""
+ },
+ "Lib/Analysis/ODE/SmoothFlow.lean": {
+  "keep": [
+   "ContDiff"
+  ],
+  "error": ""
+ },
+ "Lib/Geometry/Manifold/ChartedSpace/Transport.lean": {
+  "keep": [
+   "ContDiff"
+  ],
+  "error": ""
+ },
+ "Lib/Geometry/Manifold/Collar.lean": {
+  "keep": [
+   "ContDiff",
+   "NNReal"
+  ],
+  "error": ""
+ },
+ "Lib/Geometry/Manifold/Complex/Biholomorph.lean": {
+  "keep": [
+   "ContDiff"
+  ],
+  "error": ""
+ },
+ "Lib/Geometry/Manifold/Flow/Compact.lean": {
+  "keep": [
+   "ContDiff"
+  ],
+  "error": ""
+ },
+ "Lib/Geometry/Manifold/Flow/HeightTranslating.lean": {
+  "keep": [
+   "ContDiff",
+   "ContinuousMap"
+  ],
+  "error": ""
+ },
+ "Lib/Geometry/Manifold/Immersion/Relative.lean": {
+  "keep": [
+   "ContDiff",
+   "ENNReal"
+  ],
+  "error": ""
+ },
+ "Lib/Geometry/Manifold/Instances/RiemannSphere.lean": {
+  "keep": [
+   "ContDiff"
+  ],
+  "error": ""
+ },
+ "Lib/Geometry/Manifold/Morse/AdaptedWindows.lean": {
+  "keep": [
+   "ContDiff"
+  ],
+  "error": ""
+ },
+ "Lib/Geometry/Manifold/Morse/BeltCancellation.lean": {
+  "keep": [
+   "ContDiff",
+   "ContinuousMap"
+  ],
+  "error": ""
+ },
+ "Lib/Geometry/Manifold/Morse/Birth.lean": {
+  "keep": [
+   "ContDiff"
+  ],
+  "error": ""
+ },
+ "Lib/Geometry/Manifold/Morse/Cancellation.lean": {
+  "keep": [
+   "ContDiff"
+  ],
+  "error": ""
+ },
+ "Lib/Geometry/Manifold/Morse/CellStructure.lean": {
+  "keep": [
+   "ContDiff",
+   "ContinuousMap"
+  ],
+  "error": ""
+ },
+ "Lib/Geometry/Manifold/Morse/CircleGluing.lean": {
+  "keep": [
+   "ContDiff"
+  ],
+  "error": ""
+ },
+ "Lib/Geometry/Manifold/Morse/Connection.lean": {
+  "keep": [
+   "ContDiff",
+   "NNReal"
+  ],
+  "error": ""
+ },
+ "Lib/Geometry/Manifold/Morse/Cubic.lean": {
+  "keep": [
+   "ContDiff"
+  ],
+  "error": ""
+ },
+ "Lib/Geometry/Manifold/Morse/CubicFlow.lean": {
+  "keep": [
+   "ContDiff"
+  ],
+  "error": ""
+ },
+ "Lib/Geometry/Manifold/Morse/CutTransport.lean": {
+  "keep": [
+   "ContDiff"
+  ],
+  "error": ""
+ },
+ "Lib/Geometry/Manifold/Morse/Existence.lean": {
+  "keep": [
+   "ContDiff"
+  ],
+  "error": ""
+ },
+ "Lib/Geometry/Manifold/Morse/Handle.lean": {
+  "keep": [
+   "ContDiff"
+  ],
+  "error": ""
+ },
+ "Lib/Geometry/Manifold/Morse/Index.lean": {
+  "keep": [
+   "ContinuousMap"
+  ],
+  "error": ""
+ },
+ "Lib/Geometry/Manifold/Morse/MiddleBlocks.lean": {
+  "keep": [
+   "ContDiff",
+   "ContinuousMap"
+  ],
+  "error": ""
+ },
+ "Lib/Geometry/Manifold/Morse/OrderedCancellation.lean": {
+  "keep": [
+   "ContDiff",
+   "ContinuousMap"
+  ],
+  "error": ""
+ },
+ "Lib/Geometry/Manifold/Morse/Rearrangement.lean": {
+  "keep": [
+   "ContDiff"
+  ],
+  "error": ""
+ },
+ "Lib/Geometry/Manifold/Morse/RearrangementAmbient.lean": {
+  "keep": [
+   "ContDiff"
+  ],
+  "error": ""
+ },
+ "Lib/Geometry/Manifold/Morse/RearrangementTheorem.lean": {
+  "keep": [
+   "ContDiff"
+  ],
+  "error": ""
+ },
+ "Lib/Geometry/Manifold/Morse/Reeb.lean": {
+  "keep": [
+   "ContDiff"
+  ],
+  "error": ""
+ },
+ "Lib/Geometry/Manifold/Morse/SublevelSets.lean": {
+  "keep": [
+   "ContDiff"
+  ],
+  "error": ""
+ },
+ "Lib/Geometry/Manifold/Morse/SurgeryCollapse.lean": {
+  "keep": [
+   "ContDiff",
+   "ContinuousMap"
+  ],
+  "error": ""
+ },
+ "Lib/Geometry/Manifold/Morse/SurgeryHomology.lean": {
+  "keep": [
+   "ContDiff"
+  ],
+  "error": ""
+ },
+ "Lib/Geometry/Manifold/Morse/SurgeryWindows.lean": {
+  "keep": [
+   "ContDiff",
+   "ENNReal"
+  ],
+  "error": ""
+ },
+ "Lib/Geometry/Manifold/Quotient/Atlas.lean": {
+  "keep": [
+   "ContDiff"
+  ],
+  "error": ""
+ },
+ "Lib/Geometry/Manifold/RegularLevel.lean": {
+  "keep": [
+   "ContDiff"
+  ],
+  "error": ""
+ },
+ "Lib/Geometry/Manifold/Transversality/Basic.lean": {
+  "keep": [
+   "ContDiff",
+   "Matrix",
+   "NNReal"
+  ],
+  "error": ""
+ },
+ "Lib/Geometry/Manifold/VectorBundle/ProjectionBundle.lean": {
+  "keep": [
+   "ContDiff"
+  ],
+  "error": ""
+ },
+ "Lib/Geometry/Manifold/Whitney/AnnularExtension.lean": {
+  "keep": [
+   "ContDiff"
+  ],
+  "error": ""
+ },
+ "Lib/Geometry/Manifold/Whitney/CleanStrips.lean": {
+  "keep": [
+   "ContDiff",
+   "InnerProductSpace"
+  ],
+  "error": ""
+ },
+ "Lib/Geometry/Manifold/Whitney/EmbeddedArcs.lean": {
+  "keep": [
+   "ContDiff",
+   "InnerProductSpace",
+   "NNReal"
+  ],
+  "error": ""
+ },
+ "Lib/Geometry/Manifold/Whitney/FrameField.lean": {
+  "keep": [
+   "ContDiff"
+  ],
+  "error": ""
+ },
+ "Lib/Geometry/Manifold/Whitney/RankThreeModel.lean": {
+  "keep": [
+   "ContDiff"
+  ],
+  "error": ""
+ },
+ "Lib/Geometry/Manifold/WhitneyEmbedding.lean": {
+  "keep": [
+   "ContDiff"
+  ],
+  "error": ""
+ },
+ "Lib/Topology/Algebra/FreeActionLocus.lean": {
+  "keep": [
+   "ContDiff"
+  ],
+  "error": ""
+ },
+ "Lib/Topology/Covering/Quotient.lean": {
+  "keep": [
+   "ContDiff"
+  ],
+  "error": ""
+ },
+ "Lib/Topology/Homotopy/CellAttachment.lean": {
+  "keep": [
+   "ContinuousMap"
+  ],
+  "error": ""
+ },
+ "Lib/Topology/Homotopy/SublevelRetraction.lean": {
+  "keep": [
+   "ContinuousMap"
+  ],
+  "error": ""
+ },
+ "Lib/Topology/Homotopy/Suspension.lean": {
+  "keep": [
+   "ContinuousMap"
+  ],
+  "error": ""
+ },
+ "Lib/Topology/MappingTorus/Basic.lean": {
+  "keep": [
+   "ContinuousMap"
+  ],
+  "error": ""
+ },
+ "Lib/Topology/MappingTorus/Wang.lean": {
+  "keep": [
+   "ContDiff"
+  ],
+  "error": ""
+ }
+}
