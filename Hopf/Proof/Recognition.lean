@@ -691,7 +691,7 @@ theorem MorseCancellation.canonical_middle_matrix_surjective {E M : Type} [Norme
                   x).val =
             (γ j x).val) :
     Function.Surjective (canonicalMiddleMatrix B γ).mulVec :=
-  classCoordinateMatrix_surjective B _
+  LinearEquiv.surjective_coordMatrix_mulVec B _
     (middle_section_classes_span S T hf hdim e horder hzero hone r n hr hn hrc hp hbefore γ
       horbit)
 
