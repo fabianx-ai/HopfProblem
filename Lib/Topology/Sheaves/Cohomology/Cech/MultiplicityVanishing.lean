@@ -14,7 +14,7 @@ public import Mathlib.Topology.Sheaves.SheafCondition.Sites
 /-!
 # Fixed-cover Cech vanishing from multiplicity
 
-This file implements textbook section CD-06. If an indexed open family has multiplicity at most
+If an indexed open family has multiplicity at most
 `n + 1` and `n < a`, then the intersection attached to every strictly increasing `(a + 1)`-tuple
 of indices is empty. A sheaf valued in a category with zero morphisms takes the empty open to a
 zero object. Thus every factor, and hence the product defining the normalized degree-`a` Cech
@@ -22,6 +22,9 @@ cochain object, is zero. Its degree-`a` fixed-cover cohomology is consequently z
 
 The guarded presheaf lemma below assumes explicitly that the presheaf takes the empty open to a
 zero object. No comparison with direct-limit Cech cohomology or derived sheaf cohomology is made.
+
+Reference: Godement, *Topologie algébrique et théorie des faisceaux*, II.5.12 (the Čech cochains
+of a cover of multiplicity at most `n + 1` vanish in degrees above `n`).
 -/
 
 @[expose] public section
@@ -118,8 +121,8 @@ theorem normalizedCechCohomology_isZero_of_multiplicityLE
     IsZero (normalizedCechCohomology F.presheaf U a) :=
   OrderedCech.homology_isZero_of_multiplicityLE F hU ha
 
-/-- For an abelian-group-valued sheaf, the fixed-cover vanishing is equivalently a
-`Subsingleton` receipt for the underlying normalized Cech cohomology group. -/
+/-- For an abelian-group-valued sheaf, the fixed-cover vanishing says that the underlying
+normalized Cech cohomology group is a subsingleton. -/
 theorem normalizedCechCohomology_subsingleton_of_multiplicityLE
     [HasProducts.{u} AddCommGrpCat.{v}]
     (F : TopCat.Sheaf AddCommGrpCat.{v} X) (U : SetOpenCover X) {n a : ℕ}
