@@ -712,16 +712,16 @@ is an evidence command rather than library content.
 #check ThreeColumnPage.FilteredAbutment.all_subsingleton_iff_isUnit_of_coefficients_eq
 #print axioms ThreeColumnPage.FilteredAbutment.all_subsingleton_iff_isUnit_of_coefficients_eq
 
-#check ThreeColumnPage.LowerTransferCondition
-#print axioms ThreeColumnPage.LowerTransferCondition
-#check ThreeColumnPage.Data.lowerTransferCondition_iff_coefficients
-#print axioms ThreeColumnPage.Data.lowerTransferCondition_iff_coefficients
-#check ThreeColumnPage.Data.lowerTransferCondition_iff_isUnit_of_coefficients_eq
-#print axioms ThreeColumnPage.Data.lowerTransferCondition_iff_isUnit_of_coefficients_eq
-#check ThreeColumnPage.Data.lowerTransferCondition_iff_injective
-#print axioms ThreeColumnPage.Data.lowerTransferCondition_iff_injective
-#check ThreeColumnPage.Data.lowerTransferCondition_iff_all_subsingleton
-#print axioms ThreeColumnPage.Data.lowerTransferCondition_iff_all_subsingleton
+#check ThreeColumnPage.LowerDifferentialsBijectiveAndNeZero
+#print axioms ThreeColumnPage.LowerDifferentialsBijectiveAndNeZero
+#check ThreeColumnPage.Data.lowerDifferentialsBijectiveAndNeZero_iff_coefficients
+#print axioms ThreeColumnPage.Data.lowerDifferentialsBijectiveAndNeZero_iff_coefficients
+#check ThreeColumnPage.Data.lowerDifferentialsBijectiveAndNeZero_iff_isUnit_of_coefficients_eq
+#print axioms ThreeColumnPage.Data.lowerDifferentialsBijectiveAndNeZero_iff_isUnit_of_coefficients_eq
+#check ThreeColumnPage.Data.lowerDifferentialsBijectiveAndNeZero_iff_injective
+#print axioms ThreeColumnPage.Data.lowerDifferentialsBijectiveAndNeZero_iff_injective
+#check ThreeColumnPage.Data.lowerDifferentialsBijectiveAndNeZero_iff_all_subsingleton
+#print axioms ThreeColumnPage.Data.lowerDifferentialsBijectiveAndNeZero_iff_all_subsingleton
 
 /-! ## `Lib.Algebra.Homology.SpectralSequence.NatLowerEdge` -/
 
@@ -871,8 +871,8 @@ is an evidence command rather than library content.
 #print axioms ThreeColumnSpectralSequence.Convergence.targetNormalizationOfSource
 #check ThreeColumnSpectralSequence.Convergence.outerNormalizationOfAlternatingCoordinates
 #print axioms ThreeColumnSpectralSequence.Convergence.outerNormalizationOfAlternatingCoordinates
-#check ThreeColumnSpectralSequence.Convergence.lowerTransferCondition
-#print axioms ThreeColumnSpectralSequence.Convergence.lowerTransferCondition
+#check ThreeColumnSpectralSequence.Convergence.lowerDifferentialsBijectiveAndNeZero
+#print axioms ThreeColumnSpectralSequence.Convergence.lowerDifferentialsBijectiveAndNeZero
 
 /-! ## `Lib.AlgebraicTopology.FundamentalGroup.HomotopyEquiv` -/
 

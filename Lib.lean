@@ -151,7 +151,7 @@ import Lib.CategoryTheory.Triangulated.CoyonedaTriangleShift
 import Lib.Algebra.Homology.ShortComplex.LeftHomologyData
 import Lib.Algebra.Homology.SpectralSequence.NatLowerEdge
 import Lib.Algebra.Homology.ThreeColumnPage
-import Lib.Algebra.Homology.ThreeColumnPage.LowerTransfer
+import Lib.Algebra.Homology.ThreeColumnPage.LowerDifferentials
 import Lib.Algebra.Homology.SpectralObject.MapHomologicalFunctor
 import Lib.Algebra.Homology.SpectralObject.TotalFiltration
 import Lib.Algebra.Homology.ThreeColumnSpectralSequence
