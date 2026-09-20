@@ -10,15 +10,36 @@ public import Lib.AlgebraicTopology.SingularCochains.DualEvaluation.CoefficientN
 public import Lib.AlgebraicTopology.SingularCochains.PositivePrimitives
 
 /-!
-# Vanishing criteria for native singular cohomology
+# Vanishing criteria for singular cohomology
 
-This FREE owner packages two standard transports of cohomological vanishing.  A homotopy
-equivalence transports vanishing in either direction, while the integral local universal
-coefficient theorem turns vanishing of two adjacent homology groups into vanishing of the
-corresponding positive-degree cohomology group.
+Two standard transports of cohomological vanishing.  Singular cohomology is a homotopy
+invariant, so vanishing of `H^n(-; A)` transports along a homotopy equivalence in either
+direction; in particular it vanishes in positive degrees on a point and hence on every
+contractible space.  The universal coefficient theorem turns vanishing of two adjacent
+integral homology groups into vanishing of the corresponding positive-degree cohomology
+group.
 
-The statements are coefficient-generic where homotopy invariance is enough.  The universal
-coefficient statements use the repository's coefficient convention `ULift ℤ`.
+The homotopy-invariance statements hold for an arbitrary coefficient group.  The universal
+coefficient statements are stated for the coefficient group `ULift ℤ`.
+
+## Main results
+
+* `AlgebraicTopology.SingularCochains.cohomology_subsingleton_iff_of_homotopyEquiv`,
+  `.cohomology_subsingleton_iff_of_homeomorph` : homotopy invariance of vanishing.
+* `AlgebraicTopology.SingularCochains.pointCohomology_subsingleton`,
+  `.contractibleCohomology_subsingleton` : positive-degree cohomology of a point, and of a
+  contractible space, vanishes.
+* `AlgebraicTopology.SingularCochains.uliftIntCohomology_subsingleton_of_adjacent_homology` :
+  if `H_n(X)` and `H_{n+1}(X)` vanish then so does `H^{n+1}(X; ULift ℤ)`.
+
+## References
+
+* [Allen Hatcher, *Algebraic Topology*][hatcher02], §3.1 (cohomology groups, homotopy
+  invariance) and Theorem 3.2 (the universal coefficient theorem)
+
+## Tags
+
+singular cohomology, vanishing, homotopy invariance, universal coefficient theorem
 -/
 
 @[expose] public section
@@ -83,7 +104,8 @@ theorem contractibleCohomology_subsingleton
 open DualEvaluation.LocalUCT
 
 /-- If degree-`n` integral homology is projective and degree-`n+1` integral homology vanishes,
-then degree-`n+1` cohomology with the repository's `ULift ℤ` coefficients vanishes. -/
+then degree-`n+1` cohomology with coefficients in `ULift ℤ` vanishes.  This is the vanishing
+half of the universal coefficient theorem (Hatcher, Theorem 3.2). -/
 theorem uliftIntCohomology_subsingleton_of_projective_of_homology
     (X : Type) [TopologicalSpace X] (n : ℕ)
     [Module.Projective ℤ ((chains X).homology n)]

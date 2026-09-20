@@ -64,7 +64,9 @@ setup, in six steps.
 * `SingularChains.pathSimplex`, `SingularChains.simplexPath`, `SingularChains.concatSimplex` :
   the path/complex dictionary.
 * `SingularChains.ChainHomology.*`, `SingularChains.Cycles1`, `SingularChains.cycleClass` :
-  the explicit cycle-class presentation of homology.
+  the explicit cycle-class presentation of homology.  The `ChainHomology` API is stated for
+  chain complexes of `ℤ`-modules in an arbitrary universe; only the singular chain complex
+  itself is tied to `Type 0`.
 * `SingularChains.inducedChain`, `SingularChains.inducedHomology` : functoriality.
 
 ## References
@@ -83,6 +85,8 @@ open Set Function Filter Manifold Topology
 open scoped CategoryTheory
 
 @[expose] public noncomputable section
+
+universe u
 
 /-- The standard singular `n`-simplex: continuous maps from the model simplex to a space (Hatcher, Algebraic Topology, Section 2.1). -/
 abbrev SingularChains.Simplex (n : ℕ) :=
@@ -444,31 +448,31 @@ theorem SingularChains.chainMap_ext (X : Type) [TopologicalSpace X] (n : ℕ) {M
 
 /-- The kernel of the last map of a short complex. -/
 abbrev SingularChains.ChainHomology.ShortCycle
-    (S : CategoryTheory.ShortComplex (ModuleCat.{0} ℤ)) :=
+    (S : CategoryTheory.ShortComplex (ModuleCat.{u} ℤ)) :=
   LinearMap.ker S.g.hom
 
 /-- The module structure on short-complex cycles. -/
 @[instance_reducible]
 def SingularChains.ChainHomology.shortCycleModule
-    (S : CategoryTheory.ShortComplex (ModuleCat.{0} ℤ)) : Module ℤ (ShortCycle S) :=
+    (S : CategoryTheory.ShortComplex (ModuleCat.{u} ℤ)) : Module ℤ (ShortCycle S) :=
   (LinearMap.ker S.g.hom).module
 
 attribute [local instance] SingularChains.ChainHomology.shortCycleModule in
 /-- The boundaries submodule inside the short cycles. -/
 abbrev SingularChains.ChainHomology.ShortBoundaries
-    (S : CategoryTheory.ShortComplex (ModuleCat.{0} ℤ)) : Submodule ℤ (ShortCycle S) :=
+    (S : CategoryTheory.ShortComplex (ModuleCat.{u} ℤ)) : Submodule ℤ (ShortCycle S) :=
   LinearMap.range S.moduleCatToCycles
 
 attribute [local instance] SingularChains.ChainHomology.shortCycleModule in
 /-- The homology class of a short cycle. -/
 def SingularChains.ChainHomology.shortCycleClass
-    (S : CategoryTheory.ShortComplex (ModuleCat.{0} ℤ)) : ShortCycle S →ₗ[ℤ] S.homology :=
+    (S : CategoryTheory.ShortComplex (ModuleCat.{u} ℤ)) : ShortCycle S →ₗ[ℤ] S.homology :=
   S.moduleCatHomologyIso.inv.hom.comp (ShortBoundaries S).mkQ
 
 attribute [local instance] SingularChains.ChainHomology.shortCycleModule in
 /-- Every homology class is a short cycle class. -/
 theorem SingularChains.ChainHomology.shortCycleClass_surjective
-    (S : CategoryTheory.ShortComplex (ModuleCat.{0} ℤ)) :
+    (S : CategoryTheory.ShortComplex (ModuleCat.{u} ℤ)) :
     Function.Surjective (shortCycleClass S) :=
   ((ModuleCat.epi_iff_surjective S.moduleCatHomologyIso.inv).mp inferInstance).comp
     (ShortBoundaries S).mkQ_surjective
@@ -476,7 +480,7 @@ theorem SingularChains.ChainHomology.shortCycleClass_surjective
 attribute [local instance] SingularChains.ChainHomology.shortCycleModule in
 /-- A short cycle class vanishes exactly on boundaries. -/
 theorem SingularChains.ChainHomology.shortCycleClass_eq_zero_iff
-    (S : CategoryTheory.ShortComplex (ModuleCat.{0} ℤ)) (c : ShortCycle S) :
+    (S : CategoryTheory.ShortComplex (ModuleCat.{u} ℤ)) (c : ShortCycle S) :
     shortCycleClass S c = 0 ↔ ∃ b : S.X₁, S.f b = c.1 := by
   have hinj : Function.Injective S.moduleCatHomologyIso.inv :=
     (ModuleCat.mono_iff_injective _).mp inferInstance
@@ -495,14 +499,14 @@ theorem SingularChains.ChainHomology.shortCycleClass_eq_zero_iff
 attribute [local instance] SingularChains.ChainHomology.shortCycleModule in
 /-- The opchains of a short complex. -/
 abbrev SingularChains.ChainHomology.ShortOpchains
-    (S : CategoryTheory.ShortComplex (ModuleCat.{0} ℤ)) :=
+    (S : CategoryTheory.ShortComplex (ModuleCat.{u} ℤ)) :=
   S.X₂ ⧸ LinearMap.range S.f.hom
 
 attribute [local instance] SingularChains.ChainHomology.shortCycleModule in
 /-- The module structure on short opchains. -/
 @[instance_reducible]
 def SingularChains.ChainHomology.shortOpchainsModule
-    (S : CategoryTheory.ShortComplex (ModuleCat.{0} ℤ)) : Module ℤ (ShortOpchains S) :=
+    (S : CategoryTheory.ShortComplex (ModuleCat.{u} ℤ)) : Module ℤ (ShortOpchains S) :=
   Submodule.Quotient.module (LinearMap.range S.f.hom)
 
 attribute [local instance] SingularChains.ChainHomology.shortCycleModule
@@ -510,7 +514,7 @@ attribute [local instance] SingularChains.ChainHomology.shortCycleModule
     SingularChains.ChainHomology.shortOpchainsModule in
 /-- The map from short-complex homology to opchains. -/
 def SingularChains.ChainHomology.shortHomologyToChainClass
-    (S : CategoryTheory.ShortComplex (ModuleCat.{0} ℤ)) : S.homology →ₗ[ℤ] ShortOpchains S :=
+    (S : CategoryTheory.ShortComplex (ModuleCat.{u} ℤ)) : S.homology →ₗ[ℤ] ShortOpchains S :=
   (S.homologyι ≫ S.moduleCatOpcyclesIso.hom).hom
 
 attribute [local instance] SingularChains.ChainHomology.shortCycleModule
@@ -518,7 +522,7 @@ attribute [local instance] SingularChains.ChainHomology.shortCycleModule
     SingularChains.ChainHomology.shortOpchainsModule in
 /-- Homology embeds into opchains. -/
 theorem SingularChains.ChainHomology.shortHomologyToChainClass_injective
-    (S : CategoryTheory.ShortComplex (ModuleCat.{0} ℤ)) :
+    (S : CategoryTheory.ShortComplex (ModuleCat.{u} ℤ)) :
     Function.Injective (shortHomologyToChainClass S) :=
   (ModuleCat.mono_iff_injective (S.homologyι ≫ S.moduleCatOpcyclesIso.hom)).mp inferInstance
 
@@ -527,7 +531,7 @@ attribute [local instance] SingularChains.ChainHomology.shortCycleModule
     SingularChains.ChainHomology.shortOpchainsModule in
 /-- The embedding sends a cycle class to its chain class. -/
 theorem SingularChains.ChainHomology.shortHomologyToChainClass_cycleClass
-    (S : CategoryTheory.ShortComplex (ModuleCat.{0} ℤ)) (c : ShortCycle S) :
+    (S : CategoryTheory.ShortComplex (ModuleCat.{u} ℤ)) (c : ShortCycle S) :
     shortHomologyToChainClass S (shortCycleClass S c) =
       (Submodule.Quotient.mk c.1 : ShortOpchains S) := by
   have hcat :
@@ -546,7 +550,7 @@ attribute [local instance] SingularChains.ChainHomology.shortCycleModule
 /-! ### Degree-one homology of chain complexes -/
 
 /-- The degree-one cycles of a chain complex. -/
-abbrev SingularChains.ChainHomology.Cycle1 (K : ChainComplex (ModuleCat.{0} ℤ) ℕ) :=
+abbrev SingularChains.ChainHomology.Cycle1 (K : ChainComplex (ModuleCat.{u} ℤ) ℕ) :=
   ShortCycle (K.sc 1)
 
 attribute [local instance] SingularChains.ChainHomology.shortCycleModule in
@@ -555,7 +559,7 @@ attribute [local instance] SingularChains.ChainHomology.shortCycleModule
 attribute [local instance] SingularChains.ChainHomology.shortCycleModule
     SingularChains.ChainHomology.shortOpchainsModule in
 /-- The degree-one boundaries inside the cycles. -/
-abbrev SingularChains.ChainHomology.Boundaries1 (K : ChainComplex (ModuleCat.{0} ℤ) ℕ) :
+abbrev SingularChains.ChainHomology.Boundaries1 (K : ChainComplex (ModuleCat.{u} ℤ) ℕ) :
     Submodule ℤ (Cycle1 K) :=
   ShortBoundaries (K.sc 1)
 
@@ -565,7 +569,7 @@ attribute [local instance] SingularChains.ChainHomology.shortCycleModule
 attribute [local instance] SingularChains.ChainHomology.shortCycleModule
     SingularChains.ChainHomology.shortOpchainsModule in
 /-- The homology class of a degree-one cycle. -/
-def SingularChains.ChainHomology.cycleClass (K : ChainComplex (ModuleCat.{0} ℤ) ℕ) :
+def SingularChains.ChainHomology.cycleClass (K : ChainComplex (ModuleCat.{u} ℤ) ℕ) :
     Cycle1 K →ₗ[ℤ] K.homology 1 :=
   shortCycleClass (K.sc 1)
 
@@ -575,7 +579,7 @@ attribute [local instance] SingularChains.ChainHomology.shortCycleModule
 attribute [local instance] SingularChains.ChainHomology.shortCycleModule
     SingularChains.ChainHomology.shortOpchainsModule in
 /-- Every degree-one homology class is a cycle class. -/
-theorem SingularChains.ChainHomology.cycleClass_surjective (K : ChainComplex (ModuleCat.{0} ℤ) ℕ) :
+theorem SingularChains.ChainHomology.cycleClass_surjective (K : ChainComplex (ModuleCat.{u} ℤ) ℕ) :
     Function.Surjective (cycleClass K) :=
   shortCycleClass_surjective (K.sc 1)
 
@@ -585,7 +589,7 @@ attribute [local instance] SingularChains.ChainHomology.shortCycleModule
 attribute [local instance] SingularChains.ChainHomology.shortCycleModule
     SingularChains.ChainHomology.shortOpchainsModule in
 /-- A degree-one element with zero boundary is a cycle. -/
-def SingularChains.ChainHomology.mkCycle1 (K : ChainComplex (ModuleCat.{0} ℤ) ℕ) (z : K.X 1)
+def SingularChains.ChainHomology.mkCycle1 (K : ChainComplex (ModuleCat.{u} ℤ) ℕ) (z : K.X 1)
     (hz : (K.d 1 0).hom z = 0) : Cycle1 K :=
   ⟨z, by
     change (K.d 1 ((ComplexShape.down ℕ).next 1)).hom z = 0
@@ -599,7 +603,7 @@ attribute [local instance] SingularChains.ChainHomology.shortCycleModule
 attribute [local instance] SingularChains.ChainHomology.shortCycleModule
     SingularChains.ChainHomology.shortOpchainsModule in
 /-- A cycle class vanishes exactly when it is a boundary. -/
-theorem SingularChains.ChainHomology.cycleClass_eq_zero_iff (K : ChainComplex (ModuleCat.{0} ℤ) ℕ)
+theorem SingularChains.ChainHomology.cycleClass_eq_zero_iff (K : ChainComplex (ModuleCat.{u} ℤ) ℕ)
     (c : Cycle1 K) : cycleClass K c = 0 ↔ ∃ b : K.X 2, (K.d 2 1).hom b = c.1 := by
   change shortCycleClass (K.sc 1) c = 0 ↔ _
   rw [shortCycleClass_eq_zero_iff]
@@ -616,7 +620,7 @@ attribute [local instance] SingularChains.ChainHomology.shortCycleModule
 attribute [local instance] SingularChains.ChainHomology.shortCycleModule
     SingularChains.ChainHomology.shortOpchainsModule in
 /-- A degree-two boundary viewed as a degree-one cycle. -/
-def SingularChains.ChainHomology.boundaryCycle1 (K : ChainComplex (ModuleCat.{0} ℤ) ℕ)
+def SingularChains.ChainHomology.boundaryCycle1 (K : ChainComplex (ModuleCat.{u} ℤ) ℕ)
     (b : K.X 2) : Cycle1 K :=
   mkCycle1 K ((K.d 2 1).hom b) (congrArg (fun f : K.X 2 ⟶ K.X 0 => f.hom b) (K.d_comp_d 2 1 0))
 
@@ -626,7 +630,7 @@ attribute [local instance] SingularChains.ChainHomology.shortCycleModule
 attribute [local instance] SingularChains.ChainHomology.shortCycleModule
     SingularChains.ChainHomology.shortOpchainsModule in
 /-- Degree-one chains modulo boundaries. -/
-abbrev SingularChains.ChainHomology.Opchains (K : ChainComplex (ModuleCat.{0} ℤ) ℕ) :=
+abbrev SingularChains.ChainHomology.Opchains (K : ChainComplex (ModuleCat.{u} ℤ) ℕ) :=
   K.X 1 ⧸ LinearMap.range (K.d 2 1).hom
 
 attribute [local instance] SingularChains.ChainHomology.shortCycleModule in
@@ -636,7 +640,7 @@ attribute [local instance] SingularChains.ChainHomology.shortCycleModule
     SingularChains.ChainHomology.shortOpchainsModule in
 /-- The module structure on chain-complex opchains. -/
 @[instance_reducible]
-def SingularChains.ChainHomology.opchainsModule (K : ChainComplex (ModuleCat.{0} ℤ) ℕ) :
+def SingularChains.ChainHomology.opchainsModule (K : ChainComplex (ModuleCat.{u} ℤ) ℕ) :
     Module ℤ (Opchains K) :=
   Submodule.Quotient.module (LinearMap.range (K.d 2 1).hom)
 
@@ -646,7 +650,7 @@ attribute [local instance] SingularChains.ChainHomology.shortCycleModule
 attribute [local instance] SingularChains.ChainHomology.shortCycleModule
     SingularChains.ChainHomology.shortOpchainsModule SingularChains.ChainHomology.opchainsModule in
 /-- The opchain class of a degree-one chain. -/
-def SingularChains.ChainHomology.chainClass (K : ChainComplex (ModuleCat.{0} ℤ) ℕ) :
+def SingularChains.ChainHomology.chainClass (K : ChainComplex (ModuleCat.{u} ℤ) ℕ) :
     K.X 1 →ₗ[ℤ] Opchains K :=
   (LinearMap.range (K.d 2 1).hom).mkQ
 
@@ -657,7 +661,7 @@ attribute [local instance] SingularChains.ChainHomology.shortCycleModule
     SingularChains.ChainHomology.shortOpchainsModule SingularChains.ChainHomology.opchainsModule in
 /-- The chain class of a boundary is zero. -/
 @[simp]
-theorem SingularChains.ChainHomology.chainClass_boundary (K : ChainComplex (ModuleCat.{0} ℤ) ℕ)
+theorem SingularChains.ChainHomology.chainClass_boundary (K : ChainComplex (ModuleCat.{u} ℤ) ℕ)
     (b : K.X 2) : chainClass K ((K.d 2 1).hom b) = 0 :=
   (Submodule.Quotient.mk_eq_zero (LinearMap.range (K.d 2 1).hom)).mpr ⟨b, rfl⟩
 
@@ -667,7 +671,7 @@ attribute [local instance] SingularChains.ChainHomology.shortCycleModule
 attribute [local instance] SingularChains.ChainHomology.shortCycleModule
     SingularChains.ChainHomology.shortOpchainsModule SingularChains.ChainHomology.opchainsModule in
 /-- Two chains have equal classes exactly when they differ by a boundary. -/
-theorem SingularChains.ChainHomology.chainClass_eq_iff (K : ChainComplex (ModuleCat.{0} ℤ) ℕ)
+theorem SingularChains.ChainHomology.chainClass_eq_iff (K : ChainComplex (ModuleCat.{u} ℤ) ℕ)
     (x y : K.X 1) : chainClass K x = chainClass K y ↔ ∃ b : K.X 2, (K.d 2 1).hom b = x - y :=
   Submodule.Quotient.eq _
 
@@ -677,7 +681,7 @@ attribute [local instance] SingularChains.ChainHomology.shortCycleModule
 attribute [local instance] SingularChains.ChainHomology.shortCycleModule
     SingularChains.ChainHomology.shortOpchainsModule SingularChains.ChainHomology.opchainsModule in
 /-- The short-complex map range is the degree-two boundary range. -/
-theorem SingularChains.ChainHomology.range_sc_one_f (K : ChainComplex (ModuleCat.{0} ℤ) ℕ) :
+theorem SingularChains.ChainHomology.range_sc_one_f (K : ChainComplex (ModuleCat.{u} ℤ) ℕ) :
     LinearMap.range (K.sc 1).f.hom = LinearMap.range (K.d 2 1).hom := by
   change LinearMap.range (K.d ((ComplexShape.down ℕ).prev 1) 1).hom = _
   have hp : (ComplexShape.down ℕ).prev 1 = 2 := (ComplexShape.down ℕ).prev_eq' (by simp)
@@ -689,7 +693,7 @@ attribute [local instance] SingularChains.ChainHomology.shortCycleModule
 attribute [local instance] SingularChains.ChainHomology.shortCycleModule
     SingularChains.ChainHomology.shortOpchainsModule SingularChains.ChainHomology.opchainsModule in
 /-- Short opchains are linearly equivalent to opchains. -/
-def SingularChains.ChainHomology.opchainsEquiv (K : ChainComplex (ModuleCat.{0} ℤ) ℕ) :
+def SingularChains.ChainHomology.opchainsEquiv (K : ChainComplex (ModuleCat.{u} ℤ) ℕ) :
     ShortOpchains (K.sc 1) ≃ₗ[ℤ] Opchains K :=
   Submodule.quotEquivOfEq _ _ (range_sc_one_f K)
 
@@ -699,7 +703,7 @@ attribute [local instance] SingularChains.ChainHomology.shortCycleModule
 attribute [local instance] SingularChains.ChainHomology.shortCycleModule
     SingularChains.ChainHomology.shortOpchainsModule SingularChains.ChainHomology.opchainsModule in
 /-- Degree-one homology embeds into opchains. -/
-def SingularChains.ChainHomology.homologyToChainClass (K : ChainComplex (ModuleCat.{0} ℤ) ℕ) :
+def SingularChains.ChainHomology.homologyToChainClass (K : ChainComplex (ModuleCat.{u} ℤ) ℕ) :
     K.homology 1 →ₗ[ℤ] Opchains K :=
   (opchainsEquiv K).toLinearMap.comp (shortHomologyToChainClass (K.sc 1))
 
@@ -710,7 +714,7 @@ attribute [local instance] SingularChains.ChainHomology.shortCycleModule
     SingularChains.ChainHomology.shortOpchainsModule SingularChains.ChainHomology.opchainsModule in
 /-- The homology-to-opchain map is injective. -/
 theorem SingularChains.ChainHomology.homologyToChainClass_injective
-    (K : ChainComplex (ModuleCat.{0} ℤ) ℕ) : Function.Injective (homologyToChainClass K) :=
+    (K : ChainComplex (ModuleCat.{u} ℤ) ℕ) : Function.Injective (homologyToChainClass K) :=
   (opchainsEquiv K).injective.comp (shortHomologyToChainClass_injective (K.sc 1))
 
 attribute [local instance] SingularChains.ChainHomology.shortCycleModule in
@@ -721,7 +725,7 @@ attribute [local instance] SingularChains.ChainHomology.shortCycleModule
 /-- The homology-to-chain map sends a cycle class to its chain class. -/
 @[simp]
 theorem SingularChains.ChainHomology.homologyToChainClass_cycleClass
-    (K : ChainComplex (ModuleCat.{0} ℤ) ℕ) (c : Cycle1 K) :
+    (K : ChainComplex (ModuleCat.{u} ℤ) ℕ) (c : Cycle1 K) :
     homologyToChainClass K (cycleClass K c) = chainClass K c.1 := by
   change opchainsEquiv K (shortHomologyToChainClass (K.sc 1) (shortCycleClass (K.sc 1) c)) = _
   rw [shortHomologyToChainClass_cycleClass]
@@ -733,7 +737,7 @@ attribute [local instance] SingularChains.ChainHomology.shortCycleModule
 attribute [local instance] SingularChains.ChainHomology.shortCycleModule
     SingularChains.ChainHomology.shortOpchainsModule SingularChains.ChainHomology.opchainsModule in
 /-- A map killing boundaries contains the boundary submodule in its kernel. -/
-theorem SingularChains.ChainHomology.boundaries1_le_ker (K : ChainComplex (ModuleCat.{0} ℤ) ℕ)
+theorem SingularChains.ChainHomology.boundaries1_le_ker (K : ChainComplex (ModuleCat.{u} ℤ) ℕ)
     {M : Type*} [AddCommGroup M] [Module ℤ M] (f : Cycle1 K →ₗ[ℤ] M)
     (hf : ∀ b : K.X 2, f (boundaryCycle1 K b) = 0) : Boundaries1 K ≤ LinearMap.ker f := by
   rintro c ⟨b, hb⟩
@@ -749,7 +753,7 @@ attribute [local instance] SingularChains.ChainHomology.shortCycleModule
 attribute [local instance] SingularChains.ChainHomology.shortCycleModule
     SingularChains.ChainHomology.shortOpchainsModule SingularChains.ChainHomology.opchainsModule in
 /-- A map on cycles killing boundaries descends to homology. -/
-def SingularChains.ChainHomology.homologyDesc (K : ChainComplex (ModuleCat.{0} ℤ) ℕ) {M : Type*}
+def SingularChains.ChainHomology.homologyDesc (K : ChainComplex (ModuleCat.{u} ℤ) ℕ) {M : Type*}
     [AddCommGroup M] [Module ℤ M] (f : Cycle1 K →ₗ[ℤ] M)
     (hf : ∀ b : K.X 2, f (boundaryCycle1 K b) = 0) : K.homology 1 →ₗ[ℤ] M :=
   ((Boundaries1 K).liftQ f (boundaries1_le_ker K f hf)).comp (K.sc 1).moduleCatHomologyIso.hom.hom
@@ -761,7 +765,7 @@ attribute [local instance] SingularChains.ChainHomology.shortCycleModule
     SingularChains.ChainHomology.shortOpchainsModule SingularChains.ChainHomology.opchainsModule in
 /-- The descended map computes on cycle classes. -/
 @[simp]
-theorem SingularChains.ChainHomology.homologyDesc_cycleClass (K : ChainComplex (ModuleCat.{0} ℤ) ℕ)
+theorem SingularChains.ChainHomology.homologyDesc_cycleClass (K : ChainComplex (ModuleCat.{u} ℤ) ℕ)
     {M : Type*} [AddCommGroup M] [Module ℤ M] (f : Cycle1 K →ₗ[ℤ] M)
     (hf : ∀ b : K.X 2, f (boundaryCycle1 K b) = 0) (c : Cycle1 K) :
     homologyDesc K f hf (cycleClass K c) = f c := by
@@ -953,15 +957,15 @@ attribute [local instance] SingularChains.ChainHomology.shortCycleModule
 attribute [local instance] SingularChains.ChainHomology.shortCycleModule
     SingularChains.ChainHomology.shortOpchainsModule SingularChains.ChainHomology.opchainsModule in
 /-- A chain map restricted to the degree-one short complexes. -/
-abbrev SingularChains.ChainHomology.shortMap {K L : ChainComplex (ModuleCat.{0} ℤ) ℕ} (F : K ⟶ L) :
+abbrev SingularChains.ChainHomology.shortMap {K L : ChainComplex (ModuleCat.{u} ℤ) ℕ} (F : K ⟶ L) :
     K.sc 1 ⟶ L.sc 1 :=
-  (HomologicalComplex.shortComplexFunctor (ModuleCat.{0} ℤ) (ComplexShape.down ℕ) 1).map F
+  (HomologicalComplex.shortComplexFunctor (ModuleCat.{u} ℤ) (ComplexShape.down ℕ) 1).map F
 
 attribute [local instance] SingularChains.ChainHomology.shortCycleModule
 attribute [local instance] SingularChains.ChainHomology.shortCycleModule
     SingularChains.ChainHomology.shortOpchainsModule SingularChains.ChainHomology.opchainsModule in
 /-- A chain map sends cycles to cycles. -/
-def SingularChains.ChainHomology.mapCycles {K L : ChainComplex (ModuleCat.{0} ℤ) ℕ} (F : K ⟶ L) :
+def SingularChains.ChainHomology.mapCycles {K L : ChainComplex (ModuleCat.{u} ℤ) ℕ} (F : K ⟶ L) :
     Cycle1 K →ₗ[ℤ] Cycle1 L :=
   ((K.sc 1).moduleCatCyclesIso.inv ≫
       CategoryTheory.ShortComplex.cyclesMap (shortMap F) ≫ (L.sc 1).moduleCatCyclesIso.hom).hom
@@ -971,7 +975,7 @@ attribute [local instance] SingularChains.ChainHomology.shortCycleModule
     SingularChains.ChainHomology.shortOpchainsModule SingularChains.ChainHomology.opchainsModule in
 /-- The mapped cycle's underlying chain. -/
 @[simp]
-theorem SingularChains.ChainHomology.mapCycles_val {K L : ChainComplex (ModuleCat.{0} ℤ) ℕ}
+theorem SingularChains.ChainHomology.mapCycles_val {K L : ChainComplex (ModuleCat.{u} ℤ) ℕ}
     (F : K ⟶ L) (c : Cycle1 K) : (mapCycles F c).1 = (F.f 1).hom c.1 := by
   have hcat :
     (K.sc 1).moduleCatCyclesIso.inv ≫
@@ -987,7 +991,7 @@ attribute [local instance] SingularChains.ChainHomology.shortCycleModule
     SingularChains.ChainHomology.shortOpchainsModule SingularChains.ChainHomology.opchainsModule in
 /-- The homology map sends a cycle class to the mapped cycle's class. -/
 theorem SingularChains.ChainHomology.homologyMap_cycleClass
-    {K L : ChainComplex (ModuleCat.{0} ℤ) ℕ} (F : K ⟶ L) (c : Cycle1 K) :
+    {K L : ChainComplex (ModuleCat.{u} ℤ) ℕ} (F : K ⟶ L) (c : Cycle1 K) :
     (HomologicalComplex.homologyMap F 1).hom (cycleClass K c) = cycleClass L (mapCycles F c) := by
   have hcat :
     (K.sc 1).moduleCatLeftHomologyData.π ≫
