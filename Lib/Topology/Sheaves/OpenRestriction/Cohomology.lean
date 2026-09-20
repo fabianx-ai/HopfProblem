@@ -17,12 +17,17 @@ public import Mathlib.CategoryTheory.Sites.SheafCohomology.Basic
 /-!
 # Sheaf cohomology on an open subspace
 
-The free abelian sheaf represented by an ambient open `U` computes the value at `U` of Mathlib's
-cohomology presheaf.  Exact restriction to the open subspace identifies this Ext group, in every
-degree, with ordinary sheaf cohomology on `U`.
+For an open `U ⊆ X` and a sheaf `F` of abelian groups on `X`, the cohomology of `U` with
+coefficients in `F` may be computed either as `Ext^n(ℤ_U, F)` on `X` or as `H^n(U, F|_U)` on the
+subspace `U`, and the two agree in every degree (Godement, *Topologie algébrique et théorie des
+faisceaux*, II.4; Hartshorne, *Algebraic Geometry*, III §6).  The comparison comes from exactness
+of restriction to an open subspace, which carries the free sheaf `ℤ_U` to the free sheaf on `U`.
 
-Both sides are Mathlib's native Ext-defined groups.  No chart complex, singular comparison, or
-proper-base-change assertion enters this result.
+## Main results
+
+* `freeHomEquiv`: maps out of the free sheaf on `U` are sections of `F` over `U`.
+* `cohomologyEquiv`: `Ext^n(ℤ_U, F) ≅ H^n(U, F|_U)` in every degree.
+* `cohomologyEquiv_naturality`: that comparison is natural in `F`.
 -/
 
 @[expose] public section
@@ -35,8 +40,8 @@ namespace TopCat.Sheaf.OpenRestriction
 
 variable {X : TopCat.{0}} (U : Opens X)
 
-/-- The native sheaf cohomology group on the open subspace, bundled through Mathlib's additive
-cohomology functor. -/
+/-- The sheaf cohomology group `H^n(U, F|_U)` of the open subspace `U`, as an object of
+`AddCommGrpCat`. -/
 abbrev restrictedCohomologyGroup
     (F : TopCat.Sheaf AddCommGrpCat.{0} X) (n : ℕ) : AddCommGrpCat.{0} :=
   (@CategoryTheory.Sheaf.functorH
@@ -57,6 +62,8 @@ def freeHomEquiv (F : TopCat.Sheaf AddCommGrpCat.{0} X) :
     (((Adjunction.whiskerRight (Opens X)ᵒᵖ AddCommGrpCat.adj).homEquiv _ F.obj).trans
       yonedaEquiv)
 
+/-- The identification of maps out of the free sheaf on `U` with sections over `U` is natural in
+the coefficient sheaf. -/
 theorem freeHomEquiv_naturality {F G : TopCat.Sheaf AddCommGrpCat.{0} X}
     (h : freeOpen U ⟶ F) (g : F ⟶ G) :
     freeHomEquiv U G (h ≫ g) = g.hom.app (op U) (freeHomEquiv U F h) := rfl
@@ -98,6 +105,7 @@ theorem freeHomAddEquiv_naturality_open {U V : Opens X} (i : U ⟶ V)
       F.obj.map i.op (freeHomAddEquiv V F h) :=
   freeHomEquiv_naturality_open i F h
 
+/-- The image of the top open of the subspace `U` is `U` itself. -/
 theorem openImage_top : (openImage U).obj ⊤ = U := by
   apply Opens.ext
   ext x
@@ -112,6 +120,8 @@ def restrictionGlobalEquiv (F : TopCat.Sheaf AddCommGrpCat.{0} X) :
     ((restriction U).obj F).obj.obj (op (⊤ : Opens U)) ≃+ F.obj.obj (op U) :=
   (F.obj.mapIso (eqToIso (congrArg op (openImage_top U)))).addCommGroupIsoToAddEquiv
 
+/-- The identification of global sections of `F|_U` with sections of `F` over `U` is natural in
+the coefficient sheaf. -/
 theorem restrictionGlobalEquiv_naturality {F G : TopCat.Sheaf AddCommGrpCat.{0} X}
     (g : F ⟶ G) (s : ((restriction U).obj F).obj.obj (op (⊤ : Opens U))) :
     restrictionGlobalEquiv U G (((restriction U).map g).hom.app (op ⊤) s) =
@@ -129,6 +139,8 @@ def homRestrictionEquiv (F : TopCat.Sheaf AddCommGrpCat.{0} X) :
     (TopCat.ConstantSheaf.integralHomGlobalEquiv
       (TopCat.of U) ((restriction U).obj F)).toEquiv.symm)
 
+/-- The representing-object comparison is computed on sections: it sends a map out of the free
+sheaf on `U` to the map out of `ℤ_U` with the same section over `U`. -/
 theorem homRestrictionEquiv_sections (F : TopCat.Sheaf AddCommGrpCat.{0} X)
     (h : freeOpen U ⟶ F) :
     restrictionGlobalEquiv U F
@@ -143,6 +155,8 @@ theorem homRestrictionEquiv_sections (F : TopCat.Sheaf AddCommGrpCat.{0} X)
         ((restrictionGlobalEquiv U F).symm (freeHomEquiv U F h)))) = _
   simp only [AddEquiv.apply_symm_apply]
 
+/-- The representing-object comparison for open restriction is natural in the coefficient
+sheaf. -/
 theorem homRestrictionEquiv_naturality {F G : TopCat.Sheaf AddCommGrpCat.{0} X}
     (h : freeOpen U ⟶ F) (g : F ⟶ G) :
     homRestrictionEquiv U G (h ≫ g) =
@@ -155,17 +169,21 @@ theorem homRestrictionEquiv_naturality {F G : TopCat.Sheaf AddCommGrpCat.{0} X}
     restrictionGlobalEquiv_naturality, homRestrictionEquiv_sections,
     freeHomEquiv_naturality]
 
-/-- The canonical integral-sheaf map into the restriction of the represented open sheaf. -/
+/-- The unit `ℤ_U ⟶ (ℤ_U)|_U` exhibiting the restriction of the free sheaf on `U` as the constant
+sheaf `ℤ` on the subspace `U`. -/
 def representingUnit :
     TopCat.ConstantSheaf.integralSheaf (TopCat.of U) ⟶ (restriction U).obj (freeOpen U) :=
   homRestrictionEquiv U (freeOpen U) (𝟙 _)
 
+/-- Composing with the representing unit recovers the representing-object comparison. -/
 theorem representingUnit_comp {F : TopCat.Sheaf AddCommGrpCat.{0} X}
     (h : freeOpen U ⟶ F) :
     representingUnit U ≫ (restriction U).map h = homRestrictionEquiv U F h :=
   (homRestrictionEquiv_naturality U (𝟙 _) h).symm.trans
     (congrArg (homRestrictionEquiv U F) (Category.id_comp h))
 
+/-- Composition with the representing unit is a bijection from maps out of the free sheaf on `U`
+to maps out of the constant sheaf `ℤ` on the subspace `U`. -/
 theorem representingUnit_bijective (F : TopCat.Sheaf AddCommGrpCat.{0} X) :
     Function.Bijective
       (fun h : freeOpen U ⟶ F ↦ representingUnit U ≫ (restriction U).map h) := by
@@ -180,32 +198,34 @@ def zeroEquiv (F : TopCat.Sheaf AddCommGrpCat.{0} X) :
   (Ext.addEquiv₀ (C := TopCat.Sheaf AddCommGrpCat.{0} X)
     (X := freeOpen U) (Y := F)).trans (freeHomAddEquiv U F)
 
-/-- The canonical exact-restriction map on Ext-defined cohomology. -/
+/-- The comparison map `Ext^n(ℤ_U, F) → H^n(U, F|_U)` induced by restriction to `U`. -/
 def cohomologyForward (F : TopCat.Sheaf AddCommGrpCat.{0} X) (n : ℕ) :
     CategoryTheory.Sheaf.H'.{0} F n U →+
       restrictedCohomologyGroup U F n :=
   Ext.ExactFunctorComparison.map (restriction U) (representingUnit U) F n
 
-/-- The open-restriction comparison is bijective in every degree. -/
+/-- The comparison `Ext^n(ℤ_U, F) → H^n(U, F|_U)` is bijective in every degree. -/
 theorem cohomologyForward_bijective (F : TopCat.Sheaf AddCommGrpCat.{0} X) (n : ℕ) :
     Function.Bijective (cohomologyForward U F n) :=
   Ext.ExactFunctorComparison.map_bijective (restriction U) (representingUnit U)
     (representingUnit_bijective U) F n
 
-/-- Cohomology over `U` in the ambient cohomology presheaf is ordinary sheaf cohomology on the
-open subspace. -/
+/-- `Ext^n(ℤ_U, F) ≅ H^n(U, F|_U)`: the value at `U` of the cohomology presheaf on `X` is sheaf
+cohomology of the open subspace `U` (Godement II.4; Hartshorne III §6). -/
 def cohomologyEquiv (F : TopCat.Sheaf AddCommGrpCat.{0} X) (n : ℕ) :
     CategoryTheory.Sheaf.H'.{0} F n U ≃+
       restrictedCohomologyGroup U F n :=
   AddEquiv.ofBijective (cohomologyForward U F n) (cohomologyForward_bijective U F n)
 
+/-- In degree zero the comparison sends the class of a map out of the free sheaf on `U` to the
+class of the corresponding map on the subspace. -/
 theorem cohomologyEquiv_mk₀ {F : TopCat.Sheaf AddCommGrpCat.{0} X}
     (h : freeOpen U ⟶ F) :
     cohomologyEquiv U F 0 (Ext.mk₀ h) =
       Ext.mk₀ (representingUnit U ≫ (restriction U).map h) :=
   Ext.ExactFunctorComparison.map_mk₀ (restriction U) (representingUnit U) h
 
-/-- The comparison is natural in the coefficient sheaf. -/
+/-- The comparison `Ext^n(ℤ_U, F) ≅ H^n(U, F|_U)` is natural in the coefficient sheaf `F`. -/
 theorem cohomologyEquiv_naturality {F G : TopCat.Sheaf AddCommGrpCat.{0} X}
     (g : F ⟶ G) (n : ℕ) (x : CategoryTheory.Sheaf.H'.{0} F n U) :
     cohomologyEquiv U G n

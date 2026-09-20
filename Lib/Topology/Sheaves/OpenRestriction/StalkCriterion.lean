@@ -9,12 +9,14 @@ module
 public import Lib.Topology.Sheaves.OpenRestriction.NearbyRestrictionGerm
 
 /-!
-# A stalk criterion for the open-restriction unit
+# A stalk criterion for the unit `F ⟶ j_*j^*F`
 
-The unit `F ⟶ j_*j^*F` is automatically an isomorphism on stalks over the open subspace.
-Consequently it is enough to check its stalks on the complement in order to prove that the
-unit is an isomorphism.  This is the formal local-to-global bridge behind extension of sections
-across a closed complement; it does not assert that any complementary stalk map is invertible.
+For the inclusion `j : U → X` of an open subspace the unit `F ⟶ j_*j^*F` is always an isomorphism
+on stalks at points of `U`, so it is an isomorphism as soon as its stalk maps at the points of the
+complement are isomorphisms; a morphism of sheaves is an isomorphism iff it is one on every stalk
+(Iversen, *Cohomology of Sheaves*, II.6; Kashiwara–Schapira, *Sheaves on Manifolds*, Prop. 2.3.6;
+Mathlib `TopCat.Presheaf.isIso_of_stalkFunctor_map_iso`).  In that case the restriction map from
+global sections of `F` to sections over `U` is an isomorphism.
 -/
 
 @[expose] public section
@@ -31,14 +33,16 @@ namespace TopCat.Sheaf.OpenRestriction
 
 variable {X : TopCat.{0}} (U : Opens X)
 
-/-- The stalk of the pushforward of the restriction maps back to the restricted stalk at a
-point of the open subspace. -/
+/-- At a point `x ∈ U`, the canonical comparison from the stalk of `j_*(F|_U)` to the stalk of
+`F|_U`. -/
 def nearbyStalkPushforward (F : TopCat.Sheaf AddCommGrpCat.{0} X) (x : U) :
     nearbySectionsStalk U F x.1 ⟶
       TopCat.Presheaf.stalk ((restriction U).obj F).obj x :=
   TopCat.Presheaf.stalkPushforward AddCommGrpCat (inclusion U)
     ((restriction U).obj F).obj x
 
+/-- At a point of `U` the comparison `(j_*(F|_U))_x ⟶ (F|_U)_x` is an isomorphism, because `j` is
+an embedding. -/
 instance nearbyStalkPushforward_isIso
     (F : TopCat.Sheaf AddCommGrpCat.{0} X) (x : U) :
     IsIso (nearbyStalkPushforward U F x) :=
@@ -47,8 +51,8 @@ instance nearbyStalkPushforward_isIso
       ((restriction U).obj F).obj x
 
 set_option backward.isDefEq.respectTransparency false in
-/-- Over the open subspace, the open-restriction stalk unit followed by the canonical
-pushforward-stalk comparison is the usual restriction-stalk isomorphism. -/
+/-- At a point `x ∈ U`, the stalk map of the unit followed by the pushforward-stalk comparison is
+the isomorphism `F_x ≅ (F|_U)_x`. -/
 theorem nearbyStalkUnit_comp_nearbyStalkPushforward
     (F : TopCat.Sheaf AddCommGrpCat.{0} X) (x : U) :
     nearbyStalkUnit U F x.1 ≫ nearbyStalkPushforward U F x =
@@ -65,8 +69,7 @@ theorem nearbyStalkUnit_comp_nearbyStalkPushforward
   rw [Category.assoc, hpush]
   exact (germ_stalkIso_hom_nearbyRestrictionUnit U F V x hxV).symm
 
-/-- The open-restriction unit is automatically an isomorphism on every stalk over the open
-subspace. -/
+/-- The unit `F ⟶ j_*j^*F` is an isomorphism on stalks at every point of `U`. -/
 theorem nearbyStalkUnit_isIso_of_mem
     (F : TopCat.Sheaf AddCommGrpCat.{0} X) (x : X) (hx : x ∈ U) :
     IsIso (nearbyStalkUnit U F x) := by
@@ -78,8 +81,8 @@ theorem nearbyStalkUnit_isIso_of_mem
   exact (isIso_comp_right_iff
     (nearbyStalkUnit U F x) (nearbyStalkPushforward U F xU)).mp hcomp
 
-/-- To prove `F ⟶ j_*j^*F` is an isomorphism it is enough to prove that its stalk maps are
-isomorphisms at points outside the open subspace. -/
+/-- The unit `F ⟶ j_*j^*F` is an isomorphism as soon as its stalk maps at the points outside `U`
+are isomorphisms. -/
 theorem nearbyRestrictionUnit_app_isIso_of_isIso_outside
     (F : TopCat.Sheaf AddCommGrpCat.{0} X)
     (hout : ∀ (x : X), x ∉ U → IsIso (nearbyStalkUnit U F x)) :
@@ -96,10 +99,8 @@ theorem nearbyRestrictionUnit_app_isIso_of_isIso_outside
   exact TopCat.Presheaf.isIso_of_stalkFunctor_map_iso
     ((nearbyRestrictionUnit U).app F)
 
-/-- If the complementary stalk units are isomorphisms, restriction from global sections to the
-open subspace is an isomorphism.  The forward map is the global component of
-`F ⟶ j_*j^*F`, followed by the canonical identification of pushforward sections with sections
-on the open. -/
+/-- If the stalk maps of the unit are isomorphisms outside `U`, then restriction of sections
+`Γ(X, F) ≅ Γ(U, F)` is an isomorphism. -/
 def globalRestrictionIsoOfIsIsoOutside
     (F : TopCat.Sheaf AddCommGrpCat.{0} X)
     (hout : ∀ (x : X), x ∉ U → IsIso (nearbyStalkUnit U F x)) :

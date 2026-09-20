@@ -14,10 +14,11 @@ public import Mathlib.Topology.Sheaves.Abelian
 public import Mathlib.Topology.Sheaves.Flasque
 
 /-!
-# Flasque additive sheaves have zero Ext-defined H¹
+# Flasque sheaves are acyclic in degree one
 
-Only the degree-one consequence is proved.  Flasqueness lifts global sections across a short exact
-sequence; the native Ext exact sequence for an injective presentation then kills `H¹`.
+A flasque sheaf of abelian groups on a topological space has vanishing first cohomology
+(Hartshorne, *Algebraic Geometry*, III Prop. 2.5; Godement, *Topologie algébrique et théorie des
+faisceaux*, II.4.3), here in the degree-one case and for the `Ext`-defined cohomology.
 -/
 
 @[expose] public section
@@ -111,7 +112,8 @@ private theorem globalLifting_of_isFlasque
   have hepi := TopCat.Sheaf.IsFlasque.epi_of_shortExact (U := ⊤) hS
   exact (AddCommGrpCat.epi_iff_surjective _).mp hepi
 
-/-- A flasque additive sheaf has zero native Ext-defined `H¹`. -/
+/-- A flasque sheaf of abelian groups is acyclic in degree one: `H¹(X, F) = 0`
+(Hartshorne III Prop. 2.5). -/
 theorem subsingleton_h1_of_isFlasque
     (F : TopCat.Sheaf AddCommGrpCat.{0} X) [TopCat.Sheaf.IsFlasque F] :
     Subsingleton (CategoryTheory.Sheaf.H.{0} F 1) :=

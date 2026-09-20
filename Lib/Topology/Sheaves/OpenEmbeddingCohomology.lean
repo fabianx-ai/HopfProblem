@@ -16,10 +16,12 @@ public import Mathlib.Topology.Sheaves.Functors
 /-!
 # Constant coefficients and cohomology along open embeddings
 
-Restriction along an open embedding is exact.  This file constructs the canonical morphism from
-the constant sheaf on the source to the restriction of the constant sheaf on the target and the
-resulting native Ext-defined cohomology map.  On a locally connected source the coefficient
-morphism is an isomorphism, giving the normalized constant-coefficient pullback.
+Restriction of sheaves of abelian groups along an open embedding `f : T → X` is exact (Iversen,
+*Cohomology of Sheaves*, II.5; Bredon, *Sheaf Theory*, II.9), so it induces a map on sheaf
+cohomology in every degree.  The constant sheaf on `X` restricts canonically to the constant sheaf
+on `T`, and this comparison is an isomorphism when `T` is locally connected, because a locally
+constant function on a connected open is constant.  Composing the two gives the pullback
+`H^n(X; A_X) → H^n(T; A_T)` on constant-coefficient cohomology.
 -/
 
 @[expose] public section
@@ -38,6 +40,8 @@ variable {T X : TopCat.{0}} (f : T ⟶ X) (hf : Topology.IsOpenEmbedding f)
 /-- The functor taking an open of the source to its open image in the target. -/
 abbrev openImage : Opens T ⥤ Opens X := hf.functor
 
+/-- The direct-image functor on opens along an open embedding is continuous for the open-cover
+topologies: it takes covers to covers. -/
 instance openImage_continuous :
     (openImage f hf).IsContinuous (Opens.grothendieckTopology T)
       (Opens.grothendieckTopology X) :=
@@ -49,9 +53,12 @@ abbrev restriction : TopCat.Sheaf AddCommGrpCat.{0} X ⥤
   (openImage f hf).sheafPushforwardContinuous AddCommGrpCat
     (Opens.grothendieckTopology T) (Opens.grothendieckTopology X)
 
+/-- Restriction along an open embedding is an additive functor. -/
 instance restriction_additive : (restriction f hf).Additive where
   map_add := by intros; rfl
 
+/-- The direct-image functor on opens along an open embedding is cocontinuous: a cover of an image
+open is refined by the image of a cover. -/
 instance openImage_cocontinuous :
     (openImage f hf).IsCocontinuous (Opens.grothendieckTopology T)
       (Opens.grothendieckTopology X) where
@@ -69,26 +76,30 @@ instance openImage_cocontinuous :
     refine ⟨W', homOfLE hW'V, ?_, htW⟩
     exact S.downward_closed hi k
 
+/-- Restriction along an open embedding is a right adjoint, namely of the inverse image. -/
 instance restriction_rightAdjoint : (restriction f hf).IsRightAdjoint :=
   (Functor.sheafPullbackConstruction.sheafAdjunctionContinuous (openImage f hf)
     AddCommGrpCat (Opens.grothendieckTopology T)
       (Opens.grothendieckTopology X)).isRightAdjoint
 
+/-- Restriction along an open embedding is also a left adjoint, namely of extension by zero. -/
 instance restriction_leftAdjoint : (restriction f hf).IsLeftAdjoint :=
   ((openImage f hf).sheafAdjunctionCocontinuous AddCommGrpCat
     (Opens.grothendieckTopology T)
       (Opens.grothendieckTopology X)).isLeftAdjoint
 
+/-- Restriction along an open embedding is left exact (Iversen II.5). -/
 theorem restriction_preservesFiniteLimits :
     PreservesFiniteLimits (restriction f hf) := by
   infer_instance
 
+/-- Restriction along an open embedding is right exact (Iversen II.5). -/
 theorem restriction_preservesFiniteColimits :
     PreservesFiniteColimits (restriction f hf) := by
   infer_instance
 
-/-- Before sheafification, a coefficient value is sent to the same constant section on the
-corresponding image open. -/
+/-- The presheaf-level comparison sending a constant section on `U ⊆ T` to the constant section
+with the same value on the image open `f(U) ⊆ X`. -/
 def rawRestrictionHom (A : AddCommGrpCat.{0}) :
     TopCat.ConstantSheaf.presheaf T A ⟶
       ((restriction f hf).obj (TopCat.ConstantSheaf.sheaf X A)).obj where
@@ -105,7 +116,7 @@ def rawRestrictionHom (A : AddCommGrpCat.{0}) :
     exact (TopCat.ConstantSheaf.unit X A).naturality
       ((openImage f hf).map g.unop).op
 
-/-- Canonical restriction of a constant sheaf along an open embedding. -/
+/-- The canonical morphism `A_T ⟶ (A_X)|_T` of constant sheaves along an open embedding. -/
 def restrictionHom (A : AddCommGrpCat.{0}) :
     TopCat.ConstantSheaf.sheaf T A ⟶
       (restriction f hf).obj (TopCat.ConstantSheaf.sheaf X A) where
@@ -113,7 +124,8 @@ def restrictionHom (A : AddCommGrpCat.{0}) :
     (rawRestrictionHom f hf A)
     ((restriction f hf).obj (TopCat.ConstantSheaf.sheaf X A)).property
 
-/-- The restriction morphism is characterized by the constant-presheaf unit. -/
+/-- The comparison of constant sheaves is the unique morphism whose composite with the
+sheafification unit is the presheaf-level comparison. -/
 theorem unit_restrictionHom (A : AddCommGrpCat.{0}) :
     TopCat.ConstantSheaf.unit T A ≫ (restrictionHom f hf A).hom =
       rawRestrictionHom f hf A :=
@@ -121,6 +133,8 @@ theorem unit_restrictionHom (A : AddCommGrpCat.{0}) :
     (rawRestrictionHom f hf A)
     ((restriction f hf).obj (TopCat.ConstantSheaf.sheaf X A)).property
 
+/-- On a constant section coming from a coefficient value `a`, the restriction morphism of
+constant sheaves returns the constant section with the same value on the image open. -/
 @[simp]
 theorem restrictionHom_app_unit (A : AddCommGrpCat.{0})
     (U : Opens T) (a : A) :
@@ -132,8 +146,8 @@ theorem restrictionHom_app_unit (A : AddCommGrpCat.{0})
     (NatTrans.congr_app (unit_restrictionHom f hf A) (op U)) a
   exact h
 
-/-- A locally connected source sees the same locally constant coefficient sheaf after open
-restriction. -/
+/-- If the source is locally connected, the canonical morphism `A_T ⟶ (A_X)|_T` of constant
+sheaves is an isomorphism. -/
 theorem restrictionHom_isIso [LocallyConnectedSpace T]
     (A : AddCommGrpCat.{0}) : IsIso (restrictionHom f hf A) := by
   let B : Set (Opens T) := {U | IsConnected (U : Set T)}
@@ -167,7 +181,8 @@ theorem restrictionHom_isIso [LocallyConnectedSpace T]
     exact ⟨(TopCat.ConstantSheaf.unit T A).app (op (basis U)) a,
       restrictionHom_app_unit f hf A (basis U) a⟩
 
-/-- Native Ext-defined cohomology restriction along an open embedding. -/
+/-- The restriction map `H^n(X, F) → H^n(T, F|_T)` on sheaf cohomology along an open embedding,
+in every degree. -/
 def cohomologyMap (F : TopCat.Sheaf AddCommGrpCat.{0} X) (n : ℕ) :
     CategoryTheory.Sheaf.H.{0} F n →+
       CategoryTheory.Sheaf.H.{0} ((restriction f hf).obj F) n := by
@@ -176,7 +191,7 @@ def cohomologyMap (F : TopCat.Sheaf AddCommGrpCat.{0} X) (n : ℕ) :
   exact Ext.ExactFunctorComparison.map (restriction f hf)
     (restrictionHom f hf (AddCommGrpCat.of (ULift.{0} ℤ))) F n
 
-/-- Open restriction commutes with coefficient morphisms. -/
+/-- The restriction map on cohomology is natural in the coefficient sheaf. -/
 theorem cohomologyMap_naturality {F G : TopCat.Sheaf AddCommGrpCat.{0} X}
     (g : F ⟶ G) (n : ℕ) (a : CategoryTheory.Sheaf.H.{0} F n) :
     cohomologyMap f hf G n (CategoryTheory.Sheaf.H.map g n a) =
@@ -193,7 +208,8 @@ theorem cohomologyMap_naturality {F G : TopCat.Sheaf AddCommGrpCat.{0} X}
     _ _ _ _
     (restrictionHom f hf (AddCommGrpCat.of (ULift.{0} ℤ))) g n a
 
-/-- The normalized constant-coefficient pullback along an open embedding. -/
+/-- For a locally connected source, the pullback `H^n(X; A_X) → H^n(T; A_T)` on
+constant-coefficient sheaf cohomology along an open embedding. -/
 def constantPullback [LocallyConnectedSpace T]
     (A : AddCommGrpCat.{0}) (n : ℕ) :
     AddCommGrpCat.of (CategoryTheory.Sheaf.H.{0}

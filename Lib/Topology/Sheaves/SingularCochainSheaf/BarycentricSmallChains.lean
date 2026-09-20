@@ -9,7 +9,14 @@ module
 public import Lib.AlgebraicTopology.SingularSmallChains.Barycentric
 public import Lib.Topology.Sheaves.SingularCochainSheaf.GlobalUnitH1Criterion
 
-/-! # Barycentric discharge of the global-unit small-chain input -/
+/-!
+# Chains small with respect to an open cover
+
+Barycentric subdivision makes singular chains small with respect to a given open cover: the
+inclusion of the subcomplex of cover-small chains into the singular chain complex is a homotopy
+equivalence (Hatcher, *Algebraic Topology*, Prop. 2.21).  This module records that fact in the
+form used by the comparison between constant-sheaf and singular cohomology.
+-/
 
 @[expose] public section
 
@@ -22,8 +29,8 @@ open Set TopologicalSpace
 
 namespace TopCat.SingularCochainSheaf
 
-/-- Barycentric subdivision supplies the cover-small chain equivalences required by the global
-singular-cochain sheafification-unit comparison. -/
+/-- For every open cover of `X` the inclusion of the cover-small singular chains is a homotopy
+equivalence onto the singular chain complex (Hatcher, Prop. 2.21). -/
 theorem hasSmallChainEquivalences_barycentric (X : TopCat.{0}) :
     HasSmallChainEquivalences X := by
   intro U hxU

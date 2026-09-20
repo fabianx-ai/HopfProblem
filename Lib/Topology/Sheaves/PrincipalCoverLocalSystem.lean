@@ -14,12 +14,16 @@ public import Mathlib.Topology.Sheaves.SheafCondition.UniqueGluing
 /-!
 # Local systems from principal covering actions
 
-For a principal `G`-cover `p : E → X` and an additive commutative group `M` acted on
-distributively by `G`, this file constructs the associated sheaf.  Its sections over `U` are
-definitionally the equivariant locally constant functions on `p ⁻¹' U`.
+A principal `G`-cover `p : E → X` and a `G`-module `M` determine a local system on `X`: the sheaf
+whose sections over `U` are the `G`-equivariant locally constant functions `p⁻¹(U) → M`
+(Whitehead, *Elements of Homotopy Theory*, VI.1–2; Hatcher, *Algebraic Topology*, §3.H).  When the
+total space is connected, the global sections are the `G`-invariants `M^G`, an equivariant section
+being determined by its value at any single point.
 
-When the total space of the cover is nonempty and preconnected, the global sections are
-canonically equivalent to the subgroup of `G`-invariant coefficients.
+## Main results
+
+* `sheaf`: the local system associated with `p` and `M`.
+* `globalSectionsEquivInvariantCoefficients`: `Γ(X, L) ≃+ M^G` for a connected total space.
 -/
 
 @[expose] public section
@@ -36,15 +40,15 @@ variable {G : Type uG} {E X M : Type u}
   [Group G] [TopologicalSpace E] [TopologicalSpace X]
   [MulAction G E] [AddCommGroup M] [DistribMulAction G M]
 
-/-- The inverse image of an open set under the principal covering map. -/
+/-- The part of the total space lying over an open set `U ⊆ X`. -/
 abbrev LiftedOpen (p : E → X) (U : Opens X) := {e : E // p e ∈ U}
 
-/-- The deck action preserves the inverse image of every open set. -/
+/-- The deck action of `G` restricts to the part of the total space over an open set. -/
 def liftedAction (p : E → X) (hp : IsQuotientCoveringMap p G) (U : Opens X)
     (g : G) (e : LiftedOpen p U) : LiftedOpen p U :=
   ⟨g • e.1, by simpa only [hp.map_smul] using e.2⟩
 
-/-- Inclusion between inverse images of nested open sets. -/
+/-- The inclusion of the parts of the total space over nested open sets. -/
 def liftedInclusion (p : E → X) {U V : Opens X} (h : U ≤ V) :
     C(LiftedOpen p U, LiftedOpen p V) where
   toFun e := ⟨e.1, h e.2⟩
@@ -59,7 +63,8 @@ private theorem liftedInclusion_isOpenEmbedding (p : E → X) (hp : IsQuotientCo
   change IsOpenEmbedding (Subtype.val : LiftedOpen p U → E)
   exact (U.isOpen.preimage hp.continuous).isOpenEmbedding_subtypeVal
 
-/-- Equivariant locally constant functions on the lifted open set. -/
+/-- The `G`-equivariant locally constant functions `p⁻¹(U) → M`, the sections of the local system
+over `U`. -/
 def equivariantSections (p : E → X) (hp : IsQuotientCoveringMap p G) (U : Opens X) :
     AddSubgroup (LocallyConstant (LiftedOpen p U) M) where
   carrier s := ∀ (g : G) (e : LiftedOpen p U), s (liftedAction p hp U g e) = g • s e
@@ -71,6 +76,8 @@ def equivariantSections (p : E → X) (hp : IsQuotientCoveringMap p G) (U : Open
     intro s hs g e
     simp only [LocallyConstant.neg_apply, hs g e, smul_neg]
 
+/-- A locally constant function on `p⁻¹(U)` is a section of the local system exactly when it is
+`G`-equivariant. -/
 @[simp]
 theorem mem_equivariantSections (p : E → X) (hp : IsQuotientCoveringMap p G)
     (U : Opens X) (s : LocallyConstant (LiftedOpen p U) M) :
@@ -78,7 +85,7 @@ theorem mem_equivariantSections (p : E → X) (hp : IsQuotientCoveringMap p G)
       ∀ (g : G) (e : LiftedOpen p U), s (liftedAction p hp U g e) = g • s e :=
   Iff.rfl
 
-/-- Restriction of equivariant locally constant functions. -/
+/-- Restriction of equivariant sections along an inclusion of open sets. -/
 def restrict (p : E → X) (hp : IsQuotientCoveringMap p G) {U V : Opens X} (h : U ≤ V) :
     equivariantSections (M := M) p hp V →+ equivariantSections (M := M) p hp U where
   toFun s := ⟨LocallyConstant.comap (liftedInclusion p h) s.1, by
@@ -97,7 +104,7 @@ def restrict (p : E → X) (hp : IsQuotientCoveringMap p G) {U V : Opens X} (h :
     ext e
     rfl
 
-/-- The presheaf presented by equivariant locally constant functions. -/
+/-- The presheaf `U ↦ {G`-equivariant locally constant functions `p⁻¹(U) → M}`. -/
 def presheaf (p : E → X) (hp : IsQuotientCoveringMap p G) :
     TopCat.Presheaf AddCommGrpCat.{u} (TopCat.of X) where
   obj U := AddCommGrpCat.of (equivariantSections (M := M) p hp (unop U))
@@ -109,6 +116,7 @@ def presheaf (p : E → X) (hp : IsQuotientCoveringMap p G) :
     ext s e
     rfl
 
+/-- Restriction in the presheaf is restriction of functions. -/
 @[simp]
 theorem presheaf_map_apply (p : E → X) (hp : IsQuotientCoveringMap p G)
     {U V : (Opens X)ᵒᵖ} (i : U ⟶ V) (s : (presheaf (M := M) p hp).obj U)
@@ -117,8 +125,7 @@ theorem presheaf_map_apply (p : E → X) (hp : IsQuotientCoveringMap p G)
       s.1 ⟨e.1, i.unop.le e.2⟩ :=
   rfl
 
-/-- Equivariant locally constant functions satisfy the sheaf condition without further
-sheafification. -/
+/-- The presheaf of equivariant locally constant functions is already a sheaf. -/
 theorem presheaf_isSheaf (p : E → X) (hp : IsQuotientCoveringMap p G) :
     (presheaf (M := M) p hp).IsSheaf := by
   rw [TopCat.Presheaf.isSheaf_iff_isSheafUniqueGluing]
@@ -193,18 +200,19 @@ theorem presheaf_isSheaf (p : E → X) (hp : IsQuotientCoveringMap p G) :
     change t.1 e = value e
     exact h
 
-/-- The associated local system, with sections definitionally represented by equivariant locally
-constant functions on the principal cover. -/
+/-- The local system on `X` associated with the principal `G`-cover `p` and the `G`-module `M`
+(Whitehead VI.1–2); its sections over `U` are the equivariant locally constant functions on
+`p⁻¹(U)`. -/
 def sheaf (p : E → X) (hp : IsQuotientCoveringMap p G) :
     TopCat.Sheaf AddCommGrpCat.{u} (TopCat.of X) :=
   ⟨presheaf (M := M) p hp, presheaf_isSheaf p hp⟩
 
 /-! ## Global sections on a connected principal cover -/
 
-/-- Coefficients fixed by the whole deck group. -/
+/-- The subgroup `M^G` of coefficients fixed by the deck group. -/
 abbrev invariantCoefficients : AddSubgroup M := FixedPoints.addSubgroup G M
 
-/-- The lifted total open is canonically the original total space. -/
+/-- The part of the total space over the whole of `X` is the total space. -/
 def liftedTopHomeomorph (p : E → X) : LiftedOpen p ⊤ ≃ₜ E where
   toFun e := e.1
   invFun e := ⟨e, trivial⟩
@@ -213,8 +221,8 @@ def liftedTopHomeomorph (p : E → X) : LiftedOpen p ⊤ ≃ₜ E where
   continuous_toFun := continuous_subtype_val
   continuous_invFun := continuous_id.subtype_mk _
 
-/-- On a connected total cover, global sections of the associated sheaf are canonically the
-coefficients fixed by the deck group. -/
+/-- For a connected total space, `Γ(X, L) ≃+ M^G` (Whitehead VI.2; Hatcher §3.H): the global
+sections of the local system are the coefficients fixed by the deck group. -/
 def globalSectionsEquivInvariantCoefficients (p : E → X)
     (hp : IsQuotientCoveringMap p G) [ConnectedSpace E] :
     ((sheaf (M := M) p hp).obj.obj (op (⊤ : Opens X)) : Type u) ≃+
@@ -247,7 +255,7 @@ def globalSectionsEquivInvariantCoefficients (p : E → X)
     apply Subtype.ext
     rfl
 
-/-- The global-sections equivalence is evaluation at any point of the connected total cover. -/
+/-- The equivalence `Γ(X, L) ≃+ M^G` is evaluation at any point of the connected total space. -/
 @[simp]
 theorem globalSectionsEquivInvariantCoefficients_apply (p : E → X)
     (hp : IsQuotientCoveringMap p G) [ConnectedSpace E]

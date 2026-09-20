@@ -11,9 +11,10 @@ public import Lib.Topology.Sheaves.ConstantCohomologyPullback
 /-!
 # Composition of finite-closed constant-sheaf cohomology maps
 
-The native constant-sheaf morphism into pushforward composes, and therefore so do the exact
-finite-pushforward comparison and the induced contravariant cohomology pullback.  All statements
-hold in every Ext degree.  No proper-base-change assertion is used.
+The canonical morphism `A_Y → f_*A_X` of constant sheaves is functorial in `f`, and hence so are
+the finite-map cohomology comparison `H^n(X, F) → H^n(Y, f_*F)` and the induced contravariant
+pullback on constant-sheaf cohomology (the composition half of Hartshorne, *Algebraic Geometry*,
+III Ex. 8.2).  All statements hold in every degree.
 -/
 
 @[expose] public section
@@ -29,7 +30,8 @@ open TopologicalSpace
 namespace TopCat.ConstantSheaf
 
 set_option backward.isDefEq.respectTransparency false in
-/-- The native constant-sheaf morphism into pushforward is functorial in the map of spaces. -/
+/-- The canonical morphism `A_Z → g_*A_Y → g_*f_*A_X` of constant sheaves agrees with the one for
+the composite `f ≫ g`: `A_• → f_*` is functorial in the map of spaces. -/
 theorem pushforwardHom_comp {X Y Z : TopCat.{0}} (A : AddCommGrpCat.{0})
     (f : X ⟶ Y) (g : Y ⟶ Z) :
     pushforwardHom A g ≫
@@ -58,7 +60,7 @@ attribute [local instance] comp_preservesFiniteLimits comp_preservesFiniteColimi
 
 variable {X Y Z : TopCat.{0}} [T2Space X] [T2Space Y]
 
-/-- Sequential finite-closed pushforward comparisons agree with the comparison for the composite,
+/-- The finite-map cohomology comparisons for `f` and `g` compose to the comparison for `f ≫ g`,
 in every degree. -/
 theorem cohomologyForward_comp
     (f : X ⟶ Y) (g : Y ⟶ Z)
@@ -124,8 +126,8 @@ namespace TopCat.ConstantSheafCohomology
 
 variable {X Y Z : TopCat.{0}} [T2Space X] [T2Space Y]
 
-/-- Native Ext-defined pullback on constant-sheaf cohomology is contravariantly functorial for
-finite closed maps, in every degree. -/
+/-- Pullback on constant-sheaf cohomology is contravariantly functorial for finite closed maps:
+`g^* ≫ f^* = (f ≫ g)^*` in every degree. -/
 theorem pullback_comp
     (f : X ⟶ Y) (g : Y ⟶ Z)
     (hf : IsClosedMap f) (hff : ∀ y : Y, (f ⁻¹' ({y} : Set Y)).Finite)

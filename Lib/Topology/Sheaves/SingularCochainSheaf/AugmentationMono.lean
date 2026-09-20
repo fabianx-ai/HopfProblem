@@ -10,12 +10,11 @@ public import Lib.Topology.Sheaves.SingularCochainSheaf.PrimitivesH1
 public import Mathlib.Topology.Sheaves.Abelian
 
 /-!
-# Monicity of the native singular-cochain augmentation
+# Injectivity of the singular-cochain augmentation
 
-The assertion is first proved on stalks of the constant presheaf: equality of two germs can be
-tested after shrinking to a common nonempty neighborhood, where native constant zero-cochains
-remember their coefficient.  The sheaf assertion follows by conjugating with the genuine
-sheafification-unit stalk isomorphisms.
+The augmentation `A_X ⟶ 𝒮^0(X; A)` from the constant sheaf into the degree-zero singular-cochain
+sheaf is a monomorphism (Bredon, *Sheaf Theory*, III §1; Warner 5.31): a locally constant section
+is determined by its value, so the map is injective on stalks.
 -/
 
 @[expose] public section
@@ -58,7 +57,8 @@ private theorem presheafAugmentation_stalk_injective (x : X) :
       congr 1
     _ = P.germ V x hxV t := P.germ_res_apply iWV x hxW t
 
-/-- The genuine constant augmentation is a monomorphism. -/
+/-- The augmentation `A_X ⟶ 𝒮^0(X; A)` of the constant sheaf into the degree-zero
+singular-cochain sheaf is a monomorphism (Bredon III §1). -/
 theorem sheafAugmentation_mono : Mono (sheafAugmentation X A) := by
   apply (TopCat.Presheaf.mono_iff_stalk_mono (sheafAugmentation X A)).mpr
   intro x

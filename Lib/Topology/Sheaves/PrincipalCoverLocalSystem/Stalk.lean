@@ -14,9 +14,17 @@ public import Mathlib.Topology.Sheaves.Stalks
 /-!
 # Stalks of principal-cover local systems
 
-This file begins the textbook identification of the stalk of an associated local system with its
-coefficient group at a chosen lift.  Evaluation of an equivariant locally constant section at the
-chosen lift is compatible with restriction, hence descends canonically to the stalk.
+The stalk of the local system associated with a principal `G`-cover `p : E → X` and a `G`-module
+`M` is `M` at every point: a choice of lift `e ∈ p⁻¹(x)` identifies the stalk at `x` with the
+coefficient group by evaluating germs of equivariant sections at `e` (Whitehead, *Elements of
+Homotopy Theory*, VI.1).  Changing the lift by a deck transformation `g` changes the
+identification by the action of `g` on `M`.
+
+## Main results
+
+* `stalkEvaluation`: evaluation of a germ at a chosen lift.
+* `stalkEvaluation_bijective`, `stalkIsoCoefficientAtLift`: it is an isomorphism `L_x ≅ M`.
+* `stalkEvaluation_germ_smul`: changing the lift acts by the deck group on `M`.
 -/
 
 @[expose] public section
@@ -126,7 +134,8 @@ private theorem sliceSection_at_base (p : E → X)
     (sliceCoordinate_eq_iff p hp O hO hdisj _ 1).mpr (by simpa using heO)
   simp [sliceSection, hcoord]
 
-/-- Evaluation at a chosen lift, as a cocone over all open neighborhoods of its image. -/
+/-- Evaluation of equivariant sections at a chosen lift `e`, as a cocone over the neighbourhoods
+of `p e`. -/
 def evaluationCocone (p : E → X) (hp : IsQuotientCoveringMap p G) (e : E) :
     Cocone ((OpenNhds.inclusion (p e)).op ⋙ (sheaf (M := M) p hp).presheaf) where
   pt := AddCommGrpCat.of M
@@ -140,12 +149,13 @@ def evaluationCocone (p : E → X) (hp : IsQuotientCoveringMap p G) (e : E) :
         ext s
         rfl }
 
-/-- The canonical evaluation map from the associated local-system stalk to the coefficient group
-at a chosen lift. -/
+/-- Evaluation at a chosen lift `e`, as a map from the stalk of the local system at `p e` to the
+coefficient group `M`. -/
 def stalkEvaluation (p : E → X) (hp : IsQuotientCoveringMap p G) (e : E) :
     (sheaf (M := M) p hp).presheaf.stalk (p e) ⟶ AddCommGrpCat.of M :=
   colimit.desc _ (evaluationCocone (M := M) p hp e)
 
+/-- Evaluation at `e` of the germ of a section `s` is the value of `s` at `e`. -/
 @[simp]
 theorem stalkEvaluation_germ (p : E → X) (hp : IsQuotientCoveringMap p G)
     (e : E) (U : Opens X) (heU : p e ∈ U)
@@ -155,8 +165,8 @@ theorem stalkEvaluation_germ (p : E → X) (hp : IsQuotientCoveringMap p G)
       s.1 ⟨e, heU⟩ := by
   exact colimit.ι_desc_apply _ _ _
 
-/-- Changing the chosen lift by a deck transformation changes germ evaluation by the coefficient
-action.  This is the local monodromy convention used by the associated sheaf. -/
+/-- Changing the chosen lift by a deck transformation `g` changes evaluation by the action of `g`
+on `M`. -/
 theorem stalkEvaluation_germ_smul (p : E → X) (hp : IsQuotientCoveringMap p G)
     (e : E) (g : G) (U : Opens X) (heU : p e ∈ U)
     (s : (sheaf (M := M) p hp).obj.obj (op U)) :
@@ -288,7 +298,8 @@ noncomputable instance stalkEvaluation_isIso (p : E → X)
     IsIso (stalkEvaluation (M := M) p hp e) :=
   (ConcreteCategory.isIso_iff_bijective _).mpr (stalkEvaluation_bijective p hp e)
 
-/-- The canonical stalk/coefficient isomorphism determined by a chosen lift. -/
+/-- A choice of lift `e` of `x` identifies the stalk of the local system at `x` with the
+coefficient group `M` (Whitehead VI.1). -/
 noncomputable def stalkIsoCoefficientAtLift (p : E → X)
     (hp : IsQuotientCoveringMap p G) (e : E) :
     (sheaf (M := M) p hp).presheaf.stalk (p e) ≅ AddCommGrpCat.of M :=

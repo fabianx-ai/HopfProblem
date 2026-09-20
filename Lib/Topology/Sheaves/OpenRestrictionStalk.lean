@@ -10,11 +10,12 @@ public import Lib.Topology.Sheaves.OpenRestriction
 public import Mathlib.Topology.Sheaves.Stalks
 
 /-!
-# Stalks of open restrictions
+# Stalks of the restriction to an open subspace
 
-Restricting a sheaf to an open subspace does not change its stalk at a point of that subspace.
-The germ compatibility theorem identifies a restricted germ with the literal ambient germ over
-the direct-image open.
+Restriction to an open subspace does not change stalks: `(F|_U)_x ≅ F_x` for `x ∈ U`
+(Hartshorne, *Algebraic Geometry*, II §1; Mathlib `TopCat.Presheaf.stalkPullbackIso`).  The germ
+compatibility statement identifies the germ of a section of `F|_U` with the germ of the same
+section of `F` over the corresponding open of `X`.
 -/
 
 @[expose] public section
@@ -28,34 +29,36 @@ open CategoryTheory TopologicalSpace
 
 namespace TopCat.Sheaf.OpenRestriction
 
-variable {X : TopCat.{0}}
+universe u
 
-/-- The ambient stalk is canonically isomorphic to the stalk of the presheaf obtained by
-composing with the direct-image functor on opens. -/
-def presheafStalkIso (U : Opens X) (F : TopCat.Presheaf AddCommGrpCat.{0} X) (x : U) :
+variable {X : TopCat.{u}}
+
+/-- For `x ∈ U`, the stalk of a presheaf `F` on `X` at `x` is canonically the stalk at `x` of the
+presheaf `V ↦ F(j(V))` on `U`. -/
+def presheafStalkIso (U : Opens X) (F : TopCat.Presheaf AddCommGrpCat.{u} X) (x : U) :
     F.stalk ((inclusion U) x) ≅
       TopCat.Presheaf.stalk (X := TopCat.of U) ((openImage U).op ⋙ F) x :=
-  TopCat.Presheaf.stalkPullbackIso AddCommGrpCat (inclusion U) F x ≪≫
-    (TopCat.Presheaf.stalkFunctor (X := TopCat.of U) AddCommGrpCat x).mapIso
+  TopCat.Presheaf.stalkPullbackIso AddCommGrpCat.{u} (inclusion U) F x ≪≫
+    (TopCat.Presheaf.stalkFunctor (X := TopCat.of U) AddCommGrpCat.{u} x).mapIso
       ((inclusion_isOpenEmbedding U).isOpenMap.pullbackObjIso F)
 
-/-- The ambient stalk is canonically isomorphic to the stalk of the open restriction. -/
-def stalkIso (U : Opens X) (F : TopCat.Sheaf AddCommGrpCat.{0} X) (x : U) :
+/-- Restriction to an open subspace preserves stalks: `F_x ≅ (F|_U)_x` for `x ∈ U`. -/
+def stalkIso (U : Opens X) (F : TopCat.Sheaf AddCommGrpCat.{u} X) (x : U) :
     F.presheaf.stalk ((inclusion U) x) ≅
       ((restriction U).obj F).presheaf.stalk x :=
   presheafStalkIso U F.presheaf x
 
-/-- A point of an open in the subspace lies in its direct image in the ambient space. -/
+/-- A point of an open `V` of the subspace `U` lies in the corresponding open of `X`. -/
 theorem inclusion_mem_openImage (U : Opens X) (V : Opens U) (x : U) (hx : x ∈ V) :
     (inclusion U) x ∈ (openImage U).obj V :=
   ⟨x, hx, rfl⟩
 
 set_option backward.defeqAttrib.useBackward true in
 set_option backward.isDefEq.respectTransparency false in
-/-- The inverse stalk comparison carries the germ of a restricted section to the literal
-ambient germ on the image open. -/
+/-- The inverse of the stalk comparison carries the germ of a section of `F|_U` over `V` to the
+germ of the same section of `F` over the corresponding open of `X`. -/
 theorem stalkIso_inv_germ
-    (U : Opens X) (F : TopCat.Sheaf AddCommGrpCat.{0} X)
+    (U : Opens X) (F : TopCat.Sheaf AddCommGrpCat.{u} X)
     (V : Opens U) (x : U) (hx : x ∈ V)
     (s : F.obj.obj (Opposite.op ((openImage U).obj V))) :
     (stalkIso U F x).inv
@@ -72,7 +75,7 @@ theorem stalkIso_inv_germ
   let e := (inclusion_isOpenEmbedding U).isOpenMap.pullbackObjIso F.presheaf
   have he : e.inv.app (Opposite.op V) ≫
         TopCat.Presheaf.germToPullbackStalk
-          AddCommGrpCat (inclusion U) F.presheaf V x hx =
+          AddCommGrpCat.{u} (inclusion U) F.presheaf V x hx =
       F.presheaf.germ ((openImage U).obj V) ((inclusion U) x)
         (inclusion_mem_openImage U V x hx) := by
     apply (cancel_epi (e.hom.app (Opposite.op V))).mp

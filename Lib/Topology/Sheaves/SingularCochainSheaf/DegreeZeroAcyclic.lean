@@ -10,11 +10,11 @@ public import Lib.Topology.Sheaves.H1Vanishing.Flasque
 public import Lib.Topology.Sheaves.SingularCochainSheaf.DegreeZeroFunctions
 
 /-!
-# Degree-zero singular-cochain sheaf acyclicity in H¹
+# Acyclicity of the degree-zero singular-cochain sheaf
 
-The degree-zero cochain presheaf is already the flasque sheaf of arbitrary functions.  Its native
-sheafification is therefore isomorphic to that function sheaf, and the generic flasque-to-Ext
-bridge gives the only acyclicity statement needed by the degree-one resolution.
+The degree-zero singular-cochain presheaf `S^0(X; A)` is the sheaf of all `A`-valued functions on
+`X` (Bredon, *Sheaf Theory*, III §1; Warner 5.31).  That sheaf is flasque, and flasque sheaves are
+acyclic (Bredon II §5; Godement II.3.1), so the degree-zero cochain sheaf has vanishing `H¹`.
 -/
 
 @[expose] public section
@@ -30,7 +30,8 @@ namespace TopCat.SingularCochainSheaf
 
 variable (X : TopCat.{0}) (A : AddCommGrpCat.{0})
 
-/-- The native degree-zero cochain presheaf already satisfies the sheaf condition. -/
+/-- The degree-zero singular-cochain presheaf already satisfies the sheaf condition: it is the
+presheaf of all `A`-valued functions. -/
 theorem zeroCochainPresheaf_isSheaf : (presheaf X A 0).IsSheaf :=
   (TopCat.Presheaf.isSheaf_iso_iff (zeroCochainPresheafIsoFunctions X A)).mpr
     (TopCat.FunctionSheaf.isSheaf X A)
@@ -45,13 +46,15 @@ def zeroCochainDirectIsoFunctions :
   (fullyFaithfulSheafToPresheaf (Opens.grothendieckTopology X)
     AddCommGrpCat.{0}).preimageIso (zeroCochainPresheafIsoFunctions X A)
 
-/-- The actual native sheafification in degree zero is the arbitrary-function sheaf. -/
+/-- The sheafification of the degree-zero singular-cochain presheaf is the sheaf of all
+`A`-valued functions on `X` (Bredon III §1). -/
 def zeroCochainSheafIsoFunctions :
     sheaf X A 0 ≅ TopCat.FunctionSheaf.sheaf X A :=
   (CategoryTheory.sheafificationIso (zeroCochainDirectSheaf X A)).symm ≪≫
     zeroCochainDirectIsoFunctions X A
 
-/-- Flasqueness is transported to the actual native degree-zero cochain sheaf. -/
+/-- The degree-zero singular-cochain sheaf is flasque, being the sheaf of all `A`-valued
+functions. -/
 instance zeroCochainSheaf_isFlasque : (sheaf X A 0).IsFlasque where
   epi {U V} i := by
     let e := zeroCochainSheafIsoFunctions X A
@@ -76,7 +79,8 @@ instance zeroCochainSheaf_isFlasque : (sheaf X A 0).IsFlasque where
     rw [hmap]
     infer_instance
 
-/-- The actual degree-zero singular-cochain sheaf has zero Ext-defined `H¹`. -/
+/-- The degree-zero singular-cochain sheaf is acyclic in degree one: `H¹(X, 𝒮^0(X; A)) = 0`
+(flasque sheaves are acyclic, Godement II.3.1). -/
 theorem zeroCochainSheaf_h1_subsingleton :
     Subsingleton (CategoryTheory.Sheaf.H.{0} (sheaf X A 0) 1) :=
   TopCat.SheafH1.subsingleton_h1_of_isFlasque (sheaf X A 0)

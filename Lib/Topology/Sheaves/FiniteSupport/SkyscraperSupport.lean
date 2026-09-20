@@ -2,6 +2,16 @@ module
 
 public import Lib.Topology.Sheaves.FiniteSupport.SkyscraperReconstruction
 
+/-!
+# Stalks and support of skyscraper sheaves
+
+The stalk of `skyscraper p A` is `A` at `p` and zero at every other point of a `T₁` space
+(Hartshorne, *Algebraic Geometry*, II Ex. 1.17; Mathlib
+`skyscraperPresheafStalkOfSpecializes`, `skyscraperPresheafStalkOfNotSpecializesIsTerminal`).
+Consequently, a sheaf whose stalks vanish outside two points `p ≠ q` and whose chosen stalk maps
+at `p` and `q` are invertible is isomorphic to `skyscraper p A ⊞ skyscraper q B`.
+-/
+
 @[expose] public section
 
 set_option warningAsError true
@@ -13,18 +23,23 @@ open CategoryTheory CategoryTheory.Limits TopologicalSpace Opposite
 
 namespace TopCat.Sheaf.FiniteSupport
 
-variable {X : TopCat.{0}}
+universe u
 
-def stalkSkyscraperAtIso (p : X) (A : AddCommGrpCat) :
-    (TopCat.Presheaf.stalkFunctor AddCommGrpCat p).obj (skyscraperAt p A).obj ≅ A := by
+variable {X : TopCat.{u}}
+
+/-- The stalk of `skyscraper p A` at `p` is `A` (Hartshorne II Ex. 1.17). -/
+def stalkSkyscraperAtIso (p : X) (A : AddCommGrpCat.{u}) :
+    (TopCat.Presheaf.stalkFunctor AddCommGrpCat.{u} p).obj (skyscraperAt p A).obj ≅ A := by
   letI : ∀ U : Opens X, Decidable (p ∈ U) := fun _ ↦ Classical.dec _
   exact skyscraperPresheafStalkOfSpecializes p A specializes_rfl
 
 set_option backward.isDefEq.respectTransparency false in
+/-- The morphism `F ⟶ skyscraper p A` adjoint to a stalk map `f : F_p ⟶ A` induces `f` again on
+the stalk at `p`, after the identification of the skyscraper stalk with `A`. -/
 lemma stalkMap_toSkyscraperAt_comp_counit
-    {F : TopCat.Sheaf AddCommGrpCat X} (p : X) (A : AddCommGrpCat)
-    (f : (TopCat.Presheaf.stalkFunctor AddCommGrpCat p).obj F.obj ⟶ A) :
-    (TopCat.Presheaf.stalkFunctor AddCommGrpCat p).map
+    {F : TopCat.Sheaf AddCommGrpCat.{u} X} (p : X) (A : AddCommGrpCat.{u})
+    (f : (TopCat.Presheaf.stalkFunctor AddCommGrpCat.{u} p).obj F.obj ⟶ A) :
+    (TopCat.Presheaf.stalkFunctor AddCommGrpCat.{u} p).map
         (toSkyscraperAt p A f).hom ≫
       (stalkSkyscraperAtIso p A).hom = f := by
   let _ : ∀ U : Opens X, Decidable (p ∈ U) := fun _ ↦ Classical.dec _
@@ -38,62 +53,69 @@ lemma stalkMap_toSkyscraperAt_comp_counit
     p A specializes_rfl U hpU]
   simp [StalkSkyscraperPresheafAdjunctionAuxs.toSkyscraperPresheaf_app, hpU]
 
+/-- Stalks commute with biproducts: `(G ⊞ H)_x ≅ G_x ⊞ H_x`. -/
 def sheafStalkBiprodIso (x : X)
-    (G H : TopCat.Sheaf AddCommGrpCat X) :
-    (TopCat.Sheaf.forget AddCommGrpCat X ⋙
-      TopCat.Presheaf.stalkFunctor AddCommGrpCat x).obj (G ⊞ H) ≅
-      (TopCat.Sheaf.forget AddCommGrpCat X ⋙
-        TopCat.Presheaf.stalkFunctor AddCommGrpCat x).obj G ⊞
-      (TopCat.Sheaf.forget AddCommGrpCat X ⋙
-        TopCat.Presheaf.stalkFunctor AddCommGrpCat x).obj H := by
-  let S := TopCat.Sheaf.forget AddCommGrpCat X ⋙
-    TopCat.Presheaf.stalkFunctor AddCommGrpCat x
+    (G H : TopCat.Sheaf AddCommGrpCat.{u} X) :
+    (TopCat.Sheaf.forget AddCommGrpCat.{u} X ⋙
+      TopCat.Presheaf.stalkFunctor AddCommGrpCat.{u} x).obj (G ⊞ H) ≅
+      (TopCat.Sheaf.forget AddCommGrpCat.{u} X ⋙
+        TopCat.Presheaf.stalkFunctor AddCommGrpCat.{u} x).obj G ⊞
+      (TopCat.Sheaf.forget AddCommGrpCat.{u} X ⋙
+        TopCat.Presheaf.stalkFunctor AddCommGrpCat.{u} x).obj H := by
+  let S := TopCat.Sheaf.forget AddCommGrpCat.{u} X ⋙
+    TopCat.Presheaf.stalkFunctor AddCommGrpCat.{u} x
   let _ : PreservesBinaryBiproducts S :=
     preservesBinaryBiproducts_of_preservesBiproducts S
   exact S.mapBiprod G H
 
+/-- The stalk map of the comparison into a biproduct of two skyscrapers has the two individual
+skyscraper comparisons as its coordinates. -/
 @[reassoc]
 lemma stalkMap_toSkyscraperBiprod_comp_mapBiprod
-    {F : TopCat.Sheaf AddCommGrpCat X} (x p q : X) (A B : AddCommGrpCat)
-    (fp : (TopCat.Presheaf.stalkFunctor AddCommGrpCat p).obj F.obj ⟶ A)
-    (fq : (TopCat.Presheaf.stalkFunctor AddCommGrpCat q).obj F.obj ⟶ B) :
-    ((TopCat.Sheaf.forget AddCommGrpCat X ⋙
-        TopCat.Presheaf.stalkFunctor AddCommGrpCat x).map
+    {F : TopCat.Sheaf AddCommGrpCat.{u} X} (x p q : X) (A B : AddCommGrpCat.{u})
+    (fp : (TopCat.Presheaf.stalkFunctor AddCommGrpCat.{u} p).obj F.obj ⟶ A)
+    (fq : (TopCat.Presheaf.stalkFunctor AddCommGrpCat.{u} q).obj F.obj ⟶ B) :
+    ((TopCat.Sheaf.forget AddCommGrpCat.{u} X ⋙
+        TopCat.Presheaf.stalkFunctor AddCommGrpCat.{u} x).map
           (toSkyscraperBiprod p q A B fp fq)) ≫
       (sheafStalkBiprodIso x (skyscraperAt p A) (skyscraperAt q B)).hom =
       biprod.lift
-        ((TopCat.Sheaf.forget AddCommGrpCat X ⋙
-          TopCat.Presheaf.stalkFunctor AddCommGrpCat x).map
+        ((TopCat.Sheaf.forget AddCommGrpCat.{u} X ⋙
+          TopCat.Presheaf.stalkFunctor AddCommGrpCat.{u} x).map
             (toSkyscraperAt p A fp))
-        ((TopCat.Sheaf.forget AddCommGrpCat X ⋙
-          TopCat.Presheaf.stalkFunctor AddCommGrpCat x).map
+        ((TopCat.Sheaf.forget AddCommGrpCat.{u} X ⋙
+          TopCat.Presheaf.stalkFunctor AddCommGrpCat.{u} x).map
             (toSkyscraperAt q B fq)) := by
-  let S := TopCat.Sheaf.forget AddCommGrpCat X ⋙
-    TopCat.Presheaf.stalkFunctor AddCommGrpCat x
+  let S := TopCat.Sheaf.forget AddCommGrpCat.{u} X ⋙
+    TopCat.Presheaf.stalkFunctor AddCommGrpCat.{u} x
   let _ : PreservesBinaryBiproducts S :=
     preservesBinaryBiproducts_of_preservesBiproducts S
   change S.map (toSkyscraperBiprod p q A B fp fq) ≫
       (S.mapBiprod (skyscraperAt p A) (skyscraperAt q B)).hom = _
   apply biprod.map_lift_mapBiprod
 
+/-- On a `T₁` space the stalk of `skyscraper p A` at any point other than `p` is zero
+(Hartshorne II Ex. 1.17). -/
 lemma skyscraperAt_stalk_isZero_of_ne [T1Space X]
-    (p x : X) (A : AddCommGrpCat) (h : p ≠ x) :
-    IsZero ((TopCat.Presheaf.stalkFunctor AddCommGrpCat x).obj (skyscraperAt p A).obj) := by
+    (p x : X) (A : AddCommGrpCat.{u}) (h : p ≠ x) :
+    IsZero ((TopCat.Presheaf.stalkFunctor AddCommGrpCat.{u} x).obj (skyscraperAt p A).obj) := by
   let _ : ∀ U : Opens X, Decidable (p ∈ U) := fun _ ↦ Classical.dec _
   exact (skyscraperPresheafStalkOfNotSpecializesIsTerminal p A
     (fun hp ↦ h (specializes_iff_eq.mp hp))).isZero
 
 set_option backward.isDefEq.respectTransparency.types false in
+/-- If the chosen stalk map at `p` is invertible, the comparison into the biproduct of the two
+skyscrapers is an isomorphism on the stalk at `p`. -/
 lemma isIso_stalkFunctor_map_toSkyscraperBiprod_at_left
-    [T1Space X] {F : TopCat.Sheaf AddCommGrpCat X}
-    (p q : X) (hpq : p ≠ q) (A B : AddCommGrpCat)
-    (fp : (TopCat.Presheaf.stalkFunctor AddCommGrpCat p).obj F.obj ⟶ A)
-    (fq : (TopCat.Presheaf.stalkFunctor AddCommGrpCat q).obj F.obj ⟶ B)
+    [T1Space X] {F : TopCat.Sheaf AddCommGrpCat.{u} X}
+    (p q : X) (hpq : p ≠ q) (A B : AddCommGrpCat.{u})
+    (fp : (TopCat.Presheaf.stalkFunctor AddCommGrpCat.{u} p).obj F.obj ⟶ A)
+    (fq : (TopCat.Presheaf.stalkFunctor AddCommGrpCat.{u} q).obj F.obj ⟶ B)
     [hfp : IsIso fp] :
-    IsIso ((TopCat.Presheaf.stalkFunctor AddCommGrpCat p).map
+    IsIso ((TopCat.Presheaf.stalkFunctor AddCommGrpCat.{u} p).map
       (toSkyscraperBiprod p q A B fp fq).hom) := by
-  let S := TopCat.Sheaf.forget AddCommGrpCat X ⋙
-    TopCat.Presheaf.stalkFunctor AddCommGrpCat p
+  let S := TopCat.Sheaf.forget AddCommGrpCat.{u} X ⋙
+    TopCat.Presheaf.stalkFunctor AddCommGrpCat.{u} p
   change IsIso (S.map (toSkyscraperBiprod p q A B fp fq))
   have hq : IsZero (S.obj (skyscraperAt q B)) :=
     skyscraperAt_stalk_isZero_of_ne q p B hpq.symm
@@ -120,16 +142,18 @@ lemma isIso_stalkFunctor_map_toSkyscraperBiprod_at_left
     (e.hom ≫ biprod.fst ≫ ep.hom)
 
 set_option backward.isDefEq.respectTransparency.types false in
+/-- If the chosen stalk map at `q` is invertible, the comparison into the biproduct of the two
+skyscrapers is an isomorphism on the stalk at `q`. -/
 lemma isIso_stalkFunctor_map_toSkyscraperBiprod_at_right
-    [T1Space X] {F : TopCat.Sheaf AddCommGrpCat X}
-    (p q : X) (hpq : p ≠ q) (A B : AddCommGrpCat)
-    (fp : (TopCat.Presheaf.stalkFunctor AddCommGrpCat p).obj F.obj ⟶ A)
-    (fq : (TopCat.Presheaf.stalkFunctor AddCommGrpCat q).obj F.obj ⟶ B)
+    [T1Space X] {F : TopCat.Sheaf AddCommGrpCat.{u} X}
+    (p q : X) (hpq : p ≠ q) (A B : AddCommGrpCat.{u})
+    (fp : (TopCat.Presheaf.stalkFunctor AddCommGrpCat.{u} p).obj F.obj ⟶ A)
+    (fq : (TopCat.Presheaf.stalkFunctor AddCommGrpCat.{u} q).obj F.obj ⟶ B)
     [hfq : IsIso fq] :
-    IsIso ((TopCat.Presheaf.stalkFunctor AddCommGrpCat q).map
+    IsIso ((TopCat.Presheaf.stalkFunctor AddCommGrpCat.{u} q).map
       (toSkyscraperBiprod p q A B fp fq).hom) := by
-  let S := TopCat.Sheaf.forget AddCommGrpCat X ⋙
-    TopCat.Presheaf.stalkFunctor AddCommGrpCat q
+  let S := TopCat.Sheaf.forget AddCommGrpCat.{u} X ⋙
+    TopCat.Presheaf.stalkFunctor AddCommGrpCat.{u} q
   change IsIso (S.map (toSkyscraperBiprod p q A B fp fq))
   have hp : IsZero (S.obj (skyscraperAt p A)) :=
     skyscraperAt_stalk_isZero_of_ne p q A hpq
@@ -156,16 +180,19 @@ lemma isIso_stalkFunctor_map_toSkyscraperBiprod_at_right
     (e.hom ≫ biprod.snd ≫ eq.hom)
 
 set_option backward.isDefEq.respectTransparency.types false in
+/-- For a sheaf whose stalks vanish away from `p ≠ q` and whose chosen stalk maps at `p` and `q`
+are invertible, the comparison into the biproduct of the two skyscrapers is an isomorphism on
+every stalk. -/
 theorem isIso_stalkFunctor_map_toSkyscraperBiprod
-    [T1Space X] {F : TopCat.Sheaf AddCommGrpCat X}
-    (p q : X) (hpq : p ≠ q) (A B : AddCommGrpCat)
-    (fp : (TopCat.Presheaf.stalkFunctor AddCommGrpCat p).obj F.obj ⟶ A)
-    (fq : (TopCat.Presheaf.stalkFunctor AddCommGrpCat q).obj F.obj ⟶ B)
+    [T1Space X] {F : TopCat.Sheaf AddCommGrpCat.{u} X}
+    (p q : X) (hpq : p ≠ q) (A B : AddCommGrpCat.{u})
+    (fp : (TopCat.Presheaf.stalkFunctor AddCommGrpCat.{u} p).obj F.obj ⟶ A)
+    (fq : (TopCat.Presheaf.stalkFunctor AddCommGrpCat.{u} q).obj F.obj ⟶ B)
     [IsIso fp] [IsIso fq]
     (hF : ∀ x : X, x ≠ p → x ≠ q →
-      IsZero ((TopCat.Presheaf.stalkFunctor AddCommGrpCat x).obj F.obj))
+      IsZero ((TopCat.Presheaf.stalkFunctor AddCommGrpCat.{u} x).obj F.obj))
     (x : X) :
-    IsIso ((TopCat.Presheaf.stalkFunctor AddCommGrpCat x).map
+    IsIso ((TopCat.Presheaf.stalkFunctor AddCommGrpCat.{u} x).map
       (toSkyscraperBiprod p q A B fp fq).hom) := by
   by_cases hxp : x = p
   · subst x
@@ -175,8 +202,8 @@ theorem isIso_stalkFunctor_map_toSkyscraperBiprod
   · subst x
     exact isIso_stalkFunctor_map_toSkyscraperBiprod_at_right
       p q hpq A B fp fq
-  · let S := TopCat.Sheaf.forget AddCommGrpCat X ⋙
-      TopCat.Presheaf.stalkFunctor AddCommGrpCat x
+  · let S := TopCat.Sheaf.forget AddCommGrpCat.{u} X ⋙
+      TopCat.Presheaf.stalkFunctor AddCommGrpCat.{u} x
     change IsIso (S.map (toSkyscraperBiprod p q A B fp fq))
     have hsource : IsZero (S.obj F) := hF x hxp hxq
     have hp : IsZero (S.obj (skyscraperAt p A)) :=
@@ -194,16 +221,16 @@ theorem isIso_stalkFunctor_map_toSkyscraperBiprod
       hsum.of_iso e
     exact hsource.isIso htarget _
 
-/-- A sheaf supported away from no points other than `p` and `q`, with invertible chosen
-stalk maps there, is canonically the corresponding biproduct of skyscraper sheaves. -/
+/-- A sheaf whose stalks vanish outside two points `p ≠ q`, with invertible chosen stalk maps
+there, is isomorphic to `skyscraper p A ⊞ skyscraper q B` (Hartshorne II Ex. 1.17). -/
 def skyscraperBiprodIsoOfTwoPointSupport
-    [T1Space X] {F : TopCat.Sheaf AddCommGrpCat X}
-    (p q : X) (hpq : p ≠ q) (A B : AddCommGrpCat)
-    (fp : (TopCat.Presheaf.stalkFunctor AddCommGrpCat p).obj F.obj ⟶ A)
-    (fq : (TopCat.Presheaf.stalkFunctor AddCommGrpCat q).obj F.obj ⟶ B)
+    [T1Space X] {F : TopCat.Sheaf AddCommGrpCat.{u} X}
+    (p q : X) (hpq : p ≠ q) (A B : AddCommGrpCat.{u})
+    (fp : (TopCat.Presheaf.stalkFunctor AddCommGrpCat.{u} p).obj F.obj ⟶ A)
+    (fq : (TopCat.Presheaf.stalkFunctor AddCommGrpCat.{u} q).obj F.obj ⟶ B)
     [IsIso fp] [IsIso fq]
     (hF : ∀ x : X, x ≠ p → x ≠ q →
-      IsZero ((TopCat.Presheaf.stalkFunctor AddCommGrpCat x).obj F.obj)) :
+      IsZero ((TopCat.Presheaf.stalkFunctor AddCommGrpCat.{u} x).obj F.obj)) :
     F ≅ skyscraperAt p A ⊞ skyscraperAt q B :=
   skyscraperBiprodIsoOfStalkwiseIso p q A B fp fq fun x ↦
     isIso_stalkFunctor_map_toSkyscraperBiprod p q hpq A B fp fq hF x

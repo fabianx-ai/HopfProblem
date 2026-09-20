@@ -14,13 +14,10 @@ public import Lib.Topology.Sheaves.FiniteClosedPushforward.Exact
 /-!
 # Cohomology of finite closed-map pushforwards
 
-For a closed map with finite fibres and Hausdorff source, additive sheaf pushforward is exact and
-preserves injective objects. The native map from the integral constant sheaf into the pushforward
-of the integral constant sheaf therefore induces an additive equivalence on Ext-defined sheaf
-cohomology in every degree.
-
-This is the textbook finite-map cohomology comparison. It does not identify a higher direct-image
-stalk with fibre cohomology and makes no general proper-base-change claim.
+For a finite map `f : X → Y` (here: a closed map with finite fibres and Hausdorff source) the
+pushforward `f_*` is exact and preserves injective objects, so `H^n(X, F) ≅ H^n(Y, f_*F)` in every
+degree (Hartshorne, *Algebraic Geometry*, III Ex. 4.1 and III Ex. 8.2; Iversen, *Cohomology of
+Sheaves*, II).
 -/
 
 @[expose] public section
@@ -34,7 +31,7 @@ namespace TopCat.FiniteClosedPushforward
 variable {X Y : TopCat.{0}} [T2Space X] (f : X ⟶ Y)
   (hf : IsClosedMap f) (hfinite : ∀ y : Y, (f ⁻¹' {y}).Finite)
 
-/-- The canonical Ext-defined cohomology map from a sheaf to its finite closed pushforward. -/
+/-- The canonical map `H^n(X, F) → H^n(Y, f_*F)` induced by a finite closed map `f`. -/
 def cohomologyForward (F : TopCat.Sheaf AddCommGrpCat.{0} X) (n : ℕ) :
     CategoryTheory.Sheaf.H.{0} F n →+
       CategoryTheory.Sheaf.H.{0}
@@ -45,7 +42,8 @@ def cohomologyForward (F : TopCat.Sheaf AddCommGrpCat.{0} X) (n : ℕ) :
     (TopCat.Sheaf.pushforward AddCommGrpCat.{0} f)
     (TopCat.ConstantSheaf.pushforwardHom (AddCommGrpCat.of (ULift.{0} ℤ)) f) F n
 
-/-- The finite closed pushforward cohomology map is bijective in every degree. -/
+/-- For a finite closed map the comparison `H^n(X, F) → H^n(Y, f_*F)` is bijective in every
+degree (Hartshorne III Ex. 8.2). -/
 theorem cohomologyForward_bijective (F : TopCat.Sheaf AddCommGrpCat.{0} X) (n : ℕ) :
     Function.Bijective (cohomologyForward f hf hfinite F n) := by
   let _ := (pushforward_preservesFiniteLimitsAndColimits f hf hfinite).1
@@ -56,7 +54,8 @@ theorem cohomologyForward_bijective (F : TopCat.Sheaf AddCommGrpCat.{0} X) (n : 
     (TopCat.ConstantSheaf.pushforwardHom (AddCommGrpCat.of (ULift.{0} ℤ)) f)
     (TopCat.ConstantSheaf.integralPushforwardHom_comp_bijective f) F n
 
-/-- Finite closed pushforward does not change integral sheaf cohomology. -/
+/-- For a finite closed map, `H^n(Y, f_*F) ≅ H^n(X, F)` as additive groups in every degree
+(Hartshorne III Ex. 8.2). -/
 def cohomologyEquiv (F : TopCat.Sheaf AddCommGrpCat.{0} X) (n : ℕ) :
     CategoryTheory.Sheaf.H.{0}
         ((TopCat.Sheaf.pushforward AddCommGrpCat.{0} f).obj F) n ≃+
@@ -64,13 +63,14 @@ def cohomologyEquiv (F : TopCat.Sheaf AddCommGrpCat.{0} X) (n : ℕ) :
   (AddEquiv.ofBijective (cohomologyForward f hf hfinite F n)
     (cohomologyForward_bijective f hf hfinite F n)).symm
 
+/-- The inverse of the cohomology equivalence is the forward comparison map. -/
 @[simp] theorem cohomologyEquiv_symm_apply
     (F : TopCat.Sheaf AddCommGrpCat.{0} X) (n : ℕ)
     (e : CategoryTheory.Sheaf.H.{0} F n) :
     (cohomologyEquiv f hf hfinite F n).symm e =
       cohomologyForward f hf hfinite F n e := rfl
 
-/-- The forward comparison after its inverse is the identity. -/
+/-- The forward comparison map is a left inverse of the cohomology equivalence. -/
 theorem cohomologyForward_equiv
     (F : TopCat.Sheaf AddCommGrpCat.{0} X) (n : ℕ)
     (e : CategoryTheory.Sheaf.H.{0}
@@ -78,7 +78,7 @@ theorem cohomologyForward_equiv
     cohomologyForward f hf hfinite F n (cohomologyEquiv f hf hfinite F n e) = e :=
   (cohomologyEquiv f hf hfinite F n).symm_apply_apply e
 
-/-- Naturality of the canonical forward comparison in the coefficient sheaf. -/
+/-- The comparison `H^n(X, F) → H^n(Y, f_*F)` is natural in the coefficient sheaf `F`. -/
 theorem cohomologyForward_naturality
     {F G : TopCat.Sheaf AddCommGrpCat.{0} X} (g : F ⟶ G)
     (n : ℕ) (e : CategoryTheory.Sheaf.H.{0} F n) :
@@ -98,7 +98,8 @@ theorem cohomologyForward_naturality
     (TopCat.ConstantSheaf.pushforwardHom (AddCommGrpCat.of (ULift.{0} ℤ)) f)
     g n e
 
-/-- The inverse cohomology equivalence is natural in the coefficient sheaf. -/
+/-- The cohomology equivalence `H^n(Y, f_*F) ≅ H^n(X, F)` is natural in the coefficient
+sheaf `F`. -/
 theorem cohomologyEquiv_naturality
     {F G : TopCat.Sheaf AddCommGrpCat.{0} X} (g : F ⟶ G)
     (n : ℕ)
