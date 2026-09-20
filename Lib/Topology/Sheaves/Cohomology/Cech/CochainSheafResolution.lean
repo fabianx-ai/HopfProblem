@@ -1005,9 +1005,13 @@ theorem cochainSheafSectionsIso_inv_comp_differential_app
   rw [cochainSheafDifferential_app_comp_sectionsIso]
   simp
 
-/-- On sections over an actual open `W ≤ U i`, insert the chosen cover index `i` into an
-alternating cochain.  This is equation (C13), transported through the canonical comparison
-between sections of the product sheaf and the normalized Čech product. -/
+/-- The degree-lowering insertion operator on sections over an open `W ≤ U i`: a map from the
+sections of `cochainSheaf F U (n + 1)` over `W` to the sections of `cochainSheaf F U n` over
+`W`, given by prepending the cover index `i` to every ordered simplex.  It is
+`terminalInsertion` for the restricted family `fun j => W ⊓ U j`, whose member at `i` contains
+every other member because `W ≤ U i`, transported through the comparison
+`cochainSheafSectionsIso` between sections of the cochain sheaf and the normalized Čech
+product. -/
 def insertionHomotopy (F : TopCat.Sheaf AddCommGrpCat.{u} X)
     (U : ι → Opens X) (W : Opens X) (i : ι) (hW : W ≤ U i) (n : ℕ) :
     (cochainSheaf F U (n + 1)).presheaf.obj (op W) ⟶
@@ -1038,8 +1042,11 @@ theorem insertionHomotopy_contraction_zero
   simp only [Iso.inv_hom_id_assoc]
   rw [terminalInsertion_contraction_zero]
 
-/-- The local insertion operator satisfies `h d + d h = 1` on sections over `W ≤ U i`.
-This is the normalized form of equation (C14). -/
+/-- The insertion operators are a contracting homotopy for the cochain-sheaf differential on
+sections over an open `W ≤ U i`.  Writing `h k := insertionHomotopy F U W i hW k`, which lowers
+the degree from `k + 1` to `k`, and `d k := cochainSheafDifferential F U k`, which raises it
+from `k` to `k + 1`, the identity `h n ≫ d n + d (n + 1) ≫ h (n + 1) = 𝟙` holds on the sections
+of `cochainSheaf F U (n + 1)` over `W`, for every `n`. -/
 theorem insertionHomotopy_contraction
     (F : TopCat.Sheaf AddCommGrpCat.{u} X) (U : ι → Opens X)
     (W : Opens X) (i : ι) (hW : W ≤ U i) (n : ℕ) :
