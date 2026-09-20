@@ -14,7 +14,7 @@ public import Lib.Topology.Sheaves.ConstantCohomologyPullback
 The canonical morphism `A_Y → f_*A_X` of constant sheaves is functorial in `f`, and hence so are
 the finite-map cohomology comparison `H^n(X, F) → H^n(Y, f_*F)` and the induced contravariant
 pullback on constant-sheaf cohomology (the composition half of Hartshorne, *Algebraic Geometry*,
-III Ex. 8.2).  All statements hold in every degree.
+III Ex. 8.1 (Leray)).  All statements hold in every degree.
 -/
 
 @[expose] public section
