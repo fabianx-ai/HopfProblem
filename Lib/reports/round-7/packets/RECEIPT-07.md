@@ -15,7 +15,7 @@ One commit per file, `538f7987..acd98e17` (32 commits).
 | declaration docstrings/comments with a manuscript label stripped (item 1) | 297 |
 | docstrings added (item 2) | 245 |
 | universe pins generalised (item 3) | 1 declaration (`TopCat.Sheaf.pushforwardAdditive`); 29 `.{0}` pins left, forced |
-| `: Type` binders widened (item 4) | 7 declarations; 58 + 1 left, forced |
+| `: Type` binders widened (item 4) | 7 declarations; **62 left, forced (corrected; the receipt said "58 + 1")** — Wang 58, SphereTwo 1, BasedDiskLifting 2, CubeBoundaryThreeDimension 1 |
 
 No declaration was deleted, renamed, or given a new hypothesis; no `sorry`,
 `axiom` or `admit` was introduced.
@@ -38,7 +38,7 @@ No declaration was deleted, renamed, or given a new hypothesis; no `sorry`,
 
 | file | item 1 | item 2 | item 3 | item 4 | left / obstacle |
 |---|---|---|---|---|---|
-| `Gluing/OverBase.lean` | module docstring rewritten (gluing over a covered base; `Main definitions`; Mathlib `TopCat.GlueData`), the `fdab1700…` move-only sentence and the `CENTER_GENERIC_PATCH_HOMEOMORPH_TEXTBOOK.md` / `GP1–GP7` section comment removed | 40 added (all declarations) + 21 structure fields | none | none | the audit's rename `ThreefoldGluing`/`SpecialPeriods` → `GlueData.OverBase` was not done: it would remove and add declarations |
+| `Gluing/OverBase.lean` | module docstring rewritten (gluing over a covered base; `Main definitions`; Mathlib `TopCat.GlueData`), the `fdab1700…` move-only sentence and the `CENTER_GENERIC_PATCH_HOMEOMORPH_TEXTBOOK.md` / `GP1–GP7` section comment removed | **62 new `/--` blocks: 40 declaration docstrings + 22 structure-field docstrings (corrected; the receipt said 21 fields)** — `ThreefoldGluing.Data` has 12 fields and `SpecialPeriods.Threefold.Star.Input` 10, all documented | none | none | the audit's rename `ThreefoldGluing`/`SpecialPeriods` → `GlueData.OverBase` was not done: it would remove and add declarations |
 | `Homotopy/BasedDiskLifting.lean` | `Main results` and Hatcher §4.1 added; both `## Proof` sections moved from the docstrings into comments at the head of the proofs | 0 missing (both docstrings restated) | none | 0 of 2 | `{X Y : Type}` forced by `Hurewicz.homotopyMap {X Y : Type}` (`Lib/AlgebraicTopology/Hurewicz/Naturality.lean`, outside the packet), which occurs in the surjectivity hypothesis. Build error with `Type*`: `BasedDiskLifting.lean:61:66: Application type mismatch` |
 | `Homotopy/ConvexContraction.lean` | module docstring rewritten with `Main definitions` and Hatcher §0 | both docstrings restated as statements | none | none: already `Type u` | — |
 | `Homotopy/EquivariantCoveringLift.lean` | Hatcher Prop. 1.34 / §1.3 added to the module docstring and to `lift_eq_smul_of_eq_at` | 0 missing | none | none: already six universe variables | — |
@@ -53,7 +53,7 @@ No declaration was deleted, renamed, or given a new hypothesis; no `sorry`,
 |---|---|---|---|---|---|
 | `AddCommGrpPushforward.lean` | module docstring rewritten (Godement II.4, Hartshorne II.1/III.8); ownership sentence removed | 0 missing | **2 pins generalised**: `TopCat.{0}`/`AddCommGrpCat.{0}` → `TopCat.{v}`/`AddCommGrpCat.{v}` in `TopCat.Sheaf.pushforwardAdditive` | none | — |
 | `Cohomology/AcyclicResolution.lean` | module docstring rewritten (Hartshorne III.1.2A, Godement II.4.7, Weibel 2.4.6) | 4 added (`Resolution`, `isAcyclicFor`, `globalComplexMap_id`, `globalComplexMap_comp`) | 0 of 5 | none | forced by `CategoryTheory.Sheaf.cohomologyAddCommGroup` (`Lib/Topology/Sheaves/Cohomology/AddCommGroup.lean`, outside the packet), the only `AddCommGroup (Sheaf.H F n)` instance and itself pinned to `TopCat.{0}`/`AddCommGrpCat.{0}`/`Sheaf.H.{0}` |
-| `Cohomology/AcyclicResolutionH1.lean` | module docstring rewritten (Hartshorne III.1.2A, Godement II.4.7, Weibel 2.4.6) | 2 added (`globalSectionsFunctor_additive`, `h0GlobalIso_naturality`) | 0 of 15 | none | same obstacle; measured build error with `.{u}`: `AcyclicResolutionH1.lean:53:4: failed to synthesize instance of type class AddCommGroup (Sheaf.H F 0)` |
+| `Cohomology/AcyclicResolutionH1.lean` | module docstring rewritten (Hartshorne III.1.2A, Godement II.4.7, Weibel 2.4.6) | 2 added (`globalSectionsFunctor_additive`, `h0GlobalIso_naturality`) | **0 of 16 (corrected; the receipt said 15)** — 5 + 16 + 8 = 29 is what the header's "29 `.{0}` pins left" needs | none | same obstacle; measured build error with `.{u}`: `AcyclicResolutionH1.lean:53:4: failed to synthesize instance of type class AddCommGroup (Sheaf.H F 0)` |
 | `Cohomology/AcyclicResolutionH1Naturality.lean` | bare title expanded into a statement with Hartshorne III.1.2A / Godement II.4.7 | 1 added (`extZeroGlobalIso_naturality`) | 0 of 8 | none | same obstacle |
 | `Cohomology/Cech/CochainSheafResolution.lean` | `textbook section CD-05C, equations (C11)--(C14)` → Godement II.5.2 / Hartshorne III Lemma 4.2 | 21 added | none | none | — |
 | `Cohomology/Cech/Coefficients.lean` | `textbook section CD-05` → Godement II.5.1–5.3 / Bredon III.4 | 2 added | none | none: all binders universe-polymorphic | — |
@@ -159,3 +159,64 @@ c55c8e0e Lib/Topology/Sheaves/Cohomology/Cech/ConnectingHom.lean
 66440d10 Lib/Topology/Homotopy/PuncturedPlaneCyclic.lean
 acd98e17 Lib/Topology/MappingTorus/Wang.lean
 ```
+
+## Corrections after the reviewer pass (2026-09-21)
+
+Independent review: `Lib/reports/review-7-8/r7-packet-07.md` (ACCEPT WITH FINDINGS; the work is
+sound — no deletion, rename, hypothesis change, `sorry` or `axiom`; the one universe lift keeps the
+`u = 0` statement literally, re-elaborated by the reviewer; the 30 changed types are all
+attributable to this packet).  These corrections are to this receipt's text only; no Lean file was
+changed by them.
+
+1. **Header counts (findings 4, 5, 6), all corrected in place.**
+   * `: Type` binders: "58 + 1 left" → **62 left**.  Counting `: Type)` / `: Type}` at the branch
+     tip: `MappingTorus/Wang.lean` 58, `Dimension/SphereTwo.lean` 1,
+     `Hurewicz/BasedDiskLifting.lean` 2 (the row says "0 of 2") and
+     `Dimension/CubeBoundaryThreeDimension.lean` 1 (the `(κ : Type)` in the result type of
+     `FiniteBrickRefinement.toCriterion`).  The "7 widened" figure is right (Wang 61 → 58,
+     CubeBoundaryThreeDimension 5 → 1).
+   * `Cohomology/AcyclicResolutionH1.lean`: "0 of 15" → **0 of 16** (the packet list also said ×16);
+     5 + 16 + 8 = 29 is what the header's "29 pins left" needs.
+   * `Gluing/OverBase.lean`: "40 added + 21 structure fields" → **62 new `/--` blocks = 40
+     declaration docstrings + 22 field docstrings** (`ThreefoldGluing.Data` 12 fields,
+     `SpecialPeriods.Threefold.Star.Input` 10).  The 245 total is unaffected, since it excludes
+     fields.
+
+   All three are the kind of slip a script that sums the per-file table would have prevented; that
+   is now the rule (`Lib/reviews/REVIEW-7-8.md` §4).
+
+2. **The manuscript-label sweep was not complete (finding 1).**  This receipt's item-1 column for
+   `Cech/CochainSheafResolution.lean` ("(C11)–(C14)") and `Cech/DegreeZero.lean` ("(C7)–(C8)") reads
+   as if the sweep were finished.  It removed only the **module-docstring** labels (commits
+   `480b2350`, `f0f79db6`); three declaration docstrings still carry one, at the branch tip and at
+   head `39f1d12b`:
+   * `Lib/Topology/Sheaves/Cohomology/Cech/CochainSheafResolution.lean:1009` — "This is equation
+     (C13), transported through the canonical comparison";
+   * `…/CochainSheafResolution.lean:1042` — "This is the normalized form of equation (C14).";
+   * `…/Cech/DegreeZero.lean:699` — "This is equation (C8), valid without separation or
+     paracompactness hypotheses."
+
+   `(C8)`, `(C13)` and `(C14)` refer to nothing in `Lib`.  In addition
+   `Lib/Topology/Dimension/CubeBoundaryThreeDimension.lean:261` still says "assemble the previously
+   proved **receipts**" (manuscript jargon).  The four are on the fix list
+   (`Lib/reviews/REVIEW-7-8.md` §3, packet 07).  A grep for `\(C[0-9]+\)`, `CD-`, `Textbook`,
+   `receipt` over the packet's files after the last commit would have caught them.
+
+3. **No per-packet `envdiff.json`/`.txt` is in the repository (finding 7).**  The environment-diff
+   section above quotes a tool run ("lost 56 added 56 … changed type 56, of which source: 30,
+   VERDICT PASS") that cannot be re-inspected: `Lib/reports/round-7/packets/` holds only the ten
+   receipts and ten packet lists, and the only round-7 artefact is the merged
+   `envdiff-merged-d950428a.{json,txt}`, which mixes all ten packets.  The reviewer could check the
+   30 named constants against the merged file (all present under `changed_type_proof_naming`, none
+   lost or added at source level), which is weaker than checking this packet's own run; the
+   sentence "lost 56 / added 56 are all `_proof_n`" is **unverifiable from the tree**.  Committing
+   the JSON/TXT beside the receipt is the standing rule from round 8 on.
+
+4. **Citation and docstring findings are code fixes, not receipt fixes.**  Hatcher "Example 1.22" in
+   `Topology/Homotopy/PuncturedPlaneCyclic.lean:30` (the deformation retraction of `ℂ ∖ {0}` onto
+   `S¹` is Chapter 0 material; Ex. 1.22 is a van Kampen example), Weibel "Theorem 2.4.6" in
+   `AcyclicResolution.lean:24` and `AcyclicResolutionH1.lean:28` (the acyclic-resolution statement is
+   Exercise 2.4.3; Hartshorne III.1.2A, cited alongside, is correct) and the "*exactly* acyclicity"
+   wording of `AcyclicResolution.lean:56` are on the `Lib/reviews/REVIEW-7-8.md` §3 list.  Both
+   doubtful citations were copied from the audit's twin column in `packet-07.md` rather than checked;
+   the round-8 rule is that such citations are marked "cf." unless verified against the book.
