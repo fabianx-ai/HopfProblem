@@ -11,11 +11,17 @@ public import Lib.Topology.Sheaves.FiniteClosedPushforward.AcyclicResolution
 public import Lib.Topology.Sheaves.SingularCochainSheaf.ComparisonPositive
 
 /-!
-# Finite closed pullback and the positive-degree singular-cochain resolution
+# Naturality of the singular–sheaf comparison for finite closed maps
 
-For a finite closed map, native Ext pullback commutes in every positive degree with the
-constant-sheaf-to-singular-cohomology comparison.  The proof uses the actual indexed cycle
-objects of the singular-cochain sheaf resolution and exactness of finite closed pushforward.
+For a closed map with finite fibres, pullback on constant-sheaf cohomology commutes in every
+positive degree with the comparison `H^{n}(X; A_X) ≅ H^{n}_sing(X; A)` (Bredon, *Sheaf Theory*
+III.1; Warner, *Foundations of Differentiable Manifolds and Lie Groups* 5.32).  The proof uses
+the cycle objects of the singular-cochain resolution and exactness of pushforward along such a
+map.
+
+## Main results
+
+* `TopCat.SingularCochainSheaf.constantSheafCohomologyIsoSingular_naturality`
 -/
 
 @[expose] public section
@@ -33,8 +39,8 @@ variable {X Y : TopCat.{0}} [T2Space X] (f : X ⟶ Y)
   (hf : IsClosedMap f) (hfinite : ∀ y : Y, (f ⁻¹' ({y} : Set Y)).Finite)
   (A : AddCommGrpCat.{0})
 
-/-- Pullback on the positive cycle object, followed by the inverse kernel comparison for exact
-finite closed pushforward. -/
+/-- Pullback on the degree-`n+1` cycle object of the resolution, followed by the inverse of the
+kernel comparison for pushforward along a closed map with finite fibres. -/
 def resolutionCyclePullback
     (hX : LocallyContractibleSpace X) (hY : LocallyContractibleSpace Y) (n : ℕ) :
     (resolution Y A hY).Z (n + 1) ⟶
@@ -54,6 +60,8 @@ def resolutionCyclePullback
       (PreservesKernel.iso G (sheafDifferential X A (n + 1) (n + 2))).inv
 
 set_option backward.isDefEq.respectTransparency false in
+/-- The pullback on cycle objects is compatible with their inclusions into the terms of the
+resolution. -/
 @[reassoc]
 theorem resolutionCyclePullback_i
     (hX : LocallyContractibleSpace X) (hY : LocallyContractibleSpace Y) (n : ℕ) :
@@ -73,8 +81,8 @@ theorem resolutionCyclePullback_i
   rw [Category.assoc, PreservesKernel.iso_inv_ι, kernel.lift_ι]
 
 set_option backward.isDefEq.respectTransparency false in
-/-- Pullback of sheafified singular cochains as a map from the target indexed resolution to the
-exact finite closed pushforward of the source indexed resolution. -/
+/-- Pullback of sheafified singular cochains as a map from the resolution on `Y` to the
+pushforward of the resolution on `X`. -/
 def resolutionPullback
     (hX : LocallyContractibleSpace X) (hY : LocallyContractibleSpace Y) :
     CategoryTheory.Abelian.Ext.AcyclicResolution.Hom (resolution Y A hY)
@@ -142,8 +150,8 @@ def resolutionPullback
               (Category.assoc _ _ _).symm
 
 set_option backward.isDefEq.respectTransparency false in
-/-- On literal global sections, the indexed resolution map is sheafified singular-cochain
-pullback after the canonical identifications of both resolution complexes. -/
+/-- On global sections, the map of resolutions is the pullback of sheafified singular cochains,
+under the canonical identification of both resolution complexes. -/
 theorem resolutionPullback_globalComplex
     (hX : LocallyContractibleSpace X) (hY : LocallyContractibleSpace Y) :
     (TopCat.SheafCohomology.AcyclicResolution.Hom.globalComplexMap
@@ -171,8 +179,9 @@ private theorem reassoc_eq {C : Type*} [Category C]
 
 set_option maxHeartbeats 3000000 in
 set_option backward.isDefEq.respectTransparency false in
-/-- Native finite-closed Ext pullback commutes in every positive degree with the comparison to
-the literal global sheafified singular-cochain complex. -/
+/-- Pullback on constant-sheaf cohomology along a closed map with finite fibres commutes, in
+every positive degree, with the identification of `H^•(·; A_·)` with the cohomology of
+`Γ(·, 𝒮^•)`. -/
 theorem constantSheafGlobalIso_naturality
     (hX : LocallyContractibleSpace X) (hY : LocallyContractibleSpace Y)
     [MetrizableSpace X] [MetrizableSpace Y] (n : ℕ) :
@@ -271,8 +280,8 @@ theorem constantSheafGlobalIso_naturality
           (resolutionGlobalComplexIso X A hX) (n + 1)).hom)
       hpq).trans hnat)
 
-/-- Native finite-closed Ext pullback commutes in every positive degree with the canonical
-comparison to native singular cohomology. -/
+/-- Pullback on constant-sheaf cohomology along a closed map with finite fibres commutes, in
+every positive degree, with the comparison `H^•(·; A_·) ≅ H^•_sing(·; A)`. -/
 theorem constantSheafCohomologyIsoSingular_naturality
     (hX : LocallyContractibleSpace X) (hY : LocallyContractibleSpace Y)
     [MetrizableSpace X] [MetrizableSpace Y] (n : ℕ) :
@@ -287,8 +296,8 @@ theorem constantSheafCohomologyIsoSingular_naturality
       (constantSheafGlobalIso_naturality f hf hfinite A hX hY n)
 
 set_option backward.isDefEq.respectTransparency false in
-/-- If native singular pullback is an isomorphism in a positive degree, then the canonical
-finite-closed Ext pullback is an isomorphism in that degree. -/
+/-- If pullback on singular cohomology is an isomorphism in a positive degree, then so is
+pullback on constant-sheaf cohomology in that degree. -/
 theorem constantSheafCohomology_pullback_isIso_of_singular
     (hX : LocallyContractibleSpace X) (hY : LocallyContractibleSpace Y)
     [MetrizableSpace X] [MetrizableSpace Y] (n : ℕ)
