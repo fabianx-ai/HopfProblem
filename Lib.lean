@@ -21,6 +21,7 @@ import Lib.AlgebraicTopology.SingularHomology.LocalContributions
 import Lib.AlgebraicTopology.SingularHomology.Naturality
 import Lib.AlgebraicTopology.SingularHomology.LocalDegree
 import Lib.AlgebraicTopology.SingularHomology.LinearSphereAction
+import Lib.AlgebraicTopology.SingularHomology.SpherePointTransport
 import Lib.Geometry.Manifold.Morse.Handle
 import Lib.Analysis.Calculus.MorseLemma
 import Lib.Geometry.Manifold.Flow.Compact
