@@ -11,11 +11,11 @@ public import Lib.Topology.Sheaves.SingularCochainSheaf.AugmentationMono
 public import Lib.Topology.Sheaves.SingularCochainSheaf.LocalExactH1
 
 /-!
-# The low-degree singular-cochain sheaf resolution
+# The singular-cochain resolution of the constant sheaf in low degrees
 
-For a locally contractible space, the genuine constant sheaf and the first three terms of the
-sheafified native singular-cochain complex form the exact augmented complex needed for the
-degree-one acyclic-resolution comparison.  No exactness in degree two is used or asserted.
+On a locally contractible space the augmented complex `0 → A_X → 𝒮^0 → 𝒮^1 → 𝒮^2` is exact
+(Bredon, *Sheaf Theory* III.1).  This is the three-term window of the resolution of the constant
+sheaf by sheafified singular cochains, in the form required to compute `H¹`.
 -/
 
 @[expose] public section
@@ -31,7 +31,8 @@ namespace TopCat.SingularCochainSheaf
 
 variable (X : TopCat.{0}) (A : AddCommGrpCat.{0})
 
-/-- The native singular-cochain sheaf resolution, truncated exactly as far as `H¹` needs. -/
+/-- The three-term window `0 → A_X → 𝒮^0 → 𝒮^1 → 𝒮^2` of the singular-cochain resolution of the
+constant sheaf on a locally contractible space (Bredon, *Sheaf Theory* III.1). -/
 def resolutionH1 (hLC : LocallyContractibleSpace X) :
     CategoryTheory.Abelian.Ext.AcyclicResolutionH1
       (C := TopCat.Sheaf AddCommGrpCat.{0} X) where
