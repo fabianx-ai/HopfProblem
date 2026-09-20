@@ -14,10 +14,11 @@ public import Lib.Topology.Sheaves.SingularCochainSheaf.ResolutionPositive
 /-!
 # Constant-sheaf cohomology and singular cohomology in positive degrees
 
-For a locally contractible, paracompact space `X` and an abelian group `A`, sheaf cohomology of
-the constant sheaf `A_X` agrees with singular cohomology: `H^n(X; A_X) ≅ H^n_sing(X; A)`
-(Bredon, *Sheaf Theory*, III Thm. 1.1; Warner, *Foundations of Differentiable Manifolds and Lie
-Groups*, 5.32; Godement II.3.9).  The isomorphism is induced by the sheafification unit on the
+For a locally contractible space `X` and an abelian group `A`, sheaf cohomology of the constant
+sheaf `A_X` agrees with singular cohomology: `H^n(X; A_X) ≅ H^n_sing(X; A)` (Bredon, *Sheaf
+Theory*, III §1; Warner, *Foundations of Differentiable Manifolds and Lie Groups*, 5.32; Godement
+II.3.9).  The textbook hypothesis is paracompactness; the declarations below assume the stronger
+`[MetrizableSpace X]`.  The isomorphism is induced by the sheafification unit on the
 singular-cochain complex, which is a resolution of `A_X`, and is natural in the space.
 -/
 
@@ -61,7 +62,7 @@ theorem globalCochainComparison_homology_isIso_succ_of_metrizable
     (hasSmallChainEquivalences_barycentric X) n
 
 /-- `H^{n+1}(X; A_X) ≅ H^{n+1}_sing(X; A)` for a locally contractible metrizable space `X`
-(Bredon III Thm. 1.1; Warner 5.32). -/
+(Bredon III §1; Warner 5.32). -/
 def constantSheafCohomologyIsoSingular (hLC : LocallyContractibleSpace X)
     [MetrizableSpace X] (n : ℕ) :
     AddCommGrpCat.of (CategoryTheory.Sheaf.H.{0}
