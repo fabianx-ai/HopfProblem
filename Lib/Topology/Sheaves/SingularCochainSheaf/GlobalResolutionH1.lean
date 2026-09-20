@@ -36,7 +36,7 @@ variable (X : TopCat.{0}) (A : AddCommGrpCat.{0})
 /-- The complex `Γ(X, 𝒮^•(·; A))` of global sections of the sheafified singular-cochain
 complex. -/
 def globalCochainComplex : CochainComplex AddCommGrpCat.{0} ℕ :=
-  ((TopCat.SheafH1.globalSectionsFunctor X).mapHomologicalComplex
+  ((TopCat.Sheaf.globalSectionsFunctor X).mapHomologicalComplex
     (ComplexShape.up ℕ)).obj (complexSheaf X A)
 
 /-- Degree-one cohomology of the global-section complex is the homology of its three-term window

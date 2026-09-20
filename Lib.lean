@@ -269,6 +269,8 @@ import Lib.Topology.Homotopy.BasedDiskLifting
 import Lib.Topology.Homotopy.RelativeDiskLifting
 import Lib.Topology.MappingTorus.TranslationCocycle
 import Lib.Topology.MappingTorus.SquareZeroWinding
+import Lib.Topology.Sheaves.Sheafification
+import Lib.Topology.Sheaves.GlobalSections
 import Lib.Topology.Sheaves.AddCommGrpPushforward
 import Lib.Topology.Sheaves.Cohomology.AddCommGroup
 import Lib.Topology.Sheaves.Cohomology.Cech.OpenCover

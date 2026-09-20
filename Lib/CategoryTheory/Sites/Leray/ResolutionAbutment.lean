@@ -103,14 +103,14 @@ set_option backward.isDefEq.respectTransparency false in
 /-- Degreewise integral-sheaf pushforward equivalences assemble into an isomorphism between the
 two representable cochain complexes. -/
 def integralCoyonedaPushforwardIso (K : CochainComplex (AbelianSheaf X) ℤ) :
-    CochainComplex.HomComplex.coyonedaComplex (integralSheaf Y)
+    CochainComplex.HomComplex.coyonedaComplex (TopCat.ConstantSheaf.integralSheaf Y)
         (((pushforward f).mapHomologicalComplex (.up ℤ)).obj K) ≅
-      CochainComplex.HomComplex.coyonedaComplex (integralSheaf X) K :=
+      CochainComplex.HomComplex.coyonedaComplex (TopCat.ConstantSheaf.integralSheaf X) K :=
   HomologicalComplex.Hom.isoOfComponents
     (fun n => by
       change AddCommGrpCat.of
-          (integralSheaf Y ⟶ (pushforward f).obj (K.X n)) ≅
-        AddCommGrpCat.of (integralSheaf X ⟶ K.X n)
+          (TopCat.ConstantSheaf.integralSheaf Y ⟶ (pushforward f).obj (K.X n)) ≅
+        AddCommGrpCat.of (TopCat.ConstantSheaf.integralSheaf X ⟶ K.X n)
       exact (TopCat.ConstantSheaf.integralHomPushforwardEquiv f (K.X n)).symm.toAddCommGrpIso)
     (fun i j hij => by
       apply AddCommGrpCat.ext
@@ -127,9 +127,9 @@ def integralCoyonedaPushforwardIso (K : CochainComplex (AbelianSheaf X) ℤ) :
 /-- The integral-sheaf pushforward isomorphism induces an isomorphism on cohomology. -/
 def integralCoyonedaPushforwardHomologyIso
     (K : CochainComplex (AbelianSheaf X) ℤ) (n : ℤ) :
-    (CochainComplex.HomComplex.coyonedaComplex (integralSheaf Y)
+    (CochainComplex.HomComplex.coyonedaComplex (TopCat.ConstantSheaf.integralSheaf Y)
       (((pushforward f).mapHomologicalComplex (.up ℤ)).obj K)).homology n ≅
-        (CochainComplex.HomComplex.coyonedaComplex (integralSheaf X) K).homology n :=
+        (CochainComplex.HomComplex.coyonedaComplex (TopCat.ConstantSheaf.integralSheaf X) K).homology n :=
   HomologicalComplex.homologyMapIso (integralCoyonedaPushforwardIso f K) n
 
 /-- Derived Hom into the pushed-resolution object computes the source sheaf cohomology. -/
@@ -147,14 +147,14 @@ def resolutionDerivedHomCohomologyEquiv {F : AbelianSheaf X}
       (DerivedCategory.Q.mapIso eK)).homToEquiv.symm
   letI : CategoryTheory.Localization.HasSmallLocalizedShiftedHom.{1}
       (HomologicalComplex.quasiIso (AbelianSheaf Y) (.up ℤ)) ℤ
-      ((CochainComplex.singleFunctor (AbelianSheaf Y) 0).obj (integralSheaf Y)) K :=
+      ((CochainComplex.singleFunctor (AbelianSheaf Y) 0).obj (TopCat.ConstantSheaf.integralSheaf Y)) K :=
     fun _ _ => CategoryTheory.Localization.hasSmallLocalizedHom_of_isLocalization
       (HomologicalComplex.quasiIso (AbelianSheaf Y) (.up ℤ)) DerivedCategory.Q
   let e₂ := DerivedCategory.homEquivCoyonedaHomologyOfIsKInjective.{1}
-    (integralSheaf Y) K (n : ℤ)
+    (TopCat.ConstantSheaf.integralSheaf Y) K (n : ℤ)
   let e₃ := (integralCoyonedaPushforwardHomologyIso f I.cochainComplex (n : ℤ))
     |>.addCommGroupIsoToAddEquiv.toEquiv
-  let e₄ := (I.coyonedaHomologyExtAddEquiv (integralSheaf X) n).toEquiv
+  let e₄ := (I.coyonedaHomologyExtAddEquiv (TopCat.ConstantSheaf.integralSheaf X) n).toEquiv
   exact e₁.trans (e₂.trans (e₃.trans e₄))
 
 /-- The total interval of the pushed-resolution Postnikov spectral object is the degree-`n`

@@ -2053,6 +2053,20 @@ is an evidence command rather than library content.
 #check CategoryTheory.InjectiveResolution.positiveHomologyExtNatIso
 #print axioms CategoryTheory.InjectiveResolution.positiveHomologyExtNatIso
 
+/-! ## `Lib.Topology.Sheaves.Sheafification` -/
+
+#check TopCat.Sheaf.sheafification
+#print axioms TopCat.Sheaf.sheafification
+#check TopCat.Sheaf.sheafification_additive
+#print axioms TopCat.Sheaf.sheafification_additive
+
+/-! ## `Lib.Topology.Sheaves.GlobalSections` -/
+
+#check TopCat.Sheaf.globalSectionsFunctor
+#print axioms TopCat.Sheaf.globalSectionsFunctor
+#check TopCat.Sheaf.globalSectionsFunctor_additive
+#print axioms TopCat.Sheaf.globalSectionsFunctor_additive
+
 /-! ## `Lib.Topology.Sheaves.AddCommGrpPushforward` -/
 
 #check TopCat.Sheaf.pushforwardAdditive
@@ -2098,8 +2112,6 @@ is an evidence command rather than library content.
 -- ResolutionTransgression: every intended public source declaration in source order.
 #check CategoryTheory.Sheaf.Leray.AbelianSheaf
 #print axioms CategoryTheory.Sheaf.Leray.AbelianSheaf
-#check CategoryTheory.Sheaf.Leray.integralSheaf
-#print axioms CategoryTheory.Sheaf.Leray.integralSheaf
 #check CategoryTheory.Sheaf.Leray.abelianSheafHasExt
 #print axioms CategoryTheory.Sheaf.Leray.abelianSheafHasExt
 #check CategoryTheory.Sheaf.Leray.sheafCohomologyAddCommGroup
@@ -2960,10 +2972,6 @@ is an evidence command rather than library content.
 #print axioms CategoryTheory.Sheaf.Leray.homologyPresheaf
 #check CategoryTheory.Sheaf.Leray.stalkHomologyPresheafIso
 #print axioms CategoryTheory.Sheaf.Leray.stalkHomologyPresheafIso
-#check CategoryTheory.Sheaf.Leray.sheafification
-#print axioms CategoryTheory.Sheaf.Leray.sheafification
-#check CategoryTheory.Sheaf.Leray.sheafification_additive
-#print axioms CategoryTheory.Sheaf.Leray.sheafification_additive
 #check CategoryTheory.Sheaf.Leray.sheafification_preservesFiniteLimits
 #print axioms CategoryTheory.Sheaf.Leray.sheafification_preservesFiniteLimits
 #check CategoryTheory.Sheaf.Leray.sheafification_preservesFiniteColimits
@@ -3521,8 +3529,8 @@ is an evidence command rather than library content.
 
 /-! ## `Lib.Topology.Sheaves.Cohomology.ProjectiveDimension` -/
 
-#check TopCat.Sheaf.unitSheaf_hasProjectiveDimensionLT_iff_cohomology_subsingleton
-#print axioms TopCat.Sheaf.unitSheaf_hasProjectiveDimensionLT_iff_cohomology_subsingleton
+#check TopCat.Sheaf.integralSheaf_hasProjectiveDimensionLT_iff_cohomology_subsingleton
+#print axioms TopCat.Sheaf.integralSheaf_hasProjectiveDimensionLT_iff_cohomology_subsingleton
 
 /-! ## `Lib.Topology.Sheaves.Cohomology.RepresentedOpenProjectiveDimension` -/
 
@@ -3532,12 +3540,12 @@ is an evidence command rather than library content.
 #print axioms TopCat.Sheaf.OpenRestriction.integralToFreeTop_comp_section
 #check TopCat.Sheaf.OpenRestriction.integralToFreeTop_comp_bijective
 #print axioms TopCat.Sheaf.OpenRestriction.integralToFreeTop_comp_bijective
-#check TopCat.Sheaf.OpenRestriction.unitFreeTopIso
-#print axioms TopCat.Sheaf.OpenRestriction.unitFreeTopIso
+#check TopCat.Sheaf.OpenRestriction.integralSheafFreeTopIso
+#print axioms TopCat.Sheaf.OpenRestriction.integralSheafFreeTopIso
 #check TopCat.Sheaf.OpenRestriction.freeOpen_hasProjectiveDimensionLT_iff
 #print axioms TopCat.Sheaf.OpenRestriction.freeOpen_hasProjectiveDimensionLT_iff
-#check TopCat.Sheaf.OpenRestriction.unitSheaf_hasProjectiveDimensionLT_iff_freeOpen_top
-#print axioms TopCat.Sheaf.OpenRestriction.unitSheaf_hasProjectiveDimensionLT_iff_freeOpen_top
+#check TopCat.Sheaf.OpenRestriction.integralSheaf_hasProjectiveDimensionLT_iff_freeOpen_top
+#print axioms TopCat.Sheaf.OpenRestriction.integralSheaf_hasProjectiveDimensionLT_iff_freeOpen_top
 
 /-! ## `Lib.Topology.Sheaves.Cohomology.DiscreteProjectiveDimension` -/
 
@@ -3545,8 +3553,8 @@ is an evidence command rather than library content.
 #print axioms TopCat.Sheaf.OpenRestriction.sheaf_isFlasque_of_discreteTopology
 #check TopCat.Sheaf.OpenRestriction.freeOpen_projective_of_discreteTopology
 #print axioms TopCat.Sheaf.OpenRestriction.freeOpen_projective_of_discreteTopology
-#check TopCat.Sheaf.OpenRestriction.unitSheaf_projective_of_discreteTopology
-#print axioms TopCat.Sheaf.OpenRestriction.unitSheaf_projective_of_discreteTopology
+#check TopCat.Sheaf.OpenRestriction.integralSheaf_projective_of_discreteTopology
+#print axioms TopCat.Sheaf.OpenRestriction.integralSheaf_projective_of_discreteTopology
 
 /-! ## `Lib.CategoryTheory.Abelian.Projective.DimensionEquivalence` -/
 
@@ -3559,10 +3567,10 @@ is an evidence command rather than library content.
 
 #check TopCat.Sheaf.equivalenceOfIso
 #print axioms TopCat.Sheaf.equivalenceOfIso
-#check TopCat.Sheaf.unitSheafEquivImageIso
-#print axioms TopCat.Sheaf.unitSheafEquivImageIso
-#check TopCat.Sheaf.unitSheaf_hasProjectiveDimensionLT_iff_of_iso
-#print axioms TopCat.Sheaf.unitSheaf_hasProjectiveDimensionLT_iff_of_iso
+#check TopCat.Sheaf.integralSheafEquivImageIso
+#print axioms TopCat.Sheaf.integralSheafEquivImageIso
+#check TopCat.Sheaf.integralSheaf_hasProjectiveDimensionLT_iff_of_iso
+#print axioms TopCat.Sheaf.integralSheaf_hasProjectiveDimensionLT_iff_of_iso
 
 /-! ## `Lib.Topology.Sheaves.H1Vanishing.Flasque` -/
 
@@ -3588,8 +3596,6 @@ is an evidence command rather than library content.
 
 /-! ## `Lib.Topology.Sheaves.SheafificationPushforward` -/
 
-#check TopCat.SheafificationPushforward.sheafification
-#print axioms TopCat.SheafificationPushforward.sheafification
 #check TopCat.SheafificationPushforward.liftToPushforward
 #print axioms TopCat.SheafificationPushforward.liftToPushforward
 #check TopCat.SheafificationPushforward.toSheafify_liftToPushforward
@@ -3747,12 +3753,6 @@ is an evidence command rather than library content.
 
 /-! ## `Lib.Topology.Sheaves.Cohomology.AcyclicResolutionH1` -/
 
-#check TopCat.SheafH1.globalSectionsFunctor
-#print axioms TopCat.SheafH1.globalSectionsFunctor
-#check TopCat.SheafH1.globalSectionsFunctor_additive
-#print axioms TopCat.SheafH1.globalSectionsFunctor_additive
-#check TopCat.SheafH1.unitSheaf
-#print axioms TopCat.SheafH1.unitSheaf
 #check TopCat.SheafH1.h0GlobalIso
 #print axioms TopCat.SheafH1.h0GlobalIso
 #check TopCat.SheafH1.h0GlobalIso_naturality
@@ -3794,10 +3794,6 @@ is an evidence command rather than library content.
 
 /-! ## `Lib.Topology.Sheaves.SingularCochainSheaf.Sheaf` -/
 
-#check TopCat.SingularCochainSheaf.sheafification
-#print axioms TopCat.SingularCochainSheaf.sheafification
-#check TopCat.SingularCochainSheaf.sheafification_additive
-#print axioms TopCat.SingularCochainSheaf.sheafification_additive
 #check TopCat.SingularCochainSheaf.sheaf
 #print axioms TopCat.SingularCochainSheaf.sheaf
 #check TopCat.SingularCochainSheaf.sheafDifferential
@@ -5797,8 +5793,6 @@ is an evidence command rather than library content.
 
 #check TopCat.Sheaf.FiniteSupport.skyscraperAt
 #print axioms TopCat.Sheaf.FiniteSupport.skyscraperAt
-#check TopCat.Sheaf.FiniteSupport.topEvaluation
-#print axioms TopCat.Sheaf.FiniteSupport.topEvaluation
 #check TopCat.Sheaf.FiniteSupport.skyscraperAtTopIso
 #print axioms TopCat.Sheaf.FiniteSupport.skyscraperAtTopIso
 #check TopCat.Sheaf.FiniteSupport.sectionsBiprodIso
@@ -6912,10 +6906,6 @@ is an evidence command rather than library content.
 #print axioms TopologicalSpace.OpenCover.SetOpenCover.connectingHom_naturality
 #check TopologicalSpace.OpenCover.SetOpenCover.cechCohomologyDeltaFunctor
 #print axioms TopologicalSpace.OpenCover.SetOpenCover.cechCohomologyDeltaFunctor
-#check TopologicalSpace.OpenCover.SetOpenCover.sheafGlobalSectionsFunctor
-#print axioms TopologicalSpace.OpenCover.SetOpenCover.sheafGlobalSectionsFunctor
-#check TopologicalSpace.OpenCover.SetOpenCover.sheafGlobalSectionsFunctor_additive
-#print axioms TopologicalSpace.OpenCover.SetOpenCover.sheafGlobalSectionsFunctor_additive
 #check TopologicalSpace.OpenCover.SetOpenCover.cechCohomologyDeltaFunctorZeroIsoGlobalSections
 #print axioms TopologicalSpace.OpenCover.SetOpenCover.cechCohomologyDeltaFunctorZeroIsoGlobalSections
 #check TopologicalSpace.OpenCover.SetOpenCover.cechCohomologyDeltaFunctor_zeroIsoGlobalSections

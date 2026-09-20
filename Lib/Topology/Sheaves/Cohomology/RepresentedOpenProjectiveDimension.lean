@@ -36,7 +36,7 @@ namespace TopCat.Sheaf.OpenRestriction
 /-- The universal integral section regarded as a map to the free sheaf represented by the top
 open. -/
 def integralToFreeTop (X : TopCat.{0}) :
-    TopCat.SheafH1.unitSheaf X ⟶ freeOpen (⊤ : Opens X) :=
+    TopCat.ConstantSheaf.integralSheaf X ⟶ freeOpen (⊤ : Opens X) :=
   (TopCat.ConstantSheaf.integralHomGlobalEquiv X (freeOpen (⊤ : Opens X))).symm
     (freeHomEquiv (⊤ : Opens X) (freeOpen (⊤ : Opens X)) (𝟙 _))
 
@@ -78,8 +78,8 @@ theorem integralToFreeTop_comp_bijective (X : TopCat.{0})
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The integral unit sheaf is the free additive sheaf represented by the top open. -/
-def unitFreeTopIso (X : TopCat.{0}) :
-    TopCat.SheafH1.unitSheaf X ≅ freeOpen (⊤ : Opens X) := by
+def integralSheafFreeTopIso (X : TopCat.{0}) :
+    TopCat.ConstantSheaf.integralSheaf X ≅ freeOpen (⊤ : Opens X) := by
   let e := integralToFreeTop X
   letI : IsIso e := isIso_of_coyoneda_map_bijective e
     (integralToFreeTop_comp_bijective X)
@@ -104,15 +104,15 @@ theorem freeOpen_hasProjectiveDimensionLT_iff (X : TopCat.{0})
 
 /-- A projective-dimension bound for the global unit sheaf is equivalent to the same bound for
 the sheaf represented by the top open. -/
-theorem unitSheaf_hasProjectiveDimensionLT_iff_freeOpen_top (X : TopCat.{0}) (n : ℕ) :
-    HasProjectiveDimensionLT (TopCat.SheafH1.unitSheaf X) n ↔
+theorem integralSheaf_hasProjectiveDimensionLT_iff_freeOpen_top (X : TopCat.{0}) (n : ℕ) :
+    HasProjectiveDimensionLT (TopCat.ConstantSheaf.integralSheaf X) n ↔
       HasProjectiveDimensionLT (freeOpen (⊤ : Opens X)) n := by
   constructor
   · intro h
     let _ := h
-    exact hasProjectiveDimensionLT_of_iso (unitFreeTopIso X) n
+    exact hasProjectiveDimensionLT_of_iso (integralSheafFreeTopIso X) n
   · intro h
     let _ := h
-    exact hasProjectiveDimensionLT_of_iso (unitFreeTopIso X).symm n
+    exact hasProjectiveDimensionLT_of_iso (integralSheafFreeTopIso X).symm n
 
 end TopCat.Sheaf.OpenRestriction

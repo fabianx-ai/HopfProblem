@@ -67,24 +67,24 @@ private theorem presheaf_stalk_exact_of_local_kernels
 private def sheafificationStalkIso
     (S : ShortComplex (TopCat.Presheaf AddCommGrpCat.{u} X)) (x : X) :
     S.map (TopCat.Presheaf.stalkFunctor AddCommGrpCat.{u} x) ≅
-      (S.map (sheafification X)).map
+      (S.map (TopCat.Sheaf.sheafification X)).map
         (TopCat.Sheaf.forget AddCommGrpCat.{u} X ⋙
           TopCat.Presheaf.stalkFunctor AddCommGrpCat.{u} x) := by
   let K := TopCat.Presheaf.stalkFunctor AddCommGrpCat.{u} x
   let e (P : TopCat.Presheaf AddCommGrpCat.{u} X) :
-      K.obj P ≅ K.obj ((sheafification X).obj P).obj :=
+      K.obj P ≅ K.obj ((TopCat.Sheaf.sheafification X).obj P).obj :=
     @asIso AddCommGrpCat.{u} _ _ _
       (K.map (toSheafify (Opens.grothendieckTopology X) P))
       (TopCat.Presheaf.stalkFunctor_map_unit_toSheafify_isIso x AddCommGrpCat P)
   refine ShortComplex.isoMk (e S.X₁) (e S.X₂) (e S.X₃) ?_ ?_
   · change K.map (toSheafify (Opens.grothendieckTopology X) S.X₁) ≫
-        K.map ((sheafification X).map S.f).hom =
+        K.map ((TopCat.Sheaf.sheafification X).map S.f).hom =
       K.map S.f ≫ K.map (toSheafify (Opens.grothendieckTopology X) S.X₂)
     rw [← K.map_comp, ← K.map_comp]
     exact congrArg K.map
       (toSheafify_naturality (Opens.grothendieckTopology X) S.f).symm
   · change K.map (toSheafify (Opens.grothendieckTopology X) S.X₂) ≫
-        K.map ((sheafification X).map S.g).hom =
+        K.map ((TopCat.Sheaf.sheafification X).map S.g).hom =
       K.map S.g ≫ K.map (toSheafify (Opens.grothendieckTopology X) S.X₃)
     rw [← K.map_comp, ← K.map_comp]
     exact congrArg K.map
@@ -98,7 +98,7 @@ theorem sheafify_exact_of_local_kernels
       S.g.app (op U) s = 0 →
       ∃ (V : Opens X) (hVU : V ≤ U) (_hxV : x ∈ V) (t : S.X₁.obj (op V)),
         S.f.app (op V) t = S.X₂.map (homOfLE hVU).op s) :
-    (S.map (sheafification X)).Exact := by
+    (S.map (TopCat.Sheaf.sheafification X)).Exact := by
   apply (TopCat.Sheaf.exact_iff_stalkFunctor_map_exact _).mpr
   intro x
   exact ShortComplex.exact_of_iso (sheafificationStalkIso S x)

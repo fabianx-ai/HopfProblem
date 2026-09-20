@@ -104,10 +104,6 @@ namespace TopCat.SheafCohomology
 
 variable {X : TopCat.{0}}
 
-private abbrev constantIntegerSheaf : TopCat.Sheaf AddCommGrpCat.{0} X :=
-  (constantSheaf (Opens.grothendieckTopology X) AddCommGrpCat.{0}).obj
-    (AddCommGrpCat.of (ULift.{0} ℤ))
-
 /-- A flasque additive sheaf has zero native Ext-defined cohomology in degree `n + 1`. -/
 theorem subsingleton_h_succ_of_isFlasque
     (F : TopCat.Sheaf AddCommGrpCat.{0} X) [TopCat.Sheaf.IsFlasque F]
@@ -126,15 +122,15 @@ theorem subsingleton_h_succ_of_isFlasque
         TopCat.Sheaf.IsFlasque.of_shortExact_of_isFlasque₁₂ hS
       let _ : TopCat.Sheaf.IsFlasque (cokernel p.f) := hQ
       have hsub : Subsingleton
-          (Ext.{0} constantIntegerSheaf (cokernel p.f) (n + 1)) := by
+          (Ext.{0} (TopCat.ConstantSheaf.integralSheaf X) (cokernel p.f) (n + 1)) := by
         exact ih (cokernel p.f)
       refine subsingleton_of_forall_eq 0 ?_
       intro e
       obtain ⟨e₀, he₀⟩ := Ext.covariant_sequence_exact₁
-        constantIntegerSheaf hS e (Ext.eq_zero_of_injective _)
+        (TopCat.ConstantSheaf.integralSheaf X) hS e (Ext.eq_zero_of_injective _)
         (n₀ := n + 1) (by omega)
       rw [← he₀, @Subsingleton.elim _ hsub e₀ 0]
-      exact Ext.zero_comp constantIntegerSheaf (n + 1) hS.extClass (n + 2) (by omega)
+      exact Ext.zero_comp (TopCat.ConstantSheaf.integralSheaf X) (n + 1) hS.extClass (n + 2) (by omega)
 
 /-- A flasque additive sheaf has zero native Ext-defined cohomology in every positive degree. -/
 theorem subsingleton_h_of_isFlasque

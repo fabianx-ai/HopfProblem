@@ -63,7 +63,7 @@ theorem complexSheaf_exactAt_succ (hLC : LocallyContractibleSpace X) (n : ℕ) :
   rw [HomologicalComplex.exactAt_iff' _ n (n + 1) (n + 2)
     (CochainComplex.prev_nat_succ n) (CochainComplex.next ℕ (n + 1))]
   let S := (complex X A).sc' n (n + 1) (n + 2)
-  change (S.map (sheafification X)).Exact
+  change (S.map (TopCat.Sheaf.sheafification X)).Exact
   apply sheafify_exact_of_local_kernels S
   intro U x hx c hc
   exact exists_restriction_primitive_succ X A hLC n U x hx c hc

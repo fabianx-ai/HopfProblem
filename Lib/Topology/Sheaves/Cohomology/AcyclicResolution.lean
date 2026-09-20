@@ -45,7 +45,7 @@ variable (R : Resolution (X := X))
 
 /-- Literal global sections of the full indexed resolution complex. -/
 abbrev globalComplex : CochainComplex AddCommGrpCat.{0} ℕ :=
-  ((TopCat.SheafH1.globalSectionsFunctor X).mapHomologicalComplex
+  ((TopCat.Sheaf.globalSectionsFunctor X).mapHomologicalComplex
     (ComplexShape.up ℕ)).obj R.complex
 
 /-- Positive-degree acyclicity of every resolution term for global sections. -/
@@ -56,11 +56,11 @@ def IsAcyclic : Prop :=
 /-- Positive-degree vanishing of the cohomology of the resolution terms is exactly acyclicity
 for the constant sheaf that defines sheaf cohomology. -/
 theorem isAcyclicFor (h : IsAcyclic R) :
-    R.IsAcyclicFor (TopCat.SheafH1.unitSheaf X) := h
+    R.IsAcyclicFor (TopCat.ConstantSheaf.integralSheaf X) := h
 
 /-- Degree-zero Ext and global sections agree as full cochain complexes. -/
 def extZeroGlobalIso :
-    R.evaluatedComplex (TopCat.SheafH1.unitSheaf X) ≅ globalComplex R :=
+    R.evaluatedComplex (TopCat.ConstantSheaf.integralSheaf X) ≅ globalComplex R :=
   HomologicalComplex.Hom.isoOfComponents
     (fun n => TopCat.SheafH1.h0GlobalIso (R.X n)) (fun i j hij => by
       subst j
@@ -74,7 +74,7 @@ def extIsoGlobalHomology (h : IsAcyclic R) (n : ℕ) :
     AddCommGrpCat.of (CategoryTheory.Sheaf.H.{0} (R.Z 0) (n + 1)) ≅
       (globalComplex R).homology (n + 1) := by
   exact Iso.trans
-    (R.extIsoHomology (TopCat.SheafH1.unitSheaf X) (isAcyclicFor R h) n)
+    (R.extIsoHomology (TopCat.ConstantSheaf.integralSheaf X) (isAcyclicFor R h) n)
     (HomologicalComplex.homologyMapIso (extZeroGlobalIso R) (n + 1))
 
 namespace Hom
@@ -83,7 +83,7 @@ variable {R S T : Resolution (X := X)} (f : Ext.AcyclicResolution.Hom R S)
 
 /-- The map of literal global-section complexes induced by a map of indexed resolutions. -/
 def globalComplexMap : globalComplex R ⟶ globalComplex S :=
-  ((TopCat.SheafH1.globalSectionsFunctor X).mapHomologicalComplex
+  ((TopCat.Sheaf.globalSectionsFunctor X).mapHomologicalComplex
     (ComplexShape.up ℕ)).map f.complexMap
 
 /-- The identity map of resolutions induces the identity on global-section complexes. -/
@@ -103,35 +103,35 @@ theorem globalComplexMap_comp (f : Ext.AcyclicResolution.Hom R S)
 /-- The degree-zero Ext/global-sections complex comparison is natural. -/
 @[reassoc]
 theorem extZeroGlobalIso_naturality :
-    f.evaluatedComplexMap (TopCat.SheafH1.unitSheaf X) ≫ (extZeroGlobalIso S).hom =
+    f.evaluatedComplexMap (TopCat.ConstantSheaf.integralSheaf X) ≫ (extZeroGlobalIso S).hom =
       (extZeroGlobalIso R).hom ≫ globalComplexMap f := by
   apply HomologicalComplex.hom_ext
   intro n
-  change (extFunctorObj (TopCat.SheafH1.unitSheaf X) 0).map (f.x n) ≫
+  change (extFunctorObj (TopCat.ConstantSheaf.integralSheaf X) 0).map (f.x n) ≫
       (TopCat.SheafH1.h0GlobalIso (S.X n)).hom =
     (TopCat.SheafH1.h0GlobalIso (R.X n)).hom ≫
-      (TopCat.SheafH1.globalSectionsFunctor X).map (f.x n)
+      (TopCat.Sheaf.globalSectionsFunctor X).map (f.x n)
   exact TopCat.SheafH1.h0GlobalIso_naturality (f.x n)
 
 set_option backward.isDefEq.respectTransparency false in
 /-- Naturality of the all-positive-degree sheaf-cohomology comparison. -/
 theorem extIsoGlobalHomology_naturality
     (hR : IsAcyclic R) (hS : IsAcyclic S) (n : ℕ) :
-    (extFunctorObj (TopCat.SheafH1.unitSheaf X) (n + 1)).map (f.z 0) ≫
+    (extFunctorObj (TopCat.ConstantSheaf.integralSheaf X) (n + 1)).map (f.z 0) ≫
         (extIsoGlobalHomology S hS n).hom =
       (extIsoGlobalHomology R hR n).hom ≫
         HomologicalComplex.homologyMap (globalComplexMap f) (n + 1) := by
-  let a := (extFunctorObj (TopCat.SheafH1.unitSheaf X) (n + 1)).map (f.z 0)
-  let r := (R.extIsoHomology (TopCat.SheafH1.unitSheaf X) (isAcyclicFor R hR) n).hom
-  let s := (S.extIsoHomology (TopCat.SheafH1.unitSheaf X) (isAcyclicFor S hS) n).hom
+  let a := (extFunctorObj (TopCat.ConstantSheaf.integralSheaf X) (n + 1)).map (f.z 0)
+  let r := (R.extIsoHomology (TopCat.ConstantSheaf.integralSheaf X) (isAcyclicFor R hR) n).hom
+  let s := (S.extIsoHomology (TopCat.ConstantSheaf.integralSheaf X) (isAcyclicFor S hS) n).hom
   let eR := (HomologicalComplex.homologyMapIso (extZeroGlobalIso R) (n + 1)).hom
   let eS := (HomologicalComplex.homologyMapIso (extZeroGlobalIso S) (n + 1)).hom
   let b := HomologicalComplex.homologyMap
-    (f.evaluatedComplexMap (TopCat.SheafH1.unitSheaf X)) (n + 1)
+    (f.evaluatedComplexMap (TopCat.ConstantSheaf.integralSheaf X)) (n + 1)
   let c := HomologicalComplex.homologyMap (globalComplexMap f) (n + 1)
   change a ≫ (s ≫ eS) = (r ≫ eR) ≫ c
   have h₁ : a ≫ s = r ≫ b :=
-    f.extIsoHomology_naturality (TopCat.SheafH1.unitSheaf X)
+    f.extIsoHomology_naturality (TopCat.ConstantSheaf.integralSheaf X)
       (isAcyclicFor R hR) (isAcyclicFor S hS) n
   have h₂ : b ≫ eS = eR ≫ c := by
     dsimp only [b, eS, eR, c]

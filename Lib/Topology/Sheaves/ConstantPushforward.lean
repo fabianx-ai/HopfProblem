@@ -49,8 +49,9 @@ def presheaf (X : TopCat.{u}) (A : AddCommGrpCat.{u}) :
     TopCat.Presheaf AddCommGrpCat.{u} X :=
   (Functor.const (Opens X)ᵒᵖ).obj A
 
-/-- Mathlib's sheafification of the constant presheaf with coefficient group `A`. -/
-def sheaf (X : TopCat.{u}) (A : AddCommGrpCat.{u}) :
+/-- Mathlib's sheafification of the constant presheaf with coefficient group `A`.  Reducible, so
+that the constant sheaf is recognised wherever Mathlib spells it out (`CategoryTheory.Sheaf.H`). -/
+@[reducible] def sheaf (X : TopCat.{u}) (A : AddCommGrpCat.{u}) :
     TopCat.Sheaf AddCommGrpCat.{u} X :=
   (CategoryTheory.constantSheaf (Opens.grothendieckTopology X) AddCommGrpCat.{u}).obj A
 

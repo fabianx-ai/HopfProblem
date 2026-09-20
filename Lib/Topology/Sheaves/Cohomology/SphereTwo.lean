@@ -138,12 +138,12 @@ theorem higherDirectImage_one_derivedGlobalSections_three_four_isZero_of_homeomo
     (g : B ≃ₜ Metric.sphere (0 : EuclideanSpace ℝ (Fin 3)) 1)
     (f : Y ⟶ B) :
     IsZero ((((sheafSections (Opens.grothendieckTopology B) AddCommGrpCat.{0}).obj
-      (op ⊤)).rightDerived 3).obj (higherDirectImageSheaf f (integralSheaf Y) 1)) ∧
+      (op ⊤)).rightDerived 3).obj (higherDirectImageSheaf f (TopCat.ConstantSheaf.integralSheaf Y) 1)) ∧
     IsZero ((((sheafSections (Opens.grothendieckTopology B) AddCommGrpCat.{0}).obj
-      (op ⊤)).rightDerived 4).obj (higherDirectImageSheaf f (integralSheaf Y) 1)) :=
+      (op ⊤)).rightDerived 4).obj (higherDirectImageSheaf f (TopCat.ConstantSheaf.integralSheaf Y) 1)) :=
   ⟨higherDirectImage_derivedGlobalSections_isZero_of_homeomorph_sphereTwo
-      g f (integralSheaf Y) 1 (by decide),
+      g f (TopCat.ConstantSheaf.integralSheaf Y) 1 (by decide),
     higherDirectImage_derivedGlobalSections_isZero_of_homeomorph_sphereTwo
-      g f (integralSheaf Y) 1 (by decide)⟩
+      g f (TopCat.ConstantSheaf.integralSheaf Y) 1 (by decide)⟩
 
 end TopCat.Sheaf

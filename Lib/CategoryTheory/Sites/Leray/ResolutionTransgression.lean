@@ -55,10 +55,6 @@ universe u
 /-- The small category of sheaves of abelian groups on a topological space. -/
 abbrev AbelianSheaf (X : TopCat.{u}) := TopCat.Sheaf AddCommGrpCat.{u} X
 
-/-- Compatibility spelling for the canonical integral constant sheaf. -/
-abbrev integralSheaf (X : TopCat.{0}) : AbelianSheaf X :=
-  TopCat.ConstantSheaf.integralSheaf X
-
 /-- Compatibility spelling for the canonical `HasExt` instance on small abelian sheaves. -/
 theorem abelianSheafHasExt (X : TopCat.{u}) : HasExt.{u} (AbelianSheaf.{u} X) :=
   IsGrothendieckAbelian.hasExt _
@@ -117,7 +113,7 @@ the map from resolution homology to the genuine higher direct image. -/
 @[simp]
 lemma resolutionCohomologyIso_hom_apply {F : AbelianSheaf X}
     (I : InjectiveResolution F) (q p : ℕ)
-    (x : Ext.{0} (integralSheaf Y) ((pushedResolution f I).homology q) p) :
+    (x : Ext.{0} (TopCat.ConstantSheaf.integralSheaf Y) ((pushedResolution f I).homology q) p) :
     (resolutionCohomologyIso f I q p).hom.hom x =
       x.comp (Ext.mk₀ (higherDirectImageResolutionIso f F I q).inv) (add_zero p) := by
   rfl
@@ -135,9 +131,9 @@ lemma resolutionCohomologyIso_inv_apply {F : AbelianSheaf X}
 resolution homology. -/
 def resolutionExtZeroIso {F : AbelianSheaf X} (I : InjectiveResolution F) (q : ℕ) :
     AddCommGrpCat.of (E₂ f F 0 q) ≅
-      AddCommGrpCat.of (integralSheaf Y ⟶ (pushedResolution f I).homology q) :=
-  (Ext.addEquiv₀ (X := integralSheaf Y) (Y := higherDirectImageSheaf f F q)).toAddCommGrpIso ≪≫
-    (preadditiveCoyoneda.obj (op (integralSheaf Y))).mapIso
+      AddCommGrpCat.of (TopCat.ConstantSheaf.integralSheaf Y ⟶ (pushedResolution f I).homology q) :=
+  (Ext.addEquiv₀ (X := TopCat.ConstantSheaf.integralSheaf Y) (Y := higherDirectImageSheaf f F q)).toAddCommGrpIso ≪≫
+    (preadditiveCoyoneda.obj (op (TopCat.ConstantSheaf.integralSheaf Y))).mapIso
       (higherDirectImageResolutionIso f F I q)
 
 /-- The forward degree-zero resolution coordinate is the represented morphism followed by the
@@ -154,7 +150,7 @@ morphism. -/
 @[simp]
 lemma resolutionExtZeroIso_inv_apply {F : AbelianSheaf X}
     (I : InjectiveResolution F) (q : ℕ)
-    (x : integralSheaf Y ⟶ (pushedResolution f I).homology q) :
+    (x : TopCat.ConstantSheaf.integralSheaf Y ⟶ (pushedResolution f I).homology q) :
     (resolutionExtZeroIso f I q).inv.hom x =
       Ext.mk₀ (x ≫ (higherDirectImageResolutionIso f F I q).inv) := by
   rfl
@@ -165,8 +161,8 @@ def resolutionTransgressionMorphismOfResolution {F : AbelianSheaf X}
     (I : InjectiveResolution F) (n : ℕ) :
     AddCommGrpCat.of (E₂ f F 0 (n + 1)) ⟶ AddCommGrpCat.of (E₂ f F 2 n) :=
   (resolutionExtZeroIso f I (n + 1)).hom ≫
-    ExtTransgression.cochainTransgression (pushedResolution f I) n (integralSheaf Y) ≫
-      (extFunctorObj (integralSheaf Y) 2).map ((pushedResolution f I).homologyπ n) ≫
+    ExtTransgression.cochainTransgression (pushedResolution f I) n (TopCat.ConstantSheaf.integralSheaf Y) ≫
+      (extFunctorObj (TopCat.ConstantSheaf.integralSheaf Y) 2).map ((pushedResolution f I).homologyπ n) ≫
         (resolutionCohomologyIso f I n 2).hom
 
 set_option backward.isDefEq.respectTransparency false in
@@ -176,17 +172,17 @@ lemma resolutionTransgressionMorphismOfResolution_eq_connectingTwo
     {F : AbelianSheaf X} (I : InjectiveResolution F) (n : ℕ) :
     resolutionTransgressionMorphismOfResolution f I n =
       (resolutionExtZeroIso f I (n + 1)).hom ≫
-        (Ext.addEquiv₀ (X := integralSheaf Y)
+        (Ext.addEquiv₀ (X := TopCat.ConstantSheaf.integralSheaf Y)
           (Y := (pushedResolution f I).homology (n + 1))).toAddCommGrpIso.inv ≫
         AddCommGrpCat.ofHom
           ((ExtTransgression.homologyTwoStepResolution
-            (pushedResolution f I) n).connectingTwo (integralSheaf Y)) ≫
+            (pushedResolution f I) n).connectingTwo (TopCat.ConstantSheaf.integralSheaf Y)) ≫
         (resolutionCohomologyIso f I n 2).hom := by
   dsimp [resolutionTransgressionMorphismOfResolution]
   rw [← Category.assoc
     (ExtTransgression.cochainTransgression
-      (pushedResolution f I) n (integralSheaf Y))
-    ((extFunctorObj (integralSheaf Y) 2).map
+      (pushedResolution f I) n (TopCat.ConstantSheaf.integralSheaf Y))
+    ((extFunctorObj (TopCat.ConstantSheaf.integralSheaf Y) 2).map
       ((pushedResolution f I).homologyπ n))
     ((resolutionCohomologyIso f I n 2).hom)]
   rw [ExtTransgression.cochainTransgression_comp_homologyπ]
@@ -216,7 +212,7 @@ lemma resolutionTransgressionAddOfResolution_apply_eq_connectingTwo
     resolutionTransgressionAddOfResolution f I n x =
       (resolutionCohomologyIso f I n 2).hom.hom
         ((ExtTransgression.homologyTwoStepResolution
-          (pushedResolution f I) n).connectingTwo (integralSheaf Y)
+          (pushedResolution f I) n).connectingTwo (TopCat.ConstantSheaf.integralSheaf Y)
             (Ext.mk₀ ((resolutionExtZeroIso f I (n + 1)).hom.hom x))) := by
   change (resolutionTransgressionMorphismOfResolution f I n).hom x = _
   rw [resolutionTransgressionMorphismOfResolution_eq_connectingTwo]
@@ -230,7 +226,7 @@ lemma resolutionTransgressionAddOfResolution_apply_ne_zero_iff_connectingTwo
     (x : E₂ f F 0 (n + 1)) :
     resolutionTransgressionAddOfResolution f I n x ≠ 0 ↔
       (ExtTransgression.homologyTwoStepResolution
-        (pushedResolution f I) n).connectingTwo (integralSheaf Y)
+        (pushedResolution f I) n).connectingTwo (TopCat.ConstantSheaf.integralSheaf Y)
           (Ext.mk₀ ((resolutionExtZeroIso f I (n + 1)).hom.hom x)) ≠ 0 := by
   rw [resolutionTransgressionAddOfResolution_apply_eq_connectingTwo]
   constructor
@@ -266,7 +262,7 @@ lemma resolutionTransgression_apply_ne_zero_iff_connectingTwo
     (F : AbelianSheaf X) (n : ℕ) (x : E₂ f F 0 (n + 1)) :
     resolutionTransgression f F n x ≠ 0 ↔
       (ExtTransgression.homologyTwoStepResolution
-        (pushedResolution f (injectiveResolution F)) n).connectingTwo (integralSheaf Y)
+        (pushedResolution f (injectiveResolution F)) n).connectingTwo (TopCat.ConstantSheaf.integralSheaf Y)
           (Ext.mk₀ ((resolutionExtZeroIso f (injectiveResolution F) (n + 1)).hom.hom x)) ≠
             0 := by
   exact resolutionTransgressionAddOfResolution_apply_ne_zero_iff_connectingTwo

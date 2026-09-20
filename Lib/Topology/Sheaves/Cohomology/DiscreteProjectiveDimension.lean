@@ -112,8 +112,8 @@ instance freeOpen_projective_of_discreteTopology [DiscreteTopology X] (U : Opens
   exact TopCat.SheafH1.subsingleton_h1_of_isFlasque ((restriction U).obj F)
 
 /-- The integral unit sheaf on a discrete space is projective. -/
-instance unitSheaf_projective_of_discreteTopology [DiscreteTopology X] :
-    Projective (TopCat.SheafH1.unitSheaf X) :=
-  Projective.of_iso (unitFreeTopIso X).symm inferInstance
+instance integralSheaf_projective_of_discreteTopology [DiscreteTopology X] :
+    Projective (TopCat.ConstantSheaf.integralSheaf X) :=
+  Projective.of_iso (integralSheafFreeTopIso X).symm inferInstance
 
 end TopCat.Sheaf.OpenRestriction

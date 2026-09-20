@@ -120,8 +120,8 @@ private theorem biprodIsoProd_hom_comp_snd (A B : AddCommGrpCat.{u}) :
 private theorem sectionsBiprodIso_hom_comp_fst
     (F G : TopCat.Sheaf AddCommGrpCat.{u} X) :
     (sectionsBiprodIso F G (op (⊤ : Opens X))).hom ≫ biprod.fst =
-      (topEvaluation X).map (biprod.fst : F ⊞ G ⟶ F) := by
-  unfold sectionsBiprodIso topEvaluation
+      (TopCat.Sheaf.globalSectionsFunctor X).map (biprod.fst : F ⊞ G ⟶ F) := by
+  unfold sectionsBiprodIso TopCat.Sheaf.globalSectionsFunctor
   rw [Functor.mapBiprod_hom]
   exact biprod.lift_fst _ _
 
@@ -129,8 +129,8 @@ private theorem sectionsBiprodIso_hom_comp_fst
 private theorem sectionsBiprodIso_hom_comp_snd
     (F G : TopCat.Sheaf AddCommGrpCat.{u} X) :
     (sectionsBiprodIso F G (op (⊤ : Opens X))).hom ≫ biprod.snd =
-      (topEvaluation X).map (biprod.snd : F ⊞ G ⟶ G) := by
-  unfold sectionsBiprodIso topEvaluation
+      (TopCat.Sheaf.globalSectionsFunctor X).map (biprod.snd : F ⊞ G ⟶ G) := by
+  unfold sectionsBiprodIso TopCat.Sheaf.globalSectionsFunctor
   rw [Functor.mapBiprod_hom]
   exact biprod.lift_snd _ _
 
@@ -149,7 +149,7 @@ theorem globalSectionsIsoOfStalkwiseSkyscraperBiprod_hom_comp_fst
         AddCommGrpCat.ofHom (AddMonoidHom.fst A B) =
       F.presheaf.germ (⊤ : Opens X) p (by simp) ≫ fp := by
   unfold globalSectionsIsoOfSkyscraperBiprodIso
-  change (((((topEvaluation X).map
+  change (((((TopCat.Sheaf.globalSectionsFunctor X).map
       (skyscraperBiprodIsoOfStalkwiseIso p q A B fp fq h).hom) ≫
         (sectionsBiprodIso (skyscraperAt p A) (skyscraperAt q B) (op ⊤)).hom) ≫
       (biprod.mapIso (skyscraperAtTopIso p A) (skyscraperAtTopIso q B)).hom) ≫
@@ -167,7 +167,7 @@ theorem globalSectionsIsoOfStalkwiseSkyscraperBiprod_hom_comp_fst
       toSkyscraperAt p A fp := by
     dsimp [e]
     simp [skyscraperBiprodIsoOfStalkwiseIso, toSkyscraperBiprod]
-  change (topEvaluation X).map e.hom ≫
+  change (TopCat.Sheaf.globalSectionsFunctor X).map e.hom ≫
     (sectionsBiprodIso (skyscraperAt p A) (skyscraperAt q B) (op ⊤)).hom ≫
       (biprod.fst :
         (skyscraperAt p A).obj.obj (op ⊤) ⊞
@@ -175,16 +175,16 @@ theorem globalSectionsIsoOfStalkwiseSkyscraperBiprod_hom_comp_fst
             (skyscraperAt p A).obj.obj (op ⊤)) ≫
         (skyscraperAtTopIso p A).hom = _
   calc
-    _ = (topEvaluation X).map e.hom ≫
-        (topEvaluation X).map (biprod.fst :
+    _ = (TopCat.Sheaf.globalSectionsFunctor X).map e.hom ≫
+        (TopCat.Sheaf.globalSectionsFunctor X).map (biprod.fst :
           skyscraperAt p A ⊞ skyscraperAt q B ⟶ skyscraperAt p A) ≫
             (skyscraperAtTopIso p A).hom := by
-      exact congrArg (fun k ↦ (topEvaluation X).map e.hom ≫ k) hs
-    _ = (topEvaluation X).map (e.hom ≫ (biprod.fst :
+      exact congrArg (fun k ↦ (TopCat.Sheaf.globalSectionsFunctor X).map e.hom ≫ k) hs
+    _ = (TopCat.Sheaf.globalSectionsFunctor X).map (e.hom ≫ (biprod.fst :
           skyscraperAt p A ⊞ skyscraperAt q B ⟶ skyscraperAt p A)) ≫
             (skyscraperAtTopIso p A).hom := by
       simp only [Functor.map_comp, Category.assoc]
-    _ = (topEvaluation X).map (toSkyscraperAt p A fp) ≫
+    _ = (TopCat.Sheaf.globalSectionsFunctor X).map (toSkyscraperAt p A fp) ≫
           (skyscraperAtTopIso p A).hom := by rw [he]
     _ = F.presheaf.germ (⊤ : Opens X) p (by simp) ≫ fp :=
       toSkyscraperAt_top p A fp
@@ -204,7 +204,7 @@ theorem globalSectionsIsoOfStalkwiseSkyscraperBiprod_hom_comp_snd
         AddCommGrpCat.ofHom (AddMonoidHom.snd A B) =
       F.presheaf.germ (⊤ : Opens X) q (by simp) ≫ fq := by
   unfold globalSectionsIsoOfSkyscraperBiprodIso
-  change (((((topEvaluation X).map
+  change (((((TopCat.Sheaf.globalSectionsFunctor X).map
       (skyscraperBiprodIsoOfStalkwiseIso p q A B fp fq h).hom) ≫
         (sectionsBiprodIso (skyscraperAt p A) (skyscraperAt q B) (op ⊤)).hom) ≫
       (biprod.mapIso (skyscraperAtTopIso p A) (skyscraperAtTopIso q B)).hom) ≫
@@ -222,7 +222,7 @@ theorem globalSectionsIsoOfStalkwiseSkyscraperBiprod_hom_comp_snd
       toSkyscraperAt q B fq := by
     dsimp [e]
     simp [skyscraperBiprodIsoOfStalkwiseIso, toSkyscraperBiprod]
-  change (topEvaluation X).map e.hom ≫
+  change (TopCat.Sheaf.globalSectionsFunctor X).map e.hom ≫
     (sectionsBiprodIso (skyscraperAt p A) (skyscraperAt q B) (op ⊤)).hom ≫
       (biprod.snd :
         (skyscraperAt p A).obj.obj (op ⊤) ⊞
@@ -230,16 +230,16 @@ theorem globalSectionsIsoOfStalkwiseSkyscraperBiprod_hom_comp_snd
             (skyscraperAt q B).obj.obj (op ⊤)) ≫
         (skyscraperAtTopIso q B).hom = _
   calc
-    _ = (topEvaluation X).map e.hom ≫
-        (topEvaluation X).map (biprod.snd :
+    _ = (TopCat.Sheaf.globalSectionsFunctor X).map e.hom ≫
+        (TopCat.Sheaf.globalSectionsFunctor X).map (biprod.snd :
           skyscraperAt p A ⊞ skyscraperAt q B ⟶ skyscraperAt q B) ≫
             (skyscraperAtTopIso q B).hom := by
-      exact congrArg (fun k ↦ (topEvaluation X).map e.hom ≫ k) hs
-    _ = (topEvaluation X).map (e.hom ≫ (biprod.snd :
+      exact congrArg (fun k ↦ (TopCat.Sheaf.globalSectionsFunctor X).map e.hom ≫ k) hs
+    _ = (TopCat.Sheaf.globalSectionsFunctor X).map (e.hom ≫ (biprod.snd :
           skyscraperAt p A ⊞ skyscraperAt q B ⟶ skyscraperAt q B)) ≫
             (skyscraperAtTopIso q B).hom := by
       simp only [Functor.map_comp, Category.assoc]
-    _ = (topEvaluation X).map (toSkyscraperAt q B fq) ≫
+    _ = (TopCat.Sheaf.globalSectionsFunctor X).map (toSkyscraperAt q B fq) ≫
           (skyscraperAtTopIso q B).hom := by rw [he]
     _ = F.presheaf.germ (⊤ : Opens X) q (by simp) ≫ fq :=
       toSkyscraperAt_top q B fq

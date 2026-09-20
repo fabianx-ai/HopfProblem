@@ -227,7 +227,7 @@ def sheafIso :
         (TopCat.Sheaf.OpenRestriction.openImage U) AddCommGrpCat.{0}
         (Opens.grothendieckTopology (TopCat.of U))
         (Opens.grothendieckTopology X)).app (presheaf X A n)).symm ≪≫
-    (sheafification (TopCat.of U)).mapIso (presheafIso U A n)
+    (TopCat.Sheaf.sheafification (TopCat.of U)).mapIso (presheafIso U A n)
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The open-restriction comparison carries the ambient sheafification unit to the intrinsic
@@ -245,7 +245,7 @@ theorem unit_sheafIso_hom :
     G AddCommGrpCat.{0} J K (presheaf X A n)
   change G.op.whiskerLeft (unit X A n) ≫
       (C.inv.app (presheaf X A n)).hom ≫
-        ((sheafification (TopCat.of U)).map (presheafIso U A n).hom).hom =
+        ((TopCat.Sheaf.sheafification (TopCat.of U)).map (presheafIso U A n).hom).hom =
     (presheafIso U A n).hom ≫ unit (TopCat.of U) A n
   dsimp [unit] at hc ⊢
   have hcancel :
