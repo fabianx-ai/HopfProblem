@@ -87,7 +87,8 @@ theorem PeriodTorusHigherHomology.coordinateProjection_surjective (n : ℕ) :
   exact ⟨x, funext hx⟩
 
 /-- The loop at the origin of `(S¹)^n` obtained by projecting the straight segment from `0`
-to an integer vector `v`; its class in `H₁` is the lattice element `v`. -/
+to an integer vector `v`.  In coordinates it is `t ↦ (t · vᵢ mod 1)ᵢ`
+(`coordinatePeriodLoop_apply`). -/
 def PeriodTorusHigherHomology.coordinatePeriodLoop (n : ℕ) (v : Fin n → ℤ) :
     Path (0 : ProductTorus n) 0 :=
   ((Path.segment (0 : Fin n → ℝ) (fun i => (v i : ℝ))).map
@@ -563,8 +564,9 @@ def PeriodTorusHigherHomology.coordinateH1Add (n : ℕ) :
   map_zero' := by simp only [Pi.zero_apply, zero_zsmul, Finset.sum_const_zero]
   map_add' v w := by simp only [Pi.add_apply, add_zsmul, Finset.sum_add_distrib]
 
-/-- The `ℤ`-linear map `ℤⁿ → H₁((S¹)^n)` sending the standard basis to the classes of the
-coordinate period loops; it is the degree-one case of `coordinateTorusBasis`. -/
+/-- The `ℤ`-linear map `ℤⁿ → H₁((S¹)^n)` underlying `coordinateH1Add`: it sends `v` to
+`∑ᵢ vᵢ · [coordinate period loop of eᵢ]`, hence the standard basis to the classes of the
+coordinate period loops (`coordinateH1_basis`). -/
 def PeriodTorusHigherHomology.coordinateH1 (n : ℕ) :
     (Fin n → ℤ) →ₗ[ℤ] SingularChains.SingularH1 (ProductTorus n) :=
   { toFun := coordinateH1Add n
