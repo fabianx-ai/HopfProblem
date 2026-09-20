@@ -9,15 +9,15 @@ module
 public import Lib.Topology.Sheaves.FiniteSupport.SkyscraperGlobalSections
 
 /-!
-# Reconstructing a two-point sheaf from its stalk maps
+# Reconstructing a sheaf from stalk maps to skyscrapers
 
-This file packages the generic sheaf-theoretic step used by finite-support calculations.
-Maps from two distinguished stalks induce a map to the corresponding biproduct of
-skyscraper sheaves.  If that comparison is an isomorphism on every stalk, stalk
-conservativity upgrades it to an isomorphism of sheaves.
-
-The result deliberately does not prove the geometric stalk calculations.  Applications must
-supply the two stalk maps and verify that the induced comparison is stalkwise invertible.
+Maps `F_p ⟶ A` from a stalk correspond to maps `F ⟶ skyscraper p A` of sheaves (the skyscraper
+adjunction, Mathlib `StalkSkyscraperPresheafAdjunctionAuxs.toSkyscraperPresheaf`; Hartshorne,
+*Algebraic Geometry*, II Ex. 1.17).  Two such maps assemble into a comparison
+`F ⟶ skyscraper p A ⊞ skyscraper q B`, and a morphism of sheaves is an isomorphism as soon as it
+is one on every stalk (Hartshorne II Prop. 1.1; Mathlib
+`TopCat.Presheaf.isIso_of_stalkFunctor_map_iso`), so a stalkwise invertible comparison is an
+isomorphism of sheaves.
 -/
 
 @[expose] public section
@@ -31,11 +31,13 @@ open CategoryTheory CategoryTheory.Limits TopologicalSpace Opposite
 
 namespace TopCat.Sheaf.FiniteSupport
 
-variable {X : TopCat.{0}}
+universe u
 
-/-- The map to a skyscraper sheaf adjoint to a map from the supporting stalk. -/
-def toSkyscraperAt {F : TopCat.Sheaf AddCommGrpCat X} (p : X) (A : AddCommGrpCat)
-    (f : (TopCat.Presheaf.stalkFunctor AddCommGrpCat p).obj F.obj ⟶ A) :
+variable {X : TopCat.{u}}
+
+/-- The morphism `F ⟶ skyscraper p A` adjoint to a map `F_p ⟶ A` from the stalk at `p`. -/
+def toSkyscraperAt {F : TopCat.Sheaf AddCommGrpCat.{u} X} (p : X) (A : AddCommGrpCat.{u})
+    (f : (TopCat.Presheaf.stalkFunctor AddCommGrpCat.{u} p).obj F.obj ⟶ A) :
     F ⟶ skyscraperAt p A := by
   letI : ∀ U : Opens X, Decidable (p ∈ U) := fun _ ↦ Classical.dec _
   exact ObjectProperty.homMk
@@ -43,7 +45,7 @@ def toSkyscraperAt {F : TopCat.Sheaf AddCommGrpCat X} (p : X) (A : AddCommGrpCat
 
 /-- On the top open, the canonical skyscraper-section isomorphism is the transport associated
 to the fact that the support point belongs to the top open. -/
-theorem skyscraperAtTopIso_hom_eqToHom (p : X) (A : AddCommGrpCat)
+theorem skyscraperAtTopIso_hom_eqToHom (p : X) (A : AddCommGrpCat.{u})
     (hp : p ∈ (⊤ : Opens X)) :
     (skyscraperAtTopIso p A).hom =
       (eqToHom (if_pos hp) :
@@ -51,12 +53,11 @@ theorem skyscraperAtTopIso_hom_eqToHom (p : X) (A : AddCommGrpCat)
   unfold skyscraperAtTopIso
   rfl
 
-/-- The top component of the map adjoint to a stalk map is the germ at the support point,
-followed by that stalk map.  This is the global-section characterization used when a
-finite-support sheaf is reconstructed from its stalk coordinates. -/
-theorem toSkyscraperAt_top {F : TopCat.Sheaf AddCommGrpCat X}
-    (p : X) (A : AddCommGrpCat)
-    (f : (TopCat.Presheaf.stalkFunctor AddCommGrpCat p).obj F.obj ⟶ A) :
+/-- On global sections, the morphism adjoint to a stalk map `F_p ⟶ A` is the germ at `p`
+followed by that stalk map. -/
+theorem toSkyscraperAt_top {F : TopCat.Sheaf AddCommGrpCat.{u} X}
+    (p : X) (A : AddCommGrpCat.{u})
+    (f : (TopCat.Presheaf.stalkFunctor AddCommGrpCat.{u} p).obj F.obj ⟶ A) :
     (toSkyscraperAt p A f).hom.app (op (⊤ : Opens X)) ≫
         (skyscraperAtTopIso p A).hom =
       F.presheaf.germ (⊤ : Opens X) p (by simp) ≫ f := by
@@ -76,39 +77,39 @@ theorem toSkyscraperAt_top {F : TopCat.Sheaf AddCommGrpCat X}
         (⊤ : Opens X) (by simp)).symm
     _ = F.presheaf.germ (⊤ : Opens X) p (by simp) ≫ f := by rw [hfrom]
 
-/-- Maps from two supporting stalks assemble into the canonical map to their skyscraper
+/-- Two stalk maps `F_p ⟶ A` and `F_q ⟶ B` assemble into a morphism into the skyscraper
 biproduct. -/
-def toSkyscraperBiprod {F : TopCat.Sheaf AddCommGrpCat X}
-    (p q : X) (A B : AddCommGrpCat)
-    (fp : (TopCat.Presheaf.stalkFunctor AddCommGrpCat p).obj F.obj ⟶ A)
-    (fq : (TopCat.Presheaf.stalkFunctor AddCommGrpCat q).obj F.obj ⟶ B) :
+def toSkyscraperBiprod {F : TopCat.Sheaf AddCommGrpCat.{u} X}
+    (p q : X) (A B : AddCommGrpCat.{u})
+    (fp : (TopCat.Presheaf.stalkFunctor AddCommGrpCat.{u} p).obj F.obj ⟶ A)
+    (fq : (TopCat.Presheaf.stalkFunctor AddCommGrpCat.{u} q).obj F.obj ⟶ B) :
     F ⟶ skyscraperAt p A ⊞ skyscraperAt q B :=
   biprod.lift (toSkyscraperAt p A fp) (toSkyscraperAt q B fq)
 
-/-- A comparison to a two-point skyscraper biproduct that is invertible on every stalk is an
+/-- A comparison `F ⟶ skyscraper p A ⊞ skyscraper q B` that is invertible on every stalk is an
 isomorphism of sheaves. -/
-def skyscraperBiprodIsoOfStalkwiseIso {F : TopCat.Sheaf AddCommGrpCat X}
-    (p q : X) (A B : AddCommGrpCat)
-    (fp : (TopCat.Presheaf.stalkFunctor AddCommGrpCat p).obj F.obj ⟶ A)
-    (fq : (TopCat.Presheaf.stalkFunctor AddCommGrpCat q).obj F.obj ⟶ B)
-    (h : ∀ x : X, IsIso ((TopCat.Presheaf.stalkFunctor AddCommGrpCat x).map
+def skyscraperBiprodIsoOfStalkwiseIso {F : TopCat.Sheaf AddCommGrpCat.{u} X}
+    (p q : X) (A B : AddCommGrpCat.{u})
+    (fp : (TopCat.Presheaf.stalkFunctor AddCommGrpCat.{u} p).obj F.obj ⟶ A)
+    (fq : (TopCat.Presheaf.stalkFunctor AddCommGrpCat.{u} q).obj F.obj ⟶ B)
+    (h : ∀ x : X, IsIso ((TopCat.Presheaf.stalkFunctor AddCommGrpCat.{u} x).map
       (toSkyscraperBiprod p q A B fp fq).hom)) :
     F ≅ skyscraperAt p A ⊞ skyscraperAt q B := by
-  letI : ∀ x : X, IsIso ((TopCat.Presheaf.stalkFunctor AddCommGrpCat x).map
+  letI : ∀ x : X, IsIso ((TopCat.Presheaf.stalkFunctor AddCommGrpCat.{u} x).map
       (toSkyscraperBiprod p q A B fp fq).hom) := h
   letI : IsIso (toSkyscraperBiprod p q A B fp fq) :=
     TopCat.Presheaf.isIso_of_stalkFunctor_map_iso
       (toSkyscraperBiprod p q A B fp fq)
   exact asIso (toSkyscraperBiprod p q A B fp fq)
 
-private theorem biprodIsoProd_hom_comp_fst (A B : AddCommGrpCat) :
+private theorem biprodIsoProd_hom_comp_fst (A B : AddCommGrpCat.{u}) :
     (AddCommGrpCat.biprodIsoProd A B).hom ≫
         AddCommGrpCat.ofHom (AddMonoidHom.fst A B) =
       (biprod.fst : A ⊞ B ⟶ A) := by
   apply (cancel_epi (AddCommGrpCat.biprodIsoProd A B).inv).1
   simp
 
-private theorem biprodIsoProd_hom_comp_snd (A B : AddCommGrpCat) :
+private theorem biprodIsoProd_hom_comp_snd (A B : AddCommGrpCat.{u}) :
     (AddCommGrpCat.biprodIsoProd A B).hom ≫
         AddCommGrpCat.ofHom (AddMonoidHom.snd A B) =
       (biprod.snd : A ⊞ B ⟶ B) := by
@@ -117,7 +118,7 @@ private theorem biprodIsoProd_hom_comp_snd (A B : AddCommGrpCat) :
 
 @[reassoc]
 private theorem sectionsBiprodIso_hom_comp_fst
-    (F G : TopCat.Sheaf AddCommGrpCat X) :
+    (F G : TopCat.Sheaf AddCommGrpCat.{u} X) :
     (sectionsBiprodIso F G (op (⊤ : Opens X))).hom ≫ biprod.fst =
       (topEvaluation X).map (biprod.fst : F ⊞ G ⟶ F) := by
   unfold sectionsBiprodIso topEvaluation
@@ -126,7 +127,7 @@ private theorem sectionsBiprodIso_hom_comp_fst
 
 @[reassoc]
 private theorem sectionsBiprodIso_hom_comp_snd
-    (F G : TopCat.Sheaf AddCommGrpCat X) :
+    (F G : TopCat.Sheaf AddCommGrpCat.{u} X) :
     (sectionsBiprodIso F G (op (⊤ : Opens X))).hom ≫ biprod.snd =
       (topEvaluation X).map (biprod.snd : F ⊞ G ⟶ G) := by
   unfold sectionsBiprodIso topEvaluation
@@ -134,14 +135,14 @@ private theorem sectionsBiprodIso_hom_comp_snd
   exact biprod.lift_snd _ _
 
 set_option backward.isDefEq.respectTransparency.types false in
-/-- The first projection of the reconstructed global-section is exactly the germ at the
-first support point, followed by the supplied first stalk coordinate. -/
+/-- The first coordinate of the reconstructed global section is the germ at `p`, followed by the
+given stalk map `F_p ⟶ A`. -/
 theorem globalSectionsIsoOfStalkwiseSkyscraperBiprod_hom_comp_fst
-    {F : TopCat.Sheaf AddCommGrpCat X}
-    (p q : X) (A B : AddCommGrpCat)
-    (fp : (TopCat.Presheaf.stalkFunctor AddCommGrpCat p).obj F.obj ⟶ A)
-    (fq : (TopCat.Presheaf.stalkFunctor AddCommGrpCat q).obj F.obj ⟶ B)
-    (h : ∀ x : X, IsIso ((TopCat.Presheaf.stalkFunctor AddCommGrpCat x).map
+    {F : TopCat.Sheaf AddCommGrpCat.{u} X}
+    (p q : X) (A B : AddCommGrpCat.{u})
+    (fp : (TopCat.Presheaf.stalkFunctor AddCommGrpCat.{u} p).obj F.obj ⟶ A)
+    (fq : (TopCat.Presheaf.stalkFunctor AddCommGrpCat.{u} q).obj F.obj ⟶ B)
+    (h : ∀ x : X, IsIso ((TopCat.Presheaf.stalkFunctor AddCommGrpCat.{u} x).map
       (toSkyscraperBiprod p q A B fp fq).hom)) :
     (globalSectionsIsoOfSkyscraperBiprodIso p q A B
         (skyscraperBiprodIsoOfStalkwiseIso p q A B fp fq h)).hom ≫
@@ -189,14 +190,14 @@ theorem globalSectionsIsoOfStalkwiseSkyscraperBiprod_hom_comp_fst
       toSkyscraperAt_top p A fp
 
 set_option backward.isDefEq.respectTransparency.types false in
-/-- The second projection of the reconstructed global-section is exactly the germ at the
-second support point, followed by the supplied second stalk coordinate. -/
+/-- The second coordinate of the reconstructed global section is the germ at `q`, followed by the
+given stalk map `F_q ⟶ B`. -/
 theorem globalSectionsIsoOfStalkwiseSkyscraperBiprod_hom_comp_snd
-    {F : TopCat.Sheaf AddCommGrpCat X}
-    (p q : X) (A B : AddCommGrpCat)
-    (fp : (TopCat.Presheaf.stalkFunctor AddCommGrpCat p).obj F.obj ⟶ A)
-    (fq : (TopCat.Presheaf.stalkFunctor AddCommGrpCat q).obj F.obj ⟶ B)
-    (h : ∀ x : X, IsIso ((TopCat.Presheaf.stalkFunctor AddCommGrpCat x).map
+    {F : TopCat.Sheaf AddCommGrpCat.{u} X}
+    (p q : X) (A B : AddCommGrpCat.{u})
+    (fp : (TopCat.Presheaf.stalkFunctor AddCommGrpCat.{u} p).obj F.obj ⟶ A)
+    (fq : (TopCat.Presheaf.stalkFunctor AddCommGrpCat.{u} q).obj F.obj ⟶ B)
+    (h : ∀ x : X, IsIso ((TopCat.Presheaf.stalkFunctor AddCommGrpCat.{u} x).map
       (toSkyscraperBiprod p q A B fp fq).hom)) :
     (globalSectionsIsoOfSkyscraperBiprodIso p q A B
         (skyscraperBiprodIsoOfStalkwiseIso p q A B fp fq h)).hom ≫
@@ -244,14 +245,14 @@ theorem globalSectionsIsoOfStalkwiseSkyscraperBiprod_hom_comp_snd
       toSkyscraperAt_top q B fq
 
 set_option backward.isDefEq.respectTransparency.types false in
-/-- Under the stalkwise reconstruction, a global section is sent to the pair of its two
-specified germ coordinates. -/
+/-- Under the reconstruction `Γ(X, F) ≃+ A × B`, a global section is sent to the pair of its
+germs at `p` and `q` composed with the two stalk maps. -/
 theorem globalSectionsEquivOfStalkwiseSkyscraperBiprod_apply
-    {F : TopCat.Sheaf AddCommGrpCat X}
-    (p q : X) (A B : AddCommGrpCat)
-    (fp : (TopCat.Presheaf.stalkFunctor AddCommGrpCat p).obj F.obj ⟶ A)
-    (fq : (TopCat.Presheaf.stalkFunctor AddCommGrpCat q).obj F.obj ⟶ B)
-    (h : ∀ x : X, IsIso ((TopCat.Presheaf.stalkFunctor AddCommGrpCat x).map
+    {F : TopCat.Sheaf AddCommGrpCat.{u} X}
+    (p q : X) (A B : AddCommGrpCat.{u})
+    (fp : (TopCat.Presheaf.stalkFunctor AddCommGrpCat.{u} p).obj F.obj ⟶ A)
+    (fq : (TopCat.Presheaf.stalkFunctor AddCommGrpCat.{u} q).obj F.obj ⟶ B)
+    (h : ∀ x : X, IsIso ((TopCat.Presheaf.stalkFunctor AddCommGrpCat.{u} x).map
       (toSkyscraperBiprod p q A B fp fq).hom))
     (s : F.obj.obj (op (⊤ : Opens X))) :
     globalSectionsEquivOfSkyscraperBiprodIso p q A B
