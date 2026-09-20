@@ -11,12 +11,20 @@ public import Lib.AlgebraicTopology.FundamentalGroup.VanKampen.Basic
 /-!
 # Local-to-global path values for a two-open cover
 
-This module constructs the universal homomorphism from a fundamental group out of compatible
-homomorphisms on a path-connected two-open cover. It contains no proof-specific cover or relator
-data.
+This module proves the existence half of the van Kampen universal property: a pair of
+homomorphisms out of `π₁(U)` and `π₁(V)` agreeing on `π₁(U ∩ V)` extends to a homomorphism out
+of `π₁(X)` (`TwoOpenCover.lift`, with `lift_comp_inclusionU` and `lift_comp_inclusionV`).  The
+extension is built by subdividing a loop into pieces lying in a single member of the cover and
+multiplying their local values, and is well defined by a corresponding subdivision of a homotopy
+into rectangles.
 
 The path-factorization argument was adapted from Sebastian Kumar's Mathlib PR 28246, source commit
 `037ad801e1e5a5b7aa1750957c07f7769812effc`.
+
+## References
+
+* [A. Hatcher, *Algebraic topology*][hatcher2002], Theorem 1.20 (van Kampen).
+* [T. tom Dieck, *Algebraic topology*][tomDieck2008], §2.6.
 -/
 
 @[expose] public noncomputable section
@@ -24,41 +32,49 @@ The path-factorization argument was adapted from Sebastian Kumar's Mathlib PR 28
 open Set Function Topology
 open scoped ContinuousMap Interval
 
+/-- The chosen path from the basepoint to `x`, viewed inside the member `chart i` of the cover. -/
 def FundamentalGroup.VanKampen.Cocone.TwoOpenCover.chartPath {X : Type*} [TopologicalSpace X]
     (D : FundamentalGroup.VanKampen.Cocone.TwoOpenCover X) (i : Bool) (x : D.chart i) :
     Path (D.baseChart i) x :=
   FundamentalGroup.VanKampen.Cocone.pathIn (D.pathTo x.val) (D.base_mem_chart i) x.property
     (D.pathTo_mem i x.val x.property)
 
+/-- The chosen path inside a chart from the basepoint to itself is constant. -/
 @[simp]
 theorem FundamentalGroup.VanKampen.Cocone.TwoOpenCover.chartPath_base {X : Type*} [TopologicalSpace X]
     (D : FundamentalGroup.VanKampen.Cocone.TwoOpenCover X) (i : Bool) :
     D.chartPath i (D.baseChart i) = Path.refl (D.baseChart i) := by
   simp only [chartPath, baseChart, D.pathTo_base, FundamentalGroup.VanKampen.Cocone.pathIn_refl]
 
+/-- The homotopy class of the chosen path inside a chart. -/
 def FundamentalGroup.VanKampen.Cocone.TwoOpenCover.chartPathClass {X : Type*} [TopologicalSpace X]
     (D : FundamentalGroup.VanKampen.Cocone.TwoOpenCover X) (i : Bool) (x : D.chart i) :
     Path.Homotopic.Quotient (D.baseChart i) x :=
   Path.Homotopic.Quotient.mk (D.chartPath i x)
 
+/-- The class of the chosen path from the basepoint to itself is the identity. -/
 @[simp]
 theorem FundamentalGroup.VanKampen.Cocone.TwoOpenCover.chartPathClass_base {X : Type*}
     [TopologicalSpace X] (D : FundamentalGroup.VanKampen.Cocone.TwoOpenCover X) (i : Bool) :
     D.chartPathClass i (D.baseChart i) = Path.Homotopic.Quotient.refl (D.baseChart i) := by
   simp only [chartPathClass, D.chartPath_base, Path.Homotopic.Quotient.mk_refl]
 
+/-- Close a path in a chart into a loop at the basepoint of that chart by prefixing and
+suffixing the chosen paths, and take its class in `π₁(chart i)`. -/
 def FundamentalGroup.VanKampen.Cocone.TwoOpenCover.closePath {X : Type*} [TopologicalSpace X]
     (D : FundamentalGroup.VanKampen.Cocone.TwoOpenCover X) (i : Bool) {x y : D.chart i} (p : Path x y) :
     FundamentalGroup (D.chart i) (D.baseChart i) :=
   FundamentalGroup.VanKampen.Cocone.PathClass.basedLoop (D.chartPathClass i)
     (Path.Homotopic.Quotient.mk p)
 
+/-- Closing a constant path gives the trivial loop. -/
 @[simp]
 theorem FundamentalGroup.VanKampen.Cocone.TwoOpenCover.closePath_refl {X : Type*} [TopologicalSpace X]
     (D : FundamentalGroup.VanKampen.Cocone.TwoOpenCover X) (i : Bool) (x : D.chart i) :
     D.closePath i (Path.refl x) = 1 :=
   FundamentalGroup.VanKampen.Cocone.PathClass.basedLoop_refl _ _
 
+/-- Closing a concatenation gives the product of the closed loops, in the opposite order. -/
 theorem FundamentalGroup.VanKampen.Cocone.TwoOpenCover.closePath_trans {X : Type*} [TopologicalSpace X]
     (D : FundamentalGroup.VanKampen.Cocone.TwoOpenCover X) (i : Bool) {x y z : D.chart i} (p : Path x y)
     (q : Path y z) : D.closePath i (p.trans q) = D.closePath i q * D.closePath i p := by
@@ -66,6 +82,7 @@ theorem FundamentalGroup.VanKampen.Cocone.TwoOpenCover.closePath_trans {X : Type
     FundamentalGroup.VanKampen.Cocone.PathClass.basedLoop_trans (D.chartPathClass i)
       (Path.Homotopic.Quotient.mk p) (Path.Homotopic.Quotient.mk q)
 
+/-- Homotopic paths close to the same loop. -/
 theorem FundamentalGroup.VanKampen.Cocone.TwoOpenCover.closePath_homotopic {X : Type*}
     [TopologicalSpace X] (D : FundamentalGroup.VanKampen.Cocone.TwoOpenCover X) (i : Bool)
     {x y : D.chart i} {p q : Path x y} (hpq : Path.Homotopic p q) :
@@ -73,6 +90,7 @@ theorem FundamentalGroup.VanKampen.Cocone.TwoOpenCover.closePath_homotopic {X : 
   unfold closePath
   rw [Path.Homotopic.Quotient.eq.mpr hpq]
 
+/-- Closing a loop already based at the basepoint returns its own class. -/
 theorem FundamentalGroup.VanKampen.Cocone.TwoOpenCover.closePath_loop {X : Type*} [TopologicalSpace X]
     (D : FundamentalGroup.VanKampen.Cocone.TwoOpenCover X) (i : Bool)
     (p : Path (D.baseChart i) (D.baseChart i)) : D.closePath i p = Path.Homotopic.Quotient.mk p :=
@@ -81,6 +99,7 @@ theorem FundamentalGroup.VanKampen.Cocone.TwoOpenCover.closePath_loop {X : Type*
     Path.Homotopic.Quotient.refl_trans]
   exact Path.Homotopic.Quotient.trans_refl _
 
+/-- The homomorphism attached to the indexed chart: `fU` for `U` and `fV` for `V`. -/
 def FundamentalGroup.VanKampen.Cocone.TwoOpenCover.chartHom {X : Type*} [TopologicalSpace X] {G : Type*}
     [Group G] (D : FundamentalGroup.VanKampen.Cocone.TwoOpenCover X) (fU : D.UGroup →* G)
     (fV : D.VGroup →* G) (i : Bool) : FundamentalGroup (D.chart i) (D.baseChart i) →* G := by
@@ -88,6 +107,8 @@ def FundamentalGroup.VanKampen.Cocone.TwoOpenCover.chartHom {X : Type*} [Topolog
   · exact fU
   · exact fV
 
+/-- The value in `G` of a path contained in `chart i`: the image under `fU` or `fV` of the
+inverse of the loop obtained by closing the path. -/
 def FundamentalGroup.VanKampen.Cocone.TwoOpenCover.localValue {X : Type*} [TopologicalSpace X] {G : Type*}
     [Group G] (D : FundamentalGroup.VanKampen.Cocone.TwoOpenCover X) (fU : D.UGroup →* G)
     (fV : D.VGroup →* G) (i : Bool) {x y : X} (p : Path x y) (hp : ∀ t, p t ∈ D.chart i) : G :=
@@ -96,6 +117,7 @@ def FundamentalGroup.VanKampen.Cocone.TwoOpenCover.localValue {X : Type*} [Topol
         (FundamentalGroup.VanKampen.Cocone.pathIn (S := (D.chart i : Set X)) p (by simpa using hp 0)
           (by simpa using hp 1) hp)))⁻¹
 
+/-- The local value of a constant path is trivial. -/
 theorem FundamentalGroup.VanKampen.Cocone.TwoOpenCover.localValue_refl {X : Type*} [TopologicalSpace X]
     {G : Type*} [Group G] (D : FundamentalGroup.VanKampen.Cocone.TwoOpenCover X) (fU : D.UGroup →* G)
     (fV : D.VGroup →* G) (i : Bool) (x : X) (hx : ∀ t, Path.refl x t ∈ D.chart i) :
@@ -103,6 +125,7 @@ theorem FundamentalGroup.VanKampen.Cocone.TwoOpenCover.localValue_refl {X : Type
   simp only [localValue, FundamentalGroup.VanKampen.Cocone.pathIn_refl, D.closePath_refl, map_one,
     inv_one]
 
+/-- The local value of a concatenation is the product of the local values. -/
 theorem FundamentalGroup.VanKampen.Cocone.TwoOpenCover.localValue_trans {X : Type*} [TopologicalSpace X]
     {G : Type*} [Group G] (D : FundamentalGroup.VanKampen.Cocone.TwoOpenCover X) (fU : D.UGroup →* G)
     (fV : D.VGroup →* G) (i : Bool) {x y z : X} (p : Path x y) (q : Path y z)
@@ -116,6 +139,8 @@ theorem FundamentalGroup.VanKampen.Cocone.TwoOpenCover.localValue_trans {X : Typ
   rw [FundamentalGroup.VanKampen.Cocone.pathIn_trans p q hx hy hz hp hq hpq, D.closePath_trans, map_mul,
     mul_inv_rev]
 
+/-- The local value of a restriction splits as the product of the local values of two
+consecutive restrictions. -/
 theorem FundamentalGroup.VanKampen.Cocone.TwoOpenCover.localValue_subpath_mul {X : Type*}
     [TopologicalSpace X] {G : Type*} [Group G] (D : FundamentalGroup.VanKampen.Cocone.TwoOpenCover X)
     (fU : D.UGroup →* G) (fV : D.VGroup →* G) (i : Bool) {x y : X} (p : Path x y)
@@ -131,6 +156,7 @@ theorem FundamentalGroup.VanKampen.Cocone.TwoOpenCover.localValue_subpath_mul {X
   unfold localValue
   rw [← D.closePath_homotopic i ⟨H⟩, D.closePath_trans, map_mul, mul_inv_rev]
 
+/-- Homotopic paths with a homotopy inside the chart have the same local value. -/
 theorem FundamentalGroup.VanKampen.Cocone.TwoOpenCover.localValue_homotopy {X : Type*}
     [TopologicalSpace X] {G : Type*} [Group G] (D : FundamentalGroup.VanKampen.Cocone.TwoOpenCover X)
     (fU : D.UGroup →* G) (fV : D.VGroup →* G) (i : Bool) {x y : X} (p q : Path x y)
@@ -141,6 +167,7 @@ theorem FundamentalGroup.VanKampen.Cocone.TwoOpenCover.localValue_homotopy {X : 
   unfold localValue
   rw [D.closePath_homotopic i ⟨FundamentalGroup.VanKampen.Cocone.homotopyIn p q hx hy hp hq H hH⟩]
 
+/-- The chosen path from the basepoint to `x`, viewed inside `U ∩ V`. -/
 def FundamentalGroup.VanKampen.Cocone.TwoOpenCover.overlapPath {X : Type*} [TopologicalSpace X]
     (D : FundamentalGroup.VanKampen.Cocone.TwoOpenCover X) (x : D.overlap) : Path D.baseOverlapPoint x :=
   FundamentalGroup.VanKampen.Cocone.pathIn (S := (D.overlap : Set X)) (D.pathTo x.val) ⟨D.baseU, D.baseV⟩
@@ -148,24 +175,28 @@ def FundamentalGroup.VanKampen.Cocone.TwoOpenCover.overlapPath {X : Type*} [Topo
     (fun t =>
       ⟨D.pathTo_mem Bool.false x.val x.property.1 t, D.pathTo_mem Bool.true x.val x.property.2 t⟩)
 
+/-- Pushing the chosen path in `U ∩ V` into `U` gives the chosen path in `U`. -/
 theorem FundamentalGroup.VanKampen.Cocone.TwoOpenCover.overlapPath_map_U {X : Type*} [TopologicalSpace X]
     (D : FundamentalGroup.VanKampen.Cocone.TwoOpenCover X) (x : D.overlap) :
     (D.overlapPath x).map D.overlapToU.continuous = D.chartPath Bool.false (D.overlapToU x) := by
   ext t
   rfl
 
+/-- Pushing the chosen path in `U ∩ V` into `V` gives the chosen path in `V`. -/
 theorem FundamentalGroup.VanKampen.Cocone.TwoOpenCover.overlapPath_map_V {X : Type*} [TopologicalSpace X]
     (D : FundamentalGroup.VanKampen.Cocone.TwoOpenCover X) (x : D.overlap) :
     (D.overlapPath x).map D.overlapToV.continuous = D.chartPath Bool.true (D.overlapToV x) := by
   ext t
   rfl
 
+/-- Close a path in `U ∩ V` into a loop at the basepoint and take its class in `π₁(U ∩ V)`. -/
 def FundamentalGroup.VanKampen.Cocone.TwoOpenCover.overlapClose {X : Type*} [TopologicalSpace X]
     (D : FundamentalGroup.VanKampen.Cocone.TwoOpenCover X) {x y : D.overlap} (p : Path x y) :
     D.OverlapGroup :=
   FundamentalGroup.VanKampen.Cocone.PathClass.basedLoop
     (fun x => Path.Homotopic.Quotient.mk (D.overlapPath x)) (Path.Homotopic.Quotient.mk p)
 
+/-- The map `π₁(U ∩ V) → π₁(U)` sends a closed loop of `U ∩ V` to the loop closed in `U`. -/
 theorem FundamentalGroup.VanKampen.Cocone.TwoOpenCover.overlapHomU_close {X : Type*} [TopologicalSpace X]
     (D : FundamentalGroup.VanKampen.Cocone.TwoOpenCover X) {x y : D.overlap} (p : Path x y) :
     D.overlapHomU (D.overlapClose p) = D.closePath Bool.false (p.map D.overlapToU.continuous) := by
@@ -178,6 +209,7 @@ theorem FundamentalGroup.VanKampen.Cocone.TwoOpenCover.overlapHomU_close {X : Ty
   rw [Path.map_trans, Path.map_trans, ← Path.map_symm, D.overlapPath_map_U, D.overlapPath_map_U]
   rfl
 
+/-- The map `π₁(U ∩ V) → π₁(V)` sends a closed loop of `U ∩ V` to the loop closed in `V`. -/
 theorem FundamentalGroup.VanKampen.Cocone.TwoOpenCover.overlapHomV_close {X : Type*} [TopologicalSpace X]
     (D : FundamentalGroup.VanKampen.Cocone.TwoOpenCover X) {x y : D.overlap} (p : Path x y) :
     D.overlapHomV (D.overlapClose p) = D.closePath Bool.true (p.map D.overlapToV.continuous) := by
@@ -190,6 +222,8 @@ theorem FundamentalGroup.VanKampen.Cocone.TwoOpenCover.overlapHomV_close {X : Ty
   rw [Path.map_trans, Path.map_trans, ← Path.map_symm, D.overlapPath_map_V, D.overlapPath_map_V]
   rfl
 
+/-- For compatible `fU` and `fV`, a path lying in both `U` and `V` gets the same value from
+either chart. -/
 theorem FundamentalGroup.VanKampen.Cocone.TwoOpenCover.localValue_compatible_UV {X : Type*}
     [TopologicalSpace X] {G : Type*} [Group G] (D : FundamentalGroup.VanKampen.Cocone.TwoOpenCover X)
     (fU : D.UGroup →* G) (fV : D.VGroup →* G) (hf : D.Compatible fU fV) {x y : X} (p : Path x y)
@@ -214,6 +248,7 @@ theorem FundamentalGroup.VanKampen.Cocone.TwoOpenCover.localValue_compatible_UV 
   have hV' := congrArg fV ((D.overlapHomV_close pI).trans (congrArg (D.closePath Bool.true) hpV))
   exact congrArg (fun a : G => a⁻¹) (hU'.symm.trans (h.trans hV'))
 
+/-- For compatible `fU` and `fV`, the local value of a path is independent of the chart used. -/
 theorem FundamentalGroup.VanKampen.Cocone.TwoOpenCover.localValue_compatible {X : Type*}
     [TopologicalSpace X] {G : Type*} [Group G] (D : FundamentalGroup.VanKampen.Cocone.TwoOpenCover X)
     (fU : D.UGroup →* G) (fV : D.VGroup →* G) (hf : D.Compatible fU fV) (i j : Bool) {x y : X}
@@ -225,6 +260,8 @@ theorem FundamentalGroup.VanKampen.Cocone.TwoOpenCover.localValue_compatible {X 
   · exact (D.localValue_compatible_UV fU fV hf p hj hi).symm
   · rfl
 
+/-- The local path value attached to a compatible pair of homomorphisms out of `π₁(U)` and
+`π₁(V)`. -/
 def FundamentalGroup.VanKampen.Cocone.TwoOpenCover.localPathValue {X : Type*} [TopologicalSpace X]
     {G : Type*} [Group G] (D : FundamentalGroup.VanKampen.Cocone.TwoOpenCover X) (fU : D.UGroup →* G)
     (fV : D.VGroup →* G) (hf : D.Compatible fU fV) :
@@ -236,12 +273,15 @@ def FundamentalGroup.VanKampen.Cocone.TwoOpenCover.localPathValue {X : Type*} [T
   subpath_mul := D.localValue_subpath_mul fU fV
   compatible := D.localValue_compatible fU fV hf
 
+/-- The local path value of a compatible pair is homotopy invariant. -/
 theorem FundamentalGroup.VanKampen.Cocone.TwoOpenCover.localPathValue_homotopyInvariant {X : Type*}
     [TopologicalSpace X] {G : Type*} [Group G] (D : FundamentalGroup.VanKampen.Cocone.TwoOpenCover X)
     (fU : D.UGroup →* G) (fV : D.VGroup →* G) (hf : D.Compatible fU fV) :
     (D.localPathValue fU fV hf).HomotopyInvariant :=
   D.localValue_homotopy fU fV
 
+/-- The local value of a loop of `chart i` pushed into `X` is the inverse of its image under the
+corresponding homomorphism. -/
 theorem FundamentalGroup.VanKampen.Cocone.TwoOpenCover.localValue_map_loop {X : Type*}
     [TopologicalSpace X] {G : Type*} [Group G] (D : FundamentalGroup.VanKampen.Cocone.TwoOpenCover X)
     (fU : D.UGroup →* G) (fV : D.VGroup →* G) (i : Bool)
@@ -256,6 +296,8 @@ theorem FundamentalGroup.VanKampen.Cocone.TwoOpenCover.localValue_map_loop {X : 
   ext t
   rfl
 
+/-- A homotopy-invariant path value induces a homomorphism `π₁(X, o) → G`, sending the class of
+a loop to the inverse of its value. -/
 def FundamentalGroup.VanKampen.Cocone.PathValue.fundamentalGroupHom {X : Type*} [TopologicalSpace X]
     {G : Type*} [Group G] (V : FundamentalGroup.VanKampen.Cocone.PathValue X G) (hV : V.HomotopyInvariant)
     (o : X) : FundamentalGroup X o →* G
@@ -273,6 +315,7 @@ def FundamentalGroup.VanKampen.Cocone.PathValue.fundamentalGroupHom {X : Type*} 
     change (V.value (q.trans p))⁻¹ = (V.value p)⁻¹ * (V.value q)⁻¹
     rw [V.trans, mul_inv_rev]
 
+/-- The induced homomorphism sends the class of a loop to the inverse of its value. -/
 @[simp]
 theorem FundamentalGroup.VanKampen.Cocone.PathValue.fundamentalGroupHom_mk {X : Type*}
     [TopologicalSpace X] {G : Type*} [Group G]
@@ -281,6 +324,7 @@ theorem FundamentalGroup.VanKampen.Cocone.PathValue.fundamentalGroupHom_mk {X : 
     V.fundamentalGroupHom hV o (Path.Homotopic.Quotient.mk p) = (V.value p)⁻¹ :=
   rfl
 
+/-- If the restriction of `p` to `[a, b]` stays in `s`, then `p t ∈ s` for every `t ∈ [a, b]`. -/
 theorem FundamentalGroup.VanKampen.Cocone.mem_of_subpath_mem {X : Type*} [TopologicalSpace X] {x y : X}
     (p : Path x y) {a b : (unitInterval)} (hab : a ≤ b) {s : Set X}
     (hp : ∀ t, p.subpath a b t ∈ s) {t : (unitInterval)} (ht : t ∈ Set.Icc a b) : p t ∈ s := by
@@ -288,6 +332,8 @@ theorem FundamentalGroup.VanKampen.Cocone.mem_of_subpath_mem {X : Type*} [Topolo
   rw [p.range_subpath_of_le a b hab] at hsub
   exact hsub ⟨t, ht, rfl⟩
 
+/-- A restriction of `p` to a subinterval of `[a, b]` stays in any set containing the
+restriction to `[a, b]`. -/
 theorem FundamentalGroup.VanKampen.Cocone.subpath_mem_mono {X : Type*} [TopologicalSpace X] {x y : X}
     (p : Path x y) {a b c d : (unitInterval)} (hab : a ≤ b) (hcd : c ≤ d) (hac : a ≤ c)
     (hdb : d ≤ b) {s : Set X} (hp : ∀ t, p.subpath a b t ∈ s) : ∀ t, p.subpath c d t ∈ s := by
@@ -295,6 +341,9 @@ theorem FundamentalGroup.VanKampen.Cocone.subpath_mem_mono {X : Type*} [Topologi
   intro t ht
   exact mem_of_subpath_mem p hab hp ⟨hac.trans ht.1, ht.2.trans hdb⟩
 
+/-- Lebesgue-number subdivision of a path relative to an open cover: the parameter interval can
+be cut into finitely many closed pieces each of which `p` maps into a single member of the
+cover. -/
 theorem FundamentalGroup.VanKampen.Cocone.exists_path_subdivision {X : Type*} [TopologicalSpace X]
     {ι : Type*} {U : ι → Set X} (hopen : ∀ i, IsOpen (U i)) (hcover : (⋃ i, U i) = Set.univ)
     {x y : X} (p : Path x y) :
@@ -310,6 +359,8 @@ theorem FundamentalGroup.VanKampen.Cocone.exists_path_subdivision {X : Type*} [T
         exact Set.mem_iUnion.mpr ⟨i, hi⟩)
   exact ⟨t, ht0, hmono, ⟨n, hn n le_rfl⟩, fun n ↦ hsub n⟩
 
+/-- `F` is a primitive of `L` along `p` if, for every subinterval `[a, b]` on which `p` stays in
+one member of the cover, `F b = F a * L.value (p|[a,b])`. -/
 def FundamentalGroup.VanKampen.Cocone.LocalPathValue.IsPrimitive {X : Type*} [TopologicalSpace X]
     {ι : Type*} {G : Type*} [Group G] {U : ι → Set X}
     (L : FundamentalGroup.VanKampen.Cocone.LocalPathValue U G) {x y : X} (p : Path x y)
@@ -317,6 +368,8 @@ def FundamentalGroup.VanKampen.Cocone.LocalPathValue.IsPrimitive {X : Type*} [To
   ∀ (a b : (unitInterval)),
     a ≤ b → ∀ i (h : ∀ t, p.subpath a b t ∈ U i), F b = F a * L.value i (p.subpath a b) h
 
+/-- `F` is a primitive of `L` along `p` up to the parameter `r` if the primitive equation holds
+for all subintervals of `[0, r]`. -/
 def FundamentalGroup.VanKampen.Cocone.LocalPathValue.IsPrimitiveUpTo {X : Type*} [TopologicalSpace X]
     {ι : Type*} {G : Type*} [Group G] {U : ι → Set X}
     (L : FundamentalGroup.VanKampen.Cocone.LocalPathValue U G) {x y : X} (p : Path x y)
@@ -324,6 +377,7 @@ def FundamentalGroup.VanKampen.Cocone.LocalPathValue.IsPrimitiveUpTo {X : Type*}
   ∀ (a b : (unitInterval)),
     a ≤ b → b ≤ r → ∀ i (h : ∀ t, p.subpath a b t ∈ U i), F b = F a * L.value i (p.subpath a b) h
 
+/-- The constant function `1` is a primitive up to the parameter `0`. -/
 theorem FundamentalGroup.VanKampen.Cocone.LocalPathValue.isPrimitiveUpTo_zero {X : Type*}
     [TopologicalSpace X] {ι : Type*} {G : Type*} [Group G] {U : ι → Set X}
     (L : FundamentalGroup.VanKampen.Cocone.LocalPathValue U G) {x y : X} (p : Path x y) :
@@ -335,6 +389,8 @@ theorem FundamentalGroup.VanKampen.Cocone.LocalPathValue.isPrimitiveUpTo_zero {X
   subst b
   simp only [Path.subpath_self, L.refl, mul_one]
 
+/-- A primitive up to `a` extends to a primitive up to `b`, provided `p` maps `[a, b]` into a
+single member of the cover. -/
 theorem FundamentalGroup.VanKampen.Cocone.LocalPathValue.exists_primitiveUpTo_step {X : Type*}
     [TopologicalSpace X] {ι : Type*} {G : Type*} [Group G] {U : ι → Set X}
     (L : FundamentalGroup.VanKampen.Cocone.LocalPathValue U G) {x y : X} (p : Path x y)
@@ -387,6 +443,7 @@ theorem FundamentalGroup.VanKampen.Cocone.LocalPathValue.exists_primitiveUpTo_st
         (memi s t has hst htb) (memi a t le_rfl hat htb)]
     exact (mul_assoc _ _ _).symm
 
+/-- Along any path, a local path value for an open cover has a primitive normalized by `F 0 = 1`. -/
 theorem FundamentalGroup.VanKampen.Cocone.LocalPathValue.exists_primitive {X : Type*} [TopologicalSpace X]
     {ι : Type*} {G : Type*} [Group G] {U : ι → Set X}
     (L : FundamentalGroup.VanKampen.Cocone.LocalPathValue U G) (hopen : ∀ i, IsOpen (U i))
@@ -411,6 +468,7 @@ theorem FundamentalGroup.VanKampen.Cocone.LocalPathValue.exists_primitive {X : T
   intro a b hab i hi
   exact hF a b hab (by rw [hn]; exact le_top) i hi
 
+/-- Two primitives of the same local path value along the same path that agree at `0` are equal. -/
 theorem FundamentalGroup.VanKampen.Cocone.LocalPathValue.primitive_unique {X : Type*} [TopologicalSpace X]
     {ι : Type*} {G : Type*} [Group G] {U : ι → Set X}
     (L : FundamentalGroup.VanKampen.Cocone.LocalPathValue U G) (hopen : ∀ i, IsOpen (U i))
@@ -438,6 +496,7 @@ theorem FundamentalGroup.VanKampen.Cocone.LocalPathValue.primitive_unique {X : T
   funext s
   exact hprefix n s (by rw [hn]; exact le_top)
 
+/-- The affine parametrization of `[a, b]` by the unit interval is monotone. -/
 theorem FundamentalGroup.VanKampen.Cocone.convexComb_monotone {a b : (unitInterval)} (hab : a ≤ b) :
     Monotone (Set.Icc.convexComb a b) := by
   intro s t hst
@@ -446,6 +505,7 @@ theorem FundamentalGroup.VanKampen.Cocone.convexComb_monotone {a b : (unitInterv
   have hst' : (s : ℝ) ≤ t := hst
   nlinarith [mul_nonneg (sub_nonneg.mpr hab') (sub_nonneg.mpr hst')]
 
+/-- Composing two affine reparametrizations of the unit interval is again affine. -/
 theorem FundamentalGroup.VanKampen.Cocone.convexComb_comp (a b s t u : (unitInterval)) :
     Set.Icc.convexComb a b (Set.Icc.convexComb s t u) =
       Set.Icc.convexComb (Set.Icc.convexComb a b s) (Set.Icc.convexComb a b t) u := by
@@ -453,6 +513,8 @@ theorem FundamentalGroup.VanKampen.Cocone.convexComb_comp (a b s t u : (unitInte
   simp only [Set.Icc.coe_convexComb]
   ring
 
+/-- Restricting a restriction of a path is the restriction over the correspondingly rescaled
+subinterval. -/
 theorem FundamentalGroup.VanKampen.Cocone.subpath_subpath {X : Type*} [TopologicalSpace X] {x y : X}
     (p : Path x y) (a b s t : (unitInterval)) :
     (p.subpath a b).subpath s t =
@@ -463,9 +525,11 @@ theorem FundamentalGroup.VanKampen.Cocone.subpath_subpath {X : Type*} [Topologic
       p (Set.Icc.convexComb (Set.Icc.convexComb a b s) (Set.Icc.convexComb a b t) u)
   rw [convexComb_comp]
 
+/-- The midpoint `1/2` of the unit interval. -/
 def FundamentalGroup.VanKampen.Cocone.intervalHalf : (unitInterval) :=
   ⟨1 / 2, by norm_num⟩
 
+/-- On the first half of the parameter interval, a concatenation is the first path. -/
 theorem FundamentalGroup.VanKampen.Cocone.trans_convexComb_first_half {X : Type*} [TopologicalSpace X]
     {x y z : X} (p : Path x y) (q : Path y z) (t : (unitInterval)) :
     (p.trans q) (Set.Icc.convexComb 0 intervalHalf t) = p t := by
@@ -478,6 +542,7 @@ theorem FundamentalGroup.VanKampen.Cocone.trans_convexComb_first_half {X : Type*
     ring
   rw [heq, Path.extend_apply]
 
+/-- On the second half of the parameter interval, a concatenation is the second path. -/
 theorem FundamentalGroup.VanKampen.Cocone.trans_convexComb_second_half {X : Type*} [TopologicalSpace X]
     {x y z : X} (p : Path x y) (q : Path y z) (t : (unitInterval)) :
     (p.trans q) (Set.Icc.convexComb intervalHalf 1 t) = q t := by
@@ -490,11 +555,13 @@ theorem FundamentalGroup.VanKampen.Cocone.trans_convexComb_second_half {X : Type
     ring
   rw [heq, Path.extend_apply]
 
+/-- A concatenation passes through the joining point at the parameter `1/2`. -/
 @[simp]
 theorem FundamentalGroup.VanKampen.Cocone.trans_apply_intervalHalf {X : Type*} [TopologicalSpace X]
     {x y z : X} (p : Path x y) (q : Path y z) : (p.trans q) intervalHalf = y := by
   simpa using trans_convexComb_first_half p q 1
 
+/-- The restriction of `p.trans q` to `[0, 1/2]` is `p`. -/
 theorem FundamentalGroup.VanKampen.Cocone.trans_subpath_first_half {X : Type*} [TopologicalSpace X]
     {x y z : X} (p : Path x y) (q : Path y z) :
     (p.trans q).subpath 0 intervalHalf =
@@ -502,6 +569,7 @@ theorem FundamentalGroup.VanKampen.Cocone.trans_subpath_first_half {X : Type*} [
   ext t
   exact trans_convexComb_first_half p q t
 
+/-- The restriction of `p.trans q` to `[1/2, 1]` is `q`. -/
 theorem FundamentalGroup.VanKampen.Cocone.trans_subpath_second_half {X : Type*} [TopologicalSpace X]
     {x y z : X} (p : Path x y) (q : Path y z) :
     (p.trans q).subpath intervalHalf 1 =
@@ -509,6 +577,7 @@ theorem FundamentalGroup.VanKampen.Cocone.trans_subpath_second_half {X : Type*} 
   ext t
   exact trans_convexComb_second_half p q t
 
+/-- Equal paths have equal local values. -/
 theorem FundamentalGroup.VanKampen.Cocone.LocalPathValue.value_eq_of_path_eq {X : Type*}
     [TopologicalSpace X] {ι : Type*} {G : Type*} [Group G] {U : ι → Set X}
     (L : FundamentalGroup.VanKampen.Cocone.LocalPathValue U G) (i : ι) {x y : X} {p q : Path x y}
@@ -516,6 +585,8 @@ theorem FundamentalGroup.VanKampen.Cocone.LocalPathValue.value_eq_of_path_eq {X 
   cases h
   rfl
 
+/-- A primitive along `p` restricts, after normalization at the left endpoint, to a primitive
+along any restriction of `p`. -/
 theorem FundamentalGroup.VanKampen.Cocone.LocalPathValue.isPrimitive_subpath {X : Type*}
     [TopologicalSpace X] {ι : Type*} {G : Type*} [Group G] {U : ι → Set X}
     (L : FundamentalGroup.VanKampen.Cocone.LocalPathValue U G) {x y : X} (p : Path x y)
@@ -537,12 +608,14 @@ theorem FundamentalGroup.VanKampen.Cocone.LocalPathValue.isPrimitive_subpath {X 
   rw [hv, hstep, mul_assoc]
   rfl
 
+/-- The chosen primitive of `L` along `p`, normalized by `F 0 = 1`. -/
 def FundamentalGroup.VanKampen.Cocone.LocalPathValue.transport {X : Type*} [TopologicalSpace X]
     {ι : Type*} {G : Type*} [Group G] {U : ι → Set X}
     (L : FundamentalGroup.VanKampen.Cocone.LocalPathValue U G) (hopen : ∀ i, IsOpen (U i))
     (hcover : (⋃ i, U i) = Set.univ) {x y : X} (p : Path x y) : (unitInterval) → G :=
   (L.exists_primitive hopen hcover p).choose
 
+/-- The chosen primitive takes the value `1` at the parameter `0`. -/
 @[simp]
 theorem FundamentalGroup.VanKampen.Cocone.LocalPathValue.transport_zero {X : Type*} [TopologicalSpace X]
     {ι : Type*} {G : Type*} [Group G] {U : ι → Set X}
@@ -551,6 +624,7 @@ theorem FundamentalGroup.VanKampen.Cocone.LocalPathValue.transport_zero {X : Typ
     L.transport hopen hcover p 0 = 1 :=
   (L.exists_primitive hopen hcover p).choose_spec.1
 
+/-- The chosen primitive is indeed a primitive. -/
 theorem FundamentalGroup.VanKampen.Cocone.LocalPathValue.transport_isPrimitive {X : Type*}
     [TopologicalSpace X] {ι : Type*} {G : Type*} [Group G] {U : ι → Set X}
     (L : FundamentalGroup.VanKampen.Cocone.LocalPathValue U G) (hopen : ∀ i, IsOpen (U i))
@@ -558,6 +632,8 @@ theorem FundamentalGroup.VanKampen.Cocone.LocalPathValue.transport_isPrimitive {
     L.IsPrimitive p (L.transport hopen hcover p) :=
   (L.exists_primitive hopen hcover p).choose_spec.2
 
+/-- The primitive along a restriction of `p` is the primitive along `p`, normalized at the left
+endpoint of the subinterval. -/
 theorem FundamentalGroup.VanKampen.Cocone.LocalPathValue.transport_subpath {X : Type*}
     [TopologicalSpace X] {ι : Type*} {G : Type*} [Group G] {U : ι → Set X}
     (L : FundamentalGroup.VanKampen.Cocone.LocalPathValue U G) (hopen : ∀ i, IsOpen (U i))
@@ -573,11 +649,13 @@ theorem FundamentalGroup.VanKampen.Cocone.LocalPathValue.transport_subpath {X : 
       t
   simp only [transport_zero, Set.Icc.convexComb_zero, inv_mul_cancel]
 
+/-- The global value of a path: the value at the parameter `1` of the chosen primitive. -/
 def FundamentalGroup.VanKampen.Cocone.LocalPathValue.rawValue {X : Type*} [TopologicalSpace X] {ι : Type*}
     {G : Type*} [Group G] {U : ι → Set X} (L : FundamentalGroup.VanKampen.Cocone.LocalPathValue U G)
     (hopen : ∀ i, IsOpen (U i)) (hcover : (⋃ i, U i) = Set.univ) {x y : X} (p : Path x y) : G :=
   L.transport hopen hcover p 1
 
+/-- The global value of a path is unchanged by casting its endpoints. -/
 theorem FundamentalGroup.VanKampen.Cocone.LocalPathValue.rawValue_cast {X : Type*} [TopologicalSpace X]
     {ι : Type*} {G : Type*} [Group G] {U : ι → Set X}
     (L : FundamentalGroup.VanKampen.Cocone.LocalPathValue U G) (hopen : ∀ i, IsOpen (U i))
@@ -587,6 +665,7 @@ theorem FundamentalGroup.VanKampen.Cocone.LocalPathValue.rawValue_cast {X : Type
   cases hy
   rfl
 
+/-- The restriction of a path to the whole interval has the same global value. -/
 @[simp]
 theorem FundamentalGroup.VanKampen.Cocone.LocalPathValue.rawValue_subpath_zero_one {X : Type*}
     [TopologicalSpace X] {ι : Type*} {G : Type*} [Group G] {U : ι → Set X}
@@ -595,6 +674,7 @@ theorem FundamentalGroup.VanKampen.Cocone.LocalPathValue.rawValue_subpath_zero_o
     L.rawValue hopen hcover (p.subpath 0 1) = L.rawValue hopen hcover p := by
   rw [Path.subpath_zero_one, L.rawValue_cast]
 
+/-- The global value of a restriction is the corresponding increment of the primitive. -/
 theorem FundamentalGroup.VanKampen.Cocone.LocalPathValue.rawValue_subpath {X : Type*} [TopologicalSpace X]
     {ι : Type*} {G : Type*} [Group G] {U : ι → Set X}
     (L : FundamentalGroup.VanKampen.Cocone.LocalPathValue U G) (hopen : ∀ i, IsOpen (U i))
@@ -604,6 +684,7 @@ theorem FundamentalGroup.VanKampen.Cocone.LocalPathValue.rawValue_subpath {X : T
       (L.transport hopen hcover p a)⁻¹ * L.transport hopen hcover p b := by
   simpa only [rawValue, Set.Icc.convexComb_one] using L.transport_subpath hopen hcover p a b hab 1
 
+/-- For a path contained in a single member of the cover, the global value is the local value. -/
 theorem FundamentalGroup.VanKampen.Cocone.LocalPathValue.rawValue_local {X : Type*} [TopologicalSpace X]
     {ι : Type*} {G : Type*} [Group G] {U : ι → Set X}
     (L : FundamentalGroup.VanKampen.Cocone.LocalPathValue U G) (hopen : ∀ i, IsOpen (U i))
@@ -619,6 +700,7 @@ theorem FundamentalGroup.VanKampen.Cocone.LocalPathValue.rawValue_local {X : Typ
       ((L.value_eq_of_path_eq i (Path.subpath_zero_one p) hs hc).trans
         (L.value_cast i p p.source p.target hp hc))
 
+/-- The global value of a constant path is trivial. -/
 theorem FundamentalGroup.VanKampen.Cocone.LocalPathValue.rawValue_refl {X : Type*} [TopologicalSpace X]
     {ι : Type*} {G : Type*} [Group G] {U : ι → Set X}
     (L : FundamentalGroup.VanKampen.Cocone.LocalPathValue U G) (hopen : ∀ i, IsOpen (U i))
@@ -628,6 +710,8 @@ theorem FundamentalGroup.VanKampen.Cocone.LocalPathValue.rawValue_refl {X : Type
   have hp : ∀ t, Path.refl x t ∈ U i := fun _ => hi
   rw [L.rawValue_local hopen hcover i (Path.refl x) hp, L.refl]
 
+/-- The global value of a restriction splits as the product of the global values of two
+consecutive restrictions. -/
 theorem FundamentalGroup.VanKampen.Cocone.LocalPathValue.rawValue_subpath_mul {X : Type*}
     [TopologicalSpace X] {ι : Type*} {G : Type*} [Group G] {U : ι → Set X}
     (L : FundamentalGroup.VanKampen.Cocone.LocalPathValue U G) (hopen : ∀ i, IsOpen (U i))
@@ -639,6 +723,7 @@ theorem FundamentalGroup.VanKampen.Cocone.LocalPathValue.rawValue_subpath_mul {X
     L.rawValue_subpath hopen hcover p a b hab, L.rawValue_subpath hopen hcover p b c hbc,
     mul_assoc, mul_inv_cancel_left]
 
+/-- The global value of a concatenation is the product of the global values. -/
 theorem FundamentalGroup.VanKampen.Cocone.LocalPathValue.rawValue_trans {X : Type*} [TopologicalSpace X]
     {ι : Type*} {G : Type*} [Group G] {U : ι → Set X}
     (L : FundamentalGroup.VanKampen.Cocone.LocalPathValue U G) (hopen : ∀ i, IsOpen (U i))
@@ -658,6 +743,7 @@ theorem FundamentalGroup.VanKampen.Cocone.LocalPathValue.rawValue_trans {X : Typ
       rw [FundamentalGroup.VanKampen.Cocone.trans_subpath_first_half,
         FundamentalGroup.VanKampen.Cocone.trans_subpath_second_half, L.rawValue_cast, L.rawValue_cast]
 
+/-- The global path value extending a local path value over an open cover. -/
 def FundamentalGroup.VanKampen.Cocone.LocalPathValue.extension {X : Type*} [TopologicalSpace X]
     {ι : Type*} {G : Type*} [Group G] {U : ι → Set X}
     (L : FundamentalGroup.VanKampen.Cocone.LocalPathValue U G) (hopen : ∀ i, IsOpen (U i))
@@ -668,6 +754,7 @@ def FundamentalGroup.VanKampen.Cocone.LocalPathValue.extension {X : Type*} [Topo
   trans := FundamentalGroup.VanKampen.Cocone.LocalPathValue.rawValue_trans L hopen hcover
   subpath_mul := FundamentalGroup.VanKampen.Cocone.LocalPathValue.rawValue_subpath_mul L hopen hcover
 
+/-- The global path value agrees with the local one on paths contained in a member of the cover. -/
 theorem FundamentalGroup.VanKampen.Cocone.LocalPathValue.extension_extends {X : Type*}
     [TopologicalSpace X] {ι : Type*} {G : Type*} [Group G] {U : ι → Set X}
     (L : FundamentalGroup.VanKampen.Cocone.LocalPathValue U G) (hopen : ∀ i, IsOpen (U i))
@@ -675,6 +762,7 @@ theorem FundamentalGroup.VanKampen.Cocone.LocalPathValue.extension_extends {X : 
   intro i x y p hp
   exact FundamentalGroup.VanKampen.Cocone.LocalPathValue.rawValue_local L hopen hcover i p hp
 
+/-- The horizontal path `t ↦ F (s, t)` of a square `F`. -/
 def FundamentalGroup.VanKampen.Cocone.squareHorizontal {X : Type*} [TopologicalSpace X]
     (F : C((unitInterval) × (unitInterval), X)) (s : (unitInterval)) : Path (F (s, 0)) (F (s, 1))
     where
@@ -683,6 +771,7 @@ def FundamentalGroup.VanKampen.Cocone.squareHorizontal {X : Type*} [TopologicalS
   source' := rfl
   target' := rfl
 
+/-- The vertical path `s ↦ F (s, t)` of a square `F`. -/
 def FundamentalGroup.VanKampen.Cocone.squareVertical {X : Type*} [TopologicalSpace X]
     (F : C((unitInterval) × (unitInterval), X)) (t : (unitInterval)) : Path (F (0, t)) (F (1, t))
     where
@@ -691,6 +780,8 @@ def FundamentalGroup.VanKampen.Cocone.squareVertical {X : Type*} [TopologicalSpa
   source' := rfl
   target' := rfl
 
+/-- Any two paths in the square `[0,1] × [0,1]` with the same endpoints are homotopic, by the
+straight-line homotopy taken coordinatewise. -/
 def FundamentalGroup.VanKampen.Cocone.squarePathHomotopy {x y : (unitInterval) × (unitInterval)}
     (p q : Path x y) : Path.Homotopy p q
     where
@@ -710,6 +801,7 @@ def FundamentalGroup.VanKampen.Cocone.squarePathHomotopy {x y : (unitInterval) �
   map_one_left u := by simp
   prop' r u hu := by rcases hu with rfl | rfl <;> simp
 
+/-- A convex combination of two points of `[s, t]` lies in `[s, t]`. -/
 theorem FundamentalGroup.VanKampen.Cocone.convexComb_mem_Icc {s t u v : (unitInterval)}
     (hu : u ∈ Set.Icc s t) (hv : v ∈ Set.Icc s t) (r : (unitInterval)) :
     Set.Icc.convexComb u v r ∈ Set.Icc s t := by
@@ -719,6 +811,7 @@ theorem FundamentalGroup.VanKampen.Cocone.convexComb_mem_Icc {s t u v : (unitInt
       (show (v : ℝ) ∈ Set.Icc (s : ℝ) (t : ℝ) from hv) (unitInterval.one_minus_nonneg r)
       (unitInterval.nonneg r) (sub_add_cancel _ _)
 
+/-- The straight-line homotopy between two paths inside a rectangle stays inside that rectangle. -/
 theorem FundamentalGroup.VanKampen.Cocone.squarePathHomotopy_mem_rectangle
     {x y : (unitInterval) × (unitInterval)} (p q : Path x y) (s t a b : (unitInterval))
     (hp : ∀ u, p u ∈ Set.Icc s t ×ˢ Set.Icc a b) (hq : ∀ u, q u ∈ Set.Icc s t ×ˢ Set.Icc a b)
@@ -726,16 +819,22 @@ theorem FundamentalGroup.VanKampen.Cocone.squarePathHomotopy_mem_rectangle
     squarePathHomotopy p q u ∈ Set.Icc s t ×ˢ Set.Icc a b :=
   ⟨convexComb_mem_Icc (hp u.2).1 (hq u.2).1 u.1, convexComb_mem_Icc (hp u.2).2 (hq u.2).2 u.1⟩
 
+/-- The path from `(s, a)` to `(t, b)` in the square that goes vertically first and then
+horizontally. -/
 def FundamentalGroup.VanKampen.Cocone.rectangleHorizontalVertical (s t a b : (unitInterval)) :
     Path (s, a) (t, b) :=
   ((squareHorizontal (ContinuousMap.id ((unitInterval) × (unitInterval))) s).subpath a b).trans
     ((squareVertical (ContinuousMap.id ((unitInterval) × (unitInterval))) b).subpath s t)
 
+/-- The path from `(s, a)` to `(t, b)` in the square that goes horizontally first and then
+vertically. -/
 def FundamentalGroup.VanKampen.Cocone.rectangleVerticalHorizontal (s t a b : (unitInterval)) :
     Path (s, a) (t, b) :=
   ((squareVertical (ContinuousMap.id ((unitInterval) × (unitInterval))) a).subpath s t).trans
     ((squareHorizontal (ContinuousMap.id ((unitInterval) × (unitInterval))) t).subpath a b)
 
+/-- Pushing the first boundary path of a rectangle through `F` gives the corresponding
+concatenation of restrictions of the edges of `F`. -/
 theorem FundamentalGroup.VanKampen.Cocone.rectangleHorizontalVertical_map {X : Type*} [TopologicalSpace X]
     (F : C((unitInterval) × (unitInterval), X)) (s t a b : (unitInterval)) :
     (rectangleHorizontalVertical s t a b).map F.continuous =
@@ -746,6 +845,8 @@ theorem FundamentalGroup.VanKampen.Cocone.rectangleHorizontalVertical_map {X : T
       ((squareVertical (ContinuousMap.id ((unitInterval) × (unitInterval))) b).subpath s t)
       F.continuous
 
+/-- Pushing the second boundary path of a rectangle through `F` gives the corresponding
+concatenation of restrictions of the edges of `F`. -/
 theorem FundamentalGroup.VanKampen.Cocone.rectangleVerticalHorizontal_map {X : Type*} [TopologicalSpace X]
     (F : C((unitInterval) × (unitInterval), X)) (s t a b : (unitInterval)) :
     (rectangleVerticalHorizontal s t a b).map F.continuous =
@@ -756,6 +857,7 @@ theorem FundamentalGroup.VanKampen.Cocone.rectangleVerticalHorizontal_map {X : T
       ((squareHorizontal (ContinuousMap.id ((unitInterval) × (unitInterval))) t).subpath a b)
       F.continuous
 
+/-- The first boundary path of a rectangle stays inside that rectangle. -/
 theorem FundamentalGroup.VanKampen.Cocone.rectangleHorizontalVertical_mem (s t a b : (unitInterval))
     (hst : s ≤ t) (hab : a ≤ b) :
     ∀ u, rectangleHorizontalVertical s t a b u ∈ Set.Icc s t ×ˢ Set.Icc a b := by
@@ -765,6 +867,7 @@ theorem FundamentalGroup.VanKampen.Cocone.rectangleHorizontalVertical_mem (s t a
   · intro u
     exact ⟨⟨Set.Icc.le_convexComb hst u, Set.Icc.convexComb_le hst u⟩, hab, le_rfl⟩
 
+/-- The second boundary path of a rectangle stays inside that rectangle. -/
 theorem FundamentalGroup.VanKampen.Cocone.rectangleVerticalHorizontal_mem (s t a b : (unitInterval))
     (hst : s ≤ t) (hab : a ≤ b) :
     ∀ u, rectangleVerticalHorizontal s t a b u ∈ Set.Icc s t ×ˢ Set.Icc a b := by
@@ -774,6 +877,8 @@ theorem FundamentalGroup.VanKampen.Cocone.rectangleVerticalHorizontal_mem (s t a
   · intro u
     exact ⟨⟨hst, le_rfl⟩, Set.Icc.le_convexComb hab u, Set.Icc.convexComb_le hab u⟩
 
+/-- The homotopy, inside the image of a rectangle under `F`, between the two ways of traversing
+its boundary. -/
 def FundamentalGroup.VanKampen.Cocone.rectangleBoundaryHomotopy {X : Type*} [TopologicalSpace X]
     (F : C((unitInterval) × (unitInterval), X)) (s t a b : (unitInterval)) :
     Path.Homotopy (((squareHorizontal F s).subpath a b).trans ((squareVertical F b).subpath s t))
@@ -783,6 +888,8 @@ def FundamentalGroup.VanKampen.Cocone.rectangleBoundaryHomotopy {X : Type*} [Top
         F).cast
     (rectangleHorizontalVertical_map F s t a b) (rectangleVerticalHorizontal_map F s t a b)
 
+/-- The boundary homotopy of a rectangle is `F` applied to the straight-line homotopy in the
+square. -/
 theorem FundamentalGroup.VanKampen.Cocone.rectangleBoundaryHomotopy_apply {X : Type*} [TopologicalSpace X]
     (F : C((unitInterval) × (unitInterval), X)) (s t a b : (unitInterval))
     (u : (unitInterval) × (unitInterval)) :
@@ -792,6 +899,8 @@ theorem FundamentalGroup.VanKampen.Cocone.rectangleBoundaryHomotopy_apply {X : T
           (rectangleVerticalHorizontal s t a b) u) :=
   rfl
 
+/-- The boundary homotopy of a rectangle stays inside any set containing the image of the
+rectangle under `F`. -/
 theorem FundamentalGroup.VanKampen.Cocone.rectangleBoundaryHomotopy_mem {X : Type*} [TopologicalSpace X]
     (F : C((unitInterval) × (unitInterval), X)) (s t a b : (unitInterval)) (hst : s ≤ t)
     (hab : a ≤ b) {A : Set X} (hcell : ∀ u ∈ Set.Icc s t ×ˢ Set.Icc a b, F u ∈ A)
@@ -803,6 +912,8 @@ theorem FundamentalGroup.VanKampen.Cocone.rectangleBoundaryHomotopy_mem {X : Typ
         (rectangleHorizontalVertical_mem s t a b hst hab)
         (rectangleVerticalHorizontal_mem s t a b hst hab) u)
 
+/-- For a rectangle whose image under `F` lies in one member of the cover, the two ways of
+traversing its boundary have the same value: the commutation relation of a single cell. -/
 theorem FundamentalGroup.VanKampen.Cocone.PathValue.square_cell_of_local {X : Type*} [TopologicalSpace X]
     {ι G : Type*} [Group G] (V : FundamentalGroup.VanKampen.Cocone.PathValue X G) {U : ι → Set X}
     (L : FundamentalGroup.VanKampen.Cocone.LocalPathValue U G) (hExt : V.Extends L)
@@ -845,6 +956,7 @@ theorem FundamentalGroup.VanKampen.Cocone.PathValue.square_cell_of_local {X : Ty
       (hExt i _ hq).symm
     _ = _ := V.trans _ _
 
+/-- A constant path has trivial value. -/
 theorem FundamentalGroup.VanKampen.Cocone.PathValue.value_eq_one_of_constant {X : Type*}
     [TopologicalSpace X] {G : Type*} [Group G] (V : FundamentalGroup.VanKampen.Cocone.PathValue X G)
     {x y : X} (p : Path x y) (hp : ∀ t, p t = x) : V.value p = 1 := by
@@ -855,6 +967,8 @@ theorem FundamentalGroup.VanKampen.Cocone.PathValue.value_eq_one_of_constant {X 
     exact hp t
   rw [heq, V.refl]
 
+/-- Chaining the cell relations along a subdivision of one side of the square gives the
+commutation relation for the whole strip. -/
 theorem FundamentalGroup.VanKampen.Cocone.PathValue.square_strip {X : Type*} [TopologicalSpace X]
     {G : Type*} [Group G] (V : FundamentalGroup.VanKampen.Cocone.PathValue X G)
     (F : C((unitInterval) × (unitInterval), X)) (s t : (unitInterval)) (d : ℕ → (unitInterval))
@@ -903,6 +1017,8 @@ theorem FundamentalGroup.VanKampen.Cocone.PathValue.square_strip {X : Type*} [To
         rw [hprev]
       _ = _ := mul_assoc _ _ _
 
+/-- The horizontal path of a homotopy at the parameter `s` has the value of the intermediate
+path `H.eval s`. -/
 theorem FundamentalGroup.VanKampen.Cocone.PathValue.value_squareHorizontal_homotopy {X : Type*}
     [TopologicalSpace X] {G : Type*} [Group G] (V : FundamentalGroup.VanKampen.Cocone.PathValue X G)
     {x y : X} {p q : Path x y} (H : Path.Homotopy p q) (s : (unitInterval)) :
@@ -915,6 +1031,7 @@ theorem FundamentalGroup.VanKampen.Cocone.PathValue.value_squareHorizontal_homot
     rfl
   rw [heq, V.value_cast]
 
+/-- The vertical edge of a homotopy at `t = 0` is constant, hence has trivial value. -/
 theorem FundamentalGroup.VanKampen.Cocone.PathValue.value_squareVertical_homotopy_zero {X : Type*}
     [TopologicalSpace X] {G : Type*} [Group G] (V : FundamentalGroup.VanKampen.Cocone.PathValue X G)
     {x y : X} {p q : Path x y} (H : Path.Homotopy p q) (s t : (unitInterval)) :
@@ -924,6 +1041,7 @@ theorem FundamentalGroup.VanKampen.Cocone.PathValue.value_squareVertical_homotop
   change H (_, 0) = H (s, 0)
   simp only [Path.Homotopy.source]
 
+/-- The vertical edge of a homotopy at `t = 1` is constant, hence has trivial value. -/
 theorem FundamentalGroup.VanKampen.Cocone.PathValue.value_squareVertical_homotopy_one {X : Type*}
     [TopologicalSpace X] {G : Type*} [Group G] (V : FundamentalGroup.VanKampen.Cocone.PathValue X G)
     {x y : X} {p q : Path x y} (H : Path.Homotopy p q) (s t : (unitInterval)) :
@@ -933,6 +1051,8 @@ theorem FundamentalGroup.VanKampen.Cocone.PathValue.value_squareVertical_homotop
   change H (_, 1) = H (s, 1)
   simp only [Path.Homotopy.target]
 
+/-- A path value that extends a homotopy-invariant local path value over an open cover is itself
+homotopy invariant: this is the subdivision-of-a-homotopy step of van Kampen's theorem. -/
 theorem FundamentalGroup.VanKampen.Cocone.PathValue.value_eq_of_homotopy_of_open_cover {X : Type*}
     [TopologicalSpace X] {ι : Type*} {G : Type*} [Group G] {U : ι → Set X}
     (V : FundamentalGroup.VanKampen.Cocone.PathValue X G)
@@ -964,6 +1084,8 @@ theorem FundamentalGroup.VanKampen.Cocone.PathValue.value_eq_of_homotopy_of_open
   have hfinish := hwalk n
   simpa only [hd0, hn n le_rfl, Path.Homotopy.eval_zero, Path.Homotopy.eval_one] using hfinish
 
+/-- A path value extending a homotopy-invariant local path value over an open cover is homotopy
+invariant. -/
 theorem FundamentalGroup.VanKampen.Cocone.PathValue.homotopyInvariant_of_open_cover {X : Type*}
     [TopologicalSpace X] {ι : Type*} {G : Type*} [Group G] {U : ι → Set X}
     (V : FundamentalGroup.VanKampen.Cocone.PathValue X G)
@@ -974,17 +1096,21 @@ theorem FundamentalGroup.VanKampen.Cocone.PathValue.homotopyInvariant_of_open_co
   obtain ⟨H⟩ := h
   exact V.value_eq_of_homotopy_of_open_cover L hopen hcover hExt hL p q H
 
+/-- The global path value attached to a compatible pair of homomorphisms out of `π₁(U)` and
+`π₁(V)`. -/
 def FundamentalGroup.VanKampen.Cocone.TwoOpenCover.globalPathValue {X : Type*} [TopologicalSpace X]
     {G : Type*} [Group G] (D : FundamentalGroup.VanKampen.Cocone.TwoOpenCover X) (fU : D.UGroup →* G)
     (fV : D.VGroup →* G) (hf : D.Compatible fU fV) : FundamentalGroup.VanKampen.Cocone.PathValue X G :=
   (D.localPathValue fU fV hf).extension D.chart_open D.chart_cover
 
+/-- The global path value extends the local one. -/
 theorem FundamentalGroup.VanKampen.Cocone.TwoOpenCover.globalPathValue_extends {X : Type*}
     [TopologicalSpace X] {G : Type*} [Group G] (D : FundamentalGroup.VanKampen.Cocone.TwoOpenCover X)
     (fU : D.UGroup →* G) (fV : D.VGroup →* G) (hf : D.Compatible fU fV) :
     (D.globalPathValue fU fV hf).Extends (D.localPathValue fU fV hf) :=
   (D.localPathValue fU fV hf).extension_extends D.chart_open D.chart_cover
 
+/-- The global path value attached to a compatible pair is homotopy invariant. -/
 theorem FundamentalGroup.VanKampen.Cocone.TwoOpenCover.globalPathValue_homotopyInvariant {X : Type*}
     [TopologicalSpace X] {G : Type*} [Group G] (D : FundamentalGroup.VanKampen.Cocone.TwoOpenCover X)
     (fU : D.UGroup →* G) (fV : D.VGroup →* G) (hf : D.Compatible fU fV) :
@@ -993,12 +1119,15 @@ theorem FundamentalGroup.VanKampen.Cocone.TwoOpenCover.globalPathValue_homotopyI
     (D.localPathValue fU fV hf) D.chart_open D.chart_cover (D.globalPathValue_extends fU fV hf)
     (D.localPathValue_homotopyInvariant fU fV hf)
 
+/-- The homomorphism `π₁(X) → G` induced by a compatible pair of homomorphisms out of `π₁(U)`
+and `π₁(V)`: the existence half of the van Kampen universal property. -/
 def FundamentalGroup.VanKampen.Cocone.TwoOpenCover.lift {X : Type*} [TopologicalSpace X] {G : Type*}
     [Group G] (D : FundamentalGroup.VanKampen.Cocone.TwoOpenCover X) (fU : D.UGroup →* G)
     (fV : D.VGroup →* G) (hf : D.Compatible fU fV) : FundamentalGroup X D.base →* G :=
   (globalPathValue D fU fV hf).fundamentalGroupHom
     (globalPathValue_homotopyInvariant D fU fV hf) D.base
 
+/-- On the class of a loop contained in one chart, the lift is the inverse of the local value. -/
 theorem FundamentalGroup.VanKampen.Cocone.TwoOpenCover.lift_mk_of_mem {X : Type*} [TopologicalSpace X]
     {G : Type*} [Group G] (D : FundamentalGroup.VanKampen.Cocone.TwoOpenCover X) (fU : D.UGroup →* G)
     (fV : D.VGroup →* G) (hf : D.Compatible fU fV) (i : Bool) (p : Path D.base D.base)
@@ -1006,6 +1135,7 @@ theorem FundamentalGroup.VanKampen.Cocone.TwoOpenCover.lift_mk_of_mem {X : Type*
     D.lift fU fV hf (Path.Homotopic.Quotient.mk p) = (D.localValue fU fV i p hp)⁻¹ :=
   congrArg (fun a : G => a⁻¹) (D.globalPathValue_extends fU fV hf i p hp)
 
+/-- The lift restricts to `fU` along `π₁(U) → π₁(X)`. -/
 theorem FundamentalGroup.VanKampen.Cocone.TwoOpenCover.lift_comp_inclusionU {X : Type*}
     [TopologicalSpace X] {G : Type*} [Group G] (D : FundamentalGroup.VanKampen.Cocone.TwoOpenCover X)
     (fU : D.UGroup →* G) (fV : D.VGroup →* G) (hf : D.Compatible fU fV) :
@@ -1017,6 +1147,7 @@ theorem FundamentalGroup.VanKampen.Cocone.TwoOpenCover.lift_comp_inclusionU {X :
   rw [D.localValue_map_loop, inv_inv] at h
   exact h
 
+/-- The lift restricts to `fV` along `π₁(V) → π₁(X)`. -/
 theorem FundamentalGroup.VanKampen.Cocone.TwoOpenCover.lift_comp_inclusionV {X : Type*}
     [TopologicalSpace X] {G : Type*} [Group G] (D : FundamentalGroup.VanKampen.Cocone.TwoOpenCover X)
     (fU : D.UGroup →* G) (fV : D.VGroup →* G) (hf : D.Compatible fU fV) :
