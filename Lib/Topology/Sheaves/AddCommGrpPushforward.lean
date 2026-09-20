@@ -12,9 +12,14 @@ public import Mathlib.Topology.Sheaves.Functors
 /-!
 # Additivity of abelian-sheaf pushforward
 
-Pushforward along a continuous map is additive on sheaves of abelian groups.  This unconditional
-instance is owned here so that generic sheaf and derived-functor developments share one canonical
-typeclass declaration.
+Pushforward of sheaves of abelian groups along a continuous map is an additive functor: it
+preserves the addition of sheaf morphisms.  This is the additivity used whenever the pushforward
+is fed to a derived functor.
+
+## References
+
+* R. Godement, *Topologie algébrique et théorie des faisceaux*, II.4 (direct images of sheaves)
+* R. Hartshorne, *Algebraic Geometry*, II.1 and III.8 (`f_*` on sheaves of abelian groups)
 -/
 
 @[expose] public section
@@ -23,11 +28,13 @@ open CategoryTheory
 
 namespace TopCat.Sheaf
 
-variable {X Y : TopCat.{0}} (f : X ⟶ Y)
+universe v
+
+variable {X Y : TopCat.{v}} (f : X ⟶ Y)
 
 /-- Pushforward of sheaves of abelian groups is an additive functor. -/
 instance pushforwardAdditive :
-    (TopCat.Sheaf.pushforward AddCommGrpCat.{0} f).Additive where
+    (TopCat.Sheaf.pushforward AddCommGrpCat.{v} f).Additive where
   map_add := by intros; rfl
 
 end TopCat.Sheaf
