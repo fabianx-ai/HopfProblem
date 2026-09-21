@@ -157,10 +157,16 @@ moved's `Matrix.Pivot`/`Module.Presentation`/`sheetSum` items; the ~17 unattribu
 
 Eleven Opus 5 agents closed the §3 list: every code-side and docstring/citation finding of the
 twenty-one reviews, and every receipt correction (22 files, dated correction sections). Merge receipt
-and per-agent receipts in `Lib/reports/review-7-8/fixes/`; merged head `9a6e125a`, chain green, 3,302
-probes standard (the four moved `SphereTwo` theorems now probed by `Hopf/Proof/AxiomAudit.lean`), census
-123, pins 293 → 269, envdiff reconciled (5 deletions with twins, 3 re-additions, 38 universe lifts).
+and per-agent receipts in `Lib/reports/review-7-8/fixes/`; merged head `9a6e125a`, chain green, 3,310 + 4
+probes standard (the four moved `SphereTwo` theorems now probed by `Hopf/Proof/AxiomAudit.lean`; "3,302" stood
+here until the fix-round review), census 123, pins 293 → 269, envdiff reconciled (5 deletions with twins, 3
+re-additions, 38 changed types = 28 universe lifts + 10 downstream declarations with unchanged statements).
 Two of the reviewers' own claims were corrected by the fixers and recorded: packet 09's reviewer had the
 limit-preserving adjunction backwards (`j_! ⊣ j^*` gives limits), and packet 02's lifts went further than
 the reviewer's sample (all 12 coefficient pins, not 3). What the fixers left is listed in
 `fixes/MERGE.md` §"Left".
+Two §3 items were closed differently from the list and are recorded here after the fix-round review:
+packet 09's "II Ex. 1.19 → drop" became "cf. II Ex. 1.19, the closed-embedding special case", and packet
+08's "Ex. 8.1 → 8.2" became "cf. III.8" (the §3 list itself carried Ex. 8.1 with opposite arrows under
+packets 08 and 09; packet 09's reading — Ex. 8.1 = degenerate Leray — is the right one). The fix round was
+itself reviewed by three Fable reviewers: `Lib/reviews/REVIEW-FIX.md`.

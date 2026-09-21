@@ -2,10 +2,15 @@
 
 The reviewer pass (`Lib/reviews/REVIEW-7-8.md`, twenty-one Fable reviewers) accepted all receipts with
 findings and found nothing unsound; the fix round (§5 there, eleven Opus agents, receipts in
-`Lib/reports/review-7-8/fixes/`, merge receipt `fixes/MERGE.md`) closed the whole §3 list. Head: chain
-green, 3,302 probes standard, census 123, pins 269. Open, in order:
-(1) the small residue in `fixes/MERGE.md` §"Left": the manuscript-jargon sweep (`textbook`, `M13`,
-`C29i`, `C30` in ~27 files), the three Weibel/Godement numbers, three duplicate `import` lines;
+`Lib/reports/review-7-8/fixes/`, merge receipt `fixes/MERGE.md`) closed the whole §3 list, and three Fable
+reviewers then checked the fix round (`Lib/reviews/REVIEW-FIX.md`: nothing unsound, no rule broken, receipt
+and coordinator-text errors only). Head: chain green, 3,314 probes standard, census 123, pins 269. Open, in order:
+(1) the small residue in `fixes/MERGE.md` §"Left" (each bullet with its reproducing grep; corrected after the
+fix-round review `Lib/reviews/REVIEW-FIX.md`): the manuscript-jargon sweep (`M`/`C29x` labels in three
+`DerivedGlobalSections`/`Cech` files, `textbook` in 27 files), the three open citation numbers (Weibel Ex.
+2.4.5, Godement II.3.9, Bredon III Thm. 1.1), three duplicate `import` lines, the receipt-text errors
+listed in REVIEW-FIX §3 (envdiff rows misread as auxiliaries, Hartshorne Ex. 8.1 misdescribed, one
+`CleanStrips` docstring, `dualHomotopyEquiv`'s liftable pin);
 (2) the monolith wave, `Lib/reports/round-7/judgement/monoliths.md` (25 files; `SurgeryCollapse`/
 `OrderedCancellation` first, they hold the last Morse D material);
 (3) the owner decisions: chain-interface coefficients (the `ULift ℤ` obstruction is real and a protocol
