@@ -543,3 +543,86 @@ theorem RiemannSphere.closedDiscHalfPlaneHomeomorph_strict_iff {a b c : ℂ} (ha
       ‖(z : ℂ)‖ < 1 := by
   rw [closedDiscHalfPlaneHomeomorph_apply]
   exact MobiusCircle.orientation_mul_crossRatio_im_pos_iff ha hb hc hab.symm hbc hac z.property.2
+
+/-- A two-point fractional-linear coordinate has a pole-safe quantitative inverse
+near its first marked point. The inverse identities hold at every point away
+from the second marked point; the local norm bound includes the zero numerator.
+This is the general distinct-point form of the reviewed reverse-coordinate
+argument (P65–81; G2a/G2b/G2c), independent of any triangle or disc map. -/
+theorem Complex.fractionalLinear_reverse_local (α β : ℂ) (hαβ : α ≠ β)
+    (R : ℝ) (hR : 0 < R) :
+    let s := ‖α - β‖
+    let U := fun z : ℂ => (z - α) / (z - β)
+    let C := fun u : ℂ => (α - β * u) / (1 - u)
+    let h := min (s / 4) (s * R / 4)
+    0 < s ∧ 0 < h ∧
+    (∀ z : ℂ, ‖z - α‖ < h →
+      s - ‖z - α‖ ≤ ‖z - β‖ ∧ s / 2 < s - ‖z - α‖ ∧
+      ‖U z‖ ≤ 2 * ‖z - α‖ / s ∧ 2 * ‖z - α‖ / s < R / 2 ∧
+      R / 2 < R ∧ z ≠ β ∧ U z ≠ 1) ∧
+    (∀ z : ℂ, z ≠ β →
+      1 - U z = (α - β) / (z - β) ∧ (α - β) / (z - β) ≠ 0 ∧
+      α - β * U z = (α - β) * z / (z - β) ∧ C (U z) = z) := by
+  -- G2a (P76–81): subtract with the source pole excluded, then divide.
+  have inverse_algebra (α β : ℂ) (hαβ : α ≠ β) (z : ℂ) (hz : z ≠ β) :
+      1 - (z - α) / (z - β) = (α - β) / (z - β) ∧
+      (α - β) / (z - β) ≠ 0 ∧
+      α - β * ((z - α) / (z - β)) = (α - β) * z / (z - β) ∧
+      (α - β * ((z - α) / (z - β))) / (1 - (z - α) / (z - β)) = z := by
+    have hden : z - β ≠ 0 := sub_ne_zero.mpr hz
+    have hnum : α - β ≠ 0 := sub_ne_zero.mpr hαβ
+    have hfirst : 1 - (z - α) / (z - β) = (α - β) / (z - β) := by
+      field_simp
+      <;> ring
+    have hsecond : α - β * ((z - α) / (z - β)) = (α - β) * z / (z - β) := by
+      field_simp
+      <;> ring
+    refine ⟨hfirst, div_ne_zero hnum hden, hsecond, ?_⟩
+    rw [hfirst, hsecond]
+    field_simp
+  -- G2b (P65–73): reverse triangle and the two source-radius restrictions.
+  have local_bounds (α β : ℂ) (hαβ : α ≠ β) (R : ℝ) (hR : 0 < R) :
+      let s := ‖α - β‖
+      let h := min (s / 4) (s * R / 4)
+      0 < s ∧ 0 < h ∧ ∀ z : ℂ, ‖z - α‖ < h →
+        s - ‖z - α‖ ≤ ‖z - β‖ ∧ s / 2 < s - ‖z - α‖ ∧
+        ‖(z - α) / (z - β)‖ ≤ 2 * ‖z - α‖ / s ∧
+        2 * ‖z - α‖ / s < R / 2 ∧ R / 2 < R := by
+    dsimp only
+    have hs : 0 < ‖α - β‖ := norm_pos_iff.mpr (sub_ne_zero.mpr hαβ)
+    have hh : 0 < min (‖α - β‖ / 4) (‖α - β‖ * R / 4) :=
+      lt_min (div_pos hs (by norm_num)) (div_pos (mul_pos hs hR) (by norm_num))
+    refine ⟨hs, hh, ?_⟩
+    intro z hz
+    have hzquarter := lt_of_lt_of_le hz (min_le_left _ _)
+    have hzR := lt_of_lt_of_le hz (min_le_right _ _)
+    have hd : ‖α - β‖ - ‖z - α‖ ≤ ‖z - β‖ := by
+      have hu := norm_add_le (z - β) (α - z)
+      have he : (z - β) + (α - z) = α - β := by ring
+      rw [he, norm_sub_rev α z] at hu
+      linarith
+    have hhalf : ‖α - β‖ / 2 < ‖α - β‖ - ‖z - α‖ := by linarith
+    have hn : ‖(z - α) / (z - β)‖ ≤ 2 * ‖z - α‖ / ‖α - β‖ := by
+      rw [norm_div]
+      calc
+        ‖z - α‖ / ‖z - β‖ ≤ ‖z - α‖ / (‖α - β‖ / 2) :=
+          div_le_div_of_nonneg_left (norm_nonneg _) (half_pos hs) (hhalf.trans_le hd).le
+        _ = 2 * ‖z - α‖ / ‖α - β‖ := by ring
+    have hsmall : 2 * ‖z - α‖ / ‖α - β‖ < R / 2 := by
+      apply (div_lt_iff₀ hs).mpr
+      nlinarith
+    exact ⟨hd, hhalf, hn, hsmall, by linarith⟩
+  -- G2c: assemble local bounds and the unrestricted off-pole inverse.
+  dsimp only
+  obtain ⟨hs, hh, hb⟩ := local_bounds α β hαβ R hR
+  refine ⟨hs, hh, ?_, fun z hz => inverse_algebra α β hαβ z hz⟩
+  intro z hz
+  obtain ⟨hd, hdhalf, hn, hsmall, hhalf⟩ := hb z hz
+  have hden : 0 < ‖z - β‖ := (half_pos hs).trans (hdhalf.trans_le hd)
+  have hzb : z ≠ β := sub_ne_zero.mp (norm_pos_iff.mp hden)
+  have hi := inverse_algebra α β hαβ z hzb
+  have hu : (z - α) / (z - β) ≠ 1 := by
+    intro heq
+    have hz0 : (α - β) / (z - β) = 0 := by rw [← hi.1, heq]; simp
+    exact hi.2.1 hz0
+  exact ⟨hd, hdhalf, hn, hsmall, hhalf, hzb, hu⟩

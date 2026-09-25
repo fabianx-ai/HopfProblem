@@ -7441,3 +7441,6 @@ is an evidence command rather than library content.
 #check AddMonoidHom.restrict_left_eq_zero_iff_of_signed_exact
 #print axioms AddMonoidHom.restrict_left_eq_zero_iff_of_signed_exact
 
+
+#check Complex.fractionalLinear_reverse_local
+#print axioms Complex.fractionalLinear_reverse_local
