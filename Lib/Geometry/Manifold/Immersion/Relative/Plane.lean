@@ -526,6 +526,11 @@ theorem ManifoldImmersion.exists_relative_compact_embedding_twoDimensional {E G 
         (hgpderiv (e.symm x) (hpreK x hx))
 
 
+/-- Relative embedding with avoidance for a two-dimensional source: when `dim E = 2`, `dim N ≥ 5` and
+`dim E + dim Y < dim N`, a smooth map `f : E → N` which is an injective immersion on `K ∩ C` and
+whose image on `K ∩ C` lies off the closed image of `g : Y → N` except on `B ⊆ interior C` is
+homotopic rel `C` to a map which is a closed embedding and an immersion on the compact set `K` and
+avoids the image of `g` on `K \ B`. -/
 theorem
   ManifoldImmersion.exists_relative_embedded_avoidance_of_clean_neighborhood_of_isClosed_range
     {E E' G H H' Y N : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E]
