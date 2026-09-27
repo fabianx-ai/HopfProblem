@@ -127,7 +127,7 @@ theorem MorseCancellation.nonempty_longitudinalTubeMotion {V E H M : Type*} [Nor
       (CompactIccSpace.isCompact_Icc.prod β.hasCompactSupport.isCompact) hsource
       (longitudinalBlend_fixed_outside Real.smoothTransition hDfix)
   have hcInv : 1 / c ∈ Set.Ioo (0 : ℝ) 1 := ⟨one_div_pos.mpr hcpos, (div_lt_one hcpos).mpr hc⟩
-  obtain ⟨τ, hτ, hτvalue, hτrate, hτunique⟩ := exists_unique_smoothTransition_time hcInv
+  obtain ⟨τ, hτ, hτvalue, hτrate, hτunique⟩ := Real.smoothTransition.exists_unique_eq_of_mem_Ioo hcInv
   refine
     ⟨{  profile := D
         cutoff := β

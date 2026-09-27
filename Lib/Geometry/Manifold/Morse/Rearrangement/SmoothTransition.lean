@@ -22,11 +22,11 @@ Mathlib's `Real.smoothTransition` (`Mathlib/Analysis/SpecialFunctions/SmoothTran
 is the smooth step `expNegInvGlue x / (expNegInvGlue x + expNegInvGlue (1 - x))`, with
 `contDiff`, `zero`, `one`, `nonneg`, `le_one` and `pos_of_pos`; it lacks the derivative
 formula and strict monotonicity. Here: `expNegInvGlue` has derivative `t⁻¹ ^ 2 * expNegInvGlue t`
-(`MorseCancellation.expNegInvGlue_hasDerivAt`), the derivative of `Real.smoothTransition` is
-positive on `Ioo 0 1` (`smoothTransition_deriv_pos`), so `Real.smoothTransition` is strictly
-monotone on `Icc 0 1` (`smoothTransition_strictMonoOn`), and every level `c ∈ Ioo 0 1` is
+(`expNegInvGlue.hasDerivAt`), the derivative of `Real.smoothTransition` is
+positive on `Ioo 0 1` (`Real.smoothTransition.deriv_pos`), so `Real.smoothTransition` is strictly
+monotone on `Icc 0 1` (`Real.smoothTransition.strictMonoOn`), and every level `c ∈ Ioo 0 1` is
 attained at a unique time `τ ∈ Ioo 0 1`, with positive derivative there
-(`exists_unique_smoothTransition_time`).
+(`Real.smoothTransition.exists_unique_eq_of_mem_Ioo`).
 -/
 
 open Set Function Filter Manifold Topology
@@ -38,12 +38,12 @@ open scoped ContDiff
 /-! ### Derivative of the smooth transition -/
 
 /-- The exponential glue `exp(-1/t)` is differentiable. -/
-theorem MorseCancellation.expNegInvGlue_hasDerivAt (t : ℝ) :
+theorem expNegInvGlue.hasDerivAt (t : ℝ) :
     HasDerivAt expNegInvGlue (t⁻¹ ^ 2 * expNegInvGlue t) t := by
   simpa using expNegInvGlue.hasDerivAt_polynomial_eval_inv_mul (1 : Polynomial ℝ) t
 
 /-- The smooth transition has positive derivative on the interior. -/
-theorem MorseCancellation.smoothTransition_deriv_pos {t : ℝ} (ht : t ∈ Set.Ioo (0 : ℝ) 1) :
+theorem Real.smoothTransition.deriv_pos {t : ℝ} (ht : t ∈ Set.Ioo (0 : ℝ) 1) :
     0 < deriv Real.smoothTransition t := by
   let a := expNegInvGlue t
   let b := expNegInvGlue (1 - t)
@@ -53,10 +53,10 @@ theorem MorseCancellation.smoothTransition_deriv_pos {t : ℝ} (ht : t ∈ Set.I
   have hb : 0 < b := expNegInvGlue.pos_of_pos (sub_pos.mpr ht.2)
   have ha' : 0 < a' := mul_pos (sq_pos_of_ne_zero (inv_ne_zero ht.1.ne')) ha
   have hb' : 0 < b' := mul_pos (sq_pos_of_ne_zero (inv_ne_zero (sub_pos.mpr ht.2).ne')) hb
-  have hA : HasDerivAt expNegInvGlue a' t := expNegInvGlue_hasDerivAt t
+  have hA : HasDerivAt expNegInvGlue a' t := expNegInvGlue.hasDerivAt t
   have hB : HasDerivAt (fun s : ℝ => expNegInvGlue (1 - s)) (-b') t := by
     convert!
-      (expNegInvGlue_hasDerivAt (1 - t)).comp t
+      (expNegInvGlue.hasDerivAt (1 - t)).comp t
         ((hasDerivAt_const t (1 : ℝ)).sub (hasDerivAt_id t)) using
       1
     dsimp only [b', b]
@@ -71,16 +71,16 @@ theorem MorseCancellation.smoothTransition_deriv_pos {t : ℝ} (ht : t ∈ Set.I
   · exact sq_pos_of_pos (add_pos ha hb)
 
 /-- The smooth transition is strictly monotone on its domain. -/
-theorem MorseCancellation.smoothTransition_strictMonoOn :
+theorem Real.smoothTransition.strictMonoOn :
     StrictMonoOn Real.smoothTransition (Set.Icc (0 : ℝ) 1) := by
   apply
     strictMonoOn_of_deriv_pos (convex_Icc (0 : ℝ) 1) Real.smoothTransition.continuous.continuousOn
   intro t ht
-  apply smoothTransition_deriv_pos
+  apply Real.smoothTransition.deriv_pos
   simpa only [interior_Icc] using ht
 
 /-- Each level is crossed at a unique transition time. -/
-theorem MorseCancellation.exists_unique_smoothTransition_time {c : ℝ} (hc : c ∈ Set.Ioo (0 : ℝ) 1) :
+theorem Real.smoothTransition.exists_unique_eq_of_mem_Ioo {c : ℝ} (hc : c ∈ Set.Ioo (0 : ℝ) 1) :
     ∃ τ : ℝ,
       τ ∈ Set.Ioo (0 : ℝ) 1 ∧
         Real.smoothTransition τ = c ∧
@@ -100,6 +100,7 @@ theorem MorseCancellation.exists_unique_smoothTransition_time {c : ℝ} (hc : c 
     rw [h, Real.smoothTransition.one] at heq
     linarith [hc.2]
   have hτI : τ ∈ Set.Ioo (0 : ℝ) 1 := ⟨lt_of_le_of_ne hτ.1 (Ne.symm hτ0), lt_of_le_of_ne hτ.2 hτ1⟩
-  refine ⟨τ, hτI, heq, smoothTransition_deriv_pos hτI, ?_⟩
+  refine ⟨τ, hτI, heq, Real.smoothTransition.deriv_pos hτI, ?_⟩
   intro t ht
-  exact ⟨fun h => smoothTransition_strictMonoOn.injOn ht hτ (h.trans heq.symm), fun h => h ▸ heq⟩
+  exact
+    ⟨fun h => Real.smoothTransition.strictMonoOn.injOn ht hτ (h.trans heq.symm), fun h => h ▸ heq⟩
