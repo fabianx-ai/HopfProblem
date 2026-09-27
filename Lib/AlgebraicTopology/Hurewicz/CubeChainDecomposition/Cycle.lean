@@ -61,7 +61,7 @@ theorem Hurewicz.CubeTriangulation.sum_face_trichotomy {m : ℕ} {A : Type*}
 by the transposition gluing of the Kuhn triangulation, and the two boundary-face
 contributions are constant over the chambers with vanishing total orientation. This is the
 combinatorial core of "the cube chain of a loop is a cycle" and of the evaluation-cancel
-lemmas (textbook §9). -/
+lemmas (cf. Hatcher, §4.2). -/
 theorem Hurewicz.CubeTriangulation.sum_cubeOrientation_faces {m : ℕ} {A : Type*}
     [AddCommGroup A]
     (T : Equiv.Perm (Fin (m + 2)) → Fin (m + 3) → A)

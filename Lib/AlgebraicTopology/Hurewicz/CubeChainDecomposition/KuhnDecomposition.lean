@@ -138,7 +138,8 @@ theorem Hurewicz.cubeChain_two {X : Type} [TopologicalSpace X] {x : X}
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
 /-- The induction step of the Kuhn decomposition: from the decomposition in degree `k + 2` to
-degree `k + 3`, through the prism realization (textbook §10.3). -/
+degree `k + 3`, through the prism realization (the prism decomposition of Hatcher, proof of
+Theorem 2.10). -/
 theorem Hurewicz.cubeChain_eq_sum_simplices_step {k : ℕ} {X : Type} [TopologicalSpace X]
     {x : X}
     (ih : ∀ {Y : Type} [TopologicalSpace Y] {y : Y} (q : GenLoop (Fin ((k + 1) + 1)) Y y),
@@ -173,8 +174,8 @@ attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
 /-- The Kuhn decomposition of the cube chain in every degree: the chain of a based `n`-cube is
 the alternating sum of its `n!` permutation simplices. This is the chain identity
-`[Π n] = Σ_σ sign(σ)·σ_e` of the lane's textbook (§9, L5), proved by induction through the
-prism realization (§10.3). -/
+`[Π n] = Σ_σ sign(σ)·σ_e` behind the Hurewicz theorem (Hatcher, proof of Theorem 4.32; cross
+product as in §3.B), proved by induction through the prism realization. -/
 theorem Hurewicz.cubeChain_eq_sum_simplices (n : ℕ) {X : Type} [TopologicalSpace X]
     {x : X} (p : GenLoop (Fin n) X x) :
     Hurewicz.cubeChain p = ∑ e : Equiv.Perm (Fin n),
