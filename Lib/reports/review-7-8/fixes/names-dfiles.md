@@ -124,7 +124,11 @@ On the lakefile: the `Hopf` lean_lib has no `roots`/root module, but `lake build
 Hopf.Proof.AxiomAudit` resolves and builds the file directly (3094 jobs, green), so **no**
 import had to be added to `Hopf/Proof/Final.lean`.  Like `Lib/AxiomAudit.lean`, the file is
 deliberately imported by nothing, and it uses plain `import` (not `module` / `public import`),
-as `Lib/AxiomAudit.lean` does.
+as `Lib/AxiomAudit.lean` does.  (corrected 2026-09-27: the two sentences above described the
+file as built "directly"; precisely, `Hopf/Proof/AxiomAudit.lean` — like `Lib/AxiomAudit.lean` —
+is built by explicit module target only: it is not in `defaultTargets`, the `Hopf` lean_lib has
+no root module, and no `.lean` file imports it, so `lake build`, `lake build Lib` and the
+`Solution`/`S6`/`Challenge` targets never elaborate it; `review/B-structure.md` finding 1.)
 
 ### 5. `r8-dfiles-c` finding 4 — `w4-w1-solution` reroute  — **noted, no code change**
 
