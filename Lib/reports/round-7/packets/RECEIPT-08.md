@@ -255,6 +255,10 @@ Lean file was changed by them.
 7. **Docstring and citation findings are code fixes, not receipt fixes.**
    `basedFibreInclusion_isClosedMap`'s docstring ("when the product is compact Hausdorff"; the
    declaration is under `omit [CompactSpace S] in`, so it is the *source* `X` that is compact),
-   Hartshorne "III Ex. 8.1" in `FiniteClosedPushforward/AcyclicResolution.lean` (Ex. 8.2 is the
-   closer one; 8.1 is the sheafification description of `R^i f_*`), and the unconfirmed Iversen III.2
+   Hartshorne "III Ex. 8.1" in `FiniteClosedPushforward/AcyclicResolution.lean` (corrected
+   2026-09-27: the parenthetical read "Ex. 8.2 is the closer one; 8.1 is the sheafification
+   description of `R^i f_*`"; the sheafification description is III **Prop.** 8.1, and III
+   **Ex.** 8.1 is the degenerate Leray statement, apt for the file's argument — `fix/p0708`
+   replaced the number by the section reference "cf. III.8", which stays; `review-7-8/fixes/review/
+   C-prose.md` finding 2), and the unconfirmed Iversen III.2
    / Godement II.5.10.1 pointers are on the `Lib/reviews/REVIEW-7-8.md` §3 list.
