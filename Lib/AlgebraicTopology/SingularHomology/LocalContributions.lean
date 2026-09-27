@@ -290,8 +290,7 @@ theorem CoverLocalContributions.leftHomologyMap_in_coordinates
 /-- Surjectivity of the actual regular attachment sum and vanishing of filling
 homology in degree `n+1` make the signed Mayer–Vietoris left map surjective.
 The preimage uses the inverse of the fixed overlap coordinates; negative filling
-components vanish in their own groups. Textbook: `CENTER_NATIVE_H5_INJECTIVITY_TEXTBOOK.md`,
-HI1–HI4. No regular or lower-filling vanishing is required. -/
+components vanish in their own groups. No regular or lower-filling vanishing is required. -/
 theorem CoverLocalContributions.leftHomologyMap_surjective_of_regular_surjective
     {X : Type} [TopologicalSpace X] {ι : Type} [Fintype ι]
     (U : Set X) (V : ι → Set X) (hU : IsOpen U) (hV : ∀ i, IsOpen (V i))
@@ -347,8 +346,8 @@ theorem CoverLocalContributions.leftHomologyMap_surjective_of_regular_surjective
 
 /-- Under regular-sum surjectivity and filling degree-`n+1` vanishing, the
 actual cover connecting map from degree `n+1` to degree `n` is injective.
-Exactness makes the intervening right map zero. Textbook:
-`CENTER_NATIVE_H5_INJECTIVITY_TEXTBOOK.md`, HI5–HI6. -/
+Exactness of the Mayer–Vietoris sequence at the ambient term makes the intervening right
+map zero. -/
 theorem CoverLocalContributions.connectingHomomorphism_injective_of_regular_surjective
     {X : Type} [TopologicalSpace X] {ι : Type} [Fintype ι]
     (U : Set X) (V : ι → Set X) (hU : IsOpen U) (hV : ∀ i, IsOpen (V i))
@@ -392,8 +391,7 @@ with the kernel of the sum of regular attachment maps.
 The proof transfers the local vanishings, uses exactness at the ambient and overlap
 terms, and applies the signed local-coordinate identity. Its forward value is the
 chosen connecting map followed by the fixed overlap-coordinate equivalence.
-This is the general argument in `CENTER_NATIVE_CONNECTING_KERNEL_TEXTBOOK.md`,
-sections CK1–CK4; it includes degree zero and empty finite families. -/
+The argument includes degree zero and empty finite families. -/
 noncomputable def CoverLocalContributions.connectingRegularKernelEquiv
     {X : Type} [TopologicalSpace X] {ι : Type} [Fintype ι]
     (U : Set X) (V : ι → Set X) (hU : IsOpen U) (hV : ∀ i, IsOpen (V i))
