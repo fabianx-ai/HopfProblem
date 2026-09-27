@@ -70,7 +70,7 @@ private noncomputable def pointChainHomotopyEquiv :
     (ChainComplex.alternatingConstHomotopyEquiv pointFreeModule)
 
 private noncomputable def dualHomotopyEquiv
-    (A : AddCommGrpCat.{w}) {K L : ChainComplex (ModuleCat.{0} ℤ) ℕ}
+    (A : AddCommGrpCat.{w}) {K L : ChainComplex (ModuleCat.{u} ℤ) ℕ}
     (e : HomotopyEquiv K L) :
     HomotopyEquiv (dualComplex A L) (dualComplex A K) where
   hom := dualMap A e.hom
