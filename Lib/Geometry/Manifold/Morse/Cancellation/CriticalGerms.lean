@@ -30,6 +30,8 @@ Removing a pair of indices `k`, `k + 1` lowers the two counts by one and fixes
 the others (`nativeMorseCount_after_pair_removal`,
 `nativeMorseCount_adjacent_pair`), which is the bookkeeping of the
 cancellation theorem, Milnor, *Lectures on the h-cobordism theorem*, §5.
+The band strictly between two consecutive critical values contains no
+critical point (`surgery_pair_inner_band_regular`).
 
 ## Tags
 
@@ -323,6 +325,9 @@ theorem MorseCancellation.nativeMorseCount_adjacent_pair {E M : Type*} [NormedAd
 
 end
 
+/-- If no critical value of `f` lies strictly between the values of the critical points `p` and
+`q`, then a band `f ⁻¹' (Set.Icc a b)` with `f p < a` and `b < f q` contains no critical point of
+`f`. -/
 theorem MorseCancellation.surgery_pair_inner_band_regular {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ}
     (p q : ManifoldMorse.criticalPoints E f)
