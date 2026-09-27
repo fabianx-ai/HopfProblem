@@ -35,7 +35,7 @@ open scoped ContDiff
 
 @[expose] public noncomputable section
 
-/-! 
+/-! ### Derivative of the smooth transition -/
 
 /-- The exponential glue `exp(-1/t)` is differentiable. -/
 theorem MorseCancellation.expNegInvGlue_hasDerivAt (t : ℝ) :

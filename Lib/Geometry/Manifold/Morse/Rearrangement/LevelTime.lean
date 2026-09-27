@@ -44,7 +44,7 @@ open scoped ContDiff
 
 @[expose] public noncomputable section
 
-/-! 
+/-! ### Flow lines and level crossings -/
 
 /-- The native flow is the chart flow on the positive half-line. -/
 theorem FlowCancellation.native_flow_eq_on_positive_halfline {E M : Type*}

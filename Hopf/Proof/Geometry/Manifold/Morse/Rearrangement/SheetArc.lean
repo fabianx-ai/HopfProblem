@@ -27,7 +27,7 @@ open scoped ContDiff
 
 @[expose] public noncomputable section
 
-/-! 
+/-! ### Sheet arc tubes in dimension five -/
 
 /-- An embedded arc with injective differential admits a tubular sheet chart. -/
 theorem MorseCancellation.exists_sheet_arc_tube {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
@@ -130,7 +130,7 @@ theorem MorseCancellation.exists_sheet_arc_tube {E M : Type*} [NormedAddCommGrou
     ⟨R, ε, hε, Φ, hprod, fun t => (haxis t).trans (hΨaxis t), hgl, hgr, fun z hz =>
       hΞO (htarget hz).1⟩
 
-/-! ### Longitudinal tube motions -/
+/-! ### Clean arcs between two sheets -/
 
 /-- Two endpoint sheets admit a clean arc avoiding a closed set. -/
 theorem MorseCancellation.exists_clean_two_sheet_arc_avoiding {E M X Y Z : Type*} [NormedAddCommGroup E]

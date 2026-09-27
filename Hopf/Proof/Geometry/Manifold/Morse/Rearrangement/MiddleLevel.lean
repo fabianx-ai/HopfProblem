@@ -24,7 +24,7 @@ open scoped ContDiff
 
 @[expose] public noncomputable section
 
-/-! 
+/-! ### The middle level in dimension six -/
 
 /-- In dimension six the middle regular level is path connected. -/
 theorem AdaptedWindows.pathConnectedSpace_middle_level {E M : Type*} [NormedAddCommGroup E]
