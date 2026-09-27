@@ -6,16 +6,7 @@ Authors: Fabian Franz
 module
 
 public import Mathlib
-public import Lib.Geometry.Manifold.Morse.Existence
-public import Lib.Geometry.Manifold.RegularLevel
-public import Lib.Geometry.Manifold.WhitneyEmbedding
-public import Lib.Geometry.Manifold.Collar
-public import Lib.Geometry.Manifold.Morse.SurgeryWindows
-public import Lib.Geometry.Manifold.Morse.CubicFlow
-public import Lib.Geometry.Manifold.Transversality.Basic
-public import Lib.Geometry.Manifold.Immersion.Relative
-public import Lib.Geometry.Manifold.LocalDiffeomorph
-public import Lib.Geometry.Manifold.Morse.Rearrangement.TransverseChart
+public import Lib.Geometry.Manifold.Morse.Rearrangement
 /-!
 # Sheet arcs in a five-dimensional level (proof-specific)
 
