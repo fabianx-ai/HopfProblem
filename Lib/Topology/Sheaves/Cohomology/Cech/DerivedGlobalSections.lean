@@ -11,9 +11,10 @@ Its inverse is the fixed reverse Ext comparison after the inverse model morphism
 Both composites are identity delta morphisms. The whole degree-zero transformation
 is the Čech gluing identification followed by the inverse derived normalization,
 using the same intervening Ext evaluation. Čech-source universality identifies
-any comparison with this normalization with that fixed composite (textbook M13,
-lines 1864–1878, C29i). C30 is the forward name of this characterization; the later
-original two-source construction is not a premise here.
+any comparison with this normalization with that fixed composite (the two-sided
+Čech/derived comparison).  The forward comparison constructed directly in the section
+*The original two-source comparison* below is a consequence of this characterization,
+not a premise of it.
 
 The construction of Ext, its effacement, and its fixed isomorphism with derived
 global sections use only their earlier injective-resolution and constant-sheaf
@@ -36,22 +37,21 @@ local instance : HasExt.{u}
 namespace TopologicalSpace.OpenCover.SetOpenCover
 
 /-- The fixed Čech-to-derived-sections morphism is α followed by Φ. Composition
-retains coefficient naturality and every original positive connecting square
-(textbook M13, C29i). -/
+retains coefficient naturality and every original positive connecting square. -/
 def cechDerivedGlobalSectionsHom : CategoryTheory.CohomologicalDeltaFunctor.Hom
     (cechCohomologyDeltaFunctor X) (derivedGlobalSectionsDeltaFunctor X) :=
   CategoryTheory.CohomologicalDeltaFunctor.Hom.comp
     (cechCohomologyToExt X) (extDerivedGlobalSectionsHom X)
 
 /-- The reverse fixed morphism is Φ inverse followed by β, with the same natural
-coefficient maps and positive connecting compatibility (textbook M13, C29i). -/
+coefficient maps and positive connecting compatibility. -/
 def cechDerivedGlobalSectionsInv : CategoryTheory.CohomologicalDeltaFunctor.Hom
     (derivedGlobalSectionsDeltaFunctor X) (cechCohomologyDeltaFunctor X) :=
   CategoryTheory.CohomologicalDeltaFunctor.Hom.comp
     (extDerivedGlobalSectionsInv X) (extToCechCohomology X)
 
 /-- Every whole degree natural transformation factors through the same α and Φ,
-not through independently chosen component isomorphisms (textbook M13, C29i). -/
+not through independently chosen component isomorphisms. -/
 theorem cechDerivedGlobalSectionsHom_app (n : ℕ) :
     (cechDerivedGlobalSectionsHom X).app n =
       (cechCohomologyToExt X).app n ≫
@@ -61,7 +61,7 @@ theorem cechDerivedGlobalSectionsHom_app (n : ℕ) :
     extDerivedGlobalSectionsHom_app]
 
 /-- The whole reverse degree transformation is the inverse fixed model map
-followed by the fixed Ext-to-Čech map (textbook M13, C29i). -/
+followed by the fixed Ext-to-Čech map. -/
 theorem cechDerivedGlobalSectionsInv_app (n : ℕ) :
     (cechDerivedGlobalSectionsInv X).app n =
       (extFunctorObjIsoDerivedGlobalSections X n).inv ≫
@@ -73,7 +73,7 @@ theorem cechDerivedGlobalSectionsInv_app (n : ℕ) :
 
 /-- Forward followed by reverse is the identity on Čech as a whole delta morphism.
 First cancel Φ followed by its inverse on Ext, then α followed by β on Čech;
-the reverse composite identity is not used (textbook M13, two-sided comparison). -/
+the reverse composite identity is not used. -/
 theorem cechDerivedGlobalSectionsHom_comp_inv :
     CategoryTheory.CohomologicalDeltaFunctor.Hom.comp
       (cechDerivedGlobalSectionsHom X) (cechDerivedGlobalSectionsInv X) =
@@ -97,7 +97,7 @@ theorem cechDerivedGlobalSectionsHom_comp_inv :
 
 /-- Reverse followed by forward is the identity on derived global sections.
 Independently cancel β followed by α on Ext and then Φ inverse followed by Φ
-on derived sections (textbook M13, the other two-sided identity). -/
+on derived sections. -/
 theorem cechDerivedGlobalSectionsInv_comp_hom :
     CategoryTheory.CohomologicalDeltaFunctor.Hom.comp
       (cechDerivedGlobalSectionsInv X) (cechDerivedGlobalSectionsHom X) =
@@ -134,8 +134,8 @@ theorem cechDerivedGlobalSectionsHom_app_zero :
 
 /-- Every other delta morphism with the same whole degree-zero normalization
 equals this fixed composite. Universality of the Čech SOURCE verifies its
-characterization; it never selects a replacement Φ or uses the later C30
-construction as a premise (textbook M13). -/
+characterization; it never selects a replacement Φ or uses the direct two-source
+construction of the following section as a premise. -/
 theorem cechDerivedGlobalSectionsHom_unique
     (η : CategoryTheory.CohomologicalDeltaFunctor.Hom
       (cechCohomologyDeltaFunctor X) (derivedGlobalSectionsDeltaFunctor X))
@@ -150,18 +150,20 @@ theorem cechDerivedGlobalSectionsHom_unique
 ## The original two-source comparison
 
 Čech universality extends the fixed identification with literal global sections
-to the original forward comparison C30. Independently, universality of actual
-derived global sections extends the inverse degree-zero identification.
+to the original forward comparison `cechToDerivedGlobalSections`. Independently,
+universality of actual derived global sections extends the inverse degree-zero
+identification.
 Each composite extends its own source identity in degree zero; uniqueness from
 that source gives its whole delta-morphism identity. Thus every degree is a
-natural isomorphism, proving the textbook comparison statement (4). Both original
+natural isomorphism: Čech cohomology and derived global sections agree in every
+degree on a paracompact Hausdorff space, for every abelian sheaf. Both original
 morphisms retain all coefficient naturalities and original positive connecting
 squares. Any other normalized comparison equals the original forward morphism.
 Only afterward is this comparison identified with the earlier fixed Ext composite.
 No Godement comparison is used in this construction or its canonicity.
 -/
 
-/-- The original forward comparison C30, selected by Čech-source universality
+/-- The original forward comparison, selected by Čech-source universality
 from χ followed by κ inverse over the same literal global-sections functor. -/
 def cechToDerivedGlobalSections : CategoryTheory.CohomologicalDeltaFunctor.Hom
     (cechCohomologyDeltaFunctor X) (derivedGlobalSectionsDeltaFunctor X) :=
@@ -226,9 +228,10 @@ theorem derivedGlobalSectionsToCech_comp_forward :
     derivedGlobalSectionsToCech_app_zero, cechToDerivedGlobalSections_app_zero]
   erw [Category.assoc, Iso.inv_hom_id_assoc, Iso.hom_inv_id]
 
-/-- Every degree of C30 is a coefficient-natural isomorphism, with the original
-forward and reverse morphisms as its arrows. Both independently proved whole
-identities supply its inverse laws, proving the comparison statement (4). -/
+/-- Every degree of the original forward comparison is a coefficient-natural
+isomorphism, with the original forward and reverse morphisms as its arrows. Both
+independently proved whole identities supply its inverse laws: Čech cohomology and
+derived global sections agree in every degree. -/
 def cechCohomologyIsoDerivedGlobalSections (n : ℕ) :
     ((cechCohomologyDeltaFunctor X).T n).obj ≅
       ((derivedGlobalSectionsDeltaFunctor X).T n).obj := by
@@ -244,7 +247,8 @@ def cechCohomologyIsoDerivedGlobalSections (n : ℕ) :
       hom_inv_id := cDegree
       inv_hom_id := dDegree }
 
-/-- The natural isomorphism's entire forward arrow is the original C30 map;
+/-- The natural isomorphism's entire forward arrow is the original forward comparison
+`cechToDerivedGlobalSections`;
 its coefficient components require no unfolding of the selected comparison. -/
 theorem cechCohomologyIsoDerivedGlobalSections_hom (n : ℕ) :
     (cechCohomologyIsoDerivedGlobalSections X n).hom =
@@ -261,7 +265,8 @@ theorem cechCohomologyIsoDerivedGlobalSections_inv (n : ℕ) :
   rfl
 
 /-- Canonicity: any other delta morphism equal to the fixed global-sections
-identification in degree zero is C30, by Čech-source uniqueness. -/
+identification in degree zero is `cechToDerivedGlobalSections`, by Čech-source
+uniqueness. -/
 theorem cechToDerivedGlobalSections_unique
     (η : CategoryTheory.CohomologicalDeltaFunctor.Hom
       (cechCohomologyDeltaFunctor X) (derivedGlobalSectionsDeltaFunctor X))
