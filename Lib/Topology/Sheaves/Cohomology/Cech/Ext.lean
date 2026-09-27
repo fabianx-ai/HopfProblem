@@ -50,7 +50,7 @@ def extToCechCohomology : Hom (ofExt ((constantSheaf (Opens.grothendieckTopology
 
 /-- The entire degree-zero natural transformation of the Čech-source extension is
 χ followed by ε inverse. This fixes its normalization on every coefficient sheaf;
-source universality supplies uniqueness (textbook 1835–1836). -/
+source universality supplies uniqueness. -/
 theorem cechCohomologyToExt_app_zero :
     (cechCohomologyToExt X).app 0 = (cechCohomologyDeltaFunctor_zeroIsoGlobalSections X).hom ≫ (TopCat.ConstantSheaf.extFunctorObjZeroIsoGlobalSections X).inv := by
   unfold cechCohomologyToExt
@@ -59,7 +59,7 @@ theorem cechCohomologyToExt_app_zero :
 
 /-- The entire degree-zero natural transformation of the native-source extension is
 ε followed by χ inverse, with the same literal global-sections functor between them.
-Source universality supplies uniqueness (textbook 1837–1838). -/
+Source universality supplies uniqueness. -/
 theorem extToCechCohomology_app_zero :
     (extToCechCohomology X).app 0 = (TopCat.ConstantSheaf.extFunctorObjZeroIsoGlobalSections X).hom ≫ (cechCohomologyDeltaFunctor_zeroIsoGlobalSections X).inv := by
   unfold extToCechCohomology
