@@ -5,10 +5,7 @@ Authors: Fabian Franz
 -/
 module
 
-public import Lib.AlgebraicTopology.SingularHomology.Chains
-public import Lib.AlgebraicTopology.SingularHomology.ModuleHomology
 public import Lib.AlgebraicTopology.SingularHomology.CrossInsert
-public import Lib.AlgebraicTopology.SingularHomology.CircleProduct
 public import Lib.AlgebraicTopology.SingularHomology.CrossProduct.Multilinear
 public import Lib.AlgebraicTopology.SingularHomology.CrossProduct.Formal
 public import Lib.AlgebraicTopology.SingularHomology.CrossProduct.Affine

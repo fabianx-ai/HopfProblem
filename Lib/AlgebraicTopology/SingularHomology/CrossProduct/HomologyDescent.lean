@@ -7,8 +7,6 @@ module
 
 public import Lib.AlgebraicTopology.SingularHomology.Chains
 public import Lib.AlgebraicTopology.SingularHomology.ModuleHomology
-public import Lib.AlgebraicTopology.SingularHomology.CrossInsert
-public import Lib.AlgebraicTopology.SingularHomology.CircleProduct
 
 open Set Function Filter Manifold Topology
 
