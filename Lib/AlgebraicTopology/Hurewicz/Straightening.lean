@@ -318,8 +318,7 @@ def Hurewicz.normalizationTower {X : Type} [TopologicalSpace X] [SimplyConnected
 
 /-- The normalization homotopy at degree `n`: a coherent family straightening singular
 `n`-simplices, starting at the identity and ending at the normalized (boundary-based) simplex.
-This is the general-`n` form of the per-degree `normalization*SimplexHomotopy` compositions
-(textbook §8). -/
+This is the general-`n` form of the per-degree `normalization*SimplexHomotopy` compositions. -/
 def Hurewicz.normalizationHomotopy {X : Type} [TopologicalSpace X] [SimplyConnectedSpace X]
     (x : X) (n : ℕ) (hpi : ∀ j, 2 ≤ j → j < n → Subsingleton (π_ j X x)) :
     SingularChains.SingularSimplex X n → C((unitInterval) × SingularChains.Simplex n, X) :=
