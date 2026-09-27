@@ -43,7 +43,7 @@ This module only imports the pieces of the construction:
 * `CrossProduct.HomologyDescent` — descending a map on cycles to homology.
 * `CrossProduct.Homology` — `SingularHomology.crossProductHomology` and its degenerations at `n = 0`.
 * `CrossProduct.Swap` — graded commutativity, and the left-degree-two product
-  `PeriodTorusHigherHomology.crossProductHomologyTwoOne`.
+  `SingularHomology.crossProductHomologyTwoOne`.
 * `CrossProduct.Associator` — associativity and cyclicity of the triple product of `1`-classes.
 * `CrossProduct.Naturality` — naturality of the homology cross product.
 

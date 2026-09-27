@@ -26,14 +26,14 @@ the vertex and face formulas (`SingularHomology.productAffineSimplex_vertex`, `_
 chain map commutes with the boundary (`SingularHomology.productAffineChainMap_boundary`), and how
 it transforms under products of affine maps (`SingularHomology.prodMap_productAffineSimplex`,
 `.inducedChain_productAffineChainMap`) and under the factor swap
-(`PeriodTorusHigherHomology.prodSwap_productAffineSimplex`,
+(`SingularHomology.prodSwap_productAffineSimplex`,
 `.inducedChain_swap_productAffineChainMap`).
 
-The same for triple products `Δᵖ × (Δ^q × Δʳ)`: `PeriodTorusHigherHomology.tripleAffineSimplex`,
+The same for triple products `Δᵖ × (Δ^q × Δʳ)`: `SingularHomology.tripleAffineSimplex`,
 `.tripleAffineChainMap` (with `_face`, `_simplex`, `_boundary`), the affine maps of pairs
-`PeriodTorusHigherHomology.affineProductLeft`, `.affineProductRight` from `Δᵃ × Δᵇ` into a triple
+`SingularHomology.affineProductLeft`, `.affineProductRight` from `Δᵃ × Δᵇ` into a triple
 product, and their compatibility with the affine chain maps
-(`PeriodTorusHigherHomology.inducedChain_affineProductLeft`, `.inducedChain_affineProductRight`,
+(`SingularHomology.inducedChain_affineProductLeft`, `.inducedChain_affineProductRight`,
 `.inducedChain_tripleAffineChainMap`).
 
 These are the affine (linear) singular simplices of Hatcher, *Algebraic Topology*, §2.1 and §3.B,
@@ -202,7 +202,7 @@ theorem SingularHomology.inducedChain_productAffineChainMap {m p q r s : ℕ}
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
 /-- Composing the factor swap with a product affine simplex is the product affine simplex of the swapped vertices. -/
-theorem PeriodTorusHigherHomology.prodSwap_productAffineSimplex {n p q : ℕ}
+theorem SingularHomology.prodSwap_productAffineSimplex {n p q : ℕ}
     (v : Fin (n + 1) → SingularChains.Simplex p × SingularChains.Simplex q) :
     (ContinuousMap.prodSwap :
             C(SingularChains.Simplex p × SingularChains.Simplex q,
@@ -214,7 +214,7 @@ theorem PeriodTorusHigherHomology.prodSwap_productAffineSimplex {n p q : ℕ}
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
 /-- Chains induced along the factor swap transfer through the product affine chain map. -/
-theorem PeriodTorusHigherHomology.inducedChain_swap_productAffineChainMap (p q n : ℕ)
+theorem SingularHomology.inducedChain_swap_productAffineChainMap (p q n : ℕ)
     (c :
       SingularMayerVietoris.FormalChains (SingularChains.Simplex p × SingularChains.Simplex q)
         (n + 1)) :
@@ -236,14 +236,14 @@ theorem PeriodTorusHigherHomology.inducedChain_swap_productAffineChainMap (p q n
     intro v
     simp only [LinearMap.comp_apply, SingularHomology.productAffineChainMap_simplex,
       SingularChains.inducedChain_simplex, SingularMayerVietoris.formalMap_simplex,
-      PeriodTorusHigherHomology.prodSwap_productAffineSimplex]
+      SingularHomology.prodSwap_productAffineSimplex]
   exact LinearMap.congr_fun h c
 
 
 /-! ### Affine simplices in a triple product -/
 
 /-- The triple product affine simplex: the affine `n`-simplex in `Simplex p × (Simplex q × Simplex r)` with the given paired vertices. -/
-def PeriodTorusHigherHomology.tripleAffineSimplex {n p q r : ℕ}
+def SingularHomology.tripleAffineSimplex {n p q r : ℕ}
     (v :
       Fin (n + 1) →
         SingularChains.Simplex p × (SingularChains.Simplex q × SingularChains.Simplex r)) :
@@ -252,12 +252,12 @@ def PeriodTorusHigherHomology.tripleAffineSimplex {n p q r : ℕ}
   (SingularMayerVietoris.affineSimplex (fun i => (v i).1)).prodMk
     (SingularHomology.productAffineSimplex (fun i => (v i).2))
 /-- Faces of the triple product affine simplex are computed vertexwise. -/
-theorem PeriodTorusHigherHomology.tripleAffineSimplex_face {n p q r : ℕ}
+theorem SingularHomology.tripleAffineSimplex_face {n p q r : ℕ}
     (v :
       Fin (n + 2) → SingularChains.Simplex p × (SingularChains.Simplex q × SingularChains.Simplex r))
     (i : Fin (n + 2)) :
-    (PeriodTorusHigherHomology.tripleAffineSimplex v).comp (SingularChains.simplexFace n i) =
-      PeriodTorusHigherHomology.tripleAffineSimplex (fun j => v (i.succAbove j)) := by
+    (SingularHomology.tripleAffineSimplex v).comp (SingularChains.simplexFace n i) =
+      SingularHomology.tripleAffineSimplex (fun j => v (i.succAbove j)) := by
   apply ContinuousMap.ext
   intro t
   apply Prod.ext
@@ -270,39 +270,39 @@ theorem PeriodTorusHigherHomology.tripleAffineSimplex_face {n p q r : ℕ}
           f t)
         (SingularHomology.productAffineSimplex_face (fun j => (v j).2) i)
 /-- The affine chain map on the triple product of standard simplices. -/
-def PeriodTorusHigherHomology.tripleAffineChainMap (p q r n : ℕ) :
+def SingularHomology.tripleAffineChainMap (p q r n : ℕ) :
     SingularMayerVietoris.FormalChains
         (SingularChains.Simplex p × (SingularChains.Simplex q × SingularChains.Simplex r))
         (n + 1) →ₗ[ℤ]
       SingularChains.Chains
         (SingularChains.Simplex p × (SingularChains.Simplex q × SingularChains.Simplex r)) n :=
-  SingularMayerVietoris.formalLift fun v => SingularChains.simplexChain _ n (PeriodTorusHigherHomology.tripleAffineSimplex v)
+  SingularMayerVietoris.formalLift fun v => SingularChains.simplexChain _ n (SingularHomology.tripleAffineSimplex v)
 /-- The triple affine chain map evaluates formal simplices to the chain of the triple affine simplex. -/
 @[simp]
-theorem PeriodTorusHigherHomology.tripleAffineChainMap_simplex (p q r n : ℕ)
+theorem SingularHomology.tripleAffineChainMap_simplex (p q r n : ℕ)
     (v :
       Fin (n + 1) →
         SingularChains.Simplex p × (SingularChains.Simplex q × SingularChains.Simplex r)) :
-    PeriodTorusHigherHomology.tripleAffineChainMap p q r n (SingularMayerVietoris.formalSimplex v) =
-      SingularChains.simplexChain _ n (PeriodTorusHigherHomology.tripleAffineSimplex v) :=
+    SingularHomology.tripleAffineChainMap p q r n (SingularMayerVietoris.formalSimplex v) =
+      SingularChains.simplexChain _ n (SingularHomology.tripleAffineSimplex v) :=
   SingularMayerVietoris.formalLift_simplex _ _
 /-- The triple affine chain map commutes with the boundary. -/
-theorem PeriodTorusHigherHomology.tripleAffineChainMap_boundary (p q r n : ℕ)
+theorem SingularHomology.tripleAffineChainMap_boundary (p q r n : ℕ)
     (c :
       SingularMayerVietoris.FormalChains
         (SingularChains.Simplex p × (SingularChains.Simplex q × SingularChains.Simplex r)) (n + 2)) :
     ((SingularChains.singularComplex
                 (SingularChains.Simplex p × (SingularChains.Simplex q × SingularChains.Simplex r))).d
             (n + 1) n).hom
-        (PeriodTorusHigherHomology.tripleAffineChainMap p q r (n + 1) c) =
-      PeriodTorusHigherHomology.tripleAffineChainMap p q r n (SingularMayerVietoris.formalBoundary (n + 1) c) := by
+        (SingularHomology.tripleAffineChainMap p q r (n + 1) c) =
+      SingularHomology.tripleAffineChainMap p q r n (SingularMayerVietoris.formalBoundary (n + 1) c) := by
   have h :
     (((SingularChains.singularComplex
                   (SingularChains.Simplex p ×
                     (SingularChains.Simplex q × SingularChains.Simplex r))).d
               (n + 1) n).hom).comp
-        (PeriodTorusHigherHomology.tripleAffineChainMap p q r (n + 1)) =
-      (PeriodTorusHigherHomology.tripleAffineChainMap p q r n).comp (SingularMayerVietoris.formalBoundary (n + 1)) := by
+        (SingularHomology.tripleAffineChainMap p q r (n + 1)) =
+      (SingularHomology.tripleAffineChainMap p q r n).comp (SingularMayerVietoris.formalBoundary (n + 1)) := by
     apply SingularMayerVietoris.formalChains_ext
     intro v
     change
@@ -310,21 +310,21 @@ theorem PeriodTorusHigherHomology.tripleAffineChainMap_boundary (p q r n : ℕ)
                   (SingularChains.Simplex p ×
                     (SingularChains.Simplex q × SingularChains.Simplex r))).d
               (n + 1) n).hom
-          (PeriodTorusHigherHomology.tripleAffineChainMap p q r (n + 1) (SingularMayerVietoris.formalSimplex v)) =
+          (SingularHomology.tripleAffineChainMap p q r (n + 1) (SingularMayerVietoris.formalSimplex v)) =
         _
-    rw [PeriodTorusHigherHomology.tripleAffineChainMap_simplex, SingularChains.boundary_simplex]
+    rw [SingularHomology.tripleAffineChainMap_simplex, SingularChains.boundary_simplex]
     change
       _ =
-        PeriodTorusHigherHomology.tripleAffineChainMap p q r n
+        SingularHomology.tripleAffineChainMap p q r n
           (SingularMayerVietoris.formalBoundary (n + 1) (SingularMayerVietoris.formalSimplex v))
     rw [SingularMayerVietoris.formalBoundary_simplex, map_sum]
     apply Finset.sum_congr rfl
     intro i hi
-    rw [map_zsmul, PeriodTorusHigherHomology.tripleAffineChainMap_simplex, PeriodTorusHigherHomology.tripleAffineSimplex_face]
+    rw [map_zsmul, SingularHomology.tripleAffineChainMap_simplex, SingularHomology.tripleAffineSimplex_face]
     rfl
   exact LinearMap.congr_fun h c
 /-- The affine map of pairs associated to vertex lists on the left-associated product: the map `(x, y) ↦ (affine v x, affine w y)` re-associated to the right. -/
-def PeriodTorusHigherHomology.affineProductLeft {a b p q r : ℕ}
+def SingularHomology.affineProductLeft {a b p q r : ℕ}
     (v : Fin (a + 1) → SingularChains.Simplex p × SingularChains.Simplex q)
     (w : Fin (b + 1) → SingularChains.Simplex r) :
     C(SingularChains.Simplex a × SingularChains.Simplex b,
@@ -334,19 +334,19 @@ def PeriodTorusHigherHomology.affineProductLeft {a b p q r : ℕ}
         C(_, _)).comp
     ((SingularHomology.productAffineSimplex v).prodMap (SingularMayerVietoris.affineSimplex w))
 /-- The right-associated analogue: the map of pairs built from a simplex vertex list and a paired vertex list. -/
-def PeriodTorusHigherHomology.affineProductRight {a b p q r : ℕ}
+def SingularHomology.affineProductRight {a b p q r : ℕ}
     (v : Fin (a + 1) → SingularChains.Simplex p)
     (w : Fin (b + 1) → SingularChains.Simplex q × SingularChains.Simplex r) :
     C(SingularChains.Simplex a × SingularChains.Simplex b,
       SingularChains.Simplex p × (SingularChains.Simplex q × SingularChains.Simplex r)) :=
   (SingularMayerVietoris.affineSimplex v).prodMap (SingularHomology.productAffineSimplex w)
 /-- The left-associated product affine map composed with a product affine simplex is the triple product affine simplex of the combined vertices. -/
-theorem PeriodTorusHigherHomology.affineProductLeft_comp {a b m p q r : ℕ}
+theorem SingularHomology.affineProductLeft_comp {a b m p q r : ℕ}
     (v : Fin (a + 1) → SingularChains.Simplex p × SingularChains.Simplex q)
     (w : Fin (b + 1) → SingularChains.Simplex r)
     (z : Fin (m + 1) → SingularChains.Simplex a × SingularChains.Simplex b) :
-    (PeriodTorusHigherHomology.affineProductLeft v w).comp (SingularHomology.productAffineSimplex z) =
-      PeriodTorusHigherHomology.tripleAffineSimplex (fun j => PeriodTorusHigherHomology.affineProductLeft v w (z j)) := by
+    (SingularHomology.affineProductLeft v w).comp (SingularHomology.productAffineSimplex z) =
+      SingularHomology.tripleAffineSimplex (fun j => SingularHomology.affineProductLeft v w (z j)) := by
   apply ContinuousMap.ext
   intro t
   apply Prod.ext
@@ -361,12 +361,12 @@ theorem PeriodTorusHigherHomology.affineProductLeft_comp {a b m p q r : ℕ}
         congrArg (fun f : C(SingularChains.Simplex m, SingularChains.Simplex r) => f t)
           (SingularMayerVietoris.affineSimplex_comp w (fun j => (z j).2))
 /-- The right-associated analogue of the composition identity. -/
-theorem PeriodTorusHigherHomology.affineProductRight_comp {a b m p q r : ℕ}
+theorem SingularHomology.affineProductRight_comp {a b m p q r : ℕ}
     (v : Fin (a + 1) → SingularChains.Simplex p)
     (w : Fin (b + 1) → SingularChains.Simplex q × SingularChains.Simplex r)
     (z : Fin (m + 1) → SingularChains.Simplex a × SingularChains.Simplex b) :
-    (PeriodTorusHigherHomology.affineProductRight v w).comp (SingularHomology.productAffineSimplex z) =
-      PeriodTorusHigherHomology.tripleAffineSimplex (fun j => PeriodTorusHigherHomology.affineProductRight v w (z j)) := by
+    (SingularHomology.affineProductRight v w).comp (SingularHomology.productAffineSimplex z) =
+      SingularHomology.tripleAffineSimplex (fun j => SingularHomology.affineProductRight v w (z j)) := by
   apply ContinuousMap.ext
   intro t
   apply Prod.ext
@@ -381,45 +381,45 @@ theorem PeriodTorusHigherHomology.affineProductRight_comp {a b m p q r : ℕ}
         congrArg (fun f : C(SingularChains.Simplex m, SingularChains.Simplex r) => f t)
           (SingularMayerVietoris.affineSimplex_comp (fun j => (w j).2) (fun j => (z j).2))
 /-- Chains induced by the left-associated product affine map transfer through the affine chain structures. -/
-theorem PeriodTorusHigherHomology.inducedChain_affineProductLeft {a b m p q r : ℕ}
+theorem SingularHomology.inducedChain_affineProductLeft {a b m p q r : ℕ}
     (v : Fin (a + 1) → SingularChains.Simplex p × SingularChains.Simplex q)
     (w : Fin (b + 1) → SingularChains.Simplex r)
     (c :
       SingularMayerVietoris.FormalChains (SingularChains.Simplex a × SingularChains.Simplex b)
         (m + 1)) :
-    SingularChains.inducedChain (PeriodTorusHigherHomology.affineProductLeft v w) m (SingularHomology.productAffineChainMap a b m c) =
-      PeriodTorusHigherHomology.tripleAffineChainMap p q r m
-        (SingularMayerVietoris.formalMap (PeriodTorusHigherHomology.affineProductLeft v w) (m + 1) c) := by
+    SingularChains.inducedChain (SingularHomology.affineProductLeft v w) m (SingularHomology.productAffineChainMap a b m c) =
+      SingularHomology.tripleAffineChainMap p q r m
+        (SingularMayerVietoris.formalMap (SingularHomology.affineProductLeft v w) (m + 1) c) := by
   have h :
-    (SingularChains.inducedChain (PeriodTorusHigherHomology.affineProductLeft v w) m).comp (SingularHomology.productAffineChainMap a b m) =
-      (PeriodTorusHigherHomology.tripleAffineChainMap p q r m).comp
-        (SingularMayerVietoris.formalMap (PeriodTorusHigherHomology.affineProductLeft v w) (m + 1)) := by
+    (SingularChains.inducedChain (SingularHomology.affineProductLeft v w) m).comp (SingularHomology.productAffineChainMap a b m) =
+      (SingularHomology.tripleAffineChainMap p q r m).comp
+        (SingularMayerVietoris.formalMap (SingularHomology.affineProductLeft v w) (m + 1)) := by
     apply SingularMayerVietoris.formalChains_ext
     intro z
     simp only [LinearMap.comp_apply, SingularHomology.productAffineChainMap_simplex,
       SingularChains.inducedChain_simplex, SingularMayerVietoris.formalMap_simplex,
-      PeriodTorusHigherHomology.tripleAffineChainMap_simplex, PeriodTorusHigherHomology.affineProductLeft_comp]
+      SingularHomology.tripleAffineChainMap_simplex, SingularHomology.affineProductLeft_comp]
     rfl
   exact LinearMap.congr_fun h c
 /-- Chains induced by the right-associated product affine map transfer through the affine chain structures. -/
-theorem PeriodTorusHigherHomology.inducedChain_affineProductRight {a b m p q r : ℕ}
+theorem SingularHomology.inducedChain_affineProductRight {a b m p q r : ℕ}
     (v : Fin (a + 1) → SingularChains.Simplex p)
     (w : Fin (b + 1) → SingularChains.Simplex q × SingularChains.Simplex r)
     (c :
       SingularMayerVietoris.FormalChains (SingularChains.Simplex a × SingularChains.Simplex b)
         (m + 1)) :
-    SingularChains.inducedChain (PeriodTorusHigherHomology.affineProductRight v w) m (SingularHomology.productAffineChainMap a b m c) =
-      PeriodTorusHigherHomology.tripleAffineChainMap p q r m
-        (SingularMayerVietoris.formalMap (PeriodTorusHigherHomology.affineProductRight v w) (m + 1) c) := by
+    SingularChains.inducedChain (SingularHomology.affineProductRight v w) m (SingularHomology.productAffineChainMap a b m c) =
+      SingularHomology.tripleAffineChainMap p q r m
+        (SingularMayerVietoris.formalMap (SingularHomology.affineProductRight v w) (m + 1) c) := by
   have h :
-    (SingularChains.inducedChain (PeriodTorusHigherHomology.affineProductRight v w) m).comp (SingularHomology.productAffineChainMap a b m) =
-      (PeriodTorusHigherHomology.tripleAffineChainMap p q r m).comp
-        (SingularMayerVietoris.formalMap (PeriodTorusHigherHomology.affineProductRight v w) (m + 1)) := by
+    (SingularChains.inducedChain (SingularHomology.affineProductRight v w) m).comp (SingularHomology.productAffineChainMap a b m) =
+      (SingularHomology.tripleAffineChainMap p q r m).comp
+        (SingularMayerVietoris.formalMap (SingularHomology.affineProductRight v w) (m + 1)) := by
     apply SingularMayerVietoris.formalChains_ext
     intro z
     simp only [LinearMap.comp_apply, SingularHomology.productAffineChainMap_simplex,
       SingularChains.inducedChain_simplex, SingularMayerVietoris.formalMap_simplex,
-      PeriodTorusHigherHomology.tripleAffineChainMap_simplex, PeriodTorusHigherHomology.affineProductRight_comp]
+      SingularHomology.tripleAffineChainMap_simplex, SingularHomology.affineProductRight_comp]
     rfl
   exact LinearMap.congr_fun h c
 
@@ -429,7 +429,7 @@ theorem PeriodTorusHigherHomology.inducedChain_affineProductRight {a b m p q r :
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
 /-- The product affine simplex extends its vertex data: composition with the standard vertices returns the pairs. -/
-theorem PeriodTorusHigherHomology.productAffineSimplex_stdVertices_image {n p q : ℕ}
+theorem SingularHomology.productAffineSimplex_stdVertices_image {n p q : ℕ}
     (v : Fin (n + 1) → SingularChains.Simplex p × SingularChains.Simplex q) :
     SingularHomology.productAffineSimplex v ∘ SingularMayerVietoris.stdVertices n = v := by
   funext i
@@ -438,7 +438,7 @@ theorem PeriodTorusHigherHomology.productAffineSimplex_stdVertices_image {n p q 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
 /-- The triple product of affine maps composed with the triple product affine simplex factors through the vertexwise data. -/
-theorem PeriodTorusHigherHomology.prodMap_tripleAffineSimplex {a b c m p q r : ℕ}
+theorem SingularHomology.prodMap_tripleAffineSimplex {a b c m p q r : ℕ}
     (v : Fin (a + 1) → SingularChains.Simplex p) (w : Fin (b + 1) → SingularChains.Simplex q)
     (z : Fin (c + 1) → SingularChains.Simplex r)
     (t :
@@ -447,8 +447,8 @@ theorem PeriodTorusHigherHomology.prodMap_tripleAffineSimplex {a b c m p q r : �
     ((SingularMayerVietoris.affineSimplex v).prodMap
             ((SingularMayerVietoris.affineSimplex w).prodMap
               (SingularMayerVietoris.affineSimplex z))).comp
-        (PeriodTorusHigherHomology.tripleAffineSimplex t) =
-      PeriodTorusHigherHomology.tripleAffineSimplex
+        (SingularHomology.tripleAffineSimplex t) =
+      SingularHomology.tripleAffineSimplex
         (fun j =>
           (SingularMayerVietoris.affineSimplex v (t j).1,
             (SingularMayerVietoris.affineSimplex w (t j).2.1,
@@ -470,7 +470,7 @@ theorem PeriodTorusHigherHomology.prodMap_tripleAffineSimplex {a b c m p q r : �
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
 /-- Chains induced by triple products of affine maps transfer through the triple affine chain map. -/
-theorem PeriodTorusHigherHomology.inducedChain_tripleAffineChainMap {a b c m p q r : ℕ}
+theorem SingularHomology.inducedChain_tripleAffineChainMap {a b c m p q r : ℕ}
     (v : Fin (a + 1) → SingularChains.Simplex p) (w : Fin (b + 1) → SingularChains.Simplex q)
     (z : Fin (c + 1) → SingularChains.Simplex r)
     (t :
@@ -480,8 +480,8 @@ theorem PeriodTorusHigherHomology.inducedChain_tripleAffineChainMap {a b c m p q
         ((SingularMayerVietoris.affineSimplex v).prodMap
           ((SingularMayerVietoris.affineSimplex w).prodMap
             (SingularMayerVietoris.affineSimplex z)))
-        m (PeriodTorusHigherHomology.tripleAffineChainMap a b c m t) =
-      PeriodTorusHigherHomology.tripleAffineChainMap p q r m
+        m (SingularHomology.tripleAffineChainMap a b c m t) =
+      SingularHomology.tripleAffineChainMap p q r m
         (SingularMayerVietoris.formalMap
           ((SingularMayerVietoris.affineSimplex v).prodMap
             ((SingularMayerVietoris.affineSimplex w).prodMap
@@ -493,8 +493,8 @@ theorem PeriodTorusHigherHomology.inducedChain_tripleAffineChainMap {a b c m p q
               ((SingularMayerVietoris.affineSimplex w).prodMap
                 (SingularMayerVietoris.affineSimplex z)))
             m).comp
-        (PeriodTorusHigherHomology.tripleAffineChainMap a b c m) =
-      (PeriodTorusHigherHomology.tripleAffineChainMap p q r m).comp
+        (SingularHomology.tripleAffineChainMap a b c m) =
+      (SingularHomology.tripleAffineChainMap p q r m).comp
         (SingularMayerVietoris.formalMap
           ((SingularMayerVietoris.affineSimplex v).prodMap
             ((SingularMayerVietoris.affineSimplex w).prodMap
@@ -502,8 +502,8 @@ theorem PeriodTorusHigherHomology.inducedChain_tripleAffineChainMap {a b c m p q
           (m + 1)) := by
     apply SingularMayerVietoris.formalChains_ext
     intro s
-    simp only [LinearMap.comp_apply, PeriodTorusHigherHomology.tripleAffineChainMap_simplex,
+    simp only [LinearMap.comp_apply, SingularHomology.tripleAffineChainMap_simplex,
       SingularChains.inducedChain_simplex, SingularMayerVietoris.formalMap_simplex,
-      PeriodTorusHigherHomology.prodMap_tripleAffineSimplex]
+      SingularHomology.prodMap_tripleAffineSimplex]
     rfl
   exact LinearMap.congr_fun h t

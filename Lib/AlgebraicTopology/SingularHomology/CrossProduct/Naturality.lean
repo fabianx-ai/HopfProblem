@@ -19,10 +19,10 @@ open scoped BigOperators TensorProduct
 # Naturality of the homology cross product
 
 For continuous `f : X → X'` and `g : Y → Y'`, `(f × g)_#(a × b) = f_# a × g_# b` on cycles
-(`PeriodTorusHigherHomology.crossProductCycles_natural`) and on homology
-(`PeriodTorusHigherHomology.crossProductHomology_natural`), for `a ∈ H₁(X)`, `b ∈ Hₙ(Y)`.  As a
+(`SingularHomology.crossProductCycles_natural`) and on homology
+(`SingularHomology.crossProductHomology_natural`), for `a ∈ H₁(X)`, `b ∈ Hₙ(Y)`.  As a
 consequence the projection to the second factor kills every cross product with a `1`-class,
-`(pr₂)_#(a × b) = 0` (`PeriodTorusHigherHomology.crossProductHomology_snd`), since `H₁` of a point
+`(pr₂)_#(a × b) = 0` (`SingularHomology.crossProductHomology_snd`), since `H₁` of a point
 vanishes.
 
 Naturality of the cross product: Hatcher, *Algebraic Topology*, §3.B.
@@ -40,7 +40,7 @@ open SingularHomology
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
 /-- The cycle-level cross product is natural under maps of both factors. -/
-theorem PeriodTorusHigherHomology.crossProductCycles_natural {X Y X' Y' : Type}
+theorem SingularHomology.crossProductCycles_natural {X Y X' Y' : Type}
     [TopologicalSpace X] [TopologicalSpace Y] [TopologicalSpace X'] [TopologicalSpace Y']
     (f : C(X, X')) (g : C(Y, Y')) (n : ℕ)
     (a : SingularMayerVietoris.ModuleHomology.Cycle (SingularChains.singularComplex X) 1)
@@ -58,7 +58,7 @@ theorem PeriodTorusHigherHomology.crossProductCycles_natural {X Y X' Y' : Type}
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
 /-- The homology cross product is natural: it commutes with the maps induced by `f.prodMap g`. -/
-theorem PeriodTorusHigherHomology.crossProductHomology_natural {X Y X' Y' : Type}
+theorem SingularHomology.crossProductHomology_natural {X Y X' Y' : Type}
     [TopologicalSpace X] [TopologicalSpace Y] [TopologicalSpace X'] [TopologicalSpace Y']
     (f : C(X, X')) (g : C(Y, Y')) (n : ℕ) (a : (SingularChains.singularComplex X).homology 1)
     (b : (SingularChains.singularComplex Y).homology n) :
@@ -82,7 +82,7 @@ theorem PeriodTorusHigherHomology.crossProductHomology_natural {X Y X' Y' : Type
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
 /-- The cross product maps to zero under the second projection: `H_*` of a product pushed to a factor kills mixed classes, the Künneth projection identity. -/
-theorem PeriodTorusHigherHomology.crossProductHomology_snd {X Y : Type} [TopologicalSpace X]
+theorem SingularHomology.crossProductHomology_snd {X Y : Type} [TopologicalSpace X]
     [TopologicalSpace Y] (n : ℕ) (a : SingularMayerVietoris.SingularHomology X 1)
     (b : SingularMayerVietoris.SingularHomology Y n) :
     SingularMayerVietoris.singularHomologyMap (ContinuousMap.snd : C(X × Y, Y)) (n + 1)

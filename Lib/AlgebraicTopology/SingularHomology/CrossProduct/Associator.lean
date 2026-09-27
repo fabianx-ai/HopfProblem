@@ -21,22 +21,22 @@ open scoped BigOperators TensorProduct
 The cross product is associative: under the re-association `(X × Y) × Z ≃ X × (Y × Z)`,
 `(a × b) × c = a × (b × c)` on homology (Hatcher, *Algebraic Topology*, §3.B).  This file proves
 it for three `1`-classes, `H₁(X) ⊗ H₁(Y) ⊗ H₁(Z) → H₃(X × (Y × Z))`, with `(a × b) × c` formed by
-the left-degree-two product `PeriodTorusHigherHomology.crossProductHomologyTwoOne`.
+the left-degree-two product `SingularHomology.crossProductHomologyTwoOne`.
 
 * On formal chains: the re-association lemmas for the point, edge and triangle products
-  (`PeriodTorusHigherHomology.formalEdgeCrossProduct_point_left`, `_point_middle`,
+  (`SingularHomology.formalEdgeCrossProduct_point_left`, `_point_middle`,
   `.formalTriangleCrossProduct_point_right`), the associator defect
-  `PeriodTorusHigherHomology.formalAssociatorDefect` (the difference of the two bracketings after
+  `SingularHomology.formalAssociatorDefect` (the difference of the two bracketings after
   re-association), its Leibniz rule `.formalBoundary_associatorDefect`, and the homotopy
-  `PeriodTorusHigherHomology.formalAssociatorHomotopy` with `∂H = defect`
+  `SingularHomology.formalAssociatorHomotopy` with `∂H = defect`
   (`.formalAssociatorHomotopy_boundary`), both natural in the three vertex sets.
-* On singular chains: `PeriodTorusHigherHomology.crossProductAssociatorDefect`,
+* On singular chains: `SingularHomology.crossProductAssociatorDefect`,
   `.crossProductAssociatorHomotopy` (natural, computed on affine chains of a triple product of
   standard simplices by the formal data, `.crossProductAssociatorHomotopy_affineChainMap`), and the
   boundary identity `.crossProductAssociatorHomotopy_boundary`, `_boundary_of_cycle`.
-* On homology: `PeriodTorusHigherHomology.crossProductCycleClasses_associative`,
+* On homology: `SingularHomology.crossProductCycleClasses_associative`,
   `.crossProductHomology_associative`, and the cyclic consequence
-  `PeriodTorusHigherHomology.crossProductHomology_cyclic` along the cyclic re-association
+  `SingularHomology.crossProductHomology_cyclic` along the cyclic re-association
   `.crossProductCyclicMap : Y × (Z × X) → X × (Y × Z)`.
 -/
 
@@ -47,7 +47,7 @@ the left-degree-two product `PeriodTorusHigherHomology.crossProductHomologyTwoOn
 /-! ### The associator defect and its homotopy on formal chains -/
 
 /-- Under the triple re-association `(V × W) × Z → V × (W × Z)`, the left-nested edge/point cross product becomes the right-nested one. -/
-theorem PeriodTorusHigherHomology.formalEdgeCrossProduct_point_left {V W Z : Type*} (q : ℕ)
+theorem SingularHomology.formalEdgeCrossProduct_point_left {V W Z : Type*} (q : ℕ)
     (a : SingularMayerVietoris.FormalChains V 1) (b : SingularMayerVietoris.FormalChains W 2)
     (c : SingularMayerVietoris.FormalChains Z (q + 1)) :
     SingularMayerVietoris.formalMap (fun p : (V × W) × Z => (p.1.1, (p.1.2, p.2))) (q + 2)
@@ -61,12 +61,12 @@ theorem PeriodTorusHigherHomology.formalEdgeCrossProduct_point_left {V W Z : Typ
     intro v
     simp only [LinearMap.comp_apply, LinearMap.flip_apply, SingularHomology.formalPointCrossProduct_simplex_left]
     have hn := SingularHomology.formalMap_edgeCrossProduct (fun w : W => (v 0, w)) (id : Z → Z) q b c
-    rw [PeriodTorusHigherHomology.formalMap_id_apply] at hn
-    rw [← hn, PeriodTorusHigherHomology.formalMap_comp_apply]
+    rw [SingularHomology.formalMap_id_apply] at hn
+    rw [← hn, SingularHomology.formalMap_comp_apply]
     rfl
   exact LinearMap.congr_fun h a
 /-- Under the triple re-association, the middle-nested cross product transfers to the right-nested form. -/
-theorem PeriodTorusHigherHomology.formalEdgeCrossProduct_point_middle {V W Z : Type*} (q : ℕ)
+theorem SingularHomology.formalEdgeCrossProduct_point_middle {V W Z : Type*} (q : ℕ)
     (a : SingularMayerVietoris.FormalChains V 2) (b : SingularMayerVietoris.FormalChains W 1)
     (c : SingularMayerVietoris.FormalChains Z (q + 1)) :
     SingularMayerVietoris.formalMap (fun p : (V × W) × Z => (p.1.1, (p.1.2, p.2))) (q + 2)
@@ -82,12 +82,12 @@ theorem PeriodTorusHigherHomology.formalEdgeCrossProduct_point_middle {V W Z : T
     rw [SingularHomology.formalEdgeCrossProduct_zero_simplex_right, SingularHomology.formalPointCrossProduct_simplex_left]
     have hl := SingularHomology.formalMap_edgeCrossProduct (fun v : V => (v, w 0)) (id : Z → Z) q a c
     have hr := SingularHomology.formalMap_edgeCrossProduct (id : V → V) (fun z : Z => (w 0, z)) q a c
-    rw [PeriodTorusHigherHomology.formalMap_id_apply] at hl hr
-    rw [← hl, PeriodTorusHigherHomology.formalMap_comp_apply, ← hr]
+    rw [SingularHomology.formalMap_id_apply] at hl hr
+    rw [← hl, SingularHomology.formalMap_comp_apply, ← hr]
     rfl
   exact LinearMap.congr_fun h b
 /-- Under the triple re-association, the triangle/point cross product transfers to the right-nested form. -/
-theorem PeriodTorusHigherHomology.formalTriangleCrossProduct_point_right {V W Z : Type*}
+theorem SingularHomology.formalTriangleCrossProduct_point_right {V W Z : Type*}
     (a : SingularMayerVietoris.FormalChains V 2) (b : SingularMayerVietoris.FormalChains W 2)
     (c : SingularMayerVietoris.FormalChains Z 1) :
     SingularMayerVietoris.formalMap (fun p : (V × W) × Z => (p.1.1, (p.1.2, p.2))) 3
@@ -100,13 +100,13 @@ theorem PeriodTorusHigherHomology.formalTriangleCrossProduct_point_right {V W Z 
     apply SingularMayerVietoris.formalChains_ext
     intro z
     simp only [LinearMap.comp_apply, SingularHomology.formalTriangleCrossProduct_zero_simplex_right,
-      SingularHomology.formalEdgeCrossProduct_zero_simplex_right, PeriodTorusHigherHomology.formalMap_comp_apply]
+      SingularHomology.formalEdgeCrossProduct_zero_simplex_right, SingularHomology.formalMap_comp_apply]
     have hn := SingularHomology.formalMap_edgeCrossProduct (id : V → V) (fun w : W => (w, z 0)) 1 a b
-    rw [PeriodTorusHigherHomology.formalMap_id_apply] at hn
+    rw [SingularHomology.formalMap_id_apply] at hn
     exact hn
   exact LinearMap.congr_fun h c
 /-- The associativity defect of the cross product: the failure of `(a × b) × c` and `a × (b × c)` to agree after the product re-association. -/
-def PeriodTorusHigherHomology.formalAssociatorDefect {V W Z : Type*} (q : ℕ) :
+def SingularHomology.formalAssociatorDefect {V W Z : Type*} (q : ℕ) :
     SingularMayerVietoris.FormalChains V 2 →ₗ[ℤ]
       SingularMayerVietoris.FormalChains W 2 →ₗ[ℤ]
         SingularMayerVietoris.FormalChains Z (q + 1) →ₗ[ℤ]
@@ -122,33 +122,33 @@ def PeriodTorusHigherHomology.formalAssociatorDefect {V W Z : Type*} (q : ℕ) :
       (SingularHomology.formalEdgeCrossProduct (q + 1))
 /-- Explicit form of the associator defect as the difference of the two bracketings pushed through the re-association. -/
 @[simp]
-theorem PeriodTorusHigherHomology.formalAssociatorDefect_apply {V W Z : Type*} (q : ℕ)
+theorem SingularHomology.formalAssociatorDefect_apply {V W Z : Type*} (q : ℕ)
     (a : SingularMayerVietoris.FormalChains V 2) (b : SingularMayerVietoris.FormalChains W 2)
     (c : SingularMayerVietoris.FormalChains Z (q + 1)) :
-    PeriodTorusHigherHomology.formalAssociatorDefect q a b c =
+    SingularHomology.formalAssociatorDefect q a b c =
       SingularMayerVietoris.formalMap (fun p : (V × W) × Z => (p.1.1, (p.1.2, p.2))) (q + 3)
           (SingularHomology.formalTriangleCrossProduct q (SingularHomology.formalEdgeCrossProduct 1 a b) c) -
         SingularHomology.formalEdgeCrossProduct (q + 1) a (SingularHomology.formalEdgeCrossProduct q b c) :=
   rfl
 /-- In the lowest degrees the associator defect vanishes. -/
 @[simp]
-theorem PeriodTorusHigherHomology.formalAssociatorDefect_zero {V W Z : Type*}
+theorem SingularHomology.formalAssociatorDefect_zero {V W Z : Type*}
     (a : SingularMayerVietoris.FormalChains V 2) (b : SingularMayerVietoris.FormalChains W 2)
-    (c : SingularMayerVietoris.FormalChains Z 1) : PeriodTorusHigherHomology.formalAssociatorDefect 0 a b c = 0 := by
-  rw [PeriodTorusHigherHomology.formalAssociatorDefect_apply, PeriodTorusHigherHomology.formalTriangleCrossProduct_point_right, sub_self]
+    (c : SingularMayerVietoris.FormalChains Z 1) : SingularHomology.formalAssociatorDefect 0 a b c = 0 := by
+  rw [SingularHomology.formalAssociatorDefect_apply, SingularHomology.formalTriangleCrossProduct_point_right, sub_self]
 /-- The Leibniz rule for the associator defect. -/
-theorem PeriodTorusHigherHomology.formalBoundary_associatorDefect {V W Z : Type*} (q : ℕ)
+theorem SingularHomology.formalBoundary_associatorDefect {V W Z : Type*} (q : ℕ)
     (a : SingularMayerVietoris.FormalChains V 2) (b : SingularMayerVietoris.FormalChains W 2)
     (c : SingularMayerVietoris.FormalChains Z (q + 2)) :
-    SingularMayerVietoris.formalBoundary (q + 3) (PeriodTorusHigherHomology.formalAssociatorDefect (q + 1) a b c) =
-      PeriodTorusHigherHomology.formalAssociatorDefect q a b (SingularMayerVietoris.formalBoundary (q + 1) c) := by
-  simp only [PeriodTorusHigherHomology.formalAssociatorDefect_apply, map_sub, ← SingularMayerVietoris.formalMap_boundary,
+    SingularMayerVietoris.formalBoundary (q + 3) (SingularHomology.formalAssociatorDefect (q + 1) a b c) =
+      SingularHomology.formalAssociatorDefect q a b (SingularMayerVietoris.formalBoundary (q + 1) c) := by
+  simp only [SingularHomology.formalAssociatorDefect_apply, map_sub, ← SingularMayerVietoris.formalMap_boundary,
     SingularHomology.formalBoundary_triangleCrossProduct, SingularHomology.formalBoundary_edgeCrossProduct, map_add,
-    LinearMap.sub_apply, PeriodTorusHigherHomology.formalEdgeCrossProduct_point_middle]
-  rw [PeriodTorusHigherHomology.formalEdgeCrossProduct_point_left (q + 1) (SingularMayerVietoris.formalBoundary 1 a) b c]
+    LinearMap.sub_apply, SingularHomology.formalEdgeCrossProduct_point_middle]
+  rw [SingularHomology.formalEdgeCrossProduct_point_left (q + 1) (SingularMayerVietoris.formalBoundary 1 a) b c]
   abel
 /-- The product re-association is natural: pushforward along a product of maps commutes with it. -/
-theorem PeriodTorusHigherHomology.formalMap_prodAssoc_naturality {V W Z V' W' Z' : Type*}
+theorem SingularHomology.formalMap_prodAssoc_naturality {V W Z V' W' Z' : Type*}
     (f : V → V') (g : W → W') (h : Z → Z') (n : ℕ)
     (c : SingularMayerVietoris.FormalChains ((V × W) × Z) n) :
     SingularMayerVietoris.formalMap (Prod.map f (Prod.map g h)) n
@@ -166,20 +166,20 @@ theorem PeriodTorusHigherHomology.formalMap_prodAssoc_naturality {V W Z V' W' Z'
     rfl
   exact LinearMap.congr_fun heq c
 /-- The associator defect is natural under maps of the three factors. -/
-theorem PeriodTorusHigherHomology.formalMap_associatorDefect {V W Z V' W' Z' : Type*} (f : V → V')
+theorem SingularHomology.formalMap_associatorDefect {V W Z V' W' Z' : Type*} (f : V → V')
     (g : W → W') (h : Z → Z') (q : ℕ) (a : SingularMayerVietoris.FormalChains V 2)
     (b : SingularMayerVietoris.FormalChains W 2)
     (c : SingularMayerVietoris.FormalChains Z (q + 1)) :
     SingularMayerVietoris.formalMap (Prod.map f (Prod.map g h)) (q + 3)
-        (PeriodTorusHigherHomology.formalAssociatorDefect q a b c) =
-      PeriodTorusHigherHomology.formalAssociatorDefect q (SingularMayerVietoris.formalMap f 2 a)
+        (SingularHomology.formalAssociatorDefect q a b c) =
+      SingularHomology.formalAssociatorDefect q (SingularMayerVietoris.formalMap f 2 a)
         (SingularMayerVietoris.formalMap g 2 b) (SingularMayerVietoris.formalMap h (q + 1) c) := by
-  rw [PeriodTorusHigherHomology.formalAssociatorDefect_apply, map_sub, PeriodTorusHigherHomology.formalMap_prodAssoc_naturality,
+  rw [SingularHomology.formalAssociatorDefect_apply, map_sub, SingularHomology.formalMap_prodAssoc_naturality,
     SingularHomology.formalMap_triangleCrossProduct, SingularHomology.formalMap_edgeCrossProduct, SingularHomology.formalMap_edgeCrossProduct,
     SingularHomology.formalMap_edgeCrossProduct]
   rfl
 /-- Private plumbing: postcompose the output of a trilinear map on formal chain groups. -/
-private def PeriodTorusHigherHomology.triplePostcomp {V W Z U U' : Type*}
+private def SingularHomology.triplePostcomp {V W Z U U' : Type*}
     {n m l r s : ℕ}
     (F :
       SingularMayerVietoris.FormalChains V n →ₗ[ℤ]
@@ -194,7 +194,7 @@ private def PeriodTorusHigherHomology.triplePostcomp {V W Z U U' : Type*}
       (SingularMayerVietoris.FormalChains U r) (SingularMayerVietoris.FormalChains U' s) f)
 
 /-- Private plumbing: precompose the last argument of a trilinear map on formal chain groups. -/
-private def PeriodTorusHigherHomology.triplePrecompLast {V W Z Z' U : Type*}
+private def SingularHomology.triplePrecompLast {V W Z Z' U : Type*}
     {n m l l' r : ℕ}
     (F :
       SingularMayerVietoris.FormalChains V n →ₗ[ℤ]
@@ -209,7 +209,7 @@ private def PeriodTorusHigherHomology.triplePrecompLast {V W Z Z' U : Type*}
           (SingularMayerVietoris.FormalChains Z l) (SingularMayerVietoris.FormalChains U r)).flip
       f)
 /-- The chain homotopy witnessing that the associator defect is a boundary, degree by degree; zero in the lowest degree. -/
-def PeriodTorusHigherHomology.formalAssociatorHomotopy {V W Z : Type*} :
+def SingularHomology.formalAssociatorHomotopy {V W Z : Type*} :
     (q : ℕ) →
       SingularMayerVietoris.FormalChains V 2 →ₗ[ℤ]
         SingularMayerVietoris.FormalChains W 2 →ₗ[ℤ]
@@ -217,111 +217,111 @@ def PeriodTorusHigherHomology.formalAssociatorHomotopy {V W Z : Type*} :
             SingularMayerVietoris.FormalChains (V × (W × Z)) (q + 4)
   | 0 => 0
   | q + 1 =>
-    PeriodTorusHigherHomology.formalTrilinearLift fun v w z =>
+    SingularHomology.formalTrilinearLift fun v w z =>
       SingularMayerVietoris.formalCone (v 0, (w 0, z 0)) (q + 4)
-        (PeriodTorusHigherHomology.formalAssociatorDefect (q + 1) (SingularMayerVietoris.formalSimplex v)
+        (SingularHomology.formalAssociatorDefect (q + 1) (SingularMayerVietoris.formalSimplex v)
             (SingularMayerVietoris.formalSimplex w) (SingularMayerVietoris.formalSimplex z) -
-          PeriodTorusHigherHomology.formalAssociatorHomotopy q (SingularMayerVietoris.formalSimplex v)
+          SingularHomology.formalAssociatorHomotopy q (SingularMayerVietoris.formalSimplex v)
             (SingularMayerVietoris.formalSimplex w)
             (SingularMayerVietoris.formalBoundary (q + 1)
               (SingularMayerVietoris.formalSimplex z)))
 /-- The associator homotopy vanishes in the lowest degree. -/
 @[simp]
-theorem PeriodTorusHigherHomology.formalAssociatorHomotopy_zero {V W Z : Type*}
+theorem SingularHomology.formalAssociatorHomotopy_zero {V W Z : Type*}
     (a : SingularMayerVietoris.FormalChains V 2) (b : SingularMayerVietoris.FormalChains W 2)
-    (c : SingularMayerVietoris.FormalChains Z 1) : PeriodTorusHigherHomology.formalAssociatorHomotopy 0 a b c = 0 :=
+    (c : SingularMayerVietoris.FormalChains Z 1) : SingularHomology.formalAssociatorHomotopy 0 a b c = 0 :=
   rfl
 /-- On simplices the successor step of the associator homotopy is the cone of the lower-degree data. -/
 @[simp]
-theorem PeriodTorusHigherHomology.formalAssociatorHomotopy_simplex_succ {V W Z : Type*} (q : ℕ)
+theorem SingularHomology.formalAssociatorHomotopy_simplex_succ {V W Z : Type*} (q : ℕ)
     (v : Fin 2 → V) (w : Fin 2 → W) (z : Fin (q + 2) → Z) :
-    PeriodTorusHigherHomology.formalAssociatorHomotopy (q + 1) (SingularMayerVietoris.formalSimplex v)
+    SingularHomology.formalAssociatorHomotopy (q + 1) (SingularMayerVietoris.formalSimplex v)
         (SingularMayerVietoris.formalSimplex w) (SingularMayerVietoris.formalSimplex z) =
       SingularMayerVietoris.formalCone (v 0, (w 0, z 0)) (q + 4)
-        (PeriodTorusHigherHomology.formalAssociatorDefect (q + 1) (SingularMayerVietoris.formalSimplex v)
+        (SingularHomology.formalAssociatorDefect (q + 1) (SingularMayerVietoris.formalSimplex v)
             (SingularMayerVietoris.formalSimplex w) (SingularMayerVietoris.formalSimplex z) -
-          PeriodTorusHigherHomology.formalAssociatorHomotopy q (SingularMayerVietoris.formalSimplex v)
+          SingularHomology.formalAssociatorHomotopy q (SingularMayerVietoris.formalSimplex v)
             (SingularMayerVietoris.formalSimplex w)
             (SingularMayerVietoris.formalBoundary (q + 1)
               (SingularMayerVietoris.formalSimplex z))) :=
-  PeriodTorusHigherHomology.formalTrilinearLift_simplex _ _ _ _
+  SingularHomology.formalTrilinearLift_simplex _ _ _ _
 /-- Degree-zero boundary identity of the associator homotopy. -/
-theorem PeriodTorusHigherHomology.formalAssociatorHomotopy_boundary_zero {V W Z : Type*}
+theorem SingularHomology.formalAssociatorHomotopy_boundary_zero {V W Z : Type*}
     (a : SingularMayerVietoris.FormalChains V 2) (b : SingularMayerVietoris.FormalChains W 2)
     (c : SingularMayerVietoris.FormalChains Z 1) :
-    SingularMayerVietoris.formalBoundary 3 (PeriodTorusHigherHomology.formalAssociatorHomotopy 0 a b c) =
-      PeriodTorusHigherHomology.formalAssociatorDefect 0 a b c := by
-  rw [PeriodTorusHigherHomology.formalAssociatorHomotopy_zero, map_zero, PeriodTorusHigherHomology.formalAssociatorDefect_zero]
+    SingularMayerVietoris.formalBoundary 3 (SingularHomology.formalAssociatorHomotopy 0 a b c) =
+      SingularHomology.formalAssociatorDefect 0 a b c := by
+  rw [SingularHomology.formalAssociatorHomotopy_zero, map_zero, SingularHomology.formalAssociatorDefect_zero]
 /-- The defining identity: `∂H + (swapped bracketing defect) = 0` — the homotopy carries one bracketing of the cross product to the other. -/
-theorem PeriodTorusHigherHomology.formalAssociatorHomotopy_boundary {V W Z : Type*} :
+theorem SingularHomology.formalAssociatorHomotopy_boundary {V W Z : Type*} :
     ∀ (q : ℕ) (a : SingularMayerVietoris.FormalChains V 2)
       (b : SingularMayerVietoris.FormalChains W 2)
       (c : SingularMayerVietoris.FormalChains Z (q + 2)),
-      SingularMayerVietoris.formalBoundary (q + 4) (PeriodTorusHigherHomology.formalAssociatorHomotopy (q + 1) a b c) +
-          PeriodTorusHigherHomology.formalAssociatorHomotopy q a b (SingularMayerVietoris.formalBoundary (q + 1) c) =
-        PeriodTorusHigherHomology.formalAssociatorDefect (q + 1) a b c := by
+      SingularMayerVietoris.formalBoundary (q + 4) (SingularHomology.formalAssociatorHomotopy (q + 1) a b c) +
+          SingularHomology.formalAssociatorHomotopy q a b (SingularMayerVietoris.formalBoundary (q + 1) c) =
+        SingularHomology.formalAssociatorDefect (q + 1) a b c := by
   intro q
   induction q with
   | zero =>
     intro a b c
     have heq :
-      PeriodTorusHigherHomology.triplePostcomp (PeriodTorusHigherHomology.formalAssociatorHomotopy (V := V) (W := W) (Z := Z) 1)
+      SingularHomology.triplePostcomp (SingularHomology.formalAssociatorHomotopy (V := V) (W := W) (Z := Z) 1)
             (SingularMayerVietoris.formalBoundary 4) +
-          PeriodTorusHigherHomology.triplePrecompLast (PeriodTorusHigherHomology.formalAssociatorHomotopy 0)
+          SingularHomology.triplePrecompLast (SingularHomology.formalAssociatorHomotopy 0)
             (SingularMayerVietoris.formalBoundary 1) =
-        PeriodTorusHigherHomology.formalAssociatorDefect 1 := by
-      apply PeriodTorusHigherHomology.formalChains_trilinear_ext
+        SingularHomology.formalAssociatorDefect 1 := by
+      apply SingularHomology.formalChains_trilinear_ext
       intro v w z
       change
         SingularMayerVietoris.formalBoundary 4
-              (PeriodTorusHigherHomology.formalAssociatorHomotopy 1 (SingularMayerVietoris.formalSimplex v)
+              (SingularHomology.formalAssociatorHomotopy 1 (SingularMayerVietoris.formalSimplex v)
                 (SingularMayerVietoris.formalSimplex w) (SingularMayerVietoris.formalSimplex z)) +
-            PeriodTorusHigherHomology.formalAssociatorHomotopy 0 (SingularMayerVietoris.formalSimplex v)
+            SingularHomology.formalAssociatorHomotopy 0 (SingularMayerVietoris.formalSimplex v)
               (SingularMayerVietoris.formalSimplex w)
               (SingularMayerVietoris.formalBoundary 1 (SingularMayerVietoris.formalSimplex z)) =
-          PeriodTorusHigherHomology.formalAssociatorDefect 1 (SingularMayerVietoris.formalSimplex v)
+          SingularHomology.formalAssociatorDefect 1 (SingularMayerVietoris.formalSimplex v)
             (SingularMayerVietoris.formalSimplex w) (SingularMayerVietoris.formalSimplex z)
       have hz :
         SingularMayerVietoris.formalBoundary 3
-            (PeriodTorusHigherHomology.formalAssociatorDefect 1 (SingularMayerVietoris.formalSimplex v)
+            (SingularHomology.formalAssociatorDefect 1 (SingularMayerVietoris.formalSimplex v)
                 (SingularMayerVietoris.formalSimplex w) (SingularMayerVietoris.formalSimplex z) -
-              PeriodTorusHigherHomology.formalAssociatorHomotopy 0 (SingularMayerVietoris.formalSimplex v)
+              SingularHomology.formalAssociatorHomotopy 0 (SingularMayerVietoris.formalSimplex v)
                 (SingularMayerVietoris.formalSimplex w)
                 (SingularMayerVietoris.formalBoundary 1
                   (SingularMayerVietoris.formalSimplex z))) =
           0 := by
-        rw [map_sub, PeriodTorusHigherHomology.formalBoundary_associatorDefect, PeriodTorusHigherHomology.formalAssociatorDefect_zero,
-          PeriodTorusHigherHomology.formalAssociatorHomotopy_zero, map_zero, sub_self]
-      rw [PeriodTorusHigherHomology.formalAssociatorHomotopy_simplex_succ, SingularMayerVietoris.formalBoundary_cone, hz,
+        rw [map_sub, SingularHomology.formalBoundary_associatorDefect, SingularHomology.formalAssociatorDefect_zero,
+          SingularHomology.formalAssociatorHomotopy_zero, map_zero, sub_self]
+      rw [SingularHomology.formalAssociatorHomotopy_simplex_succ, SingularMayerVietoris.formalBoundary_cone, hz,
         map_zero, sub_zero, sub_add_cancel]
     exact LinearMap.congr_fun (LinearMap.congr_fun (LinearMap.congr_fun heq a) b) c
   | succ q ih =>
     intro a b c
     have heq :
-      PeriodTorusHigherHomology.triplePostcomp (PeriodTorusHigherHomology.formalAssociatorHomotopy (V := V) (W := W) (Z := Z) (q + 2))
+      SingularHomology.triplePostcomp (SingularHomology.formalAssociatorHomotopy (V := V) (W := W) (Z := Z) (q + 2))
             (SingularMayerVietoris.formalBoundary (q + 5)) +
-          PeriodTorusHigherHomology.triplePrecompLast (PeriodTorusHigherHomology.formalAssociatorHomotopy (q + 1))
+          SingularHomology.triplePrecompLast (SingularHomology.formalAssociatorHomotopy (q + 1))
             (SingularMayerVietoris.formalBoundary (q + 2)) =
-        PeriodTorusHigherHomology.formalAssociatorDefect (q + 2) := by
-      apply PeriodTorusHigherHomology.formalChains_trilinear_ext
+        SingularHomology.formalAssociatorDefect (q + 2) := by
+      apply SingularHomology.formalChains_trilinear_ext
       intro v w z
       change
         SingularMayerVietoris.formalBoundary (q + 5)
-              (PeriodTorusHigherHomology.formalAssociatorHomotopy (q + 2) (SingularMayerVietoris.formalSimplex v)
+              (SingularHomology.formalAssociatorHomotopy (q + 2) (SingularMayerVietoris.formalSimplex v)
                 (SingularMayerVietoris.formalSimplex w) (SingularMayerVietoris.formalSimplex z)) +
-            PeriodTorusHigherHomology.formalAssociatorHomotopy (q + 1) (SingularMayerVietoris.formalSimplex v)
+            SingularHomology.formalAssociatorHomotopy (q + 1) (SingularMayerVietoris.formalSimplex v)
               (SingularMayerVietoris.formalSimplex w)
               (SingularMayerVietoris.formalBoundary (q + 2)
                 (SingularMayerVietoris.formalSimplex z)) =
-          PeriodTorusHigherHomology.formalAssociatorDefect (q + 2) (SingularMayerVietoris.formalSimplex v)
+          SingularHomology.formalAssociatorDefect (q + 2) (SingularMayerVietoris.formalSimplex v)
             (SingularMayerVietoris.formalSimplex w) (SingularMayerVietoris.formalSimplex z)
       have hp :
         SingularMayerVietoris.formalBoundary (q + 4)
-            (PeriodTorusHigherHomology.formalAssociatorHomotopy (q + 1) (SingularMayerVietoris.formalSimplex v)
+            (SingularHomology.formalAssociatorHomotopy (q + 1) (SingularMayerVietoris.formalSimplex v)
               (SingularMayerVietoris.formalSimplex w)
               (SingularMayerVietoris.formalBoundary (q + 2)
                 (SingularMayerVietoris.formalSimplex z))) =
-          PeriodTorusHigherHomology.formalAssociatorDefect (q + 1) (SingularMayerVietoris.formalSimplex v)
+          SingularHomology.formalAssociatorDefect (q + 1) (SingularMayerVietoris.formalSimplex v)
             (SingularMayerVietoris.formalSimplex w)
             (SingularMayerVietoris.formalBoundary (q + 2)
               (SingularMayerVietoris.formalSimplex z)) := by
@@ -330,55 +330,55 @@ theorem PeriodTorusHigherHomology.formalAssociatorHomotopy_boundary {V W Z : Typ
             (SingularMayerVietoris.formalBoundary (q + 2) (SingularMayerVietoris.formalSimplex z))
       have hz :
         SingularMayerVietoris.formalBoundary (q + 4)
-            (PeriodTorusHigherHomology.formalAssociatorDefect (q + 2) (SingularMayerVietoris.formalSimplex v)
+            (SingularHomology.formalAssociatorDefect (q + 2) (SingularMayerVietoris.formalSimplex v)
                 (SingularMayerVietoris.formalSimplex w) (SingularMayerVietoris.formalSimplex z) -
-              PeriodTorusHigherHomology.formalAssociatorHomotopy (q + 1) (SingularMayerVietoris.formalSimplex v)
+              SingularHomology.formalAssociatorHomotopy (q + 1) (SingularMayerVietoris.formalSimplex v)
                 (SingularMayerVietoris.formalSimplex w)
                 (SingularMayerVietoris.formalBoundary (q + 2)
                   (SingularMayerVietoris.formalSimplex z))) =
-          0 := by rw [map_sub, PeriodTorusHigherHomology.formalBoundary_associatorDefect, hp, sub_self]
-      rw [PeriodTorusHigherHomology.formalAssociatorHomotopy_simplex_succ, SingularMayerVietoris.formalBoundary_cone, hz,
+          0 := by rw [map_sub, SingularHomology.formalBoundary_associatorDefect, hp, sub_self]
+      rw [SingularHomology.formalAssociatorHomotopy_simplex_succ, SingularMayerVietoris.formalBoundary_cone, hz,
         map_zero, sub_zero, sub_add_cancel]
     exact LinearMap.congr_fun (LinearMap.congr_fun (LinearMap.congr_fun heq a) b) c
 /-- The associator homotopy is natural under maps of the three factors. -/
-theorem PeriodTorusHigherHomology.formalMap_associatorHomotopy {V W Z V' W' Z' : Type*}
+theorem SingularHomology.formalMap_associatorHomotopy {V W Z V' W' Z' : Type*}
     (f : V → V') (g : W → W') (h : Z → Z') :
     ∀ (q : ℕ) (a : SingularMayerVietoris.FormalChains V 2)
       (b : SingularMayerVietoris.FormalChains W 2)
       (c : SingularMayerVietoris.FormalChains Z (q + 1)),
       SingularMayerVietoris.formalMap (Prod.map f (Prod.map g h)) (q + 4)
-          (PeriodTorusHigherHomology.formalAssociatorHomotopy q a b c) =
-        PeriodTorusHigherHomology.formalAssociatorHomotopy q (SingularMayerVietoris.formalMap f 2 a)
+          (SingularHomology.formalAssociatorHomotopy q a b c) =
+        SingularHomology.formalAssociatorHomotopy q (SingularMayerVietoris.formalMap f 2 a)
           (SingularMayerVietoris.formalMap g 2 b) (SingularMayerVietoris.formalMap h (q + 1) c) :=
   by
   intro q
   induction q with
   | zero =>
     intro a b c
-    simp only [PeriodTorusHigherHomology.formalAssociatorHomotopy_zero, map_zero]
+    simp only [SingularHomology.formalAssociatorHomotopy_zero, map_zero]
   | succ q ih =>
     intro a b c
     have heq :
-      PeriodTorusHigherHomology.triplePostcomp (PeriodTorusHigherHomology.formalAssociatorHomotopy (V := V) (W := W) (Z := Z) (q + 1))
+      SingularHomology.triplePostcomp (SingularHomology.formalAssociatorHomotopy (V := V) (W := W) (Z := Z) (q + 1))
           (SingularMayerVietoris.formalMap (Prod.map f (Prod.map g h)) (q + 5)) =
-        ((PeriodTorusHigherHomology.triplePrecompLast (PeriodTorusHigherHomology.formalAssociatorHomotopy (q + 1))
+        ((SingularHomology.triplePrecompLast (SingularHomology.formalAssociatorHomotopy (q + 1))
                   (SingularMayerVietoris.formalMap h (q + 2))).compl₂
               (SingularMayerVietoris.formalMap g 2)).comp
           (SingularMayerVietoris.formalMap f 2) := by
-      apply PeriodTorusHigherHomology.formalChains_trilinear_ext
+      apply SingularHomology.formalChains_trilinear_ext
       intro v w z
       change
         SingularMayerVietoris.formalMap (Prod.map f (Prod.map g h)) (q + 5)
-            (PeriodTorusHigherHomology.formalAssociatorHomotopy (q + 1) (SingularMayerVietoris.formalSimplex v)
+            (SingularHomology.formalAssociatorHomotopy (q + 1) (SingularMayerVietoris.formalSimplex v)
               (SingularMayerVietoris.formalSimplex w) (SingularMayerVietoris.formalSimplex z)) =
-          PeriodTorusHigherHomology.formalAssociatorHomotopy (q + 1)
+          SingularHomology.formalAssociatorHomotopy (q + 1)
             (SingularMayerVietoris.formalMap f 2 (SingularMayerVietoris.formalSimplex v))
             (SingularMayerVietoris.formalMap g 2 (SingularMayerVietoris.formalSimplex w))
             (SingularMayerVietoris.formalMap h (q + 2) (SingularMayerVietoris.formalSimplex z))
-      simp only [SingularMayerVietoris.formalMap_simplex, PeriodTorusHigherHomology.formalAssociatorHomotopy_simplex_succ]
+      simp only [SingularMayerVietoris.formalMap_simplex, SingularHomology.formalAssociatorHomotopy_simplex_succ]
       rw [SingularMayerVietoris.formalMap_cone]
       congr 1
-      rw [map_sub, PeriodTorusHigherHomology.formalMap_associatorDefect, ih, SingularMayerVietoris.formalMap_boundary,
+      rw [map_sub, SingularHomology.formalMap_associatorDefect, ih, SingularMayerVietoris.formalMap_boundary,
         SingularMayerVietoris.formalMap_simplex, SingularMayerVietoris.formalMap_simplex,
         SingularMayerVietoris.formalMap_simplex]
     exact LinearMap.congr_fun (LinearMap.congr_fun (LinearMap.congr_fun heq a) b) c
@@ -388,24 +388,24 @@ theorem PeriodTorusHigherHomology.formalMap_associatorHomotopy {V W Z V' W' Z' :
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
 /-- The associativity defect of the homology cross product on the space level: the difference of the two bracketings after re-associating `X × (Y × Z)`. -/
-def PeriodTorusHigherHomology.crossProductAssociatorDefect (X Y Z : Type) [TopologicalSpace X]
+def SingularHomology.crossProductAssociatorDefect (X Y Z : Type) [TopologicalSpace X]
     [TopologicalSpace Y] [TopologicalSpace Z] (n : ℕ) :
     SingularChains.Chains X 1 →ₗ[ℤ]
       SingularChains.Chains Y 1 →ₗ[ℤ]
         SingularChains.Chains Z n →ₗ[ℤ] SingularChains.Chains (X × (Y × Z)) (n + 2) :=
-  PeriodTorusHigherHomology.integerTrilinearPostcompose
-      (PeriodTorusHigherHomology.integerTrilinearLeftAssociated (SingularHomology.crossProductEdge X Y 1) (SingularHomology.crossProductTriangle (X × Y) Z n))
+  SingularHomology.integerTrilinearPostcompose
+      (SingularHomology.integerTrilinearLeftAssociated (SingularHomology.crossProductEdge X Y 1) (SingularHomology.crossProductTriangle (X × Y) Z n))
       (SingularChains.inducedChain (Homeomorph.prodAssoc X Y Z : C(_, _)) (n + 2)) -
-    PeriodTorusHigherHomology.integerTrilinearRightAssociated (SingularHomology.crossProductEdge X (Y × Z) (n + 1)) (SingularHomology.crossProductEdge Y Z n)
+    SingularHomology.integerTrilinearRightAssociated (SingularHomology.crossProductEdge X (Y × Z) (n + 1)) (SingularHomology.crossProductEdge Y Z n)
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
 /-- Explicit form: the defect is the pushforward of the two bracketings along the product-association homeomorphism. -/
 @[simp]
-theorem PeriodTorusHigherHomology.crossProductAssociatorDefect_apply (X Y Z : Type)
+theorem SingularHomology.crossProductAssociatorDefect_apply (X Y Z : Type)
     [TopologicalSpace X] [TopologicalSpace Y] [TopologicalSpace Z] (n : ℕ)
     (a : SingularChains.Chains X 1) (b : SingularChains.Chains Y 1) (c : SingularChains.Chains Z n) :
-    PeriodTorusHigherHomology.crossProductAssociatorDefect X Y Z n a b c =
+    SingularHomology.crossProductAssociatorDefect X Y Z n a b c =
       SingularChains.inducedChain (Homeomorph.prodAssoc X Y Z : C(_, _)) (n + 2)
           (SingularHomology.crossProductTriangle (X × Y) Z n (SingularHomology.crossProductEdge X Y 1 a b) c) -
         SingularHomology.crossProductEdge X (Y × Z) (n + 1) a (SingularHomology.crossProductEdge Y Z n b c) :=
@@ -414,15 +414,15 @@ theorem PeriodTorusHigherHomology.crossProductAssociatorDefect_apply (X Y Z : Ty
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
 /-- The chain homotopy on the space level carrying one bracketing of the triple cross product to the other, degree by degree. -/
-def PeriodTorusHigherHomology.crossProductAssociatorHomotopy (X Y Z : Type) [TopologicalSpace X]
+def SingularHomology.crossProductAssociatorHomotopy (X Y Z : Type) [TopologicalSpace X]
     [TopologicalSpace Y] [TopologicalSpace Z] (n : ℕ) :
     SingularChains.Chains X 1 →ₗ[ℤ]
       SingularChains.Chains Y 1 →ₗ[ℤ]
         SingularChains.Chains Z n →ₗ[ℤ] SingularChains.Chains (X × (Y × Z)) (n + 3) :=
-  PeriodTorusHigherHomology.chainTrilinearLift X Y Z 1 1 n fun σ τ υ =>
+  SingularHomology.chainTrilinearLift X Y Z 1 1 n fun σ τ υ =>
     SingularChains.inducedChain (σ.prodMap (τ.prodMap υ)) (n + 3)
-      (PeriodTorusHigherHomology.tripleAffineChainMap 1 1 n (n + 3)
-        (PeriodTorusHigherHomology.formalAssociatorHomotopy n
+      (SingularHomology.tripleAffineChainMap 1 1 n (n + 3)
+        (SingularHomology.formalAssociatorHomotopy n
           (SingularMayerVietoris.formalSimplex (SingularMayerVietoris.stdVertices 1))
           (SingularMayerVietoris.formalSimplex (SingularMayerVietoris.stdVertices 1))
           (SingularMayerVietoris.formalSimplex (SingularMayerVietoris.stdVertices n))))
@@ -431,42 +431,42 @@ attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
 /-- On simplices the associator homotopy is induced by the explicit prism data. -/
 @[simp]
-theorem PeriodTorusHigherHomology.crossProductAssociatorHomotopy_simplex (X Y Z : Type)
+theorem SingularHomology.crossProductAssociatorHomotopy_simplex (X Y Z : Type)
     [TopologicalSpace X] [TopologicalSpace Y] [TopologicalSpace Z] (n : ℕ)
     (σ : SingularChains.SingularSimplex X 1) (τ : SingularChains.SingularSimplex Y 1)
     (υ : SingularChains.SingularSimplex Z n) :
-    PeriodTorusHigherHomology.crossProductAssociatorHomotopy X Y Z n (SingularChains.simplexChain X 1 σ)
+    SingularHomology.crossProductAssociatorHomotopy X Y Z n (SingularChains.simplexChain X 1 σ)
         (SingularChains.simplexChain Y 1 τ) (SingularChains.simplexChain Z n υ) =
       SingularChains.inducedChain (σ.prodMap (τ.prodMap υ)) (n + 3)
-        (PeriodTorusHigherHomology.tripleAffineChainMap 1 1 n (n + 3)
-          (PeriodTorusHigherHomology.formalAssociatorHomotopy n
+        (SingularHomology.tripleAffineChainMap 1 1 n (n + 3)
+          (SingularHomology.formalAssociatorHomotopy n
             (SingularMayerVietoris.formalSimplex (SingularMayerVietoris.stdVertices 1))
             (SingularMayerVietoris.formalSimplex (SingularMayerVietoris.stdVertices 1))
             (SingularMayerVietoris.formalSimplex (SingularMayerVietoris.stdVertices n)))) :=
-  PeriodTorusHigherHomology.chainTrilinearLift_simplex X Y Z 1 1 n _ σ τ υ
+  SingularHomology.chainTrilinearLift_simplex X Y Z 1 1 n _ σ τ υ
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
 /-- The associator homotopy is natural under maps of the three factors. -/
-theorem PeriodTorusHigherHomology.crossProductAssociatorHomotopy_natural {X : Type} {Y : Type}
+theorem SingularHomology.crossProductAssociatorHomotopy_natural {X : Type} {Y : Type}
     {Z : Type} [TopologicalSpace X] [TopologicalSpace Y] [TopologicalSpace Z] {X' Y' Z' : Type}
     [TopologicalSpace X'] [TopologicalSpace Y'] [TopologicalSpace Z'] (f : C(X, X'))
     (g : C(Y, Y')) (h : C(Z, Z')) (n : ℕ) (a : SingularChains.Chains X 1)
     (b : SingularChains.Chains Y 1) (c : SingularChains.Chains Z n) :
     SingularChains.inducedChain (f.prodMap (g.prodMap h)) (n + 3)
-        (PeriodTorusHigherHomology.crossProductAssociatorHomotopy X Y Z n a b c) =
-      PeriodTorusHigherHomology.crossProductAssociatorHomotopy X' Y' Z' n (SingularChains.inducedChain f 1 a)
+        (SingularHomology.crossProductAssociatorHomotopy X Y Z n a b c) =
+      SingularHomology.crossProductAssociatorHomotopy X' Y' Z' n (SingularChains.inducedChain f 1 a)
         (SingularChains.inducedChain g 1 b) (SingularChains.inducedChain h n c) := by
   have heq :
-    PeriodTorusHigherHomology.integerTrilinearPostcompose (PeriodTorusHigherHomology.crossProductAssociatorHomotopy X Y Z n)
+    SingularHomology.integerTrilinearPostcompose (SingularHomology.crossProductAssociatorHomotopy X Y Z n)
         (SingularChains.inducedChain (f.prodMap (g.prodMap h)) (n + 3)) =
-      PeriodTorusHigherHomology.integerTrilinearPrecompose (PeriodTorusHigherHomology.crossProductAssociatorHomotopy X' Y' Z' n)
+      SingularHomology.integerTrilinearPrecompose (SingularHomology.crossProductAssociatorHomotopy X' Y' Z' n)
         (SingularChains.inducedChain f 1) (SingularChains.inducedChain g 1)
         (SingularChains.inducedChain h n) := by
-    apply PeriodTorusHigherHomology.chainTrilinearMap_ext X Y Z 1 1 n
+    apply SingularHomology.chainTrilinearMap_ext X Y Z 1 1 n
     intro σ τ υ
-    simp only [PeriodTorusHigherHomology.integerTrilinearPostcompose_apply, PeriodTorusHigherHomology.integerTrilinearPrecompose_apply,
-      SingularChains.inducedChain_simplex, PeriodTorusHigherHomology.crossProductAssociatorHomotopy_simplex]
+    simp only [SingularHomology.integerTrilinearPostcompose_apply, SingularHomology.integerTrilinearPrecompose_apply,
+      SingularChains.inducedChain_simplex, SingularHomology.crossProductAssociatorHomotopy_simplex]
     have hc :
       (f.comp σ).prodMap ((g.comp τ).prodMap (h.comp υ)) =
         (f.prodMap (g.prodMap h)).comp (σ.prodMap (τ.prodMap υ)) :=
@@ -478,7 +478,7 @@ theorem PeriodTorusHigherHomology.crossProductAssociatorHomotopy_natural {X : Ty
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
 /-- Chains induced along the product association commute with product pushforwards. -/
-theorem PeriodTorusHigherHomology.inducedChain_prodAssoc_natural {X : Type} {Y : Type} {Z : Type}
+theorem SingularHomology.inducedChain_prodAssoc_natural {X : Type} {Y : Type} {Z : Type}
     [TopologicalSpace X] [TopologicalSpace Y] [TopologicalSpace Z] {X' Y' Z' : Type}
     [TopologicalSpace X'] [TopologicalSpace Y'] [TopologicalSpace Z'] (f : C(X, X'))
     (g : C(Y, Y')) (h : C(Z, Z')) (n : ℕ) (c : SingularChains.Chains ((X × Y) × Z) n) :
@@ -496,16 +496,16 @@ theorem PeriodTorusHigherHomology.inducedChain_prodAssoc_natural {X : Type} {Y :
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
 /-- The associator defect is natural under maps of the three factors. -/
-theorem PeriodTorusHigherHomology.crossProductAssociatorDefect_natural {X : Type} {Y : Type}
+theorem SingularHomology.crossProductAssociatorDefect_natural {X : Type} {Y : Type}
     {Z : Type} [TopologicalSpace X] [TopologicalSpace Y] [TopologicalSpace Z] {X' Y' Z' : Type}
     [TopologicalSpace X'] [TopologicalSpace Y'] [TopologicalSpace Z'] (f : C(X, X'))
     (g : C(Y, Y')) (h : C(Z, Z')) (n : ℕ) (a : SingularChains.Chains X 1)
     (b : SingularChains.Chains Y 1) (c : SingularChains.Chains Z n) :
     SingularChains.inducedChain (f.prodMap (g.prodMap h)) (n + 2)
-        (PeriodTorusHigherHomology.crossProductAssociatorDefect X Y Z n a b c) =
-      PeriodTorusHigherHomology.crossProductAssociatorDefect X' Y' Z' n (SingularChains.inducedChain f 1 a)
+        (SingularHomology.crossProductAssociatorDefect X Y Z n a b c) =
+      SingularHomology.crossProductAssociatorDefect X' Y' Z' n (SingularChains.inducedChain f 1 a)
         (SingularChains.inducedChain g 1 b) (SingularChains.inducedChain h n c) := by
-  simp only [PeriodTorusHigherHomology.crossProductAssociatorDefect_apply, map_sub, PeriodTorusHigherHomology.inducedChain_prodAssoc_natural,
+  simp only [SingularHomology.crossProductAssociatorDefect_apply, map_sub, SingularHomology.inducedChain_prodAssoc_natural,
     SingularHomology.crossProductTriangle_natural, SingularHomology.crossProductEdge_natural]
 
 
@@ -514,7 +514,7 @@ theorem PeriodTorusHigherHomology.crossProductAssociatorDefect_natural {X : Type
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
 /-- The triangle cross product on the left-associated product transfers across the product association on standard simplices. -/
-theorem PeriodTorusHigherHomology.crossProductTriangle_productAffineChainMap_left (p q r n : ℕ)
+theorem SingularHomology.crossProductTriangle_productAffineChainMap_left (p q r n : ℕ)
     (a : SingularMayerVietoris.FormalChains (SingularChains.Simplex p × SingularChains.Simplex q) 3)
     (b : SingularMayerVietoris.FormalChains (SingularChains.Simplex r) (n + 1)) :
     SingularChains.inducedChain
@@ -525,7 +525,7 @@ theorem PeriodTorusHigherHomology.crossProductTriangle_productAffineChainMap_lef
         (SingularHomology.crossProductTriangle (SingularChains.Simplex p × SingularChains.Simplex q)
           (SingularChains.Simplex r) n (SingularHomology.productAffineChainMap p q 2 a)
           (SingularMayerVietoris.affineChainMap r n b)) =
-      PeriodTorusHigherHomology.tripleAffineChainMap p q r (n + 2)
+      SingularHomology.tripleAffineChainMap p q r (n + 2)
         (SingularMayerVietoris.formalMap
           (fun x :
               (SingularChains.Simplex p × SingularChains.Simplex q) × SingularChains.Simplex r =>
@@ -543,7 +543,7 @@ theorem PeriodTorusHigherHomology.crossProductTriangle_productAffineChainMap_lef
             C(_, _))
           (n + 2)) =
       SingularHomology.integerBilinearPostcompose (SingularHomology.formalTriangleCrossProduct n)
-        ((PeriodTorusHigherHomology.tripleAffineChainMap p q r (n + 2)).comp
+        ((SingularHomology.tripleAffineChainMap p q r (n + 2)).comp
           (SingularMayerVietoris.formalMap
             (fun x :
                 (SingularChains.Simplex p × SingularChains.Simplex q) × SingularChains.Simplex r =>
@@ -556,14 +556,14 @@ theorem PeriodTorusHigherHomology.crossProductTriangle_productAffineChainMap_lef
       SingularHomology.crossProductTriangle_simplex, LinearMap.comp_apply]
     rw [← LinearMap.comp_apply, ← SingularChains.inducedChain_comp]
     change
-      SingularChains.inducedChain (PeriodTorusHigherHomology.affineProductLeft v w) (n + 2)
+      SingularChains.inducedChain (SingularHomology.affineProductLeft v w) (n + 2)
           (SingularHomology.productAffineChainMap 2 n (n + 2)
             (SingularHomology.formalTriangleCrossProduct n
               (SingularMayerVietoris.formalSimplex (SingularMayerVietoris.stdVertices 2))
               (SingularMayerVietoris.formalSimplex (SingularMayerVietoris.stdVertices n)))) =
         _
-    rw [PeriodTorusHigherHomology.inducedChain_affineProductLeft]
-    apply congrArg (PeriodTorusHigherHomology.tripleAffineChainMap p q r (n + 2))
+    rw [SingularHomology.inducedChain_affineProductLeft]
+    apply congrArg (SingularHomology.tripleAffineChainMap p q r (n + 2))
     change
       SingularMayerVietoris.formalMap
           ((fun x :
@@ -575,44 +575,44 @@ theorem PeriodTorusHigherHomology.crossProductTriangle_productAffineChainMap_lef
             (SingularMayerVietoris.formalSimplex (SingularMayerVietoris.stdVertices 2))
             (SingularMayerVietoris.formalSimplex (SingularMayerVietoris.stdVertices n))) =
         _
-    rw [← PeriodTorusHigherHomology.formalMap_comp_apply, SingularHomology.formalMap_triangleCrossProduct,
+    rw [← SingularHomology.formalMap_comp_apply, SingularHomology.formalMap_triangleCrossProduct,
       SingularMayerVietoris.formalMap_simplex, SingularMayerVietoris.formalMap_simplex,
-      PeriodTorusHigherHomology.productAffineSimplex_stdVertices_image, SingularHomology.affineSimplex_stdVertices_image]
+      SingularHomology.productAffineSimplex_stdVertices_image, SingularHomology.affineSimplex_stdVertices_image]
   exact LinearMap.congr_fun (LinearMap.congr_fun h a) b
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
 /-- The edge cross product on the right-associated product transfers across the product association on standard simplices. -/
-theorem PeriodTorusHigherHomology.crossProductEdge_productAffineChainMap_right (p q r n : ℕ)
+theorem SingularHomology.crossProductEdge_productAffineChainMap_right (p q r n : ℕ)
     (a : SingularMayerVietoris.FormalChains (SingularChains.Simplex p) 2)
     (b :
       SingularMayerVietoris.FormalChains (SingularChains.Simplex q × SingularChains.Simplex r)
         (n + 1)) :
     SingularHomology.crossProductEdge (SingularChains.Simplex p) (SingularChains.Simplex q × SingularChains.Simplex r)
         n (SingularMayerVietoris.affineChainMap p 1 a) (SingularHomology.productAffineChainMap q r n b) =
-      PeriodTorusHigherHomology.tripleAffineChainMap p q r (n + 1) (SingularHomology.formalEdgeCrossProduct n a b) := by
+      SingularHomology.tripleAffineChainMap p q r (n + 1) (SingularHomology.formalEdgeCrossProduct n a b) := by
   have h :
     SingularHomology.integerBilinearPrecompose
         (SingularHomology.crossProductEdge (SingularChains.Simplex p)
           (SingularChains.Simplex q × SingularChains.Simplex r) n)
         (SingularMayerVietoris.affineChainMap p 1) (SingularHomology.productAffineChainMap q r n) =
       SingularHomology.integerBilinearPostcompose (SingularHomology.formalEdgeCrossProduct n)
-        (PeriodTorusHigherHomology.tripleAffineChainMap p q r (n + 1)) := by
+        (SingularHomology.tripleAffineChainMap p q r (n + 1)) := by
     apply SingularHomology.integerFormalBilinearMap_ext
     intro v w
     simp only [SingularHomology.integerBilinearPrecompose_apply, SingularHomology.integerBilinearPostcompose_apply,
       SingularMayerVietoris.affineChainMap_simplex, SingularHomology.productAffineChainMap_simplex,
       SingularHomology.crossProductEdge_simplex]
     change
-      SingularChains.inducedChain (PeriodTorusHigherHomology.affineProductRight v w) (n + 1)
+      SingularChains.inducedChain (SingularHomology.affineProductRight v w) (n + 1)
           (SingularHomology.productAffineChainMap 1 n (n + 1)
             (SingularHomology.formalEdgeCrossProduct n
               (SingularMayerVietoris.formalSimplex (SingularMayerVietoris.stdVertices 1))
               (SingularMayerVietoris.formalSimplex (SingularMayerVietoris.stdVertices n)))) =
         _
-    rw [PeriodTorusHigherHomology.inducedChain_affineProductRight]
+    rw [SingularHomology.inducedChain_affineProductRight]
     change
-      PeriodTorusHigherHomology.tripleAffineChainMap p q r (n + 1)
+      SingularHomology.tripleAffineChainMap p q r (n + 1)
           (SingularMayerVietoris.formalMap
             (Prod.map (SingularMayerVietoris.affineSimplex v) (SingularHomology.productAffineSimplex w)) (n + 2)
             (SingularHomology.formalEdgeCrossProduct n
@@ -621,51 +621,51 @@ theorem PeriodTorusHigherHomology.crossProductEdge_productAffineChainMap_right (
         _
     rw [SingularHomology.formalMap_edgeCrossProduct, SingularMayerVietoris.formalMap_simplex,
       SingularMayerVietoris.formalMap_simplex, SingularHomology.affineSimplex_stdVertices_image,
-      PeriodTorusHigherHomology.productAffineSimplex_stdVertices_image]
+      SingularHomology.productAffineSimplex_stdVertices_image]
   exact LinearMap.congr_fun (LinearMap.congr_fun h a) b
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
 /-- The associator homotopy commutes with the affine chain maps on standard simplices. -/
-theorem PeriodTorusHigherHomology.crossProductAssociatorHomotopy_affineChainMap (p q r n : ℕ)
+theorem SingularHomology.crossProductAssociatorHomotopy_affineChainMap (p q r n : ℕ)
     (a : SingularMayerVietoris.FormalChains (SingularChains.Simplex p) 2)
     (b : SingularMayerVietoris.FormalChains (SingularChains.Simplex q) 2)
     (c : SingularMayerVietoris.FormalChains (SingularChains.Simplex r) (n + 1)) :
-    PeriodTorusHigherHomology.crossProductAssociatorHomotopy (SingularChains.Simplex p) (SingularChains.Simplex q)
+    SingularHomology.crossProductAssociatorHomotopy (SingularChains.Simplex p) (SingularChains.Simplex q)
         (SingularChains.Simplex r) n (SingularMayerVietoris.affineChainMap p 1 a)
         (SingularMayerVietoris.affineChainMap q 1 b)
         (SingularMayerVietoris.affineChainMap r n c) =
-      PeriodTorusHigherHomology.tripleAffineChainMap p q r (n + 3) (PeriodTorusHigherHomology.formalAssociatorHomotopy n a b c) := by
+      SingularHomology.tripleAffineChainMap p q r (n + 3) (SingularHomology.formalAssociatorHomotopy n a b c) := by
   have heq :
-    PeriodTorusHigherHomology.integerTrilinearPrecompose
-        (PeriodTorusHigherHomology.crossProductAssociatorHomotopy (SingularChains.Simplex p) (SingularChains.Simplex q)
+    SingularHomology.integerTrilinearPrecompose
+        (SingularHomology.crossProductAssociatorHomotopy (SingularChains.Simplex p) (SingularChains.Simplex q)
           (SingularChains.Simplex r) n)
         (SingularMayerVietoris.affineChainMap p 1) (SingularMayerVietoris.affineChainMap q 1)
         (SingularMayerVietoris.affineChainMap r n) =
-      PeriodTorusHigherHomology.integerTrilinearPostcompose (PeriodTorusHigherHomology.formalAssociatorHomotopy n)
-        (PeriodTorusHigherHomology.tripleAffineChainMap p q r (n + 3)) := by
+      SingularHomology.integerTrilinearPostcompose (SingularHomology.formalAssociatorHomotopy n)
+        (SingularHomology.tripleAffineChainMap p q r (n + 3)) := by
     apply SingularMayerVietoris.formalChains_ext
     intro v
     apply SingularMayerVietoris.formalChains_ext
     intro w
     apply SingularMayerVietoris.formalChains_ext
     intro z
-    simp only [PeriodTorusHigherHomology.integerTrilinearPrecompose_apply, PeriodTorusHigherHomology.integerTrilinearPostcompose_apply,
-      SingularMayerVietoris.affineChainMap_simplex, PeriodTorusHigherHomology.crossProductAssociatorHomotopy_simplex]
-    rw [PeriodTorusHigherHomology.inducedChain_tripleAffineChainMap]
+    simp only [SingularHomology.integerTrilinearPrecompose_apply, SingularHomology.integerTrilinearPostcompose_apply,
+      SingularMayerVietoris.affineChainMap_simplex, SingularHomology.crossProductAssociatorHomotopy_simplex]
+    rw [SingularHomology.inducedChain_tripleAffineChainMap]
     change
-      PeriodTorusHigherHomology.tripleAffineChainMap p q r (n + 3)
+      SingularHomology.tripleAffineChainMap p q r (n + 3)
           (SingularMayerVietoris.formalMap
             (Prod.map (SingularMayerVietoris.affineSimplex v)
               (Prod.map (SingularMayerVietoris.affineSimplex w)
                 (SingularMayerVietoris.affineSimplex z)))
             (n + 4)
-            (PeriodTorusHigherHomology.formalAssociatorHomotopy n
+            (SingularHomology.formalAssociatorHomotopy n
               (SingularMayerVietoris.formalSimplex (SingularMayerVietoris.stdVertices 1))
               (SingularMayerVietoris.formalSimplex (SingularMayerVietoris.stdVertices 1))
               (SingularMayerVietoris.formalSimplex (SingularMayerVietoris.stdVertices n)))) =
         _
-    rw [PeriodTorusHigherHomology.formalMap_associatorHomotopy, SingularMayerVietoris.formalMap_simplex,
+    rw [SingularHomology.formalMap_associatorHomotopy, SingularMayerVietoris.formalMap_simplex,
       SingularMayerVietoris.formalMap_simplex, SingularMayerVietoris.formalMap_simplex,
       SingularHomology.affineSimplex_stdVertices_image, SingularHomology.affineSimplex_stdVertices_image,
       SingularHomology.affineSimplex_stdVertices_image]
@@ -674,44 +674,44 @@ theorem PeriodTorusHigherHomology.crossProductAssociatorHomotopy_affineChainMap 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
 /-- The associator defect commutes with the affine chain maps on standard simplices. -/
-theorem PeriodTorusHigherHomology.crossProductAssociatorDefect_affineChainMap (p q r n : ℕ)
+theorem SingularHomology.crossProductAssociatorDefect_affineChainMap (p q r n : ℕ)
     (a : SingularMayerVietoris.FormalChains (SingularChains.Simplex p) 2)
     (b : SingularMayerVietoris.FormalChains (SingularChains.Simplex q) 2)
     (c : SingularMayerVietoris.FormalChains (SingularChains.Simplex r) (n + 1)) :
-    PeriodTorusHigherHomology.crossProductAssociatorDefect (SingularChains.Simplex p) (SingularChains.Simplex q)
+    SingularHomology.crossProductAssociatorDefect (SingularChains.Simplex p) (SingularChains.Simplex q)
         (SingularChains.Simplex r) n (SingularMayerVietoris.affineChainMap p 1 a)
         (SingularMayerVietoris.affineChainMap q 1 b)
         (SingularMayerVietoris.affineChainMap r n c) =
-      PeriodTorusHigherHomology.tripleAffineChainMap p q r (n + 2) (PeriodTorusHigherHomology.formalAssociatorDefect n a b c) := by
-  simp only [PeriodTorusHigherHomology.crossProductAssociatorDefect_apply, SingularHomology.crossProductEdge_affineChainMap, Nat.reduceAdd,
-    PeriodTorusHigherHomology.crossProductTriangle_productAffineChainMap_left, PeriodTorusHigherHomology.crossProductEdge_productAffineChainMap_right,
-    PeriodTorusHigherHomology.formalAssociatorDefect_apply, map_sub]
+      SingularHomology.tripleAffineChainMap p q r (n + 2) (SingularHomology.formalAssociatorDefect n a b c) := by
+  simp only [SingularHomology.crossProductAssociatorDefect_apply, SingularHomology.crossProductEdge_affineChainMap, Nat.reduceAdd,
+    SingularHomology.crossProductTriangle_productAffineChainMap_left, SingularHomology.crossProductEdge_productAffineChainMap_right,
+    SingularHomology.formalAssociatorDefect_apply, map_sub]
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
 /-- Affine, degree-zero boundary identity for the associator homotopy. -/
-theorem PeriodTorusHigherHomology.crossProductAssociatorHomotopy_boundary_zero_affine (p q r : ℕ)
+theorem SingularHomology.crossProductAssociatorHomotopy_boundary_zero_affine (p q r : ℕ)
     (a : SingularMayerVietoris.FormalChains (SingularChains.Simplex p) 2)
     (b : SingularMayerVietoris.FormalChains (SingularChains.Simplex q) 2)
     (c : SingularMayerVietoris.FormalChains (SingularChains.Simplex r) 1) :
     ((SingularChains.singularComplex
                 (SingularChains.Simplex p × (SingularChains.Simplex q × SingularChains.Simplex r))).d
             3 2).hom
-        (PeriodTorusHigherHomology.crossProductAssociatorHomotopy (SingularChains.Simplex p) (SingularChains.Simplex q)
+        (SingularHomology.crossProductAssociatorHomotopy (SingularChains.Simplex p) (SingularChains.Simplex q)
           (SingularChains.Simplex r) 0 (SingularMayerVietoris.affineChainMap p 1 a)
           (SingularMayerVietoris.affineChainMap q 1 b)
           (SingularMayerVietoris.affineChainMap r 0 c)) =
-      PeriodTorusHigherHomology.crossProductAssociatorDefect (SingularChains.Simplex p) (SingularChains.Simplex q)
+      SingularHomology.crossProductAssociatorDefect (SingularChains.Simplex p) (SingularChains.Simplex q)
         (SingularChains.Simplex r) 0 (SingularMayerVietoris.affineChainMap p 1 a)
         (SingularMayerVietoris.affineChainMap q 1 b)
         (SingularMayerVietoris.affineChainMap r 0 c) := by
-  rw [PeriodTorusHigherHomology.crossProductAssociatorHomotopy_affineChainMap, PeriodTorusHigherHomology.tripleAffineChainMap_boundary,
-    PeriodTorusHigherHomology.formalAssociatorHomotopy_boundary_zero, PeriodTorusHigherHomology.crossProductAssociatorDefect_affineChainMap]
+  rw [SingularHomology.crossProductAssociatorHomotopy_affineChainMap, SingularHomology.tripleAffineChainMap_boundary,
+    SingularHomology.formalAssociatorHomotopy_boundary_zero, SingularHomology.crossProductAssociatorDefect_affineChainMap]
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
 /-- Affine Leibniz-type identity for the associator homotopy on standard simplices. -/
-theorem PeriodTorusHigherHomology.crossProductAssociatorHomotopy_boundary_affine (p q r n : ℕ)
+theorem SingularHomology.crossProductAssociatorHomotopy_boundary_affine (p q r n : ℕ)
     (a : SingularMayerVietoris.FormalChains (SingularChains.Simplex p) 2)
     (b : SingularMayerVietoris.FormalChains (SingularChains.Simplex q) 2)
     (c : SingularMayerVietoris.FormalChains (SingularChains.Simplex r) (n + 2)) :
@@ -719,46 +719,46 @@ theorem PeriodTorusHigherHomology.crossProductAssociatorHomotopy_boundary_affine
                   (SingularChains.Simplex p ×
                     (SingularChains.Simplex q × SingularChains.Simplex r))).d
               (n + 4) (n + 3)).hom
-          (PeriodTorusHigherHomology.crossProductAssociatorHomotopy (SingularChains.Simplex p) (SingularChains.Simplex q)
+          (SingularHomology.crossProductAssociatorHomotopy (SingularChains.Simplex p) (SingularChains.Simplex q)
             (SingularChains.Simplex r) (n + 1) (SingularMayerVietoris.affineChainMap p 1 a)
             (SingularMayerVietoris.affineChainMap q 1 b)
             (SingularMayerVietoris.affineChainMap r (n + 1) c)) +
-        PeriodTorusHigherHomology.crossProductAssociatorHomotopy (SingularChains.Simplex p) (SingularChains.Simplex q)
+        SingularHomology.crossProductAssociatorHomotopy (SingularChains.Simplex p) (SingularChains.Simplex q)
           (SingularChains.Simplex r) n (SingularMayerVietoris.affineChainMap p 1 a)
           (SingularMayerVietoris.affineChainMap q 1 b)
           (((SingularChains.singularComplex (SingularChains.Simplex r)).d (n + 1) n).hom
             (SingularMayerVietoris.affineChainMap r (n + 1) c)) =
-      PeriodTorusHigherHomology.crossProductAssociatorDefect (SingularChains.Simplex p) (SingularChains.Simplex q)
+      SingularHomology.crossProductAssociatorDefect (SingularChains.Simplex p) (SingularChains.Simplex q)
         (SingularChains.Simplex r) (n + 1) (SingularMayerVietoris.affineChainMap p 1 a)
         (SingularMayerVietoris.affineChainMap q 1 b)
         (SingularMayerVietoris.affineChainMap r (n + 1) c) := by
-  rw [PeriodTorusHigherHomology.crossProductAssociatorHomotopy_affineChainMap, PeriodTorusHigherHomology.tripleAffineChainMap_boundary,
-    SingularMayerVietoris.affineChainMap_boundary, PeriodTorusHigherHomology.crossProductAssociatorHomotopy_affineChainMap,
-    ← map_add, PeriodTorusHigherHomology.formalAssociatorHomotopy_boundary, PeriodTorusHigherHomology.crossProductAssociatorDefect_affineChainMap]
+  rw [SingularHomology.crossProductAssociatorHomotopy_affineChainMap, SingularHomology.tripleAffineChainMap_boundary,
+    SingularMayerVietoris.affineChainMap_boundary, SingularHomology.crossProductAssociatorHomotopy_affineChainMap,
+    ← map_add, SingularHomology.formalAssociatorHomotopy_boundary, SingularHomology.crossProductAssociatorDefect_affineChainMap]
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
 /-- Degree-zero case of the associator homotopy's defining boundary identity. -/
-theorem PeriodTorusHigherHomology.crossProductAssociatorHomotopy_boundary_zero {X Y Z : Type}
+theorem SingularHomology.crossProductAssociatorHomotopy_boundary_zero {X Y Z : Type}
     [TopologicalSpace X] [TopologicalSpace Y] [TopologicalSpace Z] (a : SingularChains.Chains X 1)
     (b : SingularChains.Chains Y 1) (c : SingularChains.Chains Z 0) :
     ((SingularChains.singularComplex (X × (Y × Z))).d 3 2).hom
-        (PeriodTorusHigherHomology.crossProductAssociatorHomotopy X Y Z 0 a b c) =
-      PeriodTorusHigherHomology.crossProductAssociatorDefect X Y Z 0 a b c := by
+        (SingularHomology.crossProductAssociatorHomotopy X Y Z 0 a b c) =
+      SingularHomology.crossProductAssociatorDefect X Y Z 0 a b c := by
   have heq :
-    PeriodTorusHigherHomology.integerTrilinearPostcompose (PeriodTorusHigherHomology.crossProductAssociatorHomotopy X Y Z 0)
+    SingularHomology.integerTrilinearPostcompose (SingularHomology.crossProductAssociatorHomotopy X Y Z 0)
         ((SingularChains.singularComplex (X × (Y × Z))).d 3 2).hom =
-      PeriodTorusHigherHomology.crossProductAssociatorDefect X Y Z 0 := by
-    apply PeriodTorusHigherHomology.chainTrilinearMap_ext X Y Z 1 1 0
+      SingularHomology.crossProductAssociatorDefect X Y Z 0 := by
+    apply SingularHomology.chainTrilinearMap_ext X Y Z 1 1 0
     intro σ τ υ
     have hstd :=
-      PeriodTorusHigherHomology.crossProductAssociatorHomotopy_boundary_zero_affine 1 1 0
+      SingularHomology.crossProductAssociatorHomotopy_boundary_zero_affine 1 1 0
         (SingularMayerVietoris.formalSimplex (SingularMayerVietoris.stdVertices 1))
         (SingularMayerVietoris.formalSimplex (SingularMayerVietoris.stdVertices 1))
         (SingularMayerVietoris.formalSimplex (SingularMayerVietoris.stdVertices 0))
     have hστυ := congrArg (SingularChains.inducedChain (σ.prodMap (τ.prodMap υ)) 2) hstd
-    simpa only [PeriodTorusHigherHomology.integerTrilinearPostcompose_apply, SingularChains.inducedChain_boundary,
-      PeriodTorusHigherHomology.crossProductAssociatorHomotopy_natural, PeriodTorusHigherHomology.crossProductAssociatorDefect_natural,
+    simpa only [SingularHomology.integerTrilinearPostcompose_apply, SingularChains.inducedChain_boundary,
+      SingularHomology.crossProductAssociatorHomotopy_natural, SingularHomology.crossProductAssociatorDefect_natural,
       SingularMayerVietoris.affineChainMap_stdVertices, SingularChains.inducedChain_simplex,
       ContinuousMap.comp_id] using hστυ
   exact LinearMap.congr_fun (LinearMap.congr_fun (LinearMap.congr_fun heq a) b) c
@@ -766,32 +766,32 @@ theorem PeriodTorusHigherHomology.crossProductAssociatorHomotopy_boundary_zero {
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
 /-- The defining identity of the associator homotopy on the space level: its boundary is the associativity defect. -/
-theorem PeriodTorusHigherHomology.crossProductAssociatorHomotopy_boundary {X Y Z : Type}
+theorem SingularHomology.crossProductAssociatorHomotopy_boundary {X Y Z : Type}
     [TopologicalSpace X] [TopologicalSpace Y] [TopologicalSpace Z] (n : ℕ)
     (a : SingularChains.Chains X 1) (b : SingularChains.Chains Y 1)
     (c : SingularChains.Chains Z (n + 1)) :
     ((SingularChains.singularComplex (X × (Y × Z))).d (n + 4) (n + 3)).hom
-          (PeriodTorusHigherHomology.crossProductAssociatorHomotopy X Y Z (n + 1) a b c) +
-        PeriodTorusHigherHomology.crossProductAssociatorHomotopy X Y Z n a b
+          (SingularHomology.crossProductAssociatorHomotopy X Y Z (n + 1) a b c) +
+        SingularHomology.crossProductAssociatorHomotopy X Y Z n a b
           (((SingularChains.singularComplex Z).d (n + 1) n).hom c) =
-      PeriodTorusHigherHomology.crossProductAssociatorDefect X Y Z (n + 1) a b c := by
+      SingularHomology.crossProductAssociatorDefect X Y Z (n + 1) a b c := by
   have heq :
-    PeriodTorusHigherHomology.integerTrilinearPostcompose (PeriodTorusHigherHomology.crossProductAssociatorHomotopy X Y Z (n + 1))
+    SingularHomology.integerTrilinearPostcompose (SingularHomology.crossProductAssociatorHomotopy X Y Z (n + 1))
           ((SingularChains.singularComplex (X × (Y × Z))).d (n + 4) (n + 3)).hom +
-        PeriodTorusHigherHomology.integerTrilinearPrecompose (PeriodTorusHigherHomology.crossProductAssociatorHomotopy X Y Z n) LinearMap.id
+        SingularHomology.integerTrilinearPrecompose (SingularHomology.crossProductAssociatorHomotopy X Y Z n) LinearMap.id
           LinearMap.id ((SingularChains.singularComplex Z).d (n + 1) n).hom =
-      PeriodTorusHigherHomology.crossProductAssociatorDefect X Y Z (n + 1) := by
-    apply PeriodTorusHigherHomology.chainTrilinearMap_ext X Y Z 1 1 (n + 1)
+      SingularHomology.crossProductAssociatorDefect X Y Z (n + 1) := by
+    apply SingularHomology.chainTrilinearMap_ext X Y Z 1 1 (n + 1)
     intro σ τ υ
     have hstd :=
-      PeriodTorusHigherHomology.crossProductAssociatorHomotopy_boundary_affine 1 1 (n + 1) n
+      SingularHomology.crossProductAssociatorHomotopy_boundary_affine 1 1 (n + 1) n
         (SingularMayerVietoris.formalSimplex (SingularMayerVietoris.stdVertices 1))
         (SingularMayerVietoris.formalSimplex (SingularMayerVietoris.stdVertices 1))
         (SingularMayerVietoris.formalSimplex (SingularMayerVietoris.stdVertices (n + 1)))
     have hστυ := congrArg (SingularChains.inducedChain (σ.prodMap (τ.prodMap υ)) (n + 3)) hstd
-    simpa only [PeriodTorusHigherHomology.integerTrilinearPostcompose_apply, PeriodTorusHigherHomology.integerTrilinearPrecompose_apply,
+    simpa only [SingularHomology.integerTrilinearPostcompose_apply, SingularHomology.integerTrilinearPrecompose_apply,
       LinearMap.add_apply, LinearMap.id_apply, map_add, SingularChains.inducedChain_boundary,
-      PeriodTorusHigherHomology.crossProductAssociatorHomotopy_natural, PeriodTorusHigherHomology.crossProductAssociatorDefect_natural,
+      SingularHomology.crossProductAssociatorHomotopy_natural, SingularHomology.crossProductAssociatorDefect_natural,
       SingularMayerVietoris.affineChainMap_stdVertices, SingularChains.inducedChain_simplex,
       ContinuousMap.comp_id] using hστυ
   exact LinearMap.congr_fun (LinearMap.congr_fun (LinearMap.congr_fun heq a) b) c
@@ -799,20 +799,20 @@ theorem PeriodTorusHigherHomology.crossProductAssociatorHomotopy_boundary {X Y Z
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
 /-- If the third chain is a cycle, the boundary of the associator homotopy reduces to the defect of the cycle data alone. -/
-theorem PeriodTorusHigherHomology.crossProductAssociatorHomotopy_boundary_of_cycle {X Y Z : Type}
+theorem SingularHomology.crossProductAssociatorHomotopy_boundary_of_cycle {X Y Z : Type}
     [TopologicalSpace X] [TopologicalSpace Y] [TopologicalSpace Z] (n : ℕ)
     (a : SingularChains.Chains X 1) (b : SingularChains.Chains Y 1) (c : SingularChains.Chains Z n)
     (hc : ((SingularChains.singularComplex Z).d n (n - 1)).hom c = 0) :
     ((SingularChains.singularComplex (X × (Y × Z))).d (n + 3) (n + 2)).hom
-        (PeriodTorusHigherHomology.crossProductAssociatorHomotopy X Y Z n a b c) =
-      PeriodTorusHigherHomology.crossProductAssociatorDefect X Y Z n a b c := by
+        (SingularHomology.crossProductAssociatorHomotopy X Y Z n a b c) =
+      SingularHomology.crossProductAssociatorDefect X Y Z n a b c := by
   cases n with
-  | zero => exact PeriodTorusHigherHomology.crossProductAssociatorHomotopy_boundary_zero a b c
+  | zero => exact SingularHomology.crossProductAssociatorHomotopy_boundary_zero a b c
   | succ
     n =>
     have hc' : ((SingularChains.singularComplex Z).d (n + 1) n).hom c = 0 := by
       simpa only [Nat.succ_sub_one] using hc
-    simpa only [hc', map_zero, add_zero] using PeriodTorusHigherHomology.crossProductAssociatorHomotopy_boundary n a b c
+    simpa only [hc', map_zero, add_zero] using SingularHomology.crossProductAssociatorHomotopy_boundary n a b c
 
 
 /-! ### Associativity and cyclicity on homology -/
@@ -820,7 +820,7 @@ theorem PeriodTorusHigherHomology.crossProductAssociatorHomotopy_boundary_of_cyc
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
 /-- Associativity of the cross product on cycle classes: the two bracketings agree after the product re-association. -/
-theorem PeriodTorusHigherHomology.crossProductCycleClasses_associative {X Y Z : Type}
+theorem SingularHomology.crossProductCycleClasses_associative {X Y Z : Type}
     [TopologicalSpace X] [TopologicalSpace Y] [TopologicalSpace Z]
     (a : SingularMayerVietoris.ModuleHomology.Cycle (SingularChains.singularComplex X) 1)
     (b : SingularMayerVietoris.ModuleHomology.Cycle (SingularChains.singularComplex Y) 1)
@@ -829,7 +829,7 @@ theorem PeriodTorusHigherHomology.crossProductCycleClasses_associative {X Y Z : 
             (SingularChains.singularChainMap (Homeomorph.prodAssoc X Y Z : C(_, _))) 3).hom
         (SingularMayerVietoris.ModuleHomology.cycleClass
           (SingularChains.singularComplex ((X × Y) × Z)) 3
-          (PeriodTorusHigherHomology.crossProductTwoOneCycles (X × Y) Z (SingularHomology.crossProductCycles X Y 1 a b) c)) =
+          (SingularHomology.crossProductTwoOneCycles (X × Y) Z (SingularHomology.crossProductCycles X Y 1 a b) c)) =
       SingularMayerVietoris.ModuleHomology.cycleClass
         (SingularChains.singularComplex (X × (Y × Z))) 3
         (SingularHomology.crossProductCycles X (Y × Z) 2 a (SingularHomology.crossProductCycles Y Z 1 b c)) := by
@@ -837,23 +837,23 @@ theorem PeriodTorusHigherHomology.crossProductCycleClasses_associative {X Y Z : 
   apply
     (SingularMayerVietoris.ModuleHomology.cycleClass_eq_iff
         (SingularChains.singularComplex (X × (Y × Z))) 3 _ _).mpr
-  refine ⟨PeriodTorusHigherHomology.crossProductAssociatorHomotopy X Y Z 1 a.1 b.1 c.1, ?_⟩
-  simp only [SingularMayerVietoris.ModuleHomology.mapCycles_val, PeriodTorusHigherHomology.crossProductTwoOneCycles_val,
+  refine ⟨SingularHomology.crossProductAssociatorHomotopy X Y Z 1 a.1 b.1 c.1, ?_⟩
+  simp only [SingularMayerVietoris.ModuleHomology.mapCycles_val, SingularHomology.crossProductTwoOneCycles_val,
     SingularHomology.crossProductCycles_val]
   exact
-    PeriodTorusHigherHomology.crossProductAssociatorHomotopy_boundary_of_cycle 1 a.1 b.1 c.1
+    SingularHomology.crossProductAssociatorHomotopy_boundary_of_cycle 1 a.1 b.1 c.1
       (SingularMayerVietoris.ModuleHomology.cycle_condition (SingularChains.singularComplex Z) 1 c)
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
 /-- Associativity of the homology cross product: `(a × b) × c = (a × (b × c))` after the canonical re-association of the product space. -/
-theorem PeriodTorusHigherHomology.crossProductHomology_associative {X Y Z : Type}
+theorem SingularHomology.crossProductHomology_associative {X Y Z : Type}
     [TopologicalSpace X] [TopologicalSpace Y] [TopologicalSpace Z]
     (a : SingularMayerVietoris.SingularHomology X 1)
     (b : SingularMayerVietoris.SingularHomology Y 1)
     (c : SingularMayerVietoris.SingularHomology Z 1) :
     SingularMayerVietoris.singularHomologyMap (Homeomorph.prodAssoc X Y Z : C(_, _)) 3
-        (PeriodTorusHigherHomology.crossProductHomologyTwoOne (X × Y) Z (SingularHomology.crossProductHomology X Y 1 a b) c) =
+        (SingularHomology.crossProductHomologyTwoOne (X × Y) Z (SingularHomology.crossProductHomology X Y 1 a b) c) =
       SingularHomology.crossProductHomology X (Y × Z) 2 a (SingularHomology.crossProductHomology Y Z 1 b c) := by
   obtain ⟨a, rfl⟩ :=
     SingularMayerVietoris.ModuleHomology.cycleClass_surjective (SingularChains.singularComplex X) 1
@@ -864,23 +864,23 @@ theorem PeriodTorusHigherHomology.crossProductHomology_associative {X Y Z : Type
   obtain ⟨c, rfl⟩ :=
     SingularMayerVietoris.ModuleHomology.cycleClass_surjective (SingularChains.singularComplex Z) 1
       c
-  rw [SingularHomology.crossProductHomology_cycleClass, PeriodTorusHigherHomology.crossProductHomologyTwoOne_cycleClass,
+  rw [SingularHomology.crossProductHomology_cycleClass, SingularHomology.crossProductHomologyTwoOne_cycleClass,
     SingularHomology.crossProductHomology_cycleClass, SingularHomology.crossProductHomology_cycleClass]
-  exact PeriodTorusHigherHomology.crossProductCycleClasses_associative a b c
+  exact SingularHomology.crossProductCycleClasses_associative a b c
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
 /-- The cyclic re-association map `Y × (Z × X) → X × (Y × Z)` used to state cyclicity of the triple cross product. -/
-def PeriodTorusHigherHomology.crossProductCyclicMap (X Y Z : Type) [TopologicalSpace X]
+def SingularHomology.crossProductCyclicMap (X Y Z : Type) [TopologicalSpace X]
     [TopologicalSpace Y] [TopologicalSpace Z] : C(Y × (Z × X), X × (Y × Z)) :=
   ContinuousMap.prodSwap.comp ((Homeomorph.prodAssoc Y Z X).symm : C(_, _))
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
 /-- The cyclic map composes with association and swap to the identity: it is a homeomorphism with two-fold inverse data. -/
-theorem PeriodTorusHigherHomology.crossProductCyclicMap_assoc_swap {X Y Z : Type}
+theorem SingularHomology.crossProductCyclicMap_assoc_swap {X Y Z : Type}
     [TopologicalSpace X] [TopologicalSpace Y] [TopologicalSpace Z] :
-    (PeriodTorusHigherHomology.crossProductCyclicMap X Y Z).comp
+    (SingularHomology.crossProductCyclicMap X Y Z).comp
         ((Homeomorph.prodAssoc Y Z X : C(_, _)).comp ContinuousMap.prodSwap) =
       ContinuousMap.id (X × (Y × Z)) :=
   rfl
@@ -888,24 +888,24 @@ theorem PeriodTorusHigherHomology.crossProductCyclicMap_assoc_swap {X Y Z : Type
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
 /-- Cyclicity of the triple 1-class cross product: cyclically permuting the three factors rotates the value, the Jacobi-type identity for the cross product. -/
-theorem PeriodTorusHigherHomology.crossProductHomology_cyclic {X Y Z : Type} [TopologicalSpace X]
+theorem SingularHomology.crossProductHomology_cyclic {X Y Z : Type} [TopologicalSpace X]
     [TopologicalSpace Y] [TopologicalSpace Z] (a : SingularMayerVietoris.SingularHomology X 1)
     (b : SingularMayerVietoris.SingularHomology Y 1)
     (c : SingularMayerVietoris.SingularHomology Z 1) :
     SingularHomology.crossProductHomology X (Y × Z) 2 a (SingularHomology.crossProductHomology Y Z 1 b c) =
-      SingularMayerVietoris.singularHomologyMap (PeriodTorusHigherHomology.crossProductCyclicMap X Y Z) 3
+      SingularMayerVietoris.singularHomologyMap (SingularHomology.crossProductCyclicMap X Y Z) 3
         (SingularHomology.crossProductHomology Y (Z × X) 2 b (SingularHomology.crossProductHomology Z X 1 c a)) := by
-  have h := PeriodTorusHigherHomology.crossProductHomology_associative b c a
-  rw [PeriodTorusHigherHomology.crossProductHomologyTwoOne_apply] at h
+  have h := SingularHomology.crossProductHomology_associative b c a
+  rw [SingularHomology.crossProductHomologyTwoOne_apply] at h
   have h' :=
-    congrArg (SingularMayerVietoris.singularHomologyMap (PeriodTorusHigherHomology.crossProductCyclicMap X Y Z) 3) h
+    congrArg (SingularMayerVietoris.singularHomologyMap (SingularHomology.crossProductCyclicMap X Y Z) 3) h
   have hmap :
-    (SingularMayerVietoris.singularHomologyMap (PeriodTorusHigherHomology.crossProductCyclicMap X Y Z) 3).comp
+    (SingularMayerVietoris.singularHomologyMap (SingularHomology.crossProductCyclicMap X Y Z) 3).comp
         ((SingularMayerVietoris.singularHomologyMap (Homeomorph.prodAssoc Y Z X : C(_, _)) 3).comp
           (SingularMayerVietoris.singularHomologyMap
             (ContinuousMap.prodSwap : C(X × (Y × Z), (Y × Z) × X)) 3)) =
       LinearMap.id := by
-    rw [← SingularHomology.singularHomologyMap_comp, ← SingularHomology.singularHomologyMap_comp, PeriodTorusHigherHomology.crossProductCyclicMap_assoc_swap,
+    rw [← SingularHomology.singularHomologyMap_comp, ← SingularHomology.singularHomologyMap_comp, SingularHomology.crossProductCyclicMap_assoc_swap,
       SingularHomology.singularHomologyMap_id]
   exact
     (LinearMap.congr_fun hmap

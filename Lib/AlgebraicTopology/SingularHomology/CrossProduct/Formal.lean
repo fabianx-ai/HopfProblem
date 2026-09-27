@@ -37,7 +37,7 @@ the vertex sets (`SingularHomology.formalMap_pointCrossProduct`, `.formalMap_edg
 `.formalMap_triangleCrossProduct`), and support bounds
 (`SingularHomology.formalPointCrossProduct_mem_supported`, `.formalEdgeCrossProduct_mem_supported`).
 The file also records the elementary facts about pushforward of formal chains used downstream
-(`PeriodTorusHigherHomology.formalMap_comp`, `.formalMap_comp_apply`, `.formalMap_id_apply`,
+(`SingularHomology.formalMap_comp`, `.formalMap_comp_apply`, `.formalMap_id_apply`,
 `.formalMap_prod_swap`).
 
 This is Hatcher's subdivision of `Δᵖ × Δ^q` into `(p+q)`-simplices (Hatcher, *Algebraic
@@ -600,7 +600,7 @@ attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
 /-- Formal chain maps compose: pushing forward along `g` then `f` is pushing forward along `f ∘ g`. -/
 @[simp]
-theorem PeriodTorusHigherHomology.formalMap_comp {V W Z : Type*} (f : W → Z) (g : V → W) (n : ℕ)
+theorem SingularHomology.formalMap_comp {V W Z : Type*} (f : W → Z) (g : V → W) (n : ℕ)
     (c : SingularMayerVietoris.FormalChains V n) :
     SingularMayerVietoris.formalMap f n (SingularMayerVietoris.formalMap g n c) =
       SingularMayerVietoris.formalMap (f ∘ g) n c := by
@@ -612,18 +612,18 @@ theorem PeriodTorusHigherHomology.formalMap_comp {V W Z : Type*} (f : W → Z) (
     simp only [LinearMap.comp_apply, SingularMayerVietoris.formalMap_simplex, Function.comp_assoc]
   exact LinearMap.congr_fun h c
 /-- Formal chain maps along a product of maps commute with the factor swap in the stated sense. -/
-theorem PeriodTorusHigherHomology.formalMap_prod_swap {V W V' W' : Type*} (f : V → V')
+theorem SingularHomology.formalMap_prod_swap {V W V' W' : Type*} (f : V → V')
     (g : W → W') (n : ℕ) (c : SingularMayerVietoris.FormalChains (W × V) n) :
     SingularMayerVietoris.formalMap (Prod.map f g) n
         (SingularMayerVietoris.formalMap Prod.swap n c) =
       SingularMayerVietoris.formalMap Prod.swap n
         (SingularMayerVietoris.formalMap (Prod.map g f) n c) := by
-  rw [PeriodTorusHigherHomology.formalMap_comp, PeriodTorusHigherHomology.formalMap_comp]
+  rw [SingularHomology.formalMap_comp, SingularHomology.formalMap_comp]
   rfl
 
 
 /-- Formal chain maps compose, applied form. -/
-theorem PeriodTorusHigherHomology.formalMap_comp_apply {V W Z : Type*} (f : W → Z) (g : V → W)
+theorem SingularHomology.formalMap_comp_apply {V W Z : Type*} (f : W → Z) (g : V → W)
     (n : ℕ) (c : SingularMayerVietoris.FormalChains V n) :
     SingularMayerVietoris.formalMap f n (SingularMayerVietoris.formalMap g n c) =
       SingularMayerVietoris.formalMap (f ∘ g) n c := by
@@ -635,7 +635,7 @@ theorem PeriodTorusHigherHomology.formalMap_comp_apply {V W Z : Type*} (f : W �
     simp only [LinearMap.comp_apply, SingularMayerVietoris.formalMap_simplex, Function.comp_assoc]
   exact LinearMap.congr_fun h c
 /-- The formal chain map along the identity is the identity. -/
-theorem PeriodTorusHigherHomology.formalMap_id_apply {V : Type*} (n : ℕ)
+theorem SingularHomology.formalMap_id_apply {V : Type*} (n : ℕ)
     (c : SingularMayerVietoris.FormalChains V n) :
     SingularMayerVietoris.formalMap (id : V → V) n c = c := by
   have h : SingularMayerVietoris.formalMap (id : V → V) n = LinearMap.id := by

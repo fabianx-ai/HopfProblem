@@ -20,15 +20,15 @@ open scoped BigOperators TensorProduct
 Plumbing for the singular cross product.  Currying and composition of `ℤ`-bilinear maps
 (`SingularHomology.integerBilinearRightApply`, `.integerBilinearFlip`,
 `.integerBilinearPostcompose`, `.integerBilinearPrecompose`) and of `ℤ`-trilinear maps
-(`PeriodTorusHigherHomology.integerTrilinearPostcompose`, `.integerTrilinearPrecompose`,
+(`SingularHomology.integerTrilinearPostcompose`, `.integerTrilinearPrecompose`,
 `.integerTrilinearLeftAssociated`, `.integerTrilinearRightAssociated`); the extension of a
 simplex-wise assignment to a bilinear or trilinear map on the free abelian groups of singular
-chains (`SingularHomology.chainBilinearLift`, `PeriodTorusHigherHomology.chainTrilinearLift`,
-unique by `SingularHomology.chainBilinearMap_ext`, `PeriodTorusHigherHomology.chainTrilinearMap_ext`)
+chains (`SingularHomology.chainBilinearLift`, `SingularHomology.chainTrilinearLift`,
+unique by `SingularHomology.chainBilinearMap_ext`, `SingularHomology.chainTrilinearMap_ext`)
 and on formal chains (`SingularHomology.formalBilinearLift`,
-`PeriodTorusHigherHomology.formalTrilinearLift`, with the extensionality statements
+`SingularHomology.formalTrilinearLift`, with the extensionality statements
 `SingularHomology.formalChains_bilinear_ext`, `.integerFormalBilinearMap_ext`,
-`PeriodTorusHigherHomology.formalChains_trilinear_ext`).
+`SingularHomology.formalChains_trilinear_ext`).
 
 This is the "extend bilinearly from generators" step of Hatcher's construction of the cross
 product on chains (Hatcher, *Algebraic Topology*, §3.B).  Mathlib has `LinearMap.flip`,
@@ -303,7 +303,7 @@ theorem SingularHomology.formalBilinearLift_simplex {V W M : Type*} {n m : ℕ}
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
 /-- Postcompose a ℤ-trilinear map with a linear map on its output. -/
-def PeriodTorusHigherHomology.integerTrilinearPostcompose {A B C D E : Type*} [AddCommGroup A]
+def SingularHomology.integerTrilinearPostcompose {A B C D E : Type*} [AddCommGroup A]
     [AddCommGroup B] [AddCommGroup C] [AddCommGroup D] [AddCommGroup E] [Module ℤ A] [Module ℤ B]
     [Module ℤ C] [Module ℤ D] [Module ℤ E] (F : A →ₗ[ℤ] B →ₗ[ℤ] C →ₗ[ℤ] D) (g : D →ₗ[ℤ] E) :
     A →ₗ[ℤ] B →ₗ[ℤ] C →ₗ[ℤ] E
@@ -330,17 +330,17 @@ attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
 /-- The postcomposed trilinear map evaluates as `g (F a b c)`. -/
 @[simp]
-theorem PeriodTorusHigherHomology.integerTrilinearPostcompose_apply {A B C D E : Type*}
+theorem SingularHomology.integerTrilinearPostcompose_apply {A B C D E : Type*}
     [AddCommGroup A] [AddCommGroup B] [AddCommGroup C] [AddCommGroup D] [AddCommGroup E]
     [Module ℤ A] [Module ℤ B] [Module ℤ C] [Module ℤ D] [Module ℤ E]
     (F : A →ₗ[ℤ] B →ₗ[ℤ] C →ₗ[ℤ] D) (g : D →ₗ[ℤ] E) (a : A) (b : B) (c : C) :
-    PeriodTorusHigherHomology.integerTrilinearPostcompose F g a b c = g (F a b c) :=
+    SingularHomology.integerTrilinearPostcompose F g a b c = g (F a b c) :=
   rfl
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
 /-- Precompose a ℤ-trilinear map with linear maps in each of its three arguments. -/
-def PeriodTorusHigherHomology.integerTrilinearPrecompose {A B C D A' B' C' : Type*}
+def SingularHomology.integerTrilinearPrecompose {A B C D A' B' C' : Type*}
     [AddCommGroup A] [AddCommGroup B] [AddCommGroup C] [AddCommGroup D] [AddCommGroup A']
     [AddCommGroup B'] [AddCommGroup C'] [Module ℤ A] [Module ℤ B] [Module ℤ C] [Module ℤ D]
     [Module ℤ A'] [Module ℤ B'] [Module ℤ C'] (F : A →ₗ[ℤ] B →ₗ[ℤ] C →ₗ[ℤ] D) (f : A' →ₗ[ℤ] A)
@@ -368,18 +368,18 @@ attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
 /-- The precomposed trilinear map evaluates argumentwise along the three precomposition maps. -/
 @[simp]
-theorem PeriodTorusHigherHomology.integerTrilinearPrecompose_apply {A B C D A' B' C' : Type*}
+theorem SingularHomology.integerTrilinearPrecompose_apply {A B C D A' B' C' : Type*}
     [AddCommGroup A] [AddCommGroup B] [AddCommGroup C] [AddCommGroup D] [AddCommGroup A']
     [AddCommGroup B'] [AddCommGroup C'] [Module ℤ A] [Module ℤ B] [Module ℤ C] [Module ℤ D]
     [Module ℤ A'] [Module ℤ B'] [Module ℤ C'] (F : A →ₗ[ℤ] B →ₗ[ℤ] C →ₗ[ℤ] D) (f : A' →ₗ[ℤ] A)
     (g : B' →ₗ[ℤ] B) (h : C' →ₗ[ℤ] C) (a : A') (b : B') (c : C') :
-    PeriodTorusHigherHomology.integerTrilinearPrecompose F f g h a b c = F (f a) (g b) (h c) :=
+    SingularHomology.integerTrilinearPrecompose F f g h a b c = F (f a) (g b) (h c) :=
   rfl
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
 /-- Reassociate a bilinear-then-bilinear pipeline into a trilinear map, left-associated. -/
-def PeriodTorusHigherHomology.integerTrilinearLeftAssociated {A B C D E : Type*} [AddCommGroup A]
+def SingularHomology.integerTrilinearLeftAssociated {A B C D E : Type*} [AddCommGroup A]
     [AddCommGroup B] [AddCommGroup C] [AddCommGroup D] [AddCommGroup E] [Module ℤ A] [Module ℤ B]
     [Module ℤ C] [Module ℤ D] [Module ℤ E] (F : A →ₗ[ℤ] B →ₗ[ℤ] D) (G : D →ₗ[ℤ] C →ₗ[ℤ] E) :
     A →ₗ[ℤ] B →ₗ[ℤ] C →ₗ[ℤ] E
@@ -405,7 +405,7 @@ def PeriodTorusHigherHomology.integerTrilinearLeftAssociated {A B C D E : Type*}
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
 /-- Reassociate a bilinear-then-bilinear pipeline into a trilinear map, right-associated. -/
-def PeriodTorusHigherHomology.integerTrilinearRightAssociated {A B C D E : Type*} [AddCommGroup A]
+def SingularHomology.integerTrilinearRightAssociated {A B C D E : Type*} [AddCommGroup A]
     [AddCommGroup B] [AddCommGroup C] [AddCommGroup D] [AddCommGroup E] [Module ℤ A] [Module ℤ B]
     [Module ℤ C] [Module ℤ D] [Module ℤ E] (F : A →ₗ[ℤ] D →ₗ[ℤ] E) (G : B →ₗ[ℤ] C →ₗ[ℤ] D) :
     A →ₗ[ℤ] B →ₗ[ℤ] C →ₗ[ℤ] E
@@ -431,7 +431,7 @@ def PeriodTorusHigherHomology.integerTrilinearRightAssociated {A B C D E : Type*
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
 /-- A pointwise-defined map on triples of singular simplices lifts to a ℤ-trilinear map on the free chain groups. -/
-def PeriodTorusHigherHomology.chainTrilinearLift (X Y Z : Type) [TopologicalSpace X]
+def SingularHomology.chainTrilinearLift (X Y Z : Type) [TopologicalSpace X]
     [TopologicalSpace Y] [TopologicalSpace Z] (p q r : ℕ) {M : Type} [AddCommGroup M] [Module ℤ M]
     (f :
       SingularChains.SingularSimplex X p →
@@ -444,24 +444,24 @@ attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
 /-- `chainTrilinearLift` evaluates on basis simplex chains as `f σ τ υ`. -/
 @[simp]
-theorem PeriodTorusHigherHomology.chainTrilinearLift_simplex (X Y Z : Type) [TopologicalSpace X]
+theorem SingularHomology.chainTrilinearLift_simplex (X Y Z : Type) [TopologicalSpace X]
     [TopologicalSpace Y] [TopologicalSpace Z] (p q r : ℕ) {M : Type} [AddCommGroup M] [Module ℤ M]
     (f :
       SingularChains.SingularSimplex X p →
         SingularChains.SingularSimplex Y q → SingularChains.SingularSimplex Z r → M)
     (σ : SingularChains.SingularSimplex X p) (τ : SingularChains.SingularSimplex Y q)
     (υ : SingularChains.SingularSimplex Z r) :
-    PeriodTorusHigherHomology.chainTrilinearLift X Y Z p q r f (SingularChains.simplexChain X p σ)
+    SingularHomology.chainTrilinearLift X Y Z p q r f (SingularChains.simplexChain X p σ)
         (SingularChains.simplexChain Y q τ) (SingularChains.simplexChain Z r υ) =
       f σ τ υ := by
-  rw [PeriodTorusHigherHomology.chainTrilinearLift, SingularChains.chainLift_simplex, SingularHomology.chainBilinearLift_simplex]
+  rw [SingularHomology.chainTrilinearLift, SingularChains.chainLift_simplex, SingularHomology.chainBilinearLift_simplex]
 
 /-! ### The trilinear lift on formal chains -/
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
 /-- Two trilinear maps on singular chain groups agreeing on all triples of basis simplices are equal. -/
-theorem PeriodTorusHigherHomology.chainTrilinearMap_ext (X Y Z : Type) [TopologicalSpace X]
+theorem SingularHomology.chainTrilinearMap_ext (X Y Z : Type) [TopologicalSpace X]
     [TopologicalSpace Y] [TopologicalSpace Z] (p q r : ℕ) {M : Type} [AddCommGroup M] [Module ℤ M]
     {F G :
       SingularChains.Chains X p →ₗ[ℤ]
@@ -478,7 +478,7 @@ theorem PeriodTorusHigherHomology.chainTrilinearMap_ext (X Y Z : Type) [Topologi
   apply SingularHomology.chainBilinearMap_ext Y Z q r
   exact h σ
 /-- Two trilinear maps on formal chains agreeing on formal simplices are equal. -/
-theorem PeriodTorusHigherHomology.formalChains_trilinear_ext {V W Z M : Type*} {n m l : ℕ}
+theorem SingularHomology.formalChains_trilinear_ext {V W Z M : Type*} {n m l : ℕ}
     [AddCommGroup M] [Module ℤ M]
     {f g :
       SingularMayerVietoris.FormalChains V n →ₗ[ℤ]
@@ -496,7 +496,7 @@ theorem PeriodTorusHigherHomology.formalChains_trilinear_ext {V W Z M : Type*} {
   apply SingularHomology.formalChains_bilinear_ext
   exact h v
 /-- A pointwise-defined map on triples of formal simplices lifts to a ℤ-trilinear map on formal chain groups. -/
-def PeriodTorusHigherHomology.formalTrilinearLift {V W Z M : Type*} {n m l : ℕ} [AddCommGroup M]
+def SingularHomology.formalTrilinearLift {V W Z M : Type*} {n m l : ℕ} [AddCommGroup M]
     [Module ℤ M] (f : (Fin n → V) → (Fin m → W) → (Fin l → Z) → M) :
     SingularMayerVietoris.FormalChains V n →ₗ[ℤ]
       SingularMayerVietoris.FormalChains W m →ₗ[ℤ]
@@ -504,9 +504,9 @@ def PeriodTorusHigherHomology.formalTrilinearLift {V W Z M : Type*} {n m l : ℕ
   SingularMayerVietoris.formalLift fun v => SingularHomology.formalBilinearLift (f v)
 /-- `formalTrilinearLift` evaluates on formal simplices as `f v w z`. -/
 @[simp]
-theorem PeriodTorusHigherHomology.formalTrilinearLift_simplex {V W Z M : Type*} {n m l : ℕ}
+theorem SingularHomology.formalTrilinearLift_simplex {V W Z M : Type*} {n m l : ℕ}
     [AddCommGroup M] [Module ℤ M] (f : (Fin n → V) → (Fin m → W) → (Fin l → Z) → M)
     (v : Fin n → V) (w : Fin m → W) (z : Fin l → Z) :
-    PeriodTorusHigherHomology.formalTrilinearLift f (SingularMayerVietoris.formalSimplex v)
+    SingularHomology.formalTrilinearLift f (SingularMayerVietoris.formalSimplex v)
         (SingularMayerVietoris.formalSimplex w) (SingularMayerVietoris.formalSimplex z) =
-      f v w z := by simp [PeriodTorusHigherHomology.formalTrilinearLift]
+      f v w z := by simp [SingularHomology.formalTrilinearLift]

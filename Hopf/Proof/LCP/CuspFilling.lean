@@ -13217,7 +13217,7 @@ theorem CuspCentralHomology.parameterMap_positiveCircleCross_eq_zero {X D : Type
         (PeriodTorusHigherHomology.positiveCircleCross X n b) =
       0 := by
   have h :=
-    PeriodTorusHigherHomology.crossProductHomology_natural β (ContinuousMap.id X) n
+    SingularHomology.crossProductHomology_natural β (ContinuousMap.id X) n
       (FirstHurewicz.loopHomologyClass PeriodTorusHigherHomology.CirclePaths.positiveLoop) b
   change
     SingularMayerVietoris.singularHomologyMap (β.prodMap (ContinuousMap.id X)) (n + 1)
