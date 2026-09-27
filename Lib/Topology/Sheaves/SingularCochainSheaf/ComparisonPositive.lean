@@ -16,8 +16,9 @@ public import Lib.Topology.Sheaves.SingularCochainSheaf.ResolutionPositive
 
 For a locally contractible space `X` and an abelian group `A`, sheaf cohomology of the constant
 sheaf `A_X` agrees with singular cohomology: `H^n(X; A_X) ≅ H^n_sing(X; A)` (Bredon, *Sheaf
-Theory*, III §1; Warner, *Foundations of Differentiable Manifolds and Lie Groups*, 5.32; Godement
-II.3.9).  The textbook hypothesis is paracompactness; the declarations below assume the stronger
+Theory*, III §1; Warner, *Foundations of Differentiable Manifolds and Lie Groups*, 5.32; cf.
+Godement, *Topologie algébrique et théorie des faisceaux*, II.5.10).  The textbook hypothesis is
+paracompactness; the declarations below assume the stronger
 `[MetrizableSpace X]`.  The isomorphism is induced by the sheafification unit on the
 singular-cochain complex, which is a resolution of `A_X`, and is natural in the space.
 -/
