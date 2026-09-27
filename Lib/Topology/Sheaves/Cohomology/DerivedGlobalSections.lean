@@ -9,8 +9,9 @@ public import Lib.CategoryTheory.Abelian.CohomologicalDeltaFunctor.Ext
 /-!
 # Derived global sections on an arbitrary space
 
-The textbook M00-D construction (1600–1607 before its comparison conclusion), with
-D02 (41–60), specializes the derived delta functor to literal sections at the top open.
+The right-derived delta functor of an additive left-exact functor
+(`Lib.CategoryTheory.Abelian.CohomologicalDeltaFunctor.RightDerived`) is specialized to
+literal sections at the top open.
 The space and abelian-group coefficients share an arbitrary ambient universe `u`;
 no independently sized universe or lifting compatibility is asserted here.
 The derived construction does not use the native Ext model as an input. The final
@@ -34,10 +35,11 @@ local instance : PreservesFiniteLimits ((sheafSections (Opens.grothendieckTopolo
     (evaluation _ _).obj (op ⊤)))
 
 /-- The derived delta functor of literal global sections, for arbitrary sheaf coefficients
-on an arbitrary space (M00-D, textbook 1600–1607). -/
+on an arbitrary space. -/
 @[expose] def derivedGlobalSectionsDeltaFunctor : CohomologicalDeltaFunctor (CategoryTheory.Sheaf (Opens.grothendieckTopology X) AddCommGrpCat.{u}) AddCommGrpCat.{u} :=
   ofRightDerived ((sheafSections (Opens.grothendieckTopology X) AddCommGrpCat.{u}).obj (op ⊤))
-/-- Each degree is the same fixed right-derived global-sections functor of D02. -/
+/-- Each degree is the same fixed right-derived functor `Functor.rightDerived n` of the
+global-sections functor. -/
 theorem derivedGlobalSectionsDegree (n : ℕ) :
     ((derivedGlobalSectionsDeltaFunctor X).T n).obj = ((sheafSections (Opens.grothendieckTopology X) AddCommGrpCat.{u}).obj (op ⊤)).rightDerived n := rfl
 /-- The boundary is the positive, choice-independent derived connecting morphism;
@@ -50,11 +52,11 @@ This is the derived normalization, not an Ext-model degree-zero equivalence. -/
     ((derivedGlobalSectionsDeltaFunctor X).T 0).obj ≅ ((sheafSections (Opens.grothendieckTopology X) AddCommGrpCat.{u}).obj (op ⊤)) :=
   ((sheafSections (Opens.grothendieckTopology X) AddCommGrpCat.{u}).obj (op ⊤)).rightDerivedZeroIsoSelf
 /-- Positive degrees are effaceable by embedding a sheaf into an injective sheaf,
-using the generic injective vanishing argument (M00-D, textbook 1606–1607). -/
+using the generic injective vanishing argument. -/
 theorem derivedGlobalSectionsEffaceable : (derivedGlobalSectionsDeltaFunctor X).Effaceable :=
   ofRightDerived_effaceable ((sheafSections (Opens.grothendieckTopology X) AddCommGrpCat.{u}).obj (op ⊤))
 /-- Derived global sections is universal as a source delta functor: positive effacement
-supplies the unique extension of prescribed degree-zero data (M00-D). -/
+supplies the unique extension of prescribed degree-zero data. -/
 theorem derivedGlobalSectionsIsUniversal : (derivedGlobalSectionsDeltaFunctor X).IsUniversal :=
   ofRightDerived_isUniversal ((sheafSections (Opens.grothendieckTopology X) AddCommGrpCat.{u}).obj (op ⊤))
 
@@ -81,7 +83,7 @@ Hom complex to the global-sections complex: naturality commutes with every
 differential and comparison map. Taking cohomology after the native Ext comparison
 therefore gives an additive, coefficient-natural isomorphism independent of the
 resolution. Its inverse uses inverse evaluation and the inverse Ext comparison,
-in reverse order (textbook M09, C29f). No boundary compatibility is asserted here. -/
+in reverse order. No boundary compatibility is asserted here. -/
 def extFunctorObjIsoDerivedGlobalSections (q : ℕ) :
     extFunctorObj ((constantSheaf (Opens.grothendieckTopology X) AddCommGrpCat.{u}).obj
       (AddCommGrpCat.of (ULift.{u} ℤ))) q ≅ ((derivedGlobalSectionsDeltaFunctor X).T q).obj :=
@@ -122,7 +124,7 @@ theorem extFunctorObjIsoDerivedGlobalSections_eq (q : ℕ) :
 normalization. On every original resolution the cocycle factors through the same
 augmentation, and evaluation takes that factor at the sheafification-unit image
 of 1. Thus the canonical-zero square uses the same kernel factorization and
-generator, not a newly chosen normalization (textbook M09, final sentence). -/
+generator, not a newly chosen normalization. -/
 theorem extFunctorObjIsoDerivedGlobalSections_zero :
     (extFunctorObjIsoDerivedGlobalSections X 0).hom ≫
       (derivedGlobalSectionsDegreeZeroIso X).hom =
@@ -142,8 +144,8 @@ theorem extFunctorObjIsoDerivedGlobalSections_zero :
   exact (TopCat.ConstantSheaf.extFunctorObjZeroIsoGlobalSections_hom_app X A x).symm
 
 /-- The fixed native Ext comparison with derived global sections commutes with
-the positive connecting maps of every original short exact coefficient sequence
-(textbook M10, C29g). The same compatible resolution triple computes both
+the positive connecting maps of every original short exact coefficient sequence.
+The same compatible resolution triple computes both
 boundaries: a lift satisfies `j(a) = db`, and evaluation sends it to
 `d α(b) = α(db) = α(j(a)) = j α(a)`. The native comparison followed by derived
 evaluation therefore gives the ordinary commuting square, with no new sign. -/
@@ -186,7 +188,7 @@ theorem extFunctorObjIsoDerivedGlobalSections_hom_connecting
   rw [← Category.assoc, native, Category.assoc, derived, ← Category.assoc]
 
 /-- The inverse of the same fixed Ext/global-sections comparison also commutes
-with positive connecting maps (textbook M10, inverse C29g). Inverse evaluation
+with positive connecting maps. Inverse evaluation
 and the inverse native comparison act in reverse order on the same original
 resolution triple. Their lift calculation still uses `j(a) = db`; hence this
 is the inverse ordinary-sign square, not a separately chosen comparison. -/
@@ -229,7 +231,7 @@ theorem extFunctorObjIsoDerivedGlobalSections_inv_connecting
   rw [← Category.assoc, derived, Category.assoc, native, ← Category.assoc]
 
 /-- The fixed native Ext comparison is a morphism to the derived global-sections
-delta functor (textbook M10, C29g and its assembly). Its degree maps are the
+delta functor. Its degree maps are the
 already constructed comparison, and its commutation field uses the positive
 boundary square for every original coefficient short exact sequence. -/
 def extDerivedGlobalSectionsHom : CohomologicalDeltaFunctor.Hom
@@ -238,8 +240,8 @@ def extDerivedGlobalSectionsHom : CohomologicalDeltaFunctor.Hom
   app q := (extFunctorObjIsoDerivedGlobalSections X q).hom
   comm h q := extFunctorObjIsoDerivedGlobalSections_hom_connecting X h q
 
-/-- The inverse fixed comparison is a delta morphism in the reverse direction
-(textbook M10). The same inverse degree maps and inverse positive boundary
+/-- The inverse fixed comparison is a delta morphism in the reverse direction.
+The same inverse degree maps and inverse positive boundary
 squares are used; no alternative comparison or degreewise sign is chosen. -/
 def extDerivedGlobalSectionsInv : CohomologicalDeltaFunctor.Hom
     (derivedGlobalSectionsDeltaFunctor X)
@@ -249,7 +251,7 @@ def extDerivedGlobalSectionsInv : CohomologicalDeltaFunctor.Hom
   comm h q := extFunctorObjIsoDerivedGlobalSections_inv_connecting X h q
 
 /-- Every whole degree natural transformation of the forward delta morphism is
-the fixed native Ext/global-sections comparison (textbook M10 assembly). -/
+the fixed native Ext/global-sections comparison. -/
 theorem extDerivedGlobalSectionsHom_app (n : ℕ) :
     (extDerivedGlobalSectionsHom X).app n =
       (extFunctorObjIsoDerivedGlobalSections X n).hom := by
@@ -257,7 +259,7 @@ theorem extDerivedGlobalSectionsHom_app (n : ℕ) :
   rfl
 
 /-- Every whole degree natural transformation of the reverse delta morphism is
-the inverse of the same fixed comparison (textbook M10 assembly). -/
+the inverse of the same fixed comparison. -/
 theorem extDerivedGlobalSectionsInv_app (n : ℕ) :
     (extDerivedGlobalSectionsInv X).app n =
       (extFunctorObjIsoDerivedGlobalSections X n).inv := by
@@ -265,7 +267,7 @@ theorem extDerivedGlobalSectionsInv_app (n : ℕ) :
   rfl
 
 /-- Forward comparison followed by inverse comparison is the identity on the
-native Ext delta functor, as a whole delta morphism (textbook M10). -/
+native Ext delta functor, as a whole delta morphism. -/
 theorem extDerivedGlobalSectionsHom_comp_inv :
     CohomologicalDeltaFunctor.Hom.comp (extDerivedGlobalSectionsHom X) (extDerivedGlobalSectionsInv X) =
       CohomologicalDeltaFunctor.Hom.id (ofExt ((constantSheaf (Opens.grothendieckTopology X) AddCommGrpCat.{u}).obj
@@ -277,7 +279,7 @@ theorem extDerivedGlobalSectionsHom_comp_inv :
   exact (extFunctorObjIsoDerivedGlobalSections X q).hom_inv_id
 
 /-- Inverse comparison followed by forward comparison is the identity on actual
-derived global sections, as a whole delta morphism (textbook M10). -/
+derived global sections, as a whole delta morphism. -/
 theorem extDerivedGlobalSectionsInv_comp_hom :
     CohomologicalDeltaFunctor.Hom.comp (extDerivedGlobalSectionsInv X) (extDerivedGlobalSectionsHom X) =
       CohomologicalDeltaFunctor.Hom.id (derivedGlobalSectionsDeltaFunctor X) := by
@@ -289,7 +291,8 @@ theorem extDerivedGlobalSectionsInv_comp_hom :
 
 /-- The forward delta morphism has the fixed degree-zero component: native
 evaluation followed by the inverse canonical derived normalization. This is
-the textbook `κ⁻¹ ε`, with the same evaluation and normalization as in M09. -/
+`κ⁻¹ ∘ ε`, with the same evaluation `ε` and degree-zero normalization `κ` as in
+`extFunctorObjIsoDerivedGlobalSections_zero`. -/
 theorem extDerivedGlobalSectionsHom_app_zero :
     (extDerivedGlobalSectionsHom X).app 0 =
       (TopCat.ConstantSheaf.extFunctorObjZeroIsoGlobalSections X).hom ≫
@@ -300,8 +303,8 @@ theorem extDerivedGlobalSectionsHom_app_zero :
     extFunctorObjIsoDerivedGlobalSections_zero X
 
 /-- Any other native Ext to derived-global-sections delta morphism with the same
-degree-zero normalization equals the constructed comparison (textbook M10,
-final canonicity statement). Universality of the Ext SOURCE verifies uniqueness
+degree-zero normalization equals the constructed comparison. Universality of the
+Ext SOURCE verifies uniqueness
 after construction; it neither defines the comparison nor replaces its boundary
 calculation. -/
 theorem extDerivedGlobalSectionsHom_unique
