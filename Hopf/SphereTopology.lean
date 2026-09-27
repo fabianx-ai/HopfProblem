@@ -79,6 +79,7 @@ import Lib.Geometry.Manifold.Morse.Cancellation
 import Lib.Geometry.Manifold.Transversality.Basic
 import Lib.Geometry.Manifold.Immersion.Relative
 import Lib.Geometry.Manifold.Morse.Rearrangement
+import Hopf.Proof.Geometry.Manifold.Morse.Rearrangement.MiddleLevel
 import Lib.Geometry.Manifold.Morse.Connection
 import Mathlib
 import Lib.Topology.Homotopy.HandleRetraction

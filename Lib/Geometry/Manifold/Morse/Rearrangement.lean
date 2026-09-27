@@ -15,7 +15,6 @@ public import Lib.Geometry.Manifold.Morse.Rearrangement.LevelTime
 public import Lib.Geometry.Manifold.Morse.Rearrangement.BasinImages
 public import Lib.Geometry.Manifold.Morse.Rearrangement.LevelConnectedness
 public import Lib.Geometry.Manifold.Morse.Rearrangement.AmbientTransversality
-public import Lib.Geometry.Manifold.Morse.Rearrangement.MiddleLevel
 
 /-!
 # Rearrangement of Morse functions: the toolbox
