@@ -41,6 +41,11 @@ open scoped ContDiff ContinuousMap
 
 noncomputable section
 
+/-- Let `S : AdaptedWindows E f`, `a`, `b` regular values, and `γ : X → {f = a}` a smooth injective
+immersion whose image lies in the basin of the level `b`.  Then there is a partial diffeomorphism
+`D : {f = a} → {f = b}` with source the basin of `b` and target the basin of `a`, and a smooth
+injective immersion `Γ : X → {f = b}` with `D ∘ γ = Γ`, `D⁻¹ ∘ Γ = γ`, and each `Γ z` on the flow
+line of `γ z`. -/
 theorem AdaptedWindows.exists_embedded_level_transport {E M G H X : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {f : M → ℝ} [NormedAddCommGroup G]
@@ -102,6 +107,8 @@ theorem AdaptedWindows.exists_embedded_level_transport {E M G H X : Type*} [Norm
   · intro z
     exact horbit (γ z) (hmaps z)
 
+/-- If `mfderiv γ (standardCircleParametrization z)` coproduct with `B` is surjective, so is the
+differential of `γ ∘ standardCircleParametrization` at `z` coproduct with `B`. -/
 theorem MorseCancellation.transverse_comp_standardCircle {G H N : Type*} [NormedAddCommGroup G]
     [NormedSpace ℝ G] [TopologicalSpace H] {J : ModelWithCorners ℝ G H} [TopologicalSpace N]
     [ChartedSpace H N] {D : Type*} [NormedAddCommGroup D] [NormedSpace ℝ D] {γ : Circle → N}
@@ -126,6 +133,11 @@ theorem MorseCancellation.transverse_comp_standardCircle {G H N : Type*} [Normed
   exact ContinuousLinearMap.surjective_coprod_comp_left L B P hP htrans
 
 attribute [local instance 100] Classical.propDecidable in
+/-- Let `p` be a critical point of index `2` of `S : AdaptedWindows E f` and `a < f p` a regular
+value with every critical value below `f p` below `a`.  Then there are a diffeomorphism
+`e : S¹ ≃ S(N_p)`, a partial diffeomorphism `D` from the lower level of `p` to `{f = a}` between
+the basins, and a smooth embedded circle `Γ : S¹ → {f = a}` with `D (attachingSphere (e z)) = Γ z`
+and `Γ z` on the flow line of `attachingSphere (e z)`. -/
 theorem AdaptedWindows.exists_attaching_circle_lower_transport {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {f : M → ℝ}
@@ -189,6 +201,12 @@ theorem AdaptedWindows.exists_attaching_circle_lower_transport {E M : Type*}
   exact ⟨e, D, hsource, htarget, Γ, hΓ, hΓi, hΓd, hD, hiD, hflow⟩
 
 attribute [local instance 100] Classical.propDecidable in
+/-- Let `q` be a critical point of index `1` of `S : AdaptedWindows E f` whose two core boundary
+points `u`, `v` are not joined in the lower sublevel set.  Then there is a gradient-like field
+`V` with flow `G`, agreeing with `S.field` near the critical points, and two distinct minima
+`p`, `r` below the window of `q`, such that the backward basin of `q` in the lower level is the
+attaching sphere, `attachingSphere u` flows to `p`, `attachingSphere v` flows to `r`, every
+attaching point flows to `p` or `r`, and no flow line runs from `q` to another critical point. -/
 theorem AdaptedWindows.realize_one_handle_minimum_branches {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {f : M → ℝ} (S : AdaptedWindows E f)
@@ -286,6 +304,10 @@ theorem AdaptedWindows.realize_one_handle_minimum_branches {E M : Type*} [Normed
   · exact hjp (Subtype.ext (tendsto_nhds_unique hzj hp'))
   · exact hjr (Subtype.ext (tendsto_nhds_unique hzj hr'))
 
+/-- Family version of `exists_embedded_level_transport`: a family `α : ι → X → {f = a}` of smooth
+injective immersions of a compact `X` with pairwise disjoint images in the basin of the level `b`
+is transported along the flow to a family `β : ι → X → {f = b}` of smooth closed embeddings with
+injective differential and pairwise disjoint images. -/
 theorem AdaptedWindows.exists_native_family_level_transport {ι E M F H X : Type}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {f : M → ℝ}
@@ -344,6 +366,11 @@ theorem AdaptedWindows.exists_native_family_level_transport {ι E M F H X : Type
     have heq : α i x = α j y := P.toPartialEquiv.injOn (hsrc i x) (hsrc j y) (hx.trans hy.symm)
     exact Set.disjoint_left.mp (hpair hij) (Set.mem_range_self x) ⟨y, heq.symm⟩
 
+/-- Let `p` be a critical point of index `n + 1` of `S : AdaptedWindows E f` and `a < f p` a regular
+value with every critical value below `f p` below `a`.  Then there is a smooth closed embedding
+`Γ : Sⁿ → {f = a}` with injective differential, each `Γ z` on the flow line of the attaching
+point `attachingSphere (standardParametrization z)`, whose image is exactly the backward basin
+of `p` in the level `a`. -/
 theorem AdaptedWindows.exists_native_attaching_lower_cut {E M : Type} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {f : M → ℝ} (S : AdaptedWindows E f)
@@ -397,6 +424,11 @@ theorem AdaptedWindows.exists_native_attaching_lower_cut {E M : Type} [NormedAdd
   intro y
   exact S.transported_attaching_range_iff hf p ha e e.surjective Γ hflow y
 
+/-- Let `b < a` be regular values of `S : AdaptedWindows E f` with no critical value in `[b, a]`.
+A family `α : ι → X → {f = a}` of smooth injective immersions of a compact `X` with pairwise
+disjoint images is transported along the flow to a family `β : ι → X → {f = b}` of smooth closed
+embeddings with pairwise disjoint images; if `range (α j)` is the backward basin of a critical
+point `q` above `a` in the level `a`, then `range (β j)` is its backward basin in the level `b`. -/
 theorem AdaptedWindows.exists_regular_band_family_transport {ι E M F H X : Type}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {f : M → ℝ}
@@ -440,6 +472,11 @@ theorem AdaptedWindows.exists_regular_band_family_transport {ι E M F H X : Type
   intro j q hq hfull
   exact S.transported_backward_basin_image hf hab hb q hq (α j) (β j) hfull (horbit j)
 
+/-- Let `q` be a critical point of index `1` of the surgery-window system `S`, `G` a flow whose
+backward basin of `q` in the lower level is the attaching sphere, and let the two attaching points
+`u`, `v` flow forward to the distinct critical points `p`, `r` with `f p < S.lower q`.  Then
+`attachingSphere u` flows backward to `q`, and every point flowing backward to `q` and forward to
+`p` lies on the flow line of `attachingSphere u`. -/
 theorem MorseCancellation.unique_connection_of_distinct_minimum_branches {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {f : M → ℝ}
