@@ -43,6 +43,10 @@ open scoped ContDiff ContinuousMap
 noncomputable section
 
 attribute [local instance 100] Classical.propDecidable in
+/-- Milnor, h-cobordism Theorem 4.4.  Let `p`, `q` be consecutive critical points of
+`S : AdaptedWindows E f`, `f p < f q`, with `index q = n + 1`, `coindex p = m + 1` and
+`index q ≤ index p`.  Then there is a gradient-like field `V` with flow `G`, agreeing with
+`S.field` near the critical points, with no flow line from `q` to `p`. -/
 theorem AdaptedWindows.remove_connections_of_index_le {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {f : M → ℝ} (S : AdaptedWindows E f)
@@ -116,6 +120,9 @@ theorem AdaptedWindows.remove_connections_of_index_le {E M : Type*} [NormedAddCo
     FlowSuspension.no_connection_of_level_basin_disjointness S.flow G hf.continuous hqc hpc
       e (fun x => hback x q.val) (fun x => hforward x p.val) hbasins
 
+/-- `remove_connections_of_index_le` without the positivity hypotheses: for consecutive critical
+points `p`, `q` with `f p < f q` and `index q ≤ index p` there is a gradient-like field with no
+flow line from `q` to `p`. -/
 theorem AdaptedWindows.remove_connections_of_nonincreasing_indices {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {f : M → ℝ}
@@ -149,6 +156,11 @@ theorem AdaptedWindows.remove_connections_of_nonincreasing_indices {E M : Type*}
       (Module.finrank ℝ (S.data q).chart.NegativeCoordinates - 1)
       (Module.finrank ℝ (S.data p).chart.PositiveCoordinates - 1) (by omega) (by omega) hle
 
+/-- Let `p`, `q` be consecutive critical points of `S : AdaptedWindows E f` with `f p < f q` and
+`index q ≤ index p`, on a connected manifold.  Then there is a Morse function `g` with the same
+critical points, `g p = f q`, `g q = f p`, `g = f` outside the band `(lower p, upper q)` and near
+the other critical points, distinct critical values, an `AdaptedWindows E g`, the same indices and
+the same index counts. -/
 theorem AdaptedWindows.exchange_nonincreasing_native_indices {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] [PreconnectedSpace M] {f : M → ℝ}
@@ -205,6 +217,10 @@ theorem AdaptedWindows.exchange_nonincreasing_native_indices {E M : Type*} [Norm
     ⟨g, hg, hmg, hcrit, hgp, hgq, hexterior, hothers, hinj, hnew, hindices,
       MorseCancellation.nativeMorseCount_eq_of_preserved_indices hcrit hindices⟩
 
+/-- Milnor, h-cobordism Theorem 4.8 (rearrangement).  For a Morse function `f₀` with an
+`AdaptedWindows` package on a compact connected manifold there is a Morse function `f` with the
+same critical points and indices, an `AdaptedWindows E f`, whose indices increase with the
+critical values, and with the same index counts as `f₀`. -/
 theorem MorseCancellation.exists_index_ordered_morse_system_preserving_critical_points {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] [PreconnectedSpace M]
