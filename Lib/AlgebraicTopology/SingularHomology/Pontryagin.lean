@@ -281,7 +281,7 @@ theorem PeriodTorusHigherHomologyPontryagin.product_natural {G H : Type} [Topolo
   (LinearMap.congr_fun (addition_homology_natural f hf (n + 1))
         (SingularHomology.crossProductHomology G G n a b)).trans
     (congrArg (SingularMayerVietoris.singularHomologyMap (additionMap H) (n + 1))
-      (PeriodTorusHigherHomology.crossProductHomology_natural f f n a b))
+      (SingularHomology.crossProductHomology_natural f f n a b))
 
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
@@ -313,7 +313,7 @@ theorem PeriodTorusHigherHomologyPontryagin.tripleProduct_eq_cross (G : Type) [T
         (SingularHomology.crossProductHomology G (G × G) 2 a
           (SingularHomology.crossProductHomology G G 1 b c)) := by
   have h :=
-    PeriodTorusHigherHomology.crossProductHomology_natural (ContinuousMap.id G) (additionMap G) 2
+    SingularHomology.crossProductHomology_natural (ContinuousMap.id G) (additionMap G) 2
       a (SingularHomology.crossProductHomology G G 1 b c)
   change
     SingularMayerVietoris.singularHomologyMap ((ContinuousMap.id G).prodMap (additionMap G)) 3
@@ -352,7 +352,7 @@ attribute [local instance] SingularHomology.integerLinearMapModule
 theorem PeriodTorusHigherHomologyPontryagin.product11_skew (G : Type) [TopologicalSpace G]
     [AddCommGroup G] [IsTopologicalAddGroup G]
     (a b : SingularMayerVietoris.SingularHomology G 1) : product11 G a b = -product11 G b a :=
-  PeriodTorusHigherHomology.crossProductHomology_pushforward_anticommute (additionMap G)
+  SingularHomology.crossProductHomology_pushforward_anticommute (additionMap G)
     (by ext p; exact add_comm p.2 p.1) a b
 
 /-- When `H₂(G)` is torsion free, `a ⋆ a = 0` for every `a ∈ H₁(G)`. -/
@@ -401,8 +401,8 @@ theorem PeriodTorusHigherHomologyPontryagin.tripleProduct_cyclic (G : Type) [Top
     (a b c : SingularMayerVietoris.SingularHomology G 1) :
     tripleProduct G a b c = tripleProduct G b c a := by
   rw [tripleProduct_eq_cross G a b c, tripleProduct_eq_cross G b c a,
-    PeriodTorusHigherHomology.crossProductHomology_cyclic]
-  have he : PeriodTorusHigherHomology.crossProductCyclicMap G G G = cyclicMap G G G := by
+    SingularHomology.crossProductHomology_cyclic]
+  have he : SingularHomology.crossProductCyclicMap G G G = cyclicMap G G G := by
     apply ContinuousMap.ext
     intro p
     rfl

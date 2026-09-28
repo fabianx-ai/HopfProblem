@@ -3255,7 +3255,7 @@ theorem PeriodTorusHigherHomology.torusSplit_positiveCircleCross (r n : ℕ)
         (SingularMayerVietoris.singularHomologyMap (torusTailMap r) n b) := by
   rw [PeriodTorusHigherHomologyPontryagin.product_apply]
   have h :=
-    crossProductHomology_natural (torusHeadCircleMap r) (torusTailMap r) n
+    SingularHomology.crossProductHomology_natural (torusHeadCircleMap r) (torusTailMap r) n
       (FirstHurewicz.loopHomologyClass CirclePaths.positiveLoop) b
   rw [← h]
   rw [productTorusSucc_inverse_eq_add, singularHomologyMap_comp]

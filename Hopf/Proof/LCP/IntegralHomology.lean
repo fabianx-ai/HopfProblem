@@ -15666,7 +15666,7 @@ theorem ThreefoldHomology.DeltaSweep.positiveCircleCross_natural {X Y : Type} [T
       PeriodTorusHigherHomology.positiveCircleCross Y n
         (SingularMayerVietoris.singularHomologyMap f n v) := by
   have h :=
-    PeriodTorusHigherHomology.crossProductHomology_natural
+    SingularHomology.crossProductHomology_natural
       (ContinuousMap.id (PeriodTorusHigherHomology.CircleTopology.Circle)) f n
       (FirstHurewicz.loopHomologyClass PeriodTorusHigherHomology.CirclePaths.positiveLoop) v
   change
@@ -15746,7 +15746,7 @@ theorem ThreefoldHomology.DeltaSweep.sweep_addition {G : Type} [TopologicalSpace
           (FirstHurewicz.loopHomologyClass PeriodTorusHigherHomology.CirclePaths.positiveLoop))
         v := by
   have h :=
-    PeriodTorusHigherHomology.crossProductHomology_natural b (ContinuousMap.id G) n
+    SingularHomology.crossProductHomology_natural b (ContinuousMap.id G) n
       (FirstHurewicz.loopHomologyClass PeriodTorusHigherHomology.CirclePaths.positiveLoop) v
   change
     SingularMayerVietoris.singularHomologyMap (b.prodMap (ContinuousMap.id G)) (n + 1)
@@ -18801,7 +18801,7 @@ theorem PeriodFamily.Boundary.EllipticTopFibre.productNegation_positiveCircleCro
           (FirstHurewicz.loopHomologyClass PeriodTorusHigherHomology.CirclePaths.positiveLoop)
           a) =
       _
-  rw [PeriodTorusHigherHomology.crossProductHomology_natural, circleNegation_positiveHomology]
+  rw [SingularHomology.crossProductHomology_natural, circleNegation_positiveHomology]
   change
     PeriodTorusHigherHomology.crossProductHomology
         (PeriodTorusHigherHomology.CircleTopology.Circle)
@@ -23703,7 +23703,7 @@ theorem PeriodFamily.Boundary.ThirdRelation.circleCross_eq_product (G : Type) [T
         (PeriodTorusHigherHomology.circleSectionHomology G n b) := by
   rw [PeriodTorusHigherHomologyPontryagin.product_apply]
   rw [←
-    PeriodTorusHigherHomology.crossProductHomology_natural (circleHeadMap G)
+    SingularHomology.crossProductHomology_natural (circleHeadMap G)
       (PeriodTorusHigherHomology.CircleTopology.productSection G) n
       (FirstHurewicz.loopHomologyClass PeriodTorusHigherHomology.CirclePaths.positiveLoop) b]
   rw [← LinearMap.comp_apply, ← PeriodTorusHigherHomology.singularHomologyMap_comp, ←

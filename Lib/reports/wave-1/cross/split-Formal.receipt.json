@@ -1,0 +1,2407 @@
+{
+"module": "Lib.AlgebraicTopology.SingularHomology.CrossProduct",
+"source": "/home/goblin/.claude/jobs/06995e68/tmp/wave1/cross/CrossProduct.norm.lean",
+"source_sha256": "1da1fb598558fa039330e951e6881bbbfe2de35b0ff182137719cb50086af31d",
+"units_kept": 192,
+"units_moved": 26,
+"units": [
+{
+"names": [
+"SingularHomology.integerLinearMapModule"
+],
+"class": "keep",
+"lines": [
+90,
+96
+],
+"sha256": "dfe6eff9969a38e8997b3d38ee9d491f98209c87f5022df3e422be562f1266d4"
+},
+{
+"names": [
+"SingularHomology.integerTensorModule"
+],
+"class": "keep",
+"lines": [
+98,
+104
+],
+"sha256": "638e08b0d0ee6a378cd6a4c189b84e3ea0b4f5f453a9fd32604ca9503e5ce04f"
+},
+{
+"names": [
+"SingularHomology.integerBilinearRightApply"
+],
+"class": "keep",
+"lines": [
+108,
+118
+],
+"sha256": "478e79fa01b91576255a1db20668986a71943e2f144f5d19eb5364e06f529af7"
+},
+{
+"names": [
+"SingularHomology.integerBilinearRightApply_apply"
+],
+"class": "keep",
+"lines": [
+120,
+127
+],
+"sha256": "5afd8ef0e82ac13a9e35a621d11389d3bc2ef85b1e35c873164f1d35471a1742"
+},
+{
+"names": [
+"SingularHomology.integerBilinearFlip"
+],
+"class": "keep",
+"lines": [
+129,
+147
+],
+"sha256": "4fee14b261ef25ac9c2ece12359d3c22e15fbb62ced7a634ef064c0763a17879"
+},
+{
+"names": [
+"SingularHomology.integerBilinearFlip_apply"
+],
+"class": "keep",
+"lines": [
+149,
+156
+],
+"sha256": "6bca0f8818254be2b8620f80c8670e3ef241fad89d54e82019b45d1d692b7b17"
+},
+{
+"names": [
+"SingularHomology.chainBilinearLift"
+],
+"class": "keep",
+"lines": [
+160,
+168
+],
+"sha256": "c42e3f79abe179b5e9fd096d468ff0ba3a3a37b593aab6a08b03878b6c25a47c"
+},
+{
+"names": [
+"SingularHomology.chainBilinearLift_simplex_left"
+],
+"class": "keep",
+"lines": [
+170,
+181
+],
+"sha256": "eff8b707c5753fafdefad5eaf3be8675d85c33ce914636c7f3ad2b85bce80c37"
+},
+{
+"names": [
+"SingularHomology.chainBilinearLift_simplex"
+],
+"class": "keep",
+"lines": [
+183,
+194
+],
+"sha256": "0daee604d5bac19899891dbb0ef62d3a46e24785e0ec5e7c31381e99b3ba6562"
+},
+{
+"names": [
+"SingularHomology.chainBilinearMap_ext"
+],
+"class": "keep",
+"lines": [
+196,
+212
+],
+"sha256": "53de0f85f5ef5f137948da31201613a8be35a36aeff858431a79247b839087d7"
+},
+{
+"names": [
+"SingularHomology.zeroSimplexValue"
+],
+"class": "keep",
+"lines": [
+216,
+219
+],
+"sha256": "94eced6f5a0efae52ee27014db1cb8774df2a73b82c6cb55d4226ce04a078fcc"
+},
+{
+"names": [
+"SingularHomology.zeroSimplexValue_comp"
+],
+"class": "keep",
+"lines": [
+221,
+226
+],
+"sha256": "69a04244a63b705c862e2edc3ff3b66eda20139a0645aeaaf09399679b2fa181"
+},
+{
+"names": [
+"SingularHomology.crossInsertRight"
+],
+"class": "keep",
+"lines": [
+228,
+231
+],
+"sha256": "a7f7b8b2aa18de04b2cbd715196571163bcefafd40d94d6452304a42c9b9a3d5"
+},
+{
+"names": [
+"SingularHomology.crossProductZeroLeft"
+],
+"class": "keep",
+"lines": [
+233,
+242
+],
+"sha256": "f6d9a3d951d44556a28d722559c971ad3f35fc733b915690a68c73743bd509fb"
+},
+{
+"names": [
+"SingularHomology.crossProductZeroRight"
+],
+"class": "keep",
+"lines": [
+244,
+253
+],
+"sha256": "b6edda5001d3d455c25c293da494b6ec66aeeba6d54e5ce9af78c6ddc6d2f453"
+},
+{
+"names": [
+"SingularHomology.crossProductZeroLeft_simplex_left"
+],
+"class": "keep",
+"lines": [
+255,
+266
+],
+"sha256": "59fa167d3b5cccc6a77579b7a3fc61fcabb92da4ab88a248bcb18b80b14d9633"
+},
+{
+"names": [
+"SingularHomology.crossProductZeroLeft_simplex"
+],
+"class": "keep",
+"lines": [
+268,
+279
+],
+"sha256": "df5dd8cc6f42bf1f242041ddf8e40bf14484a6682bc5416aada75e7a37cd8f1f"
+},
+{
+"names": [
+"SingularHomology.crossProductZeroRight_simplex_right"
+],
+"class": "keep",
+"lines": [
+281,
+298
+],
+"sha256": "3d7e20baa521b30dcc5f7347a213f6a711be45ab42e32fd97e0078362c63d20b"
+},
+{
+"names": [
+"SingularHomology.crossProductZeroRight_simplex"
+],
+"class": "keep",
+"lines": [
+300,
+311
+],
+"sha256": "a72c3464f0fce0014fcadd710f61fe37530e8b8cc99adadcf964c69a656fcd0e"
+},
+{
+"names": [
+"SingularHomology.crossProductZeroLeft_natural"
+],
+"class": "keep",
+"lines": [
+313,
+335
+],
+"sha256": "e1a462253ea80bebae1e7c368a2aac2e62e5d97dab43622c1fac7ab2b31cfb4b"
+},
+{
+"names": [
+"SingularHomology.integerBilinearPostcompose"
+],
+"class": "keep",
+"lines": [
+339,
+358
+],
+"sha256": "d4d8f3857cbc520dc6721e8c9e80a0c5a806edc3a49cdd78feafb2bdb558260f"
+},
+{
+"names": [
+"SingularHomology.integerBilinearPostcompose_apply"
+],
+"class": "keep",
+"lines": [
+360,
+368
+],
+"sha256": "894994d46840c3543a49a8a370c360cc4a81156064953cf30b3d9bb407c91588"
+},
+{
+"names": [
+"SingularHomology.integerBilinearPrecompose"
+],
+"class": "keep",
+"lines": [
+370,
+393
+],
+"sha256": "7333a0fe2fbde5350ff266dbb3fb400dcb3d147e7dd88b6b6cd9c7b6d852c904"
+},
+{
+"names": [
+"SingularHomology.integerBilinearPrecompose_apply"
+],
+"class": "keep",
+"lines": [
+395,
+404
+],
+"sha256": "130049baea72c02331e7b58c4aa6b45e5408ce6503bd4bcbba20bd4abf8197a6"
+},
+{
+"names": [
+"SingularHomology.integerFormalBilinearMap_ext"
+],
+"class": "keep",
+"lines": [
+408,
+424
+],
+"sha256": "23220dc76922711cd5ffa77e3e962645563d2ae7d1531eb34ad0348df522a4a3"
+},
+{
+"names": [
+"SingularHomology.formalChains_bilinear_ext"
+],
+"class": "keep",
+"lines": [
+426,
+440
+],
+"sha256": "129e8ef684f454ef630a8d827bc88f1624b57cf06153789c74336cb056ca7a24"
+},
+{
+"names": [
+"SingularHomology.formalBilinearLift"
+],
+"class": "keep",
+"lines": [
+442,
+446
+],
+"sha256": "9a83fc55ec3b7330cc68666bbeadeba9cfc8acd0589836004a3b087c923f0100"
+},
+{
+"names": [
+"SingularHomology.formalBilinearLift_simplex"
+],
+"class": "keep",
+"lines": [
+448,
+455
+],
+"sha256": "9c2785e8be98b90126866966db7b941059f6146cd0b7e54141b926aed7681568"
+},
+{
+"names": [
+"SingularHomology.formalPointCrossProduct"
+],
+"class": "move",
+"lines": [
+459,
+466
+],
+"sha256": "629da52563f26501552c762c6eb18630b543e357d55c0d339c58e8fddab0da6a"
+},
+{
+"names": [
+"SingularHomology.formalPointCrossProduct_simplex_left"
+],
+"class": "move",
+"lines": [
+468,
+475
+],
+"sha256": "f282e8ab03c5c0bc43ccf854763976df47bef618674b431ae7bbf4b3e04d3f24"
+},
+{
+"names": [
+"SingularHomology.formalPointCrossProduct_simplex"
+],
+"class": "move",
+"lines": [
+477,
+485
+],
+"sha256": "ad99e8df7ba7f146269270ce8b34fcfcc5ff56b3d2207e661694d1c69cb88257"
+},
+{
+"names": [
+"SingularHomology.formalPointCrossProduct_zero_simplex_right"
+],
+"class": "move",
+"lines": [
+487,
+505
+],
+"sha256": "b54d784d3a83c2392f1127b4dee7f5bcce4701b430c5e8c9675275f31d4c18b5"
+},
+{
+"names": [
+"SingularHomology.formalBoundary_pointCrossProduct"
+],
+"class": "move",
+"lines": [
+507,
+525
+],
+"sha256": "9472e55b37ba462c03e7545c5163956a7c3c291157f7f8432cd4ec6adf912c31"
+},
+{
+"names": [
+"SingularHomology.formalMap_pointCrossProduct"
+],
+"class": "move",
+"lines": [
+527,
+544
+],
+"sha256": "84130ce16ace4ce0a3ad479160cbb39a59121c1b4e5f26d9d18c0d5e90326406"
+},
+{
+"names": [
+"SingularHomology.formalEdgeCrossProduct"
+],
+"class": "move",
+"lines": [
+548,
+567
+],
+"sha256": "9090f769cf66062868794e3f83cdc329c74fc54538cb7a84395b507a362fbac8"
+},
+{
+"names": [
+"SingularHomology.formalEdgeCrossProduct_zero_simplex_right"
+],
+"class": "move",
+"lines": [
+569,
+576
+],
+"sha256": "1d1922783cec444e3dba2f27da0eb54b36393c057886e4edcf34dcc0236e5cbe"
+},
+{
+"names": [
+"SingularHomology.formalEdgeCrossProduct_simplex_succ"
+],
+"class": "move",
+"lines": [
+578,
+592
+],
+"sha256": "025502322e7a74a5442e83c2254f0d2a91036133057af015767e766b609ac553"
+},
+{
+"names": [
+"SingularHomology.formalBoundary_edgeCrossProduct_zero"
+],
+"class": "move",
+"lines": [
+594,
+610
+],
+"sha256": "7212204d819f54f8035a97cb0e337898a9ba8aea8afa67edfae883e3f69684ce"
+},
+{
+"names": [
+"SingularHomology.formalBoundary_edgeCrossProduct"
+],
+"class": "move",
+"lines": [
+612,
+680
+],
+"sha256": "1a9b0a76db445e858a6ded840a669102eebccba52e9c0c682b1d4f77dc2ec358"
+},
+{
+"names": [
+"SingularHomology.formalMap_edgeCrossProduct"
+],
+"class": "move",
+"lines": [
+682,
+721
+],
+"sha256": "1fbca47d0ea905dff4886cc8e30723cfc11b73bfbf9a9687b56b82545c644952"
+},
+{
+"names": [
+"SingularHomology.affineSimplex_constant"
+],
+"class": "keep",
+"lines": [
+725,
+734
+],
+"sha256": "9560d85e350ecb00f407ddfc3fc50161bd6c5851b91d655ee988434f50b74272"
+},
+{
+"names": [
+"SingularHomology.productAffineSimplex"
+],
+"class": "keep",
+"lines": [
+736,
+742
+],
+"sha256": "fd6fe2b0f7b780c704a492971f5d5338e7d3ab387d5611bf7d5ff5249d27eea4"
+},
+{
+"names": [
+"SingularHomology.productAffineSimplex_vertex"
+],
+"class": "keep",
+"lines": [
+744,
+749
+],
+"sha256": "bbad54401fd662c560ff01bb0f5f0237c1e33c749d18b1f902dd54a3de54e245"
+},
+{
+"names": [
+"SingularHomology.productAffineSimplex_face"
+],
+"class": "keep",
+"lines": [
+751,
+765
+],
+"sha256": "248126604b525ad2cc47f05460af2d098d07b15d929ccb26cbf5a0f3f55f2700"
+},
+{
+"names": [
+"SingularHomology.prodMap_productAffineSimplex"
+],
+"class": "keep",
+"lines": [
+767,
+786
+],
+"sha256": "6489c69986de874556a9d271fec01f04ffb42fe5222ac25f382de8ed804fe5f0"
+},
+{
+"names": [
+"SingularHomology.productAffineChainMap"
+],
+"class": "keep",
+"lines": [
+788,
+796
+],
+"sha256": "1d079faf24ef361a318be83b5981b1f05bd229c59562382a82a422a1a2ae01e3"
+},
+{
+"names": [
+"SingularHomology.productAffineChainMap_simplex"
+],
+"class": "keep",
+"lines": [
+798,
+805
+],
+"sha256": "8a5ee6d15140052325bcb202b674a070caa4aec3cee20b3c1893e9186f27e22e"
+},
+{
+"names": [
+"SingularHomology.productAffineChainMap_boundary"
+],
+"class": "keep",
+"lines": [
+807,
+839
+],
+"sha256": "68b6a7e4ee227dcdefb43f0327be909a0d7366029c51c4976ba024d2d3f14b9f"
+},
+{
+"names": [
+"SingularHomology.inducedChain_productAffineChainMap"
+],
+"class": "keep",
+"lines": [
+841,
+873
+],
+"sha256": "668a103763549fe701a13a50304bd92ae865ee0006a64ad8dc520f0138733382"
+},
+{
+"names": [
+"SingularHomology.crossProductEdge"
+],
+"class": "keep",
+"lines": [
+877,
+891
+],
+"sha256": "95c038947cb24ea81632a2af83b26269d2794e0bbe236f90205ddae65c631986"
+},
+{
+"names": [
+"SingularHomology.crossProductEdge_simplex"
+],
+"class": "keep",
+"lines": [
+893,
+907
+],
+"sha256": "688b996e8ca53fb1f92cb8b23745d36416be0eaa3ff69ea32a71176474fd18fa"
+},
+{
+"names": [
+"SingularHomology.crossProductEdge_natural"
+],
+"class": "keep",
+"lines": [
+909,
+930
+],
+"sha256": "bca9728cbdcaa8050ee2944d9ec5830e0796846276efd30c87a74e1c9d97ad91"
+},
+{
+"names": [
+"SingularHomology.affineSimplex_stdVertices_image"
+],
+"class": "keep",
+"lines": [
+932,
+940
+],
+"sha256": "4dc9fd8056386fcd893f3f136a296420aefc32f1d9adeadbafd8e87918223807"
+},
+{
+"names": [
+"SingularHomology.productAffineSimplex_point_left"
+],
+"class": "keep",
+"lines": [
+942,
+951
+],
+"sha256": "9378c436305e690bfc2f091da051bb26f6778cafd67fd00dce63813d32945834"
+},
+{
+"names": [
+"SingularHomology.productAffineSimplex_point_right"
+],
+"class": "keep",
+"lines": [
+953,
+962
+],
+"sha256": "4b51d66170a21d57dd98ca4f41d6a061dc530793f1f67e23fbeaa08322987389"
+},
+{
+"names": [
+"SingularHomology.crossProductZeroLeft_affineChainMap"
+],
+"class": "keep",
+"lines": [
+964,
+993
+],
+"sha256": "12b0d981b12ba3cc3622969d6ae2a01ddd32443a632e3b55993977b798b4456c"
+},
+{
+"names": [
+"SingularHomology.crossProductEdge_affineChainMap"
+],
+"class": "keep",
+"lines": [
+995,
+1030
+],
+"sha256": "e4e7308525619e2d51b433cccb6d761166d3393d159d769c1d5108bc23fa637d"
+},
+{
+"names": [
+"SingularHomology.formalTriangleCrossProduct"
+],
+"class": "move",
+"lines": [
+1034,
+1053
+],
+"sha256": "8b9bf467e675f8402726cff5eee90764e205b549e055f7827eeea0425881b0c1"
+},
+{
+"names": [
+"SingularHomology.formalTriangleCrossProduct_zero_simplex_right"
+],
+"class": "move",
+"lines": [
+1055,
+1062
+],
+"sha256": "e615e87e06d9dca5aaacdf2e6fb4e94ee70c254149181568bf0919dddd365570"
+},
+{
+"names": [
+"SingularHomology.formalTriangleCrossProduct_simplex_succ"
+],
+"class": "move",
+"lines": [
+1064,
+1078
+],
+"sha256": "61732aa77e14c7d371e284884d0c20f1cb030e4c7c5f50fffc72f81108de8c24"
+},
+{
+"names": [
+"SingularHomology.formalBoundary_triangleCrossProduct_zero"
+],
+"class": "move",
+"lines": [
+1080,
+1097
+],
+"sha256": "6856db7d9799f49516a0fcff11be3c33d4d6fc7ba6d636cb61e7709e94dec358"
+},
+{
+"names": [
+"SingularHomology.formalBoundary_triangleCrossProduct"
+],
+"class": "move",
+"lines": [
+1099,
+1169
+],
+"sha256": "55e7e07fddb3a16980153cb8e8046d35e6ce167d0a3e7fbe7b9c57f80cc74995"
+},
+{
+"names": [
+"SingularHomology.formalMap_triangleCrossProduct"
+],
+"class": "move",
+"lines": [
+1171,
+1212
+],
+"sha256": "546a7e5ea130bdc72e39be9ebe1ba4781fc16de6762381d154200080ff3d7974"
+},
+{
+"names": [
+"SingularHomology.crossProductTriangle"
+],
+"class": "keep",
+"lines": [
+1216,
+1230
+],
+"sha256": "77eda959d874273c38f0c535152e118a2bd5916ab702c4c4d0db2aba5c786071"
+},
+{
+"names": [
+"SingularHomology.crossProductTriangle_simplex"
+],
+"class": "keep",
+"lines": [
+1232,
+1247
+],
+"sha256": "119a1ce3d0878511e971415c3ccf91bf9902d8962983c83b79e526fb0a25596c"
+},
+{
+"names": [
+"SingularHomology.crossProductTriangle_natural"
+],
+"class": "keep",
+"lines": [
+1249,
+1271
+],
+"sha256": "e7338e59a8e8977b84740a61f50c2133a75aa3a91883214a725efe313e6ee7de"
+},
+{
+"names": [
+"SingularHomology.crossProductTriangle_affineChainMap"
+],
+"class": "keep",
+"lines": [
+1273,
+1308
+],
+"sha256": "b0ba93bbcc60043a71c2c96aabb7760d267b2fced360881b6aaa8dd14fe5f16c"
+},
+{
+"names": [
+"SingularHomology.crossProductTriangle_boundary_zero_affine"
+],
+"class": "keep",
+"lines": [
+1310,
+1328
+],
+"sha256": "72a47c2f892f37b02683654cd21c14cdc0db80e721160b8d1de228b28eeef403"
+},
+{
+"names": [
+"SingularHomology.crossProductTriangle_boundary_affine"
+],
+"class": "keep",
+"lines": [
+1330,
+1353
+],
+"sha256": "38ebee202a3390f622395305315e1418eb65f8b0cc348ef1970aeadb97fce99b"
+},
+{
+"names": [
+"SingularHomology.crossProductTriangle_boundary_zero"
+],
+"class": "keep",
+"lines": [
+1355,
+1380
+],
+"sha256": "c00ba3c8c79dcad4d599c41e20257927c23cae006d10ce078d093d84ae8ccab6"
+},
+{
+"names": [
+"SingularHomology.crossProductTriangle_boundary"
+],
+"class": "keep",
+"lines": [
+1382,
+1413
+],
+"sha256": "4a4fd68e9528ef4c2ca78cfb145acd2d4dbe59f3f5f7dec32bcdaad63c46eecc"
+},
+{
+"names": [
+"SingularHomology.crossProductTriangle_boundary_of_right_cycle"
+],
+"class": "keep",
+"lines": [
+1415,
+1431
+],
+"sha256": "3b0ce58d52f6d1f2ea3a60ae28b257b88158da20777d9b1257cc5fe6189c9c59"
+},
+{
+"names": [
+"SingularHomology.crossProductEdge_boundary_zero_affine"
+],
+"class": "keep",
+"lines": [
+1433,
+1451
+],
+"sha256": "c5340e943b4177b4b4bdb46e359f28571b75307051866627fe7d77cc9c603ade"
+},
+{
+"names": [
+"SingularHomology.crossProductEdge_boundary_affine"
+],
+"class": "keep",
+"lines": [
+1453,
+1476
+],
+"sha256": "7b9b81e7196be1c0346a10d33396a3b32168a7c16ecd65eba3c6e9fc12978420"
+},
+{
+"names": [
+"SingularHomology.crossProductEdge_boundary_zero"
+],
+"class": "keep",
+"lines": [
+1478,
+1502
+],
+"sha256": "9cd67ec4e9afcfe21159923564faf39e32783b278d1ba64c6c36083f94a7e74c"
+},
+{
+"names": [
+"SingularHomology.crossProductEdge_boundary"
+],
+"class": "keep",
+"lines": [
+1504,
+1535
+],
+"sha256": "149668892288852b91aa5acd3ce9fc40c0e92259515228d5092e6aad1c79bb7d"
+},
+{
+"names": [
+"SingularHomology.crossProductEdge_cycle"
+],
+"class": "keep",
+"lines": [
+1537,
+1554
+],
+"sha256": "8ce21ef75d1d92d91e606c0693712a0c8220b514dc5c90d81b110d29181c5498"
+},
+{
+"names": [
+"SingularHomology.crossProductEdge_boundary_of_left_cycle"
+],
+"class": "keep",
+"lines": [
+1556,
+1566
+],
+"sha256": "7ad8c7da09ab9aa8e02ff7b6d50d955b34d89fcff4ac7487f3ff03648662450f"
+},
+{
+"names": [
+"SingularHomology.homologyBoundaries"
+],
+"class": "keep",
+"lines": [
+1570,
+1575
+],
+"sha256": "7af10eb1c5c45c0f75514ad935446d12dc37ec05b92894009e40dff80ca8b6a6"
+},
+{
+"names": [
+"SingularHomology.homologyLinearMap_ext"
+],
+"class": "keep",
+"lines": [
+1577,
+1589
+],
+"sha256": "9b6bf883768cf7e42b73f428072cfabca071c07ec0e2b80b1b296f4c428610c3"
+},
+{
+"names": [
+"SingularHomology.homologyBoundaries_le_ker"
+],
+"class": "keep",
+"lines": [
+1591,
+1605
+],
+"sha256": "9641fb23039bd8bd5e0318b0fc1d2b96edb40b4be809f57a19094fd13cb3191e"
+},
+{
+"names": [
+"SingularHomology.homologyDesc"
+],
+"class": "keep",
+"lines": [
+1607,
+1616
+],
+"sha256": "861374129e74e5716927f5ae296700712cd0f2f86480058a9490327ad54f1b7c"
+},
+{
+"names": [
+"SingularHomology.homologyDesc_cycleClass"
+],
+"class": "keep",
+"lines": [
+1618,
+1629
+],
+"sha256": "83edd1872c5fbbe3bb95f33c695d04cfca50863571b071f205a3fbd2f2b2658d"
+},
+{
+"names": [
+"SingularHomology.crossProductCycles"
+],
+"class": "keep",
+"lines": [
+1633,
+1682
+],
+"sha256": "635d93888b6e909c28c2e3622fe1e2180e7a8372f442e1d8cd4a64cfc260f3a6"
+},
+{
+"names": [
+"SingularHomology.crossProductCycles_val"
+],
+"class": "keep",
+"lines": [
+1684,
+1693
+],
+"sha256": "ffe40c64a6eb6cec052a3720030db4a6542320abdc04374d8a398fc9139d5d08"
+},
+{
+"names": [
+"SingularHomology.crossProductCycleClasses"
+],
+"class": "keep",
+"lines": [
+1695,
+1706
+],
+"sha256": "75a4e8375b5d1ce52223aa8d772542acac3d305e32c1e16377e01b71d34fe786"
+},
+{
+"names": [
+"SingularHomology.crossProductCycleClasses_boundary_right"
+],
+"class": "keep",
+"lines": [
+1708,
+1731
+],
+"sha256": "2c5be12b6faffdd5bb1eb7d274a54fc42039df8df3c0ca8503ca0cb9ce1dea44"
+},
+{
+"names": [
+"SingularHomology.crossProductHomologyFixed"
+],
+"class": "keep",
+"lines": [
+1733,
+1743
+],
+"sha256": "086886b3bc3887eee5bd42cdf7d59555ab0a383a19a8feefbbc8c0197ec13874"
+},
+{
+"names": [
+"SingularHomology.crossProductHomologyFixed_cycleClass"
+],
+"class": "keep",
+"lines": [
+1745,
+1758
+],
+"sha256": "ab6accebea623b5e19a903c7e6b4fd61be97bc03052e1dbe29123530dda15258"
+},
+{
+"names": [
+"SingularHomology.crossProductHomologyCycles"
+],
+"class": "keep",
+"lines": [
+1760,
+1804
+],
+"sha256": "6790151050294979cf44fa69009697fc1b8a05eb81c9defa9a657e7ecf4f84f5"
+},
+{
+"names": [
+"SingularHomology.crossProductCycleClasses_boundary_left"
+],
+"class": "keep",
+"lines": [
+1806,
+1822
+],
+"sha256": "ee635b91fd32cbce362261061e3bc3a30fb45a85c75849bbdc7599366cbfce86"
+},
+{
+"names": [
+"SingularHomology.crossProductHomologyCycles_boundary_left"
+],
+"class": "keep",
+"lines": [
+1824,
+1842
+],
+"sha256": "e06db6e649331aa3880fc4767ddf6da1bb98d1e018fb67d3345b28beba630d0b"
+},
+{
+"names": [
+"SingularHomology.crossProductHomology"
+],
+"class": "keep",
+"lines": [
+1846,
+1855
+],
+"sha256": "fdeafe33f5402771d399a674c3b87873f18a5ff26b2fb9233cc984a586677036"
+},
+{
+"names": [
+"SingularHomology.crossProductHomology_cycleClass"
+],
+"class": "keep",
+"lines": [
+1857,
+1872
+],
+"sha256": "84b6787908abaf8226fdbd74da5989d932e938e1d54c0f05f0a1853215f6d41a"
+},
+{
+"names": [
+"SingularHomology.crossProductEdge_zero_eq_zeroRight"
+],
+"class": "keep",
+"lines": [
+1876,
+1897
+],
+"sha256": "ac32b4ead703f3ce4c9143393258c4cd1932ad58fdc4e8abed2a5f7199217c71"
+},
+{
+"names": [
+"SingularHomology.crossProductEdge_zero_simplex_right"
+],
+"class": "keep",
+"lines": [
+1899,
+1908
+],
+"sha256": "edfa254340946f97659b234575c471a10b6c508cd2977083776af483c0a39b26"
+},
+{
+"names": [
+"SingularHomology.crossProductEdge_pointCycle_right"
+],
+"class": "keep",
+"lines": [
+1910,
+1920
+],
+"sha256": "5bc09a19e299608b8cc7c16c1854cb77cef33b596807c0f59d8d32d9d128a7ea"
+},
+{
+"names": [
+"SingularHomology.crossProductCycles_pointCycle_right"
+],
+"class": "keep",
+"lines": [
+1922,
+1935
+],
+"sha256": "ba686eb258c1df2409a320b3c1f2454f73402fe3498944f3dc2ff975c4484a73"
+},
+{
+"names": [
+"SingularHomology.crossProductHomology_pointClass_right"
+],
+"class": "keep",
+"lines": [
+1937,
+1959
+],
+"sha256": "9d3cbf58a90ba7d8c64d4c208ebc7ca5d4b644ccb4568ba1a4918f91b88ac529"
+},
+{
+"names": [
+"SingularHomology.formalBoundary_edge_simplex"
+],
+"class": "move",
+"lines": [
+1962,
+1973
+],
+"sha256": "c1d992181409065dd4ce00ced90799116c9cc3ba07cb65c24ded6940f86091ba"
+},
+{
+"names": [
+"SingularHomology.formalPointCrossProduct_edge_boundary"
+],
+"class": "move",
+"lines": [
+1975,
+1984
+],
+"sha256": "40bbabffe71c6894889b7def476582f3b1a9ffdf467228bc7aea9fd1522e1a7b"
+},
+{
+"names": [
+"SingularHomology.formalPointCrossProduct_mem_supported"
+],
+"class": "move",
+"lines": [
+1987,
+2004
+],
+"sha256": "4ec3b96ba1e4d88ca2924b14923e37dd7a09248286e5d0186862aee5004d4829"
+},
+{
+"names": [
+"SingularHomology.formalEdgeCrossProduct_mem_supported"
+],
+"class": "move",
+"lines": [
+2006,
+2053
+],
+"sha256": "2067ad13e966189c2a40e3dce3f5c8e01e3ae16c557f509043d2d7cb43114b52"
+},
+{
+"names": [
+"PeriodTorusHigherHomology.formalMap_comp"
+],
+"class": "move",
+"lines": [
+2055,
+2069
+],
+"sha256": "dee06fe4219699ecd90e5ba7c813069196a3814028328dd9b228a9560ed342b1"
+},
+{
+"names": [
+"PeriodTorusHigherHomology.formalMap_prod_swap"
+],
+"class": "move",
+"lines": [
+2070,
+2078
+],
+"sha256": "022929662e16a1af41fe4ed76e8b9efe94ff801496381db3c1f280a63da89496"
+},
+{
+"names": [
+"PeriodTorusHigherHomology.formalMap_swap_pointCrossProduct_one"
+],
+"class": "keep",
+"lines": [
+2079,
+2110
+],
+"sha256": "fe091f1372c40e6de41b22260a740af0b36d0935507eef7523f2370824f72f8e"
+},
+{
+"names": [
+"PeriodTorusHigherHomology.formalMap_swap_edgeCrossProduct_zero"
+],
+"class": "keep",
+"lines": [
+2111,
+2142
+],
+"sha256": "6207352e5ab7cc2f5e93f81ea6522c2478a695c7d3499ca8a4050c602730175c"
+},
+{
+"names": [
+"PeriodTorusHigherHomology.formalEdgeSwapDefect"
+],
+"class": "keep",
+"lines": [
+2143,
+2148
+],
+"sha256": "f495b7543bf0f09c114bc126f94ee121fa8a9a4acaf776b9aaeb75984ca1693b"
+},
+{
+"names": [
+"PeriodTorusHigherHomology.formalEdgeSwapDefect_apply"
+],
+"class": "keep",
+"lines": [
+2149,
+2156
+],
+"sha256": "3e28ff3b8607e4d3ac6d937a9872823fa5bb875c7dc34a98b69d8f5e4ff15d5b"
+},
+{
+"names": [
+"PeriodTorusHigherHomology.formalBoundary_edgeSwapDefect"
+],
+"class": "keep",
+"lines": [
+2157,
+2164
+],
+"sha256": "ff4671d6a068cbcb551d281aafc33629bcd82fe48e68b095697451a8ec261e7a"
+},
+{
+"names": [
+"PeriodTorusHigherHomology.formalMap_edgeSwapDefect"
+],
+"class": "keep",
+"lines": [
+2165,
+2173
+],
+"sha256": "55f3ac52c51d5c94f25f3aabae5e36efc575a66374ed6aab41e992bfd7b534f3"
+},
+{
+"names": [
+"PeriodTorusHigherHomology.formalEdgeSwapHomotopy"
+],
+"class": "keep",
+"lines": [
+2174,
+2181
+],
+"sha256": "523dba84ab6088deafdf7f66e523fb144fc2da93e2539ea21778426330ba5091"
+},
+{
+"names": [
+"PeriodTorusHigherHomology.formalEdgeSwapHomotopy_simplex"
+],
+"class": "keep",
+"lines": [
+2182,
+2191
+],
+"sha256": "acf1137c0e832ab0e6840d4078e372bf28d4885bf8163572ab0d0ac26a3ff530"
+},
+{
+"names": [
+"PeriodTorusHigherHomology.formalEdgeSwapHomotopy_boundary"
+],
+"class": "keep",
+"lines": [
+2192,
+2205
+],
+"sha256": "da59fcd6c3051fa9c795163d416a1f82e6c55dffbdfe2b27220ebbe390fbcde1"
+},
+{
+"names": [
+"PeriodTorusHigherHomology.formalMap_edgeSwapHomotopy"
+],
+"class": "keep",
+"lines": [
+2206,
+2225
+],
+"sha256": "6f99545d38fe05e54cb093d585716c8a46e7a8e511b3380557264f031aeb40c2"
+},
+{
+"names": [
+"PeriodTorusHigherHomology.prodSwap_productAffineSimplex"
+],
+"class": "keep",
+"lines": [
+2227,
+2237
+],
+"sha256": "31c40b24628792ffa900ebeb442eebfd5d6960e0c6b992402fe98eb72195b208"
+},
+{
+"names": [
+"PeriodTorusHigherHomology.inducedChain_swap_productAffineChainMap"
+],
+"class": "keep",
+"lines": [
+2239,
+2265
+],
+"sha256": "cf097379700744f3d38b30987437f47e853e88059681c53b6112e9fecabc7136"
+},
+{
+"names": [
+"PeriodTorusHigherHomology.inducedChain_prodMap_swap"
+],
+"class": "keep",
+"lines": [
+2267,
+2281
+],
+"sha256": "bc1aedea19c1c4a06f245c19f1c92c04f031f1c63a6e4380b31bda84a1da8b7d"
+},
+{
+"names": [
+"PeriodTorusHigherHomology.crossProductSwapHomotopy"
+],
+"class": "keep",
+"lines": [
+2283,
+2295
+],
+"sha256": "d2d193c7f2e62eab6da9359f278538a049549fcd9eb45296ce042b285bcca7ce"
+},
+{
+"names": [
+"PeriodTorusHigherHomology.crossProductSwapHomotopy_simplex"
+],
+"class": "keep",
+"lines": [
+2297,
+2311
+],
+"sha256": "753b715c9d75ef46bb9179407be0dbbc508ea0c3ded1c65abe02c8d3140befc2"
+},
+{
+"names": [
+"PeriodTorusHigherHomology.crossProductSwapHomotopy_natural"
+],
+"class": "keep",
+"lines": [
+2313,
+2334
+],
+"sha256": "201902a9ee041e5cba49d4300933296ba52b3adbf98f54b5d44669e73cd03503"
+},
+{
+"names": [
+"PeriodTorusHigherHomology.crossProductSwapHomotopy_affineChainMap"
+],
+"class": "keep",
+"lines": [
+2336,
+2369
+],
+"sha256": "396bb26c50d2b1db9f47b0a9b0f2cbde7f56dd1ddd7b2534ecee66a746062c6f"
+},
+{
+"names": [
+"PeriodTorusHigherHomology.crossProductSwapHomotopy_boundary_affine"
+],
+"class": "keep",
+"lines": [
+2371,
+2392
+],
+"sha256": "f4c6a0799f102fa2f893767049b2af919c1f6490da4e12850d5ef9e113cf7721"
+},
+{
+"names": [
+"PeriodTorusHigherHomology.crossProductSwapHomotopy_boundary"
+],
+"class": "keep",
+"lines": [
+2394,
+2421
+],
+"sha256": "5b7e503831daa509c9471af754cf8d5fd0c76a0974a34f4d8b73b8086f2f1a9a"
+},
+{
+"names": [
+"PeriodTorusHigherHomology.crossProductCycleClasses_add_swap_eq_zero"
+],
+"class": "keep",
+"lines": [
+2423,
+2448
+],
+"sha256": "b1a7a0239b06beecc5938808856ef46bacbe2f20e47b17f4e92daefbc172302b"
+},
+{
+"names": [
+"PeriodTorusHigherHomology.crossProductHomology_add_swap_eq_zero"
+],
+"class": "keep",
+"lines": [
+2450,
+2467
+],
+"sha256": "7be7d831071bf0593e3c2aeab40b1f3d6f5c930802f47a46aacb7638d75c225a"
+},
+{
+"names": [
+"PeriodTorusHigherHomology.crossProductHomology_swap"
+],
+"class": "keep",
+"lines": [
+2469,
+2479
+],
+"sha256": "468aab2a852f2c9890874e504143294dc635e8b79dac196480c6b34dc3c01c5e"
+},
+{
+"names": [
+"PeriodTorusHigherHomology.crossProductHomology_pushforward_anticommute"
+],
+"class": "keep",
+"lines": [
+2481,
+2496
+],
+"sha256": "b14a6b29263d57dac0cc27eac18fc6b6799fbb5a3a8e7ca64632b391f7394222"
+},
+{
+"names": [
+"PeriodTorusHigherHomology.integerTrilinearPostcompose"
+],
+"class": "keep",
+"lines": [
+2498,
+2522
+],
+"sha256": "f1610d44cea7afc6d64be4b4c6185ae8d1e42f36848d24858c8dea0458619dd1"
+},
+{
+"names": [
+"PeriodTorusHigherHomology.integerTrilinearPostcompose_apply"
+],
+"class": "keep",
+"lines": [
+2524,
+2533
+],
+"sha256": "fe693b6f88b4d1760e8ba1e5bd33fca4370cd395717a6ce225fa3e203c4eae8d"
+},
+{
+"names": [
+"PeriodTorusHigherHomology.integerTrilinearPrecompose"
+],
+"class": "keep",
+"lines": [
+2535,
+2560
+],
+"sha256": "81e9aee5b55d70b5748cc748ff2dc5b94bf892256bff636e6ffc2c5190007898"
+},
+{
+"names": [
+"PeriodTorusHigherHomology.integerTrilinearPrecompose_apply"
+],
+"class": "keep",
+"lines": [
+2562,
+2572
+],
+"sha256": "044fb5912dab8afde752e9dae1d7460a2535b33c800a005feb18dacfb60204b0"
+},
+{
+"names": [
+"PeriodTorusHigherHomology.integerTrilinearLeftAssociated"
+],
+"class": "keep",
+"lines": [
+2574,
+2598
+],
+"sha256": "76a6cf26f33ba3aaf6eeda0076ad5dad20cc511c934659f93b5416d00e08283f"
+},
+{
+"names": [
+"PeriodTorusHigherHomology.integerTrilinearRightAssociated"
+],
+"class": "keep",
+"lines": [
+2600,
+2622
+],
+"sha256": "bb295cff5a3d66a2ff2aceea3d679dbecc9903452840157969606a385b840f03"
+},
+{
+"names": [
+"PeriodTorusHigherHomology.chainTrilinearLift"
+],
+"class": "keep",
+"lines": [
+2624,
+2634
+],
+"sha256": "fb407bdca4fabbaa8a1622c6e35059c12762f023348b83b15c3c427d453f8aa7"
+},
+{
+"names": [
+"PeriodTorusHigherHomology.chainTrilinearLift_simplex"
+],
+"class": "keep",
+"lines": [
+2636,
+2650
+],
+"sha256": "a8d0729289711904480e9a843f9cba196bd097b45edaef779c6363c6db0bbb0d"
+},
+{
+"names": [
+"PeriodTorusHigherHomology.chainTrilinearMap_ext"
+],
+"class": "keep",
+"lines": [
+2652,
+2670
+],
+"sha256": "eb983b835dd603d1bacc2e141e41922b1e105a66ab6039588fe5b16a8d9fdcb6"
+},
+{
+"names": [
+"PeriodTorusHigherHomology.formalMap_comp_apply"
+],
+"class": "move",
+"lines": [
+2671,
+2682
+],
+"sha256": "b67ee5bf018320f353aa97a0e7c0415f4abb8ed47acc0ac528a8ab595c5cafca"
+},
+{
+"names": [
+"PeriodTorusHigherHomology.formalMap_id_apply"
+],
+"class": "move",
+"lines": [
+2683,
+2692
+],
+"sha256": "adda64a1e8b07879335423d904cfb049e95748871066fb6415b6cab4ea89dfd9"
+},
+{
+"names": [
+"PeriodTorusHigherHomology.formalEdgeCrossProduct_point_left"
+],
+"class": "keep",
+"lines": [
+2693,
+2711
+],
+"sha256": "3e507da3851c9291877d06dcaf18f3f4213f605da1bdaf2301720ade6520f892"
+},
+{
+"names": [
+"PeriodTorusHigherHomology.formalEdgeCrossProduct_point_middle"
+],
+"class": "keep",
+"lines": [
+2712,
+2732
+],
+"sha256": "c4a321350db1fc046dc712cbd11aee11ec1de64f3b4e36ce598a066d10b2f00e"
+},
+{
+"names": [
+"PeriodTorusHigherHomology.formalTriangleCrossProduct_point_right"
+],
+"class": "keep",
+"lines": [
+2733,
+2751
+],
+"sha256": "a1295d48fbf00a6dfc7db20689ca56d80e9da887b15f4b7ce041079677a893f1"
+},
+{
+"names": [
+"PeriodTorusHigherHomology.formalChains_trilinear_ext"
+],
+"class": "keep",
+"lines": [
+2752,
+2769
+],
+"sha256": "cd87ec308425642f43286957892a42f0457393a4da2c07b577e27af887f85957"
+},
+{
+"names": [
+"PeriodTorusHigherHomology.formalTrilinearLift"
+],
+"class": "keep",
+"lines": [
+2770,
+2776
+],
+"sha256": "ee63db3ef695b5833d5bb046743c2bee87f3b4a838fe7a66aae8fc5304b4acfe"
+},
+{
+"names": [
+"PeriodTorusHigherHomology.formalTrilinearLift_simplex"
+],
+"class": "keep",
+"lines": [
+2777,
+2784
+],
+"sha256": "5a2e43465ad1f290285cf0dbe19af5c880c26ab37995e80e97c91c2605bd9259"
+},
+{
+"names": [
+"PeriodTorusHigherHomology.formalAssociatorDefect"
+],
+"class": "keep",
+"lines": [
+2785,
+2799
+],
+"sha256": "022c3e4384e523e976886fb3b1fad5644b1a8b034fac3f2e23da1d62a9b8375b"
+},
+{
+"names": [
+"PeriodTorusHigherHomology.formalAssociatorDefect_apply"
+],
+"class": "keep",
+"lines": [
+2800,
+2809
+],
+"sha256": "4d6a655f53900858b65ddea373ff2a3a18eecd9e2a7c87772baf3b2d4a13ab2b"
+},
+{
+"names": [
+"PeriodTorusHigherHomology.formalAssociatorDefect_zero"
+],
+"class": "keep",
+"lines": [
+2810,
+2815
+],
+"sha256": "66544830ec6fc90997eeb6cfbb4ca871debd0c379909e62ad782ece295879b53"
+},
+{
+"names": [
+"PeriodTorusHigherHomology.formalBoundary_associatorDefect"
+],
+"class": "keep",
+"lines": [
+2816,
+2826
+],
+"sha256": "289a46c18b216c64f07089be372d1e3fa1ef9a53845792363f5eadce522fdab3"
+},
+{
+"names": [
+"PeriodTorusHigherHomology.formalMap_prodAssoc_naturality"
+],
+"class": "keep",
+"lines": [
+2827,
+2844
+],
+"sha256": "294d2c96d4f62f3659853451f55aa8c14c1e1332a8b4915e75304be468eab07c"
+},
+{
+"names": [
+"PeriodTorusHigherHomology.formalMap_associatorDefect"
+],
+"class": "keep",
+"lines": [
+2845,
+2857
+],
+"sha256": "4b7ac580adb40b0ec312172eec560c99f9b55ee55cf1d2cb408cf9ff60b4777c"
+},
+{
+"names": [
+"_private.Lib.AlgebraicTopology.SingularHomology.CrossProduct.0.PeriodTorusHigherHomology.triplePostcomp"
+],
+"class": "keep",
+"lines": [
+2858,
+2871
+],
+"sha256": "8cec689d7a197a07cbddbe3a5c33c38f3295cb7736acc9385e1cc9e0ed5845e8"
+},
+{
+"names": [
+"_private.Lib.AlgebraicTopology.SingularHomology.CrossProduct.0.PeriodTorusHigherHomology.triplePrecompLast"
+],
+"class": "keep",
+"lines": [
+2873,
+2887
+],
+"sha256": "c2ddfde28f293bbafb26ae1956630be75662c719bd84fc07fc0e2ffbab6990e1"
+},
+{
+"names": [
+"PeriodTorusHigherHomology.formalAssociatorHomotopy"
+],
+"class": "keep",
+"lines": [
+2888,
+2904
+],
+"sha256": "8b00a61fb6f332111aae322a770c1a347e8f4237e78c70cb8dc203e4023af01a"
+},
+{
+"names": [
+"PeriodTorusHigherHomology.formalAssociatorHomotopy_zero"
+],
+"class": "keep",
+"lines": [
+2905,
+2910
+],
+"sha256": "7f8a096a4883b1a23b63c1c9fefd545b4b1dbfdba0b39b097f4b6d9d8cda91a2"
+},
+{
+"names": [
+"PeriodTorusHigherHomology.formalAssociatorHomotopy_simplex_succ"
+],
+"class": "keep",
+"lines": [
+2911,
+2924
+],
+"sha256": "aee2ab73a0064bd27dfaaaee1fca8590612feea4bfcdd7f6c4862ccc86b4eeca"
+},
+{
+"names": [
+"PeriodTorusHigherHomology.formalAssociatorHomotopy_boundary_zero"
+],
+"class": "keep",
+"lines": [
+2925,
+2931
+],
+"sha256": "cd6a191fa8b48816b55baaee172c4a359c805bdb8cf2ef3105d7afed913f7589"
+},
+{
+"names": [
+"PeriodTorusHigherHomology.formalAssociatorHomotopy_boundary"
+],
+"class": "keep",
+"lines": [
+2932,
+3019
+],
+"sha256": "c8aaab16587e97371c8bddece5ece6b66c1c478bd5fae3c866d02df56ea6eef6"
+},
+{
+"names": [
+"PeriodTorusHigherHomology.formalMap_associatorHomotopy"
+],
+"class": "keep",
+"lines": [
+3020,
+3061
+],
+"sha256": "557e469c7a42020f1ca142d430e3fd52afef71614f4abc8e225d5c7cbcd987f5"
+},
+{
+"names": [
+"PeriodTorusHigherHomology.tripleAffineSimplex"
+],
+"class": "keep",
+"lines": [
+3062,
+3070
+],
+"sha256": "91dc7157fd3848de7b37e4f9174251a86b2159b7008482141cfcd1a03c0dc98f"
+},
+{
+"names": [
+"PeriodTorusHigherHomology.tripleAffineSimplex_face"
+],
+"class": "keep",
+"lines": [
+3071,
+3088
+],
+"sha256": "03efb71d9807796d889827bedcf6b90b7d9ec5523629828906461e4496a2af9c"
+},
+{
+"names": [
+"PeriodTorusHigherHomology.tripleAffineChainMap"
+],
+"class": "keep",
+"lines": [
+3089,
+3096
+],
+"sha256": "3648340821afcce78405a0ee4b4c614275ebdca7e576847ac1e60a4ab5807606"
+},
+{
+"names": [
+"PeriodTorusHigherHomology.tripleAffineChainMap_simplex"
+],
+"class": "keep",
+"lines": [
+3097,
+3105
+],
+"sha256": "7ce389c9266619677609ef1d2f401436e021662ece0383674118022c1ca0bc0a"
+},
+{
+"names": [
+"PeriodTorusHigherHomology.tripleAffineChainMap_boundary"
+],
+"class": "keep",
+"lines": [
+3106,
+3142
+],
+"sha256": "a36660aaa3df758999e68ac10ac33ef68b97f691d387d9e457eb1ed3281a4036"
+},
+{
+"names": [
+"PeriodTorusHigherHomology.affineProductLeft"
+],
+"class": "keep",
+"lines": [
+3143,
+3152
+],
+"sha256": "e6f5a0c85f10ba3b3dd686acc1a36b13502d88a94d4320af92767fb5556b3b9d"
+},
+{
+"names": [
+"PeriodTorusHigherHomology.affineProductRight"
+],
+"class": "keep",
+"lines": [
+3153,
+3159
+],
+"sha256": "c1958d59d8d99590150fd6d7f5d96171adc7361d265697fdb19fbee0c23eb608"
+},
+{
+"names": [
+"PeriodTorusHigherHomology.affineProductLeft_comp"
+],
+"class": "keep",
+"lines": [
+3160,
+3179
+],
+"sha256": "aae15277efe091312ff7240f38c1f7fbb0acbce49822236c50c1f5200ba57192"
+},
+{
+"names": [
+"PeriodTorusHigherHomology.affineProductRight_comp"
+],
+"class": "keep",
+"lines": [
+3180,
+3199
+],
+"sha256": "ced1c0d51f48592fe30ced060f8c2e69c1a83905a7fc6016f056d9f8a5b6ffa9"
+},
+{
+"names": [
+"PeriodTorusHigherHomology.inducedChain_affineProductLeft"
+],
+"class": "keep",
+"lines": [
+3200,
+3220
+],
+"sha256": "a98ebdbf1529af913e32797dbc4020fa65a878649aa19112618ac666b0ed0dea"
+},
+{
+"names": [
+"PeriodTorusHigherHomology.inducedChain_affineProductRight"
+],
+"class": "keep",
+"lines": [
+3221,
+3241
+],
+"sha256": "6f6830251c2769f41824de0a5d9549ee6b4e645d74132853da78eb11e79aae1d"
+},
+{
+"names": [
+"PeriodTorusHigherHomology.crossProductAssociatorDefect"
+],
+"class": "keep",
+"lines": [
+3243,
+3254
+],
+"sha256": "71793d0bb8db5be51acbfeca377c026b42d42fbeea7f1d4eaf2b959836f7dec7"
+},
+{
+"names": [
+"PeriodTorusHigherHomology.crossProductAssociatorDefect_apply"
+],
+"class": "keep",
+"lines": [
+3256,
+3267
+],
+"sha256": "f49560faad5fde57e53f4715571df9f97ca0745b80bb675550160e599b058a1d"
+},
+{
+"names": [
+"PeriodTorusHigherHomology.crossProductAssociatorHomotopy"
+],
+"class": "keep",
+"lines": [
+3269,
+3283
+],
+"sha256": "a8f84d4d37c98a110fb4f8189cdbfbaf7b0d6ace0784edbb73960df070879e79"
+},
+{
+"names": [
+"PeriodTorusHigherHomology.crossProductAssociatorHomotopy_simplex"
+],
+"class": "keep",
+"lines": [
+3285,
+3301
+],
+"sha256": "ba89bac7ae6a92343a07a5f11a4b7d55971b78c87d0a7f8d70d3fb94bd5079bb"
+},
+{
+"names": [
+"PeriodTorusHigherHomology.crossProductAssociatorHomotopy_natural"
+],
+"class": "keep",
+"lines": [
+3303,
+3331
+],
+"sha256": "049c31d3f8ad2082e01bff0c21e94b9d86860bed0ef8c1659ea55ba7979d499c"
+},
+{
+"names": [
+"PeriodTorusHigherHomology.inducedChain_prodAssoc_natural"
+],
+"class": "keep",
+"lines": [
+3333,
+3349
+],
+"sha256": "f84c05c0b4e095c8511d987584a39ca018f8b7d1c79a3d37aa603131e93fab8a"
+},
+{
+"names": [
+"PeriodTorusHigherHomology.crossProductAssociatorDefect_natural"
+],
+"class": "keep",
+"lines": [
+3351,
+3364
+],
+"sha256": "3a8870518ea7712b8aa77ddb9b6a60244c6060cb611cac0aaf1523074792583d"
+},
+{
+"names": [
+"PeriodTorusHigherHomology.productAffineSimplex_stdVertices_image"
+],
+"class": "keep",
+"lines": [
+3366,
+3373
+],
+"sha256": "20da2207892dd229ca7c00cf81725aa3430c79e3f4f134f2212055cd3be3f4b2"
+},
+{
+"names": [
+"PeriodTorusHigherHomology.prodMap_tripleAffineSimplex"
+],
+"class": "keep",
+"lines": [
+3375,
+3405
+],
+"sha256": "dcb7666c66709329a163b851f45735dcff990dd329939725e9d9be97c19e3354"
+},
+{
+"names": [
+"PeriodTorusHigherHomology.inducedChain_tripleAffineChainMap"
+],
+"class": "keep",
+"lines": [
+3407,
+3446
+],
+"sha256": "228afe3dfceb1af8c5bf04be60c627da343723e19da63d65b137ac7434e5df3c"
+},
+{
+"names": [
+"PeriodTorusHigherHomology.crossProductTriangle_productAffineChainMap_left"
+],
+"class": "keep",
+"lines": [
+3448,
+3515
+],
+"sha256": "ddf7c4f501d2c4a2630407dee863461816cdf01f8bb97c0c300e97cebb54f582"
+},
+{
+"names": [
+"PeriodTorusHigherHomology.crossProductEdge_productAffineChainMap_right"
+],
+"class": "keep",
+"lines": [
+3517,
+3559
+],
+"sha256": "0f0af8ab9fbb98c6369378a107991ecf75bdc1095b6289228299ef459e9dd319"
+},
+{
+"names": [
+"PeriodTorusHigherHomology.crossProductAssociatorHomotopy_affineChainMap"
+],
+"class": "keep",
+"lines": [
+3561,
+3606
+],
+"sha256": "47e6b1346147661eb5641a3f7882e7837381d4de9286a741e3f357e71b26b103"
+},
+{
+"names": [
+"PeriodTorusHigherHomology.crossProductAssociatorDefect_affineChainMap"
+],
+"class": "keep",
+"lines": [
+3608,
+3622
+],
+"sha256": "54d320c0145a9a33c9260a788bcf552e5e102bd773340aea299556221fb910fa"
+},
+{
+"names": [
+"PeriodTorusHigherHomology.crossProductAssociatorHomotopy_boundary_zero_affine"
+],
+"class": "keep",
+"lines": [
+3624,
+3643
+],
+"sha256": "7869ff870ba36677dff253b2ecedc53621a49c16c97ae1cf904436fdea635fb6"
+},
+{
+"names": [
+"PeriodTorusHigherHomology.crossProductAssociatorHomotopy_boundary_affine"
+],
+"class": "keep",
+"lines": [
+3645,
+3671
+],
+"sha256": "ddc37651b50be9e624949991b2bfa0d441835b65e730b5958e1994160d69044c"
+},
+{
+"names": [
+"PeriodTorusHigherHomology.crossProductAssociatorHomotopy_boundary_zero"
+],
+"class": "keep",
+"lines": [
+3673,
+3698
+],
+"sha256": "b42e84abc4fdc585c26154e7a0c433d76222f62ece4cb590c1bcf768f53addec"
+},
+{
+"names": [
+"PeriodTorusHigherHomology.crossProductAssociatorHomotopy_boundary"
+],
+"class": "keep",
+"lines": [
+3700,
+3731
+],
+"sha256": "7b86645e4ac639cfb5c3e8d13f5514ca99b77daedb092ede738ecf0f67a85dbf"
+},
+{
+"names": [
+"PeriodTorusHigherHomology.crossProductAssociatorHomotopy_boundary_of_cycle"
+],
+"class": "keep",
+"lines": [
+3733,
+3749
+],
+"sha256": "84622aea53b29bfbdac32ea647b2f3b2e5bb634e277d2361040e5e81bf639a41"
+},
+{
+"names": [
+"PeriodTorusHigherHomology.formalMap_swap_pointCrossProduct_two"
+],
+"class": "keep",
+"lines": [
+3750,
+3782
+],
+"sha256": "373dcabe83c1ced293e955cb80e3616508d827eb4fb5cb495b22baca75114820"
+},
+{
+"names": [
+"PeriodTorusHigherHomology.formalMixedSwapDefect"
+],
+"class": "keep",
+"lines": [
+3783,
+3788
+],
+"sha256": "406bffa4dc78c5552d917d7625b0e974d1e91ff4041e6aac47d75005ec59fa06"
+},
+{
+"names": [
+"PeriodTorusHigherHomology.formalMixedSwapDefect_apply"
+],
+"class": "keep",
+"lines": [
+3789,
+3796
+],
+"sha256": "4eb39fbd4f7ca8ae42489ce7b7aff2a9f371aa3741ef8f2e7426ea6e68f4f504"
+},
+{
+"names": [
+"PeriodTorusHigherHomology.formalBoundary_mixedSwapDefect"
+],
+"class": "keep",
+"lines": [
+3797,
+3805
+],
+"sha256": "2c39c411aaf6b225645ac829b746103042823379e02a056988ac8cf1dd3c1a02"
+},
+{
+"names": [
+"PeriodTorusHigherHomology.formalMap_mixedSwapDefect"
+],
+"class": "keep",
+"lines": [
+3806,
+3814
+],
+"sha256": "f645a205f3f14a27fb11ae095e86e542897aa08e97f07f386d5839cbecbd5983"
+},
+{
+"names": [
+"PeriodTorusHigherHomology.formalMixedSwapHomotopy"
+],
+"class": "keep",
+"lines": [
+3815,
+3825
+],
+"sha256": "8ca0301a518bcaf4bdfc8873780a5267d22e96069bdfb3bb2f2540b9f3241548"
+},
+{
+"names": [
+"PeriodTorusHigherHomology.formalMixedSwapHomotopy_simplex"
+],
+"class": "keep",
+"lines": [
+3826,
+3838
+],
+"sha256": "b2f6074bed164ab97f6b71b584d007afef9db7d6e1fcbc7672df8ca9a9722bc6"
+},
+{
+"names": [
+"PeriodTorusHigherHomology.formalMixedSwapHomotopy_boundary"
+],
+"class": "keep",
+"lines": [
+3839,
+3871
+],
+"sha256": "203868831166d8612ecdcb58298b4b310e1008cd0b6e6dd476901cf405161df5"
+},
+{
+"names": [
+"PeriodTorusHigherHomology.formalMap_mixedSwapHomotopy"
+],
+"class": "keep",
+"lines": [
+3872,
+3893
+],
+"sha256": "ab4e6f1ca1b7c971cb6ea545b53882765e6f29cc7defaf3bad0fda39e6354cf8"
+},
+{
+"names": [
+"PeriodTorusHigherHomology.crossProductMixedSwapHomotopy"
+],
+"class": "keep",
+"lines": [
+3895,
+3907
+],
+"sha256": "e9552d120f536df8e12f19e0eb381c1aa349cb9a716c24ec34baf5d584983436"
+},
+{
+"names": [
+"PeriodTorusHigherHomology.crossProductMixedSwapHomotopy_simplex"
+],
+"class": "keep",
+"lines": [
+3909,
+3923
+],
+"sha256": "580fc29c67a50bb5595367a7097e94f2f2ef921d08cfc3c2abbb06a91c93a985"
+},
+{
+"names": [
+"PeriodTorusHigherHomology.crossProductMixedSwapHomotopy_natural"
+],
+"class": "keep",
+"lines": [
+3925,
+3946
+],
+"sha256": "5a364d16e5d52ff32eba28708def6b5608a419c23d67cd2532f0f6a5179fe1ea"
+},
+{
+"names": [
+"PeriodTorusHigherHomology.crossProductMixedSwapHomotopy_affineChainMap"
+],
+"class": "keep",
+"lines": [
+3948,
+3981
+],
+"sha256": "6e7e9ec53077b7be8257b655ffd5a61f4f3814cf97b8aecc7fdbcc12b806a271"
+},
+{
+"names": [
+"PeriodTorusHigherHomology.crossProductMixedSwapHomotopy_boundary_affine"
+],
+"class": "keep",
+"lines": [
+3983,
+4009
+],
+"sha256": "d11b1eb07befaf97f90d4ba5569a2dd545b7ebd70e972c6eed1c7cf4351d43c0"
+},
+{
+"names": [
+"PeriodTorusHigherHomology.crossProductMixedSwapHomotopy_boundary"
+],
+"class": "keep",
+"lines": [
+4011,
+4043
+],
+"sha256": "61afa856c60b0fbfcd226d8dbc1582186926cc99a269690604ea3ef69796348e"
+},
+{
+"names": [
+"PeriodTorusHigherHomology.crossProductMixedSwapHomotopy_boundary_of_cycle"
+],
+"class": "keep",
+"lines": [
+4045,
+4055
+],
+"sha256": "543aea75187f25ca9d9bda5ed67328af300291f88d8eff8a598bf1434b504c6d"
+},
+{
+"names": [
+"PeriodTorusHigherHomology.crossProductTwoOneCycles"
+],
+"class": "keep",
+"lines": [
+4057,
+4106
+],
+"sha256": "fdcbca45858a82a2a1161faea6707f59bf441008452213441eaada2f2a057017"
+},
+{
+"names": [
+"PeriodTorusHigherHomology.crossProductTwoOneCycles_val"
+],
+"class": "keep",
+"lines": [
+4108,
+4117
+],
+"sha256": "ddd1ed06f17f34eb93426e65aed7035d9c434b4b814b5b14b0c0be26be76626a"
+},
+{
+"names": [
+"PeriodTorusHigherHomology.crossProductHomologyTwoOne"
+],
+"class": "keep",
+"lines": [
+4119,
+4128
+],
+"sha256": "64b36cd583de4921b993b42ec0a0729b663504435dd529aa43c4c5094c231d0d"
+},
+{
+"names": [
+"PeriodTorusHigherHomology.crossProductHomologyTwoOne_apply"
+],
+"class": "keep",
+"lines": [
+4130,
+4140
+],
+"sha256": "0ae1d8520084634bf24614b7a3bd65ab5385310bb9bdf093b9a44089fa0430ff"
+},
+{
+"names": [
+"PeriodTorusHigherHomology.crossProductHomologyTwoOne_cycleClass"
+],
+"class": "keep",
+"lines": [
+4142,
+4172
+],
+"sha256": "e4d5b4edb7f9fdf1eeb0f1b64f33185320d07731f837b14e052e769e8bed9e16"
+},
+{
+"names": [
+"PeriodTorusHigherHomology.crossProductCycleClasses_associative"
+],
+"class": "keep",
+"lines": [
+4174,
+4199
+],
+"sha256": "2bce4458ea9d1200c7030ce9f8fe288e05375d27f9c30d509f188db1e33242e9"
+},
+{
+"names": [
+"PeriodTorusHigherHomology.crossProductHomology_associative"
+],
+"class": "keep",
+"lines": [
+4201,
+4223
+],
+"sha256": "0b8c2951fe412346ffb8579860efc2a8fec055c124c941ded15d7f2cf3d742d2"
+},
+{
+"names": [
+"PeriodTorusHigherHomology.crossProductCyclicMap"
+],
+"class": "keep",
+"lines": [
+4225,
+4230
+],
+"sha256": "77a9689a53983ba94469db8f798eafffe949ae8243e94d28071fee71fe56a7a8"
+},
+{
+"names": [
+"PeriodTorusHigherHomology.crossProductCyclicMap_assoc_swap"
+],
+"class": "keep",
+"lines": [
+4232,
+4240
+],
+"sha256": "97bae50c2dd6070130b751a62e9509ad3df41b37b05bf877766f785794e4614d"
+},
+{
+"names": [
+"PeriodTorusHigherHomology.crossProductHomology_cyclic"
+],
+"class": "keep",
+"lines": [
+4242,
+4267
+],
+"sha256": "a33d8ed43c787cca6b23c4773b9b7fef073305b46745273beb8e63b306326c4f"
+},
+{
+"names": [
+"PeriodTorusHigherHomology.crossProductCycles_natural"
+],
+"class": "keep",
+"lines": [
+4275,
+4291
+],
+"sha256": "808aeb474f2188376566f8e8f21378e7ae9c9ebe40b578691373c76d2a4f18f2"
+},
+{
+"names": [
+"PeriodTorusHigherHomology.crossProductHomology_natural"
+],
+"class": "keep",
+"lines": [
+4293,
+4315
+],
+"sha256": "2fe34984477f6c108e9c009c1f2ea9f35cb87fbc99fda79f1ef1de31705c68ac"
+},
+{
+"names": [
+"PeriodTorusHigherHomology.crossProductHomology_snd"
+],
+"class": "keep",
+"lines": [
+4317,
+4347
+],
+"sha256": "61e1ea38f0800851215a171612850111a08db821886bd6ce04942f8b73dbd9ad"
+}
+]
+}
