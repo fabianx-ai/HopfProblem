@@ -35,12 +35,17 @@ open scoped ContDiff ContinuousMap
 
 noncomputable section
 
+/-- The homology isomorphism `H_k(S(N)) ≃ H_k(oldNeighborhood ∩ diskPatch)` induced by the
+homotopy equivalence `D.overlapSphereEquiv`. -/
 def EmbeddedCellAttachment.overlapHomologyEquiv {N X : Type} [NormedAddCommGroup N]
     [NormedSpace ℝ N] [TopologicalSpace X] (D : EmbeddedCellAttachment N X) (k : ℕ) :
     SingularMayerVietoris.SingularHomology (Metric.sphere (0 : N) 1) k ≃ₗ[ℤ]
       SingularMayerVietoris.SingularHomology (↥(D.oldNeighborhood ∩ D.diskPatch)) k :=
   SingularHomology.homotopyEquivHomologyEquiv D.overlapSphereEquiv k
 
+/-- The connecting homomorphism `H_{k+1}(X) → H_k(S(N))` of the cell attachment `D`: the
+Mayer–Vietoris connecting map of the cover `(oldNeighborhood, diskPatch)` followed by
+`(D.overlapHomologyEquiv k)⁻¹`. -/
 def EmbeddedCellAttachment.cellConnectingMap {N X : Type} [NormedAddCommGroup N]
     [NormedSpace ℝ N] [TopologicalSpace X] (D : EmbeddedCellAttachment N X) (k : ℕ) :
     SingularMayerVietoris.SingularHomology X (k + 1) →ₗ[ℤ]
@@ -49,6 +54,8 @@ def EmbeddedCellAttachment.cellConnectingMap {N X : Type} [NormedAddCommGroup N]
     (SingularMayerVietoris.connectingHomomorphism D.oldNeighborhood D.diskPatch
       D.isOpen_oldNeighborhood D.isOpen_diskPatch D.open_cover k)
 
+/-- The first component of the Mayer–Vietoris left map of `D` on `overlapHomologyEquiv k a`,
+transported by `(D.oldHomologyEquiv k)⁻¹`, is `D.attachingHomologyMap k a`. -/
 theorem EmbeddedCellAttachment.coverLeft_old {N X : Type} [NormedAddCommGroup N]
     [NormedSpace ℝ N] [TopologicalSpace X] (D : EmbeddedCellAttachment N X) (k : ℕ)
     (a : SingularMayerVietoris.SingularHomology (Metric.sphere (0 : N) 1) k) :
@@ -70,6 +77,8 @@ theorem EmbeddedCellAttachment.coverLeft_old {N X : Type} [NormedAddCommGroup N]
       _
   rw [D.overlapOldMap_comp_sphere]
 
+/-- For `k ≠ 0`, the Mayer–Vietoris left map of `D` on `overlapHomologyEquiv k a` is
+`(oldHomologyEquiv k (attachingHomologyMap k a), 0)`. -/
 theorem EmbeddedCellAttachment.coverLeft_formula {N X : Type} [NormedAddCommGroup N]
     [NormedSpace ℝ N] [TopologicalSpace X] (D : EmbeddedCellAttachment N X) (k : ℕ)
     (hk : k ≠ 0) (a : SingularMayerVietoris.SingularHomology (Metric.sphere (0 : N) 1) k) :
@@ -81,6 +90,7 @@ theorem EmbeddedCellAttachment.coverLeft_formula {N X : Type} [NormedAddCommGrou
   · exact (D.oldHomologyEquiv k).symm_apply_eq.mp (D.coverLeft_old k a)
   · exact Subsingleton.elim _ _
 
+/-- `D.cellConnectingMap k a = 0` iff the Mayer–Vietoris connecting map of `D` vanishes on `a`. -/
 theorem EmbeddedCellAttachment.cellConnecting_eq_zero_iff {N X : Type}
     [NormedAddCommGroup N] [NormedSpace ℝ N] [TopologicalSpace X]
     (D : EmbeddedCellAttachment N X) (k : ℕ)
@@ -96,6 +106,8 @@ theorem EmbeddedCellAttachment.cellConnecting_eq_zero_iff {N X : Type}
   · intro h
     rw [h, map_zero]
 
+/-- Exactness at `H_k(A)`, `k ≠ 0`: the image of `attachingHomologyMap k : H_k(S) → H_k(A)` is the
+kernel of `oldHomologyMap k : H_k(A) → H_k(X)`. -/
 theorem EmbeddedCellAttachment.cell_exact_at_old {N X : Type} [NormedAddCommGroup N]
     [NormedSpace ℝ N] [TopologicalSpace X] (D : EmbeddedCellAttachment N X) (k : ℕ)
     (hk : k ≠ 0) :
@@ -145,6 +157,8 @@ theorem EmbeddedCellAttachment.cell_exact_at_old {N X : Type} [NormedAddCommGrou
         hc'
     exact (D.oldHomologyEquiv k).injective heq
 
+/-- Exactness at `H_{k+1}(X)`: the image of `oldHomologyMap (k + 1) : H_{k+1}(A) → H_{k+1}(X)` is
+the kernel of `cellConnectingMap k : H_{k+1}(X) → H_k(S)`. -/
 theorem EmbeddedCellAttachment.cell_exact_at_ambient {N X : Type} [NormedAddCommGroup N]
     [NormedSpace ℝ N] [TopologicalSpace X] (D : EmbeddedCellAttachment N X) (k : ℕ) :
     LinearMap.range (D.oldHomologyMap (k + 1)) = LinearMap.ker (D.cellConnectingMap k) := by
@@ -154,6 +168,8 @@ theorem EmbeddedCellAttachment.cell_exact_at_ambient {N X : Type} [NormedAddComm
   ext a
   exact (D.cellConnecting_eq_zero_iff k a).symm
 
+/-- `a` is in the image of `cellConnectingMap k` iff `overlapHomologyEquiv k a` is in the image of
+the Mayer–Vietoris connecting map of `D`. -/
 theorem EmbeddedCellAttachment.mem_range_cellConnecting {N X : Type} [NormedAddCommGroup N]
     [NormedSpace ℝ N] [TopologicalSpace X] (D : EmbeddedCellAttachment N X) (k : ℕ)
     (a : SingularMayerVietoris.SingularHomology (Metric.sphere (0 : N) 1) k) :
@@ -172,6 +188,8 @@ theorem EmbeddedCellAttachment.mem_range_cellConnecting {N X : Type} [NormedAddC
     change (D.overlapHomologyEquiv k).symm _ = a
     rw [hx, LinearEquiv.symm_apply_apply]
 
+/-- For `k ≠ 0`, the Mayer–Vietoris left map of `D` vanishes on `overlapHomologyEquiv k a` iff
+`attachingHomologyMap k a = 0`. -/
 theorem EmbeddedCellAttachment.coverLeft_eq_zero_iff {N X : Type} [NormedAddCommGroup N]
     [NormedSpace ℝ N] [TopologicalSpace X] (D : EmbeddedCellAttachment N X) (k : ℕ)
     (hk : k ≠ 0) (a : SingularMayerVietoris.SingularHomology (Metric.sphere (0 : N) 1) k) :
@@ -194,6 +212,8 @@ theorem EmbeddedCellAttachment.coverLeft_eq_zero_iff {N X : Type} [NormedAddComm
     rw [h, map_zero]
     rfl
 
+/-- Exactness at `H_k(S)`, `k ≠ 0`: the image of `cellConnectingMap k : H_{k+1}(X) → H_k(S)` is
+the kernel of `attachingHomologyMap k : H_k(S) → H_k(A)`. -/
 theorem EmbeddedCellAttachment.cell_exact_at_sphere {N X : Type} [NormedAddCommGroup N]
     [NormedSpace ℝ N] [TopologicalSpace X] (D : EmbeddedCellAttachment N X) (k : ℕ)
     (hk : k ≠ 0) :
@@ -204,6 +224,8 @@ theorem EmbeddedCellAttachment.cell_exact_at_sphere {N X : Type} [NormedAddCommG
       D.isOpen_oldNeighborhood D.isOpen_diskPatch D.open_cover k]
   exact D.coverLeft_eq_zero_iff k hk a
 
+/-- If the sphere `S(N)` is path-connected, the connecting map `cellConnectingMap 0 : H₁(X) → H₀(S)`
+is zero. -/
 theorem EmbeddedCellAttachment.cellConnecting_zero_apply {N X : Type} [NormedAddCommGroup N]
     [NormedSpace ℝ N] [TopologicalSpace X] (D : EmbeddedCellAttachment N X)
     [PathConnectedSpace (Metric.sphere (0 : N) 1)]
@@ -230,6 +252,7 @@ theorem EmbeddedCellAttachment.cellConnecting_zero_apply {N X : Type} [NormedAdd
   apply SphereHomology.singularHomologyMap_zero_injective q
   exact hz.trans (map_zero _).symm
 
+/-- If the sphere `S(N)` is path-connected, `D.oldHomologyMap 0 : H₀(A) → H₀(X)` is injective. -/
 theorem MorseCancellation.cell_oldHomologyMap_zero_injective {N X : Type} [NormedAddCommGroup N]
     [NormedSpace ℝ N] [TopologicalSpace X] (D : EmbeddedCellAttachment N X)
     [PathConnectedSpace (Metric.sphere (0 : N) 1)] : Function.Injective (D.oldHomologyMap 0) := by
@@ -272,6 +295,7 @@ theorem MorseCancellation.cell_oldHomologyMap_zero_injective {N X : Type} [Norme
   apply (D.oldHomologyEquiv 0).injective
   exact (congrArg Prod.fst hc).symm.trans (map_zero _).symm
 
+/-- If the sphere `S(N)` is path-connected, `D.oldHomologyMap 0 : H₀(A) → H₀(X)` is surjective. -/
 theorem MorseCancellation.cell_oldHomologyMap_zero_surjective {N X : Type} [NormedAddCommGroup N]
     [NormedSpace ℝ N] [TopologicalSpace X] (D : EmbeddedCellAttachment N X)
     [PathConnectedSpace (Metric.sphere (0 : N) 1)] : Function.Surjective (D.oldHomologyMap 0) := by
@@ -318,11 +342,14 @@ theorem MorseCancellation.cell_oldHomologyMap_zero_surjective {N X : Type} [Norm
     SingularMayerVietoris.rightHomologyMap_apply, map_zero, add_zero, map_add, hrel]
   exact hbc
 
+/-- If the sphere `S(N)` is path-connected, `D.oldHomologyMap 0 : H₀(A) → H₀(X)` is bijective. -/
 theorem MorseCancellation.cell_oldHomologyMap_zero_bijective {N X : Type} [NormedAddCommGroup N]
     [NormedSpace ℝ N] [TopologicalSpace X] (D : EmbeddedCellAttachment N X)
     [PathConnectedSpace (Metric.sphere (0 : N) 1)] : Function.Bijective (D.oldHomologyMap 0) :=
   ⟨cell_oldHomologyMap_zero_injective D, cell_oldHomologyMap_zero_surjective D⟩
 
+/-- The map `H₀(S(N)) → H₀(diskPatch)` induced by the inclusion of the sphere into the disk patch
+through `D.overlapSphereEquiv`. -/
 def MorseCancellation.cellDiskBoundaryHomologyMap {N X : Type} [NormedAddCommGroup N] [NormedSpace ℝ N]
     [TopologicalSpace X] (D : EmbeddedCellAttachment N X) :
     SingularMayerVietoris.SingularHomology (Metric.sphere (0 : N) 1) 0 →ₗ[ℤ]
@@ -330,6 +357,8 @@ def MorseCancellation.cellDiskBoundaryHomologyMap {N X : Type} [NormedAddCommGro
   SingularMayerVietoris.singularHomologyMap
     ((ContinuousMap.inclusion Set.inter_subset_right).comp D.overlapSphereEquiv.toFun) 0
 
+/-- `D.oldHomologyMap 0 a = 0` iff `a = attachingHomologyMap 0 z` for some `z ∈ H₀(S(N))` with
+`cellDiskBoundaryHomologyMap D z = 0`. -/
 theorem MorseCancellation.cell_oldHomologyMap_zero_iff {N X : Type} [NormedAddCommGroup N]
     [NormedSpace ℝ N] [TopologicalSpace X] (D : EmbeddedCellAttachment N X)
     (a : SingularMayerVietoris.SingularHomology D.old 0) :
@@ -388,6 +417,8 @@ theorem MorseCancellation.cell_oldHomologyMap_zero_iff {N X : Type} [NormedAddCo
     rw [hL, D.coverRight_old] at hzero
     exact hzero
 
+/-- If every attaching point `D.attachingSphere u` is joined in `A` to the point `p`, then
+`D.oldHomologyMap 0 : H₀(A) → H₀(X)` is injective. -/
 theorem MorseCancellation.cell_oldHomologyMap_injective_of_attaching_component {N X : Type}
     [NormedAddCommGroup N] [NormedSpace ℝ N] [TopologicalSpace X]
     (D : EmbeddedCellAttachment N X) (p : D.old)
@@ -414,6 +445,8 @@ theorem MorseCancellation.cell_oldHomologyMap_injective_of_attaching_component {
   obtain ⟨z, hza, hz⟩ := (cell_oldHomologyMap_zero_iff D a).mp ha
   rw [← hza, heq, LinearMap.comp_apply, hz, map_zero]
 
+/-- If `X` is path-connected and every attaching point `D.attachingSphere u` is joined in `A` to a
+point `p`, then `A = D.old` is path-connected. -/
 theorem MorseCancellation.cell_old_pathConnected_of_attaching_component {N X : Type}
     [NormedAddCommGroup N] [NormedSpace ℝ N] [TopologicalSpace X]
     (D : EmbeddedCellAttachment N X) [PathConnectedSpace X] (p : D.old)
