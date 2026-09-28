@@ -1479,7 +1479,7 @@ theorem Hurewicz.CubeGluing.coherentCubeCell_face {n : ℕ} {X : Type} [Topologi
     {x : X} (H₀ : C(SingularChains.Simplex n, X) → C((unitInterval) × SingularChains.Simplex n, X))
     (H₁ :
       C(SingularChains.Simplex (n + 1), X) → C((unitInterval) × SingularChains.Simplex (n + 1), X))
-    (hface : Hurewicz.DegreeTwo.SimplyConnected.FaceCompatibleHomotopies n H₀ H₁)
+    (hface : Hurewicz.Prism.FaceCompatibleHomotopies n H₀ H₁)
     (p : GenLoop (Fin (n + 1)) X x) (e : Equiv.Perm (Fin (n + 1))) (i : Fin (n + 2))
     (r : (unitInterval)) (s : SingularChains.Simplex n) :
     H₁ (p.val.comp (Hurewicz.CubeTriangulation.cubeSimplex e))
@@ -1497,7 +1497,7 @@ theorem Hurewicz.CubeGluing.coherentCubeCell_swap {n : ℕ} {X : Type} [Topologi
     {x : X} (H₀ : C(SingularChains.Simplex n, X) → C((unitInterval) × SingularChains.Simplex n, X))
     (H₁ :
       C(SingularChains.Simplex (n + 1), X) → C((unitInterval) × SingularChains.Simplex (n + 1), X))
-    (hface : Hurewicz.DegreeTwo.SimplyConnected.FaceCompatibleHomotopies n H₀ H₁)
+    (hface : Hurewicz.Prism.FaceCompatibleHomotopies n H₀ H₁)
     (p : GenLoop (Fin (n + 1)) X x) (e : Equiv.Perm (Fin (n + 1))) (i : Fin n)
     (r : (unitInterval)) (s : SingularChains.Simplex (n + 1)) (hs : s i.succ.castSucc = 0) :
     H₁ (p.val.comp (Hurewicz.CubeTriangulation.cubeSimplex e)) (r, s) =
@@ -1517,7 +1517,7 @@ theorem Hurewicz.CubeGluing.coherentCubeCell_boundary {n : ℕ} {X : Type}
     (H₀ : C(SingularChains.Simplex n, X) → C((unitInterval) × SingularChains.Simplex n, X))
     (H₁ :
       C(SingularChains.Simplex (n + 1), X) → C((unitInterval) × SingularChains.Simplex (n + 1), X))
-    (hface : Hurewicz.DegreeTwo.SimplyConnected.FaceCompatibleHomotopies n H₀ H₁)
+    (hface : Hurewicz.Prism.FaceCompatibleHomotopies n H₀ H₁)
     (hconst :
       H₀ (ContinuousMap.const (SingularChains.Simplex n) x) =
         ContinuousMap.const ((unitInterval) × SingularChains.Simplex n) x)
@@ -1543,7 +1543,7 @@ theorem Hurewicz.CubeGluing.coherentCubeFamily_compatible {n : ℕ} {X : Type}
     (H₀ : C(SingularChains.Simplex n, X) → C((unitInterval) × SingularChains.Simplex n, X))
     (H₁ :
       C(SingularChains.Simplex (n + 1), X) → C((unitInterval) × SingularChains.Simplex (n + 1), X))
-    (hface : Hurewicz.DegreeTwo.SimplyConnected.FaceCompatibleHomotopies n H₀ H₁)
+    (hface : Hurewicz.Prism.FaceCompatibleHomotopies n H₀ H₁)
     (p : GenLoop (Fin (n + 1)) X x) :
     CubeCompatible (fun e => H₁ (p.val.comp (Hurewicz.CubeTriangulation.cubeSimplex e))) := by
   intro e f s t h r
@@ -1570,7 +1570,7 @@ def Hurewicz.CubeGluing.coherentCubeHomotopyMap {n : ℕ} {X : Type} [Topologica
     {x : X} (H₀ : C(SingularChains.Simplex n, X) → C((unitInterval) × SingularChains.Simplex n, X))
     (H₁ :
       C(SingularChains.Simplex (n + 1), X) → C((unitInterval) × SingularChains.Simplex (n + 1), X))
-    (hface : Hurewicz.DegreeTwo.SimplyConnected.FaceCompatibleHomotopies n H₀ H₁)
+    (hface : Hurewicz.Prism.FaceCompatibleHomotopies n H₀ H₁)
     (p : GenLoop (Fin (n + 1)) X x) :
     C((unitInterval) × Hurewicz.CubeTriangulation.CubeN (n + 1), X) :=
   glueCubeHomotopies (fun e => H₁ (p.val.comp (Hurewicz.CubeTriangulation.cubeSimplex e)))
@@ -1584,7 +1584,7 @@ theorem Hurewicz.CubeGluing.coherentCubeHomotopyMap_cell {n : ℕ} {X : Type}
     (H₀ : C(SingularChains.Simplex n, X) → C((unitInterval) × SingularChains.Simplex n, X))
     (H₁ :
       C(SingularChains.Simplex (n + 1), X) → C((unitInterval) × SingularChains.Simplex (n + 1), X))
-    (hface : Hurewicz.DegreeTwo.SimplyConnected.FaceCompatibleHomotopies n H₀ H₁)
+    (hface : Hurewicz.Prism.FaceCompatibleHomotopies n H₀ H₁)
     (p : GenLoop (Fin (n + 1)) X x) (e : Equiv.Perm (Fin (n + 1))) (r : (unitInterval))
     (s : SingularChains.Simplex (n + 1)) :
     coherentCubeHomotopyMap H₀ H₁ hface p (r, Hurewicz.CubeTriangulation.cubeSimplex e s) =
@@ -1597,7 +1597,7 @@ theorem Hurewicz.CubeGluing.coherentCubeHomotopyMap_zero {n : ℕ} {X : Type}
     (H₀ : C(SingularChains.Simplex n, X) → C((unitInterval) × SingularChains.Simplex n, X))
     (H₁ :
       C(SingularChains.Simplex (n + 1), X) → C((unitInterval) × SingularChains.Simplex (n + 1), X))
-    (hface : Hurewicz.DegreeTwo.SimplyConnected.FaceCompatibleHomotopies n H₀ H₁)
+    (hface : Hurewicz.Prism.FaceCompatibleHomotopies n H₀ H₁)
     (hzero :
       ∀ (smp : C(SingularChains.Simplex (n + 1), X)) (s : SingularChains.Simplex (n + 1)),
         H₁ smp (0, s) = smp s)
@@ -1612,7 +1612,7 @@ theorem Hurewicz.CubeGluing.coherentCubeHomotopyMap_boundary {n : ℕ} {X : Type
     (H₀ : C(SingularChains.Simplex n, X) → C((unitInterval) × SingularChains.Simplex n, X))
     (H₁ :
       C(SingularChains.Simplex (n + 1), X) → C((unitInterval) × SingularChains.Simplex (n + 1), X))
-    (hface : Hurewicz.DegreeTwo.SimplyConnected.FaceCompatibleHomotopies n H₀ H₁)
+    (hface : Hurewicz.Prism.FaceCompatibleHomotopies n H₀ H₁)
     (hconst :
       H₀ (ContinuousMap.const (SingularChains.Simplex n) x) =
         ContinuousMap.const ((unitInterval) × SingularChains.Simplex n) x)
@@ -1631,12 +1631,12 @@ def Hurewicz.CubeGluing.coherentCubeEndpoint {n : ℕ} {X : Type} [TopologicalSp
     (H₀ : C(SingularChains.Simplex n, X) → C((unitInterval) × SingularChains.Simplex n, X))
     (H₁ :
       C(SingularChains.Simplex (n + 1), X) → C((unitInterval) × SingularChains.Simplex (n + 1), X))
-    (hface : Hurewicz.DegreeTwo.SimplyConnected.FaceCompatibleHomotopies n H₀ H₁)
+    (hface : Hurewicz.Prism.FaceCompatibleHomotopies n H₀ H₁)
     (hconst :
       H₀ (ContinuousMap.const (SingularChains.Simplex n) x) =
         ContinuousMap.const ((unitInterval) × SingularChains.Simplex n) x)
     (p : GenLoop (Fin (n + 1)) X x) : GenLoop (Fin (n + 1)) X x :=
-  ⟨Hurewicz.DegreeTwo.SimplyConnected.timeSlice (coherentCubeHomotopyMap H₀ H₁ hface p) 1, fun u hu =>
+  ⟨Hurewicz.Prism.timeSlice (coherentCubeHomotopyMap H₀ H₁ hface p) 1, fun u hu =>
     coherentCubeHomotopyMap_boundary H₀ H₁ hface hconst p 1 u hu⟩
 
 /-- On the `e`-th Kuhn cell, the coherent endpoint is the time-`1` value of `H₁`
@@ -1646,14 +1646,14 @@ theorem Hurewicz.CubeGluing.coherentCubeEndpoint_cell {n : ℕ} {X : Type}
     (H₀ : C(SingularChains.Simplex n, X) → C((unitInterval) × SingularChains.Simplex n, X))
     (H₁ :
       C(SingularChains.Simplex (n + 1), X) → C((unitInterval) × SingularChains.Simplex (n + 1), X))
-    (hface : Hurewicz.DegreeTwo.SimplyConnected.FaceCompatibleHomotopies n H₀ H₁)
+    (hface : Hurewicz.Prism.FaceCompatibleHomotopies n H₀ H₁)
     (hconst :
       H₀ (ContinuousMap.const (SingularChains.Simplex n) x) =
         ContinuousMap.const ((unitInterval) × SingularChains.Simplex n) x)
     (p : GenLoop (Fin (n + 1)) X x) (e : Equiv.Perm (Fin (n + 1))) :
     (coherentCubeEndpoint H₀ H₁ hface hconst p).val.comp
         (Hurewicz.CubeTriangulation.cubeSimplex e) =
-      Hurewicz.DegreeTwo.SimplyConnected.timeSlice
+      Hurewicz.Prism.timeSlice
         (H₁ (p.val.comp (Hurewicz.CubeTriangulation.cubeSimplex e))) 1 := by
   ext s
   exact coherentCubeHomotopyMap_cell H₀ H₁ hface p e 1 s
@@ -1664,7 +1664,7 @@ def Hurewicz.CubeGluing.coherentCubeHomotopy {n : ℕ} {X : Type} [TopologicalSp
     (H₀ : C(SingularChains.Simplex n, X) → C((unitInterval) × SingularChains.Simplex n, X))
     (H₁ :
       C(SingularChains.Simplex (n + 1), X) → C((unitInterval) × SingularChains.Simplex (n + 1), X))
-    (hface : Hurewicz.DegreeTwo.SimplyConnected.FaceCompatibleHomotopies n H₀ H₁)
+    (hface : Hurewicz.Prism.FaceCompatibleHomotopies n H₀ H₁)
     (hconst :
       H₀ (ContinuousMap.const (SingularChains.Simplex n) x) =
         ContinuousMap.const ((unitInterval) × SingularChains.Simplex n) x)

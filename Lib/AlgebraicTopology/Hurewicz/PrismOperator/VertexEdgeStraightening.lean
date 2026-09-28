@@ -30,7 +30,7 @@ step in the proof of the Hurewicz theorem (Hatcher, Thm 4.32, proof).
   face-compatible pair of families to the next degree, with `extendCoherentSimplexHomotopy_face`.
 -/
 
-open Set Function Topology
+open Set Function Topology Hurewicz.Prism
 
 noncomputable section
 

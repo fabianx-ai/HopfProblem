@@ -11,7 +11,7 @@ import Lib.AlgebraicTopology.Hurewicz.PrismOperator.HurewiczMap
 # The prism operator
 
 For a homotopy `H : C(I × A, X)` the prism operator
-`Hurewicz.DegreeTwo.SimplyConnected.prismOperator n H : Chains A n →ₗ[ℤ] Chains X (n + 1)`
+`Hurewicz.Prism.prismOperator n H : Chains A n →ₗ[ℤ] Chains X (n + 1)`
 is the `H`-pushforward of the cross product with the fundamental chain of the interval.  It
 satisfies the prism boundary identity `∂(P c) = H₁# c - H₀# c - P(∂c)` (Hatcher, Thm 2.10), so
 homotopic maps induce chain-homotopic maps on singular chains.
@@ -25,22 +25,23 @@ consequence, the time-`1` endpoint of a `2`-cycle is homologous to the cycle
 
 ## Main definitions
 
-* `Hurewicz.DegreeTwo.SimplyConnected.timeSlice`: the time-`t` slice of a homotopy.
-* `Hurewicz.DegreeTwo.SimplyConnected.prismOperator`, `prismOperator_boundary`.
-* `Hurewicz.DegreeTwo.SimplyConnected.simplexPrism`, `simplexPrism_boundary`.
-* `Hurewicz.DegreeTwo.SimplyConnected.simplexPrismOperator`, `simplexEndpointOperator`,
+* `Hurewicz.Prism.timeSlice`: the time-`t` slice of a homotopy.
+* `Hurewicz.Prism.prismOperator`, `prismOperator_boundary`.
+* `Hurewicz.Prism.simplexPrism`, `simplexPrism_boundary`.
+* `Hurewicz.Prism.simplexPrismOperator`, `simplexEndpointOperator`,
   `FaceCompatibleHomotopies`, `simplexPrismOperator_boundary`.
-* `Hurewicz.DegreeTwo.SimplyConnected.straightenedTwoCycle`, `straightenedTwoCycle_class`.
+* `Hurewicz.Prism.straightenedTwoCycle`, `straightenedTwoCycle_class`.
 -/
 
 open Set Function Topology
+open Hurewicz.DegreeTwo.SimplyConnected (crossPoint_left)
 
 noncomputable section
 
 /-! ### The prism operator -/
 
 /-- The time-`t` slice of a homotopy `H : C(I × A, X)`, as a map `C(A, X)`. -/
-def Hurewicz.DegreeTwo.SimplyConnected.timeSlice {A X : Type} [TopologicalSpace A]
+def Hurewicz.Prism.timeSlice {A X : Type} [TopologicalSpace A]
     [TopologicalSpace X] (H : C((unitInterval) × A, X)) (t : (unitInterval)) : C(A, X) :=
   H.comp (SingularHomology.crossInsertLeft t)
 
@@ -48,7 +49,7 @@ attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
 /-- The `H`-pushforward of a `crossInsertLeft t` chain is the `timeSlice H t`
 pushforward. -/
-theorem Hurewicz.DegreeTwo.SimplyConnected.inducedChain_timeSlice {A X : Type} [TopologicalSpace A]
+theorem Hurewicz.Prism.inducedChain_timeSlice {A X : Type} [TopologicalSpace A]
     [TopologicalSpace X] (H : C((unitInterval) × A, X)) (t : (unitInterval)) (n : ℕ)
     (c : SingularChains.Chains A n) :
     SingularChains.inducedChain H n
@@ -66,7 +67,7 @@ attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
 /-- The prism operator of a homotopy `H : C(I × A, X)`: `Chains A n →ₗ[ℤ]
 Chains X (n+1)`, built from the degree-`n` cross product with `intervalChain`. -/
-def Hurewicz.DegreeTwo.SimplyConnected.prismOperator {A X : Type} [TopologicalSpace A]
+def Hurewicz.Prism.prismOperator {A X : Type} [TopologicalSpace A]
     [TopologicalSpace X] (n : ℕ) (H : C((unitInterval) × A, X)) :
     SingularChains.Chains A n →ₗ[ℤ] SingularChains.Chains X (n + 1) :=
   (SingularChains.inducedChain H (n + 1)).comp
@@ -74,7 +75,7 @@ def Hurewicz.DegreeTwo.SimplyConnected.prismOperator {A X : Type} [TopologicalSp
 
 /-- `prismOperator n H c` is the `H`-pushforward of `c × intervalChain`. -/
 @[simp]
-theorem Hurewicz.DegreeTwo.SimplyConnected.prismOperator_apply {A X : Type} [TopologicalSpace A]
+theorem Hurewicz.Prism.prismOperator_apply {A X : Type} [TopologicalSpace A]
     [TopologicalSpace X] (n : ℕ) (H : C((unitInterval) × A, X)) (c : SingularChains.Chains A n) :
     prismOperator n H c =
       SingularChains.inducedChain H (n + 1)
@@ -85,7 +86,7 @@ theorem Hurewicz.DegreeTwo.SimplyConnected.prismOperator_apply {A X : Type} [Top
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
 /-- The prism boundary identity: `∂(prism c) = H₁# c - H₀# c - prism(∂c)`. -/
-theorem Hurewicz.DegreeTwo.SimplyConnected.prismOperator_boundary {A X : Type} [TopologicalSpace A]
+theorem Hurewicz.Prism.prismOperator_boundary {A X : Type} [TopologicalSpace A]
     [TopologicalSpace X] (n : ℕ) (H : C((unitInterval) × A, X))
     (c : SingularChains.Chains A (n + 1)) :
     ((SingularChains.singularComplex X).d (n + 2) (n + 1)).hom (prismOperator (n + 1) H c) =
@@ -108,7 +109,7 @@ theorem Hurewicz.DegreeTwo.SimplyConnected.prismOperator_boundary {A X : Type} [
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
 /-- Precomposing the homotopy with `id × f` equals pushing the chain forward by `f` first. -/
-theorem Hurewicz.DegreeTwo.SimplyConnected.prismOperator_domain {A B X : Type} [TopologicalSpace A]
+theorem Hurewicz.Prism.prismOperator_domain {A B X : Type} [TopologicalSpace A]
     [TopologicalSpace B] [TopologicalSpace X] (n : ℕ) (f : C(A, B)) (H : C((unitInterval) × B, X))
     (c : SingularChains.Chains A n) :
     prismOperator n (H.comp ((ContinuousMap.id (unitInterval)).prodMap f)) c =
@@ -124,7 +125,7 @@ attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
 /-- The prism chain of a homotopy of the standard `n`-simplex:
 `prismOperator n H` applied to the identity simplex chain. -/
-def Hurewicz.DegreeTwo.SimplyConnected.simplexPrism {X : Type} [TopologicalSpace X] (n : ℕ)
+def Hurewicz.Prism.simplexPrism {X : Type} [TopologicalSpace X] (n : ℕ)
     (H : C((unitInterval) × SingularChains.Simplex n, X)) : SingularChains.Chains X (n + 1) :=
   prismOperator n H
     (SingularChains.simplexChain (SingularChains.Simplex n) n
@@ -133,7 +134,7 @@ def Hurewicz.DegreeTwo.SimplyConnected.simplexPrism {X : Type} [TopologicalSpace
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
 /-- `prismOperator` on a simplex chain is the `H`-pushforward of the simplex prism. -/
-theorem Hurewicz.DegreeTwo.SimplyConnected.prismOperator_simplex {A X : Type} [TopologicalSpace A]
+theorem Hurewicz.Prism.prismOperator_simplex {A X : Type} [TopologicalSpace A]
     [TopologicalSpace X] (n : ℕ) (H : C((unitInterval) × A, X))
     (smp : SingularChains.SingularSimplex A n) :
     prismOperator n H (SingularChains.simplexChain A n smp) =
@@ -148,7 +149,7 @@ theorem Hurewicz.DegreeTwo.SimplyConnected.prismOperator_simplex {A X : Type} [T
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
 /-- The boundary of `simplexPrism n H` is `H₁# id - H₀# id - ∑` face prisms. -/
-theorem Hurewicz.DegreeTwo.SimplyConnected.simplexPrism_boundary {X : Type} [TopologicalSpace X]
+theorem Hurewicz.Prism.simplexPrism_boundary {X : Type} [TopologicalSpace X]
     (n : ℕ) (H : C((unitInterval) × SingularChains.Simplex (n + 1), X)) :
     ((SingularChains.singularComplex X).d (n + 2) (n + 1)).hom (simplexPrism (n + 1) H) =
       SingularChains.simplexChain X (n + 1) (timeSlice H 1) -
@@ -165,7 +166,7 @@ theorem Hurewicz.DegreeTwo.SimplyConnected.simplexPrism_boundary {X : Type} [Top
 
 /-- The endpoint operator `Chains X n →ₗ[ℤ] Chains X n` sending each simplex to its
 time-`t` slice under `H`. -/
-def Hurewicz.DegreeTwo.SimplyConnected.simplexEndpointOperator {X : Type} [TopologicalSpace X] (n : ℕ)
+def Hurewicz.Prism.simplexEndpointOperator {X : Type} [TopologicalSpace X] (n : ℕ)
     (H : SingularChains.SingularSimplex X n → C((unitInterval) × SingularChains.Simplex n, X))
     (t : (unitInterval)) : SingularChains.Chains X n →ₗ[ℤ] SingularChains.Chains X n :=
   SingularChains.chainLift X n fun smp => SingularChains.simplexChain X n (timeSlice (H smp) t)
@@ -173,7 +174,7 @@ def Hurewicz.DegreeTwo.SimplyConnected.simplexEndpointOperator {X : Type} [Topol
 /-- `simplexEndpointOperator` sends a simplex to its time-`t` slice `timeSlice (H
 smp) t`. -/
 @[simp]
-theorem Hurewicz.DegreeTwo.SimplyConnected.simplexEndpointOperator_simplex {X : Type}
+theorem Hurewicz.Prism.simplexEndpointOperator_simplex {X : Type}
     [TopologicalSpace X] (n : ℕ)
     (H : SingularChains.SingularSimplex X n → C((unitInterval) × SingularChains.Simplex n, X))
     (t : (unitInterval)) (smp : SingularChains.SingularSimplex X n) :
@@ -183,14 +184,14 @@ theorem Hurewicz.DegreeTwo.SimplyConnected.simplexEndpointOperator_simplex {X : 
 
 /-- The simplexwise prism operator: `Chains X n →ₗ[ℤ] Chains X (n+1)` sending each
 simplex `smp` to `simplexPrism n (H smp)`. -/
-def Hurewicz.DegreeTwo.SimplyConnected.simplexPrismOperator {X : Type} [TopologicalSpace X] (n : ℕ)
+def Hurewicz.Prism.simplexPrismOperator {X : Type} [TopologicalSpace X] (n : ℕ)
     (H : SingularChains.SingularSimplex X n → C((unitInterval) × SingularChains.Simplex n, X)) :
     SingularChains.Chains X n →ₗ[ℤ] SingularChains.Chains X (n + 1) :=
   SingularChains.chainLift X n fun smp => simplexPrism n (H smp)
 
 /-- `simplexPrismOperator` sends a simplex `smp` to `simplexPrism n (H smp)`. -/
 @[simp]
-theorem Hurewicz.DegreeTwo.SimplyConnected.simplexPrismOperator_simplex {X : Type}
+theorem Hurewicz.Prism.simplexPrismOperator_simplex {X : Type}
     [TopologicalSpace X] (n : ℕ)
     (H : SingularChains.SingularSimplex X n → C((unitInterval) × SingularChains.Simplex n, X))
     (smp : SingularChains.SingularSimplex X n) :
@@ -199,7 +200,7 @@ theorem Hurewicz.DegreeTwo.SimplyConnected.simplexPrismOperator_simplex {X : Typ
 
 /-- `H` and `H'` are face-compatible if `H'` restricted to each face equals `H` of
 the face simplex. -/
-def Hurewicz.DegreeTwo.SimplyConnected.FaceCompatibleHomotopies {X : Type} [TopologicalSpace X]
+def Hurewicz.Prism.FaceCompatibleHomotopies {X : Type} [TopologicalSpace X]
     (n : ℕ)
     (H : SingularChains.SingularSimplex X n → C((unitInterval) × SingularChains.Simplex n, X))
     (H' :
@@ -211,7 +212,7 @@ def Hurewicz.DegreeTwo.SimplyConnected.FaceCompatibleHomotopies {X : Type} [Topo
       H (smp.comp (SingularChains.simplexFace n i))
 
 /-- For face-compatible families, the `i`-th face of a time slice of `H'` is the corresponding time slice of `H`. -/
-theorem Hurewicz.DegreeTwo.SimplyConnected.timeSlice_face {X : Type} [TopologicalSpace X] {n : ℕ}
+theorem Hurewicz.Prism.timeSlice_face {X : Type} [TopologicalSpace X] {n : ℕ}
     {H : SingularChains.SingularSimplex X n → C((unitInterval) × SingularChains.Simplex n, X)}
     {H' :
       SingularChains.SingularSimplex X (n + 1) →
@@ -224,7 +225,7 @@ theorem Hurewicz.DegreeTwo.SimplyConnected.timeSlice_face {X : Type} [Topologica
 
 /-- For a face-compatible family, `simplexEndpointOperator` commutes with the
 boundary map. -/
-theorem Hurewicz.DegreeTwo.SimplyConnected.simplexEndpointOperator_boundary {X : Type}
+theorem Hurewicz.Prism.simplexEndpointOperator_boundary {X : Type}
     [TopologicalSpace X] (n : ℕ)
     (H : SingularChains.SingularSimplex X n → C((unitInterval) × SingularChains.Simplex n, X))
     (H' :
@@ -246,7 +247,7 @@ theorem Hurewicz.DegreeTwo.SimplyConnected.simplexEndpointOperator_boundary {X :
 
 /-- For a face-compatible family, the simplexwise prism boundary identity holds:
 `∂(prism c) = H₁# c - H₀# c - prism(∂c)`. -/
-theorem Hurewicz.DegreeTwo.SimplyConnected.simplexPrismOperator_boundary {X : Type}
+theorem Hurewicz.Prism.simplexPrismOperator_boundary {X : Type}
     [TopologicalSpace X] (n : ℕ)
     (H : SingularChains.SingularSimplex X n → C((unitInterval) × SingularChains.Simplex n, X))
     (H' :
@@ -271,7 +272,7 @@ theorem Hurewicz.DegreeTwo.SimplyConnected.simplexPrismOperator_boundary {X : Ty
   exact LinearMap.congr_fun hc c
 
 /-- If every homotopy starts at its simplex, the time-`0` endpoint operator is the identity. -/
-theorem Hurewicz.DegreeTwo.SimplyConnected.simplexEndpointOperator_zero {X : Type}
+theorem Hurewicz.Prism.simplexEndpointOperator_zero {X : Type}
     [TopologicalSpace X] (n : ℕ)
     (H : SingularChains.SingularSimplex X n → C((unitInterval) × SingularChains.Simplex n, X))
     (h₀ : ∀ smp, timeSlice (H smp) 0 = smp) : simplexEndpointOperator n H 0 = LinearMap.id := by
@@ -282,7 +283,7 @@ theorem Hurewicz.DegreeTwo.SimplyConnected.simplexEndpointOperator_zero {X : Typ
 
 /-- The `2`-cycle obtained by applying the time-`1` endpoint operator of `H₂` to a
 `2`-cycle `c`. -/
-def Hurewicz.DegreeTwo.SimplyConnected.straightenedTwoCycle {X : Type} [TopologicalSpace X]
+def Hurewicz.Prism.straightenedTwoCycle {X : Type} [TopologicalSpace X]
     (H₁ : SingularChains.SingularSimplex X 1 → C((unitInterval) × SingularChains.Simplex 1, X))
     (H₂ : SingularChains.SingularSimplex X 2 → C((unitInterval) × SingularChains.Simplex 2, X))
     (h : FaceCompatibleHomotopies 1 H₁ H₂)
@@ -298,7 +299,7 @@ def Hurewicz.DegreeTwo.SimplyConnected.straightenedTwoCycle {X : Type} [Topologi
 
 /-- The straightened `2`-cycle is homologous to the original cycle (the prism is
 its homology witness). -/
-theorem Hurewicz.DegreeTwo.SimplyConnected.straightenedTwoCycle_class {X : Type} [TopologicalSpace X]
+theorem Hurewicz.Prism.straightenedTwoCycle_class {X : Type} [TopologicalSpace X]
     (H₁ : SingularChains.SingularSimplex X 1 → C((unitInterval) × SingularChains.Simplex 1, X))
     (H₂ : SingularChains.SingularSimplex X 2 → C((unitInterval) × SingularChains.Simplex 2, X))
     (h : FaceCompatibleHomotopies 1 H₁ H₂) (h₀ : ∀ smp, timeSlice (H₂ smp) 0 = smp)

@@ -31,7 +31,7 @@ simplices.
   `normalizedTwoChain`, `normalizedTwoCycle`, `normalizedTwoCycle_class`.
 -/
 
-open Set Function Topology
+open Set Function Topology Hurewicz.Prism
 
 noncomputable section
 

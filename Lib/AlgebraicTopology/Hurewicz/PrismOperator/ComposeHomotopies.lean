@@ -37,8 +37,8 @@ noncomputable section
 time-`0` and time-`1` slices. -/
 def Hurewicz.cylinderHomotopy {A X : Type} [TopologicalSpace A] [TopologicalSpace X]
     (H : C((unitInterval) × A, X)) :
-    ContinuousMap.Homotopy (Hurewicz.DegreeTwo.SimplyConnected.timeSlice H 0)
-      (Hurewicz.DegreeTwo.SimplyConnected.timeSlice H 1)
+    ContinuousMap.Homotopy (Hurewicz.Prism.timeSlice H 0)
+      (Hurewicz.Prism.timeSlice H 1)
     where
   toContinuousMap := H
   map_zero_left _ := rfl
@@ -86,7 +86,7 @@ theorem Hurewicz.homotopyTrans_congr {A X : Type} [TopologicalSpace A] [Topologi
 def Hurewicz.simplexFamilyHomotopy {X : Type} [TopologicalSpace X] {n : ℕ}
     (H : SingularChains.SingularSimplex X n → C((unitInterval) × SingularChains.Simplex n, X))
     (h₀ : ∀ smp s, H smp (0, s) = smp s) (smp : SingularChains.SingularSimplex X n) :
-    smp.Homotopy (Hurewicz.DegreeTwo.SimplyConnected.timeSlice (H smp) 1) :=
+    smp.Homotopy (Hurewicz.Prism.timeSlice (H smp) 1) :=
   (cylinderHomotopy (H smp)).cast (by ext s; exact h₀ smp s) rfl
 
 /-- The composition of two coherent simplex homotopy families (first `H₀` then
@@ -97,7 +97,7 @@ def Hurewicz.composeSimplexHomotopies {X : Type} [TopologicalSpace X] {n : ℕ}
     (smp : SingularChains.SingularSimplex X n) : C((unitInterval) × SingularChains.Simplex n, X) :=
   ((simplexFamilyHomotopy H hH₀ smp).trans
       (simplexFamilyHomotopy G hG₀
-        (Hurewicz.DegreeTwo.SimplyConnected.timeSlice (H smp) 1))).toContinuousMap
+        (Hurewicz.Prism.timeSlice (H smp) 1))).toContinuousMap
 
 /-- At time `0`, `composeSimplexHomotopies H₀ H₁` is `H₀` at time `0`. -/
 @[simp]
@@ -116,7 +116,7 @@ theorem Hurewicz.composeSimplexHomotopies_one {X : Type} [TopologicalSpace X] {n
     (hH₀ : ∀ smp s, H smp (0, s) = smp s) (hG₀ : ∀ smp s, G smp (0, s) = smp s)
     (smp : SingularChains.SingularSimplex X n) (s : SingularChains.Simplex n) :
     composeSimplexHomotopies H G hH₀ hG₀ smp (1, s) =
-      G (Hurewicz.DegreeTwo.SimplyConnected.timeSlice (H smp) 1) (1, s) :=
+      G (Hurewicz.Prism.timeSlice (H smp) 1) (1, s) :=
   ContinuousMap.Homotopy.apply_one _ s
 
 /-- The time-`1` slice of the composed homotopy is the time-`1` slice of `G`
@@ -127,9 +127,9 @@ theorem Hurewicz.timeSlice_composeSimplexHomotopies_one {X : Type} [TopologicalS
     (H G : SingularChains.SingularSimplex X n → C((unitInterval) × SingularChains.Simplex n, X))
     (hH₀ : ∀ smp s, H smp (0, s) = smp s) (hG₀ : ∀ smp s, G smp (0, s) = smp s)
     (smp : SingularChains.SingularSimplex X n) :
-    Hurewicz.DegreeTwo.SimplyConnected.timeSlice (composeSimplexHomotopies H G hH₀ hG₀ smp) 1 =
-      Hurewicz.DegreeTwo.SimplyConnected.timeSlice
-        (G (Hurewicz.DegreeTwo.SimplyConnected.timeSlice (H smp) 1)) 1 := by
+    Hurewicz.Prism.timeSlice (composeSimplexHomotopies H G hH₀ hG₀ smp) 1 =
+      Hurewicz.Prism.timeSlice
+        (G (Hurewicz.Prism.timeSlice (H smp) 1)) 1 := by
   ext s
   exact composeSimplexHomotopies_one H G hH₀ hG₀ smp s
 
@@ -142,9 +142,9 @@ theorem Hurewicz.composeSimplexHomotopies_face {X : Type} [TopologicalSpace X] {
         C((unitInterval) × SingularChains.Simplex (n + 1), X))
     (hH₀ : ∀ smp s, H smp (0, s) = smp s) (hG₀ : ∀ smp s, G smp (0, s) = smp s)
     (hH'₀ : ∀ smp s, H' smp (0, s) = smp s) (hG'₀ : ∀ smp s, G' smp (0, s) = smp s)
-    (hH : Hurewicz.DegreeTwo.SimplyConnected.FaceCompatibleHomotopies n H H')
-    (hG : Hurewicz.DegreeTwo.SimplyConnected.FaceCompatibleHomotopies n G G') :
-    Hurewicz.DegreeTwo.SimplyConnected.FaceCompatibleHomotopies n
+    (hH : Hurewicz.Prism.FaceCompatibleHomotopies n H H')
+    (hG : Hurewicz.Prism.FaceCompatibleHomotopies n G G') :
+    Hurewicz.Prism.FaceCompatibleHomotopies n
       (composeSimplexHomotopies H G hH₀ hG₀) (composeSimplexHomotopies H' G' hH'₀ hG'₀) := by
   intro smp i
   unfold composeSimplexHomotopies
@@ -155,13 +155,13 @@ theorem Hurewicz.composeSimplexHomotopies_face {X : Type} [TopologicalSpace X] {
         H (smp.comp (SingularChains.simplexFace n i))
     exact hH smp i
   · change
-      (G' (Hurewicz.DegreeTwo.SimplyConnected.timeSlice (H' smp) 1)).comp
+      (G' (Hurewicz.Prism.timeSlice (H' smp) 1)).comp
           ((ContinuousMap.id (unitInterval)).prodMap (SingularChains.simplexFace n i)) =
         G
-          (Hurewicz.DegreeTwo.SimplyConnected.timeSlice (H (smp.comp (SingularChains.simplexFace n i)))
+          (Hurewicz.Prism.timeSlice (H (smp.comp (SingularChains.simplexFace n i)))
             1)
-    rw [hG (Hurewicz.DegreeTwo.SimplyConnected.timeSlice (H' smp) 1) i,
-      Hurewicz.DegreeTwo.SimplyConnected.timeSlice_face hH smp i 1]
+    rw [hG (Hurewicz.Prism.timeSlice (H' smp) 1) i,
+      Hurewicz.Prism.timeSlice_face hH smp i 1]
 
 /-- If `H` and `G` are both stationary on the constant simplex at `x`, so is
 their composition on the constant simplex. -/
@@ -177,7 +177,7 @@ theorem Hurewicz.composeSimplexHomotopies_const {X : Type} [TopologicalSpace X] 
     composeSimplexHomotopies H G hH₀ hG₀ (ContinuousMap.const (SingularChains.Simplex n) x) =
       ContinuousMap.const ((unitInterval) × SingularChains.Simplex n) x := by
   have h₁ :
-    Hurewicz.DegreeTwo.SimplyConnected.timeSlice (H (ContinuousMap.const (SingularChains.Simplex n) x))
+    Hurewicz.Prism.timeSlice (H (ContinuousMap.const (SingularChains.Simplex n) x))
         1 =
       ContinuousMap.const (SingularChains.Simplex n) x := by
     rw [hH]
@@ -187,7 +187,7 @@ theorem Hurewicz.composeSimplexHomotopies_const {X : Type} [TopologicalSpace X] 
   · exact hH
   · change
       G
-          (Hurewicz.DegreeTwo.SimplyConnected.timeSlice
+          (Hurewicz.Prism.timeSlice
             (H (ContinuousMap.const (SingularChains.Simplex n) x)) 1) =
         _
     rw [h₁]
@@ -220,7 +220,7 @@ theorem Hurewicz.coherentFaceBoundaryHomotopy_const {X : Type} [TopologicalSpace
     (H' :
       SingularChains.SingularSimplex X (n + 1) →
         C((unitInterval) × SingularChains.Simplex (n + 1), X))
-    (h : Hurewicz.DegreeTwo.SimplyConnected.FaceCompatibleHomotopies n H H') (x : X)
+    (h : Hurewicz.Prism.FaceCompatibleHomotopies n H H') (x : X)
     (hc :
       H' (ContinuousMap.const (SingularChains.Simplex (n + 1)) x) =
         ContinuousMap.const ((unitInterval) × SingularChains.Simplex (n + 1)) x) :
@@ -243,7 +243,7 @@ theorem Hurewicz.extendCoherentSimplexHomotopy_const {X : Type} [TopologicalSpac
     (H' :
       SingularChains.SingularSimplex X (n + 1) →
         C((unitInterval) × SingularChains.Simplex (n + 1), X))
-    (h : Hurewicz.DegreeTwo.SimplyConnected.FaceCompatibleHomotopies n H H')
+    (h : Hurewicz.Prism.FaceCompatibleHomotopies n H H')
     (h₀ : ∀ smp s, H' smp (0, s) = smp s) (x : X)
     (hc :
       H' (ContinuousMap.const (SingularChains.Simplex (n + 1)) x) =

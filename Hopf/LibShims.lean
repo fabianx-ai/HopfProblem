@@ -1106,7 +1106,6 @@ export Hurewicz.DegreeTwo.SimplyConnected (
   BasedTriangle
   CofaceCompatible
   FaceCompatible
-  FaceCompatibleHomotopies
   SimplexBoundary
   SubdivisionSameSide
   SubdivisionSquare
@@ -1226,7 +1225,6 @@ export Hurewicz.DegreeTwo.SimplyConnected (
   hurewiczMap_triangleClassOperator_twoCycle
   hurewiczPi2Equiv
   hurewicz_basedTriangleClass
-  inducedChain_timeSlice
   isClosed_simplexBoundary
   leftProductDegenerate
   leftProductDegenerate_fst
@@ -1262,11 +1260,6 @@ export Hurewicz.DegreeTwo.SimplyConnected (
   normalizedTwoCycle
   normalizedTwoCycle_class
   normalizedTwoCycle_val
-  prismOperator
-  prismOperator_apply
-  prismOperator_boundary
-  prismOperator_domain
-  prismOperator_simplex
   productSquareChain_four_triangles
   quarterTurn
   quarterTurnHomotopyMap
@@ -1321,10 +1314,6 @@ export Hurewicz.DegreeTwo.SimplyConnected (
   simplexBoundary
   simplexBoundary_exists_face
   simplexCard_pos
-  simplexEndpointOperator
-  simplexEndpointOperator_boundary
-  simplexEndpointOperator_simplex
-  simplexEndpointOperator_zero
   simplexFaceBoundary
   simplexFaceCover
   simplexFaceCover_isQuotientMap
@@ -1341,11 +1330,6 @@ export Hurewicz.DegreeTwo.SimplyConnected (
   simplexFace_two_three
   simplexFace_two_two
   simplexFace_two_zero
-  simplexPrism
-  simplexPrismOperator
-  simplexPrismOperator_boundary
-  simplexPrismOperator_simplex
-  simplexPrism_boundary
   simplexVertex_exists_face
   squareAffineTriangle
   squareAffineTriangle_fst_coe
@@ -1370,8 +1354,6 @@ export Hurewicz.DegreeTwo.SimplyConnected (
   squareUpperNormalizationHomotopy
   squareUpperNormalization_outerFace
   stationarySimplexHomotopy
-  straightenedTwoCycle
-  straightenedTwoCycle_class
   subdivisionBlend
   subdivisionBlendMap
   subdivisionBlend_based
@@ -1489,8 +1471,6 @@ export Hurewicz.DegreeTwo.SimplyConnected (
   tetrahedronSimplexBlend_zero
   tetrahedronSimplexBlend_zero_coordinate
   tetrahedronUpperLoop_eq_face
-  timeSlice
-  timeSlice_face
   triangleBoundary
   triangleClassOperator
   triangleClassOperator_boundary
@@ -1556,6 +1536,28 @@ export Hurewicz.DegreeTwo.SimplyConnected (
   vertexStraighteningHomotopy_zero
   verticesBased_const
   verticesBased_zero_iff
+)
+export Hurewicz.Prism (
+  FaceCompatibleHomotopies
+  inducedChain_timeSlice
+  prismOperator
+  prismOperator_apply
+  prismOperator_boundary
+  prismOperator_domain
+  prismOperator_simplex
+  simplexEndpointOperator
+  simplexEndpointOperator_boundary
+  simplexEndpointOperator_simplex
+  simplexEndpointOperator_zero
+  simplexPrism
+  simplexPrismOperator
+  simplexPrismOperator_boundary
+  simplexPrismOperator_simplex
+  simplexPrism_boundary
+  straightenedTwoCycle
+  straightenedTwoCycle_class
+  timeSlice
+  timeSlice_face
 )
 end SecondHurewicz.SimplyConnected
 
@@ -1636,7 +1638,7 @@ alias SecondHurewicz.SimplyConnected.rotationNormalized.eq_1 := Hurewicz.DegreeT
 alias SecondHurewicz.SimplyConnected.rotationVector.eq_1 := Hurewicz.DegreeTwo.SimplyConnected.rotationVector.eq_1
 alias SecondHurewicz.SimplyConnected.secondHomologyDesc.congr_simp := Hurewicz.DegreeTwo.SimplyConnected.secondHomologyDesc.congr_simp
 alias SecondHurewicz.SimplyConnected.simplexBoundary.eq_1 := Hurewicz.DegreeTwo.SimplyConnected.simplexBoundary.eq_1
-alias SecondHurewicz.SimplyConnected.simplexPrism.eq_1 := Hurewicz.DegreeTwo.SimplyConnected.simplexPrism.eq_1
+alias SecondHurewicz.SimplyConnected.simplexPrism.eq_1 := Hurewicz.Prism.simplexPrism.eq_1
 alias SecondHurewicz.SimplyConnected.subdivisionBlend.eq_1 := Hurewicz.DegreeTwo.SimplyConnected.subdivisionBlend.eq_1
 alias SecondHurewicz.SimplyConnected.subdivisionLowerBasedTriangle.congr_simp := Hurewicz.DegreeTwo.SimplyConnected.subdivisionLowerBasedTriangle.congr_simp
 alias SecondHurewicz.SimplyConnected.subdivisionLowerProductLoop.congr_simp := Hurewicz.DegreeTwo.SimplyConnected.subdivisionLowerProductLoop.congr_simp
