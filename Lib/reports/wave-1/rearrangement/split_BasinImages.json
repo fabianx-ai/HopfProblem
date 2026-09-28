@@ -1,0 +1,1322 @@
+{
+"module": "Lib.Geometry.Manifold.Morse.Rearrangement",
+"source": "/home/goblin/hopf-w1-rearrangement/Lib/Geometry/Manifold/Morse/Rearrangement.lean",
+"source_sha256": "da9d819e3c90c75613c0141eb323eb0c5d5724348c4495fb77dc952f85413cd2",
+"units_kept": 19,
+"units_moved": 97,
+"units": [
+{
+"names": [
+"MorseCancellation.linearTransverseChart"
+],
+"class": "move",
+"lines": [
+62,
+67
+],
+"sha256": "455ba7db78e2b726673f31c4366153c0281e1e2c14043dd124d1d90e3ba36295"
+},
+{
+"names": [
+"MorseCancellation.linearTransverseChart_axis"
+],
+"class": "move",
+"lines": [
+69,
+75
+],
+"sha256": "0bb92e47279090fb0f341de8eb8095130e0fb21c8cafe1c6f717931743ef555b"
+},
+{
+"names": [
+"MorseCancellation.linearTransverseChart_axis_source"
+],
+"class": "move",
+"lines": [
+77,
+83
+],
+"sha256": "2067825a80e23f32b49421f71735468165a2afb63ef5be0ca4d1de9f0d521c0f"
+},
+{
+"names": [
+"MorseCancellation.transverseBlock_comp_linear"
+],
+"class": "move",
+"lines": [
+85,
+92
+],
+"sha256": "0560bb261dd678aa95e9469be61d3fa9199ab1f14ea86c7888a839086b946eec"
+},
+{
+"names": [
+"MorseCancellation.det_transition_linearTransverseChart"
+],
+"class": "move",
+"lines": [
+94,
+116
+],
+"sha256": "f992b947515edc1e5049da671d0d226728c85088f6234e91968a41a9665772c1"
+},
+{
+"names": [
+"MorseCancellation.det_ne_zero_of_isInvertible"
+],
+"class": "move",
+"lines": [
+118,
+123
+],
+"sha256": "091a9f5bafcce0158e0686ed5be76bb850391c5f1766374b1a467dea73f2494a"
+},
+{
+"names": [
+"MorseCancellation.exists_compatible_sheet_endpoint_orientation"
+],
+"class": "move",
+"lines": [
+125,
+166
+],
+"sha256": "d16247e7969d9fac2027c06580aa13944c1ed34df6524a4b5debfe331526ef61"
+},
+{
+"names": [
+"MorseCancellation.exists_sheet_arc_tube"
+],
+"class": "move",
+"lines": [
+168,
+267
+],
+"sha256": "a384cd95962dfe904554e9f7bb806f7acd5f5c19b18bdf77454386516e725d0f"
+},
+{
+"names": [
+"MorseCancellation.exists_open_tube_sheet_recognition"
+],
+"class": "move",
+"lines": [
+269,
+301
+],
+"sha256": "f718f4058eb8237ae21274d78e89381de748188ae55867c918331a28c5bc5f9f"
+},
+{
+"names": [
+"MorseCancellation.exists_clean_axis_tube_restriction"
+],
+"class": "move",
+"lines": [
+303,
+330
+],
+"sha256": "4f1e5a9c721bf017ed07216e60e311b50d9ba952c8a50a9189871458bec9efaf"
+},
+{
+"names": [
+"MorseCancellation.exists_tube_support_box"
+],
+"class": "move",
+"lines": [
+332,
+364
+],
+"sha256": "d0d66116f5c3c52935159cb18bf0bca64f2e3dc89d9011e297ccf3c7cde9674d"
+},
+{
+"names": [
+"RegularHeightCoordinates.heightMap"
+],
+"class": "move",
+"lines": [
+368,
+370
+],
+"sha256": "02b9e979aee8472c0bc7229caf65aa5ef944bfe35df0a818259bd5025a33c01c"
+},
+{
+"names": [
+"RegularHeightCoordinates.linear_decomposition"
+],
+"class": "move",
+"lines": [
+372,
+377
+],
+"sha256": "c748847f3b72ca06f98726c150b5c56c113ed39384e3d591847cff2cc71976a7"
+},
+{
+"names": [
+"RegularHeightCoordinates.triangular_bijective"
+],
+"class": "move",
+"lines": [
+379,
+397
+],
+"sha256": "32318babb29c0848752dd1b26418f23c5708227c01d6848f7bd413775f26fe00"
+},
+{
+"names": [
+"RegularHeightCoordinates.triangularEquiv"
+],
+"class": "move",
+"lines": [
+399,
+404
+],
+"sha256": "9996ba8544bc90ab1039eb346ec73347be390f99bc490bd3064fcd3f964cbb6e"
+},
+{
+"names": [
+"RegularHeightCoordinates.contDiff_heightMap"
+],
+"class": "move",
+"lines": [
+406,
+409
+],
+"sha256": "01de37d428bb1a9f2d2c61fa92cc99840872f156ec9a41519e1f7c012d1fd8ad"
+},
+{
+"names": [
+"RegularHeightCoordinates.fderiv_heightMap"
+],
+"class": "move",
+"lines": [
+411,
+416
+],
+"sha256": "7b3b02122da7c69ad063492a703b9ea6a1f7d2fa5cbdfb63ac3b18783596d02f"
+},
+{
+"names": [
+"RegularHeightCoordinates.heightMap_localDiffeomorph"
+],
+"class": "move",
+"lines": [
+418,
+430
+],
+"sha256": "c4d92af0c439be35683aff394acf36aeb363b56498fc4f44f7a80e54ecbc7327"
+},
+{
+"names": [
+"RegularHeightCoordinates.displacedHeight"
+],
+"class": "move",
+"lines": [
+432,
+434
+],
+"sha256": "ff42043c0c2416d2d82f847b2bcc83377d794bf18cb4b806d86a65e329c31e80"
+},
+{
+"names": [
+"RegularHeightCoordinates.contDiff_displacedHeight"
+],
+"class": "move",
+"lines": [
+436,
+440
+],
+"sha256": "008d4db1b8611c9c55c01de33b861acc9c8f1a526d1810f19d92462b495ed723"
+},
+{
+"names": [
+"RegularHeightCoordinates.scalar_derivative"
+],
+"class": "move",
+"lines": [
+442,
+447
+],
+"sha256": "3c724277cbaa1740a87a99a7ac44cb5ced9b006306278feaa2d2064d7fd787d9"
+},
+{
+"names": [
+"RegularHeightCoordinates.heightMap_injective_of_positive"
+],
+"class": "move",
+"lines": [
+449,
+459
+],
+"sha256": "26bf759bbf8aa5074a100c50bbd20e7716a04301f7798f9e15fd93abe488617e"
+},
+{
+"names": [
+"RegularHeightCoordinates.heightMap_surjective_of_bounded"
+],
+"class": "move",
+"lines": [
+461,
+480
+],
+"sha256": "a657d27dcea72eb7ad667b0bc814e12feeedacde805bee02d2cd70164fe2dc47"
+},
+{
+"names": [
+"RegularHeightCoordinates.heightMap_surjective_of_compactSupport"
+],
+"class": "move",
+"lines": [
+482,
+490
+],
+"sha256": "cd044590cf3ce268225a9ed6ece6cac076620183e1c0bb9c4f8ae34d0de18db9"
+},
+{
+"names": [
+"RegularHeightCoordinates.longitudinalDiffeomorph"
+],
+"class": "move",
+"lines": [
+492,
+502
+],
+"sha256": "874c4a18baab260bc2129457ef5c86f138d827492f6881544964331d011620e7"
+},
+{
+"names": [
+"MorseRearrangement.IntervalTranslation"
+],
+"class": "move",
+"lines": [
+506,
+509
+],
+"sha256": "d79792fa2c7cdfe861b76fe8f5d078416bdb0360102a53485355b9a3d9f67d44"
+},
+{
+"names": [
+"MorseRearrangement.translation_germ_apply"
+],
+"class": "move",
+"lines": [
+511,
+515
+],
+"sha256": "8f6705a607dbb6379f64cab607ada89fa9388e5892e93a7ec834aeea8608306f"
+},
+{
+"names": [
+"MorseRearrangement.intervalTranslation_refl"
+],
+"class": "move",
+"lines": [
+517,
+523
+],
+"sha256": "ded8bcd1f1c9e5088dc88476917dc57ea0a64e7d4e6d41551aeecc68301a04f1"
+},
+{
+"names": [
+"MorseRearrangement.intervalTranslation_symm"
+],
+"class": "move",
+"lines": [
+525,
+539
+],
+"sha256": "acc3f6d7ec105e9ea9dcdedab96df661057d04d15adfb36b840da80fa0bbb6e5"
+},
+{
+"names": [
+"MorseRearrangement.intervalTranslation_trans"
+],
+"class": "move",
+"lines": [
+541,
+557
+],
+"sha256": "846e79991dbf050f074ee337b8f08d492650bf7ecb96ca792bd415b9d7e3c089"
+},
+{
+"names": [
+"MorseRearrangement.exists_local_interval_translation"
+],
+"class": "move",
+"lines": [
+559,
+583
+],
+"sha256": "8d2ead2451a73c9e89882811f7845722ec181f85f4d38cee320d35db416fd62c"
+},
+{
+"names": [
+"MorseRearrangement.exists_supported_interval_translation"
+],
+"class": "move",
+"lines": [
+585,
+604
+],
+"sha256": "6bf8fbaa9cc2d49ece052bce95b2f07ce7454c97fa55992d911170776d70a2e3"
+},
+{
+"names": [
+"MorseRearrangement.strictMono_of_fixed_exterior"
+],
+"class": "move",
+"lines": [
+606,
+614
+],
+"sha256": "90ff981baf2d3830dfe26ef719c806bdd38d53a4dac69297acadbc847824cecd"
+},
+{
+"names": [
+"MorseRearrangement.deriv_pos_of_strictMono_diffeomorph"
+],
+"class": "move",
+"lines": [
+616,
+629
+],
+"sha256": "30b0616be749786ff26030e20fae303788f9f0fa28ddc636965030d515b281b9"
+},
+{
+"names": [
+"MorseRearrangement.exists_increasing_interval_translation"
+],
+"class": "move",
+"lines": [
+631,
+640
+],
+"sha256": "112e48fe8772ee478279b8fba8a1ba44b55e1129c7a013e40999dc7079b2500c"
+},
+{
+"names": [
+"MorseRearrangement.exists_increasing_interval_translation_with_exterior_germs"
+],
+"class": "move",
+"lines": [
+642,
+660
+],
+"sha256": "b9b64dd1376ebbb92cac5ec0e9d3cca06da85ea748483a7d4451a0a3b51036c0"
+},
+{
+"names": [
+"MorseRearrangement.blendHeight"
+],
+"class": "move",
+"lines": [
+664,
+666
+],
+"sha256": "fc82a4187bc2274067b8d7d117f2715ad88a1eae3faa0a7a503f1efad8ab88b2"
+},
+{
+"names": [
+"MorseRearrangement.blendHeight_zero"
+],
+"class": "move",
+"lines": [
+668,
+670
+],
+"sha256": "03fe581885de771c4064a00ba4961c27016c6815a6a79731ef9565ee0adb283d"
+},
+{
+"names": [
+"MorseRearrangement.blendHeight_one"
+],
+"class": "move",
+"lines": [
+672,
+674
+],
+"sha256": "7df2c2a58b81ad91cb82fe9942af41625b52fa209cd5611964093374226c1a3d"
+},
+{
+"names": [
+"MorseRearrangement.blendHeight_fixed"
+],
+"class": "move",
+"lines": [
+676,
+680
+],
+"sha256": "c6e31df2f39fee6525c6761be7c7ed98e55e01691b41f582d319d9c7341535b8"
+},
+{
+"names": [
+"MorseRearrangement.positive_blended_slope"
+],
+"class": "move",
+"lines": [
+682,
+689
+],
+"sha256": "325a6a5d75c562934e0df66a231dd52de384620ca510e703e56963a2ed1599d5"
+},
+{
+"names": [
+"MorseRearrangement.hasDerivAt_blended_height"
+],
+"class": "move",
+"lines": [
+691,
+699
+],
+"sha256": "7d3dbeec85617d3e6012c5a1faefe4bc5bf4c37bf3a8cef37e1ad035b9152e6f"
+},
+{
+"names": [
+"MorseCancellation.longitudinalBlendDisplacement"
+],
+"class": "move",
+"lines": [
+703,
+706
+],
+"sha256": "8ff76c55ec9925fd1be78458fa978c0ded145bc0ec143b9df3ba3bce287b664c"
+},
+{
+"names": [
+"MorseCancellation.longitudinalBlend"
+],
+"class": "move",
+"lines": [
+708,
+711
+],
+"sha256": "eebd23822e3069a9007e56941c0987d576f61a2c774380424a904e884f092e93"
+},
+{
+"names": [
+"MorseCancellation.longitudinalBlendDisplacement_smooth"
+],
+"class": "move",
+"lines": [
+713,
+717
+],
+"sha256": "2a7a91bcafb6d5e6501de89e1c1ebb35b9cde8d6f2dc88e0339ee3c051cbc5c0"
+},
+{
+"names": [
+"MorseCancellation.longitudinalBlend_smooth"
+],
+"class": "move",
+"lines": [
+719,
+734
+],
+"sha256": "78658fc4019fcdec2df024b13cb89a2ced3cca79faf7ccce46b41aa4e294e94e"
+},
+{
+"names": [
+"MorseCancellation.longitudinalBlend_zero"
+],
+"class": "move",
+"lines": [
+736,
+741
+],
+"sha256": "7933a07156f642b03a349425989a25525802601e63aaf034e08c94b4affa272c"
+},
+{
+"names": [
+"MorseCancellation.longitudinalBlendDisplacement_zero_outside"
+],
+"class": "move",
+"lines": [
+743,
+752
+],
+"sha256": "d55604265e8769c4e81d203b207f72df398e377f74f9bbd6f8ccbf764596411d"
+},
+{
+"names": [
+"MorseCancellation.longitudinalBlend_fixed_outside"
+],
+"class": "move",
+"lines": [
+754,
+759
+],
+"sha256": "8675f8b4fc418d81fd77c21e20a8afcf56b910a023ac2a49135f13dcbb421ebb"
+},
+{
+"names": [
+"MorseCancellation.longitudinalBlend_derivative_positive"
+],
+"class": "move",
+"lines": [
+761,
+789
+],
+"sha256": "afbe7049538a8483ec65e4f628a405b1e7168abfbda32f3740b84a29e7da9b04"
+},
+{
+"names": [
+"MorseCancellation.longitudinalBlend_slices"
+],
+"class": "move",
+"lines": [
+791,
+806
+],
+"sha256": "a1a93fd8a1189b16f77fc38b4f91bac198777c75bfc28c208246928ed793d02d"
+},
+{
+"names": [
+"MorseCancellation.expNegInvGlue_hasDerivAt"
+],
+"class": "move",
+"lines": [
+808,
+811
+],
+"sha256": "4b0fa0af462f9758c7822ae15d0a74071c4931144b6a8fe8b9dab07ed503e3be"
+},
+{
+"names": [
+"MorseCancellation.smoothTransition_deriv_pos"
+],
+"class": "move",
+"lines": [
+813,
+839
+],
+"sha256": "4394e5878a4bae1e16dd5609ee564a44348b79b45ecf0f28e108929a8b86b1a7"
+},
+{
+"names": [
+"MorseCancellation.smoothTransition_strictMonoOn"
+],
+"class": "move",
+"lines": [
+841,
+848
+],
+"sha256": "5bd5d98f3fa4a16215502f3ae8bf4518fe88b48eeddfe1453974482498dbf786"
+},
+{
+"names": [
+"MorseCancellation.exists_unique_smoothTransition_time"
+],
+"class": "move",
+"lines": [
+850,
+873
+],
+"sha256": "08310da645ecf49087831a54a5f9bfd442410aaf265e5968d084144031ba5cb3"
+},
+{
+"names": [
+"MorseCancellation.LongitudinalTubeMotion",
+"MorseCancellation.LongitudinalTubeMotion.mk",
+"MorseCancellation.LongitudinalTubeMotion.profile",
+"MorseCancellation.LongitudinalTubeMotion.cutoff",
+"MorseCancellation.LongitudinalTubeMotion.cutoff_smooth",
+"MorseCancellation.LongitudinalTubeMotion.cutoff_germ",
+"MorseCancellation.LongitudinalTubeMotion.cutoff_zero",
+"MorseCancellation.LongitudinalTubeMotion.destination",
+"MorseCancellation.LongitudinalTubeMotion.destination_gt_one",
+"MorseCancellation.LongitudinalTubeMotion.profile_zero",
+"MorseCancellation.LongitudinalTubeMotion.profile_germ",
+"MorseCancellation.LongitudinalTubeMotion.time",
+"MorseCancellation.LongitudinalTubeMotion.time_mem",
+"MorseCancellation.LongitudinalTubeMotion.time_value",
+"MorseCancellation.LongitudinalTubeMotion.time_rate",
+"MorseCancellation.LongitudinalTubeMotion.unique_time",
+"MorseCancellation.LongitudinalTubeMotion.family",
+"MorseCancellation.LongitudinalTubeMotion.support",
+"MorseCancellation.LongitudinalTubeMotion.compact_support",
+"MorseCancellation.LongitudinalTubeMotion.support_subset",
+"MorseCancellation.LongitudinalTubeMotion.smooth",
+"MorseCancellation.LongitudinalTubeMotion.zero",
+"MorseCancellation.LongitudinalTubeMotion.slices",
+"MorseCancellation.LongitudinalTubeMotion.fixedOutside",
+"MorseCancellation.LongitudinalTubeMotion.model_source",
+"MorseCancellation.LongitudinalTubeMotion.formula"
+],
+"class": "move",
+"lines": [
+877,
+909
+],
+"sha256": "11b3ef884758fb5b03c078a374be872a3accad8c268121d98500909a1ffcecf0"
+},
+{
+"names": [
+"MorseCancellation.nonempty_longitudinalTubeMotion"
+],
+"class": "move",
+"lines": [
+911,
+979
+],
+"sha256": "a87487890187a20a4e5376b0f383f77acfe0d02bd4f91f2d8e4af293b4aaee02"
+},
+{
+"names": [
+"MorseCancellation.LongitudinalTubeMotion.model_axis"
+],
+"class": "move",
+"lines": [
+981,
+990
+],
+"sha256": "91f0315e9058c7b2f84125ca0019392ee94a00eb4f8b9b2281422a75994e31cc"
+},
+{
+"names": [
+"MorseCancellation.LongitudinalTubeMotion.model_germ"
+],
+"class": "move",
+"lines": [
+992,
+1006
+],
+"sha256": "eda10640354672211061637c889e3a5f713bb1473fa365ed0c71466eb88b1ce5"
+},
+{
+"names": [
+"MorseCancellation.LongitudinalTubeMotion.native_axis"
+],
+"class": "move",
+"lines": [
+1008,
+1016
+],
+"sha256": "0dac91d9614294f1ebf6b56ecd02e464801dc4fbf680db717aa778c30d9a5f21"
+},
+{
+"names": [
+"MorseCancellation.LongitudinalTubeMotion.native_germ"
+],
+"class": "move",
+"lines": [
+1018,
+1029
+],
+"sha256": "64d39609e6ed95f47df260c066f67a6955433c74f3d0a14ee8f1ea6148d49284"
+},
+{
+"names": [
+"MorseCancellation.LongitudinalTubeMotion.fixed_outside_target"
+],
+"class": "move",
+"lines": [
+1031,
+1037
+],
+"sha256": "fa1458031fcfcf80bb536be1282001df08b75b5458318259e4d465c1937cf700"
+},
+{
+"names": [
+"MorseCancellation.LongitudinalTubeMotion.crossing_axis"
+],
+"class": "move",
+"lines": [
+1039,
+1045
+],
+"sha256": "11b9251cbdd0a0a8de5f051041d8f6e19f41e219ccb9ed9731a27e85ebeef4c9"
+},
+{
+"names": [
+"MorseCancellation.LongitudinalTubeMotion.whole_sheet_crossing_iff"
+],
+"class": "move",
+"lines": [
+1047,
+1099
+],
+"sha256": "aa460f64b8d3048624db3660cbda80972851c10222bffd7ded25cb7f39e2b637"
+},
+{
+"names": [
+"MorseCancellation.surjective_sheet_coordinate_mfderiv"
+],
+"class": "move",
+"lines": [
+1101,
+1121
+],
+"sha256": "003931052a7e92642aef355ac08568d0d88614fe961467e9f991cb2d12b8cc7d"
+},
+{
+"names": [
+"MorseCancellation.native_coordinate_plane_trace_transverse"
+],
+"class": "move",
+"lines": [
+1123,
+1164
+],
+"sha256": "3b3f80a18632d3d460f9bd486f92cef1a955bc3cd0de34daffaeb4774850ccc9"
+},
+{
+"names": [
+"MorseCancellation.LongitudinalTubeMotion.whole_sheet_transverse"
+],
+"class": "move",
+"lines": [
+1166,
+1290
+],
+"sha256": "8d89b89dc497b188cb8e9505acbee6f36628db917b988e56c7ffb10569203952"
+},
+{
+"names": [
+"MorseCancellation.exists_clean_two_sheet_arc_avoiding"
+],
+"class": "move",
+"lines": [
+1292,
+1420
+],
+"sha256": "e82f78ea21e278b56fa349f527a52e59698ea6d84eb7b35acd7534a060db285a"
+},
+{
+"names": [
+"AdaptedWindows.exists_forward_basin_smooth_images"
+],
+"class": "keep",
+"lines": [
+1424,
+1495
+],
+"sha256": "f04e1c522df32951658e987e848e20dce85f9f4eda4036fa320ddc7d7f87803a"
+},
+{
+"names": [
+"AdaptedWindows.exists_backward_basin_smooth_images"
+],
+"class": "keep",
+"lines": [
+1497,
+1571
+],
+"sha256": "88b0b7fc5193c5b74749554612bb7225cd4b03ac38930b75c8a8ff040f2a4c8d"
+},
+{
+"names": [
+"MorseCancellation.exists_smooth_ball_parametrization"
+],
+"class": "keep",
+"lines": [
+1573,
+1607
+],
+"sha256": "3e4bbd7bc58b869a8e575ba899c70491b4c11ab42c072ae9c104f4ba103bb712"
+},
+{
+"names": [
+"MorseCancellation.exists_global_smooth_image_of_ball"
+],
+"class": "keep",
+"lines": [
+1609,
+1622
+],
+"sha256": "d0a4f71b6b0452031f29ffa2a68cb8ea0711cb355a707f5de90d89ff69ada892"
+},
+{
+"names": [
+"FlowCancellation.native_flow_eq_on_positive_halfline"
+],
+"class": "move",
+"lines": [
+1624,
+1644
+],
+"sha256": "ff95c61c17bbccc32e7bcc2fdfcb6e34570b8aeac97874d49b0c0a9f32ecb289"
+},
+{
+"names": [
+"FlowCancellation.native_flow_eq_on_negative_halfline"
+],
+"class": "move",
+"lines": [
+1646,
+1668
+],
+"sha256": "04a8ece602e5ff83eead688c18de2de575c503121925847173e6db3d66df2991"
+},
+{
+"names": [
+"FlowCancellation.exists_level_crossing_of_endpoint_limits"
+],
+"class": "move",
+"lines": [
+1670,
+1684
+],
+"sha256": "454b44c8364993354a2e6dccc8785d929601cb58c6b6f11bb3cbd1e910f56b88"
+},
+{
+"names": [
+"MorseCancellation.forwardHighBasins"
+],
+"class": "keep",
+"lines": [
+1688,
+1694
+],
+"sha256": "3f00bd2c5657cbb6f4e4019bdff39f1c45c42484961724e4bb9af8a9efaf84c4"
+},
+{
+"names": [
+"MorseCancellation.backwardLowBasins"
+],
+"class": "keep",
+"lines": [
+1696,
+1702
+],
+"sha256": "fdb85f17ef827a1767fc49c811cb84d11be4392933f4d758e236091f079d91d0"
+},
+{
+"names": [
+"MorseCancellation.forwardHighBasins_eq_inter"
+],
+"class": "keep",
+"lines": [
+1704,
+1723
+],
+"sha256": "7753688e440039dff6be3274c976f2b8ec0a9cb113b6ff51a30968538c692970"
+},
+{
+"names": [
+"MorseCancellation.backwardLowBasins_eq_inter"
+],
+"class": "keep",
+"lines": [
+1725,
+1744
+],
+"sha256": "b22bf0ebe872f1b8e80ee30f6117afed1db5dcdd4ae565a8af6ef799c1125b18"
+},
+{
+"names": [
+"MorseCancellation.isClosed_endpoint_obstruction"
+],
+"class": "keep",
+"lines": [
+1746,
+1762
+],
+"sha256": "f99892d024c93627da05d70a6c7df78e44ca188f0a7027fc27e99055926b188e"
+},
+{
+"names": [
+"MorseCancellation.levelBasin_compl_eq_endpoint_obstruction"
+],
+"class": "keep",
+"lines": [
+1764,
+1796
+],
+"sha256": "69aee8529712ecbbaa40f2b9b43401fe0db3592f5fcf4578f059c3a2aeff32b9"
+},
+{
+"names": [
+"AdaptedWindows.exists_forward_basin_global_images"
+],
+"class": "keep",
+"lines": [
+1798,
+1817
+],
+"sha256": "4c4597d2d721f15a914a965ee498e717c2e247f7290d50e3dc62c91ad9242d31"
+},
+{
+"names": [
+"AdaptedWindows.exists_backward_basin_global_images"
+],
+"class": "keep",
+"lines": [
+1819,
+1836
+],
+"sha256": "db634a660a6b5512ff6bc9dbee3c0d31dd4d539173a363382f4f8d7af8c138f9"
+},
+{
+"names": [
+"MorseCancellation.EndpointBasinIndex"
+],
+"class": "keep",
+"lines": [
+1838,
+1842
+],
+"sha256": "2ed16a301ebffd4196dca2ad7a1060cd10df502778ae0266477563e24dd963ce"
+},
+{
+"names": [
+"MorseCancellation.endpointBasinIndex_countable"
+],
+"class": "keep",
+"lines": [
+1844,
+1851
+],
+"sha256": "0e410d9e1e51c47b31d91861f387fc705a43f319496ae2a8bd4c769d86fbeb7a"
+},
+{
+"names": [
+"AdaptedWindows.exists_endpoint_obstruction_global_images"
+],
+"class": "keep",
+"lines": [
+1853,
+1902
+],
+"sha256": "f6903551e8ba27eceab1aee5fd0e00c29d76b6cfb6a8636ad8ee2c23e5a52314"
+},
+{
+"names": [
+"MorseCancellation.isClosed_backwardLowBasins"
+],
+"class": "keep",
+"lines": [
+1904,
+1914
+],
+"sha256": "6e953dc52ff57d0b2aeaad38516994602bbdc758dc58b5a6d1fbb97808ddce3d"
+},
+{
+"names": [
+"MorseCancellation.LowBackwardBasinIndex"
+],
+"class": "keep",
+"lines": [
+1916,
+1919
+],
+"sha256": "34e700eaef8c0262d984b282dd9a04c2b0b6435653cbccecc2cf38bb10e04f33"
+},
+{
+"names": [
+"MorseCancellation.lowBackwardBasinIndex_countable"
+],
+"class": "keep",
+"lines": [
+1921,
+1928
+],
+"sha256": "2efc8e837784840deb51d6fbe4126a3bcc27f498582ce7788d12e7c1320546c1"
+},
+{
+"names": [
+"AdaptedWindows.exists_low_backward_obstruction_images"
+],
+"class": "keep",
+"lines": [
+1930,
+1956
+],
+"sha256": "8844f67fb4de3a8c075be2ba9fd6aee1bea9d756dd02ff095793e7a1761ed001"
+},
+{
+"names": [
+"MorseCancellation.contMDiff_discrete_family"
+],
+"class": "move",
+"lines": [
+1960,
+1978
+],
+"sha256": "30056864ad997e494a001580dc651a50792fea734a69ce53b4d8dd68845dd3d0"
+},
+{
+"names": [
+"MorseCancellation.range_discrete_family"
+],
+"class": "move",
+"lines": [
+1980,
+1990
+],
+"sha256": "f47041cf4b18c866c9e56fbda488ddec0d93efdee749609c5849e8867f3865e6"
+},
+{
+"names": [
+"MorseCancellation.joinedIn_sublevel_of_forward_limit"
+],
+"class": "move",
+"lines": [
+1992,
+2015
+],
+"sha256": "8e2f5c92f56b7cbbeffe937b4b5a0aabc27cdb955c52c17c592a07328926b505"
+},
+{
+"names": [
+"MorseCancellation.joined_sublevel_of_common_forward_limit"
+],
+"class": "move",
+"lines": [
+2017,
+2025
+],
+"sha256": "fde0138b8739d37fd22ebf656d74cc22fea58b706c000d2a3835a3842195ade0"
+},
+{
+"names": [
+"MorseCancellation.joinedIn_open_forward_basin"
+],
+"class": "move",
+"lines": [
+2027,
+2046
+],
+"sha256": "4238d92286f18befad67fffd246a902c9e7274a1907e01b68168bde5bbc05fc2"
+},
+{
+"names": [
+"AdaptedWindows.joinedIn_minimum_basin"
+],
+"class": "move",
+"lines": [
+2048,
+2069
+],
+"sha256": "bb1227f71de6aa3b030a86dee5116101ca0be4502a3f7c6ce0176184eeab13bb"
+},
+{
+"names": [
+"SmoothODE.scalar_partial_invertible"
+],
+"class": "move",
+"lines": [
+2073,
+2091
+],
+"sha256": "4417fee9ca255b0de891e488353d8d704caedc3cdea50475bd439d1c1c920d74"
+},
+{
+"names": [
+"SmoothODE.exists_smooth_scalar_time_germ"
+],
+"class": "move",
+"lines": [
+2093,
+2105
+],
+"sha256": "7ad9c6e8aad2aaa9c4b3dc9619a32f018dfd32dfc3c453dc389d3ca56a64d8dc"
+},
+{
+"names": [
+"FlowCancellation.exists_native_smooth_time_germ"
+],
+"class": "move",
+"lines": [
+2107,
+2149
+],
+"sha256": "feeaabf662ab63d3e04ab25eb8211a613ccbc931da84094eb8ffff3643d1719f"
+},
+{
+"names": [
+"FlowCancellation.smooth_signed_level_time"
+],
+"class": "move",
+"lines": [
+2151,
+2189
+],
+"sha256": "00ebd9f50319e25b67fd7fd7da2d51fe9132026ff34b141206d20e32a21f9fbd"
+},
+{
+"names": [
+"FlowCancellation.exists_native_level_flow_cylinder"
+],
+"class": "move",
+"lines": [
+2191,
+2270
+],
+"sha256": "89fbfe094491edececf6ce3e3b0521f99b06fefa36120a9bca0224e5a8fe31c3"
+},
+{
+"names": [
+"AdaptedWindows.joinedIn_regular_level_of_endpoint_dimensions"
+],
+"class": "move",
+"lines": [
+2274,
+2340
+],
+"sha256": "7702f6f43b6a6b0bfbafe54cdd03dfb76a1dd00bf76b095a19c554f23d970ac8"
+},
+{
+"names": [
+"AdaptedWindows.pathConnectedSpace_regular_level_of_endpoint_dimensions"
+],
+"class": "move",
+"lines": [
+2342,
+2361
+],
+"sha256": "efabc9e4ae28968c880a3371e1ac320088b77a3a7e646f7b992537c5f2460a47"
+},
+{
+"names": [
+"AdaptedWindows.pathConnectedSpace_middle_level"
+],
+"class": "move",
+"lines": [
+2363,
+2377
+],
+"sha256": "06e713e27f609e1753c596af80a0db3922666e6e6ba5d392f4649faf77004073"
+},
+{
+"names": [
+"AdaptedWindows.pathConnectedSpace_index_three_upper_level"
+],
+"class": "move",
+"lines": [
+2379,
+2401
+],
+"sha256": "746db94af6298b3e3103522acf04888c61aa078f555e9c9eaaa3498db72c2c8c"
+},
+{
+"names": [
+"MorseRearrangement.native_transverse_dimension_bound"
+],
+"class": "move",
+"lines": [
+2405,
+2419
+],
+"sha256": "a9324353cbe685e360757dfd69f527b1f024b849999d9ec260fd083dbea94b5a"
+},
+{
+"names": [
+"MorseRearrangement.disjoint_ranges_of_native_transverse_dimension"
+],
+"class": "move",
+"lines": [
+2421,
+2434
+],
+"sha256": "d5fa4b1df518f2189c78d41284aae2a0767ab8d85d70b39359687630249ddc5b"
+},
+{
+"names": [
+"MorseRearrangement.native_transverse_of_ignored_factor"
+],
+"class": "move",
+"lines": [
+2436,
+2462
+],
+"sha256": "388e813857f59c1dd2bcba89928d408bdfbd626b76b9d44dbf4450abde763e20"
+},
+{
+"names": [
+"ChartMapPerturbation.exists_ambient_transverse_plateau"
+],
+"class": "move",
+"lines": [
+2464,
+2541
+],
+"sha256": "c6c05771bc82085f6195ac83225496df570588617ee4a9632c71636807accbe0"
+},
+{
+"names": [
+"NativeTransversality.Patch",
+"NativeTransversality.Patch.mk",
+"NativeTransversality.Patch.core",
+"NativeTransversality.Patch.core_compact",
+"NativeTransversality.Patch.chart",
+"NativeTransversality.Patch.cutoff",
+"NativeTransversality.Patch.cutoff_smooth",
+"NativeTransversality.Patch.cutoff_compact",
+"NativeTransversality.Patch.cutoff_support",
+"NativeTransversality.Patch.plateau",
+"NativeTransversality.Patch.plateau_open",
+"NativeTransversality.Patch.plateau_source",
+"NativeTransversality.Patch.plateau_one"
+],
+"class": "move",
+"lines": [
+2543,
+2557
+],
+"sha256": "88ca28ce5333f7c15bec5784fd17cbbdcbd9aefc1aa9f91919b3d6224dce5fad"
+},
+{
+"names": [
+"NativeTransversality.Patch.Compatible"
+],
+"class": "move",
+"lines": [
+2559,
+2564
+],
+"sha256": "de62da78c2bbfa5e5e4a352d962490af4fc0e30677c26418d2591c5aab15fc54"
+},
+{
+"names": [
+"NativeTransversality.exists_patch_at"
+],
+"class": "move",
+"lines": [
+2566,
+2603
+],
+"sha256": "62c2f8092e0cc25f5e2654a2be212939e84d399c53eff387ba172eb2278adaa2"
+},
+{
+"names": [
+"NativeTransversality.exists_patch_step"
+],
+"class": "move",
+"lines": [
+2605,
+2670
+],
+"sha256": "c17808a2512ea510ab39b0a7013431fd29acdac326dd9f4a3edae82c17123183"
+},
+{
+"names": [
+"NativeTransversality.exists_finite_patch_diffeomorph"
+],
+"class": "move",
+"lines": [
+2672,
+2712
+],
+"sha256": "8fd3c2681764e53925fd3366977fb4306f688db239c3b4d6db8e3682a2ee443e"
+},
+{
+"names": [
+"NativeTransversality.exists_ambient_transverse_diffeomorph"
+],
+"class": "move",
+"lines": [
+2714,
+2741
+],
+"sha256": "4286a5bad60ce2c81a7b2a709e51ca464b46d9f0a20cdc51504c61297ef021aa"
+},
+{
+"names": [
+"MorseRearrangement.exists_ambient_disjoint_diffeomorph_of_dimension"
+],
+"class": "move",
+"lines": [
+2743,
+2776
+],
+"sha256": "6bfb68535d87cded229a817a16e69c694af82a932b1167445aca4cce12e067cf"
+}
+]
+}
