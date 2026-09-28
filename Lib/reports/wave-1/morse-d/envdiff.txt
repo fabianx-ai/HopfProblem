@@ -1,0 +1,37 @@
+constants before 38248 after 38254 (keys 38146 38152 )
+lost 2 added 8 of which source declarations: 0 0 ; names with changed type 2 of which source: 0
+auxiliary lost/added/changed (not judged): 2 8 2
+module moves (source declarations, 1-to-1):
+       5  Lib.Geometry.Manifold.Morse.OrderedCancellation -> Hopf.Proof.Geometry.Manifold.Morse.OrderedCancellation.MiddleIndexBlocks
+      15  Lib.Geometry.Manifold.Morse.OrderedCancellation -> Lib.Geometry.Manifold.Morse.OrderedCancellation.BeltTube
+       7  Lib.Geometry.Manifold.Morse.OrderedCancellation -> Lib.Geometry.Manifold.Morse.OrderedCancellation.BirthPreservation
+       4  Lib.Geometry.Manifold.Morse.OrderedCancellation -> Lib.Geometry.Manifold.Morse.OrderedCancellation.CircleParametrization
+       9  Lib.Geometry.Manifold.Morse.OrderedCancellation -> Lib.Geometry.Manifold.Morse.OrderedCancellation.IndexCounts
+       3  Lib.Geometry.Manifold.Morse.OrderedCancellation -> Lib.Geometry.Manifold.Morse.OrderedCancellation.MinimalSystem
+       6  Lib.Geometry.Manifold.Morse.OrderedCancellation -> Lib.Geometry.Manifold.Morse.OrderedCancellation.Negation
+       8  Lib.Geometry.Manifold.Morse.OrderedCancellation -> Lib.Geometry.Manifold.Morse.OrderedCancellation.PairCancellation
+      12  Lib.Geometry.Manifold.Morse.OrderedCancellation -> Lib.Geometry.Manifold.Morse.OrderedCancellation.PathComponents
+       5  Lib.Geometry.Manifold.Morse.OrderedCancellation -> Lib.Geometry.Manifold.Morse.OrderedCancellation.PrescribedFlow
+       3  Lib.Geometry.Manifold.Morse.OrderedCancellation -> Lib.Geometry.Manifold.Morse.OrderedCancellation.TwoSphereDegree
+       9  Lib.Geometry.Manifold.Morse.OrderedCancellation -> Lib.Geometry.Manifold.Morse.OrderedCancellation.ValueExchange
+       7  Lib.Geometry.Manifold.Morse.SurgeryCollapse -> Hopf.Proof.Geometry.Manifold.Morse.SurgeryCollapse.BeltIntersections
+       6  Lib.Geometry.Manifold.Morse.SurgeryCollapse -> Hopf.Proof.Geometry.Manifold.Morse.SurgeryCollapse.MiddleFamilies
+      16  Lib.Geometry.Manifold.Morse.SurgeryCollapse -> Hopf.Proof.Geometry.Manifold.Morse.SurgeryCollapse.MiddlePresentation
+       1  Lib.Geometry.Manifold.Morse.SurgeryCollapse -> Hopf.Proof.Geometry.Manifold.Morse.SurgeryCollapse.OuterIndexMinimal
+       4  Lib.Geometry.Manifold.Morse.SurgeryCollapse -> Lib.Geometry.Manifold.Morse.SurgeryCollapse.BeltTubeMeridian
+      18  Lib.Geometry.Manifold.Morse.SurgeryCollapse -> Lib.Geometry.Manifold.Morse.SurgeryCollapse.CellExactSequence
+      25  Lib.Geometry.Manifold.Morse.SurgeryCollapse -> Lib.Geometry.Manifold.Morse.SurgeryCollapse.DiskCollapse
+       7  Lib.Geometry.Manifold.Morse.SurgeryCollapse -> Lib.Geometry.Manifold.Morse.SurgeryCollapse.DiskFilling
+      31  Lib.Geometry.Manifold.Morse.SurgeryCollapse -> Lib.Geometry.Manifold.Morse.SurgeryCollapse.HandleCollapse
+      23  Lib.Geometry.Manifold.Morse.SurgeryCollapse -> Lib.Geometry.Manifold.Morse.SurgeryCollapse.HandleExactSequence
+       4  Lib.Geometry.Manifold.Morse.SurgeryCollapse -> Lib.Geometry.Manifold.Morse.SurgeryCollapse.IndexOrdering
+       4  Lib.Geometry.Manifold.Morse.SurgeryCollapse -> Lib.Geometry.Manifold.Morse.SurgeryCollapse.LevelIsotopy
+       8  Lib.Geometry.Manifold.Morse.SurgeryCollapse -> Lib.Geometry.Manifold.Morse.SurgeryCollapse.LevelTransport
+      22  Lib.Geometry.Manifold.Morse.SurgeryCollapse -> Lib.Geometry.Manifold.Morse.SurgeryCollapse.LocalDegreeConnecting
+       6  Lib.Geometry.Manifold.Morse.SurgeryCollapse -> Lib.Geometry.Manifold.Morse.SurgeryCollapse.MinimumReduction
+      14  Lib.Geometry.Manifold.Morse.SurgeryCollapse -> Lib.Geometry.Manifold.Morse.SurgeryCollapse.OnePointCover
+       3  Lib.Geometry.Manifold.Morse.SurgeryCollapse -> Lib.Geometry.Manifold.Morse.SurgeryCollapse.PuncturedBall
+      32  Lib.Geometry.Manifold.Morse.SurgeryCollapse -> Lib.Geometry.Manifold.Morse.SurgeryCollapse.SphereOrientation
+ambiguous module changes: 0
+auxiliary constants that changed module: 198
+VERDICT PASS

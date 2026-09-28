@@ -117,8 +117,12 @@ import Lib.AlgebraicTopology.SingularHomology.OnePointCover
 import Lib.Geometry.Manifold.Morse.SurgeryHomology
 import Hopf.Proof.Geometry.Manifold.Morse.SurgeryHomology
 import Lib.Geometry.Manifold.Morse.OrderedCancellation
+import Hopf.Proof.Geometry.Manifold.Morse.OrderedCancellation.MiddleIndexBlocks
 import Lib.Geometry.Manifold.Morse.AdaptedWindows
 import Lib.Geometry.Manifold.Morse.SurgeryCollapse
+import Hopf.Proof.Geometry.Manifold.Morse.SurgeryCollapse.BeltIntersections
+import Hopf.Proof.Geometry.Manifold.Morse.SurgeryCollapse.MiddlePresentation
+import Hopf.Proof.Geometry.Manifold.Morse.SurgeryCollapse.OuterIndexMinimal
 
 set_option maxSynthPendingDepth 3
 

@@ -1,0 +1,2550 @@
+{
+"module": "Lib.Geometry.Manifold.Morse.SurgeryCollapse",
+"source": "/home/goblin/hopf-w1-morse-d/Lib/Geometry/Manifold/Morse/SurgeryCollapse.lean",
+"source_sha256": "a68a4bea9e3fadd1c3deb1b4e1695ae4d4872d38c995db6d365be8b932a8a5d0",
+"units_kept": 227,
+"units_moved": 4,
+"units": [
+{
+"names": [
+"PuncturedBall.toSphere_fromSphere"
+],
+"class": "keep",
+"lines": [
+88,
+91
+],
+"sha256": "93d7d8ee245c7dd56437313c35b70d9fe0bb6d688651f4f78588240e4f8ff9b3"
+},
+{
+"names": [
+"PuncturedBall.deformation"
+],
+"class": "keep",
+"lines": [
+93,
+110
+],
+"sha256": "ad97f73b939ac193a091f80d47c6886241173f5aef2d8973c125ff9672888be9"
+},
+{
+"names": [
+"PuncturedBall.sphereHomotopyEquiv"
+],
+"class": "keep",
+"lines": [
+112,
+123
+],
+"sha256": "e4630d1f9dfad1b85e30a4d22498e31be5aef4044916a8fdf258a1e84ac9a0d1"
+},
+{
+"names": [
+"MorseCancellation.nativeBeltTube_homotopic_meridian"
+],
+"class": "move",
+"lines": [
+125,
+148
+],
+"sha256": "9669ddd179c0b0a65a5e3b05f47aa7b7af09ac57c644f9fca987d1fd5ab6ba26"
+},
+{
+"names": [
+"MorseCancellation.nativeBeltTubeMeridian_eq"
+],
+"class": "move",
+"lines": [
+150,
+168
+],
+"sha256": "1d8333cea622a085ecc3e344ecd73931b1ed9e3ee21f952d4e7beab957fcf2c0"
+},
+{
+"names": [
+"MorseCancellation.beltBallBoundary_homotopic_meridian"
+],
+"class": "move",
+"lines": [
+170,
+185
+],
+"sha256": "70128d4dd6d65a961cdac40bdfeae83fc09e37935ef97707b74cedfc391a2134"
+},
+{
+"names": [
+"MorseCancellation.normal_boundary_homotopic_native_meridian"
+],
+"class": "move",
+"lines": [
+187,
+229
+],
+"sha256": "d370fada1a0464e9da2a0c3c5c14f2d2d7605917295aed63680ba69d40de2f5a"
+},
+{
+"names": [
+"AdaptedWindows.exists_embedded_level_transport"
+],
+"class": "keep",
+"lines": [
+231,
+290
+],
+"sha256": "5f5b5c78ff9324ade8adfbbfb668af6c6f906aec593816a459f816c073ff8ab9"
+},
+{
+"names": [
+"MorseCancellation.transverse_comp_standardCircle"
+],
+"class": "keep",
+"lines": [
+292,
+313
+],
+"sha256": "f24428c6902d44769a4f999ee1cd6043661cbac598b27966fa6e09116639c932"
+},
+{
+"names": [
+"AdaptedWindows.exists_attaching_circle_lower_transport"
+],
+"class": "keep",
+"lines": [
+315,
+376
+],
+"sha256": "10cbeb66b06f69a9c76fd15eb5f0fe60e63967f17c469a6eaa0cb1af9fd7400a"
+},
+{
+"names": [
+"AdaptedWindows.realize_one_handle_minimum_branches"
+],
+"class": "keep",
+"lines": [
+378,
+474
+],
+"sha256": "00ff679ee33395cfa1827175ea070f5ec54a355509d0bbfdf6aa70eb35d96a53"
+},
+{
+"names": [
+"AdaptedWindows.exists_native_family_level_transport"
+],
+"class": "keep",
+"lines": [
+476,
+532
+],
+"sha256": "783badf68a95906bb50af8e8ebea8c57696f67b1985b72e8e005e24218cc0ff3"
+},
+{
+"names": [
+"AdaptedWindows.exists_middle_family_descent"
+],
+"class": "keep",
+"lines": [
+534,
+616
+],
+"sha256": "c754f7f8e67d3e33169f4f4919ece56eb8b69ab825cd8a97c375b14b3523e6c2"
+},
+{
+"names": [
+"AdaptedWindows.exists_native_attaching_lower_cut"
+],
+"class": "keep",
+"lines": [
+618,
+669
+],
+"sha256": "e2a947ad3841bd6d8cf37cc8cf5f127116db4b2fc787988b8bb5ab3ad0372261"
+},
+{
+"names": [
+"AdaptedWindows.exists_middle_family_step"
+],
+"class": "keep",
+"lines": [
+671,
+788
+],
+"sha256": "1dd5c987d718cd9261161550c25b401375645805f26042575039dda4a540a52a"
+},
+{
+"names": [
+"AdaptedWindows.exists_regular_band_family_transport"
+],
+"class": "keep",
+"lines": [
+790,
+831
+],
+"sha256": "e32ee8f3e805c40a2fdc56105074d0a202f99963c5eec65d1235ed46a5f6442c"
+},
+{
+"names": [
+"AdaptedWindows.exists_regular_band_middle_basin_family"
+],
+"class": "keep",
+"lines": [
+833,
+852
+],
+"sha256": "b79dcfe8e642c3d2505d5f6afe008921ab2008bb17a76b831eec6833d267fe99"
+},
+{
+"names": [
+"AdaptedWindows.exists_middle_basin_family_step"
+],
+"class": "keep",
+"lines": [
+854,
+882
+],
+"sha256": "13d058e84e075ea62c8e33d5ccaa823e90b5c921b1d9d469cfe7012d763d6f8a"
+},
+{
+"names": [
+"AdaptedWindows.exists_middle_block_realization"
+],
+"class": "keep",
+"lines": [
+884,
+1006
+],
+"sha256": "16849cc60df6b4a60ebcaae61f5ee16f611157d4bc56983983429cdfa17d2d99"
+},
+{
+"names": [
+"MorseCancellation.unique_connection_of_distinct_minimum_branches"
+],
+"class": "keep",
+"lines": [
+1008,
+1056
+],
+"sha256": "63d62828da48725423c939c56a6e736fcc285f53616d7f60cce8f0caf1180d75"
+},
+{
+"names": [
+"EmbeddedCellAttachment.overlapHomologyEquiv"
+],
+"class": "keep",
+"lines": [
+1058,
+1062
+],
+"sha256": "b06a373a77228784bde99488cc3f939cce624a206499e633da089b9d4d137e63"
+},
+{
+"names": [
+"EmbeddedCellAttachment.cellConnectingMap"
+],
+"class": "keep",
+"lines": [
+1064,
+1070
+],
+"sha256": "48d4c9abaf052aca0cb2999ec2b138a3724e4fdef26ed84cf86bfe2c7dd11bfe"
+},
+{
+"names": [
+"EmbeddedCellAttachment.coverLeft_old"
+],
+"class": "keep",
+"lines": [
+1072,
+1091
+],
+"sha256": "8d5c19e4cf8ce578b72edabe3d1736554b49abf89370c64b5f9e6f4b2acb578c"
+},
+{
+"names": [
+"EmbeddedCellAttachment.coverLeft_formula"
+],
+"class": "keep",
+"lines": [
+1093,
+1102
+],
+"sha256": "93ae456d0793236c9c62dd53b2ea0dc55a89ee58a121dc7edb06cff804cc6d13"
+},
+{
+"names": [
+"EmbeddedCellAttachment.cellConnecting_eq_zero_iff"
+],
+"class": "keep",
+"lines": [
+1104,
+1117
+],
+"sha256": "464c0f2b6b58e1a701b910dc33a3a670e7320110b510471d3bf73c2ca8706233"
+},
+{
+"names": [
+"EmbeddedCellAttachment.cell_exact_at_old"
+],
+"class": "keep",
+"lines": [
+1119,
+1166
+],
+"sha256": "3dbb3c97ddbb8aabe329ddb14f37401a2b959fe732fbc30775b921340c2d0498"
+},
+{
+"names": [
+"EmbeddedCellAttachment.cell_exact_at_ambient"
+],
+"class": "keep",
+"lines": [
+1168,
+1175
+],
+"sha256": "c22caa6db998c784b9aff0399c9097225be86146ac7c788763173c6d46a5d6e4"
+},
+{
+"names": [
+"EmbeddedCellAttachment.mem_range_cellConnecting"
+],
+"class": "keep",
+"lines": [
+1177,
+1193
+],
+"sha256": "d9405fa3b2d471abebe152eeb4c9f4ae3496c62588d01449c4bf0c4438edfdfa"
+},
+{
+"names": [
+"EmbeddedCellAttachment.coverLeft_eq_zero_iff"
+],
+"class": "keep",
+"lines": [
+1195,
+1215
+],
+"sha256": "0f720ebb94be6db7b50d71bde329a1c53b96d1bcf68f698ae22a59e868540494"
+},
+{
+"names": [
+"EmbeddedCellAttachment.cell_exact_at_sphere"
+],
+"class": "keep",
+"lines": [
+1217,
+1225
+],
+"sha256": "c01855a2ea0c904b01b7d9657924f29537dd407eda6b0d8c59f5370457ba8a29"
+},
+{
+"names": [
+"EmbeddedCellAttachment.cellConnecting_zero_apply"
+],
+"class": "keep",
+"lines": [
+1227,
+1251
+],
+"sha256": "0b565f14b345c61e4690f39f3339a65dd4690009a7485220fa496a0bc3545c4a"
+},
+{
+"names": [
+"MorseCancellation.cell_oldHomologyMap_zero_injective"
+],
+"class": "keep",
+"lines": [
+1253,
+1293
+],
+"sha256": "9137e86009178c97af74558db47281b25c2f0485ed629a4b5b4d181a40e4bff4"
+},
+{
+"names": [
+"MorseCancellation.cell_oldHomologyMap_zero_surjective"
+],
+"class": "keep",
+"lines": [
+1295,
+1339
+],
+"sha256": "81ce7501d426121811f477158b0115cf4854bf3b0a095c67995aee31d30c7cf5"
+},
+{
+"names": [
+"MorseCancellation.cell_oldHomologyMap_zero_bijective"
+],
+"class": "keep",
+"lines": [
+1341,
+1344
+],
+"sha256": "c21fe2fb98ae3d06424cf6f6d3d15fda9e0379169de9c638f4cf8d2798f08539"
+},
+{
+"names": [
+"ManifoldMorse.MorseSurgeryData.cellOldHomologyEquiv"
+],
+"class": "keep",
+"lines": [
+1346,
+1352
+],
+"sha256": "84045c672cfa2eafbbfdea562714720058c99e4accd3110228717e6a8e7cf279"
+},
+{
+"names": [
+"ManifoldMorse.MorseSurgeryData.cellTotalHomologyEquiv"
+],
+"class": "keep",
+"lines": [
+1354,
+1362
+],
+"sha256": "825b54bad45291c77459fd9b5dfdec62e8257ea282bfef82fa303d94a43d6408"
+},
+{
+"names": [
+"ManifoldMorse.MorseSurgeryData.coreBoundaryHomologyMap"
+],
+"class": "keep",
+"lines": [
+1364,
+1371
+],
+"sha256": "eb5e186ef88d26cea82662b6011a5ba44d4bf229a429532d98b9c1535bb289bd"
+},
+{
+"names": [
+"ManifoldMorse.MorseSurgeryData.lowerRealizationHomologyMap"
+],
+"class": "keep",
+"lines": [
+1373,
+1379
+],
+"sha256": "25f38a000dd3809570c608df67306cf0a96c81a2b30a54b840630677c723988f"
+},
+{
+"names": [
+"ManifoldMorse.MorseSurgeryData.morseConnectingMap"
+],
+"class": "keep",
+"lines": [
+1381,
+1389
+],
+"sha256": "a4a014049208334fa747f90c3a14b3a0d306c763653a369a44399c70e583f4ea"
+},
+{
+"names": [
+"ManifoldMorse.MorseSurgeryData.cellAttachingHomology_compare"
+],
+"class": "keep",
+"lines": [
+1391,
+1406
+],
+"sha256": "c70df9e4fc168e52dd7d473c4399fe8b2041f36bfae13a6e88fbec8f5b12d000"
+},
+{
+"names": [
+"ManifoldMorse.MorseSurgeryData.cellOldHomology_compare"
+],
+"class": "keep",
+"lines": [
+1408,
+1425
+],
+"sha256": "cd9eaf5ce9311a59e12045034825fb9267b0a923405bd988eed53c0545a1fe80"
+},
+{
+"names": [
+"ManifoldMorse.MorseSurgeryData.morseConnecting_compare"
+],
+"class": "keep",
+"lines": [
+1427,
+1441
+],
+"sha256": "856eb436b6b1d6be08d765a813e0c400b637155dc99cec1d16d34dd22e0a6146"
+},
+{
+"names": [
+"ManifoldMorse.MorseSurgeryData.morse_exact_at_lower"
+],
+"class": "keep",
+"lines": [
+1443,
+1464
+],
+"sha256": "98a26ee380799650ad298592cefae88d62f4f45420986d069b939234e646ac21"
+},
+{
+"names": [
+"ManifoldMorse.MorseSurgeryData.morse_exact_at_upper"
+],
+"class": "keep",
+"lines": [
+1466,
+1483
+],
+"sha256": "aab861d4e186c16021afd7a4af32235ca7abafb5e83b0d12d6c29e87a8ed419d"
+},
+{
+"names": [
+"ManifoldMorse.MorseSurgeryData.morse_exact_at_attachingSphere"
+],
+"class": "keep",
+"lines": [
+1485,
+1502
+],
+"sha256": "f61c529efda7dc5171f99fa6a44f2874e5aa208eca61a7907cfc5b2ad0c5c8dd"
+},
+{
+"names": [
+"ManifoldMorse.MorseSurgeryData.lowerHomology_subsingleton_of_upper_and_sphere"
+],
+"class": "keep",
+"lines": [
+1504,
+1526
+],
+"sha256": "65184e45b71632be1f672d7f31c274e1ab9dcdc4b7a15b30cd9c45f8bf26194c"
+},
+{
+"names": [
+"ManifoldMorse.MorseSurgeryData.morseConnecting_zero_apply"
+],
+"class": "keep",
+"lines": [
+1528,
+1535
+],
+"sha256": "ad86ef1834285e598892b166348737b449fa77934af30aa18786f593351228b3"
+},
+{
+"names": [
+"ManifoldMorse.MorseSurgeryData.lowerRealization_one_surjective"
+],
+"class": "keep",
+"lines": [
+1537,
+1546
+],
+"sha256": "71a4ebb3d9d5595ad175c27473fdbf32480dc734b43dfe91d551c005f4269d10"
+},
+{
+"names": [
+"ManifoldMorse.MorseSurgeryData.upperHomologyOne_subsingleton"
+],
+"class": "keep",
+"lines": [
+1548,
+1556
+],
+"sha256": "078839809d012bc220a59b0e62dde338c8a2e7ee72e11fa3308ce4ad87e0a866"
+},
+{
+"names": [
+"MorseCancellation.native_lowerRealization_zero_bijective"
+],
+"class": "keep",
+"lines": [
+1558,
+1575
+],
+"sha256": "b5ee0f81c8a3b8e68f79eb53decd2d1c571414662d9a1d6d6e9642939d0b4b0e"
+},
+{
+"names": [
+"MorseCancellation.native_lower_pathConnected_of_upper"
+],
+"class": "keep",
+"lines": [
+1577,
+1588
+],
+"sha256": "ad8fb1e32ce6958c1a939586332c34ea6d0bbf5194621ea8d4b4754424ebb29a"
+},
+{
+"names": [
+"MorseCancellation.native_zero_handle_lower_isEmpty"
+],
+"class": "keep",
+"lines": [
+1590,
+1608
+],
+"sha256": "0f32124572c39510f56881062bffd2f952836085c1e3221292338dd385fca462"
+},
+{
+"names": [
+"SublevelDisk.circle_nullhomotopies"
+],
+"class": "keep",
+"lines": [
+1610,
+1625
+],
+"sha256": "8abd51113cf5b017bfab0d35e91a125d71c04989f47659319e21c59fed0dcfa6"
+},
+{
+"names": [
+"ManifoldMorse.SurgeryWindows.lower_circle_nullhomotopies_of_middle_indices"
+],
+"class": "keep",
+"lines": [
+1627,
+1687
+],
+"sha256": "5414036ec86fed7dcbacabb147ade9c5359839ee774153cc626f3ef6735afdb9"
+},
+{
+"names": [
+"MorseCancellation.lower_circle_nullhomotopies_of_ordered_native_indices"
+],
+"class": "keep",
+"lines": [
+1689,
+1730
+],
+"sha256": "86e7a5f22c88eaa6f3bf9e3ec7d51b582258680f2974c3b173de563eadc48830"
+},
+{
+"names": [
+"MorseCancellation.cellDiskBoundaryHomologyMap"
+],
+"class": "keep",
+"lines": [
+1732,
+1737
+],
+"sha256": "bb54b42a82b3370a7926938c6382308e423eab206810a4d38da7f403edd10e95"
+},
+{
+"names": [
+"MorseCancellation.cell_oldHomologyMap_zero_iff"
+],
+"class": "keep",
+"lines": [
+1739,
+1795
+],
+"sha256": "3867796ff3f53aefcca25320c7f0168d30089b26bc24acd9d8765fc1877a89fb"
+},
+{
+"names": [
+"MorseCancellation.cell_oldHomologyMap_injective_of_attaching_component"
+],
+"class": "keep",
+"lines": [
+1797,
+1821
+],
+"sha256": "c0401723e2878000b899cc008baab509e5ffb06bb137d0849d8b1adb01093575"
+},
+{
+"names": [
+"MorseCancellation.cell_old_pathConnected_of_attaching_component"
+],
+"class": "keep",
+"lines": [
+1823,
+1830
+],
+"sha256": "36e024baf79cacde2e14bb6d73a9baf6c0dcc34f15f765e799379762f75b8aeb"
+},
+{
+"names": [
+"MorseCancellation.native_lower_pathConnected_of_attaching_component"
+],
+"class": "keep",
+"lines": [
+1832,
+1846
+],
+"sha256": "4f4dfb7c3313a992d98a00b1ed49873d9ce73af5ada63037f24397f663126289"
+},
+{
+"names": [
+"MorseCancellation.native_attaching_component_of_pairwise_joined"
+],
+"class": "keep",
+"lines": [
+1848,
+1857
+],
+"sha256": "75f919908c58a3b1270e4e16695c1d3c4978223111bbaa33e5a3d5dd32aa22e3"
+},
+{
+"names": [
+"MorseCancellation.native_minimum_count_one_of_one_handle_components"
+],
+"class": "keep",
+"lines": [
+1859,
+1925
+],
+"sha256": "bd72ac69a32c1096e6023ebb7af44162553515695ba7fd5e5b79d7ecb741c38c"
+},
+{
+"names": [
+"MorseCancellation.exists_native_one_handle_joining_components"
+],
+"class": "keep",
+"lines": [
+1927,
+1946
+],
+"sha256": "4d334b03ed96035213d84645fcce441a5ab670a053831698dfedc435dcfd1a32"
+},
+{
+"names": [
+"MorseCancellation.cancel_realized_higher_minimum"
+],
+"class": "keep",
+"lines": [
+1948,
+2014
+],
+"sha256": "14ce3610ff6031cb0dfe6710e48597a90167b55d54c2815fe7cb89e345035b30"
+},
+{
+"names": [
+"MorseCancellation.exists_excellent_morse_reduction_of_multiple_minima"
+],
+"class": "keep",
+"lines": [
+2016,
+2047
+],
+"sha256": "b0d6ab880548136db50ed18f9ee8997c1b5a6582e77d9ff9be7bc3151553dd69"
+},
+{
+"names": [
+"ManifoldMorse.MorseSurgeryData.exists_finite_belt_cancellation_step"
+],
+"class": "keep",
+"lines": [
+2049,
+2098
+],
+"sha256": "e170d6dd4a3d8ec5ec443bc0dbdfea820e53803c0480c5e8f5aabda38496cf53"
+},
+{
+"names": [
+"ManifoldMorse.MorseSurgeryData.exists_finite_belt_reduction"
+],
+"class": "keep",
+"lines": [
+2100,
+2162
+],
+"sha256": "74031248222e9fdb17fab19d2ce60fb9533b0acba3ea41959f5b0227a3f7aa4b"
+},
+{
+"names": [
+"ManifoldMorse.MorseSurgeryData.exists_minimal_signed_belt_sphere"
+],
+"class": "keep",
+"lines": [
+2164,
+2228
+],
+"sha256": "80b9ad9a136d9d5c2cf2b24a0e19a202202d883e4a913178cf9f2026c12513fd"
+},
+{
+"names": [
+"ManifoldMorse.MorseSurgeryData.exists_single_belt_intersection_of_unit_count"
+],
+"class": "keep",
+"lines": [
+2230,
+2268
+],
+"sha256": "4e508e5f87d0f74b882cffbcedf38de00dcbf3fa6861a54cab80a6a4abed9273"
+},
+{
+"names": [
+"AdaptedWindows.remove_connections_of_index_le"
+],
+"class": "keep",
+"lines": [
+2270,
+2342
+],
+"sha256": "4a6385871b8f7ced5f18c0ba480248aa8241b72f32a0953deb9aaabc2c3111fc"
+},
+{
+"names": [
+"AdaptedWindows.remove_connections_of_nonincreasing_indices"
+],
+"class": "keep",
+"lines": [
+2344,
+2375
+],
+"sha256": "9d962b59818d3d0d535ff5501091b8b484f184a7f892eb93850743d606179a97"
+},
+{
+"names": [
+"AdaptedWindows.exchange_nonincreasing_native_indices"
+],
+"class": "keep",
+"lines": [
+2377,
+2431
+],
+"sha256": "00b6cf0ff52a19634da2206af54c1a288cbad48a602947e5bad3d56894799b5b"
+},
+{
+"names": [
+"MorseCancellation.exists_index_ordered_morse_system_preserving_critical_points"
+],
+"class": "keep",
+"lines": [
+2433,
+2484
+],
+"sha256": "4b4a57a1ba314feb8df97f0babb41e7ff6af417d9e13ca68e12d721cf2099b25"
+},
+{
+"names": [
+"MorseCancellation.minimal_excellent_morse_minimum_count_one"
+],
+"class": "keep",
+"lines": [
+2486,
+2502
+],
+"sha256": "2f72137bb37614fb49a794fe915496e00eba0f627551811980bfef90449fd831"
+},
+{
+"names": [
+"MorseCancellation.minimal_excellent_morse_extreme_counts_one"
+],
+"class": "keep",
+"lines": [
+2504,
+2526
+],
+"sha256": "862b853032815dbcaa6e2dd72fe3522b31261e15e0ea7c271dd2344b7552cad7"
+},
+{
+"names": [
+"AdaptedWindows.exists_transverse_middle_belt_loop"
+],
+"class": "keep",
+"lines": [
+2528,
+2675
+],
+"sha256": "d1e7197685705993f3bca5b770e4c2be045fa416e4a1ba89fa9cb9466f42d671"
+},
+{
+"names": [
+"SphereBoundary.exists_extension_immersive_on_sphere"
+],
+"class": "keep",
+"lines": [
+2677,
+2705
+],
+"sha256": "fabf87ddaf9bd280ecf25b6101429710a1ac9531b46803ac758c8247ae57fd9f"
+},
+{
+"names": [
+"exists_embedded_disk_extension_of_smooth_extension"
+],
+"class": "keep",
+"lines": [
+2707,
+2744
+],
+"sha256": "98419d1cacf60fd9233793153589485f25c5e22d34caaac76285974a7a75adae"
+},
+{
+"names": [
+"RadialFilling.contMDiffAt_direction"
+],
+"class": "keep",
+"lines": [
+2746,
+2767
+],
+"sha256": "723bc0bba37bf240e496d7595fbba0b4c214e216c1da983fdf7d907aff29f660"
+},
+{
+"names": [
+"RadialFilling.contMDiff_filling"
+],
+"class": "keep",
+"lines": [
+2769,
+2797
+],
+"sha256": "e77a9965809c51e653ec35e699724aacd1d006e111b4e3876d2e1735909fba19"
+},
+{
+"names": [
+"MorseCancellation.circle_nullhomotopy_of_disk"
+],
+"class": "keep",
+"lines": [
+2799,
+2826
+],
+"sha256": "ca4ef0fb861eef817a078d1f77fd4d7133150f6154d8efbe4800c16117359f36"
+},
+{
+"names": [
+"MorseCancellation.exists_smooth_embedded_disk_of_continuous_filling"
+],
+"class": "keep",
+"lines": [
+2828,
+2851
+],
+"sha256": "0b5b1605e69b2a7a8c051cc8ae7b604f3596b2e27d05dd1301f026e54d1d0543"
+},
+{
+"names": [
+"AdaptedWindows.realize_unit_level_isotopy"
+],
+"class": "keep",
+"lines": [
+2853,
+2918
+],
+"sha256": "bcc7247d5229f54de4b3c1cd0e031d1ddcdc05c57119be16342bdfa591bef7e1"
+},
+{
+"names": [
+"AdaptedWindows.realize_unit_transverse_level_isotopy"
+],
+"class": "keep",
+"lines": [
+2920,
+3029
+],
+"sha256": "341f87a21103d58055607f5f9b1fcebc2ae958b241b5f365d0eb8b560359fdb8"
+},
+{
+"names": [
+"AdaptedWindows.place_one_handle_in_unique_minimum_basin"
+],
+"class": "keep",
+"lines": [
+3031,
+3068
+],
+"sha256": "e58061a952c983677ac60e5b1ea95563e6887e58e4645120bd3a4f020d7b512b"
+},
+{
+"names": [
+"AdaptedWindows.realize_unique_minimum_one_handle_branches"
+],
+"class": "keep",
+"lines": [
+3070,
+3173
+],
+"sha256": "a3edded48b940cc05fec23964deb04262b3556c4122cfc7e05005bc6a305a072"
+},
+{
+"names": [
+"MorseCancellation.exists_outer_index_minimal_ordered_morse_system"
+],
+"class": "keep",
+"lines": [
+3175,
+3233
+],
+"sha256": "8a5a2629c7d8a2df646aacbf38e63f1535944904b9862f26384f778ea6f57815"
+},
+{
+"names": [
+"DiskOnePointCollapse.collapse"
+],
+"class": "keep",
+"lines": [
+3235,
+3239
+],
+"sha256": "43a82e1ea3450ac15339303df8cc26688d100645e414cf0b0c63fd51a91cf3a6"
+},
+{
+"names": [
+"DiskOnePointCollapse.collapse_boundary"
+],
+"class": "keep",
+"lines": [
+3241,
+3246
+],
+"sha256": "2cf3c08b0b0f486464c297efaced93345a08720c3e6d1f1856ef39b81cb1d0b8"
+},
+{
+"names": [
+"DiskOnePointCollapse.collapse_interior"
+],
+"class": "keep",
+"lines": [
+3248,
+3253
+],
+"sha256": "098368d42e42e847422ae7eefb17af498c13047bdd1ec92b4d67b18a0edb8fbb"
+},
+{
+"names": [
+"DiskOnePointCollapse.collapse_eq_iff"
+],
+"class": "keep",
+"lines": [
+3255,
+3263
+],
+"sha256": "4070c0c6752add596d7fd193a738bef4c0ed0e1372302f3c36cb3313ecd573d0"
+},
+{
+"names": [
+"DiskOnePointCollapse.collapse_compress"
+],
+"class": "keep",
+"lines": [
+3265,
+3270
+],
+"sha256": "dddf48f5fed1b37b2662a23456ef2596dd8f6b5406d5d0b9a7a4de39fee1e1c4"
+},
+{
+"names": [
+"DiskOnePointCollapse.collapse_eq_coe_iff"
+],
+"class": "keep",
+"lines": [
+3272,
+3280
+],
+"sha256": "1f7c8569d523b0d9a0bc2a3bbbe8c464d3b790c63eae8c84e5495596e62b83bd"
+},
+{
+"names": [
+"DiskOnePointCollapse.collapse_eq_zero_iff"
+],
+"class": "keep",
+"lines": [
+3282,
+3290
+],
+"sha256": "644d6b946cc765623bc5b3de8dfdd44ec86a845edf921241d6e261db7c5c3002"
+},
+{
+"names": [
+"DiskOnePointCollapse.collapse_eq_infty_iff"
+],
+"class": "keep",
+"lines": [
+3292,
+3299
+],
+"sha256": "b73d022047a941cc5a7df0d6d5e4d0796cd2fe8b3087be19fe53ff2d8d7eef80"
+},
+{
+"names": [
+"ClosedHandleCore.collapseMaps_agree"
+],
+"class": "keep",
+"lines": [
+3301,
+3310
+],
+"sha256": "3cd4cb389f635c3cf12a6396d48618db1bdc298ae743c3d2e338830c948b400b"
+},
+{
+"names": [
+"ClosedHandleCore.collapseMap"
+],
+"class": "keep",
+"lines": [
+3312,
+3319
+],
+"sha256": "8e5e15be8d2ae947703d5ca92f01cbbe97ac686919ae1c6075fa479a906cd15f"
+},
+{
+"names": [
+"ClosedHandleCore.collapseMap_old"
+],
+"class": "keep",
+"lines": [
+3321,
+3329
+],
+"sha256": "441e4ffd96dfc363ce337cc8424e27e34f7a5745f70fc6220e47175be252c8b2"
+},
+{
+"names": [
+"ClosedHandleCore.collapseMap_handle"
+],
+"class": "keep",
+"lines": [
+3331,
+3341
+],
+"sha256": "a11200ae5bd288f9c4b671fd7544b0160858d415fed3ed6e318c2acdb156b015"
+},
+{
+"names": [
+"EmbeddedCellAttachment.collapseMaps_agree"
+],
+"class": "keep",
+"lines": [
+3343,
+3347
+],
+"sha256": "6bf4546a9a9678c022a8dcc6af26ca5ecab367702be7cc06bc086ad9f4c8cae9"
+},
+{
+"names": [
+"EmbeddedCellAttachment.collapseMap"
+],
+"class": "keep",
+"lines": [
+3349,
+3354
+],
+"sha256": "d56bea23774facd9671a6de4d423ee18905f8071d4acd237c493de8dec2048af"
+},
+{
+"names": [
+"EmbeddedCellAttachment.collapseMap_old"
+],
+"class": "keep",
+"lines": [
+3356,
+3362
+],
+"sha256": "95055b9784970ceb768349db85ed4aeab93c52ececc9b4f5624a335c719f4a62"
+},
+{
+"names": [
+"EmbeddedCellAttachment.collapseMap_cell"
+],
+"class": "keep",
+"lines": [
+3364,
+3371
+],
+"sha256": "581b0c794a571b9a3147d3bd9d2f8dcc32aeb744c71334e45090557808014cdb"
+},
+{
+"names": [
+"EmbeddedCellAttachment.collapseMap_infty_iff"
+],
+"class": "keep",
+"lines": [
+3373,
+3379
+],
+"sha256": "60a485a453b3100014356cc04e16b95f1a98c649a306e07ac457c251c195aeeb"
+},
+{
+"names": [
+"OnePointCover.instLocal1"
+],
+"class": "keep",
+"lines": [
+3381,
+3383
+],
+"sha256": "b291c9705326b231f265e29adfbf5b9050194b50e548073f023af800571479e8"
+},
+{
+"names": [
+"_private.Lib.Geometry.Manifold.Morse.SurgeryCollapse.0.OnePointCover.spherePunctureHomeomorph"
+],
+"class": "keep",
+"lines": [
+3385,
+3392
+],
+"sha256": "e622092475ef04940425cce54c07ab3e740774941b2bbb8e64b16e2046350cd8"
+},
+{
+"names": [
+"OnePointCover.punctureHomeomorph"
+],
+"class": "keep",
+"lines": [
+3394,
+3405
+],
+"sha256": "1bdf0e04470d00a1a4514fea94a3ccd3d1a43b49f69bdec8dd3b2e499e0094db"
+},
+{
+"names": [
+"OnePointCover.oldPatch_contractible"
+],
+"class": "keep",
+"lines": [
+3407,
+3410
+],
+"sha256": "d4068b886e9d1da4f6f9782f1c5a9741f1148b99b11a9175b8054d28320962bc"
+},
+{
+"names": [
+"OnePointCover.finitePatch_contractible"
+],
+"class": "keep",
+"lines": [
+3412,
+3415
+],
+"sha256": "99a3109723d92c820545d1af25c7e93f286c4e771acb761f68b295b60c7b2350"
+},
+{
+"names": [
+"OnePointCover.overlap_subset_range"
+],
+"class": "keep",
+"lines": [
+3417,
+3423
+],
+"sha256": "2b9d86be856b521b4d2f186a8d1f1a6b8023b3b4fb69a5c0164d6d3be4e75df5"
+},
+{
+"names": [
+"OnePointCover.overlap_preimage"
+],
+"class": "keep",
+"lines": [
+3425,
+3434
+],
+"sha256": "9c44f7753d7aafbbc85039c375758bc4833b0c7db135498b085b3dd1998d2c63"
+},
+{
+"names": [
+"OnePointCover.overlapHomeomorph"
+],
+"class": "keep",
+"lines": [
+3436,
+3440
+],
+"sha256": "2b98552619af928e2dfb9f9c0aea0b46afcc099e866dc93de38ba9be22633680"
+},
+{
+"names": [
+"OnePointCover.overlapHomeomorph_apply"
+],
+"class": "keep",
+"lines": [
+3442,
+3445
+],
+"sha256": "7955269893f88f4f8fe13d1aabea35ad03fb6d96d2083a898d91ca69f0af35b2"
+},
+{
+"names": [
+"OnePointCover.overlapSphereEquiv"
+],
+"class": "keep",
+"lines": [
+3447,
+3450
+],
+"sha256": "60a0c25c2752253a0492f456b2b970d95024ee3da5ffe794735bfae39955af6a"
+},
+{
+"names": [
+"EmbeddedCellAttachment.collapseMap_eq_zero_iff"
+],
+"class": "keep",
+"lines": [
+3452,
+3469
+],
+"sha256": "479b88a8ea4014fa5827cac4831d66ff4108f414a43903b9ad2019bf3ab7d167"
+},
+{
+"names": [
+"EmbeddedCellAttachment.collapseMaps_oldNeighborhood"
+],
+"class": "keep",
+"lines": [
+3471,
+3480
+],
+"sha256": "09f448059ce1771aa41be34dd4f1c58efd0f6226e4a4478149b67bab9aa6b8b2"
+},
+{
+"names": [
+"EmbeddedCellAttachment.collapseMaps_diskPatch"
+],
+"class": "keep",
+"lines": [
+3482,
+3487
+],
+"sha256": "0450cee1ea33c200622d311210103fb429cb397d68782420c4e91e9c3af57810"
+},
+{
+"names": [
+"EmbeddedCellAttachment.collapseOverlapMap"
+],
+"class": "keep",
+"lines": [
+3489,
+3495
+],
+"sha256": "211125e03bd625a9db9e5864d3e68f3d837ef25e4d0e042ab386a38c725d30e0"
+},
+{
+"names": [
+"EmbeddedCellAttachment.collapseOverlap_sphere"
+],
+"class": "keep",
+"lines": [
+3497,
+3514
+],
+"sha256": "3481b98ca2d49a8c64d3e5811a5bcf230fa98ea46218c841e72a1f9e6ff7754d"
+},
+{
+"names": [
+"EmbeddedCellAttachment.collapseOverlap_comp_sphere"
+],
+"class": "keep",
+"lines": [
+3516,
+3522
+],
+"sha256": "f8d0f18d83008d7250a74c4f56dbf6f3c5001335b97e2b6ee58ad9eda19bb5bf"
+},
+{
+"names": [
+"OnePointCover.overlapHomologyEquiv"
+],
+"class": "keep",
+"lines": [
+3524,
+3528
+],
+"sha256": "90402ea751b92ca8782d5a391e4ef1a98adf14a9432ca6dbec96fcde3f4ea89e"
+},
+{
+"names": [
+"OnePointCover.sphereConnecting"
+],
+"class": "keep",
+"lines": [
+3530,
+3536
+],
+"sha256": "e2db74b7996c3b49489a26155052738e268e2a95b808074d10fa8101507eaced"
+},
+{
+"names": [
+"OnePointCover.sphereConnecting_injective"
+],
+"class": "keep",
+"lines": [
+3538,
+3549
+],
+"sha256": "9bca26fc8e3921cbf5253253cb20217f7a45e1b67f1db8df4afb21d4e94cf4e6"
+},
+{
+"names": [
+"OnePointCover.sphereHomologyEquiv"
+],
+"class": "keep",
+"lines": [
+3551,
+3560
+],
+"sha256": "d61e44ed2910f7735a7c2e040e1d982fca3a7ae417b064e078176be4ef31c820"
+},
+{
+"names": [
+"EmbeddedCellAttachment.collapse_overlapHomology_compare"
+],
+"class": "keep",
+"lines": [
+3562,
+3575
+],
+"sha256": "bcb405b0508d88c5e3f4683b111ca4fba1bb803ef3e171679f6664b896273729"
+},
+{
+"names": [
+"EmbeddedCellAttachment.collapse_connecting_compare"
+],
+"class": "keep",
+"lines": [
+3577,
+3599
+],
+"sha256": "a0160641fc927f411b8697f66d3fe4804c4009b4926c4851e7392a28e2f0972d"
+},
+{
+"names": [
+"ManifoldMorse.MorseSurgeryData.attachmentCollapseMap"
+],
+"class": "keep",
+"lines": [
+3601,
+3609
+],
+"sha256": "fdad63b33f1c634fb0d71aa1586de43ef3d43889ed9c542d52309fa4c73cb356"
+},
+{
+"names": [
+"ManifoldMorse.MorseSurgeryData.upperCollapseMap"
+],
+"class": "keep",
+"lines": [
+3611,
+3616
+],
+"sha256": "37f705f8f634db2d0b8ceca6c004aaefdf59c2f9b7197c1454cec8db3a4425c3"
+},
+{
+"names": [
+"ManifoldMorse.MorseSurgeryData.upperCollapse_realization"
+],
+"class": "keep",
+"lines": [
+3618,
+3625
+],
+"sha256": "11c99b43a54381cf1cd2f4d6781fd149da2d38d6a2055511717a43baab1d8b3f"
+},
+{
+"names": [
+"ManifoldMorse.MorseSurgeryData.upperCollapse_old"
+],
+"class": "keep",
+"lines": [
+3627,
+3638
+],
+"sha256": "06af45abea989e2e858d0b1aa70d8eca223d4a2afa0310a3255a06850f03eebe"
+},
+{
+"names": [
+"ManifoldMorse.MorseSurgeryData.upperCollapse_handle"
+],
+"class": "keep",
+"lines": [
+3640,
+3650
+],
+"sha256": "fdf8e77184644f7b4666ab152b2bdc6924afc8773950a0477403a4b248c549cf"
+},
+{
+"names": [
+"ManifoldMorse.MorseSurgeryData.levelCollapseMap"
+],
+"class": "keep",
+"lines": [
+3652,
+3657
+],
+"sha256": "d43ef60c5c9d7351595ddbf79d3e5ce17b8728cc1ffba4d6f975e7e84d515616"
+},
+{
+"names": [
+"ManifoldMorse.MorseSurgeryData.levelCollapse_realized"
+],
+"class": "keep",
+"lines": [
+3659,
+3670
+],
+"sha256": "6a595563902ba2400e7921f7b770114ac2ad49d5854bc224a4d16cb25e5ed95e"
+},
+{
+"names": [
+"ManifoldMorse.MorseSurgeryData.levelCollapse_newExterior"
+],
+"class": "keep",
+"lines": [
+3672,
+3678
+],
+"sha256": "1c654fecbc68ab47933a3a4dd8832133d3ff6ead5c8a5a4b36f3f4b35fe9c71c"
+},
+{
+"names": [
+"ManifoldMorse.MorseSurgeryData.levelCollapse_newPiece"
+],
+"class": "keep",
+"lines": [
+3680,
+3693
+],
+"sha256": "81aaefff2ca09b3370a2f6fc7acbbd0b40695f288c795e82ef5eda725511ef2c"
+},
+{
+"names": [
+"ManifoldMorse.MorseSurgeryData.levelCollapse_zero_iff"
+],
+"class": "keep",
+"lines": [
+3695,
+3710
+],
+"sha256": "8dc06f0efeee3930cef08896530e5dfabf8df6494b641986bd9f5dd6b41e74e3"
+},
+{
+"names": [
+"ManifoldMorse.MorseSurgeryData.upperCollapse_coreCell"
+],
+"class": "keep",
+"lines": [
+3712,
+3727
+],
+"sha256": "cb5a2b4f558d1240c0121624e79b895e26787ea1080920e45a219d6124706bf3"
+},
+{
+"names": [
+"ManifoldMorse.MorseSurgeryData.upperCollapseHomology_coreCell"
+],
+"class": "keep",
+"lines": [
+3729,
+3745
+],
+"sha256": "d79cb34de499e2463edbb5b7f8bf9cb5203ad6c4fdbdb8ff4835751758322de8"
+},
+{
+"names": [
+"ManifoldMorse.MorseSurgeryData.upperCollapse_connecting_compare"
+],
+"class": "keep",
+"lines": [
+3747,
+3759
+],
+"sha256": "ce038acee36fc11aea34014c43cf43d982b8972cee62f958f99d80d640bb3510"
+},
+{
+"names": [
+"ManifoldMorse.MorseSurgeryData.upperCollapse_homology_equiv_compare"
+],
+"class": "keep",
+"lines": [
+3761,
+3771
+],
+"sha256": "bc8088e2934f0344cf6ceae7dce8409f28739796131395521c52b93f6191f549"
+},
+{
+"names": [
+"ManifoldMorse.MorseSurgeryData.upperCollapse_homology_kernel"
+],
+"class": "keep",
+"lines": [
+3773,
+3793
+],
+"sha256": "941e1516955acb21bc56ffee98952202e73d5bc25d7f4cd71dba2fb3c865aeb2"
+},
+{
+"names": [
+"ManifoldMorse.MorseSurgeryData.morseConnecting_surjective_of_lower"
+],
+"class": "keep",
+"lines": [
+3795,
+3806
+],
+"sha256": "75592dfe10ed7679b2049842c2a063f430afa0bd04add52d335e119427c6b067"
+},
+{
+"names": [
+"ManifoldMorse.MorseSurgeryData.upperCollapse_surjective_of_lower"
+],
+"class": "keep",
+"lines": [
+3808,
+3823
+],
+"sha256": "c0d753b41f90149185c0e65de22b02e5ac14c71421b4ba07c9052eeca56a38b9"
+},
+{
+"names": [
+"LocalDegree.NativeNeighborhood.overlapSphereEquiv"
+],
+"class": "keep",
+"lines": [
+3825,
+3838
+],
+"sha256": "e96d08c13eb4bb03ba9aa95a1807453539d5a453b7e9b5036eb1eafec83d63b9"
+},
+{
+"names": [
+"LocalDegree.SeparatedNeighborhoods.overlapSphereEquiv"
+],
+"class": "keep",
+"lines": [
+3840,
+3846
+],
+"sha256": "b9b7aaafb1394e9a8fd9b0d9f5b0283e4cdf98549f35da3ff7fc571cd68cd8c9"
+},
+{
+"names": [
+"LocalDegree.SeparatedNeighborhoods.overlapSphereEquiv_apply"
+],
+"class": "keep",
+"lines": [
+3848,
+3855
+],
+"sha256": "aee0cf1c4d6b8e590e2f8289b9e9993ec572afc65e823fe18e0117d81308264a"
+},
+{
+"names": [
+"LocalDegree.SeparatedNeighborhoods.overlapMap_sphereEquiv"
+],
+"class": "keep",
+"lines": [
+3857,
+3867
+],
+"sha256": "a5dc484ae0d48d0d1129b80debf40135975185c7c9e87dc250e50286abc85563"
+},
+{
+"names": [
+"ManifoldMorse.MorseSurgeryData.levelCollapse_beltClosedDiskMap"
+],
+"class": "keep",
+"lines": [
+3869,
+3881
+],
+"sha256": "f59549925209460206b759fc4c34a06ea69c18f855d3fb530fcbd237245367f7"
+},
+{
+"names": [
+"ManifoldMorse.MorseSurgeryData.levelCollapse_eq_coe_collapseNormal"
+],
+"class": "keep",
+"lines": [
+3883,
+3898
+],
+"sha256": "d1a3388e7f08983ab2a928284a8bc09c49d5848e815d888e933c66971fadc2dc"
+},
+{
+"names": [
+"SphereNormalCoordinates.normalJacobian_smul_mul_pow"
+],
+"class": "keep",
+"lines": [
+3900,
+3920
+],
+"sha256": "dd94f4b7286957db32f06be6ed6df5d946d1b66a26beb882f41cd8e2b06cad6f"
+},
+{
+"names": [
+"SphereNormalCoordinates.sign_normalJacobian_smul_pos"
+],
+"class": "keep",
+"lines": [
+3922,
+3930
+],
+"sha256": "fcb6847cec7061ae5b80d5a6120ee06dd81924ab55951d41ed204eed6eafaad4"
+},
+{
+"names": [
+"ManifoldMorse.MorseSurgeryData.collapseNormal_comp_sign"
+],
+"class": "keep",
+"lines": [
+3932,
+3951
+],
+"sha256": "edd520b82b665bf42595c466514c99f2adaf1fe06b32b9e27263797c0483326a"
+},
+{
+"names": [
+"ManifoldMorse.MorseSurgeryData.collapseNormal_comp_sign_of_transverse"
+],
+"class": "keep",
+"lines": [
+3953,
+3986
+],
+"sha256": "8cecbd40053cfacf3d5a361d7fd9bcea6836b78c36deda9fa00b7315ca357665"
+},
+{
+"names": [
+"ManifoldMorse.MorseSurgeryData.isInvertible_collapseNormal_comp_of_transverse"
+],
+"class": "keep",
+"lines": [
+3988,
+4017
+],
+"sha256": "3407cc46d85d23c474a206d019df4ece52495ee8df0c795286cd36658e97f923"
+},
+{
+"names": [
+"ManifoldMorse.MorseSurgeryData.CollapseNeighborhoods"
+],
+"class": "keep",
+"lines": [
+4019,
+4025
+],
+"sha256": "7008dfb99a92711652540eb86773016d72f2d00aa108d06d68e2b1209be9e574"
+},
+{
+"names": [
+"ManifoldMorse.MorseSurgeryData.nonempty_collapseNeighborhoods"
+],
+"class": "keep",
+"lines": [
+4027,
+4057
+],
+"sha256": "acdcc0328df5e25b3e01f8f7d64ef25d3dc37f8dd6f2b1ff8311db58eada5a7c"
+},
+{
+"names": [
+"ManifoldMorse.MorseSurgeryData.attachingCollapse"
+],
+"class": "keep",
+"lines": [
+4059,
+4065
+],
+"sha256": "155f86df2974e25abedf37a175ab63152af71dddf53aeea7d9effd5b93d15e30"
+},
+{
+"names": [
+"ManifoldMorse.MorseSurgeryData.attachingCollapse_zero_iff"
+],
+"class": "keep",
+"lines": [
+4067,
+4074
+],
+"sha256": "45d0e3afbd17e7dfcac1aa2ab621f7e8ad2f4647bdeed3a383af6fe012efb544"
+},
+{
+"names": [
+"ManifoldMorse.MorseSurgeryData.attachingCollapse_maps_old"
+],
+"class": "keep",
+"lines": [
+4076,
+4084
+],
+"sha256": "5aa212232be76cc5e556142cb97f60174c2bae4669ad54b06c24c954f9aca846"
+},
+{
+"names": [
+"ManifoldMorse.MorseSurgeryData.attachingCollapse_maps_neighborhood"
+],
+"class": "keep",
+"lines": [
+4086,
+4097
+],
+"sha256": "c239bb717c58615fb0438b63c732135e1f20b806282fb1c43065325eb7519bc0"
+},
+{
+"names": [
+"ManifoldMorse.MorseSurgeryData.collapseOverlapMap"
+],
+"class": "keep",
+"lines": [
+4099,
+4111
+],
+"sha256": "2218cfc8d82af4be8c61ed396e9c2d341a896ea8d929be4529b92b0280e8baae"
+},
+{
+"names": [
+"ManifoldMorse.MorseSurgeryData.collapseOverlapMap_eq"
+],
+"class": "keep",
+"lines": [
+4113,
+4129
+],
+"sha256": "d43c859a617a7d732017e8a0a026338b8a189846ceb45331651a76051df749e1"
+},
+{
+"names": [
+"ManifoldMorse.MorseSurgeryData.collapseOverlapMap_sphereEquiv"
+],
+"class": "keep",
+"lines": [
+4131,
+4140
+],
+"sha256": "921e1e91b21a0de45301ff5b6fe8e069110b86547303a68cc95efad427c9ac91"
+},
+{
+"names": [
+"ManifoldMorse.SurgeryWindows.BandData.homologyEquiv"
+],
+"class": "keep",
+"lines": [
+4142,
+4148
+],
+"sha256": "75c240ab9a37d0541a71a926a32ac9242a763844690cb5139981bb5d7db780c5"
+},
+{
+"names": [
+"ManifoldMorse.SurgeryWindows.lower_homologyOne_subsingleton_of_indices"
+],
+"class": "keep",
+"lines": [
+4150,
+4208
+],
+"sha256": "7575a450a5d8113a974419352818dae61adcc6c9a5da14c7ca6f57ec813b7b0c"
+},
+{
+"names": [
+"ManifoldMorse.MorseSurgeryData.lowerHomology_subsingleton_of_upper_and_index"
+],
+"class": "keep",
+"lines": [
+4210,
+4221
+],
+"sha256": "ce8ea631066e44a3d4f131d563f9a156a8dcff49d67794d2497ac9cd4b0459f9"
+},
+{
+"names": [
+"LinearSphereAction.sphereHomotopyEquiv"
+],
+"class": "keep",
+"lines": [
+4223,
+4227
+],
+"sha256": "fae60abfa7fbc449a191d783cd10461d8cf479af42cc158fb12bd77966023bbe"
+},
+{
+"names": [
+"LinearSphereAction.sphereHomotopyEquiv_toFun"
+],
+"class": "keep",
+"lines": [
+4229,
+4232
+],
+"sha256": "7bd214c8590475f31cd43387d630a73c792416e8719caf0bfdf995ba7cd16338"
+},
+{
+"names": [
+"LinearSphereAction.homologyEquiv"
+],
+"class": "keep",
+"lines": [
+4234,
+4238
+],
+"sha256": "c9f363f5607defb95fd72f8efe3d4188ea8a8ad4a77b8f77d36d14d47817718e"
+},
+{
+"names": [
+"LinearSphereAction.homologyEquiv_apply"
+],
+"class": "keep",
+"lines": [
+4240,
+4247
+],
+"sha256": "d0148f7643f4b94aa3a5ce2b5c28534d79b002903e51165d8e6e48ad3ef6ed9b"
+},
+{
+"names": [
+"LocalDegree.NativeNeighborhood.sphereConnecting"
+],
+"class": "keep",
+"lines": [
+4249,
+4262
+],
+"sha256": "33d961e2ac53a90c4370d5285630df130d7b21bf89fa9fd2cd82db81db3dcf55"
+},
+{
+"names": [
+"LocalDegree.NativeNeighborhood.sphereHomologyEquiv"
+],
+"class": "keep",
+"lines": [
+4264,
+4278
+],
+"sha256": "ffd06b1fe8f1032f01de560d46bb0d6568a4474b0a2e4eefc63b3dd4c16a62db"
+},
+{
+"names": [
+"SpherePoint.chart_radial_frame_comp"
+],
+"class": "keep",
+"lines": [
+4280,
+4313
+],
+"sha256": "253ca542891f20d77b75000ea6e5d903da70e9e7861a447677571d8bdde2c3b3"
+},
+{
+"names": [
+"LocalDegree.BoundaryData.normalized_homology_compare"
+],
+"class": "keep",
+"lines": [
+4315,
+4325
+],
+"sha256": "dd7b05eabb89e6e27d4f0f135e39370277558318fbe1174461ca9844179c868f"
+},
+{
+"names": [
+"LocalDegree.BoundaryData.normalized_homology_eq_sign_smul"
+],
+"class": "keep",
+"lines": [
+4327,
+4338
+],
+"sha256": "377b5124cf88ddcca07d48c0cc4b8449d48999351309f79c9234e07904dd6d87"
+},
+{
+"names": [
+"SphereNormalCoordinates.chartJacobian"
+],
+"class": "keep",
+"lines": [
+4340,
+4349
+],
+"sha256": "53d6e8f7bec614b3d9f026c4a96ed302810f8397db3e85e9aca4a389aa606a09"
+},
+{
+"names": [
+"SphereNormalCoordinates.chartJacobian_ne_zero"
+],
+"class": "keep",
+"lines": [
+4351,
+4362
+],
+"sha256": "b0160eadaa3b6718c406007742a0585db678d5f885d2e0aba894a23a25e9e904"
+},
+{
+"names": [
+"SphereNormalCoordinates.chartJacobian_factor"
+],
+"class": "keep",
+"lines": [
+4364,
+4394
+],
+"sha256": "c73fb2b17fda0970f772e213a8fdeee402d07aaccf831392db0db3a4a9953497"
+},
+{
+"names": [
+"SphereNormalCoordinates.chartJacobian_sign_factor"
+],
+"class": "keep",
+"lines": [
+4396,
+4413
+],
+"sha256": "7ac49969535923c06cc4bb4797a8341c976598d861569f7bee153ad6b62077de"
+},
+{
+"names": [
+"SpherePoint.chart_radial_frame_det"
+],
+"class": "keep",
+"lines": [
+4415,
+4465
+],
+"sha256": "8365c467d8046ff3638ec5b296ae5ee1f3375311671e70b375e4fa429e786ee2"
+},
+{
+"names": [
+"SpherePoint.chartJacobian_transport"
+],
+"class": "keep",
+"lines": [
+4467,
+4479
+],
+"sha256": "fd19a6549fac5534d37f2a07701b06ec2b3c42425e2c5b614721070c66608b8c"
+},
+{
+"names": [
+"SpherePoint.chartJacobian_transport_sign"
+],
+"class": "keep",
+"lines": [
+4481,
+4497
+],
+"sha256": "64691d52dcfefaba627037c2cd38bd3221c8666d94f233943c81d2793a92ecb9"
+},
+{
+"names": [
+"LocalDegree.PointTransition.coordinateMap"
+],
+"class": "keep",
+"lines": [
+4499,
+4521
+],
+"sha256": "0de8d92502d4e84b4fe701b243287c617a9f03fae290f894250a2755d0eda0aa"
+},
+{
+"names": [
+"LocalDegree.PointTransition.coordinateMap_coe"
+],
+"class": "keep",
+"lines": [
+4523,
+4550
+],
+"sha256": "56fd0ca25b195ad93d06e9187228982df4f2221951d490b5f18a479576b0f049"
+},
+{
+"names": [
+"LocalDegree.PointTransition.connecting_naturality"
+],
+"class": "keep",
+"lines": [
+4552,
+4583
+],
+"sha256": "bc827d4e4f42e0c1a3370de6115f430d6e4aa71b5af323d9a51a224489ac09c5"
+},
+{
+"names": [
+"LocalDegree.NativeNeighborhood.coordinateMap_restrictRadius"
+],
+"class": "keep",
+"lines": [
+4585,
+4617
+],
+"sha256": "ac7dbab7ccad003ecc931faae013c54bdd79987765ac3b6ee81c495264c1ec88"
+},
+{
+"names": [
+"LocalDegree.NativeNeighborhood.sphereConnecting_restrictRadius"
+],
+"class": "keep",
+"lines": [
+4619,
+4639
+],
+"sha256": "778f2e21448eeb695032172b881efc998e427fed4303d5cbf6463bf210c509b2"
+},
+{
+"names": [
+"LocalDegree.NativeNeighborhood.sphereConnecting_eq"
+],
+"class": "keep",
+"lines": [
+4641,
+4661
+],
+"sha256": "38dcfc84bc7c471dfb43f9d75787d4827d2a59cc6851ff1e06203bc35095559e"
+},
+{
+"names": [
+"LocalDegree.PointTransition.coordinateMap_eq_boundary"
+],
+"class": "keep",
+"lines": [
+4663,
+4683
+],
+"sha256": "912c9f162b80e53d76d260bcb0a4b59405c4eaf496349e0d5cc6d4fb1c7163e2"
+},
+{
+"names": [
+"LocalDegree.PointTransition.coordinateMap_homology"
+],
+"class": "keep",
+"lines": [
+4685,
+4709
+],
+"sha256": "4066dfd796dbb180a14116f8b716a51ca8016435c1c14f995065e28697daf1b6"
+},
+{
+"names": [
+"LocalDegree.PointTransition.connecting_derivative_naturality"
+],
+"class": "keep",
+"lines": [
+4711,
+4745
+],
+"sha256": "0e0227785a29ddb025f65f282e9e4fb2a8a1da79bf8e29af8c993c6b8d3d1b51"
+},
+{
+"names": [
+"LocalDegree.pointConnecting_diffeomorph"
+],
+"class": "keep",
+"lines": [
+4747,
+4782
+],
+"sha256": "fcd4d2cca12d018b9675cbaab0c589cdf39a0b069aa513c06b8cb16b84c9f30d"
+},
+{
+"names": [
+"SpherePoint.instLocal1"
+],
+"class": "keep",
+"lines": [
+4784,
+4786
+],
+"sha256": "185ac08ea25476871e218e58354aa16b143ae4a03894edf83318be11937f610a"
+},
+{
+"names": [
+"SpherePoint.pointDiffeomorph"
+],
+"class": "keep",
+"lines": [
+4788,
+4792
+],
+"sha256": "a0614c27c9410375ea71937e135d66e2e33e47e11ce2b98d70b8bf5050b655b5"
+},
+{
+"names": [
+"SpherePoint.pointDiffeomorph_apply"
+],
+"class": "keep",
+"lines": [
+4794,
+4797
+],
+"sha256": "c34d1e2fa34dc68d07c02b43379122ecb81d727fb67c291d69c51ff3cb5391c3"
+},
+{
+"names": [
+"SpherePoint.pointChartLinear"
+],
+"class": "keep",
+"lines": [
+4799,
+4802
+],
+"sha256": "7b1f709da70d0e101fe9b86538f02b3e58084fc5284bbe2ec8ad61ff290fb03f"
+},
+{
+"names": [
+"SpherePoint.pointClass_sign_compare"
+],
+"class": "keep",
+"lines": [
+4804,
+4834
+],
+"sha256": "30a4af6e189355b9fafb09ee7c42bcbc41670089dab7418a5f785d36de4ffaa4"
+},
+{
+"names": [
+"SpherePoint.punctureHomeomorph"
+],
+"class": "keep",
+"lines": [
+4836,
+4841
+],
+"sha256": "eb620d1485ecf968c975cb4bdb260138c60876dca16c041476ea27dac71608fa"
+},
+{
+"names": [
+"SpherePoint.puncture_contractible"
+],
+"class": "keep",
+"lines": [
+4843,
+4846
+],
+"sha256": "ee4325f285de362d433e2c3c6497478e8bd671b959be929526e73f8cc4d3a1eb"
+},
+{
+"names": [
+"SpherePoint.connectingHomologyEquiv"
+],
+"class": "keep",
+"lines": [
+4848,
+4864
+],
+"sha256": "48bda8eb99fcfe105040a9e2532ee173116f12beadd54141706347567ebd553c"
+},
+{
+"names": [
+"SpherePoint.outwardPointClass"
+],
+"class": "keep",
+"lines": [
+4866,
+4884
+],
+"sha256": "9859a7fea6440b4eaf44e61035d8da35bee84e76bbf0b7d7eaa72892f7aed7be"
+},
+{
+"names": [
+"SpherePoint.outwardPointClass_eq"
+],
+"class": "keep",
+"lines": [
+4886,
+4925
+],
+"sha256": "3276c1ac4d0782d5679b6935528d657fa62e2edeffacac2448e2c15771bc034c"
+},
+{
+"names": [
+"SpherePoint.chartSign_mul_self"
+],
+"class": "keep",
+"lines": [
+4927,
+4953
+],
+"sha256": "84a826b69826b82a35d6cea3b582ae7e0c7e83745c0894c082f7ab68714b8a00"
+},
+{
+"names": [
+"SpherePoint.connecting_eq_sign_outward"
+],
+"class": "keep",
+"lines": [
+4955,
+4985
+],
+"sha256": "799b2052bdc47016d9e5ab53147ec9f51278445f0be60056564a3f4fa8d9b662"
+},
+{
+"names": [
+"SpherePoint.outwardPointClassEquiv"
+],
+"class": "keep",
+"lines": [
+4987,
+5015
+],
+"sha256": "9baa92d0ea498e0fe61b5338088160e0e1e49f4e552788e092fc21f705bfc07c"
+},
+{
+"names": [
+"SpherePoint.outwardClass"
+],
+"class": "keep",
+"lines": [
+5017,
+5023
+],
+"sha256": "4b386447cdb37bb33c1a0ef3542ef8e432446b958dd2fc2ecf116bc457df6565"
+},
+{
+"names": [
+"SpherePoint.outwardClassEquiv"
+],
+"class": "keep",
+"lines": [
+5025,
+5031
+],
+"sha256": "6efee0700e17c98b73d9d5857d1b7536b8b5d7ef43a2daaa481a831446a879a7"
+},
+{
+"names": [
+"SpherePoint.outwardPointClass_eq_global"
+],
+"class": "keep",
+"lines": [
+5033,
+5045
+],
+"sha256": "1d87f1f20f10b3cde3c801b797f4b55bc8f3e4f3b0f58f0ae8d861564695140a"
+},
+{
+"names": [
+"SpherePoint.pointConnecting_eq_outward"
+],
+"class": "keep",
+"lines": [
+5047,
+5066
+],
+"sha256": "bac3e52b6e0a349ffc158a77c347c47af1d72071c99ed8b56b69b1ce56ded6f9"
+},
+{
+"names": [
+"SpherePoint.sourceCountMark"
+],
+"class": "keep",
+"lines": [
+5068,
+5072
+],
+"sha256": "dfff8cac6ddf7807f323775957c18c73c282793b83b8bd8da3e69f04f6b6457e"
+},
+{
+"names": [
+"SpherePoint.overlapCountMark"
+],
+"class": "keep",
+"lines": [
+5074,
+5078
+],
+"sha256": "2ecfc2dcc918c827d826643ab298fa6022bbf14ba8459b1b23570124bf5d0093"
+},
+{
+"names": [
+"SpherePoint.targetCountMark"
+],
+"class": "keep",
+"lines": [
+5080,
+5083
+],
+"sha256": "faa1c8bc6f3deab6bc85c5d2ed9ca812851cbeb17df4162f1251bc99c72813fc"
+},
+{
+"names": [
+"SpherePoint.overlapCountMark_linear"
+],
+"class": "keep",
+"lines": [
+5085,
+5098
+],
+"sha256": "1bf5708e3ac85b2754b0a8e0c44a66a99eccef70cf125eb7b082552eaf308193"
+},
+{
+"names": [
+"SpherePoint.countMark_of_connecting"
+],
+"class": "keep",
+"lines": [
+5100,
+5115
+],
+"sha256": "6e9b402d46bc01eb395fd0fec3373b2d5873394bad975766ca0c080e2de413ac"
+},
+{
+"names": [
+"ManifoldMorse.MorseSurgeryData.indexTwoCollapseCoordinate"
+],
+"class": "keep",
+"lines": [
+5117,
+5123
+],
+"sha256": "7643ddb0591d1ece8b485646714a1cc13e351c39d73e328a233cb78649df607a"
+},
+{
+"names": [
+"ManifoldMorse.MorseSurgeryData.indexTwoCoordinate_surjective"
+],
+"class": "keep",
+"lines": [
+5125,
+5133
+],
+"sha256": "962b68125df8dd7843a824478e0f9e2f3ec13b44ef3c17e9a146e34776be5dbc"
+},
+{
+"names": [
+"ManifoldMorse.MorseSurgeryData.indexTwoCoordinate_kernel"
+],
+"class": "keep",
+"lines": [
+5135,
+5151
+],
+"sha256": "c6cb4164992541139118bcb8199971f23264bf26efaaf9e9b20a3f6fda1862e9"
+},
+{
+"names": [
+"ManifoldMorse.MorseSurgeryData.lowerRealization_two_injective"
+],
+"class": "keep",
+"lines": [
+5153,
+5169
+],
+"sha256": "f17ed566227edfe817166d43de644f5ca34b52208505892271b9d9fad75b1e59"
+},
+{
+"names": [
+"ManifoldMorse.MorseSurgeryData.exists_indexTwoHomology_split"
+],
+"class": "keep",
+"lines": [
+5171,
+5186
+],
+"sha256": "8ef981b3842cf7d006195b8f0c8763e28c21d3e98ef02fdf5c7a8c6c4f62205c"
+},
+{
+"names": [
+"ManifoldMorse.MorseSurgeryData.exists_indexTwoBasis_extension"
+],
+"class": "keep",
+"lines": [
+5188,
+5212
+],
+"sha256": "7aa19eaf513a05e021e62dfa10dfadd635052c66a0bed26db4e8db3c11682c92"
+},
+{
+"names": [
+"ManifoldMorse.SurgeryWindows.indexTwoBasis_step"
+],
+"class": "keep",
+"lines": [
+5214,
+5247
+],
+"sha256": "4a503e78ef991fd5d8c7481d7e7d50d29d14cb53d966d8d129436c6fec6c634b"
+},
+{
+"names": [
+"ManifoldMorse.SurgeryWindows.indexTwoBasis"
+],
+"class": "keep",
+"lines": [
+5249,
+5271
+],
+"sha256": "1cd454bfe82581a155f6fe55ee1b73a0b0aaaf8e2b82a7c30567e1e0c41cdab2"
+},
+{
+"names": [
+"ManifoldMorse.MorseSurgeryData.indexThreeAttachingClass"
+],
+"class": "keep",
+"lines": [
+5273,
+5278
+],
+"sha256": "544915a81b13de75a933425e97abb931c819d3119d3240b98ed7c45a6957177c"
+},
+{
+"names": [
+"ManifoldMorse.MorseSurgeryData.coreBoundary_two_eq_smul"
+],
+"class": "keep",
+"lines": [
+5280,
+5291
+],
+"sha256": "827cc0dba8e54f1917b2e3dedc4c7cb0f253751e902167423ebad5bc07dd470e"
+},
+{
+"names": [
+"ManifoldMorse.MorseSurgeryData.coreBoundary_two_range"
+],
+"class": "keep",
+"lines": [
+5293,
+5319
+],
+"sha256": "25499e639f6ef58bf7c09389554236a8bd2ba5667a372ee421523f2173c3b047"
+},
+{
+"names": [
+"ManifoldMorse.MorseSurgeryData.indexThree_lowerRealization_surjective"
+],
+"class": "keep",
+"lines": [
+5321,
+5334
+],
+"sha256": "1c6bfd7840573bbb7492eb929df57930c6a972178c9616f7468d9c6df2c95593"
+},
+{
+"names": [
+"ManifoldMorse.MorseSurgeryData.indexThree_lowerRealization_kernel"
+],
+"class": "keep",
+"lines": [
+5336,
+5342
+],
+"sha256": "996cdba91ea1ba5a1f8a3fb406d944a941f5ad7218286db47698ac2328045c58"
+},
+{
+"names": [
+"ManifoldMorse.MorseSurgeryData.indexThreePresentation"
+],
+"class": "keep",
+"lines": [
+5344,
+5355
+],
+"sha256": "1d3885768a4e529c92c3ab846a022baf6332087d132016088654953425bf9fc2"
+},
+{
+"names": [
+"ManifoldMorse.SurgeryWindows.middlePresentation"
+],
+"class": "keep",
+"lines": [
+5357,
+5376
+],
+"sha256": "70fef6135111c6a8c1a29121cfd1708274d8ca2b44cfad6fdd2e0cd05cb7929e"
+},
+{
+"names": [
+"ManifoldMorse.SurgeryWindows.middleMatrix"
+],
+"class": "keep",
+"lines": [
+5378,
+5384
+],
+"sha256": "9b68a8c4902e2bdee3f3f8c127b0931fcd86dda6507cd67c2d92ce5bf5ddffdf"
+},
+{
+"names": [
+"AdaptedWindows.exists_ordered_middle_family"
+],
+"class": "keep",
+"lines": [
+5386,
+5429
+],
+"sha256": "98bbaf39fc157007b8a02baad34930a5807abb3f7f42b7405dbafe0f96f72d59"
+}
+]
+}
