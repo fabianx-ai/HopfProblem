@@ -29,6 +29,9 @@ open scoped ContDiff ContinuousMap
 
 noncomputable section
 
+/-- Minimum principle.  Let `f` be continuous and `g` smooth on a compact manifold, `g = l` on the
+level `f = l`, and `l ≤ g` at every critical point of `g` in `{l ≤ f}`.  Then `l ≤ g` on all of
+`{l ≤ f}`. -/
 theorem MorseCancellation.superlevel_bound_of_critical_bound {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M]
     [CompactSpace M] {f g : M → ℝ} (hf : Continuous f) (hg : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ g)
@@ -48,6 +51,10 @@ theorem MorseCancellation.superlevel_bound_of_critical_bound {E M : Type*} [Norm
       exact (hboundary p heq).ge
   exact hgp.trans (hmin hx)
 
+/-- Let `g` agree with `f` near every point outside `U ⊆ {l < f}` and near every critical point of
+`f`, let every critical point of `g` be a critical point of `f` or one of `p`, `q` with
+`l ≤ g p`, `l ≤ g q`.  Then for every `a < l`: `g y = a ↔ f y = a`, and `g = f` near every `y`
+with `f y ≤ a`. -/
 theorem MorseCancellation.birth_preserves_lower_levels {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M]
     [CompactSpace M] {f g : M → ℝ} (hf : Continuous f) (hg : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ g)
@@ -83,6 +90,8 @@ theorem MorseCancellation.birth_preserves_lower_levels {E M : Type*} [NormedAddC
   · intro hfy
     exact (hexterior y (hout y (hfy ▸ ha.le))).self_of_nhds.trans hfy
 
+/-- If `f` and `g` are smooth, `a` is a regular value of both and `{g = a} = {f = a}` pointwise,
+the identity is a diffeomorphism `{f = a} ≃ {g = a}` for the regular-level charted structures. -/
 def MorseCancellation.equalLevelDiffeomorph {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M]
     {f g : M → ℝ} {a : ℝ} (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)
@@ -110,6 +119,8 @@ def MorseCancellation.equalLevelDiffeomorph {E M : Type*} [NormedAddCommGroup E]
         (RegularLevel.contMDiff_iff_inclusion hf hfr 𝓘(ℝ, RegularLevel.Model E) G).mpr
           (RegularLevel.contMDiff_inclusion hg hgr) }
 
+/-- If `a` is regular for `f`, every critical point of `g` is a critical point of `f` (near which
+`g = f`) or one of `p`, `q` with `a < g p`, `a < g q`, then `a` is regular for `g`. -/
 theorem MorseCancellation.regular_level_of_retained_critical_germs {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] {f g : M → ℝ} {a : ℝ}
@@ -125,6 +136,9 @@ theorem MorseCancellation.regular_level_of_retained_critical_germs {E M : Type*}
   · exact hp.ne' hy
   · exact hq.ne' hy
 
+/-- If every critical point of `g` is a critical point of `f` (near which `g = f`) or one of `p`,
+`q` with `a < g p`, `a < g q`, and every critical point of `f` with value `≤ a` has index `≤ k`,
+then every critical point of `g` with value `≤ a` has index `≤ k`. -/
 theorem MorseCancellation.birth_preserves_lower_index_bound {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f g : M → ℝ} {p q : M} {a : ℝ}
     {k : ℕ}
@@ -143,6 +157,9 @@ theorem MorseCancellation.birth_preserves_lower_index_bound {E M : Type*} [Norme
   · exact False.elim (hp.not_ge (hzp ▸ hz))
   · exact False.elim (hq.not_ge (hzq ▸ hz))
 
+/-- If every critical point of `g` is a critical point of `f` (near which `g = f`) or one of `p`,
+`q`, `a` is regular for `f`, `f` has no critical value in `(a, b)`, `g p < b` and `g p < g q`,
+then every critical value of `g` below `g p` is below `a`. -/
 theorem MorseCancellation.birth_first_new_value_gap {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f g : M → ℝ} {p q : M} {a b : ℝ}
     (hcrit :
@@ -163,6 +180,9 @@ theorem MorseCancellation.birth_first_new_value_gap {E M : Type*} [NormedAddComm
   · exact False.elim ((hzp ▸ hz : g p < g p).false)
   · exact False.elim (hpq.not_gt (hzq ▸ hz))
 
+/-- If every critical point of `g` is a critical point of `f` (near which `g = f`) or one of `p`,
+`q`, neither of which has index `0` for `g`, and `m` is the only index-`0` critical point of `f`,
+then `m` is the only index-`0` critical point of `g`. -/
 theorem MorseCancellation.birth_preserves_unique_index_zero {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f g : M → ℝ} {p q : M}
     (m : ManifoldMorse.criticalPoints E f)
