@@ -1,0 +1,9 @@
+found [_private.Lib.AlgebraicTopology.SingularCochains.PositivePrimitives.0.AlgebraicTopology.SingularCochains.dualHomotopyEquiv]
+levelParams [u, w]
+AlgebraicTopology.SingularCochains.dualHomotopyEquiv✝.{u_1,
+  u_2} : (A : AddCommGrpCat.{u_2}) →
+  {K L : ChainComplex.{u_1, u_1 + 1, 0} (ModuleCat.{u_1, 0} ℤ) ℕ} →
+    HomotopyEquiv.{u_1, u_1 + 1, 0} K L →
+      HomotopyEquiv.{max u_2 u_1, max (u_2 + 1) (u_1 + 1), 0}
+        (AlgebraicTopology.SingularCochains.dualComplex.{u_1, u_2} A L)
+        (AlgebraicTopology.SingularCochains.dualComplex.{u_1, u_2} A K)
