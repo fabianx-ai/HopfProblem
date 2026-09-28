@@ -33,6 +33,9 @@ open scoped ContDiff ContinuousMap
 
 noncomputable section
 
+/-- The parametrisation `S(P) × (punctured unit ball of N) → belt source` of the tubular
+neighbourhood of the belt sphere of a Morse surgery datum `d` in the chart coordinates
+`(positive, negative)`, sending `(v, z)` to `(v, z)` inside the enlarged closed belt. -/
 def MorseCancellation.nativeBeltTubeSource {E M : Type} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ} {p : M}
     (d : ManifoldMorse.MorseSurgeryData E f p) :
@@ -50,6 +53,10 @@ def MorseCancellation.nativeBeltTubeSource {E M : Type} [NormedAddCommGroup E] [
   continuous_toFun :=
     (continuous_fst.prodMk (continuous_subtype_val.comp continuous_snd)).subtype_mk _
 
+/-- The tubular neighbourhood of the belt sphere of `d`, parametrised by
+`S(P) × (punctured unit ball of N)` through `nativeBeltTubeSource` and the belt neighbourhood
+homeomorphism, lands in the complement of the belt sphere in the upper level, because the
+normal coordinate is `d.radius • z ≠ 0`. -/
 def MorseCancellation.nativeBeltTubeInComplement {E M : Type} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ} {p : M}
     (d : ManifoldMorse.MorseSurgeryData E f p) :
@@ -73,6 +80,8 @@ def MorseCancellation.nativeBeltTubeInComplement {E M : Type} [NormedAddCommGrou
             (nativeBeltTubeSource d).continuous)).subtype_mk
       _
 
+/-- The meridian of the belt tube of `d` through the belt point `v` at normal radius `r`,
+`0 < r < 1`: the `(λ - 1)`-sphere `S(N) → (belt sphere)ᶜ` given by `u ↦ (v, r • u)`. -/
 def MorseCancellation.nativeBeltTubeMeridian {E M : Type} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ} {p : M}
     (d : ManifoldMorse.MorseSurgeryData E f p)
@@ -82,6 +91,7 @@ def MorseCancellation.nativeBeltTubeMeridian {E M : Type} [NormedAddCommGroup E]
   (nativeBeltTubeInComplement d).comp
     ((ContinuousMap.const _ v).prodMk (PuncturedBall.fromSphere 1 r hr hr1))
 
+/-- The boundary sphere of the parameter ball: `S(A) → closedBall 0 r`, `u ↦ r • u` (`0 < r`). -/
 def MorseCancellation.parameterBallBoundary {A : Type} [NormedAddCommGroup A] [NormedSpace ℝ A] (r : ℝ)
     (hr : 0 < r) : C(Metric.sphere (0 : A) 1, Metric.closedBall (0 : A) r)
     where
@@ -92,10 +102,13 @@ def MorseCancellation.parameterBallBoundary {A : Type} [NormedAddCommGroup A] [N
       continuous_const.smul continuous_subtype_val
     exact h.subtype_mk _
 
+/-- The centre `0` of the closed parameter ball of radius `r > 0`. -/
 def MorseCancellation.parameterBallCenter {A : Type} [NormedAddCommGroup A] (r : ℝ) (hr : 0 < r) :
     Metric.closedBall (0 : A) r :=
   ⟨0, by simpa using hr.le⟩
 
+/-- The radial homotopy `(t, u) ↦ (1 - t) • (r • u)` from `parameterBallBoundary r hr` to the
+constant map at `parameterBallCenter r hr` inside the closed ball of radius `r`. -/
 def MorseCancellation.parameterBallContraction {A : Type} [NormedAddCommGroup A] [NormedSpace ℝ A]
     (r : ℝ) (hr : 0 < r) :
     (parameterBallBoundary (A := A) r hr).Homotopy
@@ -119,6 +132,8 @@ def MorseCancellation.parameterBallContraction {A : Type} [NormedAddCommGroup A]
   map_zero_left u := by apply Subtype.ext; simp [parameterBallBoundary]
   map_one_left u := by apply Subtype.ext; simp [parameterBallCenter]
 
+/-- For every `g : C(closedBall 0 r, Y)`, the restriction `g ∘ parameterBallBoundary r hr` to the
+boundary sphere is homotopic to the constant map at `g 0`. -/
 theorem MorseCancellation.parameterBall_boundary_nullhomotopic {A : Type} [NormedAddCommGroup A]
     [NormedSpace ℝ A] {Y : Type} [TopologicalSpace Y] (r : ℝ) (hr : 0 < r)
     (g : C(Metric.closedBall (0 : A) r, Y)) :
@@ -127,11 +142,15 @@ theorem MorseCancellation.parameterBall_boundary_nullhomotopic {A : Type} [Norme
   have h := (ContinuousMap.Homotopic.refl g).comp ⟨parameterBallContraction r hr⟩
   exact h
 
+/-- Normalising commutes with positive scaling: `‖r • x‖⁻¹ • (r • x) = ‖x‖⁻¹ • x` for `0 < r`. -/
 theorem MorseCancellation.normalized_pos_smul {F : Type} [NormedAddCommGroup F] [NormedSpace ℝ F]
     (r : ℝ) (hr : 0 < r) (x : F) : ‖r • x‖⁻¹ • (r • x) = ‖x‖⁻¹ • x := by
   rw [norm_smul, Real.norm_eq_abs, abs_of_pos hr, mul_inv_rev, smul_smul, mul_assoc,
     inv_mul_cancel₀ hr.ne', mul_one]
 
+/-- The chart coordinates `(belt component, normal component)` of a map
+`F : C(closedBall 0 ε, beltTarget)` of a parameter ball into the belt neighbourhood of `d`,
+obtained through the inverse belt neighbourhood homeomorphism. -/
 def MorseCancellation.beltBallCoordinates {E M A : Type} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ} {p : M} [NormedAddCommGroup A]
     (d : ManifoldMorse.MorseSurgeryData E f p) (ε : ℝ)
@@ -143,6 +162,7 @@ def MorseCancellation.beltBallCoordinates {E M A : Type} [NormedAddCommGroup E] 
       ((d.chart.beltNeighborhoodHomeomorph d.radius d.radius_pos).symm.continuous.comp
         F.continuous)⟩
 
+/-- The normal component of `beltBallCoordinates d ε F z` is `d.radius⁻¹ • d.beltNormal (F z)`. -/
 theorem MorseCancellation.beltBallCoordinates_normal {E M A : Type} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ} {p : M}
     [NormedAddCommGroup A] [NormedSpace ℝ A] (d : ManifoldMorse.MorseSurgeryData E f p)
@@ -151,6 +171,9 @@ theorem MorseCancellation.beltBallCoordinates_normal {E M A : Type} [NormedAddCo
     (beltBallCoordinates d ε F z).2 = d.radius⁻¹ • d.beltNormal (F z).val :=
   rfl
 
+/-- The normalised-normal map `S(A) → punctured unit ball of N` of `F` on the boundary of the
+parameter ball, under the hypotheses that all normal components of `F` have norm `< 1`
+(`hsmall`) and are nonzero on the boundary sphere (`hne`). -/
 def MorseCancellation.beltBallBoundaryNormal {E M A : Type} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ} {p : M} [NormedAddCommGroup A]
     [NormedSpace ℝ A] (d : ManifoldMorse.MorseSurgeryData E f p) (ε : ℝ) (hε : 0 < ε)
@@ -163,6 +186,9 @@ def MorseCancellation.beltBallBoundaryNormal {E M A : Type} [NormedAddCommGroup 
           (parameterBallBoundary ε hε).continuous).subtype_mk
       _⟩
 
+/-- The boundary sphere of the parameter ball mapped by `F` into the complement of the belt
+sphere, written through the belt tube: `u ↦ nativeBeltTubeInComplement d (belt part, normal part)`
+of `F (parameterBallBoundary ε hε u)`. -/
 def MorseCancellation.beltBallBoundaryInComplement {E M A : Type} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ} {p : M}
     [NormedAddCommGroup A] [NormedSpace ℝ A] (d : ManifoldMorse.MorseSurgeryData E f p)
@@ -175,6 +201,8 @@ def MorseCancellation.beltBallBoundaryInComplement {E M A : Type} [NormedAddComm
           (parameterBallBoundary ε hε)).prodMk
       (beltBallBoundaryNormal d ε hε F hsmall hne))
 
+/-- The underlying point of `beltBallBoundaryInComplement d ε hε F hsmall hne u` is
+`F (parameterBallBoundary ε hε u)`. -/
 theorem MorseCancellation.beltBallBoundaryInComplement_coe {E M A : Type} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ} {p : M}
     [NormedAddCommGroup A] [NormedSpace ℝ A] (d : ManifoldMorse.MorseSurgeryData E f p)
@@ -198,6 +226,8 @@ theorem MorseCancellation.beltBallBoundaryInComplement_coe {E M A : Type} [Norme
     rfl
   rw [hs, e.apply_symm_apply]
 
+/-- The normalisation of `beltBallBoundaryNormal d ε hε F hsmall hne u` in the unit sphere is the
+normalised belt normal `‖n‖⁻¹ • n` of `n = d.beltNormal (F (parameterBallBoundary ε hε u))`. -/
 theorem MorseCancellation.beltBallBoundary_normalized_coe {E M A : Type} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ} {p : M}
     [NormedAddCommGroup A] [NormedSpace ℝ A] (d : ManifoldMorse.MorseSurgeryData E f p)
@@ -214,6 +244,10 @@ theorem MorseCancellation.beltBallBoundary_normalized_coe {E M A : Type} [Normed
       _
   exact normalized_pos_smul d.radius⁻¹ (inv_pos.mpr d.radius_pos) _
 
+/-- Let `G : A → d.UpperLevel` be continuous on a neighbourhood `t` of `0` with `G 0` on the belt
+sphere of `d` at `v`.  Then there is a neighbourhood `s ⊆ t` of `0` on which `G` is continuous,
+takes values in the belt normal domain and has normal component `d.radius⁻¹ • d.beltNormal (G z)`
+of norm `< 1`. -/
 theorem MorseCancellation.exists_small_native_belt_neighborhood {E M A : Type} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ} {p : M}
     [NormedAddCommGroup A] [NormedSpace ℝ A] (d : ManifoldMorse.MorseSurgeryData E f p)
