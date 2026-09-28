@@ -36,6 +36,9 @@ open scoped ContDiff ContinuousMap
 
 noncomputable section
 
+/-- Let `a : X → S(P)` be homotopic to the constant map at `v` and `b : X → punctured unit ball`.
+Then `nativeBeltTubeInComplement d ∘ (a, b)` is homotopic to the meridian
+`nativeBeltTubeMeridian d v r hr hr1` composed with the normalisation `toSphere 1 ∘ b`. -/
 theorem MorseCancellation.nativeBeltTube_homotopic_meridian {E M : Type} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ} {p : M}
     (d : ManifoldMorse.MorseSurgeryData E f p) {X : Type} [TopologicalSpace X]
@@ -61,6 +64,8 @@ theorem MorseCancellation.nativeBeltTube_homotopic_meridian {E M : Type} [Normed
   rw [heq] at hh
   exact hh
 
+/-- For an adapted window `S` at `q`, the belt tube meridian `nativeBeltTubeMeridian (S.data q) v r`
+is the upper meridian `nativeUpperMeridianInComplement S q v ⟨r, _, _⟩ hr`. -/
 theorem MorseCancellation.nativeBeltTubeMeridian_eq {E M : Type} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ} [FiniteDimensional ℝ E]
     [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] (S : AdaptedWindows E f)
@@ -81,6 +86,9 @@ theorem MorseCancellation.nativeBeltTubeMeridian_eq {E M : Type} [NormedAddCommG
   simp only [MorseHandle.ambientMap, BeltPassage.upper, Prod.swap, norm_smul,
     Real.norm_eq_abs, abs_of_pos hr, mem_sphere_zero_iff_norm.mp u.property, mul_one, smul_smul]
 
+/-- The boundary map `beltBallBoundaryInComplement d ε hε F hsmall hne` of a parameter ball in the
+belt neighbourhood is homotopic to the meridian through the belt component of `F 0` at radius
+`r`, composed with the normalised normal map `toSphere 1 ∘ beltBallBoundaryNormal`. -/
 theorem MorseCancellation.beltBallBoundary_homotopic_meridian {E M A : Type} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ} {p : M}
     [NormedAddCommGroup A] [NormedSpace ℝ A] (d : ManifoldMorse.MorseSurgeryData E f p)
@@ -98,6 +106,10 @@ theorem MorseCancellation.beltBallBoundary_homotopic_meridian {E M A : Type} [No
     nativeBeltTube_homotopic_meridian d (a.comp (parameterBallBoundary ε hε))
       (beltBallBoundaryNormal d ε hε F hsmall hne) (a (parameterBallCenter ε hε)) ha r hr hr1
 
+/-- Let `g : A → d.UpperLevel` be continuous on `s`, with values in the belt normal domain and
+normal component of norm `< 1`, and let `b : BoundaryData (d.beltNormal ∘ g) L s`.  Then there is
+a map `J : S(A) → (belt sphere)ᶜ` with `J u = g (b.radius • u)` which is homotopic to a meridian
+`nativeBeltTubeMeridian d v r` composed with the normalised map `b.normalizedMap`. -/
 theorem MorseCancellation.normal_boundary_homotopic_native_meridian {E M A : Type}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ}
     {p : M} [NormedAddCommGroup A] [NormedSpace ℝ A]
