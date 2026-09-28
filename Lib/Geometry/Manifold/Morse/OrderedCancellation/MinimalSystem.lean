@@ -29,6 +29,9 @@ open scoped ContDiff ContinuousMap
 
 noncomputable section
 
+/-- On a compact manifold `M` modelled on the finite-dimensional space `E` there is a Morse
+function `f` with an `AdaptedWindows E f` package whose number of critical points is at most that
+of every Morse function with distinct critical values. -/
 theorem MorseCancellation.exists_minimal_excellent_morse_system (E : Type*) (M : Type*)
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] :
@@ -60,6 +63,8 @@ theorem MorseCancellation.exists_minimal_excellent_morse_system (E : Type*) (M :
   rw [hcard]
   exact Nat.find_min' hex ⟨g, hg, hmg, hinjg, rfl⟩
 
+/-- If `f` has the least number of critical points among Morse functions with distinct critical
+values, then no such Morse function `g` has exactly two critical points fewer than `f`. -/
 theorem MorseCancellation.minimal_excellent_morse_forbids_pair_removal {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {f g : M → ℝ}
@@ -77,6 +82,8 @@ theorem MorseCancellation.minimal_excellent_morse_forbids_pair_removal {E M : Ty
   have hle := hminimal g hg hmg hinjg
   omega
 
+/-- If `f` has the least number of critical points among Morse functions with distinct critical
+values, then so has `-f`. -/
 theorem MorseCancellation.minimal_excellent_morse_neg {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ}
     (hminimal :
