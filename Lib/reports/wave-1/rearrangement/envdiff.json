@@ -1,0 +1,82 @@
+{
+ "before": "/home/goblin/.claude/jobs/06995e68/tmp/wave1/dump_head.jsonl",
+ "after": "/home/goblin/.claude/jobs/06995e68/tmp/wave1/rearrangement/dump_after.jsonl",
+ "prefix": "",
+ "constants": [
+  38248,
+  38248
+ ],
+ "lost": [],
+ "added": [],
+ "changed_type_source": [],
+ "changed_type_proof_naming": [],
+ "changed_type_accepted": [],
+ "added_accepted": [],
+ "accept_without_effect": [],
+ "changed_type_all": [],
+ "moves": [
+  [
+   "Lib.Geometry.Manifold.Morse.Rearrangement",
+   "Hopf.Proof.Geometry.Manifold.Morse.Rearrangement.MiddleLevel",
+   2
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.Rearrangement",
+   "Hopf.Proof.Geometry.Manifold.Morse.Rearrangement.SheetArc",
+   2
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.Rearrangement",
+   "Lib.Geometry.Manifold.Morse.Rearrangement.AmbientTransversality",
+   23
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.Rearrangement",
+   "Lib.Geometry.Manifold.Morse.Rearrangement.BasinImages",
+   19
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.Rearrangement",
+   "Lib.Geometry.Manifold.Morse.Rearrangement.HeightCoordinates",
+   14
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.Rearrangement",
+   "Lib.Geometry.Manifold.Morse.Rearrangement.IntervalTranslation",
+   17
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.Rearrangement",
+   "Lib.Geometry.Manifold.Morse.Rearrangement.LevelConnectedness",
+   8
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.Rearrangement",
+   "Lib.Geometry.Manifold.Morse.Rearrangement.LevelTime",
+   8
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.Rearrangement",
+   "Lib.Geometry.Manifold.Morse.Rearrangement.LongitudinalBlend",
+   9
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.Rearrangement",
+   "Lib.Geometry.Manifold.Morse.Rearrangement.SmoothTransition",
+   4
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.Rearrangement",
+   "Lib.Geometry.Manifold.Morse.Rearrangement.TransverseChart",
+   10
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.Rearrangement",
+   "Lib.Geometry.Manifold.Morse.Rearrangement.TubeMotion",
+   37
+  ]
+ ],
+ "ambiguous": [],
+ "auxiliary_moved": 49,
+ "verdict": "PASS"
+}

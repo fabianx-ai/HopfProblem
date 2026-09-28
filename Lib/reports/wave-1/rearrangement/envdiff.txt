@@ -1,0 +1,19 @@
+constants before 38248 after 38248 (keys 38146 38146 )
+lost 0 added 0 of which source declarations: 0 0 ; names with changed type 0 of which source: 0
+auxiliary lost/added/changed (not judged): 0 0 0
+module moves (source declarations, 1-to-1):
+       2  Lib.Geometry.Manifold.Morse.Rearrangement -> Hopf.Proof.Geometry.Manifold.Morse.Rearrangement.MiddleLevel
+       2  Lib.Geometry.Manifold.Morse.Rearrangement -> Hopf.Proof.Geometry.Manifold.Morse.Rearrangement.SheetArc
+      23  Lib.Geometry.Manifold.Morse.Rearrangement -> Lib.Geometry.Manifold.Morse.Rearrangement.AmbientTransversality
+      19  Lib.Geometry.Manifold.Morse.Rearrangement -> Lib.Geometry.Manifold.Morse.Rearrangement.BasinImages
+      14  Lib.Geometry.Manifold.Morse.Rearrangement -> Lib.Geometry.Manifold.Morse.Rearrangement.HeightCoordinates
+      17  Lib.Geometry.Manifold.Morse.Rearrangement -> Lib.Geometry.Manifold.Morse.Rearrangement.IntervalTranslation
+       8  Lib.Geometry.Manifold.Morse.Rearrangement -> Lib.Geometry.Manifold.Morse.Rearrangement.LevelConnectedness
+       8  Lib.Geometry.Manifold.Morse.Rearrangement -> Lib.Geometry.Manifold.Morse.Rearrangement.LevelTime
+       9  Lib.Geometry.Manifold.Morse.Rearrangement -> Lib.Geometry.Manifold.Morse.Rearrangement.LongitudinalBlend
+       4  Lib.Geometry.Manifold.Morse.Rearrangement -> Lib.Geometry.Manifold.Morse.Rearrangement.SmoothTransition
+      10  Lib.Geometry.Manifold.Morse.Rearrangement -> Lib.Geometry.Manifold.Morse.Rearrangement.TransverseChart
+      37  Lib.Geometry.Manifold.Morse.Rearrangement -> Lib.Geometry.Manifold.Morse.Rearrangement.TubeMotion
+ambiguous module changes: 0
+auxiliary constants that changed module: 49
+VERDICT PASS
