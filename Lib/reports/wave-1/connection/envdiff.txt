@@ -1,0 +1,25 @@
+constants before 38248 after 38249 (keys 38146 38147 )
+lost 1 added 2 of which source declarations: 0 0 ; names with changed type 1 of which source: 0
+auxiliary lost/added/changed (not judged): 1 2 1
+module moves (source declarations, 1-to-1):
+      16  Lib.Geometry.Manifold.Morse.Connection -> Lib.Geometry.Manifold.Morse.Connection.BeltArc
+       8  Lib.Geometry.Manifold.Morse.Connection -> Lib.Geometry.Manifold.Morse.Connection.CubicEndpoints
+      22  Lib.Geometry.Manifold.Morse.Connection -> Lib.Geometry.Manifold.Morse.Connection.CubicFieldChart
+      10  Lib.Geometry.Manifold.Morse.Connection -> Lib.Geometry.Manifold.Morse.Connection.CylinderHolonomy
+      37  Lib.Geometry.Manifold.Morse.Connection -> Lib.Geometry.Manifold.Morse.Connection.EndpointBasins
+      13  Lib.Geometry.Manifold.Morse.Connection -> Lib.Geometry.Manifold.Morse.Connection.FieldChartGluing
+      20  Lib.Geometry.Manifold.Morse.Connection -> Lib.Geometry.Manifold.Morse.Connection.LevelHolonomy
+       9  Lib.Geometry.Manifold.Morse.Connection -> Lib.Geometry.Manifold.Morse.Connection.MinimumBasins
+       9  Lib.Geometry.Manifold.Morse.Connection -> Lib.Geometry.Manifold.Morse.Connection.NoReturn
+      17  Lib.Geometry.Manifold.Morse.Connection -> Lib.Geometry.Manifold.Morse.Connection.PhaseCylinder
+      26  Lib.Geometry.Manifold.Morse.Connection -> Lib.Geometry.Manifold.Morse.Connection.PhaseFlow
+       8  Lib.Geometry.Manifold.Morse.Connection -> Lib.Geometry.Manifold.Morse.Connection.SignEnumerations
+      22  Lib.Geometry.Manifold.Morse.Connection -> Lib.Geometry.Manifold.Morse.Connection.Suspension
+      16  Lib.Geometry.Manifold.Morse.Connection -> Lib.Geometry.Manifold.Morse.Connection.TimeChange
+       6  Lib.Geometry.Manifold.Morse.Connection -> Lib.Geometry.Manifold.Morse.Connection.TransitionPhase
+       5  Lib.Geometry.Manifold.Morse.Connection -> Lib.Geometry.Manifold.Morse.Connection.TransportedCorrections
+      14  Lib.Geometry.Manifold.Morse.Connection -> Lib.Geometry.Manifold.Morse.Connection.TransverseBlocks
+       8  Lib.Geometry.Manifold.Morse.Connection -> Lib.Geometry.Manifold.Morse.Connection.TransverseTimeLifts
+ambiguous module changes: 0
+auxiliary constants that changed module: 98
+VERDICT PASS
