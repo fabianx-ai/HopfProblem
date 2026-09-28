@@ -112,16 +112,107 @@ a module docstring stating the mathematics and the textbook result.
 
 ## Build lines
 
-BUILD_LINES
+All under `nohup`, from the worktree root, Lake 5.0.0-src (Lean 4.33.0); this Lake has no `-j`
+option (`lake build -j3 …` fails with "unknown short option '-j'"), so the builds ran without it.
+Result line of each log (`build<N>.log` in the coordinator scratch), verbatim:
+
+```
+lake build Lib.AlgebraicTopology.Hurewicz.PrismOperator          Build completed successfully (8738 jobs).   (after the split, commit 1)
+lake build Lib                                                   Build completed successfully (9162 jobs).   (commit 1)
+lake build Lib Hopf.LibShims                                     Build completed successfully (9163 jobs).   (after the rename, commit 2)
+lake build Lib Hopf.LibShims                                     Build completed successfully (9163 jobs).   (after the lifts, commit 3)
+lake build Solution S6Shortcuts S6 Challenge Lib.AxiomAudit Hopf.Proof.AxiomAudit
+                                                                 Build completed successfully (9216 jobs).   (commit 3)
+```
+
+Axiom audit (the last log): 3303 `depends on axioms` lines, distinct axioms
+`['Classical.choice', 'Quot.sound', 'propext']`, `sorryAx` occurrences 0 (the only `sorry` warning is
+the pre-existing one in `Challenge.lean:42`, present at the base). `lake env lean
+prism/lift_examples.lean`: exit 0.
+`python3 scripts/lib_stock_census.py --check`: `ratchet PASS: 123 <= baseline 1648`.
+`grep -rn '^import Hopf' Lib/ --include=*.lean`: empty (the three hits without the filter are in
+`Lib/docs/*.md`).
 
 ## envdiff
 
-ENVDIFF
+`lake env lean-agent-ide dump Solution Lib --modules Hopf,Lib --rename prism/rename.txt` after the
+last edit (38267 constants; rename map 20 entries), then
+`envdiff.py dump_head.jsonl dump_after.jsonl --receipt prism/envdiff.json > prism/envdiff.txt`:
+
+```
+constants before 38248 after 38267 (keys 38146 38165 )
+lost 78 added 97 of which source declarations: 0 0 ; names with changed type 75 of which source: 27
+auxiliary lost/added/changed (not judged): 78 97 48
+module moves (source declarations, 1-to-1): 454, all Lib.AlgebraicTopology.Hurewicz.PrismOperator -> …PrismOperator.<Piece>
+ambiguous module changes: 0
+auxiliary constants that changed module: 145
+VERDICT PASS
+```
+
+Reconciliation, name by name. Source declarations lost 0, added 0. The 27 source names with a
+changed type are all in the `PROOF-NAMING` list (type hash changed, `uses` unchanged) and split as:
+
+* the 10 lifted constants of commit 3 (`squareTriangles_diagonal`, `lowerSquareTriangle_outerFace`,
+  `upperSquareTriangle_outerFace`, `subdivisionLowerSquareTriangle_based`,
+  `subdivisionUpperNegativeSquareTriangle_based`, `subdivisionUpperPositiveSquareTriangle_based`,
+  `homotopyTrans_compContinuousMap`, `homotopyTrans_const`, `homotopyTrans_congr`,
+  `tetrahedronSimplexBlendMap`): the binder `Type` → `Type*` adds universe parameters, which the
+  hash sees; these are the planned lifts, listed with their `u = 0` examples above;
+* 17 `alias`es in `Hopf/LibShims.lean`, `SecondHurewicz.SimplyConnected.<d>.eq_1` for `d` in
+  `bottomProductDegenerate`, `edgeStraighteningHomotopy`, `leftProductDegenerate`,
+  `lowerProductTriangle`, `rotationCentered`, `subdivisionLowerProductMap`,
+  `subdivisionLowerTriangleMap`, `subdivisionUpperConeMap`, `subdivisionUpperNegativeMap`,
+  `subdivisionUpperNegativeReversedMap`, `subdivisionUpperPositiveSquareTriangle`,
+  `subdivisionUpperProductMap`, `subdivisionUpperTriangleMap`, `subdivisionWarpCoordinate`,
+  `subdivisionWarpMap`, `tetrahedronQuadrilateralA`, `upperProductTriangle`: their types are the
+  equation lemmas `<d>.eq_1`, which embed the abstracted proof terms `_proof_n` of the unfolded
+  definitions; those auxiliaries are renumbered per module after the split (the spec's
+  "auxiliary proof naming only" case), the LibShims source text is unchanged for them.
+
+Module map = the plan: 454 source declarations moved 1-to-1 into the sixteen pieces (the counts
+per piece are the ranged constants of the piece minus its lifted ones: BasedTetrahedron 37 + 1,
+ComposeHomotopies 11 + 3, NormalizedSquare 30 + 3, SubdivisionTriangleClass 34 + 3, the others as
+in the table); 454 + 10 = 464 ranged constants of the base module. The 20 renamed constants are
+compared under the rename map and appear as moves into `Basic`. Auxiliaries (`_proof_n`, `eq_n`,
+`casesOn`/`recOn`, notation artifacts) lost/added/changed 78/97/48 and 145 moved with their parents
+— not judged by the tool.
 
 ## Left
 
-LEFT
+- `Hurewicz.DegreeTwo.SimplyConnected.cubeBoundary_productBoundary` (`NormalizedSquare`) duplicates
+  `Hurewicz.DegreeTwo.SimplyConnected.subdivisionSquare_boundary_cases` (`SquareSubdivision`; same
+  statement, `SubdivisionSquare` is an `abbrev` for `Fin 2 → I`); nothing deleted this wave.
+  `grep -n 'cubeBoundary_productBoundary\|subdivisionSquare_boundary_cases' Lib/AlgebraicTopology/Hurewicz/PrismOperator/*.lean`
+- `Hurewicz.DegreeTwo.toLoop_transAt` (`HurewiczMap`, `i = 0`) is the special case of
+  `Hurewicz.DegreeTwo.SimplyConnected.subdivision_toLoop_transAt` (`SquareSubdivision`, any `i`).
+  `grep -rn 'toLoop_transAt' Lib/AlgebraicTopology/Hurewicz/PrismOperator/`
+- Namespaces: everything but the prism section keeps `Hurewicz.DegreeTwo.SimplyConnected` (the
+  Hopf shims `SecondHurewicz.SimplyConnected.*` export it), although `SquareRotation`,
+  `SquareSubdivision`, `BasedTetrahedron`, `TwoTriangles` use no `SimplyConnectedSpace` hypothesis,
+  and `crossPoint_left` (`CrossProductPoint`) is a cross-product lemma in that namespace; a
+  Mathlib-style home would be `SingularHomology.crossProductZeroLeft_pointChain` next to the
+  cross-product file, which another agent is splitting.
+  `grep -c SimplyConnectedSpace Lib/AlgebraicTopology/Hurewicz/PrismOperator/{SquareRotation,SquareSubdivision,BasedTetrahedron,TwoTriangles}.lean`
+- Universe 0: 238 declarations keep `{X : Type}` because `SingularChains.Chains`,
+  `SingularChains.SingularSimplex` (`Lib/AlgebraicTopology/SingularHomology/Chains.lean`) and
+  `SingularHomology.crossInsertLeft` (`CrossInsert.lean`) take `(X : Type)`; lifting the interface is
+  a separate step. `grep -c '{[A-Z ]* : Type}' Lib/AlgebraicTopology/Hurewicz/PrismOperator/*.lean`
+- Import lists of the pieces were chosen by direct use (see "The cut"), not minimized by trial
+  builds; `SquareRotation` and `SquareSubdivision` import `Mathlib`.
+  `grep -n '^import' Lib/AlgebraicTopology/Hurewicz/PrismOperator/*.lean`
 
 ## Commits
 
-COMMITS
+Branch `wave1/prism` on base `e669bc93`:
+
+```
+1e1ffad9 Lib/AlgebraicTopology/Hurewicz/PrismOperator: split into 16 topic modules, facade kept
+46b5ab60 Lib/AlgebraicTopology/Hurewicz/PrismOperator: move the prism operator to `Hurewicz.Prism`
+43b00fde Lib/AlgebraicTopology/Hurewicz/PrismOperator: lift ten pure-topology statements to `Type*`
+a9f4c358 Lib/reports/wave-1: prism receipt draft with split receipts, rename map, lift examples
+(final)  Lib/reports/wave-1: prism receipt
+```
+
+Files of the receipt: `Lib/reports/wave-1/prism.md` (this file), `Lib/reports/wave-1/prism/`
+(`receipt_<Piece>.json` × 16 from `split_module.py`, `rename.txt`, `lift_examples.lean`,
+`envdiff.json`, `envdiff.txt`).

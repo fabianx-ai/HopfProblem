@@ -1,0 +1,43 @@
+constants before 38248 after 38267 (keys 38146 38165 )
+lost 78 added 97 of which source declarations: 0 0 ; names with changed type 75 of which source: 27
+  PROOF-NAMING Hurewicz.DegreeTwo.SimplyConnected.lowerSquareTriangle_outerFace
+  PROOF-NAMING Hurewicz.DegreeTwo.SimplyConnected.squareTriangles_diagonal
+  PROOF-NAMING Hurewicz.DegreeTwo.SimplyConnected.subdivisionLowerSquareTriangle_based
+  PROOF-NAMING Hurewicz.DegreeTwo.SimplyConnected.subdivisionUpperNegativeSquareTriangle_based
+  PROOF-NAMING Hurewicz.DegreeTwo.SimplyConnected.subdivisionUpperPositiveSquareTriangle_based
+  PROOF-NAMING Hurewicz.DegreeTwo.SimplyConnected.tetrahedronSimplexBlendMap
+  PROOF-NAMING Hurewicz.DegreeTwo.SimplyConnected.upperSquareTriangle_outerFace
+  PROOF-NAMING Hurewicz.homotopyTrans_compContinuousMap
+  PROOF-NAMING Hurewicz.homotopyTrans_congr
+  PROOF-NAMING Hurewicz.homotopyTrans_const
+  PROOF-NAMING SecondHurewicz.SimplyConnected.bottomProductDegenerate.eq_1
+  PROOF-NAMING SecondHurewicz.SimplyConnected.edgeStraighteningHomotopy.eq_1
+  PROOF-NAMING SecondHurewicz.SimplyConnected.leftProductDegenerate.eq_1
+  PROOF-NAMING SecondHurewicz.SimplyConnected.lowerProductTriangle.eq_1
+  PROOF-NAMING SecondHurewicz.SimplyConnected.rotationCentered.eq_1
+  PROOF-NAMING SecondHurewicz.SimplyConnected.subdivisionLowerProductMap.eq_1
+  PROOF-NAMING SecondHurewicz.SimplyConnected.subdivisionLowerTriangleMap.eq_1
+  PROOF-NAMING SecondHurewicz.SimplyConnected.subdivisionUpperConeMap.eq_1
+  PROOF-NAMING SecondHurewicz.SimplyConnected.subdivisionUpperNegativeMap.eq_1
+  PROOF-NAMING SecondHurewicz.SimplyConnected.subdivisionUpperNegativeReversedMap.eq_1
+auxiliary lost/added/changed (not judged): 78 97 48
+module moves (source declarations, 1-to-1):
+      37  Lib.AlgebraicTopology.Hurewicz.PrismOperator -> Lib.AlgebraicTopology.Hurewicz.PrismOperator.BasedTetrahedron
+      38  Lib.AlgebraicTopology.Hurewicz.PrismOperator -> Lib.AlgebraicTopology.Hurewicz.PrismOperator.BasedTriangle
+      20  Lib.AlgebraicTopology.Hurewicz.PrismOperator -> Lib.AlgebraicTopology.Hurewicz.PrismOperator.Basic
+      11  Lib.AlgebraicTopology.Hurewicz.PrismOperator -> Lib.AlgebraicTopology.Hurewicz.PrismOperator.ComposeHomotopies
+       4  Lib.AlgebraicTopology.Hurewicz.PrismOperator -> Lib.AlgebraicTopology.Hurewicz.PrismOperator.CrossProductPoint
+       2  Lib.AlgebraicTopology.Hurewicz.PrismOperator -> Lib.AlgebraicTopology.Hurewicz.PrismOperator.DegreeTwo
+      25  Lib.AlgebraicTopology.Hurewicz.PrismOperator -> Lib.AlgebraicTopology.Hurewicz.PrismOperator.HurewiczInverse
+      52  Lib.AlgebraicTopology.Hurewicz.PrismOperator -> Lib.AlgebraicTopology.Hurewicz.PrismOperator.HurewiczMap
+       5  Lib.AlgebraicTopology.Hurewicz.PrismOperator -> Lib.AlgebraicTopology.Hurewicz.PrismOperator.MapGenLoop
+      30  Lib.AlgebraicTopology.Hurewicz.PrismOperator -> Lib.AlgebraicTopology.Hurewicz.PrismOperator.NormalizedSquare
+      36  Lib.AlgebraicTopology.Hurewicz.PrismOperator -> Lib.AlgebraicTopology.Hurewicz.PrismOperator.SquareRotation
+      58  Lib.AlgebraicTopology.Hurewicz.PrismOperator -> Lib.AlgebraicTopology.Hurewicz.PrismOperator.SquareSubdivision
+      34  Lib.AlgebraicTopology.Hurewicz.PrismOperator -> Lib.AlgebraicTopology.Hurewicz.PrismOperator.SubdivisionTriangleClass
+      14  Lib.AlgebraicTopology.Hurewicz.PrismOperator -> Lib.AlgebraicTopology.Hurewicz.PrismOperator.TetrahedronRelation
+      28  Lib.AlgebraicTopology.Hurewicz.PrismOperator -> Lib.AlgebraicTopology.Hurewicz.PrismOperator.TwoTriangles
+      60  Lib.AlgebraicTopology.Hurewicz.PrismOperator -> Lib.AlgebraicTopology.Hurewicz.PrismOperator.VertexEdgeStraightening
+ambiguous module changes: 0
+auxiliary constants that changed module: 145
+VERDICT PASS
