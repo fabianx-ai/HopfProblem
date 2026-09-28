@@ -7,7 +7,8 @@ public import Lib.Topology.Sheaves.Cohomology.Cech.DerivedGlobalSections
 
 On a paracompact Hausdorff space of covering dimension at most n, the right-derived
 functors of literal global sections vanish in every degree a > n, for every sheaf
-of abelian groups. This is the covering-dimension theorem (5) of textbook CD07.
+of abelian groups. This is the vanishing theorem of dimension theory for sheaf cohomology
+(cf. Godement, *Topologie algébrique et théorie des faisceaux*, II §5).
 
 The earlier Čech vanishing theorem supplies the full refinement argument: choose
 an order on a cover's indices and use the normalized alternating cochain product

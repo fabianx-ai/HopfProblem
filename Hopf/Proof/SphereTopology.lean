@@ -108,7 +108,6 @@ import Lib.AlgebraicTopology.SingularHomology.Naturality
 import Lib.AlgebraicTopology.SingularHomology.LinearSphereAction
 import Lib.Geometry.Manifold.Morse.SublevelSets
 import Lib.Geometry.Manifold.Morse.Index
-import Lib.Algebra.Module.IntegerPresentation
 import Lib.Geometry.Manifold.Morse.RearrangementTheorem
 import Lib.Geometry.Manifold.Morse.Birth
 import Lib.Geometry.Manifold.Morse.CellStructure

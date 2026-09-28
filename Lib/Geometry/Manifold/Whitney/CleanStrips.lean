@@ -2779,9 +2779,12 @@ structure CleanBigonBoundary {E M : Type*} [NormedAddCommGroup E] [NormedSpace �
         l ∘ WhitneyPairModel.upperStripCoordinates h
 
 /-- Existence of a clean embedded neighbourhood of the bigon boundary: two clean corner patches and
-two clean strip patches for the arcs `a` and `b` glue to a map which is injective, an immersion
-and a closed embedding on a compact neighbourhood of the frontier of the bigon, restricts to `a`
-and `b` on the two edges and meets the two sheets only there.
+two clean strip patches for the arcs `a` and `b` glue to a map `f` which is smooth, injective and
+an immersion on an open set `W`, is a closed embedding on a compact neighbourhood `C ⊆ W` of the
+frontier of the bigon, restricts to `a` and `b` on the two edges, agrees near the edges with the
+strip charts `k` and `l`, and avoids the sheets `S` and `T` at every point of `W` in the interior
+of the bigon and at every point of the bigon in `C` off its frontier.  Only the bigon side is
+constrained: nothing is asserted about the points of `W` outside the bigon.
 -/
 theorem exists_clean_bigon_boundary_neighborhood {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]

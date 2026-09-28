@@ -71,7 +71,7 @@ end Representations
 
 set_option backward.isDefEq.respectTransparency false in
 /-- Native Ext in every nonnegative degree is the homology of the actual fixed-source
-Hom complex of any injective resolution (textbook lines 1634–1639). -/
+Hom complex of any injective resolution (cf. Weibel §2.5, §2.7). -/
 noncomputable def extHomologyIso (P : C) {A : C} (I : InjectiveResolution A) (q : ℕ) : AddCommGrpCat.of (Ext.{v} P A q) ≅
     (((preadditiveCoyoneda.obj (op P)).mapHomologicalComplex (.up ℕ)).obj I.cocomplex).homology q :=
   I.extAddEquivCohomologyClass.toAddCommGrpIso ≪≫
@@ -84,7 +84,7 @@ noncomputable def extHomologyIso (P : C) {A : C} (I : InjectiveResolution A) (q 
 
 set_option backward.isDefEq.respectTransparency false in
 /-- The resolution comparison sends an Ext cocycle to its actual Hom-complex homology
-class, including degree zero (textbook lines 1634–1639). -/
+class, including degree zero. -/
 theorem extHomologyIso_hom_extMk (P : C) {A : C} (I : InjectiveResolution A) (q : ℕ)
     (f : P ⟶ I.cocomplex.X q) (hf : f ≫ I.cocomplex.d q (q + 1) = 0) :
     (extHomologyIso P I q).hom (I.extMk f (q + 1) rfl hf) =
@@ -157,7 +157,7 @@ theorem extHomologyIso_hom_extMk (P : C) {A : C} (I : InjectiveResolution A) (q 
   exact component _ (ComplexShape.embeddingUpNat.r_eq_some (i := q) rfl)
 
 /-- A coefficient map extended to any map of injective resolutions induces the native
-Ext map on the actual Hom-complex cohomology (textbook lines 1640–1648). -/
+Ext map on the actual Hom-complex cohomology. -/
 theorem extHomologyIso_hom_naturality (P : C) {A B : C}
     (I : InjectiveResolution A) (J : InjectiveResolution B) {f : A ⟶ B}
     (φ : I.Hom J f) (q : ℕ) :
@@ -239,8 +239,7 @@ noncomputable def extFunctorObjIsoRightDerived (P : C) (q : ℕ) :
       _ = _ := (Category.assoc _ _ _).symm)
 
 /-- The one natural Ext/right-derived identification is computed by any injective
-resolution; hence different resolution computations agree canonically
-(textbook lines 1647–1648). -/
+resolution; hence different resolution computations agree canonically. -/
 theorem extFunctorObjIsoRightDerived_hom_app (P : C) {A : C}
     (I : InjectiveResolution A) (q : ℕ) :
     (extFunctorObjIsoRightDerived P q).hom.app A =
