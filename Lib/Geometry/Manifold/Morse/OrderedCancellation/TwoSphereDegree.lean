@@ -26,14 +26,19 @@ open scoped ContDiff ContinuousMap
 
 noncomputable section
 
+/-- A `ℤ`-linear automorphism `e` of `ℤ` is multiplication by `e 1`: `e k = e 1 * k`. -/
 theorem IntLinearAutomorphism.apply_eq_mul (e : ℤ ≃ₗ[ℤ] ℤ) (k : ℤ) : e k = e 1 * k := by
   simpa only [smul_eq_mul, mul_one, mul_comm] using e.map_smul k 1
 
+/-- A `ℤ`-linear automorphism `e` of `ℤ` sends `1` to `1` or to `-1`. -/
 theorem IntLinearAutomorphism.apply_one_eq_one_or_neg_one (e : ℤ ≃ₗ[ℤ] ℤ) :
     e 1 = 1 ∨ e 1 = -1 := by
   apply Int.eq_one_or_neg_one_of_mul_eq_one (v := e.symm 1)
   rw [← apply_eq_mul, e.apply_symm_apply]
 
+/-- Let `e : S² ≃ₜ Y` be a homeomorphism and `g : C(S², Y)` a map inducing a bijection on `H₂`.
+Then `H₂(g) = k • H₂(e)` for some `k ∈ {1, -1}`: a homology isomorphism of the two-sphere has
+degree `±1` relative to the homeomorphism. -/
 theorem MorseCancellation.two_sphere_map_unit_of_homology_bijective {Y : Type} [TopologicalSpace Y]
     (e : (Hemisphere.Sphere 2) ≃ₜ Y) (g : C((Hemisphere.Sphere 2), Y))
     (hg : Function.Bijective (SingularMayerVietoris.singularHomologyMap g 2)) :
