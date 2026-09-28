@@ -57,6 +57,8 @@ open scoped ContDiff ContinuousMap
 noncomputable section
 
 attribute [local instance 100] Classical.propDecidable in
+/-- The collapse map `{f ≤ f p - r²} ∪ range handleMap → OnePoint N` of the handle attachment of
+`d`: `∞` on the lower sublevel set, `collapse ∘ fst` on the handle. -/
 def ManifoldMorse.MorseSurgeryData.attachmentCollapseMap {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [T2Space M]
     {f : M → ℝ} {p : M} (d : ManifoldMorse.MorseSurgeryData E f p) (hf : Continuous f) :
@@ -67,6 +69,8 @@ def ManifoldMorse.MorseSurgeryData.attachmentCollapseMap {E M : Type*}
     (d.chart.attachingHandleMap_lower_iff d.radius d.radius_pos d.block)
 
 attribute [local instance 100] Classical.propDecidable in
+/-- The collapse map `{f ≤ f p + r²} → OnePoint N` of `d`, `attachmentCollapseMap` transported by
+the attachment homeomorphism. -/
 def ManifoldMorse.MorseSurgeryData.upperCollapseMap {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [T2Space M] {f : M → ℝ} {p : M}
     (d : ManifoldMorse.MorseSurgeryData E f p) (hf : Continuous f) :
@@ -74,6 +78,7 @@ def ManifoldMorse.MorseSurgeryData.upperCollapseMap {E M : Type*} [NormedAddComm
   (d.attachmentCollapseMap hf).comp d.attachmentHomeomorph.symm.toHomotopyEquiv.toFun
 
 attribute [local instance 100] Classical.propDecidable in
+/-- `upperCollapseMap hf (attachmentHomeomorph x) = attachmentCollapseMap hf x`. -/
 theorem ManifoldMorse.MorseSurgeryData.upperCollapse_realization {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [T2Space M]
     {f : M → ℝ} {p : M} (d : ManifoldMorse.MorseSurgeryData E f p) (hf : Continuous f)
@@ -83,6 +88,7 @@ theorem ManifoldMorse.MorseSurgeryData.upperCollapse_realization {E M : Type*}
   exact congrArg (d.attachmentCollapseMap hf) (d.attachmentHomeomorph.symm_apply_apply x)
 
 attribute [local instance 100] Classical.propDecidable in
+/-- `upperCollapseMap hf` is `∞` on the lower sublevel set. -/
 theorem ManifoldMorse.MorseSurgeryData.upperCollapse_old {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [T2Space M]
     {f : M → ℝ} {p : M} (d : ManifoldMorse.MorseSurgeryData E f p) (hf : Continuous f)
@@ -96,6 +102,8 @@ theorem ManifoldMorse.MorseSurgeryData.upperCollapse_old {E M : Type*}
   exact ClosedHandleCore.collapseMap_old _ d.handleMap _ _ _ x
 
 attribute [local instance 100] Classical.propDecidable in
+/-- `upperCollapseMap hf` on the handle point `handleMap z` is `DiskOnePointCollapse.collapse z.1`.
+`upperCollapseMap hf` on the handle point `handleMap z` is `DiskOnePointCollapse.collapse z.1`. -/
 theorem ManifoldMorse.MorseSurgeryData.upperCollapse_handle {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [T2Space M]
     {f : M → ℝ} {p : M} (d : ManifoldMorse.MorseSurgeryData E f p) (hf : Continuous f)
@@ -108,6 +116,7 @@ theorem ManifoldMorse.MorseSurgeryData.upperCollapse_handle {E M : Type*}
       (ClosedHandleCore.collapseMap_handle _ d.handleMap _ _ _ z)
 
 attribute [local instance 100] Classical.propDecidable in
+/-- The restriction of `upperCollapseMap hf` to the upper level `d.UpperLevel`. -/
 def ManifoldMorse.MorseSurgeryData.levelCollapseMap {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [T2Space M] {f : M → ℝ} {p : M}
     (d : ManifoldMorse.MorseSurgeryData E f p) (hf : Continuous f) :
@@ -115,6 +124,7 @@ def ManifoldMorse.MorseSurgeryData.levelCollapseMap {E M : Type*} [NormedAddComm
   (d.upperCollapseMap hf).comp ⟨Set.inclusion (fun _ hx => hx.le), continuous_inclusion _⟩
 
 attribute [local instance 100] Classical.propDecidable in
+/-- `levelCollapseMap hf y = attachmentCollapseMap hf x` when `y = attachmentHomeomorph x`. -/
 theorem ManifoldMorse.MorseSurgeryData.levelCollapse_realized {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [T2Space M]
     {f : M → ℝ} {p : M} (d : ManifoldMorse.MorseSurgeryData E f p) (hf : Continuous f)
@@ -128,6 +138,7 @@ theorem ManifoldMorse.MorseSurgeryData.levelCollapse_realized {E M : Type*}
   rw [heq, d.upperCollapse_realization]
 
 attribute [local instance 100] Classical.propDecidable in
+/-- `levelCollapseMap hf` is `∞` on the new exterior of the surgery. -/
 theorem ManifoldMorse.MorseSurgeryData.levelCollapse_newExterior {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [T2Space M]
     {f : M → ℝ} {p : M} (d : ManifoldMorse.MorseSurgeryData E f p) (hf : Continuous f) (r) :
@@ -136,6 +147,8 @@ theorem ManifoldMorse.MorseSurgeryData.levelCollapse_newExterior {E M : Type*}
   exact ClosedHandleCore.collapseMap_old _ d.handleMap _ _ _ ⟨r.val, r.property.1.le⟩
 
 attribute [local instance 100] Classical.propDecidable in
+/-- `levelCollapseMap hf` on the new piece point `newPiece z` is the collapse of the unit-ball
+coordinate of `z.1`. -/
 theorem ManifoldMorse.MorseSurgeryData.levelCollapse_newPiece {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [T2Space M]
     {f : M → ℝ} {p : M} (d : ManifoldMorse.MorseSurgeryData E f p) (hf : Continuous f)
@@ -151,6 +164,7 @@ theorem ManifoldMorse.MorseSurgeryData.levelCollapse_newPiece {E M : Type*}
       (d.chart.handleBallCoordinates (z.1, PuncturedHandle.sphereToBall z.2))
 
 attribute [local instance 100] Classical.propDecidable in
+/-- `levelCollapseMap hf x = 0` iff `x` lies on the belt sphere. -/
 theorem ManifoldMorse.MorseSurgeryData.levelCollapse_zero_iff {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [T2Space M]
     {f : M → ℝ} {p : M} (d : ManifoldMorse.MorseSurgeryData E f p) (hf : Continuous f)
@@ -168,6 +182,8 @@ theorem ManifoldMorse.MorseSurgeryData.levelCollapse_zero_iff {E M : Type*}
     rfl
 
 attribute [local instance 100] Classical.propDecidable in
+/-- `upperCollapseMap hf ∘ coreUnionHomotopyEquiv` is the collapse map of the core cell
+presentation. -/
 theorem ManifoldMorse.MorseSurgeryData.upperCollapse_coreCell {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [T2Space M]
     {f : M → ℝ} {p : M} (d : ManifoldMorse.MorseSurgeryData E f p) (hf : Continuous f) :
@@ -185,6 +201,8 @@ theorem ManifoldMorse.MorseSurgeryData.upperCollapse_coreCell {E M : Type*}
     rw [d.upperCollapse_handle, (d.coreCellPresentation hf).collapseMap_cell]
 
 attribute [local instance 100] Classical.propDecidable in
+/-- On homology, `upperCollapseMap hf` composed with `cellTotalHomologyEquiv hf k` is the collapse
+map of the core cell presentation. -/
 theorem ManifoldMorse.MorseSurgeryData.upperCollapseHomology_coreCell {E M : Type}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [T2Space M]
     {f : M → ℝ} {p : M} (d : ManifoldMorse.MorseSurgeryData E f p) (hf : Continuous f)
@@ -203,6 +221,8 @@ theorem ManifoldMorse.MorseSurgeryData.upperCollapseHomology_coreCell {E M : Typ
     d.upperCollapse_coreCell]
 
 attribute [local instance 100] Classical.propDecidable in
+/-- `OnePointCover.sphereConnecting overlapRadius _ k ∘ H_{k+1}(upperCollapseMap hf)` is the
+Morse connecting map `morseConnectingMap hf k`. -/
 theorem ManifoldMorse.MorseSurgeryData.upperCollapse_connecting_compare {E M : Type}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [T2Space M]
     {f : M → ℝ} {p : M} (d : ManifoldMorse.MorseSurgeryData E f p) (hf : Continuous f)
@@ -217,6 +237,8 @@ theorem ManifoldMorse.MorseSurgeryData.upperCollapse_connecting_compare {E M : T
     d.morseConnecting_compare]
 
 attribute [local instance 100] Classical.propDecidable in
+/-- `OnePointCover.sphereHomologyEquiv overlapRadius _ k ∘ H_{k+2}(upperCollapseMap hf)` is
+`morseConnectingMap hf (k + 1)`. -/
 theorem ManifoldMorse.MorseSurgeryData.upperCollapse_homology_equiv_compare {E M : Type}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [T2Space M]
     {f : M → ℝ} {p : M} (d : ManifoldMorse.MorseSurgeryData E f p) (hf : Continuous f)
@@ -229,6 +251,8 @@ theorem ManifoldMorse.MorseSurgeryData.upperCollapse_homology_equiv_compare {E M
   d.upperCollapse_connecting_compare hf (k + 1) a
 
 attribute [local instance 100] Classical.propDecidable in
+/-- The kernel of `H_{k+1}(upperCollapseMap hf)` is the image of `lowerRealizationHomologyMap (k + 1)`.
+The kernel of `H_{k+1}(upperCollapseMap hf)` is the image of `lowerRealizationHomologyMap (k + 1)`. -/
 theorem ManifoldMorse.MorseSurgeryData.upperCollapse_homology_kernel {E M : Type}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [T2Space M]
     {f : M → ℝ} {p : M} (d : ManifoldMorse.MorseSurgeryData E f p) (hf : Continuous f)
@@ -251,6 +275,8 @@ theorem ManifoldMorse.MorseSurgeryData.upperCollapse_homology_kernel {E M : Type
         (h.trans (map_zero _).symm)
 
 attribute [local instance 100] Classical.propDecidable in
+/-- For `k ≠ 0`, if `H_k(M_{lower})` is a subsingleton then `morseConnectingMap hf k` is surjective.
+For `k ≠ 0`, if `H_k(M_{lower})` is a subsingleton then `morseConnectingMap hf k` is surjective. -/
 theorem ManifoldMorse.MorseSurgeryData.morseConnecting_surjective_of_lower {E M : Type}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [T2Space M]
     {f : M → ℝ} {p : M} (d : ManifoldMorse.MorseSurgeryData E f p) (hf : Continuous f)
@@ -264,6 +290,7 @@ theorem ManifoldMorse.MorseSurgeryData.morseConnecting_surjective_of_lower {E M 
   exact ha
 
 attribute [local instance 100] Classical.propDecidable in
+/-- If `H_{k+1}(M_{lower})` is a subsingleton then `H_{k+2}(upperCollapseMap hf)` is surjective. -/
 theorem ManifoldMorse.MorseSurgeryData.upperCollapse_surjective_of_lower {E M : Type}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [T2Space M]
     {f : M → ℝ} {p : M} (d : ManifoldMorse.MorseSurgeryData E f p) (hf : Continuous f)
@@ -281,6 +308,8 @@ theorem ManifoldMorse.MorseSurgeryData.upperCollapse_surjective_of_lower {E M : 
   exact (d.upperCollapse_homology_equiv_compare hf k b).trans hb
 
 attribute [local instance 100] Classical.propDecidable in
+/-- `levelCollapseMap hf` on `beltClosedDiskMap z` is the collapse of the belt face disk
+coordinate of `z.1`. -/
 theorem ManifoldMorse.MorseSurgeryData.levelCollapse_beltClosedDiskMap {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ}
     {p : M} (d : ManifoldMorse.MorseSurgeryData E f p) [T2Space M] (hf : Continuous f)
@@ -295,6 +324,7 @@ theorem ManifoldMorse.MorseSurgeryData.levelCollapse_beltClosedDiskMap {E M : Ty
   rfl
 
 attribute [local instance 100] Classical.propDecidable in
+/-- On the new interior, `levelCollapseMap hf x = (collapseNormal x : OnePoint N)`. -/
 theorem ManifoldMorse.MorseSurgeryData.levelCollapse_eq_coe_collapseNormal {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ}
     {p : M} (d : ManifoldMorse.MorseSurgeryData E f p) [T2Space M] (hf : Continuous f)
@@ -312,6 +342,9 @@ theorem ManifoldMorse.MorseSurgeryData.levelCollapse_eq_coe_collapseNormal {E M 
   rfl
 
 attribute [local instance 100] Classical.propDecidable in
+/-- If `d.beltNormal ∘ g` has invertible differential at `x` and `g x` is on the belt sphere, the
+sign of the normal Jacobian of `d.collapseNormal ∘ g` at `x` is the belt intersection sign
+`d.beltIntersectionSign m j g x`. -/
 theorem ManifoldMorse.MorseSurgeryData.collapseNormal_comp_sign {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ}
     {p : M} (d : ManifoldMorse.MorseSurgeryData E f p) (m : ℕ)
@@ -333,6 +366,8 @@ theorem ManifoldMorse.MorseSurgeryData.collapseNormal_comp_sign {E M : Type*}
       (MorseHandle.scaled_beltCollapseCoordinate_factor_pos d.radius d.radius_pos)
 
 attribute [local instance 100] Classical.propDecidable in
+/-- For a smooth `g : Sᵐ → d.UpperLevel` transverse to the belt sphere, at every belt intersection
+point the sign of the normal Jacobian of `d.collapseNormal ∘ g` is the belt intersection sign. -/
 theorem ManifoldMorse.MorseSurgeryData.collapseNormal_comp_sign_of_transverse {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ}
     {p : M} (d : ManifoldMorse.MorseSurgeryData E f p) [FiniteDimensional ℝ E]
@@ -368,6 +403,8 @@ theorem ManifoldMorse.MorseSurgeryData.collapseNormal_comp_sign_of_transverse {E
   exact d.collapseNormal_comp_sign m j g x hAi ⟨v, hv⟩
 
 attribute [local instance 100] Classical.propDecidable in
+/-- For a smooth `g : Sᵐ → d.UpperLevel` transverse to the belt sphere, the differential of
+`d.collapseNormal ∘ g` is invertible at every belt intersection point. -/
 theorem ManifoldMorse.MorseSurgeryData.isInvertible_collapseNormal_comp_of_transverse
     {E M : Type} [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E]
     [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] {f : M → ℝ} {p : M}
@@ -399,6 +436,8 @@ theorem ManifoldMorse.MorseSurgeryData.isInvertible_collapseNormal_comp_of_trans
       (MorseHandle.scaled_beltCollapseCoordinate_factor_pos d.radius d.radius_pos).ne'
 
 attribute [local instance 100] Classical.propDecidable in
+/-- Separated neighbourhoods of the belt intersection points of `g : Sᵐ → d.UpperLevel` for the
+function `d.collapseNormal ∘ g`, inside `g⁻¹ (new interior)`. -/
 abbrev ManifoldMorse.MorseSurgeryData.CollapseNeighborhoods {E M : Type}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ}
     {p : M} (d : ManifoldMorse.MorseSurgeryData E f p) (m : ℕ)
@@ -407,6 +446,8 @@ abbrev ManifoldMorse.MorseSurgeryData.CollapseNeighborhoods {E M : Type}
     (d.beltIntersectionPoints m g) (d.collapseNormal ∘ g) (g ⁻¹' d.surgery.NewInterior)
 
 attribute [local instance 100] Classical.propDecidable in
+/-- For a smooth injective `g : Sᵐ → d.UpperLevel` transverse to the belt sphere,
+`d.CollapseNeighborhoods m g` is nonempty. -/
 theorem ManifoldMorse.MorseSurgeryData.nonempty_collapseNeighborhoods {E M : Type}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ}
     {p : M} (d : ManifoldMorse.MorseSurgeryData E f p) [FiniteDimensional ℝ E]
@@ -439,6 +480,7 @@ theorem ManifoldMorse.MorseSurgeryData.nonempty_collapseNeighborhoods {E M : Typ
     exact d.surgery.beltSphere_mem_newInterior v
 
 attribute [local instance 100] Classical.propDecidable in
+/-- `levelCollapseMap hf ∘ g : Sᵐ → OnePoint N` for `g : C(Sᵐ, d.UpperLevel)`. -/
 def ManifoldMorse.MorseSurgeryData.attachingCollapse {E M : Type} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [T2Space M] {f : M → ℝ} {p : M}
     (d : ManifoldMorse.MorseSurgeryData E f p) (hf : Continuous f) (m : ℕ)
@@ -447,6 +489,7 @@ def ManifoldMorse.MorseSurgeryData.attachingCollapse {E M : Type} [NormedAddComm
   (d.levelCollapseMap hf).comp g
 
 attribute [local instance 100] Classical.propDecidable in
+/-- `attachingCollapse hf m g x = 0` iff `x` is a belt intersection point of `g`. -/
 theorem ManifoldMorse.MorseSurgeryData.attachingCollapse_zero_iff {E M : Type}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [T2Space M]
     {f : M → ℝ} {p : M} (d : ManifoldMorse.MorseSurgeryData E f p) (hf : Continuous f)
@@ -456,6 +499,8 @@ theorem ManifoldMorse.MorseSurgeryData.attachingCollapse_zero_iff {E M : Type}
   d.levelCollapse_zero_iff hf (g x)
 
 attribute [local instance 100] Classical.propDecidable in
+/-- `attachingCollapse hf m g` maps the complement of the belt intersection points into
+`OnePointCover.oldPatch`. -/
 theorem ManifoldMorse.MorseSurgeryData.attachingCollapse_maps_old {E M : Type}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [T2Space M]
     {f : M → ℝ} {p : M} (d : ManifoldMorse.MorseSurgeryData E f p) (hf : Continuous f)
@@ -466,6 +511,8 @@ theorem ManifoldMorse.MorseSurgeryData.attachingCollapse_maps_old {E M : Type}
   exact hx ((d.attachingCollapse_zero_iff hf m g x).mp hzero)
 
 attribute [local instance 100] Classical.propDecidable in
+/-- `attachingCollapse hf m g` maps each neighbourhood `D.neighborhood i` of a belt intersection
+point into `OnePointCover.finitePatch`. -/
 theorem ManifoldMorse.MorseSurgeryData.attachingCollapse_maps_neighborhood {E M : Type}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [T2Space M]
     {f : M → ℝ} {p : M} (d : ManifoldMorse.MorseSurgeryData E f p) (hf : Continuous f)
@@ -479,6 +526,8 @@ theorem ManifoldMorse.MorseSurgeryData.attachingCollapse_maps_neighborhood {E M 
   exact OnePoint.coe_ne_infty _
 
 attribute [local instance 100] Classical.propDecidable in
+/-- The restriction of `attachingCollapse hf m g` to the overlap
+`(intersection points)ᶜ ∩ D.neighborhood i → oldPatch ∩ finitePatch`. -/
 def ManifoldMorse.MorseSurgeryData.collapseOverlapMap {E M : Type} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [T2Space M] {f : M → ℝ} {p : M}
     (d : ManifoldMorse.MorseSurgeryData E f p) (hf : Continuous f) (m : ℕ)
@@ -493,6 +542,7 @@ def ManifoldMorse.MorseSurgeryData.collapseOverlapMap {E M : Type} [NormedAddCom
         d.attachingCollapse_maps_neighborhood hf m g D i hx.2⟩)
 
 attribute [local instance 100] Classical.propDecidable in
+/-- `collapseOverlapMap hf m g D i` is `OnePointCover.overlapHomeomorph ∘ D.overlapMap i`. -/
 theorem ManifoldMorse.MorseSurgeryData.collapseOverlapMap_eq {E M : Type}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [T2Space M]
     {f : M → ℝ} {p : M} (d : ManifoldMorse.MorseSurgeryData E f p) (hf : Continuous f)
@@ -511,6 +561,8 @@ theorem ManifoldMorse.MorseSurgeryData.collapseOverlapMap_eq {E M : Type}
   exact d.levelCollapse_eq_coe_collapseNormal hf (D.neighborhood_subset i x.property.2)
 
 attribute [local instance 100] Classical.propDecidable in
+/-- `collapseOverlapMap hf m g D i ∘ D.overlapSphereEquiv i` is
+`OnePointCover.overlapHomeomorph ∘ (D.data i).innerBoundary.map`. -/
 theorem ManifoldMorse.MorseSurgeryData.collapseOverlapMap_sphereEquiv {E M : Type}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [T2Space M]
     {f : M → ℝ} {p : M} (d : ManifoldMorse.MorseSurgeryData E f p) (hf : Continuous f)
