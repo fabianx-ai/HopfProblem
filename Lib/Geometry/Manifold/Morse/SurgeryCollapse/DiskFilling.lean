@@ -35,6 +35,8 @@ open scoped ContDiff ContinuousMap
 
 noncomputable section
 
+/-- In the boundary sphere `Sⁿ` of a sublevel disk of dimension `n + 1` with `1 < n`, every map
+of the circle is homotopic to a constant. -/
 theorem SublevelDisk.circle_nullhomotopies {M : Type*} [TopologicalSpace M] [T2Space M]
     {f : M → ℝ} {a : ℝ} {n : ℕ} (d : SublevelDisk (n + 1) f a) (hn : 1 < n) :
     ∀ g : C(Hemisphere.Sphere 1, { x : M // f x = a }),
@@ -52,6 +54,9 @@ theorem SublevelDisk.circle_nullhomotopies {M : Type*} [TopologicalSpace M] [T2S
     (ContinuousMap.Homotopic.refl forward).comp hq
   exact ⟨e q, heq ▸ hh⟩
 
+/-- Let `f : E → N` be smooth, with `dim E = n + 1`, restricting on the unit sphere to `γ`, an
+immersion, and `n + dim E < dim N`.  Then there is a smooth `g : E → N` agreeing with `γ` on the
+unit sphere and immersive at every point of the sphere. -/
 theorem SphereBoundary.exists_extension_immersive_on_sphere {E G H N : Type*}
     [NormedAddCommGroup E] [InnerProductSpace ℝ E] [FiniteDimensional ℝ E] {n : ℕ}
     [Fact (Module.finrank ℝ E = n + 1)] [NormedAddCommGroup G] [NormedSpace ℝ G]
@@ -82,6 +87,9 @@ theorem SphereBoundary.exists_extension_immersive_on_sphere {E G H N : Type*}
   · intro x
     exact hderiv x.1 ⟨x, rfl⟩
 
+/-- Let `f : ℝ² → N` be smooth with `dim N ≥ 5`, restricting on the unit circle to an injective
+immersion `γ`.  Then there is a smooth `g : ℝ² → N` agreeing with `γ` on the circle whose
+restriction to the closed unit disk is a closed embedding with injective differential. -/
 theorem exists_embedded_disk_extension_of_smooth_extension {G H N : Type*}
     [NormedAddCommGroup G] [NormedSpace ℝ G] [FiniteDimensional ℝ G] [TopologicalSpace H]
     {J : ModelWithCorners ℝ G H} [J.Boundaryless] [TopologicalSpace N] [ChartedSpace H N]
@@ -121,6 +129,7 @@ theorem exists_embedded_disk_extension_of_smooth_extension {G H N : Type*}
   intro x
   exact (hhom.fst_eq_snd x.property).symm.trans (hboundary₁ x)
 
+/-- The direction map `RadialFilling.direction b : ℝⁿ⁺¹ → Sⁿ` is smooth at every `v ≠ 0`. -/
 theorem RadialFilling.contMDiffAt_direction {n : ℕ} (b : Hemisphere.Sphere n)
     {v : Hemisphere.Ambient (n + 1)} (hv : v ≠ 0) :
     ContMDiffAt 𝓘(ℝ, Hemisphere.Ambient (n + 1)) (𝓡 n) ∞ (direction b) v := by
@@ -144,6 +153,9 @@ theorem RadialFilling.contMDiffAt_direction {n : ℕ} (b : Hemisphere.Sphere n)
     exact Subtype.ext (direction_coe b w.2)
   exact (contMDiffAt_subtype_iff (U := V) (f := direction b) (x := ⟨v, hv⟩)).mp (hs ⟨v, hv⟩)
 
+/-- If `f : Sⁿ → M` is smooth and `H` is a smooth homotopy from `f` to the constant `c` which is
+`f` for times `≤ 1/4` and `c` for times `≥ 3/4`, then the radial filling
+`RadialFilling.filling H b : ℝⁿ⁺¹ → M` is smooth. -/
 theorem RadialFilling.contMDiff_filling {n : ℕ} {G K M : Type*} [NormedAddCommGroup G]
     [NormedSpace ℝ G] [TopologicalSpace K] {J : ModelWithCorners ℝ G K} [TopologicalSpace M]
     [ChartedSpace K M] {f : C(Hemisphere.Sphere n, M)} {c : M}
@@ -174,6 +186,8 @@ theorem RadialFilling.contMDiff_filling {n : ℕ} {G K M : Type*} [NormedAddComm
           ((contMDiffAt_radialTime hv hunit).prodMk
             (contMDiffAt_direction b (norm_pos_iff.mp hv)))
 
+/-- A map `γ : S¹ → N` which is the boundary of a continuous map `D` of the closed disk is
+homotopic to the constant map at `D 0`. -/
 theorem MorseCancellation.circle_nullhomotopy_of_disk {N : Type*} [TopologicalSpace N]
     (γ : C(Hemisphere.Sphere 1, N)) (D : C(Hemisphere.Ball 2, N))
     (hboundary :
@@ -203,6 +217,9 @@ theorem MorseCancellation.circle_nullhomotopy_of_disk {N : Type*} [TopologicalSp
         exact congrArg D he }
   exact ⟨c, ⟨H⟩⟩
 
+/-- Let `γ : S¹ → N` be a smooth injective immersion in a manifold of dimension `≥ 5` bounding a
+continuous disk `D`.  Then there is a smooth `g : ℝ² → N` agreeing with `γ` on the circle whose
+restriction to the closed disk is a closed embedding with injective differential. -/
 theorem MorseCancellation.exists_smooth_embedded_disk_of_continuous_filling {G N : Type*}
     [NormedAddCommGroup G] [NormedSpace ℝ G] [FiniteDimensional ℝ G] [TopologicalSpace N]
     [ChartedSpace G N] [IsManifold 𝓘(ℝ, G) ∞ N] [T2Space N] (γ : C(Hemisphere.Sphere 1, N))
