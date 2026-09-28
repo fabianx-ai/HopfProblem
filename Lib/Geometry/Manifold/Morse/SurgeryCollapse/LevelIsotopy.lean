@@ -39,6 +39,13 @@ open scoped ContDiff ContinuousMap
 
 noncomputable section
 
+/-- Let `a` be a regular value of `S : AdaptedWindows E f` between the critical points `q`, `p`
+(`f q < a < f p`) and `P` a diffeomorphism of the level `{f = a}` isotopic to the identity such
+that exactly one point `x` of the level flows backward to `p` with `P x` flowing forward to `q`.
+Then there is a gradient-like field `V` with flow `G`, agreeing with `S.field` near the critical
+points, with a point `z` of the level on a flow line from `p` to `q` through which every such flow
+line passes, whose backward basins in the level are those of `S.flow` and whose forward basins are
+those of `S.flow ∘ P`. -/
 theorem AdaptedWindows.realize_unit_level_isotopy {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {f : M → ℝ} (S : AdaptedWindows E f)
@@ -106,6 +113,11 @@ theorem AdaptedWindows.realize_unit_level_isotopy {E M : Type*} [NormedAddCommGr
     ⟨V, G, z, hV, hG, (fun x hx => (hzero x).mpr (S.zero x hx)), hdesc, hgerms, hzb, hzf, hunique,
       hback, hforward⟩
 
+/-- `realize_unit_level_isotopy` with sheets: if moreover `α : X → {f = a}` and `β : Y → {f = a}` are
+transverse at `(x, y)` with `β y = α x`, `α` near `x` in the backward basin of `p` and `P ∘ β` near
+`y` in the forward basin of `q`, the realised flow `G` has the flow line of `α x` from `p` to `q`
+as its unique connection, and the flowed-out sheets `C (u, t) = G t (α u)`,
+`D (u, t) = G t (β u)` are transverse at `((x, 0), (y, 0))`. -/
 theorem AdaptedWindows.realize_unit_transverse_level_isotopy {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {f : M → ℝ} {A B HA HB X Y : Type*}
@@ -218,6 +230,9 @@ theorem AdaptedWindows.realize_unit_transverse_level_isotopy {E M : Type*} [Norm
       (fun w hw => hdesc w (ha w hw)) α β x y hα hβ hcross htrans hαG hβG
 
 attribute [local instance 100] Classical.propDecidable in
+/-- Let `q` be a critical point of index `1` of `S : AdaptedWindows E f` and `p` the unique critical
+point of index `0`.  Then there is a diffeomorphism `d` of the lower level of `q` isotopic to the
+identity such that `f p < lower q` and every attaching point `d (attachingSphere w)` flows to `p`. -/
 theorem AdaptedWindows.place_one_handle_in_unique_minimum_basin {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {f : M → ℝ}
@@ -257,6 +272,10 @@ theorem AdaptedWindows.place_one_handle_in_unique_minimum_basin {E M : Type*}
   · exact hpv
 
 attribute [local instance 100] Classical.propDecidable in
+/-- Let `q` be a critical point of index `1` of `S : AdaptedWindows E f` and `p` the unique critical
+point of index `0`.  Then there is an `AdaptedWindows E f` package `T` with the same charts, the
+same field germs at the critical points, whose attaching points of `q` all flow to `p`, and with
+no flow line from `q` to a critical point other than `p`, `q`. -/
 theorem AdaptedWindows.realize_unique_minimum_one_handle_branches {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {f : M → ℝ}
