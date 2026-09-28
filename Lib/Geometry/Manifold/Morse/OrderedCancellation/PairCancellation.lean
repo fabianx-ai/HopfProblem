@@ -37,6 +37,8 @@ open scoped ContDiff ContinuousMap
 
 noncomputable section
 
+/-- For a gradient-like flow `F` of `f` modelled near a critical point `p` of index `0` by the
+signed Morse chart `c`, the forward basin `{x | F t x → p as t → ∞}` is open. -/
 theorem MorseCancellation.isOpen_forward_basin_of_native_index_zero {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {f : M → ℝ}
@@ -64,6 +66,12 @@ theorem MorseCancellation.isOpen_forward_basin_of_native_index_zero {E M : Type*
   exact (flow_time_atTop_limit_iff F t y p).mp hy
 
 attribute [local instance 100] Classical.propDecidable in
+/-- Cancellation of an index-`0`/index-`1` pair.  Let `p`, `q` be critical points of `f` of
+indices `0` and `1`, `f p < f q`, the only critical points with values in `[l, u]`, and let the
+gradient-like flow `F` of `V` (modelled by the charts `cp`, `cq`) have the point `z` on a flow
+line from `q` to `p` through which every such flow line passes.  Then there is a Morse function
+`g` with two critical points fewer (exactly `p` and `q` removed) which agrees with `f` near every
+point with `f x ∉ (l, u)`. -/
 theorem MorseCancellation.cancel_unique_zero_one_connection {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {f : M → ℝ}
@@ -132,6 +140,9 @@ theorem MorseCancellation.cancel_unique_zero_one_connection {E M : Type*} [Norme
       fun x : M => x) mdifferentiableAt_const mdifferentiableAt_id rfl rfl
       (Filter.Eventually.of_forall (fun _ => hq)) hbasin htrans
 
+/-- Let `P` be a diffeomorphism of `N`, `γ`, `δ : X → N` with `P ∘ γ = δ`, and `β : Y → N`
+transverse to `δ` at `(x, y)` with `β y = δ x`.  Then `β' := P⁻¹ ∘ β` is differentiable at `y`,
+meets `γ` at `β' y = γ x`, is transverse to `γ` there, and satisfies `P ∘ β' = β`. -/
 theorem MorseCancellation.exists_transverse_sheet_of_circle_placement {A B E HA HB H X Y N : Type*}
     [NormedAddCommGroup A] [NormedSpace ℝ A] [TopologicalSpace HA] {I : ModelWithCorners ℝ A HA}
     [TopologicalSpace X] [ChartedSpace HA X] [NormedAddCommGroup B] [NormedSpace ℝ B]
@@ -161,6 +172,12 @@ theorem MorseCancellation.exists_transverse_sheet_of_circle_placement {A B E HA 
   rw [hγeq, hβeq]
   exact htrans
 
+/-- General position into the basin of a regular level.  Let `S : AdaptedWindows E f`, `a` a
+regular value, all critical points above `a` of coindex `≤ d` and below `a` of index `≤ d`, and
+`f₀ : C(A, M)` smooth with `2 dim A < dim M` and `dim A + d < dim M`, embedded on the compact
+`K`, and with `f₀ (L ∩ C)` in the basin of the level `a`.  Then `f₀` is homotopic relative to the
+closed set `C` to a smooth `g`, embedded on `K`, with `g x = g y → f₀ x = f₀ y`, whose values on
+`L` and on the points already in the basin lie in the basin of the level `a`. -/
 theorem MorseCancellation.exists_embedded_avoidance_into_level_basin {E M A : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [NormedAddCommGroup A]
     [NormedSpace ℝ A] [FiniteDimensional ℝ A] [TopologicalSpace M] [ChartedSpace E M]
@@ -219,6 +236,8 @@ theorem MorseCancellation.exists_embedded_avoidance_into_level_basin {E M A : Ty
     simpa only [hrange, Set.mem_compl_iff, Classical.not_not] using hx
   simpa only [hrange, Set.mem_compl_iff, Classical.not_not] using havoid x hx'
 
+/-- Conjugating a diffeomorphism `d : M → M` isotopic to the identity by a diffeomorphism
+`e : M → N` gives `e ∘ d ∘ e⁻¹ : N → N` isotopic to the identity. -/
 theorem MorseCancellation.isotopicToIdentity_conj {E F H H' M N : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace H] {I : ModelWithCorners ℝ E H} [TopologicalSpace M]
     [ChartedSpace H M] [NormedAddCommGroup F] [NormedSpace ℝ F] [TopologicalSpace H']
@@ -244,6 +263,9 @@ theorem MorseCancellation.isotopicToIdentity_conj {E F H H' M N : Type*} [Normed
     change e (A (t, e.symm y)) = e (dₜ (e.symm y))
     rw [hdₜ]
 
+/-- Let `P` be a bijection of the level `f = a` and `δ : X → {f = a}` with `x` in the backward
+basin of `p` iff `P x ∈ range δ`, and let `δ z` flow forward to `q` iff `z = z₀`.  Then exactly
+one point `x` of the level flows backward to `p` with `P x` flowing forward to `q`. -/
 theorem MorseCancellation.unit_level_count_of_circle_placement {M X : Type*} [TopologicalSpace M]
     (F : Flow ℝ M) {f : M → ℝ} {a : ℝ} {p q : M} (P : { y : M // f y = a } ≃ { y : M // f y = a })
     (δ : X → { y : M // f y = a }) (z₀ : X)
@@ -274,6 +296,10 @@ theorem MorseCancellation.unit_level_count_of_circle_placement {M X : Type*} [To
   rw [heq]
   exact Set.ncard_singleton _
 
+/-- Let `F` be a flow along which the continuous function `f` is antitone, `f` injective on `C`,
+`p q r ∈ C`, `a < f p` with every `f j < f p` (`j ∈ C`) below `a`, and suppose every point of
+the level `f = a` flowing backward to `p` flows forward to `q` or to `r`.  Then no point flows
+backward to `p` and forward to a `j ∈ C` different from `p`, `q`, `r`. -/
 theorem MorseCancellation.no_other_connections_of_two_level_endpoints {M : Type*} [TopologicalSpace M]
     [T2Space M] (F : Flow ℝ M) {f : M → ℝ} (hf : Continuous f) {C : Set M} (hinj : Set.InjOn f C)
     (p q r : C) {a : ℝ} (hpa : a < f p) (hgap : ∀ j : C, f j < f p → f j < a)
@@ -309,6 +335,14 @@ theorem MorseCancellation.no_other_connections_of_two_level_endpoints {M : Type*
   · exact hjq (Subtype.ext (tendsto_nhds_unique hzf hq))
   · exact hjr (Subtype.ext (tendsto_nhds_unique hzf hr))
 
+/-- Milnor, h-cobordism Theorem 5.4 (first cancellation theorem).  Let `f` be a Morse function with
+distinct critical values on a compact connected manifold of dimension `m + 1`, `V` a
+gradient-like field with flow `F` modelled by signed Morse charts, `r`, `p`, `q` critical points
+with `f r < f p < f q` and `index q = index p + 1`, no flow line from `q` to a critical point
+other than `p`, `q`, `r`, and `z` a point on a flow line from `q` to `p` through which every such
+line passes, with the descending sheet `α` of `q` and the ascending sheet `β` of `p` transverse at
+`z`.  Then there is a Morse function `g` with distinct critical values, whose critical points are
+those of `f` except `p` and `q`, with the same indices at the remaining ones. -/
 theorem MorseCancellation.cancel_transverse_pair_after_flow_preserving_descent {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] [PreconnectedSpace M]
