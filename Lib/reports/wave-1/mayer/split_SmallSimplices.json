@@ -1,0 +1,2748 @@
+{
+"module": "Lib.AlgebraicTopology.SingularHomology.MayerVietoris",
+"source": "/home/goblin/hopf-w1-mayer/Lib/AlgebraicTopology/SingularHomology/MayerVietoris.lean",
+"source_sha256": "9aec34893e5a9caa6ec0560c809c364aa431cd4cac9dcb2c42356ec0c4c9a438",
+"units_kept": 237,
+"units_moved": 12,
+"units": [
+{
+"names": [
+"SingularMayerVietoris.supportedChainSubmodule"
+],
+"class": "keep",
+"lines": [
+88,
+92
+],
+"sha256": "3c989a489d4e2361d2876749a999085c91cf190623276005513a27cdbd1fb524"
+},
+{
+"names": [
+"SingularMayerVietoris.smallChainSubmodule"
+],
+"class": "keep",
+"lines": [
+94,
+97
+],
+"sha256": "a66a905b9ed9351cbd66102a3df876305ebe9f8ce2a3970e531ee7cf9ede9ea3"
+},
+{
+"names": [
+"SingularMayerVietoris.smallChainSubmodule_eq_span"
+],
+"class": "keep",
+"lines": [
+101,
+110
+],
+"sha256": "c6da87e44094e39aabb6df9c7dfc46974ad94016c8aebe93b59f6ef2cb000295"
+},
+{
+"names": [
+"SingularMayerVietoris.simplexChain_mem_supported"
+],
+"class": "keep",
+"lines": [
+112,
+116
+],
+"sha256": "5481fef254b57f7f6b307528b9cd8893ab9b46cd1298c7f5af697af24a5a83b7"
+},
+{
+"names": [
+"SingularMayerVietoris.simplexChain_mem_small"
+],
+"class": "keep",
+"lines": [
+118,
+123
+],
+"sha256": "413b28a72b87e5ac54fe17cb6da1ad7a624104436bd56c73ecf39bb4f40a1e13"
+},
+{
+"names": [
+"SingularMayerVietoris.simplex_face_supported"
+],
+"class": "keep",
+"lines": [
+125,
+130
+],
+"sha256": "307feb6686b594aa7d5da3c21ad9de00ea977ed391e97dace1c47a1fabb86758"
+},
+{
+"names": [
+"SingularMayerVietoris.boundary_mem_small_succ"
+],
+"class": "keep",
+"lines": [
+132,
+154
+],
+"sha256": "bfd56dddfd55b3734755b9c0a22435c6fa5ee3c028b7de94107a4bb38be31c88"
+},
+{
+"names": [
+"SingularMayerVietoris.boundary_mem_small"
+],
+"class": "keep",
+"lines": [
+156,
+168
+],
+"sha256": "2fe3d3e8ffeb39038e8f9a630ff7c7fa249b22913ac7d0c6ac240ca08248bf58"
+},
+{
+"names": [
+"SingularMayerVietoris.smallChainModule"
+],
+"class": "keep",
+"lines": [
+170,
+173
+],
+"sha256": "16a22a903cd7484fa8a2c9038328b57c13bc24e9d91b777b60a6d1d1098be729"
+},
+{
+"names": [
+"SingularMayerVietoris.smallDifferential"
+],
+"class": "keep",
+"lines": [
+175,
+180
+],
+"sha256": "1f8efc47e45b9ef2302b827a5a963abafc30692945b5daa438f6e2d857c32ec2"
+},
+{
+"names": [
+"SingularMayerVietoris.smallComplex"
+],
+"class": "keep",
+"lines": [
+182,
+205
+],
+"sha256": "f4f6a75d979be578ce05b964c3b84cdfb99f324cea1f39614289b115fc45bdce"
+},
+{
+"names": [
+"SingularMayerVietoris.smallInclusion"
+],
+"class": "keep",
+"lines": [
+207,
+217
+],
+"sha256": "5290ac224dda4c14063acb00b4f5cd42a9d914f9af0d26566ba2c9179bd62555"
+},
+{
+"names": [
+"SingularMayerVietoris.smallInclusion_f_injective"
+],
+"class": "keep",
+"lines": [
+219,
+222
+],
+"sha256": "17c9b2f13d20ef021a72d71632a2394687b52252b044b237f3499a5c82a7b1e5"
+},
+{
+"names": [
+"SingularMayerVietoris.smallInclusion_mono"
+],
+"class": "keep",
+"lines": [
+224,
+228
+],
+"sha256": "361b5f2ec32ff21d94d912dbd620b264822414f28876fcc23c86d25cb39c35d2"
+},
+{
+"names": [
+"SingularMayerVietoris.liftToSmall"
+],
+"class": "keep",
+"lines": [
+230,
+242
+],
+"sha256": "1cab0e795f9e8c3db9f2a7d66513f809b28baee819e47d96909b199856e072ec"
+},
+{
+"names": [
+"SingularMayerVietoris.liftToSmall_inclusion"
+],
+"class": "keep",
+"lines": [
+244,
+253
+],
+"sha256": "d3338640b1d242b42dd716b4103757ad355bef1d492d6d1175311d5f08b1da78"
+},
+{
+"names": [
+"SingularMayerVietoris.subtypeInclusion"
+],
+"class": "keep",
+"lines": [
+255,
+258
+],
+"sha256": "310039f7799e9e0512577a0b13062746bbff1fc2977512952d95ba10f8cf1efb"
+},
+{
+"names": [
+"SingularMayerVietoris.restrictSimplex"
+],
+"class": "keep",
+"lines": [
+260,
+264
+],
+"sha256": "e9ca7f3f30734aa600f859a1ec87a514d28645c2c9d613e109c2a2be1bcbd98b"
+},
+{
+"names": [
+"SingularMayerVietoris.subtypeInclusion_comp_restrictSimplex"
+],
+"class": "keep",
+"lines": [
+266,
+272
+],
+"sha256": "8fb1d1314a3637d0a66ee38af670921cd7c7c1afede72c7d49cd9e0d22fd4742"
+},
+{
+"names": [
+"SingularMayerVietoris.range_subtypeInclusion_comp"
+],
+"class": "keep",
+"lines": [
+274,
+279
+],
+"sha256": "39c3e69e83a8cfb45b12d8ae15d33bb0c8bd1d6809246cff3617e81077f74fd1"
+},
+{
+"names": [
+"SingularMayerVietoris.restrictSimplex_inclusion"
+],
+"class": "keep",
+"lines": [
+281,
+288
+],
+"sha256": "31d731d5140492e67b9c9a417ab54ae1c4c17937af72b12a36784214fc71ad6c"
+},
+{
+"names": [
+"SingularMayerVietoris.simplexRetraction"
+],
+"class": "keep",
+"lines": [
+290,
+295
+],
+"sha256": "aad3d6133316b62b7d85bae64645195482e270b7d36ee6064e043238a88e4c26"
+},
+{
+"names": [
+"SingularMayerVietoris.subtypeChainRetraction"
+],
+"class": "keep",
+"lines": [
+297,
+300
+],
+"sha256": "be0cb12f983a0dce9664c07cccda765d876421d25c9511166ef75cd4616423a4"
+},
+{
+"names": [
+"SingularMayerVietoris.subtypeChainRetraction_inclusion_simplex"
+],
+"class": "keep",
+"lines": [
+302,
+312
+],
+"sha256": "40cf5601d55a0cc3cf7b631d3e905459c1d7644f0d85c316abee890fa9216e05"
+},
+{
+"names": [
+"SingularMayerVietoris.subtypeChainRetraction_comp"
+],
+"class": "keep",
+"lines": [
+314,
+321
+],
+"sha256": "a75a0c08ea7f0f8bc038f0a2aed3f41160fab5fb4c9482beaa8f1ed82e268e1f"
+},
+{
+"names": [
+"SingularMayerVietoris.subtypeInclusion_chain_injective"
+],
+"class": "keep",
+"lines": [
+323,
+330
+],
+"sha256": "51e2a510014cc24a7e64f2dfbda1fed85ca4fb0806a543e4298e0e07d8c412b1"
+},
+{
+"names": [
+"SingularMayerVietoris.subtypeInclusion_generator_image"
+],
+"class": "keep",
+"lines": [
+332,
+347
+],
+"sha256": "6c2f919426ed624db8b5ab0af76128cf85663956f82c4d0d61665bb20d7b27fa"
+},
+{
+"names": [
+"SingularMayerVietoris.subtypeInclusion_chain_range"
+],
+"class": "keep",
+"lines": [
+349,
+356
+],
+"sha256": "b38d402d150386d8626ecd0530dbc179c5ced05f20e82fe9b549cba43b7fcfee"
+},
+{
+"names": [
+"SingularMayerVietoris.supportedChainSubmodule_inf"
+],
+"class": "keep",
+"lines": [
+358,
+370
+],
+"sha256": "edf98e43822404beb2f42605815ab235f400fa4184c99cf311abba8f1cf7e7a9"
+},
+{
+"names": [
+"SingularMayerVietoris.subtypeInclusion_chain_mem"
+],
+"class": "keep",
+"lines": [
+372,
+377
+],
+"sha256": "aeb6fdb4a06b0f958370eb5179eded88b2bfe9bb94066c1a4b3e15339ef76ff8"
+},
+{
+"names": [
+"SingularMayerVietoris.toSmallLeft"
+],
+"class": "keep",
+"lines": [
+381,
+387
+],
+"sha256": "0e5b0ab090316b7455c0cbd27718df835ac6285cceb011361cc1c699b26c01a2"
+},
+{
+"names": [
+"SingularMayerVietoris.toSmallRight"
+],
+"class": "keep",
+"lines": [
+389,
+395
+],
+"sha256": "4565d96ddbb796fe1e786da210213193136ded0c7138995600d0aae2c4107e79"
+},
+{
+"names": [
+"SingularMayerVietoris.toSmallLeft_inclusion"
+],
+"class": "keep",
+"lines": [
+397,
+402
+],
+"sha256": "c36e22f3de93d1075af9e2ef9fbb1262e8bdf7b2054123b73a3ece689f7b5b51"
+},
+{
+"names": [
+"SingularMayerVietoris.toSmallRight_inclusion"
+],
+"class": "keep",
+"lines": [
+404,
+409
+],
+"sha256": "d25cb8f1ee2850a8f9ccdb41c82b427d85772e4310875f9c5c7dc1f4ffaf7a20"
+},
+{
+"names": [
+"SingularMayerVietoris.toSmall_jointly_surjective"
+],
+"class": "keep",
+"lines": [
+411,
+429
+],
+"sha256": "ae75a67ee54c236d0fdc4a3d41856d00a387ce5e9f12a5641902f3cb5f476266"
+},
+{
+"names": [
+"SingularMayerVietoris.intersectionToLeft"
+],
+"class": "keep",
+"lines": [
+431,
+434
+],
+"sha256": "fe07c35f773a6c8bbc0b93b3497ed5dde51c9a07fb2abbd94f67ab1640e3d03e"
+},
+{
+"names": [
+"SingularMayerVietoris.intersectionToRight"
+],
+"class": "keep",
+"lines": [
+436,
+439
+],
+"sha256": "ffeb17f6b05af6d9a908ab842cca49a6ee9c03b2ae550c0e4015f15f6fdd2fa5"
+},
+{
+"names": [
+"SingularMayerVietoris.intersectionToLeft_ambient"
+],
+"class": "keep",
+"lines": [
+441,
+451
+],
+"sha256": "59656a23ef437ac6be994d18770fd598986da3d825f3f4131e810f7ab10104d7"
+},
+{
+"names": [
+"SingularMayerVietoris.intersectionToRight_ambient"
+],
+"class": "keep",
+"lines": [
+453,
+463
+],
+"sha256": "76728a01d787f450a106e59006fe0f3a70022ec08f9255954c1263c27175f457"
+},
+{
+"names": [
+"SingularMayerVietoris.intersectionToLeft_ambient_apply"
+],
+"class": "keep",
+"lines": [
+465,
+471
+],
+"sha256": "7ecb9d182f209f0b3c05d6bf2e8aa5d94ef2925b2b4b5fd881ad3a7947372fc7"
+},
+{
+"names": [
+"SingularMayerVietoris.intersectionToRight_ambient_apply"
+],
+"class": "keep",
+"lines": [
+473,
+479
+],
+"sha256": "3d25895aa88384581a268dc5f83ac11338c57ac33ab5e118c9aa2af1599fa920"
+},
+{
+"names": [
+"SingularMayerVietoris.intersectionToLeft_f_injective"
+],
+"class": "keep",
+"lines": [
+481,
+495
+],
+"sha256": "c80543fce66eb9b5bbc381cf52e4c7f18dd3c862e1679d78a4bfb67c07be498f"
+},
+{
+"names": [
+"SingularMayerVietoris.intersection_toSmall_comm"
+],
+"class": "keep",
+"lines": [
+497,
+503
+],
+"sha256": "e051a6db46566ee1ec32be604626a4ed04d817de23c3468bfdf7b3676148e349"
+},
+{
+"names": [
+"SingularMayerVietoris.toSmall_overlap_lift"
+],
+"class": "keep",
+"lines": [
+505,
+530
+],
+"sha256": "31441186619fa8e04178a5d4caaf76039e163f9ab3fdd5f654f4b9d4037ff6fa"
+},
+{
+"names": [
+"SingularMayerVietoris.middleComplex"
+],
+"class": "keep",
+"lines": [
+532,
+535
+],
+"sha256": "e2b88f0c6a87f7d0ed22b6210eae32ab17aaff50aa5cbceae737af7465ebdde3"
+},
+{
+"names": [
+"SingularMayerVietoris.leftMap"
+],
+"class": "keep",
+"lines": [
+537,
+540
+],
+"sha256": "2943dff5612968cc8491a2c8dc23682369713167dc0dc25a6cf738f611c962d9"
+},
+{
+"names": [
+"SingularMayerVietoris.rightMap"
+],
+"class": "keep",
+"lines": [
+542,
+545
+],
+"sha256": "1cf2d8ea7f9395fbb9e4121cb98194ef9a656a63b60d1b08f2d1f87590bb4434"
+},
+{
+"names": [
+"SingularMayerVietoris.leftMap_fst"
+],
+"class": "keep",
+"lines": [
+547,
+553
+],
+"sha256": "a5152785c5dc03061911072b4aba5d45f19bed243753157a174394c97dbda7c4"
+},
+{
+"names": [
+"SingularMayerVietoris.leftMap_snd"
+],
+"class": "keep",
+"lines": [
+555,
+561
+],
+"sha256": "53168d44478e87654ac3a6cdd995a1db5706d667732cec4449ebe0f191241db4"
+},
+{
+"names": [
+"SingularMayerVietoris.inl_rightMap"
+],
+"class": "keep",
+"lines": [
+563,
+569
+],
+"sha256": "54acb2fa34b1cb705012f525e8d011b38d17c2e68e38034ff10e93bf78f39213"
+},
+{
+"names": [
+"SingularMayerVietoris.inr_rightMap"
+],
+"class": "keep",
+"lines": [
+571,
+577
+],
+"sha256": "3aedaa60064f1f543524754ec093e1942dc5ad96464c898c0aeea315943e63f8"
+},
+{
+"names": [
+"SingularMayerVietoris.leftMap_rightMap"
+],
+"class": "keep",
+"lines": [
+579,
+587
+],
+"sha256": "76cffe98bbd032dfb4c201bffdb2d898b899c5e5d3d8e2ee3e45c5ce971d68e8"
+},
+{
+"names": [
+"SingularMayerVietoris.chainSequence"
+],
+"class": "keep",
+"lines": [
+589,
+592
+],
+"sha256": "06bbfde5301a80f84a7ef09ee1c788878100e3e5cab65e6a95ccca0f22c69bcf"
+},
+{
+"names": [
+"SingularMayerVietoris.chainSequence_shortExact"
+],
+"class": "keep",
+"lines": [
+594,
+600
+],
+"sha256": "386de78d7c7842001ff81fbf4b20ada2ff6e4ce6b1546ae9f58921cd969ed5f6"
+},
+{
+"names": [
+"SingularMayerVietoris.homologyLinearMap"
+],
+"class": "keep",
+"lines": [
+604,
+607
+],
+"sha256": "6d4a4658d727510a9cfe4ca00cd63ebf8b5069d144273becbcad07d751316b39"
+},
+{
+"names": [
+"SingularMayerVietoris.homologyLinearMap_comp"
+],
+"class": "keep",
+"lines": [
+609,
+613
+],
+"sha256": "622b436dcd3540a994204a231d4e9a5e19b2717f3a1e4e25dd9ab1c3dd279db0"
+},
+{
+"names": [
+"SingularMayerVietoris.homologyLinearMap_neg"
+],
+"class": "keep",
+"lines": [
+615,
+619
+],
+"sha256": "07511fd7571ffb7176ec2911bc7e70fa1bc61832216878e5d8c14f3303f51c90"
+},
+{
+"names": [
+"SingularMayerVietoris.connectingMap"
+],
+"class": "keep",
+"lines": [
+621,
+625
+],
+"sha256": "6d8faa02a004d9d97ac03faede7f06d1723c421f8558f969e0fbca97e5abcb9c"
+},
+{
+"names": [
+"SingularMayerVietoris.exact_at_leftHomology"
+],
+"class": "keep",
+"lines": [
+627,
+631
+],
+"sha256": "a3b7a450482a2afd0aa6f4eb1356ed78011ac3503a80f0d436ad79ea69d2b29a"
+},
+{
+"names": [
+"SingularMayerVietoris.exact_at_middleHomology"
+],
+"class": "keep",
+"lines": [
+633,
+638
+],
+"sha256": "291b08fbe22acd50e7fa10770cbd2e11f68de304c1ee1b0b2f717b9ab682c0de"
+},
+{
+"names": [
+"SingularMayerVietoris.exact_at_rightHomology"
+],
+"class": "keep",
+"lines": [
+640,
+645
+],
+"sha256": "ba3d0dc3d1d238011e50416cde415b1c3386dc81588d2978593ca94915e79455"
+},
+{
+"names": [
+"SingularMayerVietoris.homologyLinearMap_second_zero_surjective"
+],
+"class": "keep",
+"lines": [
+647,
+653
+],
+"sha256": "a812e33ac2ef524b94ada98f4adb188c19acd92e7af3ee3e06af48d0ff46f70c"
+},
+{
+"names": [
+"SingularMayerVietoris.connectingMap_naturality"
+],
+"class": "keep",
+"lines": [
+655,
+662
+],
+"sha256": "d33c4c2f9ba727b344d5df95b17b2d08c5a76f81f5bff66fa2173563c9582c36"
+},
+{
+"names": [
+"SingularMayerVietoris.homologyClassOfCycle"
+],
+"class": "keep",
+"lines": [
+664,
+668
+],
+"sha256": "1a7dbc2d7346862914f52eb37a3f1717245c74c0f0fcb8bbb3076b24eaf1b529"
+},
+{
+"names": [
+"SingularMayerVietoris.connectingMap_lift_is_cycle"
+],
+"class": "keep",
+"lines": [
+670,
+675
+],
+"sha256": "878e7a8a0731040a9b58390b9dcdcd55dc6309db2dee67232de2be9281987601"
+},
+{
+"names": [
+"SingularMayerVietoris.connectingMap_homologyClassOfCycle"
+],
+"class": "keep",
+"lines": [
+677,
+687
+],
+"sha256": "0faf8543be91939f56ea13b96cc2eb3826060d30205c4e73d731184c17abf68e"
+},
+{
+"names": [
+"SingularMayerVietoris.homology_fst_inl"
+],
+"class": "keep",
+"lines": [
+689,
+700
+],
+"sha256": "462ce510fbb766b7d8697958ebe47ad05642aee28b021f01f5e25d8c4595906b"
+},
+{
+"names": [
+"SingularMayerVietoris.homology_snd_inl"
+],
+"class": "keep",
+"lines": [
+702,
+713
+],
+"sha256": "f5398182ad0e304b97dc1564b402f8b49a5079eca02e4ca8e9290917675d4fa3"
+},
+{
+"names": [
+"SingularMayerVietoris.homology_fst_inr"
+],
+"class": "keep",
+"lines": [
+715,
+726
+],
+"sha256": "190acfb95d0b58795e945d2400acec6a6a0417a4fd7bd1b1307ea51b2a113ba1"
+},
+{
+"names": [
+"SingularMayerVietoris.homology_snd_inr"
+],
+"class": "keep",
+"lines": [
+728,
+739
+],
+"sha256": "15d39b473abbfd544e3e045d79a6b8ab269b563a87dff4778a3be701136cf056"
+},
+{
+"names": [
+"SingularMayerVietoris.homology_biprod_total"
+],
+"class": "keep",
+"lines": [
+741,
+763
+],
+"sha256": "3b57208112fba2d8a238e0a22d6fc94e6b75347816207af5a3fb92b904ace947"
+},
+{
+"names": [
+"SingularMayerVietoris.homologyBiprodEquiv"
+],
+"class": "keep",
+"lines": [
+767,
+812
+],
+"sha256": "1c1ac160887aa35ba76bc22b767f757874d1277f7a7ae7716d931b202c649478"
+},
+{
+"names": [
+"SingularMayerVietoris.homologyBiprodEquiv_symm_apply"
+],
+"class": "keep",
+"lines": [
+814,
+821
+],
+"sha256": "07bbeaee5bf3aaced4aa4d7c787b1922e11d4302dca8876b49ebf28b8456d615"
+},
+{
+"names": [
+"SingularMayerVietoris.homologyBiprodEquiv_desc"
+],
+"class": "keep",
+"lines": [
+823,
+842
+],
+"sha256": "f6b540fedd51b206ee6f7f2468e495883d21dd40aac269ba86cce2f64de462cf"
+},
+{
+"names": [
+"SingularMayerVietoris.biprodSequenceFirstMap"
+],
+"class": "keep",
+"lines": [
+844,
+847
+],
+"sha256": "b15a2b38e6fb767f16bff9210eb9486b4a7a2543bde42cb88a9f3fa5df6b5055"
+},
+{
+"names": [
+"SingularMayerVietoris.biprodSequenceSecondMap"
+],
+"class": "keep",
+"lines": [
+849,
+852
+],
+"sha256": "592ca8e653405b43e422c772103e19e3517025716920070a39bcfcaecbeb25de"
+},
+{
+"names": [
+"SingularMayerVietoris.biprodSequenceSecondMap_desc"
+],
+"class": "keep",
+"lines": [
+854,
+860
+],
+"sha256": "6b7b8d623819500db73a866d991ab1e858b26d777c8c8f5997b317670cb262d8"
+},
+{
+"names": [
+"SingularMayerVietoris.biprodSequence_exact_at_leftHomology"
+],
+"class": "keep",
+"lines": [
+862,
+874
+],
+"sha256": "5f97f95d9596898b60997a2865cb29af070a7c6337e2f75dda633807c852a1ce"
+},
+{
+"names": [
+"SingularMayerVietoris.biprodSequence_exact_at_middleHomology"
+],
+"class": "keep",
+"lines": [
+876,
+899
+],
+"sha256": "2c712fa9c6cee633250381bf6487a0886c2b8b511ade9757e037239723cd312e"
+},
+{
+"names": [
+"SingularMayerVietoris.biprodSequence_exact_at_rightHomology"
+],
+"class": "keep",
+"lines": [
+901,
+916
+],
+"sha256": "987736d885f4ed6bc00887989599ba91fc4f0353a0ef85f40cc9e3ae0415988e"
+},
+{
+"names": [
+"SingularMayerVietoris.biprodSequence_second_zero_surjective"
+],
+"class": "keep",
+"lines": [
+918,
+923
+],
+"sha256": "ec49d3bf640709217ae2db611a93aaa3955f786c870f6d128a4d327d36123960"
+},
+{
+"names": [
+"SingularMayerVietoris.SingularHomology"
+],
+"class": "keep",
+"lines": [
+927,
+929
+],
+"sha256": "1ede3f6a714338024383be1c5ea7cc6052dfc2268ae199c65b701733f1607fee"
+},
+{
+"names": [
+"SingularMayerVietoris.singularHomologyMap"
+],
+"class": "keep",
+"lines": [
+931,
+935
+],
+"sha256": "d935a922eca82445f29c5ad8505e342ef2eab71dc5bd4182628291140401c6ef"
+},
+{
+"names": [
+"SingularMayerVietoris.singularHomologyMap_one"
+],
+"class": "keep",
+"lines": [
+937,
+942
+],
+"sha256": "b419b8b2c74a8ee9da112ca3860641a9a34558b196de0501439c1a92f4df80ef"
+},
+{
+"names": [
+"SingularMayerVietoris.SmallHomology"
+],
+"class": "keep",
+"lines": [
+944,
+947
+],
+"sha256": "e17fd188d61ad9d2e980253b20861eaf4197fa12a132ecfad2961fbe63942af2"
+},
+{
+"names": [
+"SingularMayerVietoris.smallLeftHomologyMap"
+],
+"class": "keep",
+"lines": [
+949,
+953
+],
+"sha256": "7b00953cbe0638a4e6b20af7b6237435be8fc417b027d9a24eea761b7b739841"
+},
+{
+"names": [
+"SingularMayerVietoris.smallRightHomologyMap"
+],
+"class": "keep",
+"lines": [
+955,
+958
+],
+"sha256": "63a9160936b9dcf523c7db9d8fb4d26878e8ecde43b6b851dc17b01848742b09"
+},
+{
+"names": [
+"SingularMayerVietoris.smallConnectingMap"
+],
+"class": "keep",
+"lines": [
+960,
+963
+],
+"sha256": "2a8e17724d303f64c3d64fabf55b36030bdd3926796a8e2f81fdc9521da1ac75"
+},
+{
+"names": [
+"SingularMayerVietoris.smallHomologyComparison"
+],
+"class": "keep",
+"lines": [
+965,
+968
+],
+"sha256": "9d08354e130fcee2dc398d73dccde2a6684046ac85da3498f5fc4e47cea42b8d"
+},
+{
+"names": [
+"SingularMayerVietoris.smallLeftHomologyMap_components"
+],
+"class": "keep",
+"lines": [
+970,
+990
+],
+"sha256": "060d21687a280d999d74446a5638f8f199a370214f868ac4c1860578e3611b6e"
+},
+{
+"names": [
+"SingularMayerVietoris.smallRightHomologyMap_components"
+],
+"class": "keep",
+"lines": [
+992,
+1007
+],
+"sha256": "a3df99ed4d7a52eb940cf08ad39cbfce5563e1aa9d83ddc0aa9de6410e37ac72"
+},
+{
+"names": [
+"SingularMayerVietoris.smallLeftHomologyMap_apply"
+],
+"class": "keep",
+"lines": [
+1009,
+1017
+],
+"sha256": "8d3584384243301176f7bc2ec269c0ac0006d9f502d60142e994489225e08ae1"
+},
+{
+"names": [
+"SingularMayerVietoris.smallRightHomologyMap_apply"
+],
+"class": "keep",
+"lines": [
+1019,
+1024
+],
+"sha256": "0e6d2fed15a9ca0448da2bb598d188395271d4a185cb4f95c5a96c37454aca71"
+},
+{
+"names": [
+"SingularMayerVietoris.smallHomologyComparison_right"
+],
+"class": "keep",
+"lines": [
+1026,
+1039
+],
+"sha256": "9261ceede33c527df0597ab8566a6be494a0895ad3f1d53f9587621d2fd44d17"
+},
+{
+"names": [
+"SingularMayerVietoris.small_exact_at_intersection"
+],
+"class": "keep",
+"lines": [
+1041,
+1045
+],
+"sha256": "018e570e9e1033ab97011dd11aa5bec656333000a5c49dcabe04ee688a76e2af"
+},
+{
+"names": [
+"SingularMayerVietoris.small_exact_at_pair"
+],
+"class": "keep",
+"lines": [
+1047,
+1051
+],
+"sha256": "87d28230ea64b322974765b6d14a6080dc76e83718b8d26171b9878e8eb66081"
+},
+{
+"names": [
+"SingularMayerVietoris.small_exact_at_smallHomology"
+],
+"class": "keep",
+"lines": [
+1053,
+1058
+],
+"sha256": "40f32d9124bab8d5d5bcaa9b63e01924c99303c137892787064285b2ff524a73"
+},
+{
+"names": [
+"SingularMayerVietoris.smallRightHomologyMap_zero_surjective"
+],
+"class": "keep",
+"lines": [
+1060,
+1063
+],
+"sha256": "7e8d22406e1ca7de050ce332d11c56e054dacbb8f41b026d42a44e6eddcf49b3"
+},
+{
+"names": [
+"SingularMayerVietoris.smallLeftHomologyMap_comp_right"
+],
+"class": "keep",
+"lines": [
+1065,
+1074
+],
+"sha256": "c43f39c4d0813d9f9a9fc439455184c58f2a9f29437c2fde619d854f5a1b7480"
+},
+{
+"names": [
+"SingularMayerVietoris.rightTransport_range_eq_ker"
+],
+"class": "keep",
+"lines": [
+1076,
+1095
+],
+"sha256": "b8f9bd0da28409c5c01e12ce615d78a1e17eea92e528c2f69e363a1657d6ff87"
+},
+{
+"names": [
+"SingularMayerVietoris.rightTransport_connecting_range"
+],
+"class": "keep",
+"lines": [
+1097,
+1101
+],
+"sha256": "326f0250459312bbd77468dcefe36fbd0729047005e18e40278f1bc8e6eec2b3"
+},
+{
+"names": [
+"SingularMayerVietoris.rightTransport_second_ker"
+],
+"class": "keep",
+"lines": [
+1103,
+1107
+],
+"sha256": "5b0dde3369e0ccc90bb154f8f30096e475a83dc73f3716261248ddff90b16cc4"
+},
+{
+"names": [
+"SingularMayerVietoris.rightTransport_second_surjective"
+],
+"class": "keep",
+"lines": [
+1109,
+1113
+],
+"sha256": "7f1d77d87187785bfa0122d3b72c47891071dfe02b5729c562b24a2ce8a9d157"
+},
+{
+"names": [
+"SingularMayerVietoris.affineSimplex"
+],
+"class": "keep",
+"lines": [
+1117,
+1130
+],
+"sha256": "bea93e3eca9306fc517b6bf82ebe7434ac493f6fd7c73412e825930b678ea487"
+},
+{
+"names": [
+"SingularMayerVietoris.affineSimplex_coordinate"
+],
+"class": "keep",
+"lines": [
+1132,
+1138
+],
+"sha256": "7d1ceeb065a5e8b3a2011be3e51a6177cee51381100c1d554cf72c85b6c15958"
+},
+{
+"names": [
+"SingularMayerVietoris.affineSimplex_vertex"
+],
+"class": "keep",
+"lines": [
+1140,
+1149
+],
+"sha256": "9816e6a95439e35ddc634a25287c157653e2d96607e94a2d37824b1728dfead6"
+},
+{
+"names": [
+"SingularMayerVietoris.stdVertices"
+],
+"class": "keep",
+"lines": [
+1151,
+1153
+],
+"sha256": "6c99507d54b8070d45980e4ddda39e014899727890604a09cf2590b1646a9063"
+},
+{
+"names": [
+"SingularMayerVietoris.affineSimplex_stdVertices"
+],
+"class": "keep",
+"lines": [
+1155,
+1164
+],
+"sha256": "9535ee8e0d0eaee9604c61eef6b373948243f8269c7889796e564dfb3717b20e"
+},
+{
+"names": [
+"SingularMayerVietoris.affineSimplex_face"
+],
+"class": "keep",
+"lines": [
+1166,
+1179
+],
+"sha256": "7806ed8b6c00bb9388c5e32e07ddcc5064a53d058e2ed627269608fe9b53ca89"
+},
+{
+"names": [
+"SingularMayerVietoris.affineSimplex_comp"
+],
+"class": "keep",
+"lines": [
+1181,
+1192
+],
+"sha256": "36876cfed5ca720c6cf78b39dac1590b3fcfa35e5e2f71c4f43ab0090ab1d7fa"
+},
+{
+"names": [
+"SingularMayerVietoris.affineSimplex_mem_convexHull"
+],
+"class": "keep",
+"lines": [
+1194,
+1205
+],
+"sha256": "c1f957a75708320306499c792055f59d3ec6a18437e566210d13f0c55b4eb0d8"
+},
+{
+"names": [
+"SingularMayerVietoris.simplexBarycenter"
+],
+"class": "keep",
+"lines": [
+1207,
+1210
+],
+"sha256": "0b6176ee2b7727116acfe1f7346644b0556820cfa6aad414df5fcbffc74fa309"
+},
+{
+"names": [
+"SingularMayerVietoris.simplexBarycenter_coe"
+],
+"class": "keep",
+"lines": [
+1212,
+1218
+],
+"sha256": "fbc2e0f6581c336cf51c38cf2efdb981558b8f4ed420f04ecd23f7b13af1f513"
+},
+{
+"names": [
+"SingularMayerVietoris.affineSimplex_simplexBarycenter"
+],
+"class": "keep",
+"lines": [
+1220,
+1225
+],
+"sha256": "29935922274d64e0aa75f2260a5bfb4168e53a95c6b5aea189ea7a0ee5c42d00"
+},
+{
+"names": [
+"SingularMayerVietoris.FormalChains"
+],
+"class": "keep",
+"lines": [
+1229,
+1231
+],
+"sha256": "e0431fe7653c9957fb4fb596756ae93ac2a7e1a78faf33f845e5d279cceab4f7"
+},
+{
+"names": [
+"SingularMayerVietoris.formalSimplex"
+],
+"class": "keep",
+"lines": [
+1233,
+1235
+],
+"sha256": "56c6e9e2a7e662d9f8889538c71da8209e9c9740e3930b8ef9885886e3f37c33"
+},
+{
+"names": [
+"SingularMayerVietoris.formalLift"
+],
+"class": "keep",
+"lines": [
+1237,
+1240
+],
+"sha256": "1194f1765aabc67c4f3f5ebd1082d318e772565f16dd44684167d22251d8e790"
+},
+{
+"names": [
+"SingularMayerVietoris.formalLift_simplex"
+],
+"class": "keep",
+"lines": [
+1242,
+1247
+],
+"sha256": "d9844843425db47cd865ff1fb22053ae45bd67bea7eb0479c355bf30114e9062"
+},
+{
+"names": [
+"SingularMayerVietoris.formalChains_ext"
+],
+"class": "keep",
+"lines": [
+1249,
+1257
+],
+"sha256": "194c13c6deb9617d444b96ac42570cb210c7bcd3fa381dd902abc13074993d15"
+},
+{
+"names": [
+"SingularMayerVietoris.formalMap"
+],
+"class": "keep",
+"lines": [
+1259,
+1262
+],
+"sha256": "c01673d50e937e52daf21d24eba0662bf94201a677bceeb44a1750b88ad74038"
+},
+{
+"names": [
+"SingularMayerVietoris.formalMap_simplex"
+],
+"class": "keep",
+"lines": [
+1264,
+1268
+],
+"sha256": "6bc34a7465d2c75cfa7c594087f95048c8b5792c04aa901ed725b9cc123259e4"
+},
+{
+"names": [
+"SingularMayerVietoris.formalCone"
+],
+"class": "keep",
+"lines": [
+1270,
+1273
+],
+"sha256": "cfb471b722c6fb57d7ae42a4bcbcea5cfc35a4c7b8cd52e20f42a04c31f1e05f"
+},
+{
+"names": [
+"SingularMayerVietoris.formalCone_simplex"
+],
+"class": "keep",
+"lines": [
+1275,
+1279
+],
+"sha256": "5155093b5ef2977b97be77c1dd080729cf7e1036756bf9106236f34566a8289a"
+},
+{
+"names": [
+"SingularMayerVietoris.formalBoundary"
+],
+"class": "keep",
+"lines": [
+1281,
+1284
+],
+"sha256": "9d31ed1cb2c7224855888cbbb95233fa29a2593b5037e78775e635a134792c99"
+},
+{
+"names": [
+"SingularMayerVietoris.formalBoundary_simplex"
+],
+"class": "keep",
+"lines": [
+1286,
+1291
+],
+"sha256": "39ffad87d50f8ff28416063c4d17bce31b4120ee14cfc3ee958093a7a6ba2c2c"
+},
+{
+"names": [
+"SingularMayerVietoris.formalBoundary_cone_zero"
+],
+"class": "keep",
+"lines": [
+1293,
+1306
+],
+"sha256": "3992a1c5ee7bacef6d6a7f09ad96607cf37cd1dddff84fa787ce8d077028681a"
+},
+{
+"names": [
+"SingularMayerVietoris.formalBoundary_cone"
+],
+"class": "keep",
+"lines": [
+1308,
+1332
+],
+"sha256": "6321a564add2dda6d4bf449241ed3e18fa59f17a6de74fdf5f169b005ed924f4"
+},
+{
+"names": [
+"SingularMayerVietoris.formalBoundary_comp"
+],
+"class": "keep",
+"lines": [
+1334,
+1353
+],
+"sha256": "5d1baf0765b6c0b5287a091ad4c9526da23a739a5f32c4c680b4098444a9c573"
+},
+{
+"names": [
+"SingularMayerVietoris.formalBoundary_boundary"
+],
+"class": "keep",
+"lines": [
+1355,
+1359
+],
+"sha256": "93f959802a4969ac1430b3f9d94ae6a1d9cd9455855f556328dc3eec42b50fb8"
+},
+{
+"names": [
+"SingularMayerVietoris.formalMap_boundary"
+],
+"class": "keep",
+"lines": [
+1361,
+1371
+],
+"sha256": "97fd1bb2e89cd20ffbe83d215d6146a0b9761826a2d06f28d65885b2adbe5876"
+},
+{
+"names": [
+"SingularMayerVietoris.formalMap_cone"
+],
+"class": "keep",
+"lines": [
+1373,
+1385
+],
+"sha256": "58340255095774a1be6c77abdc1517f47d66347891e33c6a4fd807183e4b5cf8"
+},
+{
+"names": [
+"SingularMayerVietoris.FormalCenter"
+],
+"class": "keep",
+"lines": [
+1389,
+1391
+],
+"sha256": "e13c8b025d4750e5913b91e9b4cfdbfe45b34957d24f3431135ce935ab8b1115"
+},
+{
+"names": [
+"SingularMayerVietoris.formalSubdivision"
+],
+"class": "keep",
+"lines": [
+1393,
+1399
+],
+"sha256": "9deea58870687a9ec08830ff7889402f4f4dd698fc970add27119aec305a28d4"
+},
+{
+"names": [
+"SingularMayerVietoris.formalSubdivision_zero"
+],
+"class": "keep",
+"lines": [
+1401,
+1405
+],
+"sha256": "dcb6f120714c6ec352b07a6a7d98b5c5c0c155c95babff530196b9d02337ada1"
+},
+{
+"names": [
+"SingularMayerVietoris.formalSubdivision_simplex_succ"
+],
+"class": "keep",
+"lines": [
+1407,
+1414
+],
+"sha256": "97d1d1be020be36ba4c0d7d01e5b91f79439a07b02d23dd9f36b1c36a314a3fb"
+},
+{
+"names": [
+"SingularMayerVietoris.formalBoundary_subdivision"
+],
+"class": "keep",
+"lines": [
+1416,
+1441
+],
+"sha256": "904c05c8e20c53f8b720aec97638e558f0c81e4cc22fa2b953bd2ade19ab6fac"
+},
+{
+"names": [
+"SingularMayerVietoris.formalMap_subdivision"
+],
+"class": "keep",
+"lines": [
+1443,
+1461
+],
+"sha256": "a7b3e4a4dd521c76899f7ad831c03a43c05e14460a07531ef9a840364d3038ae"
+},
+{
+"names": [
+"SingularMayerVietoris.simplexCenter"
+],
+"class": "keep",
+"lines": [
+1465,
+1467
+],
+"sha256": "35cce75af46edfa82f6f1f502f84cb9dc67023d78e98f1dafb1119b335baf1b5"
+},
+{
+"names": [
+"SingularMayerVietoris.affineChainMap"
+],
+"class": "keep",
+"lines": [
+1469,
+1473
+],
+"sha256": "62d2167d0b089d7211e5fd5980a162d44689c3309a3000903551eeeab2e8a648"
+},
+{
+"names": [
+"SingularMayerVietoris.affineChainMap_simplex"
+],
+"class": "keep",
+"lines": [
+1475,
+1481
+],
+"sha256": "42f5632aa13bef3c099c3300a2482ae7485bbaa87e97ca69abc8d61cb1a1f340"
+},
+{
+"names": [
+"SingularMayerVietoris.affineChainMap_boundary"
+],
+"class": "keep",
+"lines": [
+1483,
+1506
+],
+"sha256": "51c83be376229312d9873db402b58f2085c52bde8ff4bd19c155a5435d834f87"
+},
+{
+"names": [
+"SingularMayerVietoris.inducedChain_affineChainMap"
+],
+"class": "keep",
+"lines": [
+1508,
+1522
+],
+"sha256": "0099e2e68bb26e770b4b1caa12454e61141567d82003db9e27a9abf0397149bd"
+},
+{
+"names": [
+"SingularMayerVietoris.affineChainMap_stdVertices"
+],
+"class": "keep",
+"lines": [
+1524,
+1530
+],
+"sha256": "4bee46bd002a533dcdfa37b2661783f5b779172dbfb95c0f764b18a9783a1722"
+},
+{
+"names": [
+"SingularMayerVietoris.affineSimplex_preserves_center"
+],
+"class": "keep",
+"lines": [
+1532,
+1537
+],
+"sha256": "ba8d8f1b9bf2a05937cf3abab37f8119bd9db5448adc72ebf8690a93e7fbb338"
+},
+{
+"names": [
+"SingularMayerVietoris.formalSubdivisionHomotopy"
+],
+"class": "keep",
+"lines": [
+1539,
+1547
+],
+"sha256": "1809954944a40fd4d4818bccc2023fce924226c8ae466ccaf387be5f199c4fc1"
+},
+{
+"names": [
+"SingularMayerVietoris.formalSubdivisionHomotopy_zero"
+],
+"class": "keep",
+"lines": [
+1549,
+1553
+],
+"sha256": "c98ec0679777a01fcf0b7e9ac677b73589c094aeb13c3a8755259a7f59076701"
+},
+{
+"names": [
+"SingularMayerVietoris.formalSubdivisionHomotopy_simplex_succ"
+],
+"class": "keep",
+"lines": [
+1555,
+1563
+],
+"sha256": "03252c98671e95880488e5bb30d2aaf752490118e5077f38f704f8bc58f6dff1"
+},
+{
+"names": [
+"SingularMayerVietoris.formalSubdivisionHomotopy_boundary"
+],
+"class": "keep",
+"lines": [
+1565,
+1624
+],
+"sha256": "ddcc8e8f279b147d062d9bc91ed125a8e37e2386b3e7fb5bbb913ac34a52487e"
+},
+{
+"names": [
+"SingularMayerVietoris.formalMap_subdivisionHomotopy"
+],
+"class": "keep",
+"lines": [
+1626,
+1648
+],
+"sha256": "4435897e50de5458c29ca73b0c926b0d59bc0e3672de2db313a1e213281792dd"
+},
+{
+"names": [
+"SingularMayerVietoris.formalBoundary_subdivision_iterate"
+],
+"class": "keep",
+"lines": [
+1650,
+1659
+],
+"sha256": "971aa47e6dd5a7f83bee8b692dd7eb992ff0216abeec8b225cbc2921390f357d"
+},
+{
+"names": [
+"SingularMayerVietoris.formalMap_subdivision_iterate"
+],
+"class": "keep",
+"lines": [
+1661,
+1671
+],
+"sha256": "e72fe8fd738a1c50f7f8ef43441f2186c624b3ae403b14f706502286e96de60e"
+},
+{
+"names": [
+"SingularMayerVietoris.formalSubdivisionIteratedHomotopy"
+],
+"class": "keep",
+"lines": [
+1673,
+1677
+],
+"sha256": "120cb9ae96672a4eb53f59c3c6a72ecdd09f590af05b4c66812039c7d325785d"
+},
+{
+"names": [
+"SingularMayerVietoris.formalSubdivisionIteratedHomotopy_apply"
+],
+"class": "keep",
+"lines": [
+1679,
+1686
+],
+"sha256": "820ee1d1f4394ea95d2848799eae7d2770779018507b6ba745babbf4a1cdd09f"
+},
+{
+"names": [
+"SingularMayerVietoris.formalSubdivisionIteratedHomotopy_zero"
+],
+"class": "keep",
+"lines": [
+1688,
+1693
+],
+"sha256": "f1a3abbcf7ee1eda98a056a8a4fd1b0c4d10891611a29d0a21faa0bfd7bc55d3"
+},
+{
+"names": [
+"SingularMayerVietoris.formalSubdivisionIteratedHomotopy_succ"
+],
+"class": "keep",
+"lines": [
+1695,
+1701
+],
+"sha256": "cee84b8c87f82300e51c0aac32c8c5db09d3ec218cd7597267bfb30ffe03edb2"
+},
+{
+"names": [
+"SingularMayerVietoris.formalSubdivisionIteratedHomotopy_degree_zero"
+],
+"class": "keep",
+"lines": [
+1703,
+1708
+],
+"sha256": "21112274e3192a728fe8b49c68d3a8a32d9de997f991dc284d70c17ec911d3d4"
+},
+{
+"names": [
+"SingularMayerVietoris.formalSubdivisionIteratedHomotopy_boundary"
+],
+"class": "keep",
+"lines": [
+1710,
+1740
+],
+"sha256": "b3ef795f832cc3359042350bae353faa899dfd9f9d490304901fe63f062cb782"
+},
+{
+"names": [
+"SingularMayerVietoris.formalMap_subdivisionIteratedHomotopy"
+],
+"class": "keep",
+"lines": [
+1742,
+1752
+],
+"sha256": "34f4d5d28d0f69ac378b689a50524bf2faf378716c265053b17b16e7f31bbf36"
+},
+{
+"names": [
+"SingularMayerVietoris.subdivision"
+],
+"class": "keep",
+"lines": [
+1754,
+1760
+],
+"sha256": "4de60bf31827f44bc1c9c4ab734de2a9903704e95ea7059fa8b0f7f622e1b70b"
+},
+{
+"names": [
+"SingularMayerVietoris.subdivision_simplex"
+],
+"class": "keep",
+"lines": [
+1762,
+1770
+],
+"sha256": "7d55181e9da4701260095418a7f7df1d7e70c6b99b3c7210c666499ea798c3fb"
+},
+{
+"names": [
+"SingularMayerVietoris.inducedChain_subdivision"
+],
+"class": "keep",
+"lines": [
+1772,
+1785
+],
+"sha256": "91d79f40c8e8409ee411584e8faf366106793c2245af3d04abfb9d044efa1348"
+},
+{
+"names": [
+"SingularMayerVietoris.affineSimplex_comp_stdVertices"
+],
+"class": "keep",
+"lines": [
+1787,
+1791
+],
+"sha256": "0639643b2119c00ec9779037b38892b5ebe8142729a86a997b545ca10b42c449"
+},
+{
+"names": [
+"SingularMayerVietoris.subdivision_affineChainMap"
+],
+"class": "keep",
+"lines": [
+1793,
+1809
+],
+"sha256": "dec38c2cf81cc7dc659a6ba482ab7d4a573a56e15e9a908bfd5aefc72f9270c9"
+},
+{
+"names": [
+"SingularMayerVietoris.subdivision_boundary"
+],
+"class": "keep",
+"lines": [
+1811,
+1830
+],
+"sha256": "fc75695c2f6a876c36762a3a03d8c088a106c0df36708089ff43f34bf0cefcf5"
+},
+{
+"names": [
+"SingularMayerVietoris.subdivisionHomotopy"
+],
+"class": "keep",
+"lines": [
+1832,
+1839
+],
+"sha256": "fd5e0d773722b41b461583e8d17f5959685701f835aa5acb8d5eab9fa9dba379"
+},
+{
+"names": [
+"SingularMayerVietoris.subdivisionHomotopy_simplex"
+],
+"class": "keep",
+"lines": [
+1841,
+1850
+],
+"sha256": "157132692af0f926310f612efba2025608f1d37986547c0391a47c970a4c5d14"
+},
+{
+"names": [
+"SingularMayerVietoris.inducedChain_subdivisionHomotopy"
+],
+"class": "keep",
+"lines": [
+1852,
+1866
+],
+"sha256": "83208ae03f33eb5b9c750e9a0a1920abf7f4c7303e63dbaec37ed5b78627341e"
+},
+{
+"names": [
+"SingularMayerVietoris.subdivisionHomotopy_affineChainMap"
+],
+"class": "keep",
+"lines": [
+1868,
+1885
+],
+"sha256": "f888b682dd9616387f48862b52da7433b0065a3e3547a3dcf02dae1b0fcc163b"
+},
+{
+"names": [
+"SingularMayerVietoris.subdivisionHomotopy_boundary_zero_affineChainMap"
+],
+"class": "keep",
+"lines": [
+1887,
+1897
+],
+"sha256": "bef3fa1d6f06f8247ff76925c1f42df966f4764321f0a7ec236aa821db021150"
+},
+{
+"names": [
+"SingularMayerVietoris.subdivisionHomotopy_boundary_affineChainMap"
+],
+"class": "keep",
+"lines": [
+1899,
+1913
+],
+"sha256": "cd3254a9d9066191a78efd3a7eeee551e2134e6191ede1a439f405cbefc45f5d"
+},
+{
+"names": [
+"SingularMayerVietoris.subdivisionHomotopy_boundary_zero"
+],
+"class": "keep",
+"lines": [
+1915,
+1932
+],
+"sha256": "2929841260e426c7d117c1229daf0d330f8e8dc1b6a68cfe2d80e7aaa928a480"
+},
+{
+"names": [
+"SingularMayerVietoris.subdivisionHomotopy_boundary"
+],
+"class": "keep",
+"lines": [
+1934,
+1956
+],
+"sha256": "9e89c38ddf2ab7103a9e268ea3e20530a80418aedf317b97ac75434114d90f52"
+},
+{
+"names": [
+"SingularMayerVietoris.subdivisionHomotopy_boundary_of_cycle"
+],
+"class": "keep",
+"lines": [
+1958,
+1970
+],
+"sha256": "e8131f2002560cfeda241faa3b766d5c794abba385ffb7df8f293a9280bd29c1"
+},
+{
+"names": [
+"SingularMayerVietoris.formalChainsSupported"
+],
+"class": "keep",
+"lines": [
+1974,
+1977
+],
+"sha256": "f24c4ac03386ae0c61ac615e87634b0d23fd9aeb87958b2f9970983df1a21699"
+},
+{
+"names": [
+"SingularMayerVietoris.mem_formalChainsSupported_iff"
+],
+"class": "keep",
+"lines": [
+1979,
+1982
+],
+"sha256": "f49cec84a5a94fd298237d1b5898e2fad7e1efdbde5e5cc862fe4e50e62432bf"
+},
+{
+"names": [
+"SingularMayerVietoris.formalChainsSupported_mono"
+],
+"class": "keep",
+"lines": [
+1984,
+1988
+],
+"sha256": "c74d9393dcbba8b7cb70bd80ce9295b9f84f42627651071a2b76d0904ff8e50c"
+},
+{
+"names": [
+"SingularMayerVietoris.formalChainsSupported_univ"
+],
+"class": "keep",
+"lines": [
+1990,
+1996
+],
+"sha256": "abbc404a666c1ac883b9595f7fa798bc89ead1f986d6e1add21003b99ad44a97"
+},
+{
+"names": [
+"SingularMayerVietoris.formalSimplex_mem_supported_iff"
+],
+"class": "keep",
+"lines": [
+1998,
+2002
+],
+"sha256": "382a93b870ea44e9dee3f9649be421bb2f56aa677bdaf29926c9ce864193a36e"
+},
+{
+"names": [
+"SingularMayerVietoris.formalSimplex_mem_supported"
+],
+"class": "keep",
+"lines": [
+2004,
+2007
+],
+"sha256": "b34d1ca25e66dfc0ad9f43327cd70e2fb80527463effd42e73cde8fe677d297d"
+},
+{
+"names": [
+"SingularMayerVietoris.formalChainsSupported_le"
+],
+"class": "keep",
+"lines": [
+2009,
+2016
+],
+"sha256": "c55e82a7a38fdf899df29139a6d7af071f02528eab345f91ec538a677e730f79"
+},
+{
+"names": [
+"SingularMayerVietoris.formalLinearMap_mem_of_supported"
+],
+"class": "keep",
+"lines": [
+2018,
+2023
+],
+"sha256": "d2dd2278a2e1012076b6301a13ad7a4478a779963e47c514b5897c1e3a20f3c4"
+},
+{
+"names": [
+"SingularMayerVietoris.formalBoundary_mem_supported"
+],
+"class": "keep",
+"lines": [
+2025,
+2035
+],
+"sha256": "b980c7c403e42e2dd237f49c3ea8000e0e5a4940a9ac41b9f9ee21bd39e65d86"
+},
+{
+"names": [
+"SingularMayerVietoris.formalCone_mem_supported"
+],
+"class": "keep",
+"lines": [
+2037,
+2046
+],
+"sha256": "0da9a5a73b2c40a57c95cfa2aa6c007c298bb1c2d45432ec9a450f41933620b9"
+},
+{
+"names": [
+"SingularMayerVietoris.formalMap_mem_supported"
+],
+"class": "keep",
+"lines": [
+2048,
+2055
+],
+"sha256": "258662c2d4339e359f8f39475fa5382d28d390d7d402a36c195f6e1aeaf9f35a"
+},
+{
+"names": [
+"SingularMayerVietoris.formalSubdivision_mem_supported"
+],
+"class": "keep",
+"lines": [
+2057,
+2076
+],
+"sha256": "17c6ca975629268843edd3d49db07ffd802d8d4ef44f3c025a32b2948ba76291"
+},
+{
+"names": [
+"SingularMayerVietoris.formalCone_support_exists"
+],
+"class": "keep",
+"lines": [
+2078,
+2085
+],
+"sha256": "00c19aac000fad6d83291b98cd3b4c9de64c5f00b5e683eeb61cfbcda6a9f370"
+},
+{
+"names": [
+"SingularMayerVietoris.formalLift_support_exists"
+],
+"class": "keep",
+"lines": [
+2087,
+2094
+],
+"sha256": "8e7040ee09a98677ef417e4c810a22cdaf6e5f0e288b113ad8ab0db9fdfefe49"
+},
+{
+"names": [
+"SingularMayerVietoris.formalLinearMap_support_exists"
+],
+"class": "keep",
+"lines": [
+2096,
+2105
+],
+"sha256": "b90e9a7e951e2ac39b7dbfc3671660e2dce8b37f47618a2cd7f8dd3709305457"
+},
+{
+"names": [
+"SingularMayerVietoris.formalBoundary_support_exists"
+],
+"class": "keep",
+"lines": [
+2107,
+2117
+],
+"sha256": "0221d337c0c144f2bc17b78ddf8edec2d96eac9b44bd2f49fb011fddd5248eea"
+},
+{
+"names": [
+"SingularMayerVietoris.formalLinearMap_mem_of_support"
+],
+"class": "keep",
+"lines": [
+2119,
+2128
+],
+"sha256": "567894da8eb2036890e2eebead3423edae9a655d7339a070ce1d0f1282e60cf3"
+},
+{
+"names": [
+"SingularMayerVietoris.singularLinearMap_mem_of_support"
+],
+"class": "move",
+"lines": [
+2130,
+2146
+],
+"sha256": "4e5bcf5839183f4d8ac1cbec123ad546d1372723d3b412d5b00167b80ee56c52"
+},
+{
+"names": [
+"SingularMayerVietoris.singularLinearMap_mem_of_small"
+],
+"class": "move",
+"lines": [
+2148,
+2162
+],
+"sha256": "37871824acd05051a415fea3c73f4d41a1311245b68fab73d7b116ab12a76945"
+},
+{
+"names": [
+"SingularMayerVietoris.realizedChain_mem_supported"
+],
+"class": "move",
+"lines": [
+2164,
+2176
+],
+"sha256": "a78bbb2a025665f245fe5d3dae9bf634ec479802f2ae6d2a40d7cc250856e7bc"
+},
+{
+"names": [
+"SingularMayerVietoris.realizedChain_mem_small"
+],
+"class": "move",
+"lines": [
+2178,
+2190
+],
+"sha256": "ed094809f96e0e86999226e25211c437fe8b6da163290418651fe49344f3a4ba"
+},
+{
+"names": [
+"SingularMayerVietoris.realizedChain_mem_small_of_support"
+],
+"class": "move",
+"lines": [
+2192,
+2205
+],
+"sha256": "ff2d65ef66c6af73af2e8e039f0d07c00d05e0e1b8beca60d05fd9c0e312669a"
+},
+{
+"names": [
+"SingularMayerVietoris.vertexBarycenter"
+],
+"class": "keep",
+"lines": [
+2209,
+2212
+],
+"sha256": "3a6524edf1976fc9eae802b0f3b5fbb45d751aa39d956deafebd292c9fe9c699"
+},
+{
+"names": [
+"SingularMayerVietoris.vertexBarycenter_mem_of_convex"
+],
+"class": "keep",
+"lines": [
+2214,
+2222
+],
+"sha256": "97b8c3e8d1db9a3c3085bff3c7d5499f47ece39a47c9ff0dc9c7706784dd7dc8"
+},
+{
+"names": [
+"SingularMayerVietoris.vertexBarycenter_sub"
+],
+"class": "keep",
+"lines": [
+2224,
+2232
+],
+"sha256": "ae3a9bcc18b001338c0123545db20b06ba8e3fed13a98acf609035592a579d2b"
+},
+{
+"names": [
+"SingularMayerVietoris.sum_norm_vertex_sub_le"
+],
+"class": "keep",
+"lines": [
+2234,
+2246
+],
+"sha256": "e49bc39938d305ce955628fcd7ff93e55e4d1ad750d16290b096f7593f1c38c6"
+},
+{
+"names": [
+"SingularMayerVietoris.dist_vertexBarycenter_vertex_le"
+],
+"class": "keep",
+"lines": [
+2248,
+2259
+],
+"sha256": "9a5dc98c768c8fd67ceb8d7091f386c4e3f508988864c9dcd96b79308d597564"
+},
+{
+"names": [
+"SingularMayerVietoris.dist_vertexBarycenter_convexHull_le"
+],
+"class": "keep",
+"lines": [
+2261,
+2272
+],
+"sha256": "367b24e472602505ce8c0e3e90f4c9b5ad293a196cc57949aa029cace63b862e"
+},
+{
+"names": [
+"SingularMayerVietoris.dist_convexHull_range_le"
+],
+"class": "keep",
+"lines": [
+2274,
+2280
+],
+"sha256": "cb377f996c3721c25bce3721b4cc0e4cb52c603e79915391ae2ef80b15326533"
+},
+{
+"names": [
+"SingularMayerVietoris.exists_lebesgue_number_two_pairwise"
+],
+"class": "keep",
+"lines": [
+2282,
+2316
+],
+"sha256": "0cabfb515ccb527da0e491c077821cd0edd42b512b75b55334a3c531dea3187f"
+},
+{
+"names": [
+"SingularMayerVietoris.exists_lebesgue_number_two"
+],
+"class": "keep",
+"lines": [
+2318,
+2326
+],
+"sha256": "2666caecf36de09072cb0e7fdfb1c06a4e0070c9119ff842b1aff7c1f2e597ff"
+},
+{
+"names": [
+"SingularMayerVietoris.meshFactor"
+],
+"class": "keep",
+"lines": [
+2328,
+2330
+],
+"sha256": "9aa720114ffbdcba7fdf2954407714048d143d539b1d64eeba2e89d5559e7b5a"
+},
+{
+"names": [
+"SingularMayerVietoris.meshFactor_nonneg"
+],
+"class": "keep",
+"lines": [
+2332,
+2334
+],
+"sha256": "21be8feccce54e338ad52f47834ed50e3000649c59507e5f8f9a61bb54ec6757"
+},
+{
+"names": [
+"SingularMayerVietoris.meshFactor_lt_one"
+],
+"class": "keep",
+"lines": [
+2336,
+2339
+],
+"sha256": "6e3518845f8005eb4a14622882e19b4787916b9197f08e00ee3fef10c5426fe2"
+},
+{
+"names": [
+"SingularMayerVietoris.meshFactor_mono"
+],
+"class": "keep",
+"lines": [
+2341,
+2347
+],
+"sha256": "041285605fd62e6f1e24e34e4738d2842978a89146e55d44e1dfa0531fe1f659"
+},
+{
+"names": [
+"SingularMayerVietoris.meshFactor_pow_tendsto"
+],
+"class": "keep",
+"lines": [
+2349,
+2352
+],
+"sha256": "11d8db2b7f8784fcd7e2a6095a2daf186c01cf8bfdc3022bd82da14b3faaea82"
+},
+{
+"names": [
+"SingularMayerVietoris.meshFactor_pow_mul_tendsto"
+],
+"class": "keep",
+"lines": [
+2354,
+2357
+],
+"sha256": "4e33575f671ac0be48e493d5d05c5ae7683f482883e7a9f507e1e9756a21759a"
+},
+{
+"names": [
+"SingularMayerVietoris.eventually_meshFactor_pow_mul_lt"
+],
+"class": "keep",
+"lines": [
+2359,
+2363
+],
+"sha256": "d368ad9ebe58c60c2f32b8d187696792fc4c5fb75f2d77528fa3b4acfae3105c"
+},
+{
+"names": [
+"SingularMayerVietoris.simplex_lebesgue_number_two"
+],
+"class": "keep",
+"lines": [
+2365,
+2370
+],
+"sha256": "7a1a2a3e01a8be11aa9fc0646ae4deed3b86fb42327035d5a0be51b112745a9f"
+},
+{
+"names": [
+"SingularMayerVietoris.simplex_lebesgue_number_subsimplices"
+],
+"class": "keep",
+"lines": [
+2372,
+2382
+],
+"sha256": "7db3d713172932fb22edd452a78a63d45fecc76299717f8f75ac29d4c6136405"
+},
+{
+"names": [
+"SingularMayerVietoris.simplex_eventually_small_of_diameter"
+],
+"class": "keep",
+"lines": [
+2384,
+2397
+],
+"sha256": "ce1e4bf6c6d1392524c0a7bcc7fd3dc1cb76bb39e08e534770a2e53135b238b5"
+},
+{
+"names": [
+"SingularMayerVietoris.finite_family_eventually_small_of_diameter"
+],
+"class": "keep",
+"lines": [
+2399,
+2421
+],
+"sha256": "25f5c5e62312664520f9d6924d31e83c80f6fdffb32332b1eee86133409550b4"
+},
+{
+"names": [
+"SingularMayerVietoris.simplexBarycenter_eq_vertexBarycenter"
+],
+"class": "keep",
+"lines": [
+2423,
+2429
+],
+"sha256": "1588e184cbeb72d4ee95d5b5a537a61ec9559f48cb1b42ce40bc1fc484c98c7d"
+},
+{
+"names": [
+"SingularMayerVietoris.dist_affineSimplex_le"
+],
+"class": "keep",
+"lines": [
+2431,
+2436
+],
+"sha256": "aaf928b4b80c41ee7a18c4b15b7e7753afdda0f8f0ef978e04b09094ceebbb3c"
+},
+{
+"names": [
+"SingularMayerVietoris.affineSimplex_diam_le"
+],
+"class": "keep",
+"lines": [
+2438,
+2444
+],
+"sha256": "dc8068f1bbb74c0939d830363b86fcf3eca56e9b085fc96a2ac54162b87b9a8b"
+},
+{
+"names": [
+"SingularMayerVietoris.finite_family_eventually_small_of_vertices"
+],
+"class": "keep",
+"lines": [
+2446,
+2460
+],
+"sha256": "4cf865e9976227e01b4653c60d2bc3a517a31ae9bfec94eba687b0f10c411086"
+},
+{
+"names": [
+"SingularMayerVietoris.formalCenter_mem_of_convex"
+],
+"class": "keep",
+"lines": [
+2462,
+2469
+],
+"sha256": "29daed02ba0ef5971213f80031867d080e14be17f1b9f0ec3bc44e6791864c8f"
+},
+{
+"names": [
+"SingularMayerVietoris.formalSubdivision_simplex_vertices_mem_convexHull"
+],
+"class": "keep",
+"lines": [
+2471,
+2487
+],
+"sha256": "a5d30f8ba3ae6782f94b49df35e3a2c132c2ca46af4ec1c64144258844aaf87e"
+},
+{
+"names": [
+"SingularMayerVietoris.formalSubdivision_simplex_mesh"
+],
+"class": "keep",
+"lines": [
+2489,
+2528
+],
+"sha256": "505cf3e4851a282600f811a048f62a95d78218c8aa38ffb8d20fca9dfef3d082"
+},
+{
+"names": [
+"SingularMayerVietoris.formalSubdivision_mesh"
+],
+"class": "keep",
+"lines": [
+2530,
+2540
+],
+"sha256": "3937cbfe81364d0f0135bbe460a68e031755bd9d26ec22956c38e4310618b939"
+},
+{
+"names": [
+"SingularMayerVietoris.formalSubdivision_iterate_mesh"
+],
+"class": "keep",
+"lines": [
+2542,
+2558
+],
+"sha256": "e500bda44f29406a7ed9288ff4ad0390647702dfb397a2904c4fd018d42063e5"
+},
+{
+"names": [
+"SingularMayerVietoris.simplex_dist_le_one"
+],
+"class": "keep",
+"lines": [
+2560,
+2564
+],
+"sha256": "9ac45db1c60b93a92ed07d7cf5dc7dc836cc210782f16c685ed4a7641950d3da"
+},
+{
+"names": [
+"SingularMayerVietoris.simplex_formalSubdivision_iterate_mesh"
+],
+"class": "keep",
+"lines": [
+2566,
+2579
+],
+"sha256": "71b77f1b6e54f27b2e4cde376489611c93d06db414d04b8d7b444d225685fb69"
+},
+{
+"names": [
+"SingularMayerVietoris.finite_family_formalSubdivision_eventually_small"
+],
+"class": "keep",
+"lines": [
+2581,
+2596
+],
+"sha256": "d5c383568aa49e4ebaad8d6199fced690e43010e1fa93d5d3a66fc28e6657633"
+},
+{
+"names": [
+"SingularMayerVietoris.subdivisionHomotopy_mem_small"
+],
+"class": "move",
+"lines": [
+2600,
+2609
+],
+"sha256": "58b3820aa86cd54245f45898cf753063942b33141259b4d6546cca98fbec725e"
+},
+{
+"names": [
+"SingularMayerVietoris.eventually_subdivision_mem_small"
+],
+"class": "move",
+"lines": [
+2611,
+2631
+],
+"sha256": "e4d03ed4cb5ed073900f5cd398dfe7b5e6939afbbc2fb5686d2008a3c4de4822"
+},
+{
+"names": [
+"SingularMayerVietoris.smallInclusion_quasiIso_of_deformation"
+],
+"class": "move",
+"lines": [
+2635,
+2675
+],
+"sha256": "2b9e2950936dd5baa601c8f097136328cfa86a99cb8aa36739c448b0d0ff34ca"
+},
+{
+"names": [
+"SingularMayerVietoris.smallInclusion_quasiIso"
+],
+"class": "move",
+"lines": [
+2677,
+2687
+],
+"sha256": "9022740fc0f67b8a6d9fc917b9855bba6ecaef47a2fe8c40c63046a530c61a0a"
+},
+{
+"names": [
+"SingularMayerVietoris.smallHomologyIso"
+],
+"class": "move",
+"lines": [
+2689,
+2694
+],
+"sha256": "59530d07eccf3b64aafff4ec7c01fe61e9255cb58270b8531f82448c9cbe8ea9"
+},
+{
+"names": [
+"SingularMayerVietoris.smallHomologyEquiv"
+],
+"class": "move",
+"lines": [
+2696,
+2700
+],
+"sha256": "01ae4597370c842a9d1c92d8fd6c04010637a2c9ae885dc2097244ad9134231f"
+},
+{
+"names": [
+"SingularMayerVietoris.smallHomologyEquiv_toLinearMap"
+],
+"class": "move",
+"lines": [
+2702,
+2708
+],
+"sha256": "45166a43a1482c344e657f3c6b485bb759a06852e09d7f3c9f26b7fe0e6ef605"
+},
+{
+"names": [
+"SingularMayerVietoris.leftHomologyMap"
+],
+"class": "keep",
+"lines": [
+2712,
+2716
+],
+"sha256": "e878370695c227223a7fc26134ea921d3b1fd536a818132f1d240f5e9b9e4819"
+},
+{
+"names": [
+"SingularMayerVietoris.rightHomologyMap"
+],
+"class": "keep",
+"lines": [
+2718,
+2730
+],
+"sha256": "286c2e522f46afcff9da2888cd8c1378e564bb592d78ff08179e9d2ebeb01eb5"
+},
+{
+"names": [
+"SingularMayerVietoris.leftHomologyMap_apply"
+],
+"class": "keep",
+"lines": [
+2732,
+2739
+],
+"sha256": "e31a4499c3cb167bc0c652933ea634e77a3a0f97a40832e07b71dda4efa5d41d"
+},
+{
+"names": [
+"SingularMayerVietoris.rightHomologyMap_apply"
+],
+"class": "keep",
+"lines": [
+2741,
+2748
+],
+"sha256": "674fd2d0e93ef63c5fe520851e89c7f110cf896886dadbddc979fa6e5d2e1d99"
+},
+{
+"names": [
+"SingularMayerVietoris.rightHomologyMap_eq_comparison"
+],
+"class": "keep",
+"lines": [
+2750,
+2757
+],
+"sha256": "0c0e82f993c4894548cee3ed46c4286fefd45f4af26990a02c9f0413d7aa5a16"
+},
+{
+"names": [
+"SingularMayerVietoris.leftHomologyMap_comp_right"
+],
+"class": "keep",
+"lines": [
+2759,
+2769
+],
+"sha256": "4f43e8cd8443241d456ad289cad93428406e0fb6b620eff4ec37a9401f17304d"
+},
+{
+"names": [
+"SingularMayerVietoris.smallHomologyEquiv_eq_comparison"
+],
+"class": "keep",
+"lines": [
+2771,
+2775
+],
+"sha256": "846b63ad9c0b0a3e7e0fb4242ef22e82f35c9f0bc3aa6ec7703b5dafe6691db7"
+},
+{
+"names": [
+"SingularMayerVietoris.connectingHomomorphism"
+],
+"class": "keep",
+"lines": [
+2777,
+2781
+],
+"sha256": "2d030f8ec292e9fddc8f728e219a65b5584b1469972fd5b2aec03b861eec09fe"
+},
+{
+"names": [
+"SingularMayerVietoris.connectingHomomorphism_comparison"
+],
+"class": "keep",
+"lines": [
+2783,
+2792
+],
+"sha256": "737dcb10ea1300ae88857afab74a4db051c51ee3e2c6e419549811b4db318fc3"
+},
+{
+"names": [
+"SingularMayerVietoris.rightHomologyMap_eq_transport"
+],
+"class": "keep",
+"lines": [
+2794,
+2799
+],
+"sha256": "e69342bdb157fdad814da46e0e3ebf714123bd7b8a5dc0218d5f89c39d5ce5e6"
+},
+{
+"names": [
+"SingularMayerVietoris.exact_at_intersection"
+],
+"class": "keep",
+"lines": [
+2801,
+2807
+],
+"sha256": "bda484a76bfa6aac0e6056beda9a88c9058f3c68e0a1bfb5c7dc3179e4fbe617"
+},
+{
+"names": [
+"SingularMayerVietoris.exact_at_pair"
+],
+"class": "keep",
+"lines": [
+2809,
+2814
+],
+"sha256": "47cdc16ecd9ed361391f0098b4f12ba61e39703fc5a40543e567ccca2991171c"
+},
+{
+"names": [
+"SingularMayerVietoris.exact_at_ambient"
+],
+"class": "keep",
+"lines": [
+2816,
+2825
+],
+"sha256": "ca0455b3556afe25a4b4a8a0095615e627abb9584aa4006958a2f45ce09cea0c"
+},
+{
+"names": [
+"SingularMayerVietoris.rightHomologyMap_zero_surjective"
+],
+"class": "keep",
+"lines": [
+2827,
+2834
+],
+"sha256": "c7107867ef7bbce7109a9d7c826e86f11c61a3cec356b38d6803cdefc267a5a8"
+},
+{
+"names": [
+"SingularMayerVietoris.connectingHomomorphism_comp_left"
+],
+"class": "keep",
+"lines": [
+2836,
+2847
+],
+"sha256": "bc28ecd8939fde27a540f92fc0e2700f6560277727c79404f95eb0e8e6721e94"
+}
+]
+}

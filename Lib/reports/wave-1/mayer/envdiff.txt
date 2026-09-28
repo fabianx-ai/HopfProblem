@@ -1,0 +1,27 @@
+constants before 38248 after 38260 (keys 38146 38158 )
+lost 25 added 37 of which source declarations: 0 0 ; names with changed type 24 of which source: 6
+  PROOF-NAMING SingularMayerVietoris.inl_rightMap
+  PROOF-NAMING SingularMayerVietoris.inr_rightMap
+  PROOF-NAMING SingularMayerVietoris.leftMap_fst
+  PROOF-NAMING SingularMayerVietoris.leftMap_snd
+  PROOF-NAMING SingularMayerVietoris.smallLeftHomologyMap_components
+  PROOF-NAMING SingularMayerVietoris.smallRightHomologyMap_components
+auxiliary lost/added/changed (not judged): 25 37 18
+module moves (source declarations, 1-to-1):
+      11  Lib.AlgebraicTopology.SingularHomology.MayerVietoris -> Lib.AlgebraicTopology.SingularHomology.MayerVietoris.AffineSimplex
+      15  Lib.AlgebraicTopology.SingularHomology.MayerVietoris -> Lib.AlgebraicTopology.SingularHomology.MayerVietoris.BiprodSequence
+      20  Lib.AlgebraicTopology.SingularHomology.MayerVietoris -> Lib.AlgebraicTopology.SingularHomology.MayerVietoris.ChainSequence
+      17  Lib.AlgebraicTopology.SingularHomology.MayerVietoris -> Lib.AlgebraicTopology.SingularHomology.MayerVietoris.FormalChains
+      20  Lib.AlgebraicTopology.SingularHomology.MayerVietoris -> Lib.AlgebraicTopology.SingularHomology.MayerVietoris.FormalSubdivision
+      12  Lib.AlgebraicTopology.SingularHomology.MayerVietoris -> Lib.AlgebraicTopology.SingularHomology.MayerVietoris.HomologyLongExact
+      32  Lib.AlgebraicTopology.SingularHomology.MayerVietoris -> Lib.AlgebraicTopology.SingularHomology.MayerVietoris.Mesh
+      15  Lib.AlgebraicTopology.SingularHomology.MayerVietoris -> Lib.AlgebraicTopology.SingularHomology.MayerVietoris.Sequence
+       3  Lib.AlgebraicTopology.SingularHomology.MayerVietoris -> Lib.AlgebraicTopology.SingularHomology.MayerVietoris.SingularHomology
+      30  Lib.AlgebraicTopology.SingularHomology.MayerVietoris -> Lib.AlgebraicTopology.SingularHomology.MayerVietoris.SmallChains
+      17  Lib.AlgebraicTopology.SingularHomology.MayerVietoris -> Lib.AlgebraicTopology.SingularHomology.MayerVietoris.SmallHomology
+      12  Lib.AlgebraicTopology.SingularHomology.MayerVietoris -> Lib.AlgebraicTopology.SingularHomology.MayerVietoris.SmallSimplices
+      22  Lib.AlgebraicTopology.SingularHomology.MayerVietoris -> Lib.AlgebraicTopology.SingularHomology.MayerVietoris.Subdivision
+      17  Lib.AlgebraicTopology.SingularHomology.MayerVietoris -> Lib.AlgebraicTopology.SingularHomology.MayerVietoris.Support
+ambiguous module changes: 0
+auxiliary constants that changed module: 47
+VERDICT PASS
