@@ -33,6 +33,9 @@ open scoped ContDiff ContinuousMap
 
 noncomputable section
 
+/-- If `f` is injective on `S`, `p q ∈ S`, and `g` is obtained from `f` by exchanging the values at
+`p` and `q` (`g p = f q`, `g q = f p`, `g x = f x` for the other points of `S`), then `g` is
+injective on `S`. -/
 theorem MorseCancellation.injOn_of_exchanged_values {X Y : Type*} {f g : X → Y} {S : Set X} {p q : X}
     (hinj : Set.InjOn f S) (hp : p ∈ S) (hq : q ∈ S) (hgp : g p = f q) (hgq : g q = f p)
     (hothers : ∀ x ∈ S, x ≠ p → x ≠ q → g x = f x) : Set.InjOn g S := by
@@ -60,6 +63,8 @@ theorem MorseCancellation.injOn_of_exchanged_values {X Y : Type*} {f g : X → Y
   rw [← hform x hx, ← hform y hy]
   exact hxy
 
+/-- If `g` and `f` have the same critical points and the same `nativeMorseIndex` at each of them,
+then `nativeMorseCount E g k = nativeMorseCount E f k` for every `k`. -/
 theorem MorseCancellation.nativeMorseCount_eq_of_preserved_indices {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f g : M → ℝ}
     (hcrit : ManifoldMorse.criticalPoints E g = ManifoldMorse.criticalPoints E f)
@@ -78,6 +83,9 @@ theorem MorseCancellation.nativeMorseCount_eq_of_preserved_indices {E M : Type*}
     · simp only [hx, false_and]
   exact congrArg Set.ncard heq
 
+/-- Let `S : AdaptedWindows E f` and let `g` be a Morse function with the same critical points
+as `f` which exchanges the values of the critical points `p`, `q` and agrees with `f` near every
+other critical point.  Then `g` has distinct critical values and admits an `AdaptedWindows E g`. -/
 theorem MorseCancellation.adapted_surgery_system_after_value_exchange {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f g : M → ℝ}
     {p q : M} [FiniteDimensional ℝ E] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M]
@@ -95,6 +103,13 @@ theorem MorseCancellation.adapted_surgery_system_after_value_exchange {E M : Typ
         (fun x hx hxp hxq => (hothers x hx hxp hxq).self_of_nhds)
   exact ⟨hinj, nonempty_adaptedSurgeryWindows hg hmg hinj⟩
 
+/-- Milnor, h-cobordism Theorem 4.1 (one exchange).  Let `f` be a Morse function with distinct
+critical values on a compact connected manifold, `V` a gradient-like field with flow `F` modelled
+by signed Morse charts near the critical points, and `p`, `q` critical points with `f p < f q`,
+no critical value strictly between, and no flow line from `q` to `p`.  Then there is a Morse
+function `g` with the same critical points, distinct critical values, `g p = f q`, `g q = f p`,
+`g = f` near the other critical points, for which `V` is still gradient-like and modelled by
+signed Morse charts, with the same indices and the same index counts. -/
 theorem MorseCancellation.exists_flow_preserving_value_exchange {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] [PreconnectedSpace M] {f : M → ℝ}
@@ -170,6 +185,12 @@ theorem MorseCancellation.exists_flow_preserving_value_exchange {E M : Type*} [N
     ⟨g, hg, hmg, hcrit, hinjg, hgp, hgq, hothers, (fun x hx => hdescent x (hcrit ▸ hx)),
       hnewmodels, hindices, nativeMorseCount_eq_of_preserved_indices hcrit hindices⟩
 
+/-- Iterated exchange.  Under the hypotheses of `exists_flow_preserving_value_exchange` for the
+field `V` and critical points `r`, `p`, `q` with `f₀ r < f₀ p < f₀ q` such that no flow line runs
+from `q` to a critical point other than `p`, `q`, `r`, there is a Morse function `f` with the same
+critical points and indices, distinct critical values, `f p = f₀ p`, `f r = f₀ r`, `f p < f q`,
+no critical value strictly between `f p` and `f q`, for which `V` is gradient-like and modelled by
+signed Morse charts. -/
 theorem MorseCancellation.exists_flow_preserving_consecutive_pair {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] [PreconnectedSpace M] {f₀ : M → ℝ}
@@ -303,6 +324,9 @@ theorem MorseCancellation.exists_flow_preserving_consecutive_pair {E M : Type*} 
   exact ⟨f, hf, hm, hcrit, hinj, hfp, hfr, hfpq, hconsecutive, hdesc, hmodels, hindices⟩
 
 attribute [local instance 100] Classical.propDecidable in
+/-- The index disorder of a Morse function `f`: `IndexDisorder.finiteIndexDisorder` of the
+critical values and `nativeMorseIndex` on the (finite) set of critical points, and `0` when
+that set is infinite. -/
 def MorseCancellation.nativeIndexDisorder (E : Type*) [NormedAddCommGroup E] [NormedSpace ℝ E]
     {M : Type*} [TopologicalSpace M] [ChartedSpace E M] (f : M → ℝ) : ℕ :=
   if hfinite : (ManifoldMorse.criticalPoints E f).Finite then
@@ -312,6 +336,8 @@ def MorseCancellation.nativeIndexDisorder (E : Type*) [NormedAddCommGroup E] [No
       (fun x : ManifoldMorse.criticalPoints E f => nativeMorseIndex E f x)
   else 0
 
+/-- When the critical set of `f` is finite, `nativeIndexDisorder E f` is
+`IndexDisorder.finiteIndexDisorder (f ∘ val) (nativeMorseIndex E f ∘ val)` on it. -/
 theorem MorseCancellation.nativeIndexDisorder_eq_of_finite {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ}
     (hfinite : (ManifoldMorse.criticalPoints E f).Finite) :
@@ -322,6 +348,9 @@ theorem MorseCancellation.nativeIndexDisorder_eq_of_finite {E M : Type*} [Normed
         (fun x : ManifoldMorse.criticalPoints E f => nativeMorseIndex E f x) := by
   classical simp only [nativeIndexDisorder, dif_pos hfinite]
 
+/-- If `g` has the same (finite) critical set as `f` and the same indices, then
+`nativeIndexDisorder E g` is the index disorder of the values of `g` against the indices of `f`,
+computed on the critical set of `f`. -/
 theorem MorseCancellation.nativeIndexDisorder_transport {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f g : M → ℝ}
     (hfinite : (ManifoldMorse.criticalPoints E f).Finite)
@@ -353,6 +382,9 @@ theorem MorseCancellation.nativeIndexDisorder_transport {E M : Type*} [NormedAdd
   rw [hw]
   rfl
 
+/-- Exchanging the values of two consecutive critical points `p`, `q` (`f p < f q`, no critical
+value between) with `index q < index p`, keeping the other values and all indices, strictly
+decreases the index disorder: `nativeIndexDisorder E g < nativeIndexDisorder E f`. -/
 theorem MorseCancellation.nativeIndexDisorder_exchange_lt {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f g : M → ℝ}
     (hfinite : (ManifoldMorse.criticalPoints E f).Finite)
