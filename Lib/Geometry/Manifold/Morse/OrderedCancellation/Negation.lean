@@ -25,6 +25,7 @@ open scoped ContDiff ContinuousMap
 
 noncomputable section
 
+/-- If `f` is Morse at `p` then so is `-f`. -/
 theorem MorseCancellation.isMorseAt_neg {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ} {p : M}
     (hm : ManifoldMorse.IsMorseAt E f p) :
@@ -42,11 +43,14 @@ theorem MorseCancellation.isMorseAt_neg {E M : Type*} [NormedAddCommGroup E] [No
     change Function.Bijective (fun v => -(fderiv ℝ (fderiv ℝ (f ∘ e.symm)) (e p) v))
     exact neg_bijective.comp hH
 
+/-- If `f` is a Morse function then so is `-f`. -/
 theorem MorseCancellation.isMorse_neg {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ} (hm : ManifoldMorse.IsMorse E f) :
     ManifoldMorse.IsMorse E (fun x => -f x) := fun x => isMorseAt_neg (hm x)
 
 attribute [local instance 100] Classical.propDecidable in
+/-- For a signed Morse chart `c` of `f` at `p`, the negative coordinates of the chart `c.neg` of
+`-f` have the dimension of the positive coordinates of `c`. -/
 theorem MorseCancellation.negative_finrank_neg_chart {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ} {p : M}
     (c : ManifoldMorse.SignedMorseChart (E := E) f p) :
@@ -60,6 +64,8 @@ theorem MorseCancellation.negative_finrank_neg_chart {E M : Type*} [NormedAddCom
   change -c.weights i = -1 ↔ c.weights i ≠ -1
   rcases c.signs i with h | h <;> norm_num [h]
 
+/-- Milnor, Morse Theory §2: at a critical point `p` with a signed Morse chart,
+`index_{-f} p + index_f p = dim E`. -/
 theorem MorseCancellation.nativeMorseIndex_neg_add {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ} {p : M}
     (c : ManifoldMorse.SignedMorseChart (E := E) f p) :
@@ -67,6 +73,9 @@ theorem MorseCancellation.nativeMorseIndex_neg_add {E M : Type*} [NormedAddCommG
   rw [nativeMorseIndex_eq_chart c.neg, nativeMorseIndex_eq_chart c, negative_finrank_neg_chart]
   exact (Nat.add_comm _ _).trans c.finrank_negative_add_positive
 
+/-- For a Morse function `f` on a finite-dimensional manifold and `k ≤ dim E`, the number of
+critical points of `-f` of index `dim E - k` equals the number of critical points of `f` of
+index `k`. -/
 theorem MorseCancellation.nativeMorseCount_neg {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ} [FiniteDimensional ℝ E]
     (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f) (hm : ManifoldMorse.IsMorse E f) {k : ℕ}
@@ -90,6 +99,7 @@ theorem MorseCancellation.nativeMorseCount_neg {E M : Type*} [NormedAddCommGroup
     have hsum := nativeMorseIndex_neg_add c
     exact ⟨hz, by omega⟩
 
+/-- If `f` is injective on its critical set then so is `-f` (on the same set). -/
 theorem MorseCancellation.distinct_critical_values_neg {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ}
     (hinj : Set.InjOn f (ManifoldMorse.criticalPoints E f)) :
