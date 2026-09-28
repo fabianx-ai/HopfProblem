@@ -1,0 +1,5151 @@
+{
+"module": "Lib.AlgebraicTopology.Hurewicz.PrismOperator",
+"source": "/home/goblin/hopf-w1-prism/Lib/AlgebraicTopology/Hurewicz/PrismOperator.lean",
+"source_sha256": "1c900bf8efc225d02039436f3b45d0abcd23062ad63e5316e357b9db64b60a27",
+"units_kept": 427,
+"units_moved": 28,
+"units": [
+{
+"names": [
+"Hurewicz.DegreeTwo.crossProductTriangle_zero_eq_zeroRight"
+],
+"class": "keep",
+"lines": [
+67,
+93
+],
+"sha256": "1182d2248d9d3f1446ed9f457152a952dbe1cd2857fac9103531cc8d8989bbc4"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.crossProductTriangle_point_right"
+],
+"class": "keep",
+"lines": [
+95,
+105
+],
+"sha256": "cb0b8435e79af0bdd76094fb0be0bb5470c579861ffffb428e4a3d6397839e4c"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.crossProductEdge_point_right"
+],
+"class": "keep",
+"lines": [
+107,
+116
+],
+"sha256": "d279e35cc5cae8525b7f9b23855928563abc3fcf56ff34083bf3ad868453133f"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.Remaining"
+],
+"class": "keep",
+"lines": [
+118,
+120
+],
+"sha256": "c372b7f0ca0b18e518b458d74dd75ddc5cfa747cf27274502b1c841ac46ca8b9"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.BasedLoopSpace"
+],
+"class": "keep",
+"lines": [
+122,
+124
+],
+"sha256": "29b389e30f35509b28119e4702ed902ac243e282466837a0a746a6d3fc32f89a"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.evaluation"
+],
+"class": "keep",
+"lines": [
+128,
+134
+],
+"sha256": "e274e125f3c7b95ef762d8e5ab29289759d2525439afee0205dec197a9045cfc"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.evaluation_zero"
+],
+"class": "keep",
+"lines": [
+136,
+140
+],
+"sha256": "fe5c4f2dfc6401182a4d0ebfe67dbc3f85759f69bfd77cb83dda3107abccb227"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.evaluation_one"
+],
+"class": "keep",
+"lines": [
+142,
+146
+],
+"sha256": "7e872b60a3ea2d989f1a56df05f93d49395a2da9491ba535f6790f828c14ecc2"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.evaluation_comp_right_zero"
+],
+"class": "keep",
+"lines": [
+148,
+155
+],
+"sha256": "5b4997e5b989c9dbe6466152291b6914ed7dcdae0b9a5d13d3d61985d427bdf9"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.evaluation_comp_right_one"
+],
+"class": "keep",
+"lines": [
+157,
+164
+],
+"sha256": "67fa7ba5118836506c19f6e780dbd42564d0a7691f03847009c1d98301d9de5b"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.squareCoordinates"
+],
+"class": "keep",
+"lines": [
+166,
+170
+],
+"sha256": "fcf8e09e1a8949fa8a25e62f884d9a770fc2a2b9cb5bf59f7a5530de0f5b6179"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.squareCoordinates_zero"
+],
+"class": "keep",
+"lines": [
+172,
+177
+],
+"sha256": "f928db5a41052db6396d2e64b6a31f14f12b0d5f8006cb3126f14eefd7f9e243"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.squareCoordinates_one"
+],
+"class": "keep",
+"lines": [
+179,
+184
+],
+"sha256": "35b2e8c32328b7240d83c2047b08725ca3e5efd30ae12c8df23c3ace9d65e4ba"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.squareMap"
+],
+"class": "keep",
+"lines": [
+186,
+190
+],
+"sha256": "ed46756cdabbab79d0af7b4b64113153605a801a4880fef873710e79f85221f0"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.evaluation_comp_toLoop"
+],
+"class": "keep",
+"lines": [
+192,
+200
+],
+"sha256": "9e9edf898466338406ac3cf4bf0737524f105d59d9ec742663bd99be493f1437"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.intervalChain"
+],
+"class": "keep",
+"lines": [
+202,
+206
+],
+"sha256": "b14fa89c23c251ff61077099c34e9872728429f7f91a9d063f909e7f2c5c6187"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.intervalChain_boundary"
+],
+"class": "keep",
+"lines": [
+208,
+215
+],
+"sha256": "1db6a3296f827a311520b784a855ca4552aa83b85d771ec5194ec158358dfaab"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.evaluation_right_zero_chain"
+],
+"class": "keep",
+"lines": [
+217,
+233
+],
+"sha256": "c74c9258652e1488e8ffbf44af2bd97e2d431a2c0d26ed07f83a2398c9ffb18f"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.evaluation_right_one_chain"
+],
+"class": "keep",
+"lines": [
+235,
+251
+],
+"sha256": "a3a4a6a9f37134409487e935f106c44aee952d1db40e9d2432bf03fa3504743c"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.evaluated_edge_endpoint_cancel"
+],
+"class": "keep",
+"lines": [
+253,
+263
+],
+"sha256": "6f837a50c5606e761f22c6dd19199f69b1a21cf4e57e1fbfbd307f14929749e2"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.evaluated_triangle_endpoint_cancel"
+],
+"class": "keep",
+"lines": [
+265,
+276
+],
+"sha256": "9040d3d9e68d8e5fcb4119ffc16f8efbfc7e373f6dc604a9fc22f86a2f059d4e"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.suspensionOne"
+],
+"class": "keep",
+"lines": [
+278,
+287
+],
+"sha256": "83973668a2e08d45cec38d6d179b7674f6e623dde87150870d4957807d880f3b"
+},
+{
+"context": "attribute [local instance] SingularHomology.integerLinearMapModule SingularHomol",
+"lines": [
+289,
+290
+],
+"placed": "keep+move"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.suspensionOne_apply"
+],
+"class": "keep",
+"lines": [
+292,
+300
+],
+"sha256": "98be9e88b3b48ae3e4c99d524245306e22185c7f18047ea295a59bebbe63c731"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.suspensionTwo"
+],
+"class": "keep",
+"lines": [
+302,
+311
+],
+"sha256": "c0dd4faee09a9f8519aaca252113807dd61d0803c2f90bb1256d109594c63448"
+},
+{
+"context": "attribute [local instance] SingularHomology.integerLinearMapModule SingularHomol",
+"lines": [
+313,
+314
+],
+"placed": "keep+move"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.suspensionTwo_apply"
+],
+"class": "keep",
+"lines": [
+316,
+324
+],
+"sha256": "ae682d5af3f721f0a84e74d93b7de1dba9e3aaca842bbaa22dc25232074f29e7"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.boundaryTwo_suspensionOne_of_cycle"
+],
+"class": "keep",
+"lines": [
+326,
+345
+],
+"sha256": "5dd18d966ee9934659146bc46659e6980882b6991fdf7cbbed55e59f86af0827"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.boundaryThree_suspensionTwo"
+],
+"class": "keep",
+"lines": [
+347,
+365
+],
+"sha256": "cbb70608f68d0aa0fa57899c76ce9fc8e7247ce6e09100fd491ee7063ddca8c2"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.pathSquareCycle"
+],
+"class": "keep",
+"lines": [
+367,
+375
+],
+"sha256": "4526dc6ee78ef8cdd8324d6223035b619edc5b0a8113326aec06cbd3c031b21b"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.pathSquareCycle_val"
+],
+"class": "keep",
+"lines": [
+377,
+382
+],
+"sha256": "c5d30161415b48d4415f73f71a8fffb529d81f9f1c4728175ba9ff56e4b534f2"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.pathSquareClass"
+],
+"class": "keep",
+"lines": [
+384,
+389
+],
+"sha256": "feba4daefc0ecb1123067bc9e629eae54cd845e43f70995c9280af458b50421a"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.pathSquare_homotopy_boundary"
+],
+"class": "keep",
+"lines": [
+391,
+398
+],
+"sha256": "cd531bccbccaea84d20fac5ff368959462f92ea2ed55d7b925b39e60ff08c6a5"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.pathSquareClass_homotopy"
+],
+"class": "keep",
+"lines": [
+400,
+406
+],
+"sha256": "2a2b3a7a806e4fff37f7067b71b753f5e3c396784d21410d7164c71f748d2fce"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.pathSquareClass_homotopic"
+],
+"class": "keep",
+"lines": [
+408,
+413
+],
+"sha256": "9d0c688180cd7f96c17b46095dedb0ecb0b7e2150b3b5465547c75fba74ccf8d"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.pathSquareClass_refl"
+],
+"class": "keep",
+"lines": [
+415,
+425
+],
+"sha256": "3a1db13859efeee6f4d31b4ae198355fb122fb35c35cb92f9d898e1a2bcca501"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.pathSquare_concat_boundary"
+],
+"class": "keep",
+"lines": [
+427,
+436
+],
+"sha256": "cd9713f899adfa1a30d520383818842531f20e23388462e2dc1047d40a73c431"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.pathSquareClass_trans"
+],
+"class": "keep",
+"lines": [
+438,
+447
+],
+"sha256": "6767b1cfcbb842b0391a50ec18e4e5bfd6aeab720ace06ed7de7476d318607f7"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.productSquareChain"
+],
+"class": "keep",
+"lines": [
+449,
+455
+],
+"sha256": "c153eefd22480220aff0ef33a832415b944846d3196378f46d9df7c01bf8389b"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.productSquareChain_boundary"
+],
+"class": "keep",
+"lines": [
+457,
+485
+],
+"sha256": "114025be6860dd36d6b0a6d36fd79c0d36b1583097ab043c6a9ef6bdd7c5d6e9"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.fundamentalSquareChain"
+],
+"class": "keep",
+"lines": [
+487,
+492
+],
+"sha256": "595abdd0ccfdea97c0ab042282452a8efe7d848ae897bf214e54aaa50decceb3"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.induced_intervalChain"
+],
+"class": "keep",
+"lines": [
+494,
+504
+],
+"sha256": "90e815c2fcf651b42b971bd16567d10b816b00f87eaca9ddcc1648a4688740f4"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.suspensionOne_toLoop"
+],
+"class": "keep",
+"lines": [
+506,
+528
+],
+"sha256": "75de26a9bf542ca49fad42efc043536d98d64e971d9eb683cb9be919c2c804f9"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.squareChain"
+],
+"class": "keep",
+"lines": [
+530,
+536
+],
+"sha256": "1c51c691b30b6630e884fbfd76ebb72a9ba8eafc391f0d443338eb350082031a"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.squareChain_boundary"
+],
+"class": "keep",
+"lines": [
+538,
+543
+],
+"sha256": "78d91e1ab3b08feb843530eefed382fa69273833e2c252dc30ebc76a7bdd3125"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.squareCycle"
+],
+"class": "keep",
+"lines": [
+545,
+550
+],
+"sha256": "db0645eb7986458ceb1b7e7e6ca2d16dbc5c226d798a2d90f094b56ed96e7b7f"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.squareHomologyClass"
+],
+"class": "keep",
+"lines": [
+552,
+559
+],
+"sha256": "56396637707c855a06b64c1cd937a9bd440205dd0ff1d74ba7d862c3bf57d05f"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.squareHomologyClass_eq_pathSquareClass"
+],
+"class": "keep",
+"lines": [
+561,
+568
+],
+"sha256": "77846e6acf619d96b51ddf8fc413142061761cd140c6271f7a9ceed7cb335a0d"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.squareHomologyClass_homotopic"
+],
+"class": "keep",
+"lines": [
+570,
+576
+],
+"sha256": "18ff5b310222f50dccbe81aa1b2fd78bc742a95358f79c1be1071da171cc8753"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.toLoop_const"
+],
+"class": "keep",
+"lines": [
+578,
+588
+],
+"sha256": "e85df90abd493a4b783483cfa7120b09c16524d2303efb0dd752740b9dde2600"
+},
+{
+"context": "attribute [local instance] SingularHomology.integerLinearMapModule SingularHomol",
+"lines": [
+590,
+591
+],
+"placed": "keep+move"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.squareHomologyClass_const"
+],
+"class": "keep",
+"lines": [
+593,
+597
+],
+"sha256": "557c932797ba3609dbb517f22f5e0ec829eff48b6917a2049c4e8bc26223c657"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.toLoop_transAt"
+],
+"class": "keep",
+"lines": [
+599,
+610
+],
+"sha256": "9b73ec67009ee4c638ba309e1963e7014e8fd9448b1b1116a199621b7f18842e"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.squareHomologyClass_transAt"
+],
+"class": "keep",
+"lines": [
+612,
+619
+],
+"sha256": "566df36828a4ae150de7146b550485c1f7280332d12e417810b4aa32cdcfa819"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.mapGenLoop"
+],
+"class": "keep",
+"lines": [
+621,
+627
+],
+"sha256": "728a42e1b0d7913d5bd7cc205e42c8cfc18641709b4ba36870bafa51c42006df"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.mapGenLoop_val"
+],
+"class": "keep",
+"lines": [
+629,
+633
+],
+"sha256": "194124548a16d5e85788cfa9772b46e1df2b19b8f87767940f5f0df2ed94a6a1"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.mapGenLoop_const"
+],
+"class": "keep",
+"lines": [
+635,
+639
+],
+"sha256": "7818535b137dcf8bbdd4211eb2c3f7ebf185ec49cbee69baab6403da3972a6e4"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.mapGenLoop_homotopic"
+],
+"class": "keep",
+"lines": [
+641,
+645
+],
+"sha256": "07e718d13f88dd98a7590f55302d5f2d0170fe0bec7091955672067ef6fa91ed"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.mapGenLoop_transAt"
+],
+"class": "keep",
+"lines": [
+647,
+656
+],
+"sha256": "ca451655d29d377c1b8e6f46e23297715c364d7068b2526f29fd0703c37572fe"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.hurewiczFunction"
+],
+"class": "keep",
+"lines": [
+658,
+662
+],
+"sha256": "394aa7e4a3372d8d23cde780d37821f2f2c1088b4fcb16ee9a8412b211c3455e"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.hurewiczPi2"
+],
+"class": "keep",
+"lines": [
+664,
+681
+],
+"sha256": "874a8f9467093f0bf150eba93e43d6b112cb7a9b3b56746e31c130d9a0b2aef8"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.hurewiczMap"
+],
+"class": "keep",
+"lines": [
+683,
+689
+],
+"sha256": "017df3ca8168cf8bb1f1deda54bb752482d1767911ba18aff41733bc16e9d479"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.hurewiczMap_representative"
+],
+"class": "keep",
+"lines": [
+691,
+697
+],
+"sha256": "f9d4846df8c03f636cc4d18b1668a92e0742ee4550f69b32eb2aa7b8ffb43e38"
+},
+{
+"context": "attribute [local instance] SingularHomology.integerLinearMapModule SingularHomol",
+"lines": [
+699,
+700
+],
+"placed": "keep+move"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.timeSlice"
+],
+"class": "keep",
+"lines": [
+703,
+706
+],
+"sha256": "3f413916b17410ed996efd4520a1bb4b3f5f956641a4540c35d94c5eefc36211"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.crossPoint_left"
+],
+"class": "keep",
+"lines": [
+708,
+718
+],
+"sha256": "3e5ae8476609353a16b6b6fda162baa929c5a44315c4e434f211e449bd4d0a9a"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.inducedChain_timeSlice"
+],
+"class": "keep",
+"lines": [
+720,
+736
+],
+"sha256": "7d0560ff863548cc4dcc0f0ff0d6a9c6d372af85319f559875f10fafabfdff4f"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.prismOperator"
+],
+"class": "keep",
+"lines": [
+738,
+746
+],
+"sha256": "32241af861005f4069f96761fa47a26efd3f1afa1fba22870311208214c66127"
+},
+{
+"context": "attribute [local instance] SingularHomology.integerLinearMapModule SingularHomol",
+"lines": [
+748,
+749
+],
+"placed": "keep+move"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.prismOperator_apply"
+],
+"class": "keep",
+"lines": [
+751,
+759
+],
+"sha256": "30e573b8a511d938247b2a503ac3dc4ce66fd71f493ce762dc77c71cad748470"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.prismOperator_boundary"
+],
+"class": "keep",
+"lines": [
+761,
+782
+],
+"sha256": "2737461cf3a63a5b94b935f97631be560c0f8d4fb7b65002921b037ef6867aaa"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.prismOperator_domain"
+],
+"class": "keep",
+"lines": [
+784,
+797
+],
+"sha256": "3d7ec5dcd7a27eaa796384f21656a7f870e48ddd37d6749d1e2a4eeedfa31bc2"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.simplexPrism"
+],
+"class": "keep",
+"lines": [
+799,
+807
+],
+"sha256": "bc4e3b1fc979f8280c808d12f5a8edd568cad624a5be7cd7ebd596f79faabe6e"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.prismOperator_simplex"
+],
+"class": "keep",
+"lines": [
+809,
+822
+],
+"sha256": "2e455abdd50bae6fda2aa973407bf79fb973ff1708922e5498c7a2e3764371c8"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.simplexPrism_boundary"
+],
+"class": "keep",
+"lines": [
+824,
+840
+],
+"sha256": "e584e1589cce5ee7c68e818767e0ea265789e9374af4c88adf727b56f5046543"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.simplexEndpointOperator"
+],
+"class": "keep",
+"lines": [
+842,
+847
+],
+"sha256": "25a41e534a7bad05d7b90c0bb3b0087eaf7443beb8c3d6fcb673e5f706250fd9"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.simplexEndpointOperator_simplex"
+],
+"class": "keep",
+"lines": [
+849,
+858
+],
+"sha256": "286bb861c611a2dcafb334e92613c681a4b7c12d69ff9ad01b5fc75d647836e5"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.simplexPrismOperator"
+],
+"class": "keep",
+"lines": [
+860,
+865
+],
+"sha256": "7499915f3fc5a9327663c9ac6a633677e8727bad486d224ad246b080aee8e03e"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.simplexPrismOperator_simplex"
+],
+"class": "keep",
+"lines": [
+867,
+874
+],
+"sha256": "85d59290e1d481a48e64d87dbf6bf9e78e4532cfb3bd6bd413025ee7275d0502"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.FaceCompatibleHomotopies"
+],
+"class": "keep",
+"lines": [
+876,
+887
+],
+"sha256": "3ed939dd48c66124f418776a1cd5186fa2f0b516580f1f6f455392cd06649415"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.timeSlice_face"
+],
+"class": "keep",
+"lines": [
+889,
+899
+],
+"sha256": "6df84be23b601e2dff4ac280c2c1a5723f37a3a337b6d9d7385b43494832a1c3"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.simplexEndpointOperator_boundary"
+],
+"class": "keep",
+"lines": [
+901,
+921
+],
+"sha256": "9f4d48f1b6a1502189d1d3c86ce8c47dc6a4d0ea745c2bf499fac5e3e63c1f89"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.simplexPrismOperator_boundary"
+],
+"class": "keep",
+"lines": [
+923,
+947
+],
+"sha256": "52c70827cb483afc6456bc91b9fe6ad37229f743658538e1951738e066e58528"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.simplexEndpointOperator_zero"
+],
+"class": "keep",
+"lines": [
+949,
+957
+],
+"sha256": "fccd36ec2817c265046aeb914db9e1fb261b27243dea703ee04eeafea7a30ef3"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.straightenedTwoCycle"
+],
+"class": "keep",
+"lines": [
+959,
+973
+],
+"sha256": "eea0c4de8fa00a721b1cac5e55d724e3ee10ca9e1c14d866aa6869f1ee49783d"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.straightenedTwoCycle_class"
+],
+"class": "keep",
+"lines": [
+975,
+992
+],
+"sha256": "8b6dc88980d635b2629b3300c326ba16147774e36ddc0a5cea823a73b9409a7f"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.VertexHomotopyData",
+"Hurewicz.DegreeTwo.SimplyConnected.VertexHomotopyData.mk",
+"Hurewicz.DegreeTwo.SimplyConnected.VertexHomotopyData.homotopy",
+"Hurewicz.DegreeTwo.SimplyConnected.VertexHomotopyData.zero",
+"Hurewicz.DegreeTwo.SimplyConnected.VertexHomotopyData.one_verticesBased",
+"Hurewicz.DegreeTwo.SimplyConnected.VertexHomotopyData.of_verticesBased",
+"Hurewicz.DegreeTwo.SimplyConnected.VertexHomotopyData.face_compatible"
+],
+"class": "keep",
+"lines": [
+996,
+1015
+],
+"sha256": "0eab10b0e51cc5387be650d49c221ac7923764ba5881278ec4dcb254aeba35fb"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.vertexBoundaryHomotopy"
+],
+"class": "keep",
+"lines": [
+1017,
+1022
+],
+"sha256": "59f1dae3cc9a9c2bbc622f565291fd5305ee6725c73cd682e98d2de32f2f2fd5"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.vertexBoundaryHomotopy_face"
+],
+"class": "keep",
+"lines": [
+1024,
+1031
+],
+"sha256": "ccec57d0cf96dc911a1ae95c6f3ffc54ef779b011d5b797c3dc074f825b91a72"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.vertexBoundaryHomotopy_zero"
+],
+"class": "keep",
+"lines": [
+1033,
+1039
+],
+"sha256": "10993c5b2587ab088dd54e98cef740faf83e43101fc7e09c4f5a2f5e90bacd8b"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.vertexStepHomotopy"
+],
+"class": "keep",
+"lines": [
+1041,
+1053
+],
+"sha256": "2648e69bc811c20a118c20adb5d1a5c1d12e3e45bed5b974a2d6891c946c6b9f"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.vertexStepHomotopy_of_verticesBased"
+],
+"class": "keep",
+"lines": [
+1055,
+1063
+],
+"sha256": "de16eff5b7d5b0acc276560caf2a339de0ffdcccc5d5bd4fc27e9bb50ef5dc45"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.vertexStepHomotopy_of_not_verticesBased"
+],
+"class": "keep",
+"lines": [
+1065,
+1071
+],
+"sha256": "69b95e60feedf5b2e0250cebc5c6464e858267303c4a6d9157c73014a060e6a7"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.vertexStepHomotopy_zero"
+],
+"class": "keep",
+"lines": [
+1073,
+1083
+],
+"sha256": "f28ead5ddd5656edf61f2faeebd0fe9d2051ad53db7fdaa061488107403c0ad4"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.vertexStepHomotopy_face_apply"
+],
+"class": "keep",
+"lines": [
+1085,
+1097
+],
+"sha256": "4aa72156d264adfaddcb5f72c4965a75c84476c51cfc2554afcf2005a56b37de"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.vertexStepHomotopy_face"
+],
+"class": "keep",
+"lines": [
+1099,
+1105
+],
+"sha256": "b3c14882a1e46e30e1fd4bd59a2f77872b8715c4e05453e73afc0bff0eb4a33f"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.vertexStepHomotopy_one_verticesBased"
+],
+"class": "keep",
+"lines": [
+1107,
+1116
+],
+"sha256": "f78a83fb8a5b6310a9f2faec9c6e1bc304b3918b252294bf5f1bd421f623815c"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.vertexStepHomotopy_faceCompatible"
+],
+"class": "keep",
+"lines": [
+1118,
+1127
+],
+"sha256": "2dbc2de19b98e2934dc05a8e4127ea16b4681973686cb998e69ab228ead567c4"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.VertexHomotopyData.next"
+],
+"class": "keep",
+"lines": [
+1129,
+1139
+],
+"sha256": "133c44518b38a7182db1caa4fc23254ae29911834de0bcdb29727de25e35b0bd"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.basedEdgePath"
+],
+"class": "keep",
+"lines": [
+1141,
+1145
+],
+"sha256": "9c97bfc18c3232398a46e94a100e1f2cb44e815398a6b33b65228b1f3a87dfad"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.basedEdgePath_const"
+],
+"class": "keep",
+"lines": [
+1147,
+1154
+],
+"sha256": "6978f753cf5da65d67986583b9b47b790fe303b088b50302724a554858f273df"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.chosenBasePath"
+],
+"class": "keep",
+"lines": [
+1156,
+1160
+],
+"sha256": "ee4d121b3abce765d3a3d3057b552fe27085c3570d95594bcd76f1d6af80c5d4"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.chosenBasePath_self"
+],
+"class": "keep",
+"lines": [
+1162,
+1166
+],
+"sha256": "d3f2066b1b7d5040567735fbd4a8a0b0c02a834fedd35f345f17a31f1cc9890d"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.chosenNullHomotopy"
+],
+"class": "keep",
+"lines": [
+1168,
+1174
+],
+"sha256": "f5fe31430315e4d1e4e61daa8b093a781709d8c578628929ee1cadfada163ce1"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.chosenNullHomotopy_refl"
+],
+"class": "keep",
+"lines": [
+1176,
+1182
+],
+"sha256": "351f2428d635fff7d9fb38e02b9a9f32fe988d4adf4048a225f32e2efef95425"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.vertexHomotopy"
+],
+"class": "keep",
+"lines": [
+1184,
+1189
+],
+"sha256": "32505d04d6af7a08356957b2905031156e699e58a5bffec24b19d6803564aca1"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.vertexHomotopy_zero"
+],
+"class": "keep",
+"lines": [
+1191,
+1197
+],
+"sha256": "2f0fdcb8a79fc102ebd4edfe754e879f309a437e823b28104631cef37d960c12"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.vertexHomotopy_one"
+],
+"class": "keep",
+"lines": [
+1199,
+1204
+],
+"sha256": "b9a720a48f736cfcc5e0965bf343ed302333765c508264279dc1f13a7dd49323"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.vertexHomotopy_const"
+],
+"class": "keep",
+"lines": [
+1206,
+1215
+],
+"sha256": "79ab8fe84cfddf028f5903b9a220bcfc70afa752bd0f3b2b4ec3e49fb909f394"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.edgeNullHomotopy"
+],
+"class": "keep",
+"lines": [
+1217,
+1225
+],
+"sha256": "c38b2626323cebe69fb1b65e6297244eb65a17c3dde625e1671c62af75b0343c"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.edgeNullHomotopy_zero"
+],
+"class": "keep",
+"lines": [
+1227,
+1237
+],
+"sha256": "5adcf8e6690a2ae8445930ee4d25eda1bfb461f0c7d20a941dd139f5ec0437dc"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.edgeNullHomotopy_one"
+],
+"class": "keep",
+"lines": [
+1239,
+1247
+],
+"sha256": "91675f12a407594da2d303242ba06b3324ddc5d441492e9a32e25e027477568b"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.edgeNullHomotopy_vertex_zero"
+],
+"class": "keep",
+"lines": [
+1249,
+1258
+],
+"sha256": "93b09de240692b7071ae9747409ce4d8edf2a8addbc0d66a3509d9641c76d8e7"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.edgeNullHomotopy_vertex_one"
+],
+"class": "keep",
+"lines": [
+1260,
+1269
+],
+"sha256": "724712b50a2d3ac14dfdfb498b06f9fbc6f2b72221f780b8873c4a6c8c28b6b4"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.edgeNullHomotopy_const"
+],
+"class": "keep",
+"lines": [
+1271,
+1284
+],
+"sha256": "94eed5f1a28c1801283d1ff42ff96c3f759ec1c977e31c8c1bc9d687f28f2195"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.vertexInitialData"
+],
+"class": "keep",
+"lines": [
+1286,
+1300
+],
+"sha256": "6c2bdcb508f002ff83c00d11ecffbff54a05b42a628f7109e08f5da3bcdf4248"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.vertexStraighteningData"
+],
+"class": "keep",
+"lines": [
+1302,
+1307
+],
+"sha256": "52050d0a9a4b8119c13d7c274d2798d08c8981029092d2cadbcca43f000825e2"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.vertexStraighteningHomotopy"
+],
+"class": "keep",
+"lines": [
+1309,
+1313
+],
+"sha256": "d46c07116d67cefa9189000beaeff49cbdd147ca5480d86d0465ac876ab38f44"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.vertexStraighteningHomotopy_zero"
+],
+"class": "keep",
+"lines": [
+1315,
+1321
+],
+"sha256": "eb32fc128d500ea051bd4dc512b0b8acf83fbde0777ecf7eb3700bd491bbd755"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.vertexStraighteningHomotopy_timeSlice_zero"
+],
+"class": "keep",
+"lines": [
+1323,
+1330
+],
+"sha256": "ba0409b642ba411f4c32e3c8769a5e7b0c366d6a997a3eb113a6338ac95993b8"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.vertexStraighteningHomotopy_face"
+],
+"class": "keep",
+"lines": [
+1332,
+1337
+],
+"sha256": "d775a7c37f7bad9c7c9a00a9e0afd8e34f8f6581df21330e7a5c3d990de0ada7"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.vertexStraighteningHomotopy_timeSlice_face"
+],
+"class": "keep",
+"lines": [
+1339,
+1346
+],
+"sha256": "5d20d69ea896347e5339c346bf0a0fb12555990aadecdb076000a93e673e8bab"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.vertexStraighteningHomotopy_one_verticesBased"
+],
+"class": "keep",
+"lines": [
+1348,
+1353
+],
+"sha256": "11d5ccc974ac31e24b6c604d4da6589ddf4ff93063221ea44d9aa61a3add11a4"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.vertexStraighteningHomotopy_of_verticesBased"
+],
+"class": "keep",
+"lines": [
+1355,
+1363
+],
+"sha256": "4365ecc91b7eec7ef774564b10757a9a1ae9c786ed6616bbfa19456947d17fab"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.vertexStraighteningHomotopy_timeSlice_of_verticesBased"
+],
+"class": "keep",
+"lines": [
+1365,
+1372
+],
+"sha256": "a98d0f50f59b73b4b961d3b42b54ae7342ac7d854af23376368471acaadd66a8"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.vertexStraighteningHomotopy_const"
+],
+"class": "keep",
+"lines": [
+1374,
+1381
+],
+"sha256": "8d4ce170621ca5fae3482423c2bb00d0140050019103e6fce68777944b6cc3b7"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.stationarySimplexHomotopy"
+],
+"class": "keep",
+"lines": [
+1383,
+1388
+],
+"sha256": "c1d07214a2428961281575b3c497c31eb29327b7a97400632efd7771c9f0897b"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.edgeStraighteningHomotopy"
+],
+"class": "keep",
+"lines": [
+1390,
+1401
+],
+"sha256": "33ecbc510d403402ddb790572eacf1657232b06134f49cab15128676def000f0"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.edgeStraighteningHomotopy_zero"
+],
+"class": "keep",
+"lines": [
+1403,
+1412
+],
+"sha256": "b93eab6934099357105d7725141816f42ee4dcb1ad970f5877e6f43825481daf"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.edgeStraighteningHomotopy_one"
+],
+"class": "keep",
+"lines": [
+1414,
+1426
+],
+"sha256": "cb47ef4261e645613be91af95bf1fdfc9d2ea8e004844c8a9f5b0abcb9b43acb"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.edgeStraighteningHomotopy_vertex"
+],
+"class": "keep",
+"lines": [
+1428,
+1441
+],
+"sha256": "0acf8c0efd95ded7466952878a2ceb268b79f4e05715f99495d3cee5f33cec07"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.edgeStraighteningHomotopy_const"
+],
+"class": "keep",
+"lines": [
+1443,
+1451
+],
+"sha256": "b8226312858b1f787bdb6899978c425220b5feffdeeaa7ec8998ad1e100947d7"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.edgeStraighteningHomotopy_face"
+],
+"class": "keep",
+"lines": [
+1453,
+1465
+],
+"sha256": "a452530a419d304aafc1ffc901430654df01ae39d07f7eb5e7bbb56a87e1d2e9"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.nextFaceHomotopies_compatible"
+],
+"class": "keep",
+"lines": [
+1467,
+1506
+],
+"sha256": "4fd7cd9e1dac9dd45e5ceceda16862fda390e167abb58617d9a67468cda5bc6d"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.coherentFaceBoundaryHomotopy"
+],
+"class": "keep",
+"lines": [
+1508,
+1519
+],
+"sha256": "accb3c0fad966a243e01136623edf46b3cdb3b6286332ae8751f206fcf032e4a"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.coherentFaceBoundaryHomotopy_face"
+],
+"class": "keep",
+"lines": [
+1521,
+1533
+],
+"sha256": "4f83b07851787e3fd7ca38bb4eed61e06dda8fa5910aa03801777db2452a25cb"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.coherentFaceBoundaryHomotopy_zero"
+],
+"class": "keep",
+"lines": [
+1535,
+1546
+],
+"sha256": "b4e8cadd1f665b6502f4e0d5e25fa18360dbafff4698327f8b0bab19e2c461b3"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.extendCoherentSimplexHomotopy"
+],
+"class": "keep",
+"lines": [
+1548,
+1560
+],
+"sha256": "a94d249f3277f82e40a7ba539438313d8a4df3cf56e52374d24bc6612fce5115"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.extendCoherentSimplexHomotopy_zero"
+],
+"class": "keep",
+"lines": [
+1562,
+1573
+],
+"sha256": "fc498627ac5a745cb3a057f753a6c768ad665851213624bfc25f13f1e1d31432"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.extendCoherentSimplexHomotopy_face"
+],
+"class": "keep",
+"lines": [
+1575,
+1593
+],
+"sha256": "85e3da2b0ab967c4ca43b39e887e0d3b5201efd3add04d8310e3d56b7e83f2e8"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.triangleBoundary"
+],
+"class": "keep",
+"lines": [
+1597,
+1599
+],
+"sha256": "42322557dcfa3a5f7cb50a6055fad1b82a073772e8d74cfecbe94befec4af411"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.BasedTriangle"
+],
+"class": "keep",
+"lines": [
+1601,
+1603
+],
+"sha256": "23744b4b582b6e66d2b361c4ad594c1f05b86c688991d8e97e01a106a25c22a3"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.triangleQuotient"
+],
+"class": "keep",
+"lines": [
+1605,
+1626
+],
+"sha256": "989b043dca9b8af38d00cdffa979fe2c5dbe924bcb4a71407d035de471da945a"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.triangleQuotient_zero"
+],
+"class": "keep",
+"lines": [
+1628,
+1632
+],
+"sha256": "8e312333eae9b6b0e01e5de8507a69e6179f96ce2b7691b01426ac08e55eade6"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.triangleQuotient_one"
+],
+"class": "keep",
+"lines": [
+1634,
+1639
+],
+"sha256": "772773535dacfc3c63c057f1cef3f269450d0724c165b666fd5a766b37934886"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.triangleQuotient_two"
+],
+"class": "keep",
+"lines": [
+1641,
+1645
+],
+"sha256": "ab52064ff73f35e53da9836e0a379d2f236356555ca9d32d158a9a7e3b827852"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.triangleCubeQuotient"
+],
+"class": "keep",
+"lines": [
+1647,
+1650
+],
+"sha256": "8ded3e7dca7fae34b0d4d055ca598514da551f9aed1f9ee27e1ce0934be1923d"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.triangleCubeQuotient_boundary"
+],
+"class": "keep",
+"lines": [
+1652,
+1673
+],
+"sha256": "0f09b7037749dab9056d0c2fd4c22340ac8d5102a38cdcf9c3b5739db1cd1958"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.basedTriangleLoop"
+],
+"class": "keep",
+"lines": [
+1675,
+1678
+],
+"sha256": "581c73aaae36417bbefc77899d19c24e60bc0c5b5e6f5e7618c1047f8642baec"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.squareMap_basedTriangleLoop"
+],
+"class": "keep",
+"lines": [
+1680,
+1691
+],
+"sha256": "f0692f6d350937c5b7211e2a2619d864218c5fda3ea83c43af4cdd41ec6fe439"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.basedTriangleClass"
+],
+"class": "keep",
+"lines": [
+1693,
+1696
+],
+"sha256": "2d12fce34080062c4cf13b4c944c4f62acfd850c92eab0c7d799732971b18e27"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.constantBasedTriangle"
+],
+"class": "keep",
+"lines": [
+1698,
+1701
+],
+"sha256": "bbf17012964ca4ad8f0e5d7cfa37ec0d9b224d68f93c92616006610b4389ba14"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.triangleEdgeStraighteningHomotopy"
+],
+"class": "keep",
+"lines": [
+1703,
+1708
+],
+"sha256": "23b916cb1f852f93556a7ff37fbad0629a9aa474c291ec07cafe5110bcede778"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.triangleEdgeStraighteningHomotopy_zero"
+],
+"class": "keep",
+"lines": [
+1710,
+1716
+],
+"sha256": "1bd8575644b2e9d0d71ee4e424007e371d04278b9ac9ec494abb28e78e9eeaf2"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.triangleEdgeStraighteningHomotopy_face"
+],
+"class": "keep",
+"lines": [
+1718,
+1724
+],
+"sha256": "16298870924b25ae6527d16c9f4ebf2db664ce02cc2204c34c47fe6d88987860"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.tetrahedronEdgeStraighteningHomotopy"
+],
+"class": "keep",
+"lines": [
+1726,
+1732
+],
+"sha256": "8693056090bcb9bb9f6e08c2752f1848c38e23b635c0919660abc968bfa0a812"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.tetrahedronEdgeStraighteningHomotopy_zero"
+],
+"class": "keep",
+"lines": [
+1734,
+1740
+],
+"sha256": "8ef615d127af27c4510c12ad27e4424f4a895cd3ea5fe5d74a9fb84d103497f3"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.tetrahedronEdgeStraighteningHomotopy_face"
+],
+"class": "keep",
+"lines": [
+1742,
+1749
+],
+"sha256": "cb454c77e3fd4aefe17a0271377b87373f959832bdab66395168ce9b019af882"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.triangleEdgeStraighteningHomotopy_one_face"
+],
+"class": "keep",
+"lines": [
+1751,
+1761
+],
+"sha256": "c14a7f2d63d87023980bc39c351b3bba6edcd1ad02530824455b5260734c9980"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.triangleEdgeStraighteningHomotopy_one_boundary"
+],
+"class": "keep",
+"lines": [
+1763,
+1774
+],
+"sha256": "4f54d41c59230caaaf96b026c02b65f9e79af8605b5977bde16e826560459882"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.edgeStraightenedTriangle"
+],
+"class": "keep",
+"lines": [
+1776,
+1781
+],
+"sha256": "32965dd27088cc045e7a00f9939cfbb429025453420aeab28799a8168ab2262b"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.vertexNormalizedSimplex"
+],
+"class": "keep",
+"lines": [
+1783,
+1788
+],
+"sha256": "85789b7792f6a8eb9c731e59e13c45bd0a9561ca20a9cfb842c9a7c9358523b3"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.vertexNormalizedSimplex_verticesBased"
+],
+"class": "keep",
+"lines": [
+1790,
+1795
+],
+"sha256": "56adbaf5bbf320dfaed4c1af4be751ae0d99d0daf4914d6647d25fc0528f25fa"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.vertexNormalizedSimplex_face"
+],
+"class": "keep",
+"lines": [
+1797,
+1804
+],
+"sha256": "a8fec416b48631f3b78d4ca6c6d9dba5b7ddac5aee8d65cc07ebb30d7aa8cac3"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.vertexNormalizedSimplex_of_verticesBased"
+],
+"class": "keep",
+"lines": [
+1806,
+1812
+],
+"sha256": "0aa073db0e9d860b3497b06604c67e19d9d2989925e3b7885612b332048b79d4"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.normalizedTriangle"
+],
+"class": "keep",
+"lines": [
+1814,
+1819
+],
+"sha256": "88e465af340b6b9e0c9aca0cb37323ffb8548a7371e4a9970887585834e7fa1d"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.normalizedTriangle_of_verticesBased"
+],
+"class": "keep",
+"lines": [
+1821,
+1830
+],
+"sha256": "6eb41f6c7d731005225886e49549ced308c0942fb3c43865e5ce1cf773330212"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.normalizedTetrahedronMap"
+],
+"class": "keep",
+"lines": [
+1832,
+1836
+],
+"sha256": "2a454efbe482324ea5f5eb1c43673abd92aa58792dff4119070f22a0d99f1827"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.normalizedTetrahedronMap_face"
+],
+"class": "keep",
+"lines": [
+1838,
+1849
+],
+"sha256": "b159e129b2e5f09b343e093e16c3a15ec3bfe0a88abecd65338ca0de6180bba5"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.normalizedTetrahedronMap_face_boundary"
+],
+"class": "keep",
+"lines": [
+1851,
+1860
+],
+"sha256": "0c6c41cbfbc932e7ca5427324ac7dd3c9e6bc05e48d06ff113807bbcdc44df49"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.normalizedTwoChain"
+],
+"class": "keep",
+"lines": [
+1862,
+1867
+],
+"sha256": "cb5f592f5df4d1cd271a1e36ffa86b06dc1f1304f8333370c58567d032d91229"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.normalizedTwoChain_simplex"
+],
+"class": "keep",
+"lines": [
+1869,
+1875
+],
+"sha256": "76f9bfa63755894d3896a22d503eab134b2046c021a3c3535c5fffa65e58a8b9"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.normalizedTwoChain_eq"
+],
+"class": "keep",
+"lines": [
+1877,
+1886
+],
+"sha256": "ce9c2150fbd7fde50b069c7740e9f5a99b152e2a3b66581733f63984457d9c09"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.vertexNormalizedTwoCycle"
+],
+"class": "keep",
+"lines": [
+1888,
+1894
+],
+"sha256": "f0fa2078de71212715b03da7d83eab90d4d81517a9054e34cd81848652929e4f"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.vertexNormalizedTwoCycle_class"
+],
+"class": "keep",
+"lines": [
+1896,
+1904
+],
+"sha256": "cc728aa27f00c3263aaa00a3f3ae9251e80e0f6c9a90c2bd84297c5761a62db1"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.normalizedTwoCycle"
+],
+"class": "keep",
+"lines": [
+1906,
+1912
+],
+"sha256": "22c7e5558c5ea6a6d60b4a3d401f877d32a8ecc56266494f0619376893fd6f62"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.normalizedTwoCycle_val"
+],
+"class": "keep",
+"lines": [
+1914,
+1921
+],
+"sha256": "e70ca86a4acf43e5f6b4c581c7aba03ca09ee143e8316254bd0edd1b2b0de58c"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.normalizedTwoCycle_class"
+],
+"class": "keep",
+"lines": [
+1923,
+1937
+],
+"sha256": "308935154979738620d30b06b1622a9d232ab0a14d512a207c5e2fcaec899fa7"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.tetrahedronOneSkeleton"
+],
+"class": "keep",
+"lines": [
+1941,
+1944
+],
+"sha256": "1999432d5955eb77591d098df7cdd9d687573e1bef52071a68ff471a033919bb"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.BasedTetrahedron"
+],
+"class": "keep",
+"lines": [
+1946,
+1948
+],
+"sha256": "b6be7effc255d58d0fc38279d2a4767b55636ee1482002ebdb9b6dcd36e6629d"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.simplexFace_triangleBoundary"
+],
+"class": "keep",
+"lines": [
+1950,
+1957
+],
+"sha256": "7f857149b3755326170afcc3aa189fd194024947a945af5cb9a5d607defa9419"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.basedTetrahedronFace"
+],
+"class": "keep",
+"lines": [
+1959,
+1963
+],
+"sha256": "9d8fa9d18fc631e9ff0b95ca37a8e52e18afab6dbcf1fbed71e33fe1c99fbefa"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.tetrahedronSimplexBlend"
+],
+"class": "keep",
+"lines": [
+1965,
+1970
+],
+"sha256": "38cca7381ef42d9dd14f343ab9f84a4a1e5360b4a2fec233758ce3ebb8b9e47e"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.tetrahedronSimplexBlend_zero"
+],
+"class": "keep",
+"lines": [
+1972,
+1979
+],
+"sha256": "0da040f4c11d55a6e13064a63ab8452fd1a21a6071865462d443bdde170b3d57"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.tetrahedronSimplexBlend_one"
+],
+"class": "keep",
+"lines": [
+1981,
+1988
+],
+"sha256": "15002abe51e38aa9875d27e41ee6eb64e1dd418d7f008a266d50ab8a1ece3989"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.tetrahedronSimplexBlend_self"
+],
+"class": "keep",
+"lines": [
+1990,
+1997
+],
+"sha256": "51574bcf0c4b62e655f10334e1929f26e4dfc71b2ddd0fe99c3e3dd14970f94f"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.tetrahedronSimplexBlendMap"
+],
+"class": "keep",
+"lines": [
+1999,
+2017
+],
+"sha256": "59f1a0ad70b015b35750c059f5adbc1fbc28861dd5941d7e775b5171e3a13e56"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.tetrahedronSimplexBlend_zero_coordinate"
+],
+"class": "keep",
+"lines": [
+2019,
+2024
+],
+"sha256": "a86701ca018b94dedd089d4331a779b549c34233a17100800c9ff2790b54a769"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.simplexFace_two_zero"
+],
+"class": "keep",
+"lines": [
+2026,
+2034
+],
+"sha256": "ba2c02f6cff19c57c7fc56b6da21c3e7db78ba71338320abee99dc1354f34fc6"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.simplexFace_two_one"
+],
+"class": "keep",
+"lines": [
+2036,
+2044
+],
+"sha256": "a8e164319593ac4df6cf1cba77b73778bf3e8216b67ecb3769cdbaf472e15ea7"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.simplexFace_two_two"
+],
+"class": "keep",
+"lines": [
+2046,
+2054
+],
+"sha256": "83325e7da3fba9172cb1f0ce03e1157a031f84f53b897dc5789626b1d88b1a43"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.simplexFace_two_three"
+],
+"class": "keep",
+"lines": [
+2056,
+2064
+],
+"sha256": "1fdde946a0efc18a3cd06da5c1e29ea92368660c81eeecf81b16550293f2d4ef"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.BasedTetrahedron.ofFaces"
+],
+"class": "keep",
+"lines": [
+2066,
+2089
+],
+"sha256": "788247d0b8a71ebf4b3d01b538311088a1ce603671556dff2b7ad636828775b6"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.tetrahedronQuadrilateralA"
+],
+"class": "keep",
+"lines": [
+2091,
+2118
+],
+"sha256": "40005ff2e79d12b22ace6686eb45c6fec0cfdd0665d9dd8ffdf2c50400ae2eb8"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.tetrahedronQuadrilateralA_boundary"
+],
+"class": "keep",
+"lines": [
+2120,
+2140
+],
+"sha256": "2e75fe8a85026780a55022ea22dc0471cdc7b70c537e15d91842846fa5f9ada7"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.tetrahedronQuadrilateralA_diagonal"
+],
+"class": "keep",
+"lines": [
+2142,
+2145
+],
+"sha256": "21af1b982378f3749425ad1227ba76cb78a35c8056acafa304efe14769b84394"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.tetrahedronQuarterShift"
+],
+"class": "keep",
+"lines": [
+2147,
+2170
+],
+"sha256": "7b05f9e8b1c6287f1f7f3cd3965d0596d48cd1b63e171d6398b461401d82fd8c"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.tetrahedronQuarterIndex"
+],
+"class": "keep",
+"lines": [
+2172,
+2178
+],
+"sha256": "f9accb3032ca3bedaceedb55a009ce2f538e4c23aa2e25ba2903aa9e9c37fbb8"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.tetrahedronQuarterShift_index"
+],
+"class": "keep",
+"lines": [
+2180,
+2184
+],
+"sha256": "b0eeb0ce59504e16597b1459f7e8eded14f328a22be14f687b2bf476f642f847"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.tetrahedronQuarterShift_oneSkeleton"
+],
+"class": "keep",
+"lines": [
+2186,
+2193
+],
+"sha256": "f5a2d5237fa1688be1f93b100c61b52253007c879743f433e15c38e46b0fa7a2"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.tetrahedronQuadrilateralLoop"
+],
+"class": "keep",
+"lines": [
+2195,
+2199
+],
+"sha256": "04e925417b2acfa83279178a39cb278122e1fa8bdb00767a577e4bf10c4209f0"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.tetrahedronQuadrilateralLoop_diagonal"
+],
+"class": "keep",
+"lines": [
+2201,
+2205
+],
+"sha256": "24a4a2f4da6aeedda031111ad062afa5690e5bc7bba4b578dee81ce9b4e8502f"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.tetrahedronShiftedQuadrilateralLoop"
+],
+"class": "keep",
+"lines": [
+2207,
+2212
+],
+"sha256": "7a20318518daae3d6e11c93bc5a76965888011f9fa1048ca2140c2945c06cd4d"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.tetrahedronShiftedQuadrilateralLoop_diagonal"
+],
+"class": "keep",
+"lines": [
+2214,
+2218
+],
+"sha256": "675fb0f58823b044c5227a325cf490c5b998b09e9851089d87f38ecd8472f377"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.quarterTurn"
+],
+"class": "keep",
+"lines": [
+2220,
+2227
+],
+"sha256": "c84c6f936ebbd188b954be685f3a1b279791bf95b6e880e11371c0aa0a383c86"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.quarterTurn_apply"
+],
+"class": "keep",
+"lines": [
+2229,
+2233
+],
+"sha256": "7ccac1fb27d0f33b06948deae1d0fd70555903844b936dd60580e08d1a6332f4"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.quarterTurn_boundary"
+],
+"class": "keep",
+"lines": [
+2235,
+2246
+],
+"sha256": "50b8dbb6f35d18f36647273da974fe09759beee15f8d1ef1ac835ab786c048e3"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.rotatedSquareLoop"
+],
+"class": "keep",
+"lines": [
+2248,
+2251
+],
+"sha256": "03d6541f34f495ba948b529797d271acab6a17833453cc4b10bb0ebf59f86dbc"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.rotationVector"
+],
+"class": "keep",
+"lines": [
+2253,
+2255
+],
+"sha256": "274f83fb4b8c784d90189f44e5194b3f8d471426204cce15a2cb824efa35945d"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.rotationVector_norm"
+],
+"class": "keep",
+"lines": [
+2257,
+2260
+],
+"sha256": "66625565f3852847ac3f9785d559f7a0608e32faa1ae27742217d61b2da43038"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.rotationBlend"
+],
+"class": "keep",
+"lines": [
+2262,
+2264
+],
+"sha256": "2a694c8b1c50adc291912621bac8095a170422fd9fb6513cf6e02e372ed93ee2"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.rotationBlend_zero"
+],
+"class": "keep",
+"lines": [
+2266,
+2269
+],
+"sha256": "684f7e7ac2dded7e867254654edd983717b8732052df24cd5c892d0fab42ce87"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.rotationBlend_one"
+],
+"class": "keep",
+"lines": [
+2271,
+2274
+],
+"sha256": "ee54ceeb1946c68475c96080c4b28c32e34abfd0ba30b58dc2842e47510a4f98"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.rotationBlend_zero_vector"
+],
+"class": "keep",
+"lines": [
+2276,
+2279
+],
+"sha256": "2d19256dac821d39a0c3821ea9e5582c32638f1ab20eeabfd4133e901b2ab0ef"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.rotationBlend_ne_zero"
+],
+"class": "keep",
+"lines": [
+2281,
+2293
+],
+"sha256": "7017e5baf6bc08e939db24db7c164ac81c20b70b42b96463ccc4d6815cbc11de"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.rotationBlend_continuous"
+],
+"class": "keep",
+"lines": [
+2295,
+2299
+],
+"sha256": "cdf82deaed7522acc7fd74171ef8c4cb2813d0d90c1b7c4f0f185bd977872e66"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.rotationCentered"
+],
+"class": "keep",
+"lines": [
+2301,
+2303
+],
+"sha256": "c821e74f825ca2a15f1a6b525e0d4e7e4e81a59cd1a0aee3cce204eba7c5a987"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.rotationCentered_continuous"
+],
+"class": "keep",
+"lines": [
+2305,
+2309
+],
+"sha256": "597a6c2e5a5e7f9a5122362a092a5248ab421f018507a4a9d015af2359c007d6"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.rotationCentered_norm_le"
+],
+"class": "keep",
+"lines": [
+2311,
+2317
+],
+"sha256": "696ef94ab8a2956495571139bdd7a3f01155deac3ca8cbaf8149da3e1169f55c"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.rotationCentered_norm_boundary"
+],
+"class": "keep",
+"lines": [
+2319,
+2337
+],
+"sha256": "c68383a3b5fbe1e3da86375f3b1b1a7d8f5a1c3e3aecf4c9df6e58560c40bb6a"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.rotationDenominator"
+],
+"class": "keep",
+"lines": [
+2339,
+2342
+],
+"sha256": "617d053c6c0b71dcc8c4cec20a0c59756151fed101ae3a38411507a722ec5a10"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.rotationDenominator_pos"
+],
+"class": "keep",
+"lines": [
+2344,
+2353
+],
+"sha256": "44ea19c172e7338618c1c0fa1c5cfeb8b37b1e96a1db2a92511cf95716560d08"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.rotationDenominator_continuous"
+],
+"class": "keep",
+"lines": [
+2355,
+2366
+],
+"sha256": "98bd5b452f0092f503bed80f1f2687aab676a53400d5263ea22a4a8892717021"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.rotationNormalized"
+],
+"class": "keep",
+"lines": [
+2368,
+2371
+],
+"sha256": "0d6cf1e60b809fec68cd75236eb0cc4a72377bbf5f85d9bc44f11dd8a1ccf21c"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.rotationNormalized_continuous"
+],
+"class": "keep",
+"lines": [
+2373,
+2387
+],
+"sha256": "c1a8624acfdb6c372a01b234c42b4946730a4f925f30533f4b83ec01624e6031"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.rotationNormalized_norm_le"
+],
+"class": "keep",
+"lines": [
+2389,
+2396
+],
+"sha256": "beadb696ac7a8861fb6507f63048ec12444675c3e7fb0d014e8a79fd488bb2db"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.rotationNormalized_norm_boundary"
+],
+"class": "keep",
+"lines": [
+2398,
+2406
+],
+"sha256": "ef7605e99344ecad6b0f6330482ef0a3f51a11d933bac4fee16d49733ff4893a"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.rotationNormalized_zero"
+],
+"class": "keep",
+"lines": [
+2408,
+2412
+],
+"sha256": "3f4f363249be79b92293b0c19a2ebff3bb067550544b81367fd6abe10ae36995"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.rotationNormalized_one"
+],
+"class": "keep",
+"lines": [
+2414,
+2418
+],
+"sha256": "8c91a0838edd123a51eccdcc69497660565fb3987098fda36f82388f087f761f"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.rotationUncenter"
+],
+"class": "keep",
+"lines": [
+2420,
+2430
+],
+"sha256": "72f57c713376899232afe948a45e26f816e0b868b549bc5a540622d55c484ff8"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.rotationUncenter_congr"
+],
+"class": "keep",
+"lines": [
+2432,
+2436
+],
+"sha256": "7e6eab43be6632888f14829dc6e6702195f55446a14cd761dfaf478461a8c5e2"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.rotationUncenter_centered"
+],
+"class": "keep",
+"lines": [
+2438,
+2442
+],
+"sha256": "a0dc217f50b1e5191a87f98793b54f7af5eef8cd5fbf72e3571f993f2dc9d74f"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.rotationUncenter_vector"
+],
+"class": "keep",
+"lines": [
+2444,
+2453
+],
+"sha256": "f14627870010aca98af596f0301eb9faa2dfc626238450fba94f985596838832"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.rotationUncenter_boundary"
+],
+"class": "keep",
+"lines": [
+2455,
+2487
+],
+"sha256": "47e64d779b9e8d260b3c3c796753197cdb78944f4f57226e3966cf946dfc895b"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.quarterTurnHomotopyMap"
+],
+"class": "keep",
+"lines": [
+2489,
+2509
+],
+"sha256": "ff41232bf7819d68639d640653921ca72a85f26863aae446c30a4b769892dbb8"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.quarterTurnHomotopyMap_zero"
+],
+"class": "keep",
+"lines": [
+2511,
+2518
+],
+"sha256": "97397121b5dff2f2be702913cc8151131b604abc61087b27c584ea67c79de6ca"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.quarterTurnHomotopyMap_one"
+],
+"class": "keep",
+"lines": [
+2520,
+2527
+],
+"sha256": "14d5493264a23e3fe903cb120bac80be1a9310f2992f75d872b1abb828f7748b"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.quarterTurnHomotopyMap_boundary"
+],
+"class": "keep",
+"lines": [
+2529,
+2534
+],
+"sha256": "d01d0e162742558bfde7dce402c59e21dc14a314f248b49e18e7eb4cd2c54d20"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.rotatedSquareLoop_homotopy"
+],
+"class": "keep",
+"lines": [
+2536,
+2546
+],
+"sha256": "89791b835ea429e4dffbd643def2bc71dfac7a197993c95d685ff60e49bb54d2"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.rotatedSquareLoop_class"
+],
+"class": "keep",
+"lines": [
+2548,
+2554
+],
+"sha256": "0beae7c67eda7ce4d18155372fa39a4599102f686fc199b9d5731a77b859b84a"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.tetrahedronQuadrilateralB"
+],
+"class": "keep",
+"lines": [
+2556,
+2559
+],
+"sha256": "62899bd00cafba94c5c4a0b5e380cd67f58fac26daf2ad4774615537320c4554"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.tetrahedronQuadrilateral_perimeter"
+],
+"class": "keep",
+"lines": [
+2561,
+2620
+],
+"sha256": "f60c8dbe39af12f36bcdfd996101e5d22edc08426852e145317d29e25f62baf9"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.tetrahedronFillingsHomotopy"
+],
+"class": "keep",
+"lines": [
+2622,
+2648
+],
+"sha256": "f912ae2586619abc2a5ac4600a4d7bdcdc0a4d59fa341ad116db6db256e8523c"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.tetrahedronFillings_homotopic"
+],
+"class": "keep",
+"lines": [
+2650,
+2655
+],
+"sha256": "7c580dafaaea493810f4e1415a27c1c14d25cb389019486c58cd0a63bc418cd6"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.tetrahedronFillings_class"
+],
+"class": "keep",
+"lines": [
+2657,
+2662
+],
+"sha256": "c8548519d5d529dc7251e99408b4b6a1171fd05c8136b7e842a2124ac3584679"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.triangleCyclicPermutation"
+],
+"class": "keep",
+"lines": [
+2666,
+2688
+],
+"sha256": "2eb2b143838b884e0c9c21954dda3c0b19a05ebd252b4ceda0800f64b88da741"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.triangleCyclicPermutation_boundary"
+],
+"class": "keep",
+"lines": [
+2690,
+2698
+],
+"sha256": "366b1c519e4a47da010d722e40afe1cd3d412b5a33752f292c6b95a70941b755"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.cyclicBasedTriangle"
+],
+"class": "keep",
+"lines": [
+2700,
+2704
+],
+"sha256": "4ec060bed3fc33d9b9ead50d957b0a8578c30b3bf8dedc1c06bdda68506fb75b"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.cyclicTriangleQuotient_commonZero"
+],
+"class": "keep",
+"lines": [
+2706,
+2739
+],
+"sha256": "9792b2ebb6eb29870fe7febe2a480ac81318168d79c0c7847128564cd48e284c"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.cyclicTriangleQuotient_blend_boundary"
+],
+"class": "keep",
+"lines": [
+2741,
+2748
+],
+"sha256": "75868efe21bd0b6cc308499bec44ccb39244e051ddce3b90c9c1bf08f8ce1449"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.cyclicTriangleLoopHomotopy"
+],
+"class": "keep",
+"lines": [
+2750,
+2778
+],
+"sha256": "1d9218b8503064db6233fb1b37d903ddadfab96772fc9f58eb71e4f598842a89"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.basedTriangleClass_cyclic"
+],
+"class": "keep",
+"lines": [
+2780,
+2793
+],
+"sha256": "df7d4f2b65fcf1805e18bd79104044d7b23a52ee96a13492a52ce435bf0ebb59"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.SubdivisionSquare"
+],
+"class": "keep",
+"lines": [
+2797,
+2799
+],
+"sha256": "4ed0d29131d46c554a9f2923d39395c393e5be4420591f4d2b4edd5501370c34"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.subdivisionSquare_boundary_cases"
+],
+"class": "keep",
+"lines": [
+2801,
+2811
+],
+"sha256": "e7e5814611f002a14104a3062efcd43af02a0dae5883c67d0e7b90905febf61c"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.SubdivisionSameSide",
+"Hurewicz.DegreeTwo.SimplyConnected.SubdivisionSameSide.zero",
+"Hurewicz.DegreeTwo.SimplyConnected.SubdivisionSameSide.one",
+"Hurewicz.DegreeTwo.SimplyConnected.SubdivisionSameSide.diagonal"
+],
+"class": "keep",
+"lines": [
+2813,
+2817
+],
+"sha256": "e5e1254afedd4fbd209fdab9ce716dff6b330b6e8a8c3e9ab1fc062e99de3285"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.subdivisionBlend"
+],
+"class": "keep",
+"lines": [
+2819,
+2821
+],
+"sha256": "acd656615fc9bad261043febe09fe901561a6171553e4519cef6214e6e489d39"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.subdivisionBlend_zero"
+],
+"class": "keep",
+"lines": [
+2823,
+2828
+],
+"sha256": "0ffc58e416cebd1c46670f0b3b9e2bc1a0e9db925a8f54938e96fbf10ce10b03"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.subdivisionBlend_one"
+],
+"class": "keep",
+"lines": [
+2830,
+2835
+],
+"sha256": "789a54dd88dcaf847f1c12376549fdaad2332acb4592f35ab870702701c84e49"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.subdivisionBlendMap"
+],
+"class": "keep",
+"lines": [
+2837,
+2849
+],
+"sha256": "ad8d92245eba24505e36fc1fbc134dbf077395315a1687e944e23f764a53243c"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.subdivisionOnDiagonal"
+],
+"class": "keep",
+"lines": [
+2851,
+2860
+],
+"sha256": "bcd180fef666cbe7c7f79e46f21f452737ef6cd0a3f5ad9f9fcf8e44b0c37aee"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.subdivisionBlend_based"
+],
+"class": "keep",
+"lines": [
+2862,
+2876
+],
+"sha256": "bf59c064a2da3d9bfd192f9d78e9ea08ff7a5494d4d6baacab15752668f35c22"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.subdivisionPullbackLoop"
+],
+"class": "keep",
+"lines": [
+2878,
+2882
+],
+"sha256": "43233f2a1de8eb71f1360a755021a0ceab60689bd69f5559740340885dfd95b7"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.subdivisionLinearHomotopy"
+],
+"class": "keep",
+"lines": [
+2884,
+2904
+],
+"sha256": "c3d9ea00a3d07f8e017d71896d24c22369686539e631b1518332da9e7409aa52"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.subdivisionSubMin"
+],
+"class": "keep",
+"lines": [
+2906,
+2909
+],
+"sha256": "b222413795e7654ec1ba669d4edf58c0e1b32dff7ec3c5e9c055666fb37562ef"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.subdivisionSubMin_zero_left"
+],
+"class": "keep",
+"lines": [
+2911,
+2916
+],
+"sha256": "1b46b74a0d48482d772830135a0b5a2be1287cb9330ae59679e82adf8fd53e98"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.subdivisionSubMin_zero_right"
+],
+"class": "keep",
+"lines": [
+2918,
+2923
+],
+"sha256": "0b6d744a748a841b7fea2263370ba012f27d0aea28f0d7c59a5512230bc355b2"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.subdivisionSubMin_one_left"
+],
+"class": "keep",
+"lines": [
+2925,
+2930
+],
+"sha256": "0e77104ac84560b4476b047fd8c4e621e2e2e8abd552e70f6a52ab57bad81ebe"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.subdivisionSubMin_one_right"
+],
+"class": "keep",
+"lines": [
+2932,
+2937
+],
+"sha256": "d487b023c1d6387c93f835c5f8799d595e78e29cab586159cc569e27b7f9991e"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.subdivisionLowerProductMap"
+],
+"class": "keep",
+"lines": [
+2939,
+2953
+],
+"sha256": "b5dacbf7770d74b3eddacb21e048352b543ebee45ea4505a6f9921d6510325a0"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.subdivisionUpperProductMap"
+],
+"class": "keep",
+"lines": [
+2955,
+2967
+],
+"sha256": "c986191470364f968acaa079729d585c70acc29cc0ba9bd490413bad1bbf291b"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.subdivisionUpperConeMap"
+],
+"class": "keep",
+"lines": [
+2969,
+2984
+],
+"sha256": "537258dd953438bf2a3234dc1502cb47ca7a61c19332f52bf0dfeb5cfc5a56bc"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.subdivisionLowerTriangleMap"
+],
+"class": "keep",
+"lines": [
+2986,
+2991
+],
+"sha256": "61d3ab5fd40254b16c8dd4e652fcb5e0abcf4ab3bd93c4d24e4c320ff1355b7f"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.subdivisionUpperTriangleMap"
+],
+"class": "keep",
+"lines": [
+2993,
+3005
+],
+"sha256": "2bd84f1140f122a01d7c2b1af9ad6e74d180094cf8a5af87e3f604c68b5c178b"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.subdivisionLowerProductMap_based"
+],
+"class": "keep",
+"lines": [
+3007,
+3016
+],
+"sha256": "971cf147630171056c0f4707a85463fc4937a3dcd69c8cbfb611d10109504ce2"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.subdivisionUpperProductMap_based"
+],
+"class": "keep",
+"lines": [
+3018,
+3027
+],
+"sha256": "aba5be8067b474bb838d94a6dbed61ff5b89cb6b857f23ac8461d39d2db8bb90"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.subdivisionUpperConeMap_based"
+],
+"class": "keep",
+"lines": [
+3029,
+3038
+],
+"sha256": "eadf99e6aec81fdc6d6cabe724290cab91c20621dbfb28a16cbc4c591bded9aa"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.subdivisionLowerTriangleMap_based"
+],
+"class": "keep",
+"lines": [
+3040,
+3053
+],
+"sha256": "0335f10250e475aa00559f563247179789bb902f0208c253c741b2dc644c022a"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.subdivisionUpperTriangleMap_based"
+],
+"class": "keep",
+"lines": [
+3055,
+3064
+],
+"sha256": "7a89c27b1dd91bd34bf95666084496e1dca70f3a78740a5e9c8bdeac09f722bc"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.subdivisionLowerProductLoop"
+],
+"class": "keep",
+"lines": [
+3066,
+3070
+],
+"sha256": "15527260c42a6da3c4a83acc6a197aac20f7ed096ffd0ecdf2f57d9e7fe816dd"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.subdivisionUpperProductLoop"
+],
+"class": "keep",
+"lines": [
+3072,
+3076
+],
+"sha256": "468659b055586358aa58b8b44c347d26adef571d27deb9aafa42963047282764"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.subdivisionUpperConeLoop"
+],
+"class": "keep",
+"lines": [
+3078,
+3082
+],
+"sha256": "dd59fae1c78765d92d9255212dac677547b9b9628faab57cba38ae3a275ebbbd"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.subdivisionLowerTriangleLoop"
+],
+"class": "keep",
+"lines": [
+3084,
+3088
+],
+"sha256": "5147237ae5278af56e3091ea3862a46ca9c565cc3f7810bc86319aa26e14aa87"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.subdivisionUpperTriangleLoop"
+],
+"class": "keep",
+"lines": [
+3090,
+3094
+],
+"sha256": "39145b7481d8575e5c25de16de5657e9abc1a2330264973529ac29cdce5877bd"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.subdivisionLowerProductTriangle_sides"
+],
+"class": "keep",
+"lines": [
+3096,
+3111
+],
+"sha256": "ecc6bbf39e967831034ac5675e3476ed02cca7b72662f4cd7cfe986850013629"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.subdivisionUpperProductCone_sides"
+],
+"class": "keep",
+"lines": [
+3113,
+3122
+],
+"sha256": "a666edc5320e20da6e60ca904d01435af6b3a4a8d99d23da57074e7369d95b39"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.subdivisionUpperConeTriangle_sides"
+],
+"class": "keep",
+"lines": [
+3124,
+3135
+],
+"sha256": "e1aae51e74aace40175f171831c0053e88f62daa349e96b535ff1b0af0be0b6e"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.subdivisionLowerTriangleHomotopy"
+],
+"class": "keep",
+"lines": [
+3137,
+3144
+],
+"sha256": "e356f8b7ab8cb8eeccd0bfce493c3b67962f28a9ca23b04ad53262bb4fba6145"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.subdivisionUpperConeHomotopy"
+],
+"class": "keep",
+"lines": [
+3146,
+3152
+],
+"sha256": "46b43b956a648c727c3542551278effa4eb275026abbbc913e6566ee33df452b"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.subdivisionUpperTriangleHomotopy"
+],
+"class": "keep",
+"lines": [
+3154,
+3161
+],
+"sha256": "588842b4b0bd0e6753fb2b5f15740e5dfbec35035a3381a6f9e53fed82d11aae"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.subdivision_toLoop_transAt"
+],
+"class": "keep",
+"lines": [
+3163,
+3167
+],
+"sha256": "4b0391f030cb428ca8d57602d5ae528ac40d4e2d0f8a428f7e7b3c17de1cd610"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.subdivision_transAt_homotopic"
+],
+"class": "keep",
+"lines": [
+3169,
+3178
+],
+"sha256": "ee739eef53520c99cfcb9229228aa66821b4b6cfc98cf2b9c3ab5c0b220c2c1e"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.subdivisionWarpCoordinate"
+],
+"class": "keep",
+"lines": [
+3180,
+3190
+],
+"sha256": "f711e6244c164e03b12d3bd55b99b3df67cbe58e1bcc4cd41df67538c3a375af"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.subdivisionWarpCoordinate_apply"
+],
+"class": "keep",
+"lines": [
+3192,
+3197
+],
+"sha256": "df8a19b52a0850db1dfb17b5914607faef342db79424bcf9a0c271064709af3d"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.subdivisionWarpCoordinate_zero"
+],
+"class": "keep",
+"lines": [
+3199,
+3203
+],
+"sha256": "8788aff4acb44e0d25c53b61c57ae5f5f00925d62b1c66c8d98ea6d2ca325e4e"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.subdivisionWarpCoordinate_one"
+],
+"class": "keep",
+"lines": [
+3205,
+3209
+],
+"sha256": "faa61bfa8bdb2d93c64a79a2671fdb4be8e64d75f650ee1b1281a97108d09cd3"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.subdivisionWarpCoordinate_of_le_half"
+],
+"class": "keep",
+"lines": [
+3211,
+3219
+],
+"sha256": "ad8885eaadd1de5faeabdf1cda3fc61ffa1d01c9bfba0cf790be4a01450423e8"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.subdivisionWarpCoordinate_of_half_le"
+],
+"class": "keep",
+"lines": [
+3221,
+3232
+],
+"sha256": "6f6e96634b0e1013139fdab1eab13f133d3e04708edf78a3ff9e163c6606a2aa"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.subdivisionWarpCoordinate_of_half_lt"
+],
+"class": "keep",
+"lines": [
+3234,
+3239
+],
+"sha256": "62a686a216eec70e80b9c84700bc3fa1cac8db38d948dcd2b5af830c8d38874d"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.subdivisionWarpMap"
+],
+"class": "keep",
+"lines": [
+3241,
+3254
+],
+"sha256": "017f11d0775ba7ba25b3e7141e7bd2fd8006b4d426fcb1bbd3ff4ec5a3d4722f"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.subdivisionWarpMap_sides"
+],
+"class": "keep",
+"lines": [
+3256,
+3263
+],
+"sha256": "64647bf7a740327b2c50fb3d6ddd911b04b317a9b1ded9e50b05df91f431f5b7"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.subdivisionWarpMap_based"
+],
+"class": "keep",
+"lines": [
+3265,
+3273
+],
+"sha256": "75a7ac3a15f4d91b8161297de33adb475d6b9bf986e67682a8e81b41cc838933"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.subdivisionWarpLoop"
+],
+"class": "keep",
+"lines": [
+3275,
+3278
+],
+"sha256": "48d9b682326a0f4e367fc5ad7ca7b204aa1ad1f8fef896844bd0d9c626b5014b"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.subdivisionWarpHomotopy"
+],
+"class": "keep",
+"lines": [
+3280,
+3285
+],
+"sha256": "8fb7527ec92b7d875adde7712828c5f0ef3602e14e365861b3b380d37f5fc515"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.subdivisionWarpLoop_eq_transAt"
+],
+"class": "keep",
+"lines": [
+3287,
+3310
+],
+"sha256": "62a6096badb9b56ca9168d5374a11fe7410f889806df82717b6ec68b86bcedee"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.subdivision_homotopic"
+],
+"class": "keep",
+"lines": [
+3312,
+3323
+],
+"sha256": "54b9ae1885a0605f97adac9d53ef5ca0c4d060ade5132523fea5e1dadf6bb458"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.subdivision_class"
+],
+"class": "keep",
+"lines": [
+3325,
+3341
+],
+"sha256": "2f324ca2ac397f60d2d6b6eebf74fd113f6edd0ed0d4bff8038de46288c421a6"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.subdivision_additiveClass"
+],
+"class": "keep",
+"lines": [
+3343,
+3350
+],
+"sha256": "e2aa88298c7da4c3de6aa925b5a7b80e6f6a080d3e55049c0114c4897eea27b0"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.tetrahedronQuadrilateralA_lower"
+],
+"class": "keep",
+"lines": [
+3354,
+3377
+],
+"sha256": "7de0799dbcbdef721f1c3f173696e8183bf7b850a4467c800952a0bfc7980a2f"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.tetrahedronQuadrilateralA_upper"
+],
+"class": "keep",
+"lines": [
+3379,
+3407
+],
+"sha256": "afb595e1b07999c56ffb749d4b225c41baca263f370a0077093bdeaba209584c"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.tetrahedronQuarterShift_face_three"
+],
+"class": "keep",
+"lines": [
+3409,
+3424
+],
+"sha256": "6a2dfbcc78fe9557336f3c51e36b53011a8b26754ac45fb8979be5bb903ba9e6"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.tetrahedronQuarterShift_face_one"
+],
+"class": "keep",
+"lines": [
+3426,
+3443
+],
+"sha256": "aa47b353c35e2b5109863fbc4a6eed85c7847ea6e5638770cf8dda885d0b1909"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.tetrahedronLowerLoop_eq_face"
+],
+"class": "keep",
+"lines": [
+3445,
+3456
+],
+"sha256": "0f6b5f0b82c197a06ef020aea89ed8db06f75d90f2aae927e8151dcd153dd7cf"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.tetrahedronUpperLoop_eq_face"
+],
+"class": "keep",
+"lines": [
+3458,
+3469
+],
+"sha256": "b800e05c52fd16a36d981fd6b697ad215d15ed1abbc2a9a1964f1575893c1480"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.tetrahedronShiftedLowerLoop_eq_face"
+],
+"class": "keep",
+"lines": [
+3471,
+3482
+],
+"sha256": "fc7392c9a39badcb2c5ae47fabccc19c906825f3c03b71deafc8d07b18b92b11"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.tetrahedronShiftedUpperLoop_eq_face"
+],
+"class": "keep",
+"lines": [
+3484,
+3497
+],
+"sha256": "18e4988d084170067765f1436f3a062f230d7481f3769b5a709b0f21f4d0d71a"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.basedTetrahedron_pair_relation"
+],
+"class": "keep",
+"lines": [
+3499,
+3520
+],
+"sha256": "dac90b58fbe63f01486366e08b45bdd8a2981195f1e5d3c53997f36fbf6686c9"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.basedTetrahedron_boundary_relation"
+],
+"class": "keep",
+"lines": [
+3522,
+3536
+],
+"sha256": "a451e28dbd4e070a2719622250d7e7ac5a30279e81625b65bbdaf85c081961ce"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.basedTetrahedron_signed_relation"
+],
+"class": "keep",
+"lines": [
+3538,
+3543
+],
+"sha256": "177b330d79c2cff72abdfdafc886cd678d76f25eade8bf7f141bb36d3c7f654a"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.normalizedTetrahedron"
+],
+"class": "keep",
+"lines": [
+3545,
+3550
+],
+"sha256": "678e4c687b7bea74fa76fb001bc206a63f7a6feceb644350cc7c471e84ae18a8"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.normalizedTetrahedron_face"
+],
+"class": "keep",
+"lines": [
+3552,
+3559
+],
+"sha256": "da5335597cd0c40f501a82aa7beb89cbc637f89ddbcbc7f4f6f2f9523ec77c1d"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.normalizedTriangle_boundary_relation"
+],
+"class": "keep",
+"lines": [
+3561,
+3570
+],
+"sha256": "8411127dd5f465c3556579d3aa76be82d6f49a82b6b1cd2edf1c0d289a762460"
+},
+{
+"context": "attribute [local instance] SingularHomology.integerLinearMapModule SingularHomol",
+"lines": [
+3572,
+3573
+],
+"placed": "keep+move"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.squareAffineTriangle"
+],
+"class": "move",
+"lines": [
+3576,
+3583
+],
+"sha256": "6243b442928cb2a1e33a97de288d72fcbc49975cc3f0c0de1dc28e1fd5d64f2e"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.squareAffineTriangle_fst_coe"
+],
+"class": "move",
+"lines": [
+3585,
+3596
+],
+"sha256": "56289351eaf717a6106ddfaec407d413435c1050de8c8c74723e77267f3dfac6"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.squareAffineTriangle_snd_coe"
+],
+"class": "move",
+"lines": [
+3598,
+3609
+],
+"sha256": "88df7616bf523aecc511175a6c5baf88acdda23f7d9e58b4ee767c7fbd35c8fa"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.lowerProductTriangle"
+],
+"class": "move",
+"lines": [
+3611,
+3616
+],
+"sha256": "c9969d506ba00234b021d8b90bc0fe534f06c2e1c4db904578993a5349fe9b85"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.upperProductTriangle"
+],
+"class": "move",
+"lines": [
+3618,
+3623
+],
+"sha256": "ba1db16de707d9d809eee2ec4f09b0f7a018524e08d6b5080f77f6325bbcfa8c"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.leftProductDegenerate"
+],
+"class": "move",
+"lines": [
+3625,
+3630
+],
+"sha256": "78b8069735ff170bbe7c748208ca97775bf2af38ebd003a100191b31ef210685"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.bottomProductDegenerate"
+],
+"class": "move",
+"lines": [
+3632,
+3637
+],
+"sha256": "f74e8f9226508b5ba8e2be712f28e9d9e61bb3bf3df617af8f7f0c1ccd6ed8ea"
+},
+{
+"context": "attribute [local instance] SingularHomology.integerLinearMapModule SingularHomol",
+"lines": [
+3639,
+3640
+],
+"placed": "keep+move"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.lowerProductTriangle_fst"
+],
+"class": "move",
+"lines": [
+3642,
+3647
+],
+"sha256": "45c68bb3f48a9b9cc41ca70239c34989f6c127f001dee5b7c05a1bc80870ba84"
+},
+{
+"context": "attribute [local instance] SingularHomology.integerLinearMapModule SingularHomol",
+"lines": [
+3649,
+3650
+],
+"placed": "keep+move"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.lowerProductTriangle_snd"
+],
+"class": "move",
+"lines": [
+3652,
+3657
+],
+"sha256": "22f8a3a9856811485cdc7318f1621a451ed0ca11dc2750b115d0e578fae76ff3"
+},
+{
+"context": "attribute [local instance] SingularHomology.integerLinearMapModule SingularHomol",
+"lines": [
+3659,
+3660
+],
+"placed": "keep+move"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.upperProductTriangle_fst"
+],
+"class": "move",
+"lines": [
+3662,
+3667
+],
+"sha256": "974903e20dfe224c02ca099b107f0bb1f735e8ec6f573a5508cc02fb58da0736"
+},
+{
+"context": "attribute [local instance] SingularHomology.integerLinearMapModule SingularHomol",
+"lines": [
+3669,
+3670
+],
+"placed": "keep+move"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.upperProductTriangle_snd"
+],
+"class": "move",
+"lines": [
+3672,
+3677
+],
+"sha256": "41ca77693c2c100ca4ae8da78409ab8225ab2a18daf263c9b7fcac980b01231e"
+},
+{
+"context": "attribute [local instance] SingularHomology.integerLinearMapModule SingularHomol",
+"lines": [
+3679,
+3680
+],
+"placed": "keep+move"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.leftProductDegenerate_fst"
+],
+"class": "move",
+"lines": [
+3682,
+3688
+],
+"sha256": "01a364b7aca1df8f163f46968dc85a39e460261afed1bb0d54065cb4b098915f"
+},
+{
+"context": "attribute [local instance] SingularHomology.integerLinearMapModule SingularHomol",
+"lines": [
+3690,
+3691
+],
+"placed": "keep+move"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.bottomProductDegenerate_snd"
+],
+"class": "move",
+"lines": [
+3693,
+3699
+],
+"sha256": "39570ab8c85426df32efc20d682de607b0964b20647594ab06fdb4dad814544b"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.lowerSquareTriangle"
+],
+"class": "move",
+"lines": [
+3701,
+3707
+],
+"sha256": "9da6055b48ede9a594de3c4b4429840323c400fbb54d83231cf9a9274aa91328"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.upperSquareTriangle"
+],
+"class": "move",
+"lines": [
+3709,
+3715
+],
+"sha256": "1e18f50a62e668fc1b4ddb9a582bdc351039da037698c45e50fb384ffc5b242a"
+},
+{
+"context": "attribute [local instance] SingularHomology.integerLinearMapModule SingularHomol",
+"lines": [
+3717,
+3718
+],
+"placed": "keep+move"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.lowerSquareTriangle_zero"
+],
+"class": "move",
+"lines": [
+3720,
+3723
+],
+"sha256": "bdb175c5b4d515e300a5dcf48cba123a56b98862653a085e679a6bc5317e81e1"
+},
+{
+"context": "attribute [local instance] SingularHomology.integerLinearMapModule SingularHomol",
+"lines": [
+3725,
+3726
+],
+"placed": "keep+move"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.lowerSquareTriangle_one"
+],
+"class": "move",
+"lines": [
+3728,
+3731
+],
+"sha256": "4e24365e3ca58c8e3b6078c4ca852bfed056995f19338e13ba03586f8e01d6a8"
+},
+{
+"context": "attribute [local instance] SingularHomology.integerLinearMapModule SingularHomol",
+"lines": [
+3733,
+3734
+],
+"placed": "keep+move"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.upperSquareTriangle_zero"
+],
+"class": "move",
+"lines": [
+3736,
+3739
+],
+"sha256": "1eee1b23983058317071b850a7f4861ca71ba97ec06482549f8f6130b6099ca6"
+},
+{
+"context": "attribute [local instance] SingularHomology.integerLinearMapModule SingularHomol",
+"lines": [
+3741,
+3742
+],
+"placed": "keep+move"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.upperSquareTriangle_one"
+],
+"class": "move",
+"lines": [
+3744,
+3747
+],
+"sha256": "a6e20e6915a66a22a9e13e18f864c8768233b651886100c3658d84a0df5d128f"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.productSquareChain_four_triangles"
+],
+"class": "move",
+"lines": [
+3749,
+3773
+],
+"sha256": "06a0420f3316a70a0f8b84d11867e5523c1310b84ebb52f625c208d23a7f94bb"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.squareMap_leftProductDegenerate"
+],
+"class": "move",
+"lines": [
+3775,
+3785
+],
+"sha256": "b60e0efe586e1fa02f9342c83fe77dd79b02da24c2a04bd4fed07598d406f48c"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.squareMap_bottomProductDegenerate"
+],
+"class": "move",
+"lines": [
+3787,
+3797
+],
+"sha256": "83c9600dc9e3a2db6d0d4e78cfa85c83c40d1ca42754c9fefaeb5e8d388c92be"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.squareChain_two_triangles"
+],
+"class": "move",
+"lines": [
+3799,
+3817
+],
+"sha256": "ae2add861a5378ef06713e908eacfb06aa3bf5c81d83f86a14af4ec5dfbc4937"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.triangleQuotient_lowerProductTriangle"
+],
+"class": "move",
+"lines": [
+3819,
+3841
+],
+"sha256": "fca4aacc2c5addbe6ddefb699aa7169e02f371aa6dfb20657266e0b7f10f2dca"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.triangleQuotient_upperProductTriangle_boundary"
+],
+"class": "move",
+"lines": [
+3843,
+3849
+],
+"sha256": "224483b1c3ea2d0f58fa7e031d548bb211fb8b49e76a57fb09d54ef6ea75d0d2"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.basedTriangleLoop_lower"
+],
+"class": "move",
+"lines": [
+3851,
+3856
+],
+"sha256": "b162118281e9d996dd2521816322df533bd1694520b1d6058aa2837b2b0d49d7"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.basedTriangleLoop_upper"
+],
+"class": "move",
+"lines": [
+3858,
+3866
+],
+"sha256": "bd1e57f16f5c3a788f334e9c946c7cc8e4be8b7d368d73d992c534b259419903"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.squareChain_basedTriangleLoop"
+],
+"class": "move",
+"lines": [
+3868,
+3874
+],
+"sha256": "17d6d21e9d6bde234143bbed0d17f3628fe96143aff94f2644081a24b48e56e6"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.basedTriangleCycle"
+],
+"class": "keep",
+"lines": [
+3878,
+3887
+],
+"sha256": "dac85cd2529052434a77d3be3de089f9fb369aabe1476a5da5f1cf26a77c9448"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.basedTriangleCycle_val"
+],
+"class": "keep",
+"lines": [
+3889,
+3896
+],
+"sha256": "720e8a0cf9bfe840319fa9b7aeb46f9a7290927ed31827a7245f91e455f42a72"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.hurewicz_basedTriangleClass"
+],
+"class": "keep",
+"lines": [
+3898,
+3910
+],
+"sha256": "878afa6af7dcea747867dd2858182e4d7db40debdd19f0d8de46741ee36df21e"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.secondHomologyDesc"
+],
+"class": "keep",
+"lines": [
+3912,
+3922
+],
+"sha256": "6f9fb3f901470951148a4247531767485954d02be13a46a18f6c54849d96452d"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.secondHomologyDesc_cycleClass"
+],
+"class": "keep",
+"lines": [
+3924,
+3934
+],
+"sha256": "f76fa37e533464cd458d24e10c0280120d8cba644a8b64ba5073d19f02761598"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.comp_secondHomologyDesc_eq_id"
+],
+"class": "keep",
+"lines": [
+3936,
+3949
+],
+"sha256": "84813ff0784a5d879578e7befe81f5fa4ea7f2ce6c788de23ad7796c9d81df9c"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.chainAugmentation"
+],
+"class": "keep",
+"lines": [
+3953,
+3956
+],
+"sha256": "7173069ab57f621c9d8b66e6efc809d334aeba802fd5c179c4094054408f1f59"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.chainAugmentation_simplex"
+],
+"class": "keep",
+"lines": [
+3958,
+3963
+],
+"sha256": "211c9e6a371b865b1bc04dae023904ee1edb41524c45e9e4ae062b4e422169c4"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.chainAugmentation_boundaryTwo"
+],
+"class": "keep",
+"lines": [
+3965,
+3974
+],
+"sha256": "82a92b541c621304cc814fcbf164c155068b25c27650c23d933c20ca0df84c14"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.chainAugmentation_twoCycle"
+],
+"class": "keep",
+"lines": [
+3976,
+3985
+],
+"sha256": "53ade26577cd0a3fb827d43a636e3af20de5d0fef2b5f2715c529d01f64c5d0f"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.chainLift_sub_constant"
+],
+"class": "keep",
+"lines": [
+3987,
+4004
+],
+"sha256": "0513816411a58580182295cbb9c41cd9edefe566e6b7c683872114cf3a8f2c61"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.chainLift_sub_constant_twoCycle"
+],
+"class": "keep",
+"lines": [
+4006,
+4012
+],
+"sha256": "5f12f522b97279c0502a2e39c18792dd03cd435e680248b1d40b325320ae6e5a"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.triangleClassOperator"
+],
+"class": "keep",
+"lines": [
+4014,
+4018
+],
+"sha256": "ba0c0adebc89177008291f38ba000fa95eeb6b0104459cd9279a7ce0622ce470"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.triangleClassOperator_simplex"
+],
+"class": "keep",
+"lines": [
+4020,
+4027
+],
+"sha256": "50dbadc79260faefcc011e8737696c67fa14e5439aec7bd2356eb020459bdbb3"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.triangleClassOperator_boundary"
+],
+"class": "keep",
+"lines": [
+4029,
+4040
+],
+"sha256": "68127b9327011f5cba482f2083206252b6c0188b4b0464ae34879338c7a922dd"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.normalizedTriangleCycleOperator"
+],
+"class": "keep",
+"lines": [
+4042,
+4047
+],
+"sha256": "a5b552af8a91310f51bb9348380e8e2d11fb78e1c7c4e0974da79985debdbe06"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.normalizedTriangleCycleOperator_simplex"
+],
+"class": "keep",
+"lines": [
+4049,
+4056
+],
+"sha256": "e50864045a0d06d4103ec261580bb768558f99c4ef0b5ddc4eb9f94ac6fed8fa"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.normalizedTriangleCycleOperator_val"
+],
+"class": "keep",
+"lines": [
+4058,
+4078
+],
+"sha256": "83d60a793fd245b3468f1039187444ba341d71014fe668165893554e4c5e3a97"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.normalizedTriangleCycleOperator_twoCycle"
+],
+"class": "keep",
+"lines": [
+4080,
+4088
+],
+"sha256": "ae35e3b8c117ebc5c3d643b24a2a26bf3132e2f4b3d31090b51e0d15c65bb9c8"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.hurewiczMap_comp_triangleClassOperator"
+],
+"class": "keep",
+"lines": [
+4090,
+4100
+],
+"sha256": "a023e37bac316ba2222f6dd24c674ce4f52215600eab28738af04f8526218c60"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.hurewiczMap_triangleClassOperator_twoCycle"
+],
+"class": "keep",
+"lines": [
+4102,
+4114
+],
+"sha256": "53da05425cff9f518ffd7c69678b2f67e4b1e2774dedbd5ec327200377e4ef81"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.hurewiczInverse"
+],
+"class": "keep",
+"lines": [
+4116,
+4121
+],
+"sha256": "5bf2c62720052c3d1ad7b62ed8290e8a27c71e134a84541dbda801755fc238c0"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.hurewiczInverse_cycleClass"
+],
+"class": "keep",
+"lines": [
+4123,
+4131
+],
+"sha256": "c466b4dc8f43130d75359e759e6a5dcb112a7157aaccc5abc2ff663536f708ff"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.hurewiczMap_comp_hurewiczInverse"
+],
+"class": "keep",
+"lines": [
+4133,
+4138
+],
+"sha256": "5ecb2874a923c9ceddbfccb0dfa66e72e5364bfc273e072b362594625a45058a"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.hurewiczMap_hurewiczInverse"
+],
+"class": "keep",
+"lines": [
+4140,
+4145
+],
+"sha256": "898b877b2c85eee1488264968f6ea535bb7cb7c851fd07d3773491628f9bbe4d"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.lowerSquareTriangle_verticesBased"
+],
+"class": "keep",
+"lines": [
+4149,
+4165
+],
+"sha256": "8cfef642f8d705334da6b6102f57bfa32c3cb7b61a5a5d0863e5fab7698e47d0"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.upperSquareTriangle_verticesBased"
+],
+"class": "keep",
+"lines": [
+4167,
+4183
+],
+"sha256": "9c7b077b0be2b074b6cdb44142022106d7a2b95a320845f0273ecde00fffd5fd"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.squareTriangles_diagonal"
+],
+"class": "keep",
+"lines": [
+4185,
+4208
+],
+"sha256": "0610918df1c9c0f928f007ceaf81cc1ed88c5fa7a3151c3ed9d47132ba92ef04"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.lowerSquareTriangle_outerFace"
+],
+"class": "keep",
+"lines": [
+4210,
+4238
+],
+"sha256": "4fc2982c33b0ae533bc42004fa67fc35706904eac1d5d781ad452f77bdbc3b70"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.upperSquareTriangle_outerFace"
+],
+"class": "keep",
+"lines": [
+4240,
+4268
+],
+"sha256": "33f78546c9177e7b6e460a40b150f72ceee7cd6de337d23c172b3475948d6447"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.lowerSquareTriangle_quotient"
+],
+"class": "keep",
+"lines": [
+4270,
+4280
+],
+"sha256": "0019d6ba1567cbc07ff93883d6d16bf593b76b6fbb17043d6398c567e659c3e3"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.upperSquareTriangle_quotient"
+],
+"class": "keep",
+"lines": [
+4282,
+4292
+],
+"sha256": "b827d2092428d81bfeffe01d5d5b2b634f5c0a19aaa0a93728a6078e48db5bd9"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.triangleQuotient_perimeter_of_le"
+],
+"class": "keep",
+"lines": [
+4294,
+4311
+],
+"sha256": "06ffa3d083c5dbf5059cf4cc307a53feb0ed9097287c8b8c5dd66d9d0cd4be65"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.cubeBoundary_productBoundary"
+],
+"class": "keep",
+"lines": [
+4313,
+4322
+],
+"sha256": "871916c0dbbcf13f1c09f12b4401a4342917374a127b771d9312d5574aa5fa5c"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.gluedTriangleHomotopyMap"
+],
+"class": "keep",
+"lines": [
+4324,
+4340
+],
+"sha256": "2e43f3262782657303a24685a98af6c082949dcfc03bce813800ae726b873732"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.gluedTriangleHomotopyMap_boundary"
+],
+"class": "keep",
+"lines": [
+4342,
+4359
+],
+"sha256": "0e1213fabe178b51d591703a587238fafe1cb4e9bd560a062dd0a857afea6945"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.gluedTriangleHomotopy"
+],
+"class": "keep",
+"lines": [
+4361,
+4399
+],
+"sha256": "b4556deaed9f58e1d5b557a5e8da9c777ce10bc1a52ac7e235eeb5d42de73b4a"
+},
+{
+"names": [
+"_private.Lib.AlgebraicTopology.Hurewicz.PrismOperator.0.Hurewicz.DegreeTwo.SimplyConnected.basedTriangles_diagonal"
+],
+"class": "keep",
+"lines": [
+4401,
+4406
+],
+"sha256": "3388117721f9d282d7bfba3c3c45fd7975e598c932f354f06f015845cb622723"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.basedTrianglesLoop"
+],
+"class": "keep",
+"lines": [
+4408,
+4419
+],
+"sha256": "bebb9512adbaea8a1e14d875b457e83584a8051db15af74972b5ab6799a1869d"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.basedTrianglesLoop_apply"
+],
+"class": "keep",
+"lines": [
+4421,
+4428
+],
+"sha256": "1cc52066d4b8c7edb8925e54c0112c0fa7644a386c949978c78f3c77c0d895b0"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.basedTrianglesLoop_diagonal"
+],
+"class": "keep",
+"lines": [
+4430,
+4436
+],
+"sha256": "bb7d8cb466e67c9c8633edf109abf86913c80ff78eb9f747e9a3806d5c4cedb3"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.basedTrianglesLoop_lower"
+],
+"class": "keep",
+"lines": [
+4438,
+4452
+],
+"sha256": "0f5262f50d70e0c5b01600693fa1b49bc9535f1840a822efa1c9b984a8d3adb8"
+},
+{
+"names": [
+"_private.Lib.AlgebraicTopology.Hurewicz.PrismOperator.0.Hurewicz.DegreeTwo.SimplyConnected.triangleQuotient_swapped_upper"
+],
+"class": "keep",
+"lines": [
+4454,
+4464
+],
+"sha256": "3914f3308b070908feec422b81431b9cf1bec31fd6c7189552845222f46d3537"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.basedTrianglesLoop_upper"
+],
+"class": "keep",
+"lines": [
+4466,
+4485
+],
+"sha256": "4abd2bdfed02ab5454611ba1c98bb56a3e41951190f67f37a9f8fc4c1483d76b"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.basedTrianglesHomotopy"
+],
+"class": "keep",
+"lines": [
+4487,
+4496
+],
+"sha256": "c2fe7db25bd36e27ac4ff018c429c5974466342dc277f0b2785f6b1a1d6d3fd4"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.triangleProperty_of_face"
+],
+"class": "keep",
+"lines": [
+4498,
+4502
+],
+"sha256": "d0c6ab72acc21ca4fd7899b964ddd80196d88c7dc1faf61a95cb621377dc9377"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.basedTrianglesHomotopy_of_faces"
+],
+"class": "keep",
+"lines": [
+4504,
+4521
+],
+"sha256": "eaf3319fbc5e05ef2d09423588bbc7322f070fadeef4d1d4f717b51a6fb972cb"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.squareNormalizedLowerTriangle"
+],
+"class": "keep",
+"lines": [
+4523,
+4527
+],
+"sha256": "0af2a24d89baeb5ab1746a1dc06c0f23f68f243e68389ff35021b1be6d7a1d2d"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.squareNormalizedUpperTriangle"
+],
+"class": "keep",
+"lines": [
+4529,
+4533
+],
+"sha256": "fb7d54986f0a65c6f5c6588acdde5fd66dd8a7d1484d15bbac5673253839bb61"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.squareNormalizationTriangleHomotopy"
+],
+"class": "keep",
+"lines": [
+4535,
+4542
+],
+"sha256": "5423199e1b85053464233633a367b9ca4ee8f7ac44dd9deab3f1a9fde8ca94e8"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.squareLowerNormalizationHomotopy"
+],
+"class": "keep",
+"lines": [
+4544,
+4548
+],
+"sha256": "00a67cacef9a8c79d9a5f2023bf746bff95d76cd0ff2ce3d659ac71d10749981"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.squareUpperNormalizationHomotopy"
+],
+"class": "keep",
+"lines": [
+4550,
+4554
+],
+"sha256": "4a3ea5fd17a080b4969151c05bb38a40f4fb4c54fc80773ae4a8ba3bec36fd73"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.squareNormalization_edge_face"
+],
+"class": "keep",
+"lines": [
+4556,
+4562
+],
+"sha256": "e374dac289bbe07335c311b6fe1ee2cf1548a53b5588644350ac789c1abacf0e"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.squareNormalization_diagonal"
+],
+"class": "keep",
+"lines": [
+4564,
+4575
+],
+"sha256": "8ccf89ed58ab18652501be50e0eda72e0aeb1217a53be957c14ba84bc1b14d3a"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.squareLowerNormalization_outerFace"
+],
+"class": "keep",
+"lines": [
+4577,
+4588
+],
+"sha256": "2334d4d1c01816fdfcdb12d54df5ce7b566cc5e3b5d155639c345df82ad73e97"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.squareUpperNormalization_outerFace"
+],
+"class": "keep",
+"lines": [
+4590,
+4601
+],
+"sha256": "8562d656d1f68b9874cfd3595c559c46e5d84e08cfec3a348236910f62282d9f"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.squareNormalizationHomotopy"
+],
+"class": "keep",
+"lines": [
+4603,
+4612
+],
+"sha256": "11725fd2dcdc268efa53198712c5f64d18c67026e04ea12f0af12c78763da873"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.squareNormalization_homotopic"
+],
+"class": "keep",
+"lines": [
+4614,
+4619
+],
+"sha256": "7dc75206e2b58ee71d01d004e7f258f3483652d41e2cb186d94238dd477c37dc"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.subdivisionUpperPositiveSquareTriangle"
+],
+"class": "keep",
+"lines": [
+4623,
+4626
+],
+"sha256": "12647e1e10117d1c03b4d37e1f3bf6f392fc85ee2f6cd6b097aeda8e648c1f55"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.subdivisionUpperPositiveSquareTriangle_zero"
+],
+"class": "keep",
+"lines": [
+4628,
+4633
+],
+"sha256": "12c545dbad4e65dd04c42b30107a9eaba8a07320e587c596284403f500585b03"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.subdivisionUpperPositiveSquareTriangle_one"
+],
+"class": "keep",
+"lines": [
+4635,
+4641
+],
+"sha256": "071d7cbe29b7d90e1f84b672a6a60147cae6064f19479cafb48179de09da23c0"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.subdivisionTriangle_coordinate_sum"
+],
+"class": "keep",
+"lines": [
+4643,
+4649
+],
+"sha256": "c220bb2bc5437397a14f784afd0be4136c270fbc10873bcf7340990b9802a21e"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.subdivisionLowerSquareTriangle_based"
+],
+"class": "keep",
+"lines": [
+4651,
+4673
+],
+"sha256": "87de0b9c73dbb5b50e245c300ef1a9471bc3d32bd4cfcad181e8a3d8aeb06c4d"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.subdivisionUpperNegativeSquareTriangle_based"
+],
+"class": "keep",
+"lines": [
+4675,
+4697
+],
+"sha256": "a58bd8148765c6bce0f620a6a65c3870c42a6f8e10a5dfd8e645049632d1ec7d"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.subdivisionUpperPositiveSquareTriangle_based"
+],
+"class": "keep",
+"lines": [
+4699,
+4721
+],
+"sha256": "8b6c8aa09a2f7b5a420cd805c4fa9456616d1cf7907fdddfd1754b11b46f82d5"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.subdivisionLowerBasedTriangle"
+],
+"class": "keep",
+"lines": [
+4723,
+4727
+],
+"sha256": "8de57988975435d5f97b49bfa1c770b2ff4ad3abb477dc3ca187f5f42a28fbf8"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.subdivisionUpperNegativeBasedTriangle"
+],
+"class": "keep",
+"lines": [
+4729,
+4733
+],
+"sha256": "449f729e6db75018d170171b8b2dd01ef695451d04f3350bb55fb015ff334ac6"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.subdivisionUpperPositiveBasedTriangle"
+],
+"class": "keep",
+"lines": [
+4735,
+4740
+],
+"sha256": "68580d0695c292b81ac18ba13348d7fbb787d8ee2e96e59c316eed1daa4e0636"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.subdivisionLowerTriangleLoop_eq_basedTriangleLoop"
+],
+"class": "keep",
+"lines": [
+4742,
+4752
+],
+"sha256": "6d0bacfb1f531ced416a7fd257c3fbbef09d8c0ce92957bc89b7417bd2e5e54f"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.subdivisionUpperTriangleLoop_eq_basedTriangleLoop"
+],
+"class": "keep",
+"lines": [
+4754,
+4767
+],
+"sha256": "206383c8075adda1161ac821c8558d13dd8e732e439351bdf0a07d00c5b9f636"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.subdivisionUpperNegativeBasedTriangle_loop_apply"
+],
+"class": "keep",
+"lines": [
+4769,
+4778
+],
+"sha256": "03fb5f9482981042d86ca5513630b4501169d56e55a1ffc6f27aa306b77fb989"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.subdivision_basedTriangleClass_sum"
+],
+"class": "keep",
+"lines": [
+4780,
+4789
+],
+"sha256": "c58b5c51c471b12f160f0a732e7bdfe4e87a49c4e133edc4b02f5f43327f6c0d"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.subdivisionUpperNegativeMap"
+],
+"class": "keep",
+"lines": [
+4791,
+4796
+],
+"sha256": "a8685d9b38366bb0449b3e9a0ddbdf9fd6803635875343c8a84a5de3faeabf5e"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.subdivisionUpperNegativeReversedMap"
+],
+"class": "keep",
+"lines": [
+4798,
+4803
+],
+"sha256": "c6f9e15b7aed32c33c64908aa830fe01a292fdccbadbd2eb150820d2bcc5db54"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.subdivisionUpperNegativeMap_based"
+],
+"class": "keep",
+"lines": [
+4805,
+4818
+],
+"sha256": "9e916725ef75a28044af5cffd97d3520b7a1b454dcdb3a379f983ed03450d856"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.subdivisionUpperNegativeReversedMap_based"
+],
+"class": "keep",
+"lines": [
+4820,
+4833
+],
+"sha256": "e3b1ea01e43956078376f7c8c1ca6edf15c66d3b9a3e9220f0e2a8b57a17f66c"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.subdivisionUpperNegativeLoop"
+],
+"class": "keep",
+"lines": [
+4835,
+4839
+],
+"sha256": "7171f2e2e68e85363539045f9cff6c64c61140d50c4212c55e5f04f952d3ad38"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.subdivisionUpperNegativeReversedLoop"
+],
+"class": "keep",
+"lines": [
+4841,
+4846
+],
+"sha256": "f889aeb18a58191fde7cc51fec87003338b2ce27954c86a22e4e6bf66c9a4ba6"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.subdivisionUpperOrientation_sides"
+],
+"class": "keep",
+"lines": [
+4848,
+4867
+],
+"sha256": "76592a18a40e4262bcd4929d6d37e93388f565bc17a85f528dd3dc51f63ae060"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.subdivisionUpperOrientationHomotopy"
+],
+"class": "keep",
+"lines": [
+4869,
+4876
+],
+"sha256": "7f06d83081c81929703b91af03adccffb56ba08ea8811fbeab735c945d77eb90"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.subdivisionUpperNegativeReversedLoop_eq_symmAt"
+],
+"class": "keep",
+"lines": [
+4878,
+4890
+],
+"sha256": "ce1d34a3925712623e645af47059248de69a94082d7cf2da480cffdb129a7b49"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.subdivisionUpperOrientation_homotopic"
+],
+"class": "keep",
+"lines": [
+4892,
+4899
+],
+"sha256": "a6c7d0d5fcf9a766b50722d64301d12e70d473bcfe67f21324c76b486c84e42a"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.subdivisionUpperOrientation_class"
+],
+"class": "keep",
+"lines": [
+4901,
+4913
+],
+"sha256": "2a5c7d4c724027fa8769318eb7304683efbf9f8b077b3252fce6f09d573ed058"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.subdivisionUpperOrientation_additiveClass"
+],
+"class": "keep",
+"lines": [
+4915,
+4922
+],
+"sha256": "2ed5de9b30a5df7955e48948e0a14d527fc1c2f497724c1526ffe31a2810ec82"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.subdivision_eq_sub_of_eq_add"
+],
+"class": "keep",
+"lines": [
+4924,
+4927
+],
+"sha256": "1cc4357ce39157b88191b3a19a63ba21bd7e610a190ee4bdcd4dcda4766cb08b"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.subdivisionUpperNegativeLoop_eq_basedTriangleLoop"
+],
+"class": "keep",
+"lines": [
+4929,
+4937
+],
+"sha256": "8685b6bbf82a869103c810c0805490d1b7d9ca7dbdbe0ac80337ba2d0e038de6"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.subdivisionUpperPositiveBasedTriangle_class_eq_neg"
+],
+"class": "keep",
+"lines": [
+4939,
+4949
+],
+"sha256": "0b7676f01328b9d9741eb5ed46672ea3d4143dcf29aac438b306ff181dc0dda9"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.subdivision_basedTriangleClass_sub"
+],
+"class": "keep",
+"lines": [
+4951,
+4960
+],
+"sha256": "2af1572530262b805bdce40e480346ba289f65fd954066e69d4b26104341b5d2"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.basedTrianglesLoop_class"
+],
+"class": "keep",
+"lines": [
+4962,
+4977
+],
+"sha256": "f135b377e13e4366230dc1eb65b6b852950728aed74af670c308477b984f992e"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.squareNormalization_quotient"
+],
+"class": "keep",
+"lines": [
+4979,
+4984
+],
+"sha256": "2e5acefa2f5902d9c5f4af8abb0e6f131c2c42db085ff8e9db4845b68f14f8ff"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.squareNormalization_class"
+],
+"class": "keep",
+"lines": [
+4986,
+4996
+],
+"sha256": "f9c4553b2f4e18979fb8c130e2f91afe55d2d43ae11be1b1134275647e538187"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.triangleClassOperator_squareChain"
+],
+"class": "keep",
+"lines": [
+4998,
+5006
+],
+"sha256": "9c7ab04113d93ac8d12ca61c946d03bd11ca287123cc8b5c5275b5294989c85b"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.hurewiczInverse_hurewiczMap_mk"
+],
+"class": "keep",
+"lines": [
+5008,
+5015
+],
+"sha256": "d063da8224dccc20441d2d38beec38d2c9a8c7dd4d941417b745f678d7a1fb50"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.hurewiczInverse_hurewiczMap"
+],
+"class": "keep",
+"lines": [
+5017,
+5027
+],
+"sha256": "332bc0d260b0b44cf6f5e49416506bf179eaf448687364216c2eb177360790d8"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.hurewiczInverse_comp_hurewiczMap"
+],
+"class": "keep",
+"lines": [
+5029,
+5034
+],
+"sha256": "632d47094d4576ce0ae793081ec46c3977fb410529718286f78dcfb23e42809b"
+},
+{
+"names": [
+"Hurewicz.degreeTwoLinearEquiv"
+],
+"class": "keep",
+"lines": [
+5038,
+5047
+],
+"sha256": "e6145a9e768b0863d36c7d3aecd9af81f76affeaafee0cddeb503fbda9dd8559"
+},
+{
+"names": [
+"Hurewicz.DegreeTwo.SimplyConnected.hurewiczPi2Equiv"
+],
+"class": "keep",
+"lines": [
+5049,
+5059
+],
+"sha256": "7c8818ac6f0d950c4b6c257d063062e1cc5b8dbdb21ff8ef361df017e7e46f01"
+},
+{
+"names": [
+"Hurewicz.cylinderHomotopy"
+],
+"class": "keep",
+"lines": [
+5064,
+5073
+],
+"sha256": "1709605b46d2dcf85ccd43e032b7516ba59df48a760f75da5f5fcf45afe45b72"
+},
+{
+"names": [
+"Hurewicz.homotopyTrans_compContinuousMap"
+],
+"class": "keep",
+"lines": [
+5075,
+5084
+],
+"sha256": "b4f14ca9da11a2b76ae01eb68f295da8c0b770d73c07e6f92533a5a6e6db181b"
+},
+{
+"names": [
+"Hurewicz.homotopyTrans_const"
+],
+"class": "keep",
+"lines": [
+5086,
+5097
+],
+"sha256": "669601459342e37918d3324b49e6b94cb6a8bd3aa9f348b5f013246f2d32729d"
+},
+{
+"names": [
+"Hurewicz.homotopyTrans_congr"
+],
+"class": "keep",
+"lines": [
+5099,
+5110
+],
+"sha256": "a3d22b7501c2473766f18a491c3b96fe5a604e930c05098ea41a284d1e53a980"
+},
+{
+"names": [
+"Hurewicz.simplexFamilyHomotopy"
+],
+"class": "keep",
+"lines": [
+5112,
+5118
+],
+"sha256": "cdaa9e4691a9d534be001dc0d6838fa57441a67144c209d1b9a132fa032c4d82"
+},
+{
+"names": [
+"Hurewicz.composeSimplexHomotopies"
+],
+"class": "keep",
+"lines": [
+5120,
+5128
+],
+"sha256": "34e056895deeaf335feab3f8097d0b83472b79e88b7db9a342184476bae5b70e"
+},
+{
+"names": [
+"Hurewicz.composeSimplexHomotopies_zero"
+],
+"class": "keep",
+"lines": [
+5130,
+5137
+],
+"sha256": "625487821a5b43a0ad50524caa0f7e12c087d648b0e8d15136b2406f71259aff"
+},
+{
+"names": [
+"Hurewicz.composeSimplexHomotopies_one"
+],
+"class": "keep",
+"lines": [
+5139,
+5148
+],
+"sha256": "c52eeb2c2e515499bf2bd8cae7f0a4bd9528abaad35099eb400609bc62dca05c"
+},
+{
+"names": [
+"Hurewicz.timeSlice_composeSimplexHomotopies_one"
+],
+"class": "keep",
+"lines": [
+5150,
+5162
+],
+"sha256": "5e459774fa4b17bf4e58822c8d8f92c020bd3ddc85f244cc110be52da1f04cae"
+},
+{
+"names": [
+"Hurewicz.composeSimplexHomotopies_face"
+],
+"class": "keep",
+"lines": [
+5164,
+5192
+],
+"sha256": "cfb2417575ed148a7a0bbee947f71b0e4c784ba03658cecb8402085b6c4bb432"
+},
+{
+"names": [
+"Hurewicz.composeSimplexHomotopies_const"
+],
+"class": "keep",
+"lines": [
+5194,
+5222
+],
+"sha256": "cd8bead16ec9b801dc5c07baaef39fa67cda126a59be11445272ff7846b8b1f3"
+},
+{
+"names": [
+"Hurewicz.gluedBoundaryMap_constant_value"
+],
+"class": "keep",
+"lines": [
+5225,
+5244
+],
+"sha256": "5ba4db6cb20de50da120462051c9c19742927ec8cacc2744e1e9321c904125b7"
+},
+{
+"names": [
+"Hurewicz.coherentFaceBoundaryHomotopy_const"
+],
+"class": "keep",
+"lines": [
+5246,
+5267
+],
+"sha256": "9461021cd705e1e1ea0e94c74722579329d7d5d9c83a846f3e3098de7f1b2aef"
+},
+{
+"names": [
+"Hurewicz.extendCoherentSimplexHomotopy_const"
+],
+"class": "keep",
+"lines": [
+5269,
+5300
+],
+"sha256": "84b1559ca0400724b186e525c70f882758c9706db48e151e78114ea51159fd74"
+}
+]
+}
