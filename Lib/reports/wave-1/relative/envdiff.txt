@@ -1,0 +1,19 @@
+constants before 38248 after 38251 (keys 38146 38149 )
+lost 20 added 23 of which source declarations: 0 0 ; names with changed type 20 of which source: 0
+auxiliary lost/added/changed (not judged): 20 23 20
+module moves (source declarations, 1-to-1):
+      32  Lib.Geometry.Manifold.Immersion.Relative -> Lib.Geometry.Manifold.Immersion.Relative.AffinePerturbation
+      13  Lib.Geometry.Manifold.Immersion.Relative -> Lib.Geometry.Manifold.Immersion.Relative.Arc
+       8  Lib.Geometry.Manifold.Immersion.Relative -> Lib.Geometry.Manifold.Immersion.Relative.AxisChart
+      13  Lib.Geometry.Manifold.Immersion.Relative -> Lib.Geometry.Manifold.Immersion.Relative.ChartPerturbation
+      25  Lib.Geometry.Manifold.Immersion.Relative -> Lib.Geometry.Manifold.Immersion.Relative.Curve
+      25  Lib.Geometry.Manifold.Immersion.Relative -> Lib.Geometry.Manifold.Immersion.Relative.Embedding
+      38  Lib.Geometry.Manifold.Immersion.Relative -> Lib.Geometry.Manifold.Immersion.Relative.FrameField
+      16  Lib.Geometry.Manifold.Immersion.Relative -> Lib.Geometry.Manifold.Immersion.Relative.ImmersionLocus
+      14  Lib.Geometry.Manifold.Immersion.Relative -> Lib.Geometry.Manifold.Immersion.Relative.Plane
+      20  Lib.Geometry.Manifold.Immersion.Relative -> Lib.Geometry.Manifold.Immersion.Relative.PointMoving
+       6  Lib.Geometry.Manifold.Immersion.Relative -> Lib.Geometry.Manifold.Immersion.Relative.TubularNeighborhood
+       5  Lib.Geometry.Manifold.Immersion.Relative -> Lib.Geometry.Manifold.Immersion.Relative.TwoSheetArc
+ambiguous module changes: 0
+auxiliary constants that changed module: 59
+VERDICT PASS
