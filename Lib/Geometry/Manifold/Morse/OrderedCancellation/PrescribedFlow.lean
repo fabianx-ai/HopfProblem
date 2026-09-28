@@ -35,6 +35,12 @@ open scoped ContDiff ContinuousMap
 noncomputable section
 
 attribute [local instance 100] Classical.propDecidable in
+/-- Let `f` be smooth on a compact manifold with finitely many critical points, `V` a smooth
+vector field with flow `F` vanishing exactly at the critical points and strictly decreasing `f`
+elsewhere, `c` a signed Morse chart at `p` with `V = c.descentField` near `p`, and `p` the only
+critical point at its value.  Then for every `ε > 0` there is a Morse surgery datum `d` at `p`
+with chart `c`, radius `< ε`, no other critical value in `[f p - r², f p + r²]`, and
+`V = c.descentField` near the whole model block of radius `2r`. -/
 theorem MorseCancellation.exists_morseSurgeryData_of_field_germ_lt {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {f : M → ℝ}
@@ -119,6 +125,11 @@ theorem MorseCancellation.exists_morseSurgeryData_of_field_germ_lt {E M : Type*}
         upper_regular := hupper }, hρε, rfl, hband, hmodel⟩
 
 attribute [local instance 100] Classical.propDecidable in
+/-- Let `f` be a Morse function with distinct critical values on a compact manifold and `V` a
+smooth vector field with flow `F` that vanishes exactly at the critical points, strictly
+decreases `f` elsewhere, and agrees near each critical point `p` with the descent field of a
+given signed Morse chart `c p`.  Then there is an `AdaptedWindows E f` package `S` with
+`S.field = V`, `S.flow = F` and `(S.data p).chart = c p` for every `p`. -/
 theorem MorseCancellation.exists_adapted_windows_with_prescribed_flow {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {f : M → ℝ}
@@ -163,6 +174,8 @@ theorem MorseCancellation.exists_adapted_windows_with_prescribed_flow {E M : Typ
         model_germ := hgerm }, rfl, rfl, hchart⟩
 
 attribute [local instance 100] Classical.propDecidable in
+/-- `exists_adapted_windows_with_prescribed_flow` with the surgery radii below a prescribed bound:
+given `ε p > 0` for every critical point, the package also satisfies `(S.data p).radius < ε p`. -/
 theorem MorseCancellation.exists_adapted_windows_with_prescribed_flow_lt {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {f : M → ℝ}
@@ -212,6 +225,8 @@ theorem MorseCancellation.exists_adapted_windows_with_prescribed_flow_lt {E M : 
         descent := hdesc
         model_germ := hgerm }, rfl, rfl, hchart, hde⟩
 
+/-- If `g = f` on a neighbourhood of `p` and `c` is a signed Morse chart of `f` at `p`, then `g`
+has a signed Morse chart at `p` with the same descent field as `c`. -/
 theorem MorseCancellation.exists_signed_morse_chart_of_germ_preserving_field {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f g : M → ℝ}
     {p : M} (c : ManifoldMorse.SignedMorseChart (E := E) f p) (hgerm : g =ᶠ[𝓝 p] f) :
@@ -239,6 +254,8 @@ theorem MorseCancellation.exists_signed_morse_chart_of_germ_preserving_field {E 
         exact c.inverse_equation z hzs.1 }
   exact ⟨d, rfl⟩
 
+/-- If `g = f + k` on a neighbourhood of `p` for a constant `k` and `c` is a signed Morse chart of
+`f` at `p`, then `g` has a signed Morse chart at `p` with the same descent field as `c`. -/
 theorem MorseCancellation.exists_signed_morse_chart_of_shift_germ_preserving_field {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f g : M → ℝ}
     {p : M} (c : ManifoldMorse.SignedMorseChart (E := E) f p) {k : ℝ}
