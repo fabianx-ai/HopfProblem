@@ -43,6 +43,8 @@ open scoped ContDiff ContinuousMap
 
 noncomputable section
 
+/-- `normalJacobian j x (c • A) * c ^ dim N = normalJacobian j x A` for invertible `A` and `c ≠ 0`.
+`normalJacobian j x (c • A) * c ^ dim N = normalJacobian j x A` for invertible `A` and `c ≠ 0`. -/
 theorem SphereNormalCoordinates.normalJacobian_smul_mul_pow {V N : Type*}
     [NormedAddCommGroup V] [InnerProductSpace ℝ V] [NormedAddCommGroup N] [NormedSpace ℝ N]
     [FiniteDimensional ℝ N] {n : ℕ} [Fact (Module.finrank ℝ V = n + 1)] (j : (ℝ × N) ≃L[ℝ] V)
@@ -65,6 +67,7 @@ theorem SphereNormalCoordinates.normalJacobian_smul_mul_pow {V N : Type*}
       (normalJacobian_mul_chartDet j x A hA A.inverse).symm
   simpa only [hdet, hid, mul_one] using h
 
+/-- Scaling an invertible `A` by `c > 0` does not change the sign of `normalJacobian j x A`. -/
 theorem SphereNormalCoordinates.sign_normalJacobian_smul_pos {V N : Type*}
     [NormedAddCommGroup V] [InnerProductSpace ℝ V] [NormedAddCommGroup N] [NormedSpace ℝ N]
     [FiniteDimensional ℝ N] {n : ℕ} [Fact (Module.finrank ℝ V = n + 1)] (j : (ℝ × N) ≃L[ℝ] V)
@@ -75,6 +78,8 @@ theorem SphereNormalCoordinates.sign_normalJacobian_smul_pos {V N : Type*}
   have hp : SignType.sign (c ^ Module.finrank ℝ N) = 1 := sign_eq_one_iff.mpr (pow_pos hc _)
   simpa only [sign_mul, hp, mul_one] using h
 
+/-- For a linear isometry `R` with `R x = y`, the radial frame of the centred chart at `y`
+composed with `id × (linear chart transition)` is `R` composed with the radial frame at `x`. -/
 theorem SpherePoint.chart_radial_frame_comp {V : Type} [NormedAddCommGroup V]
     [InnerProductSpace ℝ V] {m : ℕ} [Fact (Module.finrank ℝ V = m + 1)]
     (x y : Metric.sphere (0 : V) 1) (R : V ≃ₗᵢ[ℝ] V) (he : sphereHomeomorph R x = y) :
@@ -110,6 +115,8 @@ theorem SpherePoint.chart_radial_frame_comp {V : Type} [NormedAddCommGroup V]
         z.1 • (NativeParametrization.centered y (0 : EuclideanSpace ℝ (Fin m)) : V) + v)
       hD
 
+/-- The chart Jacobian of a chart `c` of the sphere `S(V)` at `z`: the determinant of the radial
+frame of `c` at `z` against the splitting `ℝ × F ≃ V` given by `j` and `B : ℝᵐ ≃ F`. -/
 def SphereNormalCoordinates.chartJacobian {V F : Type} [NormedAddCommGroup V]
     [InnerProductSpace ℝ V] [NormedAddCommGroup F] [NormedSpace ℝ F] {m : ℕ}
     [Fact (Module.finrank ℝ V = m + 1)]
@@ -121,6 +128,7 @@ def SphereNormalCoordinates.chartJacobian {V F : Type} [NormedAddCommGroup V]
   let j' := (ContinuousLinearEquiv.prodCongr (ContinuousLinearEquiv.refl ℝ ℝ) B).trans j
   ((chartRadialFrame c z).comp j'.symm.toContinuousLinearMap).det
 
+/-- The chart Jacobian is nonzero on the source of the chart. -/
 theorem SphereNormalCoordinates.chartJacobian_ne_zero {V F : Type} [NormedAddCommGroup V]
     [InnerProductSpace ℝ V] [FiniteDimensional ℝ V] [NormedAddCommGroup F] [NormedSpace ℝ F]
     {m : ℕ} [Fact (Module.finrank ℝ V = m + 1)]
@@ -134,6 +142,8 @@ theorem SphereNormalCoordinates.chartJacobian_ne_zero {V F : Type} [NormedAddCom
       ((ContinuousLinearEquiv.prodCongr (ContinuousLinearEquiv.refl ℝ ℝ) B).trans
           j).symm.bijective)
 
+/-- For `f : S(V) → F` with invertible differential at `c z`:
+`normalJacobian j (c z) (mfderiv f (c z)) * det (B⁻¹ ∘ fderiv (f ∘ c) z) = chartJacobian c j B z`. -/
 theorem SphereNormalCoordinates.chartJacobian_factor {V F : Type} [NormedAddCommGroup V]
     [InnerProductSpace ℝ V] [NormedAddCommGroup F] [NormedSpace ℝ F] {m : ℕ}
     [Fact (Module.finrank ℝ V = m + 1)]
@@ -166,6 +176,8 @@ theorem SphereNormalCoordinates.chartJacobian_factor {V F : Type} [NormedAddComm
   unfold chartJacobian
   rw [chartRadialFrame_eq c hz]
 
+/-- Sign form of `chartJacobian_factor`: `sign (chartJacobian c j B z) * sign det (B⁻¹ ∘ fderiv (f ∘ c) z)`
+is the sign of the normal Jacobian of `f` at `c z`. -/
 theorem SphereNormalCoordinates.chartJacobian_sign_factor {V F : Type}
     [NormedAddCommGroup V] [InnerProductSpace ℝ V] [FiniteDimensional ℝ V] [NormedAddCommGroup F]
     [NormedSpace ℝ F] {m : ℕ} [Fact (Module.finrank ℝ V = m + 1)]
@@ -185,6 +197,8 @@ theorem SphereNormalCoordinates.chartJacobian_sign_factor {V F : Type}
   rw [hd, MulZeroClass.mul_zero] at h
   exact chartJacobian_ne_zero c j B hz h.symm
 
+/-- For a linear isometry `R` with `R x = y`: `det (frame_y ∘ j⁻¹) * det (transition x y R)`
+equals `det R * det (frame_x ∘ j⁻¹)`. -/
 theorem SpherePoint.chart_radial_frame_det {V : Type} [NormedAddCommGroup V]
     [InnerProductSpace ℝ V] {m : ℕ} [Fact (Module.finrank ℝ V = m + 1)]
     (x y : Metric.sphere (0 : V) 1) (R : V ≃ₗᵢ[ℝ] V) (he : sphereHomeomorph R x = y)
@@ -237,6 +251,8 @@ theorem SpherePoint.chart_radial_frame_det {V : Type} [NormedAddCommGroup V]
       exact (LinearMap.det_comp _ _).symm
     _ = _ := (congrArg ContinuousLinearMap.det hfactor).trans (LinearMap.det_comp _ _)
 
+/-- `chartJacobian (centered y) j B 0 * det (transition x y R) = det R * chartJacobian (centered x) j B 0`
+for a linear isometry `R` with `R x = y`. -/
 theorem SpherePoint.chartJacobian_transport {V : Type} [NormedAddCommGroup V]
     [InnerProductSpace ℝ V] {m : ℕ} [Fact (Module.finrank ℝ V = m + 1)]
     (x y : Metric.sphere (0 : V) 1) (R : V ≃ₗᵢ[ℝ] V) (he : sphereHomeomorph R x = y) {F : Type}
@@ -251,6 +267,8 @@ theorem SpherePoint.chartJacobian_transport {V : Type} [NormedAddCommGroup V]
   chart_radial_frame_det x y R he
     ((ContinuousLinearEquiv.prodCongr (ContinuousLinearEquiv.refl ℝ ℝ) B).trans j)
 
+/-- If `det R = 1`, the sign of the chart Jacobian at `y` times the sign of the chart transition
+determinant is the sign of the chart Jacobian at `x`. -/
 theorem SpherePoint.chartJacobian_transport_sign {V : Type} [NormedAddCommGroup V]
     [InnerProductSpace ℝ V] {m : ℕ} [Fact (Module.finrank ℝ V = m + 1)]
     (x y : Metric.sphere (0 : V) 1) (R : V ≃ₗᵢ[ℝ] V) (he : sphereHomeomorph R x = y) {F : Type}
@@ -269,27 +287,33 @@ theorem SpherePoint.chartJacobian_transport_sign {V : Type} [NormedAddCommGroup 
   rw [hR, one_mul] at h
   rw [← sign_mul, h]
 
+/-- `Fact (finrank ℝ (EuclideanSpace ℝ (Fin (n + 3))) = (n + 2) + 1)`, used as a local instance. -/
 theorem SpherePoint.instLocal1 (n : ℕ) :
     Fact (Module.finrank ℝ (EuclideanSpace ℝ (Fin (n + 3))) = (n + 2) + 1) :=
   ⟨by simp⟩
 
 attribute [local instance] SpherePoint.instLocal1 in
+/-- The diffeomorphism of `Sⁿ⁺²` moving `x` to `y`, induced by the positive transport rotation. -/
 def SpherePoint.pointDiffeomorph (n : ℕ) (x y : SphereHomology.UnitSphere (n + 2)) :
     Diffeomorph (𝓡 (n + 2)) (𝓡 (n + 2)) (SphereHomology.UnitSphere (n + 2))
       (SphereHomology.UnitSphere (n + 2)) ∞ :=
   sphereDiffeomorph (positiveTransport (n + 1) x y)
 
 attribute [local instance] SpherePoint.instLocal1 in
+/-- `pointDiffeomorph n x y x = y`. -/
 theorem SpherePoint.pointDiffeomorph_apply (n : ℕ)
     (x y : SphereHomology.UnitSphere (n + 2)) : pointDiffeomorph n x y x = y :=
   positiveTransport_moves (n + 1) x y
 
 attribute [local instance] SpherePoint.instLocal1 in
+/-- The linear chart transition `ℝⁿ⁺² ≃L ℝⁿ⁺²` of `pointDiffeomorph n x y` at `x`. -/
 def SpherePoint.pointChartLinear (n : ℕ) (x y : SphereHomology.UnitSphere (n + 2)) :
     EuclideanSpace ℝ (Fin (n + 2)) ≃L[ℝ] EuclideanSpace ℝ (Fin (n + 2)) :=
   NativeChartTransition.linear x y (pointDiffeomorph n x y) (pointDiffeomorph_apply n x y)
 
 attribute [local instance] SpherePoint.instLocal1 in
+/-- The point connecting maps at `x` and `y` on `H_{k+2}(Sⁿ⁺²)` differ by the sign of the
+determinant of `pointChartLinear n x y`. -/
 theorem SpherePoint.pointClass_sign_compare (n : ℕ) {F G : Type} [NormedAddCommGroup F]
     [NormedSpace ℝ F] [NormedAddCommGroup G] [NormedSpace ℝ G]
     (x y : SphereHomology.UnitSphere (n + 2)) {fx : SphereHomology.UnitSphere (n + 2) → F}
@@ -321,6 +345,8 @@ theorem SpherePoint.pointClass_sign_compare (n : ℕ) {F G : Type} [NormedAddCom
   apply h.trans
   exact LinearSphereAction.homology_eq_sign_smul n (pointChartLinear n x y) k _
 
+/-- Stereographic projection: the complement of a point `x` of the unit sphere of `V`,
+`dim V = n + 1`, is homeomorphic to `EuclideanSpace ℝ (Fin n)`. -/
 def SpherePoint.punctureHomeomorph {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℝ V]
     {n : ℕ} [hdim : Fact (Module.finrank ℝ V = n + 1)] (x : Metric.sphere (0 : V) 1) :
     ↥({ x }ᶜ : Set (Metric.sphere (0 : V) 1)) ≃ₜ EuclideanSpace ℝ (Fin n) :=
@@ -328,11 +354,14 @@ def SpherePoint.punctureHomeomorph {V : Type} [NormedAddCommGroup V] [InnerProdu
     ((stereographic' n x).toHomeomorphSourceTarget.trans
       ((Homeomorph.setCongr (stereographic'_target x)).trans (Homeomorph.Set.univ _)))
 
+/-- The complement of a point in the unit sphere of `V`, `dim V = n + 1`, is contractible. -/
 theorem SpherePoint.puncture_contractible {V : Type} [NormedAddCommGroup V]
     [InnerProductSpace ℝ V] {n : ℕ} [hdim : Fact (Module.finrank ℝ V = n + 1)]
     (x : Metric.sphere (0 : V) 1) : ContractibleSpace ({ x }ᶜ : Set (Metric.sphere (0 : V) 1)) :=
   (punctureHomeomorph (n := n) x).contractibleSpace
 
+/-- The point connecting isomorphism `H_{k+2}(S(V)) ≃ H_{k+1}(S(ℝⁿ))` at `x ∈ S(V)`, `dim V = n + 1`.
+The point connecting isomorphism `H_{k+2}(S(V)) ≃ H_{k+1}(S(ℝⁿ))` at `x ∈ S(V)`, `dim V = n + 1`. -/
 def SpherePoint.connectingHomologyEquiv {V : Type} [NormedAddCommGroup V]
     [InnerProductSpace ℝ V] {n : ℕ} [hdim : Fact (Module.finrank ℝ V = n + 1)] {F : Type}
     [NormedAddCommGroup F] [NormedSpace ℝ F] (x : Metric.sphere (0 : V) 1)
@@ -352,6 +381,8 @@ def SpherePoint.connectingHomologyEquiv {V : Type} [NormedAddCommGroup V]
   exact LocalDegree.NativeNeighborhood.sphereHomologyEquiv x d k
 
 attribute [local instance] SpherePoint.instLocal2 in
+/-- The point connecting map at `x` corrected by the sign of the chart Jacobian of the centred
+chart at `x`: `sign (chartJacobian (centered x) j B 0) • sphereConnecting x dx (k + 1)`. -/
 def SpherePoint.outwardPointClass (n : ℕ) {F H : Type} [NormedAddCommGroup F]
     [NormedSpace ℝ F] [NormedAddCommGroup H] [NormedSpace ℝ H]
     (j : (ℝ × H) ≃L[ℝ] EuclideanSpace ℝ (Fin (n + 3)))
@@ -372,6 +403,7 @@ def SpherePoint.outwardPointClass (n : ℕ) {F H : Type} [NormedAddCommGroup F]
     LocalDegree.NativeNeighborhood.sphereConnecting x dx (k + 1)
 
 attribute [local instance] SpherePoint.instLocal2 in
+/-- `outwardPointClass` does not depend on the point nor on the neighbourhood datum. -/
 theorem SpherePoint.outwardPointClass_eq (n : ℕ) {F G H : Type} [NormedAddCommGroup F]
     [NormedSpace ℝ F] [NormedAddCommGroup G] [NormedSpace ℝ G] [NormedAddCommGroup H]
     [NormedSpace ℝ H] (j : (ℝ × H) ≃L[ℝ] EuclideanSpace ℝ (Fin (n + 3)))
@@ -413,6 +445,7 @@ theorem SpherePoint.outwardPointClass_eq (n : ℕ) {F G H : Type} [NormedAddComm
   rfl
 
 attribute [local instance] SpherePoint.instLocal2 in
+/-- The sign of the chart Jacobian squares to `1` (it is nonzero). -/
 theorem SpherePoint.chartSign_mul_self (n : ℕ) {H : Type} [NormedAddCommGroup H]
     [NormedSpace ℝ H] (j : (ℝ × H) ≃L[ℝ] EuclideanSpace ℝ (Fin (n + 3)))
     (B : EuclideanSpace ℝ (Fin (n + 2)) ≃L[ℝ] H) (x : SphereHomology.UnitSphere (n + 2)) :
@@ -441,6 +474,8 @@ theorem SpherePoint.chartSign_mul_self (n : ℕ) {H : Type} [NormedAddCommGroup 
   simpa only [SignType.coe_mul, SignType.coe_one] using congrArg (fun s : SignType => (s : ℤ)) hs
 
 attribute [local instance] SpherePoint.instLocal2 in
+/-- `sphereConnecting x dx (k + 1) a = sign (chartJacobian …) • outwardPointClass n j B x dx k a`.
+`sphereConnecting x dx (k + 1) a = sign (chartJacobian …) • outwardPointClass n j B x dx k a`. -/
 theorem SpherePoint.connecting_eq_sign_outward (n : ℕ) {F H : Type} [NormedAddCommGroup F]
     [NormedSpace ℝ F] [NormedAddCommGroup H] [NormedSpace ℝ H]
     (j : (ℝ × H) ≃L[ℝ] EuclideanSpace ℝ (Fin (n + 3)))
@@ -473,6 +508,8 @@ theorem SpherePoint.connecting_eq_sign_outward (n : ℕ) {F H : Type} [NormedAdd
   rw [smul_smul, chartSign_mul_self n j B x, one_smul]
 
 attribute [local instance] SpherePoint.instLocal2 in
+/-- `outwardPointClass n j B x dx k` as a linear isomorphism
+`H_{k+2}(Sⁿ⁺²) ≃ H_{k+1}(Sⁿ⁺¹)`. -/
 def SpherePoint.outwardPointClassEquiv (n : ℕ) {F H : Type} [NormedAddCommGroup F]
     [NormedSpace ℝ F] [NormedAddCommGroup H] [NormedSpace ℝ H]
     (j : (ℝ × H) ≃L[ℝ] EuclideanSpace ℝ (Fin (n + 3)))
@@ -503,6 +540,8 @@ def SpherePoint.outwardPointClassEquiv (n : ℕ) {F H : Type} [NormedAddCommGrou
     rw [C.apply_symm_apply, smul_smul, hs, one_smul]
 
 attribute [local instance] SpherePoint.instLocal3 in
+/-- The canonical connecting map `H_{k+2}(Sⁿ⁺²) → H_{k+1}(Sⁿ⁺¹)`: `outwardPointClass` at the
+reference point with its reference neighbourhood. -/
 def SpherePoint.outwardClass (n : ℕ) {H : Type} [NormedAddCommGroup H] [NormedSpace ℝ H]
     (j : (ℝ × H) ≃L[ℝ] EuclideanSpace ℝ (Fin (n + 3)))
     (B : EuclideanSpace ℝ (Fin (n + 2)) ≃L[ℝ] H) (k : ℕ) :
@@ -511,6 +550,7 @@ def SpherePoint.outwardClass (n : ℕ) {H : Type} [NormedAddCommGroup H] [Normed
   outwardPointClass n j B (referencePoint n) (referenceNeighborhood n (referencePoint n)) k
 
 attribute [local instance] SpherePoint.instLocal3 in
+/-- `outwardClass n j B k` as a linear isomorphism. -/
 def SpherePoint.outwardClassEquiv (n : ℕ) {H : Type} [NormedAddCommGroup H]
     [NormedSpace ℝ H] (j : (ℝ × H) ≃L[ℝ] EuclideanSpace ℝ (Fin (n + 3)))
     (B : EuclideanSpace ℝ (Fin (n + 2)) ≃L[ℝ] H) (k : ℕ) :
@@ -519,6 +559,7 @@ def SpherePoint.outwardClassEquiv (n : ℕ) {H : Type} [NormedAddCommGroup H]
   outwardPointClassEquiv n j B (referencePoint n) (referenceNeighborhood n (referencePoint n)) k
 
 attribute [local instance] SpherePoint.instLocal3 in
+/-- `outwardPointClass n j B x d k = outwardClass n j B k` for every point `x` and datum `d`. -/
 theorem SpherePoint.outwardPointClass_eq_global (n : ℕ) {H : Type} [NormedAddCommGroup H]
     [NormedSpace ℝ H] (j : (ℝ × H) ≃L[ℝ] EuclideanSpace ℝ (Fin (n + 3)))
     (B : EuclideanSpace ℝ (Fin (n + 2)) ≃L[ℝ] H) {F : Type} [NormedAddCommGroup F]
@@ -533,6 +574,8 @@ theorem SpherePoint.outwardPointClass_eq_global (n : ℕ) {H : Type} [NormedAddC
   outwardPointClass_eq n j B (referencePoint n) x (referenceNeighborhood n (referencePoint n)) d k
 
 attribute [local instance] SpherePoint.instLocal3 in
+/-- `sphereConnecting x d (k + 1) a = sign (chartJacobian (centered x) j B 0) • outwardClass n j B k a`.
+`sphereConnecting x d (k + 1) a = sign (chartJacobian (centered x) j B 0) • outwardClass n j B k a`. -/
 theorem SpherePoint.pointConnecting_eq_outward (n : ℕ) {H : Type} [NormedAddCommGroup H]
     [NormedSpace ℝ H] (j : (ℝ × H) ≃L[ℝ] EuclideanSpace ℝ (Fin (n + 3)))
     (B : EuclideanSpace ℝ (Fin (n + 2)) ≃L[ℝ] H) {F : Type} [NormedAddCommGroup F]
@@ -553,23 +596,30 @@ theorem SpherePoint.pointConnecting_eq_outward (n : ℕ) {H : Type} [NormedAddCo
         outwardClass n j B k a := by
   rw [connecting_eq_sign_outward n j B x d k a, outwardPointClass_eq_global]
 
+/-- The identification `H_{n+2}(Sⁿ⁺²) ≃ ℤ` through `outwardClassEquiv` and the top homology of
+`Sⁿ⁺¹`. -/
 def SpherePoint.sourceCountMark (n : ℕ) {N : Type} [NormedAddCommGroup N] [NormedSpace ℝ N]
     (j : (ℝ × N) ≃L[ℝ] EuclideanSpace ℝ (Fin (n + 3)))
     (B : EuclideanSpace ℝ (Fin (n + 2)) ≃L[ℝ] N) :
     SingularMayerVietoris.SingularHomology (SphereHomology.UnitSphere (n + 2)) (n + 2) ≃ₗ[ℤ] ℤ :=
   (outwardClassEquiv n j B n).trans (SphereHomology.unitSphereHomologyTopEquiv n)
 
+/-- The identification `H_{n+1}(S(N)) ≃ ℤ` through `(LinearSphereAction.homologyEquiv B)⁻¹` and the
+top homology of `Sⁿ⁺¹`. -/
 def SpherePoint.overlapCountMark (n : ℕ) {N : Type} [NormedAddCommGroup N] [NormedSpace ℝ N]
     (B : EuclideanSpace ℝ (Fin (n + 2)) ≃L[ℝ] N) :
     SingularMayerVietoris.SingularHomology (Metric.sphere (0 : N) 1) (n + 1) ≃ₗ[ℤ] ℤ :=
   (LinearSphereAction.homologyEquiv B (n + 1)).symm.trans
     (SphereHomology.unitSphereHomologyTopEquiv n)
 
+/-- The identification `H_{n+2}(OnePoint N) ≃ ℤ` through the suspension isomorphism
+`OnePointCover.sphereHomologyEquiv` and `overlapCountMark`. -/
 def SpherePoint.targetCountMark (n : ℕ) {N : Type} [NormedAddCommGroup N] [NormedSpace ℝ N]
     [FiniteDimensional ℝ N] (B : EuclideanSpace ℝ (Fin (n + 2)) ≃L[ℝ] N) :
     SingularMayerVietoris.SingularHomology (OnePoint N) (n + 2) ≃ₗ[ℤ] ℤ :=
   (OnePointCover.sphereHomologyEquiv 1 zero_lt_one n).trans (overlapCountMark n B)
 
+/-- `overlapCountMark n B` of `H_{n+1}(sphereMap B) a` is the top-homology mark of `a`. -/
 theorem SpherePoint.overlapCountMark_linear (n : ℕ) {N : Type} [NormedAddCommGroup N]
     [NormedSpace ℝ N] (B : EuclideanSpace ℝ (Fin (n + 2)) ≃L[ℝ] N)
     (a : SingularMayerVietoris.SingularHomology (SphereHomology.UnitSphere (n + 1)) (n + 1)) :
@@ -585,6 +635,8 @@ theorem SpherePoint.overlapCountMark_linear (n : ℕ) {N : Type} [NormedAddCommG
       _
   rw [LinearEquiv.symm_apply_apply]
 
+/-- If `sphereConnecting 1 _ (n + 1) u = c • H_{n+1}(sphereMap B) (outwardClass n j B n a)`, then
+`targetCountMark n B u = c * sourceCountMark n j B a`. -/
 theorem SpherePoint.countMark_of_connecting (n : ℕ) {N : Type} [NormedAddCommGroup N]
     [NormedSpace ℝ N] [FiniteDimensional ℝ N] (j : (ℝ × N) ≃L[ℝ] EuclideanSpace ℝ (Fin (n + 3)))
     (B : EuclideanSpace ℝ (Fin (n + 2)) ≃L[ℝ] N)
