@@ -44,6 +44,8 @@ open scoped ContDiff ContinuousMap
 noncomputable section
 
 attribute [local instance 100] Classical.propDecidable in
+/-- The homology isomorphism `H_k({f ≤ f p - r²}) ≃ H_k((coreCellPresentation hf).old)` induced by
+the homeomorphism `d.cellOldHomeomorph hf`. -/
 def ManifoldMorse.MorseSurgeryData.cellOldHomologyEquiv {E M : Type} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [T2Space M] {f : M → ℝ} {p : M}
     (d : ManifoldMorse.MorseSurgeryData E f p) (hf : Continuous f) (k : ℕ) :
@@ -52,6 +54,8 @@ def ManifoldMorse.MorseSurgeryData.cellOldHomologyEquiv {E M : Type} [NormedAddC
   SingularHomology.homeomorphHomologyEquiv (d.cellOldHomeomorph hf) k
 
 attribute [local instance 100] Classical.propDecidable in
+/-- The homology isomorphism `H_k({f ≤ f p - r²} ∪ range coreMap) ≃ H_k({f ≤ f p + r²})` induced
+by the homotopy equivalence `d.coreUnionHomotopyEquiv hf`. -/
 def ManifoldMorse.MorseSurgeryData.cellTotalHomologyEquiv {E M : Type}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [T2Space M]
     {f : M → ℝ} {p : M} (d : ManifoldMorse.MorseSurgeryData E f p) (hf : Continuous f)
@@ -62,6 +66,8 @@ def ManifoldMorse.MorseSurgeryData.cellTotalHomologyEquiv {E M : Type}
   SingularHomology.homotopyEquivHomologyEquiv (d.coreUnionHomotopyEquiv hf) k
 
 attribute [local instance 100] Classical.propDecidable in
+/-- The map `H_k(S(N)) → H_k({f ≤ f p - r²})` induced by the core boundary map
+`d.coreBoundaryMap` (the attaching sphere of the handle). -/
 def ManifoldMorse.MorseSurgeryData.coreBoundaryHomologyMap {E M : Type}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ}
     {p : M} (d : ManifoldMorse.MorseSurgeryData E f p) (k : ℕ) :
@@ -71,6 +77,8 @@ def ManifoldMorse.MorseSurgeryData.coreBoundaryHomologyMap {E M : Type}
   SingularMayerVietoris.singularHomologyMap d.coreBoundaryMap k
 
 attribute [local instance 100] Classical.propDecidable in
+/-- The map `H_k({f ≤ f p - r²}) → H_k({f ≤ f p + r²})` induced by the inclusion
+`d.realizedLowerInclusion`. -/
 def ManifoldMorse.MorseSurgeryData.lowerRealizationHomologyMap {E M : Type}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ}
     {p : M} (d : ManifoldMorse.MorseSurgeryData E f p) (k : ℕ) :
@@ -79,6 +87,9 @@ def ManifoldMorse.MorseSurgeryData.lowerRealizationHomologyMap {E M : Type}
   SingularMayerVietoris.singularHomologyMap d.realizedLowerInclusion k
 
 attribute [local instance 100] Classical.propDecidable in
+/-- The connecting homomorphism `H_{k+1}({f ≤ f p + r²}) → H_k(S(N))` of the Morse surgery `d`:
+the cell connecting map of the core cell presentation, transported by
+`(cellTotalHomologyEquiv hf (k + 1))⁻¹`. -/
 def ManifoldMorse.MorseSurgeryData.morseConnectingMap {E M : Type} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [T2Space M] {f : M → ℝ} {p : M}
     (d : ManifoldMorse.MorseSurgeryData E f p) (hf : Continuous f) (k : ℕ) :
@@ -89,6 +100,8 @@ def ManifoldMorse.MorseSurgeryData.morseConnectingMap {E M : Type} [NormedAddCom
     (d.cellTotalHomologyEquiv hf (k + 1)).symm.toLinearMap
 
 attribute [local instance 100] Classical.propDecidable in
+/-- The attaching map of the core cell presentation on `H_k` is `coreBoundaryHomologyMap k`
+followed by `cellOldHomologyEquiv hf k`. -/
 theorem ManifoldMorse.MorseSurgeryData.cellAttachingHomology_compare {E M : Type}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [T2Space M]
     {f : M → ℝ} {p : M} (d : ManifoldMorse.MorseSurgeryData E f p) (hf : Continuous f)
@@ -106,6 +119,8 @@ theorem ManifoldMorse.MorseSurgeryData.cellAttachingHomology_compare {E M : Type
   rfl
 
 attribute [local instance 100] Classical.propDecidable in
+/-- `cellTotalHomologyEquiv hf k ∘ oldHomologyMap k ∘ cellOldHomologyEquiv hf k` is
+`lowerRealizationHomologyMap k`. -/
 theorem ManifoldMorse.MorseSurgeryData.cellOldHomology_compare {E M : Type}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [T2Space M]
     {f : M → ℝ} {p : M} (d : ManifoldMorse.MorseSurgeryData E f p) (hf : Continuous f)
@@ -125,6 +140,8 @@ theorem ManifoldMorse.MorseSurgeryData.cellOldHomology_compare {E M : Type}
   rfl
 
 attribute [local instance 100] Classical.propDecidable in
+/-- `morseConnectingMap hf k` on `cellTotalHomologyEquiv hf (k + 1) a` is the cell connecting map
+of the core cell presentation on `a`. -/
 theorem ManifoldMorse.MorseSurgeryData.morseConnecting_compare {E M : Type}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [T2Space M]
     {f : M → ℝ} {p : M} (d : ManifoldMorse.MorseSurgeryData E f p) (hf : Continuous f)
@@ -141,6 +158,8 @@ theorem ManifoldMorse.MorseSurgeryData.morseConnecting_compare {E M : Type}
   rw [LinearEquiv.symm_apply_apply]
 
 attribute [local instance 100] Classical.propDecidable in
+/-- Exactness at `H_k(M_{lower})`, `k ≠ 0`: the image of `coreBoundaryHomologyMap k` is the kernel
+of `lowerRealizationHomologyMap k`. -/
 theorem ManifoldMorse.MorseSurgeryData.morse_exact_at_lower {E M : Type}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [T2Space M]
     {f : M → ℝ} {p : M} (d : ManifoldMorse.MorseSurgeryData E f p) (hf : Continuous f)
@@ -164,6 +183,8 @@ theorem ManifoldMorse.MorseSurgeryData.morse_exact_at_lower {E M : Type}
     exact h.symm
 
 attribute [local instance 100] Classical.propDecidable in
+/-- Exactness at `H_{k+1}(M_{upper})`: the image of `lowerRealizationHomologyMap (k + 1)` is the
+kernel of `morseConnectingMap hf k`. -/
 theorem ManifoldMorse.MorseSurgeryData.morse_exact_at_upper {E M : Type}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [T2Space M]
     {f : M → ℝ} {p : M} (d : ManifoldMorse.MorseSurgeryData E f p) (hf : Continuous f)
@@ -183,6 +204,8 @@ theorem ManifoldMorse.MorseSurgeryData.morse_exact_at_upper {E M : Type}
   · exact d.morseConnecting_compare hf k
 
 attribute [local instance 100] Classical.propDecidable in
+/-- Exactness at `H_k(S(N))`, `k ≠ 0`: the image of `morseConnectingMap hf k` is the kernel of
+`coreBoundaryHomologyMap k`. -/
 theorem ManifoldMorse.MorseSurgeryData.morse_exact_at_attachingSphere {E M : Type}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [T2Space M]
     {f : M → ℝ} {p : M} (d : ManifoldMorse.MorseSurgeryData E f p) (hf : Continuous f)
@@ -202,6 +225,8 @@ theorem ManifoldMorse.MorseSurgeryData.morse_exact_at_attachingSphere {E M : Typ
     rw [d.cellAttachingHomology_compare, LinearEquiv.symm_apply_apply]
 
 attribute [local instance 100] Classical.propDecidable in
+/-- For `k ≠ 0`, if `H_k(M_{upper})` and `H_k(S(N))` are subsingletons then so is
+`H_k(M_{lower})`. -/
 theorem ManifoldMorse.MorseSurgeryData.lowerHomology_subsingleton_of_upper_and_sphere
     {E M : Type} [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [T2Space M] {f : M → ℝ} {p : M} (d : ManifoldMorse.MorseSurgeryData E f p)
@@ -225,6 +250,7 @@ theorem ManifoldMorse.MorseSurgeryData.lowerHomology_subsingleton_of_upper_and_s
     exact hs.symm
   exact ⟨fun a b => (hall a).trans (hall b).symm⟩
 
+/-- If the index of `d` is at least `2`, the connecting map `H₁(M_{upper}) → H₀(S(N))` is zero. -/
 theorem ManifoldMorse.MorseSurgeryData.morseConnecting_zero_apply {E M : Type}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [T2Space M]
     {f : M → ℝ} {p : M} (d : ManifoldMorse.MorseSurgeryData E f p) (hf : Continuous f)
@@ -234,6 +260,7 @@ theorem ManifoldMorse.MorseSurgeryData.morseConnecting_zero_apply {E M : Type}
   let := d.attachingSphere_pathConnected hindex
   exact (d.coreCellPresentation hf).cellConnecting_zero_apply _
 
+/-- If the index of `d` is at least `2`, `H₁(M_{lower}) → H₁(M_{upper})` is surjective. -/
 theorem ManifoldMorse.MorseSurgeryData.lowerRealization_one_surjective {E M : Type}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [T2Space M]
     {f : M → ℝ} {p : M} (d : ManifoldMorse.MorseSurgeryData E f p) (hf : Continuous f)
@@ -245,6 +272,8 @@ theorem ManifoldMorse.MorseSurgeryData.lowerRealization_one_surjective {E M : Ty
   rw [← d.morse_exact_at_upper hf 0] at ha
   exact ha
 
+/-- If the index of `d` is at least `2` and `H₁(M_{lower})` is a subsingleton, so is
+`H₁(M_{upper})`. -/
 theorem ManifoldMorse.MorseSurgeryData.upperHomologyOne_subsingleton {E M : Type}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [T2Space M]
     {f : M → ℝ} {p : M} (d : ManifoldMorse.MorseSurgeryData E f p) (hf : Continuous f)
@@ -255,6 +284,7 @@ theorem ManifoldMorse.MorseSurgeryData.upperHomologyOne_subsingleton {E M : Type
       (SingularMayerVietoris.SingularHomology { y : M // f y ≤ f p + d.radius ^ 2 } 1) :=
   (d.lowerRealization_one_surjective hf hindex).subsingleton
 
+/-- If the index of `d` is at least `2`, `H₀(M_{lower}) → H₀(M_{upper})` is bijective. -/
 theorem MorseCancellation.native_lowerRealization_zero_bijective {E M : Type} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [T2Space M] {f : M → ℝ} {p : M}
     (d : ManifoldMorse.MorseSurgeryData E f p) (hf : Continuous f)
@@ -274,6 +304,8 @@ theorem MorseCancellation.native_lowerRealization_zero_bijective {E M : Type} [N
     (d.cellTotalHomologyEquiv hf 0).bijective.comp
       (hi.comp (d.cellOldHomologyEquiv hf 0).bijective)
 
+/-- If the index of `d` is at least `2` and the upper sublevel set is path-connected, so is the
+lower one. -/
 theorem MorseCancellation.native_lower_pathConnected_of_upper {E M : Type} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [T2Space M] {f : M → ℝ} {p : M}
     (d : ManifoldMorse.MorseSurgeryData E f p) (hf : Continuous f)
@@ -287,6 +319,8 @@ theorem MorseCancellation.native_lower_pathConnected_of_upper {E M : Type} [Norm
     pathConnectedSpace_of_homologyZero_injective d.realizedLowerInclusion
       (native_lowerRealization_zero_bijective d hf hindex).1
 
+/-- If the index of `d` is `0` and the upper sublevel set `{f ≤ f p + r²}` is path-connected,
+the lower sublevel set `{f ≤ f p - r²}` is empty. -/
 theorem MorseCancellation.native_zero_handle_lower_isEmpty {E M : Type} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [T2Space M] {f : M → ℝ} {p : M}
     (d : ManifoldMorse.MorseSurgeryData E f p) (hf : Continuous f)
@@ -307,6 +341,9 @@ theorem MorseCancellation.native_zero_handle_lower_isEmpty {E M : Type} [NormedA
   have hx := (d.cellOldHomeomorph hf x).property
   exact (Set.eq_empty_iff_forall_notMem.mp he) _ hx
 
+/-- If every core boundary point `d.coreBoundaryMap u` is joined in the lower sublevel set to the
+point `a`, and the upper sublevel set is path-connected, then the lower sublevel set is
+path-connected. -/
 theorem MorseCancellation.native_lower_pathConnected_of_attaching_component {E M : Type}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [T2Space M]
     {f : M → ℝ} {p : M} (d : ManifoldMorse.MorseSurgeryData E f p) (hf : Continuous f)
@@ -323,6 +360,8 @@ theorem MorseCancellation.native_lower_pathConnected_of_attaching_component {E M
         exact (hcomponent u).map (d.cellOldHomeomorph hf).continuous)
   exact pathConnectedSpace_of_homotopyEquiv (d.cellOldHomeomorph hf).toHomotopyEquiv
 
+/-- If the index of `d` is positive and any two core boundary points are joined in the lower
+sublevel set, there is a point `a` of the lower sublevel set joined to every core boundary point. -/
 theorem MorseCancellation.native_attaching_component_of_pairwise_joined {E M : Type}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [T2Space M]
     {f : M → ℝ} {p : M} (d : ManifoldMorse.MorseSurgeryData E f p)
@@ -334,6 +373,8 @@ theorem MorseCancellation.native_attaching_component_of_pairwise_joined {E M : T
     NormedSpace.sphere_nonempty.mpr zero_le_one
   exact ⟨d.coreBoundaryMap ⟨v, hv⟩, fun u => hjoined u ⟨v, hv⟩⟩
 
+/-- The homology isomorphism `H_k({f ≤ upper i}) ≃ H_k({f ≤ lower j})` induced by the sublevel
+homeomorphism of a band datum `D : S.BandData i j`. -/
 def ManifoldMorse.SurgeryWindows.BandData.homologyEquiv {E M : Type} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ}
     {S : ManifoldMorse.SurgeryWindows E f} {i j : Fin S.count} (D : S.BandData i j)
@@ -342,6 +383,8 @@ def ManifoldMorse.SurgeryWindows.BandData.homologyEquiv {E M : Type} [NormedAddC
       SingularMayerVietoris.SingularHomology { x : M // f x ≤ S.lower (S.point j) } k :=
   SingularHomology.homeomorphHomologyEquiv D.sublevelHomeomorph k
 
+/-- If every window strictly between the first and the `j`-th window of `S` has index at least
+`2`, then `H₁({f ≤ lower (point j)})` is a subsingleton. -/
 theorem ManifoldMorse.SurgeryWindows.lower_homologyOne_subsingleton_of_indices {E M : Type}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {f : M → ℝ}
@@ -402,6 +445,8 @@ theorem ManifoldMorse.SurgeryWindows.lower_homologyOne_subsingleton_of_indices {
       hT
   exact (SingularHomology.homeomorphHomologyEquiv H.symm 1).injective.subsingleton
 
+/-- For `k ≠ 0`, if the index `λ` of `d` satisfies `2 ≤ λ` and `λ ≠ k + 1`, and `H_k(M_{upper})` is
+a subsingleton, then `H_k(M_{lower})` is a subsingleton. -/
 theorem ManifoldMorse.MorseSurgeryData.lowerHomology_subsingleton_of_upper_and_index
     {E M : Type} [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [T2Space M] {f : M → ℝ} {p : M} (d : ManifoldMorse.MorseSurgeryData E f p)
