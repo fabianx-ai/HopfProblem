@@ -36,6 +36,10 @@ open scoped ContDiff ContinuousMap
 
 noncomputable section
 
+/-- Let `S` be a surgery-window system of `f` on a compact path-connected manifold and `i` a
+window index.  If for every later window `j > i` path-connectedness of the sublevel set at
+`upper j` implies path-connectedness of the sublevel set at `lower j`, then the sublevel set at
+`upper i` is path-connected. -/
 theorem MorseCancellation.ordered_upper_pathConnected_of_later_transfers {E M : Type}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M]
@@ -85,6 +89,8 @@ theorem MorseCancellation.ordered_upper_pathConnected_of_later_transfers {E M : 
         exact pathConnectedSpace_of_homotopyEquiv e
   exact hall _ i rfl htransfer
 
+/-- If a surgery-window system `S` of `f` is nonempty and `f` has exactly one critical point of
+index `0`, then every critical point of index `0` is the first window point `S.first hn`. -/
 theorem MorseCancellation.native_index_zero_point_unique {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {f : M → ℝ}
@@ -110,6 +116,8 @@ theorem MorseCancellation.native_index_zero_point_unique {E M : Type*} [NormedAd
   rw [hz₀, Set.mem_singleton_iff] at hzmem
   exact hzmem.trans hfirstmem.symm
 
+/-- If `f` has no critical point of index `1` (`nativeMorseCount E f 1 = 0`), then no critical
+point has index `1`. -/
 theorem MorseCancellation.native_index_one_excluded {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {f : M → ℝ}
@@ -128,6 +136,7 @@ theorem MorseCancellation.native_index_one_excluded {E M : Type*} [NormedAddComm
   rw [hempty] at hmem
   exact hmem
 
+/-- The unit sphere of a normed space of dimension `0` is empty. -/
 theorem MorseCancellation.unitSphere_isEmpty_of_finrank_zero {A : Type*} [NormedAddCommGroup A]
     [NormedSpace ℝ A] [FiniteDimensional ℝ A] (hA : Module.finrank ℝ A = 0) :
     IsEmpty (PuncturedHandle.UnitSphere A) := by
@@ -137,6 +146,7 @@ theorem MorseCancellation.unitSphere_isEmpty_of_finrank_zero {A : Type*} [Normed
   rw [Subsingleton.elim (v : A) 0, norm_zero] at hh
   norm_num at hh
 
+/-- The unit sphere of a normed space of dimension `1` has two distinct points. -/
 theorem MorseCancellation.exists_distinct_unitSphere_points_of_finrank_one {V : Type}
     [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V]
     (hdim : Module.finrank ℝ V = 1) : ∃ u v : Metric.sphere (0 : V) 1, u ≠ v := by
@@ -152,6 +162,8 @@ theorem MorseCancellation.exists_distinct_unitSphere_points_of_finrank_one {V : 
   have hval : (1 : ℝ) = -1 := congrArg Subtype.val hh
   norm_num at hval
 
+/-- If the critical set of `g` is that of `f` minus `{p, q}` with the same indices, the set of
+critical points of `g` of index `k` is that of `f` minus `{p, q}`. -/
 theorem MorseCancellation.indexed_criticalPoints_removed_of_index_eq {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f g : M → ℝ}
     {p q : M}
@@ -177,6 +189,9 @@ theorem MorseCancellation.indexed_criticalPoints_removed_of_index_eq {E M : Type
     exact ⟨hz, (hindex z hz).trans hi⟩
 
 attribute [local instance 100] Classical.propDecidable in
+/-- If the critical set of `g` is the finite critical set of `f` minus the two distinct critical
+points `p`, `q`, with the same indices elsewhere, then
+`count_g k + [index_f p = k] + [index_f q = k] = count_f k` for every `k`. -/
 theorem MorseCancellation.nativeMorseCount_removed_of_index_eq {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f g : M → ℝ} {p q : M}
     (hfinite : (ManifoldMorse.criticalPoints E f).Finite)
@@ -224,6 +239,9 @@ theorem MorseCancellation.nativeMorseCount_removed_of_index_eq {E M : Type*} [No
   rw [indexed_criticalPoints_removed_of_index_eq hcrit hindex k]
   exact (Nat.add_assoc _ _ _).trans hc
 
+/-- Removing two critical points of indices `k` and `k + 1` (as in
+`nativeMorseCount_removed_of_index_eq`) lowers the counts of indices `k` and `k + 1` by one and
+keeps all other counts. -/
 theorem MorseCancellation.nativeMorseCount_adjacent_removed_of_index_eq {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f g : M → ℝ}
     {p q : M} (hfinite : (ManifoldMorse.criticalPoints E f).Finite)
@@ -247,6 +265,8 @@ theorem MorseCancellation.nativeMorseCount_adjacent_removed_of_index_eq {E M : T
   · intro j hj hj'
     simpa only [hip, hiq, if_neg (Ne.symm hj), if_neg (Ne.symm hj'), Nat.add_zero] using hc j
 
+/-- If the indices of `f` increase with the critical values, the function
+`i ↦ nativeMorseIndex E f (S.point i)` on the windows of `S` is monotone. -/
 theorem MorseCancellation.native_indices_monotone {E M : Type} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M]
     [T2Space M] [CompactSpace M] [Nonempty M] {f : M → ℝ}
