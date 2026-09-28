@@ -63,6 +63,7 @@ Original source lines 237525--248758; see PROVENANCE.md.
 
 import Hopf.LibShims
 import Hopf.LCP.IntegralHomology
+import Hopf.Proof.Geometry.Manifold.Morse.OrderedCancellation.MiddleIndexBlocks
 import Lib.Geometry.Manifold.Morse.Handle
 import Lib.Analysis.Calculus.MorseLemma
 import Lib.Geometry.Manifold.Flow.Compact
