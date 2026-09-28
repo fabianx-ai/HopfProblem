@@ -1,32 +1,40 @@
-# Next steps (after the fix round, 2026-09-21)
+# Next steps (after monolith wave 1, 2026-09-28)
 
-The reviewer pass (`Lib/reviews/REVIEW-7-8.md`, twenty-one Fable reviewers) accepted all receipts with
-findings and found nothing unsound; the fix round (§5 there, eleven Opus agents, receipts in
-`Lib/reports/review-7-8/fixes/`, merge receipt `fixes/MERGE.md`) closed the whole §3 list, and three Fable
-reviewers then checked the fix round (`Lib/reviews/REVIEW-FIX.md`: nothing unsound, no rule broken, receipt
-and coordinator-text errors only). Head: chain green, 3,314 probes standard, census 123, pins 269. Open, in order:
-(1) the small residue in `fixes/MERGE.md` §"Left" (each bullet with its reproducing grep; corrected after the
-fix-round review `Lib/reviews/REVIEW-FIX.md`): the manuscript-jargon sweep (`M`/`C29x` labels in three
-`DerivedGlobalSections`/`Cech` files, `textbook` in 27 files), the three open citation numbers (Weibel Ex.
-2.4.5, Godement II.3.9, Bredon III Thm. 1.1), three duplicate `import` lines, the receipt-text errors
-listed in REVIEW-FIX §3 (envdiff rows misread as auxiliaries, Hartshorne Ex. 8.1 misdescribed, one
-`CleanStrips` docstring, `dualHomotopyEquiv`'s liftable pin);
-(2) the monolith wave, `Lib/reports/round-7/judgement/monoliths.md` (25 files; `SurgeryCollapse`/
-`OrderedCancellation` first, they hold the last Morse D material);
+Monolith wave 1 (`Lib/reports/wave-1/MERGE.md`, ten Fable agents, receipts beside it) split eleven of the 24
+monoliths into 139 topic modules behind name-preserving facades (2,345 declarations moved verbatim, 39 of
+them to `Hopf/Proof`, nothing deleted, no statement changed; renames in `wave-1/rename_all.txt`), and closed
+the fix-round review's §3 list and the "Left" residue. Head: chain green (9,337 jobs), 3,302 probes standard,
+census 123, source pins 268, envdiff PASS. Open, in order:
+(1) **batch 2 of the monolith wave**: the 13 files listed at the end of `wave-1/MERGE.md`, same rules
+(`wave-1/RULES.md`), base dump = a fresh `dump` of the head (the one in the session scratch is not in the
+repo); `Morse/Cubic` has no consumer and may move whole to `Hopf/Proof`;
+(2) **after all facades exist**: dissolve them (reroute the consumers to the pieces, then delete the facade
+modules and fix `Lib.lean`), take the "better homes" listed in `wave-1/MERGE.md` §Left, and run the
+`native*`/`Native*`/`MorseCancellation.*` rename wave that the facades blocked; then a fresh-reviewer pass
+over the wave receipts (twin claims, closure arguments, docstrings of morse-d's 281);
 (3) the owner decisions: chain-interface coefficients (the `ULift ℤ` obstruction is real and a protocol
 obstruction; the clean route is a new polymorphic `chains` beside the pinned one plus a `u = 0`
-comparison, i.e. an addition), the pre-PR chain tower (dup-hom item 2, refusal judged right);
-(4) carried over from the receipts' "left" sections: the 40 Jev two-letter disagreements and the
-auditors' ten low-confidence calls; the remaining project namespaces (`nativeMorseIndex`,
-`NativeTransversality`, `ThreefoldGluing`, `SpecialPeriods.Threefold.Star`, `MorseCancellation.`);
-dup-hom items 4–6; dup-sheaf items 1–5; dfiles-c's `sheaf`/`unit` removal; moved's
-`Matrix.Pivot`/`Module.Presentation`/`sheetSum` items; the ~17 unattributed remaining pins.
-Standing rules adopted from the reviewers (REVIEW-7-8 §4): per-branch `envdiff.json` committed; totals
-computed from tables; "not done because X" ships a reproduction; compile-based minimisation with
-`autoImplicit` off (it is on in 221 of 446 `Lib` files); a move to `Hopf/Proof` carries its probes to
-`Hopf/Proof/AxiomAudit.lean`; invisible universe-0 pins (instance arguments at a universe metavariable)
-are found with `#check` + `pp.universes`, not by grep. `w4-w1-solution` must reroute its `SphereTwo`
-import to the `Hopf.Proof` path when it meets this branch.
+comparison, i.e. an addition — it also unblocks the ~600 universe-0 binders the wave left), the pre-PR chain
+tower (dup-hom item 2, refusal judged right);
+(4) carried over: the twins listed in `wave-1/MERGE.md` §Left (nothing deleted this wave); the 40 Jev
+two-letter disagreements and the auditors' ten low-confidence calls; the remaining project namespaces
+(`nativeMorseIndex`, `NativeTransversality`, `ThreefoldGluing`, `SpecialPeriods.Threefold.Star`,
+`MorseCancellation.`); dup-hom items 4–6; dup-sheaf items 1–5; dfiles-c's `sheaf`/`unit` removal; moved's
+`Matrix.Pivot`/`Module.Presentation`/`sheetSum` items; the ~17 unattributed remaining pins; the optional
+citation restores in `wave-1/residue.md`.
+Standing rules (REVIEW-7-8 §4, REVIEW-FIX §4, wave-1 RULES.md): per-branch `envdiff.json` committed; totals
+computed from tables; "not done because X" ships a reproduction; a "Left" list carries a reproducing grep
+per bullet and is built from the head; twin claims ship as `example`s; agents keep a `PROGRESS.md`
+(Done / In progress / Next) rewritten after every step and commit in small green steps; compile-based
+minimisation with `autoImplicit` off (it is on in 221 of 446 `Lib` files); a move to `Hopf/Proof` carries
+its probes to `Hopf/Proof/AxiomAudit.lean`; invisible universe-0 pins are found with `#check` +
+`pp.universes`. Lake 5.0.0 has no `-j`; use `taskset`. `w4-w1-solution` must reroute its `SphereTwo` import
+to the `Hopf.Proof` path when it meets this branch.
+
+The reviewer pass (`Lib/reviews/REVIEW-7-8.md`, twenty-one Fable reviewers) accepted all receipts with
+findings and found nothing unsound; the fix round (§5 there, eleven Opus agents) closed the whole §3 list;
+three Fable reviewers checked the fix round (`Lib/reviews/REVIEW-FIX.md`: nothing unsound, receipt and
+coordinator-text errors only, all closed by `wave1/residue`).
 
 Round 8 (`Lib/reviews/INTEGRATION-8.md`) did the judgement packets except the monoliths: universe pins
 1,024 → 320 (the rest is the chain-interface decision, `ULift ℤ` vs literal `ℤ`), 280 duplicate
