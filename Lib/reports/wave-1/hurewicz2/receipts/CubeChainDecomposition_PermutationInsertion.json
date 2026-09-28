@@ -1,0 +1,1472 @@
+{
+"module": "Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition",
+"source": "/home/goblin/hopf-w1-hurewicz2/Lib/AlgebraicTopology/Hurewicz/CubeChainDecomposition.lean",
+"source_sha256": "4044644f32dec83a20b90ae8727ae5f967bc08c2eecbb6f978f80db10ff7fd68",
+"units_kept": 117,
+"units_moved": 16,
+"units": [
+{
+"names": [
+"Hurewicz.CubeSubdivision.signed_sum_eq_zero_of_swap_invariant"
+],
+"class": "keep",
+"lines": [
+53,
+71
+],
+"sha256": "ca1d9b99b08c33b19cff1cab68aa0372d70ec52224c27f7ec936797726df0ae8"
+},
+{
+"names": [
+"Hurewicz.CubeSubdivision.signed_sum_constant_eq_zero"
+],
+"class": "keep",
+"lines": [
+73,
+79
+],
+"sha256": "9037e1206c77598684fe78db4d5c807ea15bb6b6fbbab1bc3ba9c666dc102ed1"
+},
+{
+"names": [
+"Hurewicz.CubeSubdivision.prismCubeVertex"
+],
+"class": "keep",
+"lines": [
+83,
+88
+],
+"sha256": "416ecfa6f4176e03bb12220f45b9d2dd5c27dddd73219364195800b0863c36ab"
+},
+{
+"names": [
+"Hurewicz.CubeSubdivision.prismCubeVertex_succ"
+],
+"class": "keep",
+"lines": [
+90,
+96
+],
+"sha256": "6ceeab57bc9030f3deb6922126f9c79d165ea6996c35a519ddfc77682f389869"
+},
+{
+"names": [
+"Hurewicz.CubeSubdivision.prismCubeSimplex"
+],
+"class": "keep",
+"lines": [
+98,
+103
+],
+"sha256": "33afa545c542abfe010f3cc3263bff9e177a6b65aa55f94e81de4a88056b8a5e"
+},
+{
+"names": [
+"Hurewicz.CubeSubdivision.prismCubeVertex_swap_of_ne"
+],
+"class": "keep",
+"lines": [
+105,
+114
+],
+"sha256": "168200ec268d309a761e74829d3601f19b77235dd3ff99d0c8d8cc539b846f4f"
+},
+{
+"names": [
+"Hurewicz.CubeSubdivision.prismCubeSimplex_swap_of_omitted"
+],
+"class": "keep",
+"lines": [
+116,
+124
+],
+"sha256": "d167ad29252d1b6d2afaac65ee626b77818e13e773032cbd017ff978b1ffcb7c"
+},
+{
+"names": [
+"Hurewicz.CubeSubdivision.prismCubeSimplex_zero_of_left_zero"
+],
+"class": "keep",
+"lines": [
+126,
+133
+],
+"sha256": "0f5e30b64a4674fa5bcd939377a8cab6e48472fcddc54cbacbd388083d0a97e5"
+},
+{
+"names": [
+"Hurewicz.CubeSubdivision.prismCubeSimplex_zero_of_last_omitted"
+],
+"class": "keep",
+"lines": [
+135,
+150
+],
+"sha256": "645e3403504f3c739a16339f663debbfafafdb9ed843a861f3c1bfdb717f64b2"
+},
+{
+"names": [
+"Hurewicz.CubeSubdivision.prismCubeRealization"
+],
+"class": "keep",
+"lines": [
+152,
+159
+],
+"sha256": "405a72e05c2276f493ba913e59bc13303cafafb1b33249cc637700e01f86acf7"
+},
+{
+"names": [
+"Hurewicz.CubeSubdivision.prismCubeRealization_simplex"
+],
+"class": "keep",
+"lines": [
+161,
+169
+],
+"sha256": "aef5be180bc5774e522221008fb1ad5b299fd8e7f6d020b45398618484128e39"
+},
+{
+"names": [
+"Hurewicz.CubeSubdivision.orientedPrismRealization"
+],
+"class": "keep",
+"lines": [
+171,
+180
+],
+"sha256": "86826ef45889878c351dc8f2b010870fd0654a165acf9b2f552be2a312e410f8"
+},
+{
+"names": [
+"Hurewicz.CubeSubdivision.orientedPrismRealization_simplex"
+],
+"class": "keep",
+"lines": [
+182,
+192
+],
+"sha256": "7febc92e45bef1a325fee9cce6a35ebbe701b8bd92bc61cac59e945219cbeed0"
+},
+{
+"names": [
+"Hurewicz.CubeSubdivision.evalLeft"
+],
+"class": "keep",
+"lines": [
+194,
+200
+],
+"sha256": "c3ee429e367da71e474f933a81cbbf06f4e02da94ced2b6ed4a9051465f0c53e"
+},
+{
+"names": [
+"Hurewicz.CubeSubdivision.cubeAffineSimplex_comp"
+],
+"class": "keep",
+"lines": [
+202,
+221
+],
+"sha256": "26c11af026afce4e3a6aeed2ea8bc8e57d29e3cb6788a905e21fef8c703685be"
+},
+{
+"names": [
+"Hurewicz.CubeSubdivision.cubeAffineSimplex_comp_selectedVertices"
+],
+"class": "keep",
+"lines": [
+223,
+232
+],
+"sha256": "19980c1d002da4fa0e3d05ffcdae83146f58723e7c9bae04caa2de18582ca6d2"
+},
+{
+"names": [
+"Hurewicz.CubeSubdivision.prismCubeMap"
+],
+"class": "keep",
+"lines": [
+234,
+252
+],
+"sha256": "1faf7004b940d7315d5a3cc2b0060427908297d9b931862a5e8a36cb24dfa816"
+},
+{
+"names": [
+"Hurewicz.CubeSubdivision.prismCubeMap_affine"
+],
+"class": "keep",
+"lines": [
+254,
+282
+],
+"sha256": "2b1d96f6a2ddb3bfae7c900d611156906782bf905b96a277faa075e44a261fda"
+},
+{
+"names": [
+"Hurewicz.CubeSubdivision.prismCubeRealization_eq_induced"
+],
+"class": "keep",
+"lines": [
+284,
+311
+],
+"sha256": "a504bb60a6eb1dcf6b190384c90ddc88212593470b2e126a8e77cbfd838c3d67"
+},
+{
+"names": [
+"Hurewicz.CubeSubdivision.prismCubeRealization_edgeCrossProduct"
+],
+"class": "keep",
+"lines": [
+313,
+332
+],
+"sha256": "ab66cce51024ddc1623a8103cbd536adf9b788b252d81d61aaf72358826863f1"
+},
+{
+"names": [
+"Hurewicz.CubeSubdivision.badPrism"
+],
+"class": "keep",
+"lines": [
+336,
+343
+],
+"sha256": "0b28e82e7bb69e0faa1ff0af24a03672a81acb91fdb6a4b8e93d2da39b6e06a3"
+},
+{
+"names": [
+"Hurewicz.CubeSubdivision.mem_badPrism_of_left_zero"
+],
+"class": "keep",
+"lines": [
+345,
+349
+],
+"sha256": "0696e4a4372204646effd118469a07716f20c6638392f9cd278c7e08197dafb4"
+},
+{
+"names": [
+"Hurewicz.CubeSubdivision.mem_badPrism_of_omit"
+],
+"class": "keep",
+"lines": [
+351,
+356
+],
+"sha256": "13aa3c750ec63c7e75682aa55e427a91bb6ffeb0a8eaeef400494ab4f4f701c9"
+},
+{
+"names": [
+"Hurewicz.CubeSubdivision.badPrism_le"
+],
+"class": "keep",
+"lines": [
+358,
+367
+],
+"sha256": "05b695933805e37d79effd92b033524cdf038e16613186ea04f9459be7bbc553"
+},
+{
+"names": [
+"Hurewicz.CubeSubdivision.badPrism_le_ker"
+],
+"class": "keep",
+"lines": [
+369,
+381
+],
+"sha256": "1ce248de226463be0be2483f42beb987e007477e905639243319368b5c5fae5d"
+},
+{
+"names": [
+"Hurewicz.CubeSubdivision.formalCone_mem_badPrism"
+],
+"class": "keep",
+"lines": [
+383,
+398
+],
+"sha256": "dc394d2955f488900e4d211ba1289bb7cf647cde852030e861967f3c1be6abf1"
+},
+{
+"names": [
+"Hurewicz.CubeSubdivision.formalMap_succ_mem_badPrism"
+],
+"class": "keep",
+"lines": [
+400,
+423
+],
+"sha256": "375c74b39610e85ae671ef4165c17f52ec9f472cca165ca1e5238885b9efc2eb"
+},
+{
+"names": [
+"Hurewicz.CubeSubdivision.formalEdgeCrossProduct_mem_badPrism_of_omit"
+],
+"class": "keep",
+"lines": [
+425,
+437
+],
+"sha256": "cd2017e46d0c5592d5b7dde23980da862bab4b47420b20d9cd53ffcbbfe4cb43"
+},
+{
+"names": [
+"Hurewicz.CubeSubdivision.retainedFirstBoundary"
+],
+"class": "keep",
+"lines": [
+441,
+447
+],
+"sha256": "2e3c588094b61b194352959520702e160135d79a39c014b7a9f0abdfef552ba0"
+},
+{
+"names": [
+"Hurewicz.CubeSubdivision.retainedFirstBoundary_simplex"
+],
+"class": "keep",
+"lines": [
+449,
+457
+],
+"sha256": "ae9f9c9b98670a13cd8a769b4904f7cae350e3daf14c1b14813004ed8a46deb4"
+},
+{
+"names": [
+"Hurewicz.CubeSubdivision.formalBoundary_firstFace_split_simplex"
+],
+"class": "keep",
+"lines": [
+459,
+469
+],
+"sha256": "3358404b821846b7dd50aa78d4a480bcf2c0d17ca5ec17434a7ae999de018ed5"
+},
+{
+"names": [
+"Hurewicz.CubeSubdivision.shufflePrismVertices"
+],
+"class": "keep",
+"lines": [
+473,
+477
+],
+"sha256": "3c43fadbbd06a9d9fe9455197b8671bcbb6c11f9ec82cdce54a7fbdd0546570e"
+},
+{
+"names": [
+"Hurewicz.CubeSubdivision.shufflePrismVertices_first"
+],
+"class": "keep",
+"lines": [
+479,
+483
+],
+"sha256": "c6bc9a009a01d2a2702102df037419c374cb991358df2fd358912011cf594e69"
+},
+{
+"names": [
+"Hurewicz.CubeSubdivision.shufflePrismVertices_zero_index"
+],
+"class": "keep",
+"lines": [
+485,
+492
+],
+"sha256": "91b46aaeb880329cc2c53bb376b8367fb0bdfd6db666a9b66a78729d1b03930d"
+},
+{
+"names": [
+"Hurewicz.CubeSubdivision.shufflePrismVertices_succ_index"
+],
+"class": "keep",
+"lines": [
+494,
+502
+],
+"sha256": "a78b3cfa5110f83b3dd0710ee144fe1e45573f2b284cfd1ecc5f0109aadc2a75"
+},
+{
+"names": [
+"Hurewicz.CubeSubdivision.shufflePrismVertices_map"
+],
+"class": "keep",
+"lines": [
+504,
+510
+],
+"sha256": "5661053e95097b5dffb81d35bb7bf1d7a290af7c2c29c2070b88e275b1163c19"
+},
+{
+"names": [
+"Hurewicz.CubeSubdivision.standardPrism"
+],
+"class": "keep",
+"lines": [
+512,
+517
+],
+"sha256": "0d32ae454902882d08bd1cc0aeb4e070e87586be058e8d808d5f9c8b080edd4d"
+},
+{
+"names": [
+"Hurewicz.CubeSubdivision.standardPrism_zero"
+],
+"class": "keep",
+"lines": [
+519,
+530
+],
+"sha256": "dfa5daad233757bc08a58288edcfb089f58f1950e5bdad83f7225795df5cdcaf"
+},
+{
+"names": [
+"Hurewicz.CubeSubdivision.standardPrism_succ"
+],
+"class": "keep",
+"lines": [
+532,
+549
+],
+"sha256": "7692f0f57970769185e80b21d6e19675bb652ab17f6e38ff831b3f60cf9e56f3"
+},
+{
+"names": [
+"Hurewicz.CubeSubdivision.formalMap_standardPrism"
+],
+"class": "keep",
+"lines": [
+551,
+557
+],
+"sha256": "99da4caf944e3b5a6a787d8f06dcbc84e71f2d3171bec865d17a6d8bca8ddb1d"
+},
+{
+"names": [
+"Hurewicz.CubeSubdivision.prismDiscrepancy"
+],
+"class": "keep",
+"lines": [
+559,
+565
+],
+"sha256": "0e2904ed9e14ffcb7e029151229403c741a1df0434ad7cc7171c68dd1095a4ed"
+},
+{
+"names": [
+"Hurewicz.CubeSubdivision.prismDiscrepancy_zero"
+],
+"class": "keep",
+"lines": [
+567,
+573
+],
+"sha256": "61c75dd08c51acf83e3ce29feee544ee610575af9ace4bd52dd4e0c3b32957a5"
+},
+{
+"names": [
+"Hurewicz.CubeSubdivision.formalMap_prismDiscrepancy"
+],
+"class": "keep",
+"lines": [
+575,
+581
+],
+"sha256": "680df88eb48dcfbb447017cbdc96ce2b51d5608c57e3beee722410f524e76f39"
+},
+{
+"names": [
+"Hurewicz.CubeSubdivision.canonicalPrismDiscrepancy"
+],
+"class": "keep",
+"lines": [
+583,
+587
+],
+"sha256": "ac55b6c430adaa8edd7f177727eeb08d907583bf8b22168aa724e1e114eaca55"
+},
+{
+"names": [
+"Hurewicz.CubeSubdivision.canonicalPrismDiscrepancy_zero"
+],
+"class": "keep",
+"lines": [
+589,
+593
+],
+"sha256": "aab05b21dde040a3548903ed83b5e7eb940148537e5d25163d36b443d7d32bf8"
+},
+{
+"names": [
+"Hurewicz.CubeSubdivision.prismDiscrepancy_eq_map_canonical"
+],
+"class": "keep",
+"lines": [
+595,
+601
+],
+"sha256": "d6544e944879cc6b278ff8c2bbc409ca9dbd2cf6825208e0a3936a0cac9b456f"
+},
+{
+"names": [
+"Hurewicz.CubeSubdivision.prismDiscrepancy_succ"
+],
+"class": "keep",
+"lines": [
+603,
+620
+],
+"sha256": "2ed4a8a7d8db252504c313e2bb5b7834ebd51aa219393b00e379f59df2ca035c"
+},
+{
+"names": [
+"Hurewicz.CubeSubdivision.prismDiscrepancy_succ_retained"
+],
+"class": "keep",
+"lines": [
+622,
+635
+],
+"sha256": "a71a32e1e008816720f002b9b83b7c8ae7717fe0acacaa0829002fed0565de2d"
+},
+{
+"names": [
+"Hurewicz.CubeSubdivision.canonicalPrismDiscrepancy_succ"
+],
+"class": "keep",
+"lines": [
+637,
+653
+],
+"sha256": "5dc9a870d03d5e86bea834d98f0b0ccb15f67b65066838ffcd6acffa31d21c4e"
+},
+{
+"names": [
+"Hurewicz.CubeSubdivision.canonicalPrismDiscrepancy_mem_badPrism"
+],
+"class": "keep",
+"lines": [
+655,
+677
+],
+"sha256": "69badfbe46c5a953a0a5c1e1b6091e8560fc888cca5ef7be28403333bf5f5c6e"
+},
+{
+"names": [
+"Hurewicz.CubeSubdivision.orientedPrismRealization_left_zero"
+],
+"class": "keep",
+"lines": [
+681,
+692
+],
+"sha256": "153604e3944125cd5f3622390fd64115a51372b2d708f692c1066bb3c6f3409d"
+},
+{
+"names": [
+"Hurewicz.CubeSubdivision.orientedPrismRealization_last_omitted"
+],
+"class": "keep",
+"lines": [
+694,
+706
+],
+"sha256": "18e8048ebfdad0501d71158f4bbdca8d027c4f5b9797eaa8889b9aaa22f4a850"
+},
+{
+"names": [
+"Hurewicz.CubeSubdivision.orientedPrismRealization_interior_omitted"
+],
+"class": "keep",
+"lines": [
+708,
+724
+],
+"sha256": "1a302b55dda35135ca7ac2e00747175e07fc1ebd813eafdecffb9fc8d2b665ac"
+},
+{
+"names": [
+"Hurewicz.CubeSubdivision.orientedPrismRealization_nonzero_omitted"
+],
+"class": "keep",
+"lines": [
+726,
+747
+],
+"sha256": "b26e91005b08a5e26311df7d78cfc7f4cd33a34a31c1005711f42b93a9440f55"
+},
+{
+"names": [
+"Hurewicz.CubeSubdivision.badPrism_le_ker_orientedPrismRealization"
+],
+"class": "keep",
+"lines": [
+749,
+754
+],
+"sha256": "d3253026b3de7d64811d6e514bac9512b1e8745067b4a70045db26b24e641a63"
+},
+{
+"names": [
+"Hurewicz.CubeSubdivision.orientedPrismRealization_canonicalPrismDiscrepancy"
+],
+"class": "keep",
+"lines": [
+756,
+761
+],
+"sha256": "63a6142edd15396cad0af13dcd76022d78b4b1265863cdc79abfb88819f63c15"
+},
+{
+"names": [
+"Hurewicz.CubeSubdivision.orientedPrismRealization_edge_eq_standard"
+],
+"class": "keep",
+"lines": [
+763,
+775
+],
+"sha256": "3ca5a48e2fd46113e657de20d876434be090e4aa470d80e239f54b4346c57e0e"
+},
+{
+"names": [
+"_private.Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition.0.Hurewicz.CubeSubdivision.linearMap_zsmul_apply"
+],
+"class": "keep",
+"lines": [
+777,
+781
+],
+"sha256": "6dc24b4ddb659396085a09f996889d0fc2d350cf96ee8a56561372906cc1ec64"
+},
+{
+"names": [
+"Hurewicz.CubeSubdivision.orientedPrismRealization_eq_sum"
+],
+"class": "keep",
+"lines": [
+783,
+801
+],
+"sha256": "66236b42a050ad952e48e7f1f13ee9c265b04422ba01f57ae2d77741c1ff1449"
+},
+{
+"names": [
+"Hurewicz.CubeSubdivision.PermutationInsertion.insert"
+],
+"class": "move",
+"lines": [
+805,
+809
+],
+"sha256": "a3a92c79524d7181bfa4e8e1c77717a5e2bb7bac7ba6052f569f7efd30f802ab"
+},
+{
+"names": [
+"Hurewicz.CubeSubdivision.PermutationInsertion.insert_apply_self"
+],
+"class": "move",
+"lines": [
+811,
+816
+],
+"sha256": "3159a5dc3e051dadeb0348ece96f2c23a0171fb6ffba702c0b199087efe5f28a"
+},
+{
+"names": [
+"Hurewicz.CubeSubdivision.PermutationInsertion.insert_apply_succAbove"
+],
+"class": "move",
+"lines": [
+818,
+823
+],
+"sha256": "bbab2a7f2fb6309471261fd5ee841f07891003cec0996297babc2b0baafbef41"
+},
+{
+"names": [
+"Hurewicz.CubeSubdivision.PermutationInsertion.insert_symm_apply_zero"
+],
+"class": "move",
+"lines": [
+825,
+831
+],
+"sha256": "b1691071a6f9b8deaaea87047dbe350988766730497583763e60f5e85c21e3fa"
+},
+{
+"names": [
+"Hurewicz.CubeSubdivision.PermutationInsertion.insert_symm_apply_succ"
+],
+"class": "move",
+"lines": [
+833,
+840
+],
+"sha256": "042e0724eb9b74d35b218d799479161e214ec107003c713f49e7b9fcd1fae462"
+},
+{
+"names": [
+"Hurewicz.CubeSubdivision.PermutationInsertion.sign_insert"
+],
+"class": "move",
+"lines": [
+842,
+848
+],
+"sha256": "eec133f64833bd892330201b9abf96a23911fb3d7791a1964b6074b2f95cb271"
+},
+{
+"names": [
+"Hurewicz.CubeSubdivision.PermutationInsertion.sign_insert_int"
+],
+"class": "move",
+"lines": [
+850,
+854
+],
+"sha256": "69ba6248801b62ac853d1272d128e38947e35adbff6248b9bfefb1e625184683"
+},
+{
+"names": [
+"Hurewicz.CubeSubdivision.lt_predAbove_iff_succAbove_lt"
+],
+"class": "move",
+"lines": [
+856,
+861
+],
+"sha256": "e2203bf7bc7ab39fc47e49efc1b7c88d3a4c490c5559600efb32380b9fcd7d06"
+},
+{
+"names": [
+"Hurewicz.CubeSubdivision.prismCubeVertex_shuffle"
+],
+"class": "move",
+"lines": [
+863,
+882
+],
+"sha256": "20d5726c7c9b5e91ebbb41bde61c0514084fb98348db9fc5c7f2f6f7dbd95dbb"
+},
+{
+"names": [
+"Hurewicz.CubeSubdivision.prismCubeSimplex_shuffle"
+],
+"class": "move",
+"lines": [
+884,
+892
+],
+"sha256": "5ab8fe07d44dbdd461fdc63b8f6a4d7bafb5666f260d5a08ae71e119b16e31eb"
+},
+{
+"names": [
+"Hurewicz.CubeSubdivision.PermutationInsertion.insert_injective"
+],
+"class": "move",
+"lines": [
+894,
+906
+],
+"sha256": "8c24b702d9df6c0f37523d64cb5df0a70960022a65c8e13f12189b35a3c4ce9f"
+},
+{
+"names": [
+"Hurewicz.CubeSubdivision.PermutationInsertion.insert_bijective"
+],
+"class": "move",
+"lines": [
+908,
+914
+],
+"sha256": "03a814601ed97de4a016997fd11f61e2fd2d8893d38a92ed8ce3c9ae5a3104ae"
+},
+{
+"names": [
+"Hurewicz.CubeSubdivision.PermutationInsertion.sum_insert"
+],
+"class": "move",
+"lines": [
+916,
+925
+],
+"sha256": "72fb2affc49c6306037850b85c4bd68fd63ac91f2bbdf28df5f3337617846778"
+},
+{
+"names": [
+"Hurewicz.CubeSubdivision.PermutationInsertion.sum_sign_insert"
+],
+"class": "move",
+"lines": [
+927,
+936
+],
+"sha256": "0a6aed830b4a3729d6e1714bff01a04f2803e0768f25a6103b2483050b5b42f7"
+},
+{
+"names": [
+"Hurewicz.CubeSubdivision.PermutationInsertion.sum_sign_smul_insert"
+],
+"class": "move",
+"lines": [
+938,
+947
+],
+"sha256": "a8d518c2d5b74010a78b2786c0e48fb10a6dc6ace1285d437640c3e198f25ccb"
+},
+{
+"names": [
+"Hurewicz.CubeSubdivision.orientedPrismRealization_standardPrism"
+],
+"class": "move",
+"lines": [
+949,
+966
+],
+"sha256": "5518e5cfd4e2548991b6df7781a60aed29be516a3588b5ae7c1f243e33b9faef"
+},
+{
+"names": [
+"Hurewicz.cubeRemainingCoordinates"
+],
+"class": "keep",
+"lines": [
+970,
+975
+],
+"sha256": "e81f9c4d3a207bfa4082d12b8ccf5b38e7780c4eb42f5637857784ade0096d2d"
+},
+{
+"names": [
+"Hurewicz.cubeCoordinates"
+],
+"class": "keep",
+"lines": [
+977,
+984
+],
+"sha256": "cc8b401da3ca7f8d903e8aac7d9815b234bdc7a10f24d40abe7b853b102943c4"
+},
+{
+"names": [
+"Hurewicz.cubeCoordinates_zero"
+],
+"class": "keep",
+"lines": [
+988,
+993
+],
+"sha256": "71abbc7a06f05dd71521522625792bc39e0220a32627d6a53a04af0f915d0908"
+},
+{
+"names": [
+"Hurewicz.cubeCoordinates_succ"
+],
+"class": "keep",
+"lines": [
+995,
+1001
+],
+"sha256": "d32127a20bd84167dbc18ea5c5ff5d3fc3bc2817879604cb57d7447762d883c0"
+},
+{
+"names": [
+"Hurewicz.cubeCoordinates_boundary_right"
+],
+"class": "keep",
+"lines": [
+1003,
+1008
+],
+"sha256": "789ed6c04b38fd670b686ae575bd91d253004ec5dbc0f499af8e5d8b66662a1f"
+},
+{
+"names": [
+"Hurewicz.cubeCoordinates_boundary_left"
+],
+"class": "keep",
+"lines": [
+1011,
+1015
+],
+"sha256": "edc841d17a6e64c59f30826535099e611824ce262fdda43cbaee66f08d883eba"
+},
+{
+"names": [
+"SingularChains.inducedChain_const"
+],
+"class": "keep",
+"lines": [
+1017,
+1044
+],
+"sha256": "3b035e0ba72902a762b9f51fe61c13cd623d0ca0438019372d1e13bce6355060"
+},
+{
+"names": [
+"Hurewicz.cubeMap"
+],
+"class": "keep",
+"lines": [
+1045,
+1048
+],
+"sha256": "74313675181029dcbcc108a3821d6bbea0f152b4c7b6edeb44bf17821a2a5ce1"
+},
+{
+"names": [
+"Hurewicz.curryLoop"
+],
+"class": "keep",
+"lines": [
+1050,
+1058
+],
+"sha256": "92547c8b320bcc5dd9497b8b6bc2a124b6a06d30be595575143742ccc0d848e4"
+},
+{
+"names": [
+"Hurewicz.evalLeft_comp_curryLoop"
+],
+"class": "keep",
+"lines": [
+1060,
+1067
+],
+"sha256": "5b8665f880cfae5784a5735a9aa52edcaa61ee3ede86a99ed51901e562a8825f"
+},
+{
+"names": [
+"Hurewicz.fundamentalCubeChain"
+],
+"class": "keep",
+"lines": [
+1069,
+1084
+],
+"sha256": "7c88a10490a47cc58abcd4fcee542b671ba1548f7fa0968bfce3bf7a6a8183f9"
+},
+{
+"names": [
+"Hurewicz.cubeChain"
+],
+"class": "keep",
+"lines": [
+1086,
+1089
+],
+"sha256": "e852c7fcb0f022d5e7c2c2e249ab20f30fd60e58b8c17840ce4af23d5d61f547"
+},
+{
+"names": [
+"Hurewicz.fundamentalCubeChain_succ"
+],
+"class": "keep",
+"lines": [
+1091,
+1100
+],
+"sha256": "0efe9f19c4705c25fb12f99d4c9b7b4f989d1c1db8709f5a41afbcf8127ba57b"
+},
+{
+"names": [
+"Hurewicz.cubeChain_succ"
+],
+"class": "keep",
+"lines": [
+1102,
+1121
+],
+"sha256": "912f7b66bbe48508c03cc74f2c7bb8870cfb02094c37a2ef6aae350ebd1f1036"
+},
+{
+"names": [
+"Hurewicz.cubeCoordinates_comp_prismCubeMap"
+],
+"class": "keep",
+"lines": [
+1123,
+1138
+],
+"sha256": "deb7320f153c2f74c53881735d9ff449fc5a29d2564e27b4f84101436e632f53"
+},
+{
+"names": [
+"Hurewicz.evalLeft_crossProductEdge_intervalChain_simplex"
+],
+"class": "keep",
+"lines": [
+1140,
+1177
+],
+"sha256": "a143ba98361d753af364f24433a5cda6e1bb5c4e81eadabe2feddbdc404c3764"
+},
+{
+"names": [
+"Hurewicz.funUniqueSymm_pathSimplex_eq_cubeSimplex_one"
+],
+"class": "keep",
+"lines": [
+1180,
+1196
+],
+"sha256": "2cf5aa73a4b5c5fbd08400551c1c727687efa2dfbd5b56153bc5e9fd1cb4b7d9"
+},
+{
+"names": [
+"Hurewicz.cubeChain_one"
+],
+"class": "keep",
+"lines": [
+1198,
+1224
+],
+"sha256": "244b73a3757e45d8c07df9a3f522f7ac77b44492a962e0856412b8bcc142516d"
+},
+{
+"names": [
+"Hurewicz.cubeCoordinates_one_comp_eq_squareCoordinates"
+],
+"class": "keep",
+"lines": [
+1226,
+1245
+],
+"sha256": "e4f942cd68e3127f98e8a5bc706a6aed04cfe8d09a0e885fe265903af29de77d"
+},
+{
+"names": [
+"Hurewicz.fundamentalCubeChain_two"
+],
+"class": "keep",
+"lines": [
+1247,
+1271
+],
+"sha256": "6a3180fcbac581d7c6e80a8553f5adef861a99a72072fe83ef0e09ecbfcf9ba8"
+},
+{
+"names": [
+"Hurewicz.cubeChain_eq_squareChain"
+],
+"class": "keep",
+"lines": [
+1273,
+1283
+],
+"sha256": "644b065f695249db8332eb4630f8c2607dc9a2c0b79863a5f8c158ae4c0fd2c8"
+},
+{
+"names": [
+"Hurewicz.cubeScaleLeft"
+],
+"class": "keep",
+"lines": [
+1285,
+1293
+],
+"sha256": "3e6ea85be24ec9eea6bb260c2c618c226a228df50b0d8e928be5e93a78f06e8f"
+},
+{
+"names": [
+"Hurewicz.cubeScaleRight"
+],
+"class": "keep",
+"lines": [
+1295,
+1304
+],
+"sha256": "7fc1df3c95becf82d9311a8acf6d0257207c169000bb93d1a009fad47fc0eac5"
+},
+{
+"names": [
+"Hurewicz.intervalScaleLeft"
+],
+"class": "keep",
+"lines": [
+1306,
+1313
+],
+"sha256": "83d278fbbc05f6dab6658a4ab511376602e5296a58d1a4061c1e4253eb3aa06c"
+},
+{
+"names": [
+"Hurewicz.intervalScaleRight"
+],
+"class": "keep",
+"lines": [
+1315,
+1323
+],
+"sha256": "60eb47170cc49a5cbe42ab9cd443bffaf387d6cfdb2ac45954d8fad6f7640313"
+},
+{
+"names": [
+"Hurewicz.intervalPathLeft"
+],
+"class": "keep",
+"lines": [
+1325,
+1335
+],
+"sha256": "82273361855d395786b1b5a6f757879d8c41e2f138c1aa206fc737945d3aba5d"
+},
+{
+"names": [
+"Hurewicz.intervalPathRight"
+],
+"class": "keep",
+"lines": [
+1337,
+1348
+],
+"sha256": "a6cc9afcfb9f3b784656e73ca0f9bc6108fba01ed2bc6cf02c9b5770b0eb89e9"
+},
+{
+"names": [
+"Hurewicz.intervalPathLeft_trans_intervalPathRight"
+],
+"class": "keep",
+"lines": [
+1350,
+1359
+],
+"sha256": "546a48ccbe009042f13c6d0bfa951632d76d41f8690c615ccfd90a336ed9695c"
+},
+{
+"names": [
+"Hurewicz.intervalChain_split"
+],
+"class": "keep",
+"lines": [
+1361,
+1381
+],
+"sha256": "51880024dfb2d37c769b51a06c4035887a5a16586e0293e069deda11ca9b6917"
+},
+{
+"names": [
+"Hurewicz.cubeScaleLeft_zero_comp_cubeCoordinates"
+],
+"class": "keep",
+"lines": [
+1383,
+1397
+],
+"sha256": "d46cfd0ba0b7cdee12cb45fc6adebfd0e304651cec41ca0e7c324590fc2a3906"
+},
+{
+"names": [
+"Hurewicz.cubeScaleRight_zero_comp_cubeCoordinates"
+],
+"class": "keep",
+"lines": [
+1399,
+1413
+],
+"sha256": "37738d8bb4d4b81819bbb3d7fcd38d5e219638687cbaf51501c6116a22e58a7a"
+},
+{
+"names": [
+"Hurewicz.cubeScale_zero_sum_fundamentalCubeChain"
+],
+"class": "keep",
+"lines": [
+1415,
+1468
+],
+"sha256": "aa0e41897820c394c158e16b52f8fb6a761e4dd3a80a14c52b48a91a466bd144"
+},
+{
+"names": [
+"Hurewicz.transAt_comp_cubeScaleLeft"
+],
+"class": "keep",
+"lines": [
+1470,
+1503
+],
+"sha256": "d5757a4b3141f443fc041bfad118dbebb08eb8b2b34cc812e484a9b8e0ae69df"
+},
+{
+"names": [
+"Hurewicz.transAt_comp_cubeScaleRight"
+],
+"class": "keep",
+"lines": [
+1505,
+1553
+],
+"sha256": "51e95fffb4d4d2ce4bf582f0b9586006666994c9f44f142eff364491ac9a1089"
+},
+{
+"names": [
+"Hurewicz.cubeChain_transAt_zero_diff"
+],
+"class": "keep",
+"lines": [
+1555,
+1606
+],
+"sha256": "3992a0921c5c31945416b7fc9930b474cd7670999d0a4c73cab4896122a177a0"
+},
+{
+"names": [
+"Hurewicz.cubeChain_transAt_zero_diff_boundary"
+],
+"class": "keep",
+"lines": [
+1608,
+1661
+],
+"sha256": "f4d4685731e52753402ed0c3ce8bfaa2529fa744d7216ebbe4c29590b6981853"
+},
+{
+"names": [
+"Hurewicz.transAt_cubeCoordinates_of_mem_boundary"
+],
+"class": "keep",
+"lines": [
+1663,
+1671
+],
+"sha256": "7b49e89af3b760123831541ab06fee794a9c64372c1d003b875f5888f68b9d2e"
+},
+{
+"names": [
+"Hurewicz.cubeChain_transAt_zero_extra_zero"
+],
+"class": "keep",
+"lines": [
+1673,
+1735
+],
+"sha256": "2bbf38276c313fddcb5e452ac6d4ce675c1881c792af83c7c470f74b0e0108e5"
+},
+{
+"names": [
+"SingularMayerVietoris.inducedChain_mem_supported_of_mapsTo"
+],
+"class": "keep",
+"lines": [
+1737,
+1755
+],
+"sha256": "4884a84100f92a0c7907af512d854af4f0834340782a54cf644216276fa2fbfd"
+},
+{
+"names": [
+"SingularHomology.zeroSimplexValue_const"
+],
+"class": "keep",
+"lines": [
+1757,
+1762
+],
+"sha256": "33b23b9da892ca3d2ab66bd577c3976106cbf6de2cf1a80c7391721ef84a972a"
+},
+{
+"names": [
+"SingularHomology.crossProductZeroLeft_pointChain"
+],
+"class": "keep",
+"lines": [
+1764,
+1774
+],
+"sha256": "c3e580dc52d71a068ac9b1f77b242089a4a38445e0d64c600fe14829001d91fd"
+},
+{
+"names": [
+"SingularChains.inducedChain_pointChain"
+],
+"class": "keep",
+"lines": [
+1776,
+1781
+],
+"sha256": "d54185fc1673382cd07cc0748f8054e6a0e864ceabeae204474dbed314397650"
+},
+{
+"names": [
+"SingularChains.pointChain_mem_supported"
+],
+"class": "keep",
+"lines": [
+1783,
+1789
+],
+"sha256": "ff1b3754259c01ca1be8a69fc517b3e5f787bc2774c4c9d4407a54335ca38401"
+},
+{
+"names": [
+"Hurewicz.fundamentalCubeChain_boundary_supported"
+],
+"class": "keep",
+"lines": [
+1791,
+1852
+],
+"sha256": "db5db5e4e7abc45fc4c77d0db4494ed8c44ffb62ab7880417c12f4d284b70b89"
+},
+{
+"names": [
+"Hurewicz.cubeChain_transAt_zero_extra_eq_smul"
+],
+"class": "keep",
+"lines": [
+1854,
+1905
+],
+"sha256": "4b4b41678f1aa806dec95aee6cf5515bdad79f378252c1069ed90828ed510c91"
+},
+{
+"names": [
+"Hurewicz.boundary_const_simplex"
+],
+"class": "keep",
+"lines": [
+1907,
+1923
+],
+"sha256": "5c3a270e65ad6f14d92e58f471d07a8d363242784942b73e9515c71fbf365b90"
+},
+{
+"names": [
+"Hurewicz.lowerSquareTriangle_eq_cubeSimplex_one"
+],
+"class": "keep",
+"lines": [
+1927,
+1949
+],
+"sha256": "35d5a9436fb46dd477f9f3df5e7424271ebd4896c69e9a9dda2e0242b9b20ac3"
+},
+{
+"names": [
+"Hurewicz.upperSquareTriangle_eq_cubeSimplex_swap"
+],
+"class": "keep",
+"lines": [
+1951,
+1973
+],
+"sha256": "f6b61595d7aa600f703b20170bd77de17ed15237e462e48fdd034c75a2c8296c"
+},
+{
+"names": [
+"Hurewicz.cubeChain_two"
+],
+"class": "keep",
+"lines": [
+1975,
+2001
+],
+"sha256": "4aba8b417c75c374eede1878a1aaf9a161a816f0f8ebf65a3c92f97bb0b343fe"
+},
+{
+"names": [
+"Hurewicz.cubeChain_eq_sum_simplices_step"
+],
+"class": "keep",
+"lines": [
+2003,
+2035
+],
+"sha256": "e7cf2988742d7bde91be5c59fc79b0e4725a21ce685441a72b102de8f182f4ca"
+},
+{
+"names": [
+"Hurewicz.cubeChain_eq_sum_simplices"
+],
+"class": "keep",
+"lines": [
+2037,
+2087
+],
+"sha256": "545b5ef1dd10c1878c9489e954b5bd6827a6dfc99f45a6fbe687c1fb7e37e0d8"
+},
+{
+"names": [
+"Hurewicz.CubeTriangulation.sum_face_trichotomy"
+],
+"class": "keep",
+"lines": [
+2088,
+2101
+],
+"sha256": "b9ecd7fc292bee0e2c20f9ad68d1f35c1ecae50783ac8e9723d783d72b442408"
+},
+{
+"names": [
+"Hurewicz.CubeTriangulation.sum_cubeOrientation_faces"
+],
+"class": "keep",
+"lines": [
+2103,
+2177
+],
+"sha256": "1a66ed053f4d102c6f093f4b3136b071545f3f865cc3d4d64f656412b35856cc"
+},
+{
+"names": [
+"Hurewicz.cubeChain_boundary"
+],
+"class": "keep",
+"lines": [
+2179,
+2213
+],
+"sha256": "861c9672c389037291959e21965048af27bb50f3d7674f8462abd9c6d30c211f"
+},
+{
+"names": [
+"Hurewicz.cubeCycle"
+],
+"class": "keep",
+"lines": [
+2215,
+2224
+],
+"sha256": "32aed7a3d45ef3ae7b63a920e82212cf20d85dd8131121075c63022bd377af09"
+},
+{
+"names": [
+"Hurewicz.cubeCycle_val"
+],
+"class": "keep",
+"lines": [
+2226,
+2231
+],
+"sha256": "bcabab54db5e57a50724ee962bfc2a616d867ee5045eb079840dd9c69e23dfd6"
+},
+{
+"names": [
+"Hurewicz.cubeHomologyClass"
+],
+"class": "keep",
+"lines": [
+2233,
+2238
+],
+"sha256": "6c3bf5d1168acba5f9df67ed30b9729020fde6a2fccbe9d399de237f0cd7a154"
+},
+{
+"names": [
+"Hurewicz.cubeHomologyClass_const"
+],
+"class": "keep",
+"lines": [
+2240,
+2264
+],
+"sha256": "11a5693b6591fd8951a1e1edc7489a10f8c3bbc788a4e63bdd3116425eea66fd"
+}
+]
+}

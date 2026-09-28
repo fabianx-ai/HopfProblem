@@ -1,0 +1,178 @@
+{
+ "dump": "/home/goblin/.claude/jobs/06995e68/tmp/wave1/dump_head.jsonl",
+ "module": "Lib.AlgebraicTopology.Hurewicz.Subdivision",
+ "stem": "Subdivision",
+ "source": "/home/goblin/hopf-w1-hurewicz2/Lib/AlgebraicTopology/Hurewicz/Subdivision.lean",
+ "orig_preamble": [
+  "open Set Function Filter Manifold Topology",
+  "",
+  "noncomputable section"
+ ],
+ "preamble": [
+  "open Set Function Topology",
+  "",
+  "noncomputable section"
+ ],
+ "pieces": [
+  {
+   "name": "SimplexQuotient",
+   "ranges": [
+    [
+     51,
+     546
+    ],
+    [
+     884,
+     950
+    ]
+   ],
+   "imports": [
+    "Lib.AlgebraicTopology.Hurewicz.CubeTriangulation",
+    "Lib.AlgebraicTopology.Hurewicz.HomotopyExtension"
+   ],
+   "doc": "/-!\n# The simplex as a quotient of the cube\n\nThe `n`-cube `Fin n \u2192 I` maps onto the `n`-simplex by the *prefix minima* of the\ncoordinates: `Hurewicz.SimplexGeometry.simplexQuotient n` sends `u` to the point with\nbarycentric coordinates `extendedMinimum u i - extendedMinimum u (i + 1)`, where\n`prefixMinimum u k = min {u i | i < k}`. On the Kuhn cell of the identity permutation\n(`Hurewicz.CubeTriangulation.cubeSimplex 1`, the points with antitone coordinates) the\nquotient is inverse to the cell map (`simplexQuotient_cubeSimplex_refl`); every other cell\nis sent into the boundary of the simplex (`simplexQuotient_cubeSimplex_boundary`), and the\ncube boundary goes to the simplex boundary (`simplexQuotient_boundary`).\n\nA *based simplex* `BasedSimplex n x` is a singular simplex sending the boundary to `x`;\nprecomposition with the quotient turns it into a based cube `basedSimplexLoop \u03c4`, whose\nclass in `\u03c0_n X x` is `basedSimplexClass \u03c4`. The signed sum of its cell restrictions is its\ncorrected chain (`basedSimplex_simplexChain_sum`). The boundary strata of the quotient\n(`simplexTwoBoundary`, `simplexQuotient_codimTwo`) and the behaviour of the prefix minima\nunder `Fin.insertNth` complete the calculus.\n\nThis is the cube-to-simplex half of the comparison used in the proof of the Hurewicz\ntheorem (Hatcher, *Algebraic Topology*, Theorem 4.32); the Kuhn (Freudenthal)\ntriangulation of the cube is the one of `Lib.AlgebraicTopology.Hurewicz.CubeTriangulation`.\n\n## Main definitions\n\n* `Hurewicz.SimplexGeometry.prefixMinimum`, `Hurewicz.SimplexGeometry.extendedMinimum`\n* `Hurewicz.SimplexGeometry.simplexQuotient`\n* `Hurewicz.SimplexGeometry.BasedSimplex`, `Hurewicz.SimplexGeometry.basedSimplexLoop`,\n  `Hurewicz.SimplexGeometry.basedSimplexClass`\n* `Hurewicz.SimplexGeometry.BasedSimplexBoundary`, `Hurewicz.SimplexGeometry.simplexTwoBoundary`\n\n## Main results\n\n* `Hurewicz.SimplexGeometry.simplexQuotient_cubeSimplex_refl`,\n  `Hurewicz.SimplexGeometry.simplexQuotient_cubeSimplex_boundary`\n* `Hurewicz.SimplexGeometry.basedSimplex_simplexChain_sum`\n-/",
+   "out": "/home/goblin/hopf-w1-hurewicz2/Lib/AlgebraicTopology/Hurewicz/Subdivision/SimplexQuotient.lean"
+  },
+  {
+   "name": "CubeClass",
+   "ranges": [
+    [
+     547,
+     883
+    ]
+   ],
+   "imports": [
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator"
+   ],
+   "doc": "/-!\n# The homotopy class of a based cube and its reparametrisations\n\n`Hurewicz.NativeSubdivision.nativeClass p` is the class `Additive.ofMul \u27e6p\u27e7` of a based\ncube `p : GenLoop N X x` in the additively written homotopy group `Additive (\u03c0_N X x)`.\nIt is additive under concatenation `GenLoop.transAt`, changes sign under reversal\n`GenLoop.symmAt`, and is invariant under homotopy rel boundary.\n\nTwo reparametrisations are studied:\n\n* the *quarter turn* in a coordinate pair `(i, j)`, which is homotopic to the identity\n  (`nativeClass_quarterTurn`), and\n* the *coordinate permutation* `permuteCubeLoop p e = p \u2218 (u \u21a6 u \u2218 e)`, whose class is\n  `sign e \u2022 nativeClass p` (`permuteCubeLoop_additiveClass`): a transposition is a\n  quarter turn followed by a reversal.\n\nFor an *internally based* cube (`NativeCubeInternalBased p`: `p u = x` whenever two\ncoordinates of `u` coincide), pullbacks along two cube self-maps that agree on a common\n*flat* of the boundary (`NativeCubeSameFlat`) are homotopic rel boundary through the\ncoordinatewise convex blend (`nativeCubeLinearHomotopy`). This is the tool by which the\nsubdivision argument replaces one chart of a chamber by another.\n\nThe sign of a permuted cube is the classical statement that `\u03c0_n` is acted on by `S_n`\nthrough the sign character (cf. Hatcher, *Algebraic Topology*, \u00a74.1, and the proof of\nTheorem 4.32).\n\n## Main definitions\n\n* `Hurewicz.NativeSubdivision.nativeClass`\n* `Hurewicz.NativeSubdivision.NativeCubeInternalBased`, `Hurewicz.NativeSubdivision.NativeCubeSameFlat`\n* `Hurewicz.NativeSubdivision.nativeCubePullbackLoop`, `Hurewicz.NativeSubdivision.nativeCubeLinearHomotopy`\n* `Hurewicz.NativeSubdivision.permuteCubeLoop`\n\n## Main results\n\n* `Hurewicz.NativeSubdivision.nativeClass_transAt`, `Hurewicz.NativeSubdivision.nativeClass_symmAt`\n* `Hurewicz.NativeSubdivision.permuteCubeLoop_additiveClass`\n-/",
+   "out": "/home/goblin/hopf-w1-hurewicz2/Lib/AlgebraicTopology/Hurewicz/Subdivision/CubeClass.lean"
+  },
+  {
+   "name": "InsertPermutation",
+   "ranges": [
+    [
+     997,
+     1112
+    ]
+   ],
+   "imports": [
+    "Mathlib.Algebra.BigOperators.Fin",
+    "Mathlib.Data.Fintype.Perm",
+    "Mathlib.Logic.Equiv.Fin.Basic"
+   ],
+   "doc": "/-!\n# Inserting the last index into a permutation\n\nA permutation `E` of `Fin (n + 1)` is determined by the position `r = E.symm (Fin.last n)`\nof the last index together with the permutation of `Fin n` induced on the remaining\nindices. `Hurewicz.NativeSubdivision.insertPermutation e r` is the forward map of this\nbijection and `Hurewicz.NativeSubdivision.deletePermutation` its inverse;\n`Hurewicz.NativeSubdivision.insertPermutationEquiv n : Perm (Fin n) \u00d7 Fin (n + 1) \u2243 Perm (Fin (n + 1))`\npackages both, and `Hurewicz.NativeSubdivision.sum_insertPermutation` reindexes a sum over\n`Perm (Fin (n + 1))` as a double sum over `Perm (Fin n)` and the insertion position.\n\nThis is the recursion `S_{n+1} = S_n \u00d7 (n + 1)` on the Kuhn chambers of the cube: a\nchamber of the `(n + 1)`-cube is a chamber of the `n`-cube together with the slot of\nthe new coordinate in the order (cf. the proof of Hatcher, Theorem 4.32).\n\n## Main definitions\n\n* `Hurewicz.NativeSubdivision.insertPermutation`, `Hurewicz.NativeSubdivision.deletePermutation`\n* `Hurewicz.NativeSubdivision.insertPermutationEquiv`\n\n## Main results\n\n* `Hurewicz.NativeSubdivision.insertPermutation_deletePermutation`\n* `Hurewicz.NativeSubdivision.sum_insertPermutation`\n-/",
+   "out": "/home/goblin/hopf-w1-hurewicz2/Lib/AlgebraicTopology/Hurewicz/Subdivision/InsertPermutation.lean",
+   "preamble": [
+    "open Set Function",
+    "",
+    "noncomputable section"
+   ]
+  },
+  {
+   "name": "ChamberChart",
+   "ranges": [
+    [
+     1113,
+     1306
+    ],
+    [
+     1407,
+     1531
+    ],
+    [
+     1621,
+     1656
+    ]
+   ],
+   "imports": [
+    "Lib.AlgebraicTopology.Hurewicz.Subdivision.CubeClass",
+    "Lib.AlgebraicTopology.Hurewicz.Subdivision.InsertPermutation"
+   ],
+   "doc": "/-!\n# Chamber charts of the ordered cube\n\nThe chamber of the `n`-cube attached to a permutation `e` is the set of points whose\ncoordinates are ordered by `e`. A *chamber chart* `Hurewicz.NativeSubdivision.NativeChamberChart e`\nis a cube self-map satisfying the four face compatibilities of the Duffy map of that\nchamber: on the face where the last ordered coordinate is `0` the chart is `0` there, on\nthe face where the first ordered coordinate is `1` the chart is `1` there, and on the\nfaces where an inner ordered coordinate is `0` or `1` the chart identifies it with its\nneighbour in the order. Any two charts of the same chamber land on a common flat of the\nboundary (`NativeChamberChart.sameFlat`), which is what makes their pullbacks homotopic.\n\nThe *cut functions* `chamberLower`, `chamberUpper` of a chart at a slot `r` are the two\nordered coordinates adjacent to the slot (with `0` and `1` at the ends); the *cut sequence*\n`chamberCutSequence` lists them. Inserting a new coordinate at slot `r` by the convex\ncombination of the two cuts produces the chart `insertChamberChart e r chart` of the\nchamber `insertPermutation e r` of the `(n + 1)`-cube.\n\nThis is the recursive description of the Kuhn chambers used to subdivide a based cube\nin the proof of the Hurewicz theorem (Hatcher, *Algebraic Topology*, Theorem 4.32).\n\n## Main definitions\n\n* `Hurewicz.NativeSubdivision.NativeChamberChart`\n* `Hurewicz.NativeSubdivision.chamberLower`, `Hurewicz.NativeSubdivision.chamberUpper`,\n  `Hurewicz.NativeSubdivision.chamberCutSequence`\n* `Hurewicz.NativeSubdivision.insertChamberMap`, `Hurewicz.NativeSubdivision.insertChamberChart`\n\n## Main results\n\n* `Hurewicz.NativeSubdivision.NativeChamberChart.sameFlat`\n* `Hurewicz.NativeSubdivision.chamberCutSequence_castSucc`, `Hurewicz.NativeSubdivision.chamberCutSequence_succ`\n-/",
+   "out": "/home/goblin/hopf-w1-hurewicz2/Lib/AlgebraicTopology/Hurewicz/Subdivision/ChamberChart.lean"
+  },
+  {
+   "name": "Slicing",
+   "ranges": [
+    [
+     1730,
+     1863
+    ],
+    [
+     1906,
+     2111
+    ]
+   ],
+   "imports": [
+    "Lib.AlgebraicTopology.Hurewicz.Subdivision.CubeClass"
+   ],
+   "doc": "/-!\n# Slicing a based cube along coordinate cuts\n\nGiven a based cube `p : GenLoop N X x` and two *cut functions* `a b : C(N \u2192 I, I)` in the\ncoordinate `i` (both *based*, `CutBased p i a`: setting `u i := a u` lands `p` at `x`),\nthe *slice* `Hurewicz.NativeSubdivision.sliceLoop p i a b` is `p` restricted to the region\nbetween the graphs of `a` and `b`, reparametrised to the full cube by the convex\ncombination `u i \u21a6 (1 - u i) \u2022 a u + u i \u2022 b u`.\n\nSlicing is compatible with concatenation: for cuts independent of the coordinate `i`\n(`CutIndependent`), the slice from `a` to `c` is homotopic to the concatenation\n`GenLoop.transAt i` of the slices from `a` to `b` and from `b` to `c`\n(`slice_homotopic_trans`), through the binary warp `cutBinaryWarp`. Iterating,\n`finiteCuts_class` writes the class of `p` as the sum of the classes of the slices\nbetween consecutive members of a finite family of cuts running from `0` to `1`.\n\nThis is the \"cutting a cube into slabs\" step of the subdivision argument in the proof of\nthe Hurewicz theorem (Hatcher, *Algebraic Topology*, Theorem 4.32).\n\n## Main definitions\n\n* `Hurewicz.NativeSubdivision.CutIndependent`, `Hurewicz.NativeSubdivision.CutBased`\n* `Hurewicz.NativeSubdivision.sliceMap`, `Hurewicz.NativeSubdivision.sliceLoop`\n* `Hurewicz.NativeSubdivision.cutBinaryWarp`, `Hurewicz.NativeSubdivision.sliceConcat`\n\n## Main results\n\n* `Hurewicz.NativeSubdivision.slice_homotopic_trans`\n* `Hurewicz.NativeSubdivision.sliceConcat_class`, `Hurewicz.NativeSubdivision.finiteCuts_class`\n-/",
+   "out": "/home/goblin/hopf-w1-hurewicz2/Lib/AlgebraicTopology/Hurewicz/Subdivision/Slicing.lean"
+  },
+  {
+   "name": "ExtendedChamber",
+   "ranges": [
+    [
+     1307,
+     1406
+    ],
+    [
+     1532,
+     1620
+    ],
+    [
+     1657,
+     1729
+    ],
+    [
+     1864,
+     1905
+    ],
+    [
+     2112,
+     2153
+    ]
+   ],
+   "imports": [
+    "Lib.AlgebraicTopology.Hurewicz.Subdivision.ChamberChart",
+    "Lib.AlgebraicTopology.Hurewicz.Subdivision.Slicing"
+   ],
+   "doc": "/-!\n# Extended chamber maps and the insertion sum\n\nA chamber chart of the `m`-cube extends to a self-map of the `n`-cube (`m \u2264 n`) acting on\nthe first `m` coordinates and leaving the others unchanged\n(`Hurewicz.NativeSubdivision.extendCubeMap`). For an internally based cube\n`p : GenLoop (Fin n) X x` the pullback along the extended chart is again a based cube,\nthe *extended chamber loop* `extendedChamberLoop p hp h chart`, and its class does not\ndepend on the chart (`nativeClass_extendedChamber_eq`), by the linear homotopy on the\ncommon flat.\n\nThe main result is the insertion step: when `m + 1 \u2264 n`, the extended chamber loop of a\nchart of the `m`-cube chamber `e` is the sum, over the `m + 1` slots `r`, of the extended\nchamber loops of the inserted charts `insertChamberChart e r chart`\n(`nativeClass_extendedChamber_eq_sum_insertions`). It follows by slicing the coordinate\n`chamberCutIndex h` along the extended cut sequence of the chart (`finiteCuts_class`).\n\nThis is the induction step of the subdivision of a based cube into its Kuhn chambers in\nthe proof of the Hurewicz theorem (Hatcher, *Algebraic Topology*, Theorem 4.32).\n\n## Main definitions\n\n* `Hurewicz.NativeSubdivision.cubeRestriction`, `Hurewicz.NativeSubdivision.extendCubeMap`\n* `Hurewicz.NativeSubdivision.extendedChamberLoop`, `Hurewicz.NativeSubdivision.extendedChamberHomotopy`\n* `Hurewicz.NativeSubdivision.chamberCutIndex`, `Hurewicz.NativeSubdivision.extendedChamberCutSequence`\n\n## Main results\n\n* `Hurewicz.NativeSubdivision.nativeClass_extendedChamber_eq`\n* `Hurewicz.NativeSubdivision.nativeClass_extendedChamber_eq_sum_insertions`\n-/",
+   "out": "/home/goblin/hopf-w1-hurewicz2/Lib/AlgebraicTopology/Hurewicz/Subdivision/ExtendedChamber.lean"
+  },
+  {
+   "name": "DuffyMap",
+   "ranges": [
+    [
+     2154,
+     2398
+    ]
+   ],
+   "imports": [
+    "Lib.AlgebraicTopology.Hurewicz.Subdivision.ChamberChart"
+   ],
+   "doc": "/-!\n# Duffy maps of the ordered chambers\n\nThe *Duffy cube* of a permutation `e` sends `u` to the cumulative products of the\ncoordinates of `u` taken in the order `e`: the `e i`-th coordinate of\n`Hurewicz.NativeSubdivision.nativeDuffyCube e u` is `prefixProduct u (i + 1) = \u220f_{k \u2264 i} u k`.\nIts image consists of `e`-ordered points, so it is a chart of the chamber `e`; the\n*ordered Duffy map* `nativeOrderedDuffyMap e` is the Duffy cube precomposed with the\ncoordinate permutation `e`, and `orderedDuffyChart e` records it as a\n`NativeChamberChart e`. Every chamber chart shares a flat with it on the boundary\n(`NativeChamberChart.commonOrderedDuffy`).\n\nFor an internally based cube `p`, the pullback along any cube self-map that shares a flat\nwith the ordered Duffy map has class `sign e \u2022 nativeClass (nativeDuffyCubeLoop p hp e)`\n(`nativeClass_commonOrderedDuffy`), by the linear homotopy and the sign of a permuted\ncube.\n\nThe cumulative-product map from the cube onto a simplex is Duffy's transformation\n(cf. M. G. Duffy, *Quadrature over a pyramid or cube of integrands with a singularity at\na vertex*, 1982); here it serves as the canonical chart of a Kuhn chamber in the proof of\nthe Hurewicz theorem (Hatcher, *Algebraic Topology*, Theorem 4.32).\n\n## Main definitions\n\n* `Hurewicz.NativeSubdivision.prefixProduct`\n* `Hurewicz.NativeSubdivision.nativeDuffyCube`, `Hurewicz.NativeSubdivision.nativeDuffyCubeLoop`\n* `Hurewicz.NativeSubdivision.nativeOrderedDuffyMap`, `Hurewicz.NativeSubdivision.orderedDuffyChart`\n\n## Main results\n\n* `Hurewicz.NativeSubdivision.nativeDuffyCube_boundary`\n* `Hurewicz.NativeSubdivision.nativeClass_commonOrderedDuffy`\n* `Hurewicz.NativeSubdivision.NativeChamberChart.commonOrderedDuffy`\n-/",
+   "out": "/home/goblin/hopf-w1-hurewicz2/Lib/AlgebraicTopology/Hurewicz/Subdivision/DuffyMap.lean"
+  },
+  {
+   "name": "SubdivisionClass",
+   "ranges": [
+    [
+     951,
+     996
+    ],
+    [
+     2399,
+     2580
+    ]
+   ],
+   "imports": [
+    "Lib.AlgebraicTopology.Hurewicz.Subdivision.SimplexQuotient",
+    "Lib.AlgebraicTopology.Hurewicz.Subdivision.ExtendedChamber",
+    "Lib.AlgebraicTopology.Hurewicz.Subdivision.DuffyMap"
+   ],
+   "doc": "/-!\n# The subdivision identity for based cubes\n\nThe class of an internally based `n`-cube `p : GenLoop (Fin n) X x` (`n \u2265 2`) in the\nadditively written homotopy group is the signed sum, over the permutations `e`, of the\nclasses of the based simplices cut out by the Kuhn cells:\n\n`Additive.ofMul \u27e6p\u27e7 = \u2211 e : Perm (Fin n), cubeOrientation e \u2022 basedSimplexClass (nativeBasedCubeSimplex p hp e)`\n\n(`Hurewicz.NativeSubdivision.nativeCubeSubdivision_class`). Here\n`nativeBasedCubeSimplex p hp e` is the restriction of `p` to the `e`-th Kuhn cell\n`Hurewicz.CubeTriangulation.cubeSimplex e`, which is a based simplex because `p` is\ninternally based, and `basedSimplexClass` is its class via the simplex quotient of the\ncube.\n\nThe proof assembles the pieces of the subdivision: by induction on `m \u2264 n` the class of `p`\nis the sum over the chambers of the `m`-cube of the extended Duffy chamber loops\n(`nativeClass_eq_sum_partialChambers`, using the insertion sum), and for `m = n` each\nchamber loop is homotopic to the based simplex loop of its cell\n(`nativeDuffyCube_homotopic_basedSimplexLoop`: the Duffy cube and the cell quotient\n`nativeCubeSimplexQuotient e` share a flat on the boundary), with the sign of the\npermutation as orientation (`nativeClass_chamber_eq_orientedSimplex`).\n\nThis is the step \"a spheroid is the signed sum of the simplices of a triangulation of the\ncube\" in the proof of the Hurewicz theorem (Hatcher, *Algebraic Topology*, Theorem 4.32).\n\n## Main definitions\n\n* `Hurewicz.NativeSubdivision.nativeCubeSimplexQuotient`, `Hurewicz.NativeSubdivision.nativeBasedCubeSimplex`\n\n## Main results\n\n* `Hurewicz.NativeSubdivision.nativeClass_eq_sum_partialChambers`\n* `Hurewicz.NativeSubdivision.nativeDuffyCubeClass_eq_basedSimplexClass`\n* `Hurewicz.NativeSubdivision.nativeClass_eq_sum_simplices`,\n  `Hurewicz.NativeSubdivision.nativeCubeSubdivision_class`\n-/",
+   "out": "/home/goblin/hopf-w1-hurewicz2/Lib/AlgebraicTopology/Hurewicz/Subdivision/SubdivisionClass.lean"
+  }
+ ]
+}

@@ -1,0 +1,281 @@
+{
+ "before": "/home/goblin/.claude/jobs/06995e68/tmp/wave1/dump_head.jsonl",
+ "after": "/home/goblin/.claude/jobs/06995e68/tmp/wave1/hurewicz2/dump_after.jsonl",
+ "prefix": "",
+ "constants": [
+  38248,
+  38250
+ ],
+ "lost": [
+  [
+   "Hurewicz.CubeSubdivision.orientedPrismRealization_standardPrism._simp_1_2",
+   3705374514,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition": 1
+   }
+  ],
+  [
+   "Hurewicz.CubeSubdivision.prismCubeVertex_shuffle._simp_1_2",
+   821638330,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition": 1
+   }
+  ],
+  [
+   "Hurewicz.CubeSubdivision.prismCubeVertex_shuffle._simp_1_3",
+   3269858211,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition": 1
+   }
+  ],
+  [
+   "Hurewicz.CubeSubdivision.prismCubeVertex_shuffle._simp_1_5",
+   2185636451,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition": 1
+   }
+  ],
+  [
+   "Hurewicz.CubeSubdivision.prismCubeVertex_shuffle._simp_1_6",
+   821100061,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition": 1
+   }
+  ],
+  [
+   "Hurewicz.CubeSubdivision.shufflePrismVertices.eq_1",
+   1941682677,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition": 1
+   }
+  ],
+  [
+   "Hurewicz.cubeCoordinates._proof_1",
+   2272690309,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition": 1
+   }
+  ],
+  [
+   "Hurewicz.cubeCoordinates.eq_1",
+   630135612,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition": 1
+   }
+  ],
+  [
+   "Hurewicz.cubeRemainingCoordinates._proof_1",
+   4128272863,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition": 1
+   }
+  ],
+  [
+   "Hurewicz.cubeRemainingCoordinates._proof_2",
+   1244004431,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition": 1
+   }
+  ],
+  [
+   "Hurewicz.cubeRemainingCoordinates.eq_1",
+   2337187207,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition": 1
+   }
+  ]
+ ],
+ "added": [
+  [
+   "Hurewicz.CubeSubdivision.orientedPrismRealization_standardPrism._simp_1_1",
+   3705374514,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition.PermutationInsertion": 1
+   }
+  ],
+  [
+   "Hurewicz.CubeSubdivision.prismCubeVertex_shuffle._simp_1_1",
+   821638330,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition.PermutationInsertion": 1
+   }
+  ],
+  [
+   "Hurewicz.CubeSubdivision.prismCubeVertex_shuffle._simp_1_2",
+   3269858211,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition.PermutationInsertion": 1
+   }
+  ],
+  [
+   "Hurewicz.CubeSubdivision.prismCubeVertex_shuffle._simp_1_3",
+   2185636451,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition.PermutationInsertion": 1
+   }
+  ],
+  [
+   "Hurewicz.CubeSubdivision.prismCubeVertex_shuffle._simp_1_4",
+   821100061,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition.PermutationInsertion": 1
+   }
+  ],
+  [
+   "Hurewicz.CubeSubdivision.shufflePrismVertices._proof_1",
+   29803911,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition.StandardPrism": 1
+   }
+  ],
+  [
+   "Hurewicz.CubeSubdivision.shufflePrismVertices.eq_1",
+   522826629,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition.StandardPrism": 1
+   }
+  ],
+  [
+   "Hurewicz.cubeCoordinates._proof_1",
+   520313552,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition.CubeChain": 1
+   }
+  ],
+  [
+   "Hurewicz.cubeCoordinates.eq_1",
+   2181265777,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition.CubeChain": 1
+   }
+  ],
+  [
+   "Hurewicz.cubeRemainingCoordinates._proof_1",
+   1374387624,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition.CubeChain": 1
+   }
+  ],
+  [
+   "Hurewicz.cubeRemainingCoordinates._proof_2",
+   2739609344,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition.CubeChain": 1
+   }
+  ],
+  [
+   "Hurewicz.cubeRemainingCoordinates._proof_3",
+   2982083630,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition.CubeChain": 1
+   }
+  ],
+  [
+   "Hurewicz.cubeRemainingCoordinates.eq_1",
+   1015438925,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition.CubeChain": 1
+   }
+  ]
+ ],
+ "changed_type_source": [],
+ "changed_type_proof_naming": [],
+ "changed_type_accepted": [],
+ "added_accepted": [],
+ "accept_without_effect": [],
+ "changed_type_all": [
+  "Hurewicz.CubeSubdivision.prismCubeVertex_shuffle._simp_1_2",
+  "Hurewicz.CubeSubdivision.prismCubeVertex_shuffle._simp_1_3",
+  "Hurewicz.CubeSubdivision.shufflePrismVertices.eq_1",
+  "Hurewicz.cubeCoordinates._proof_1",
+  "Hurewicz.cubeCoordinates.eq_1",
+  "Hurewicz.cubeRemainingCoordinates._proof_1",
+  "Hurewicz.cubeRemainingCoordinates._proof_2",
+  "Hurewicz.cubeRemainingCoordinates.eq_1"
+ ],
+ "moves": [
+  [
+   "Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition",
+   "Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition.Concatenation",
+   13
+  ],
+  [
+   "Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition",
+   "Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition.CubeChain",
+   21
+  ],
+  [
+   "Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition",
+   "Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition.Cycle",
+   7
+  ],
+  [
+   "Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition",
+   "Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition.IntervalSplit",
+   11
+  ],
+  [
+   "Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition",
+   "Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition.KuhnDecomposition",
+   6
+  ],
+  [
+   "Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition",
+   "Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition.PermutationInsertion",
+   16
+  ],
+  [
+   "Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition",
+   "Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition.PrismRealization",
+   28
+  ],
+  [
+   "Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition",
+   "Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition.StandardPrism",
+   31
+  ],
+  [
+   "Lib.AlgebraicTopology.Hurewicz.Subdivision",
+   "Lib.AlgebraicTopology.Hurewicz.Subdivision.ChamberChart",
+   34
+  ],
+  [
+   "Lib.AlgebraicTopology.Hurewicz.Subdivision",
+   "Lib.AlgebraicTopology.Hurewicz.Subdivision.CubeClass",
+   36
+  ],
+  [
+   "Lib.AlgebraicTopology.Hurewicz.Subdivision",
+   "Lib.AlgebraicTopology.Hurewicz.Subdivision.DuffyMap",
+   28
+  ],
+  [
+   "Lib.AlgebraicTopology.Hurewicz.Subdivision",
+   "Lib.AlgebraicTopology.Hurewicz.Subdivision.ExtendedChamber",
+   30
+  ],
+  [
+   "Lib.AlgebraicTopology.Hurewicz.Subdivision",
+   "Lib.AlgebraicTopology.Hurewicz.Subdivision.InsertPermutation",
+   13
+  ],
+  [
+   "Lib.AlgebraicTopology.Hurewicz.Subdivision",
+   "Lib.AlgebraicTopology.Hurewicz.Subdivision.SimplexQuotient",
+   52
+  ],
+  [
+   "Lib.AlgebraicTopology.Hurewicz.Subdivision",
+   "Lib.AlgebraicTopology.Hurewicz.Subdivision.Slicing",
+   28
+  ],
+  [
+   "Lib.AlgebraicTopology.Hurewicz.Subdivision",
+   "Lib.AlgebraicTopology.Hurewicz.Subdivision.SubdivisionClass",
+   17
+  ]
+ ],
+ "ambiguous": [],
+ "auxiliary_moved": 220,
+ "verdict": "PASS"
+}
