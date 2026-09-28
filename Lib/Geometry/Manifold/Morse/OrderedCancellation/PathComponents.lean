@@ -33,15 +33,20 @@ open scoped ContDiff ContinuousMap
 noncomputable section
 
 attribute [local instance 100] Classical.propDecidable in
+/-- The linear functional on singular `0`-chains of `X` counting, with multiplicity, the
+simplices whose vertex is joined to `x` by a path. -/
 def MorseCancellation.componentChainWeight {X : Type} [TopologicalSpace X] (x : X) :
     SingularChains.Chains X 0 →ₗ[ℤ] ℤ :=
   SingularChains.chainLift X 0 (fun σ => if Joined x (σ (stdSimplex.vertex 0)) then 1 else 0)
 
 attribute [local instance 100] Classical.propDecidable in
+/-- `componentChainWeight x` of the point chain at `y` is `1` if `x` and `y` are joined, else `0`.
+`componentChainWeight x` of the point chain at `y` is `1` if `x` and `y` are joined, else `0`. -/
 theorem MorseCancellation.componentChainWeight_point {X : Type} [TopologicalSpace X] (x y : X) :
     componentChainWeight x (SingularChains.pointChain y) = if Joined x y then 1 else 0 := by
   exact SingularChains.chainLift_simplex X 0 _ _
 
+/-- `componentChainWeight x` vanishes on boundaries of `1`-chains. -/
 theorem MorseCancellation.componentChainWeight_boundary {X : Type} [TopologicalSpace X] (x : X)
     (b : SingularChains.Chains X 1) : componentChainWeight x (SingularChains.boundaryOne X b) = 0 :=
   by
@@ -59,6 +64,8 @@ theorem MorseCancellation.componentChainWeight_boundary {X : Type} [TopologicalS
     rw [hi, sub_self]
   exact LinearMap.congr_fun heq b
 
+/-- Hatcher, Proposition 2.7: two points `x`, `y` of `X` have the same class in `H₀(X)` iff they
+are joined by a path. -/
 theorem MorseCancellation.pointClass_eq_iff_joined {X : Type} [TopologicalSpace X] (x y : X) :
     SingularHomology.pointClass x = SingularHomology.pointClass y ↔
       Joined x y := by
@@ -83,6 +90,7 @@ theorem MorseCancellation.pointClass_eq_iff_joined {X : Type} [TopologicalSpace 
           (SingularHomology.pointCycle x) (SingularHomology.pointCycle y)).mpr
     exact ⟨SingularChains.pathChain p.symm, SingularChains.boundaryOne_pathChain p.symm⟩
 
+/-- If `f : C(X, Y)` is injective on `H₀`, then `f x` and `f y` are joined iff `x` and `y` are. -/
 theorem MorseCancellation.joined_iff_of_homologyZero_injective {X Y : Type} [TopologicalSpace X]
     [TopologicalSpace Y] (f : C(X, Y))
     (hf : Function.Injective (SingularMayerVietoris.singularHomologyMap f 0)) (x y : X) :
@@ -91,6 +99,8 @@ theorem MorseCancellation.joined_iff_of_homologyZero_injective {X Y : Type} [Top
     SingularHomology.singularHomologyMap_pointClass f, ←
     SingularHomology.singularHomologyMap_pointClass f, hf.eq_iff]
 
+/-- If `X` is nonempty, `Y` is path-connected and `f : C(X, Y)` is injective on `H₀`, then `X` is
+path-connected. -/
 theorem MorseCancellation.pathConnectedSpace_of_homologyZero_injective {X Y : Type} [TopologicalSpace X]
     [TopologicalSpace Y] [Nonempty X] [PathConnectedSpace Y] (f : C(X, Y))
     (hf : Function.Injective (SingularMayerVietoris.singularHomologyMap f 0)) :
@@ -99,6 +109,7 @@ theorem MorseCancellation.pathConnectedSpace_of_homologyZero_injective {X Y : Ty
     ⟨inferInstance, fun x y =>
       (joined_iff_of_homologyZero_injective f hf x y).mp (PathConnectedSpace.joined (f x) (f y))⟩
 
+/-- A space homotopy equivalent to a path-connected space is path-connected. -/
 theorem MorseCancellation.pathConnectedSpace_of_homotopyEquiv {X Y : Type} [TopologicalSpace X]
     [TopologicalSpace Y] [PathConnectedSpace Y] (e : X ≃ₕ Y) : PathConnectedSpace X := by
   let : Nonempty X := ⟨e.invFun (Classical.arbitrary Y)⟩
@@ -106,6 +117,8 @@ theorem MorseCancellation.pathConnectedSpace_of_homotopyEquiv {X Y : Type} [Topo
     pathConnectedSpace_of_homologyZero_injective e.toFun
       (SingularHomology.homotopyEquivHomologyEquiv e 0).injective
 
+/-- If the unit sphere of `N` is empty and `X` is preconnected, then the old part of an
+embedded cell attachment `D : EmbeddedCellAttachment N X` is empty (the cell is all of `X`). -/
 theorem MorseCancellation.cell_old_empty_of_empty_boundary {N X : Type} [NormedAddCommGroup N]
     [NormedSpace ℝ N] [TopologicalSpace X] [PreconnectedSpace X]
     (D : EmbeddedCellAttachment N X) [IsEmpty (Metric.sphere (0 : N) 1)] : D.old = ∅ := by
@@ -128,6 +141,8 @@ theorem MorseCancellation.cell_old_empty_of_empty_boundary {N X : Type} [NormedA
   · let z : MorseHandle.UnitDisk N := ⟨0, by simp⟩
     exact False.elim (hdisjoint z (h ▸ Set.mem_univ _))
 
+/-- Every singular `0`-chain is a cycle: the linear map `Chains X 0 → Cycle (singularComplex X) 0`.
+Every singular `0`-chain is a cycle: the linear map `Chains X 0 → Cycle (singularComplex X) 0`. -/
 def MorseCancellation.zeroChainCycle {X : Type} [TopologicalSpace X] :
     SingularChains.Chains X 0 →ₗ[ℤ]
       SingularMayerVietoris.ModuleHomology.Cycle (SingularChains.singularComplex X) 0
@@ -141,11 +156,13 @@ def MorseCancellation.zeroChainCycle {X : Type} [TopologicalSpace X] :
   map_add' _ _ := rfl
   map_smul' _ _ := rfl
 
+/-- The linear map `Chains X 0 → H₀(X)` sending a `0`-chain to the class of the cycle it is. -/
 def MorseCancellation.zeroChainClass {X : Type} [TopologicalSpace X] :
     SingularChains.Chains X 0 →ₗ[ℤ] SingularMayerVietoris.SingularHomology X 0 :=
   (SingularMayerVietoris.ModuleHomology.cycleClass (SingularChains.singularComplex X) 0).comp
     zeroChainCycle
 
+/-- `zeroChainClass : Chains X 0 → H₀(X)` is surjective. -/
 theorem MorseCancellation.zeroChainClass_surjective {X : Type} [TopologicalSpace X] :
     Function.Surjective (zeroChainClass (X := X)) := by
   intro a
@@ -154,6 +171,7 @@ theorem MorseCancellation.zeroChainClass_surjective {X : Type} [TopologicalSpace
       a
   exact ⟨c.val, rfl⟩
 
+/-- Two linear maps `L K : H₀(X) → A` agreeing on every point class `pointClass x` are equal. -/
 theorem MorseCancellation.homologyZero_linearMap_ext {X : Type} [TopologicalSpace X] {A : Type}
     [AddCommGroup A] [Module ℤ A] {L K : SingularMayerVietoris.SingularHomology X 0 →ₗ[ℤ] A}
     (h :
