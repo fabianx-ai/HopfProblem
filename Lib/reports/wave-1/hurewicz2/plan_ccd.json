@@ -1,0 +1,132 @@
+{
+ "dump": "/home/goblin/.claude/jobs/06995e68/tmp/wave1/dump_head.jsonl",
+ "module": "Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition",
+ "stem": "CubeChainDecomposition",
+ "source": "/home/goblin/hopf-w1-hurewicz2/Lib/AlgebraicTopology/Hurewicz/CubeChainDecomposition.lean",
+ "orig_preamble": [
+  "open Set Function Filter Manifold Topology",
+  "",
+  "noncomputable section"
+ ],
+ "preamble": [
+  "open Set Function Topology",
+  "",
+  "noncomputable section"
+ ],
+ "pieces": [
+  {
+   "name": "PrismRealization",
+   "ranges": [
+    [
+     51,
+     438
+    ]
+   ],
+   "imports": [
+    "Lib.AlgebraicTopology.Hurewicz.CubeTriangulation",
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator"
+   ],
+   "doc": "/-!\n# The prism realization of a based cube\n\nThe `(n + 1)`-cube `I \u00d7 I\u207f` is triangulated by the prisms `\u0394\u00b9 \u00d7 (Kuhn cell of e)`,\n`e : Perm (Fin n)`. A formal chain on the vertex set `Fin 2 \u00d7 Fin (n + 1)` (a time `0`/`1`\nand a Kuhn vertex index) is *realized* in `X` by a map `p : C(I \u00d7 I\u207f, X)`:\n`Hurewicz.CubeSubdivision.prismCubeRealization p e m` sends a formal `m`-simplex `v` to the\nsingular simplex `p \u2218 prismCubeSimplex e v`, the affine simplex of the cube on the prism\nvertices `prismCubeVertex e (v j)`. The *oriented* realization\n`orientedPrismRealization p m` is the signed sum over `e` with the orientations\n`Hurewicz.CubeTriangulation.cubeOrientation e`.\n\nTwo facts are proved here. The realization at `e` of the formal edge cross product of the\ninterval with a simplex is the pushforward along the prism map `prismCubeMap e` of the\nsingular edge cross product (`prismCubeRealization_edgeCrossProduct`), so that the\nrealization is the singular cross product of Hatcher \u00a73.B read on the cube. And the\n*bad-prism* submodule `badPrism q m` \u2014 the formal chains supported at time `0` or omitting\na nonzero Kuhn index \u2014 is stable under the formal cone and under the edge cross product\n(`formalCone_mem_badPrism`, `formalEdgeCrossProduct_mem_badPrism_of_omit`); these are the\nterms that the oriented realization of a based cube kills.\n\nSigned sums over permutations that are invariant under a transposition vanish\n(`signed_sum_eq_zero_of_swap_invariant`); this is the cancellation that underlies both the\nvanishing on bad prisms and the cycle property of the cube chain.\n\nThe prism decomposition of `\u0394\u00b9 \u00d7 \u0394\u207f` is the one of the prism operator (Hatcher,\n*Algebraic Topology*, proof of Theorem 2.10).\n\n## Main definitions\n\n* `Hurewicz.CubeSubdivision.prismCubeVertex`, `Hurewicz.CubeSubdivision.prismCubeSimplex`,\n  `Hurewicz.CubeSubdivision.prismCubeMap`\n* `Hurewicz.CubeSubdivision.prismCubeRealization`, `Hurewicz.CubeSubdivision.orientedPrismRealization`\n* `Hurewicz.CubeSubdivision.badPrism`\n\n## Main results\n\n* `Hurewicz.CubeSubdivision.prismCubeRealization_edgeCrossProduct`\n* `Hurewicz.CubeSubdivision.signed_sum_eq_zero_of_swap_invariant`\n* `Hurewicz.CubeSubdivision.formalCone_mem_badPrism`\n-/",
+   "out": "/home/goblin/hopf-w1-hurewicz2/Lib/AlgebraicTopology/Hurewicz/CubeChainDecomposition/PrismRealization.lean"
+  },
+  {
+   "name": "StandardPrism",
+   "ranges": [
+    [
+     439,
+     802
+    ]
+   ],
+   "imports": [
+    "Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition.PrismRealization"
+   ],
+   "doc": "/-!\n# The standard prism and the vanishing on bad terms\n\nThe formal edge cross product `\u0394\u00b9 \u00d7 \u0394^q` of the universal edge with the universal simplex\ndiffers from the *standard prism* `standardPrism q v w` \u2014 the signed sum of the `q + 1`\nshuffle simplices `shufflePrismVertices v w i` \u2014 by the *prism discrepancy*\n`prismDiscrepancy q v w`. The discrepancy is natural in the vertices, so it is the image\nof the canonical one `canonicalPrismDiscrepancy q`, and the canonical discrepancy is a\nbad-prism chain (`canonicalPrismDiscrepancy_mem_badPrism`): by the recursion\n`prismDiscrepancy_succ` it is built from cones at time `0` and edge cross products with\nchains omitting a nonzero index.\n\nFor a based cube `p : GenLoop (Fin (n + 2)) X x` the oriented prism realization kills every\nbad-prism generator: at time `0` the prism simplex lies on the cube boundary\n(`orientedPrismRealization_left_zero`), a generator omitting the last Kuhn index lies on\nthe boundary face (`orientedPrismRealization_last_omitted`), and a generator omitting an\ninterior index is invariant under an adjacent transposition of `e`, so its signed sum\ncancels (`orientedPrismRealization_interior_omitted`). Hence the realizations of the edge\ncross product and of the standard prism agree (`orientedPrismRealization_edge_eq_standard`),\nand the oriented realization is the signed sum of the realizations at each `e`\n(`orientedPrismRealization_eq_sum`).\n\nThe shuffle decomposition of `\u0394\u00b9 \u00d7 \u0394^q` into `q + 1` simplices is the one of the prism\noperator (Hatcher, *Algebraic Topology*, proof of Theorem 2.10); the cross-product\nconvention is that of Hatcher \u00a73.B.\n\n## Main definitions\n\n* `Hurewicz.CubeSubdivision.retainedFirstBoundary`\n* `Hurewicz.CubeSubdivision.shufflePrismVertices`, `Hurewicz.CubeSubdivision.standardPrism`\n* `Hurewicz.CubeSubdivision.prismDiscrepancy`, `Hurewicz.CubeSubdivision.canonicalPrismDiscrepancy`\n\n## Main results\n\n* `Hurewicz.CubeSubdivision.canonicalPrismDiscrepancy_mem_badPrism`\n* `Hurewicz.CubeSubdivision.badPrism_le_ker_orientedPrismRealization`\n* `Hurewicz.CubeSubdivision.orientedPrismRealization_edge_eq_standard`\n* `Hurewicz.CubeSubdivision.orientedPrismRealization_eq_sum`\n-/",
+   "out": "/home/goblin/hopf-w1-hurewicz2/Lib/AlgebraicTopology/Hurewicz/CubeChainDecomposition/StandardPrism.lean"
+  },
+  {
+   "name": "PermutationInsertion",
+   "ranges": [
+    [
+     803,
+     966
+    ]
+   ],
+   "imports": [
+    "Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition.StandardPrism"
+   ],
+   "doc": "/-!\n# Permutation insertion and the shuffle prism\n\n`Hurewicz.CubeSubdivision.PermutationInsertion.insert k e` is the permutation of\n`Fin (n + 1)` sending `k` to `0` and `k.succAbove j` to `(e j).succ`; its sign is\n`(-1)^k \u2022 sign e` (`sign_insert`), and `(k, e) \u21a6 insert k e` is a bijection\n`Fin (n + 1) \u00d7 Perm (Fin n) \u2243 Perm (Fin (n + 1))` (`insert_bijective`), so that\nsign-weighted sums over `Perm (Fin (n + 1))` reindex as double sums (`sum_sign_insert`,\n`sum_sign_smul_insert`).\n\nThe geometric content is that the `k`-th shuffle simplex of the prism `\u0394\u00b9 \u00d7 (cell of e)`\nis the Kuhn cell of `insert k e` (`prismCubeSimplex_shuffle`). Consequently the oriented\nprism realization of the standard prism is the signed sum of the Kuhn cells of the\n`(n + 1)`-cube (`orientedPrismRealization_standardPrism`): the prism triangulation of\n`I \u00d7 I\u207f` refines to the Kuhn triangulation of `I\u207f\u207a\u00b9`.\n\nThis is the recursion `S_{n+1} = (n + 1) \u00d7 S_n` on the Kuhn (Freudenthal) chambers,\napplied to the prism decomposition of Hatcher, *Algebraic Topology*, proof of\nTheorem 2.10.\n\n## Main definitions\n\n* `Hurewicz.CubeSubdivision.PermutationInsertion.insert`\n\n## Main results\n\n* `Hurewicz.CubeSubdivision.PermutationInsertion.sign_insert`,\n  `Hurewicz.CubeSubdivision.PermutationInsertion.insert_bijective`\n* `Hurewicz.CubeSubdivision.PermutationInsertion.sum_sign_smul_insert`\n* `Hurewicz.CubeSubdivision.prismCubeSimplex_shuffle`\n* `Hurewicz.CubeSubdivision.orientedPrismRealization_standardPrism`\n-/",
+   "out": "/home/goblin/hopf-w1-hurewicz2/Lib/AlgebraicTopology/Hurewicz/CubeChainDecomposition/PermutationInsertion.lean"
+  },
+  {
+   "name": "CubeChain",
+   "ranges": [
+    [
+     968,
+     1285
+    ]
+   ],
+   "imports": [
+    "Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition.PrismRealization"
+   ],
+   "doc": "/-!\n# The fundamental cube chain\n\n`Hurewicz.fundamentalCubeChain n` is the fundamental singular chain of the cube\n`Fin n \u2192 I`, defined by recursion: the point chain for `n = 0`, the interval chain for\n`n = 1`, and for `n + 2` the edge cross product (Hatcher \u00a73.B) of the interval chain with\nthe fundamental chain of the `(n + 1)`-cube, pushed forward along the uncurrying map\n`cubeCoordinates (n + 1) : I \u00d7 I\u207f\u207a\u00b9 \u2192 I\u207f\u207a\u00b2`. The *cube chain* of a based cube\n`p : GenLoop (Fin n) X x` is its pushforward `cubeChain p = p_* (fundamentalCubeChain n)`.\n\nThe recursion is expressed on `X` by currying: `cubeChain p` is the evaluation of the\ncross product of the interval chain with the cube chain of the curried cube\n`curryLoop p : GenLoop (Fin n) C(I, X) _` (`cubeChain_succ`), and the cross product of the\ninterval chain with the `e`-th Kuhn simplex of the curried cube is the prism realization\nat `e` (`evalLeft_crossProductEdge_intervalChain_simplex`) \u2014 the term that the Kuhn\ndecomposition step feeds into the prism argument.\n\nThe low degrees are computed explicitly: in degree `1` the cube chain is the single\npermutation simplex (`cubeChain_one`), and in degree `2` the fundamental chain is the\nfundamental square chain of `Lib.AlgebraicTopology.Hurewicz.PrismOperator`\n(`fundamentalCubeChain_two`, `cubeChain_eq_squareChain`).\n\n## Main definitions\n\n* `Hurewicz.cubeCoordinates`, `Hurewicz.cubeMap`, `Hurewicz.curryLoop`\n* `Hurewicz.fundamentalCubeChain`, `Hurewicz.cubeChain`\n\n## Main results\n\n* `Hurewicz.cubeChain_succ`, `Hurewicz.evalLeft_crossProductEdge_intervalChain_simplex`\n* `Hurewicz.cubeChain_one`, `Hurewicz.fundamentalCubeChain_two`, `Hurewicz.cubeChain_eq_squareChain`\n-/",
+   "out": "/home/goblin/hopf-w1-hurewicz2/Lib/AlgebraicTopology/Hurewicz/CubeChainDecomposition/CubeChain.lean"
+  },
+  {
+   "name": "IntervalSplit",
+   "ranges": [
+    [
+     1286,
+     1470
+    ]
+   ],
+   "imports": [
+    "Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition.CubeChain"
+   ],
+   "doc": "/-!\n# Splitting the interval chain and the scaled cube\n\nScaling the coordinate `i` of the cube onto `[0, 1/2]` or `[1/2, 1]`\n(`Hurewicz.cubeScaleLeft`, `Hurewicz.cubeScaleRight`) is the cube-level form of the two\nhalf-interval paths `intervalPathLeft`, `intervalPathRight`, whose concatenation is the\nidentity path. The interval chain splits accordingly: the sum of the two half-interval\nchains minus the interval chain is the boundary of the concatenation `2`-simplex\n(`intervalChain_split`), and the same identity holds for the fundamental `(n + 2)`-cube\nchain scaled in the coordinate `0`, with the cross product of that boundary against the\nremaining fundamental cube (`cubeScale_zero_sum_fundamentalCubeChain`).\n\nThis is the chain-level input for the additivity of the cube chain under concatenation\n`GenLoop.transAt 0` (cf. Hatcher, *Algebraic Topology*, proof of Theorem 4.32, where the\nHurewicz map is shown to be a homomorphism).\n\n## Main definitions\n\n* `Hurewicz.cubeScaleLeft`, `Hurewicz.cubeScaleRight`\n* `Hurewicz.intervalScaleLeft`, `Hurewicz.intervalScaleRight`,\n  `Hurewicz.intervalPathLeft`, `Hurewicz.intervalPathRight`\n\n## Main results\n\n* `Hurewicz.intervalPathLeft_trans_intervalPathRight`\n* `Hurewicz.intervalChain_split`\n* `Hurewicz.cubeScale_zero_sum_fundamentalCubeChain`\n-/",
+   "out": "/home/goblin/hopf-w1-hurewicz2/Lib/AlgebraicTopology/Hurewicz/CubeChainDecomposition/IntervalSplit.lean"
+  },
+  {
+   "name": "Concatenation",
+   "ranges": [
+    [
+     1471,
+     1908
+    ]
+   ],
+   "imports": [
+    "Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition.IntervalSplit"
+   ],
+   "doc": "/-!\n# The cube chain of a concatenation\n\nFor based cubes `p q : GenLoop (Fin (n + 2)) X x`, the cube chains of `p`, `q` and of the\nconcatenation `GenLoop.transAt 0 p q` satisfy\n\n`cubeChain p + cubeChain q - cubeChain (transAt 0 p q) = \u2202(\u2026) - (extra term)`\n\n(`Hurewicz.cubeChain_transAt_zero_diff_boundary`): the difference is the pushforward of\nthe interval-split identity along the uncurrying of the concatenation, and the extra\nterm is the cross product of the concatenation `2`-simplex with the boundary of the\nremaining fundamental cube. That boundary is supported on the cube boundary\n(`fundamentalCubeChain_boundary_supported`), where the concatenation is constant, so the\nextra term is a multiple of the constant simplex (`cubeChain_transAt_zero_extra_eq_smul`)\nand vanishes outright in degree `2` (`cubeChain_transAt_zero_extra_zero`).\n\nThe general lemmas on supported chains used along the way (a pushforward along a map into\n`V` is `V`-supported; the point chain is supported where its point lies; the pushforward\nof a point chain is a point chain) are stated for the singular chains of\n`Lib.AlgebraicTopology.SingularHomology`.\n\nThis is the chain-level form of the additivity of the Hurewicz map (Hatcher,\n*Algebraic Topology*, proof of Theorem 4.32).\n\n## Main results\n\n* `Hurewicz.transAt_comp_cubeScaleLeft`, `Hurewicz.transAt_comp_cubeScaleRight`\n* `Hurewicz.cubeChain_transAt_zero_diff`, `Hurewicz.cubeChain_transAt_zero_diff_boundary`\n* `Hurewicz.fundamentalCubeChain_boundary_supported`\n* `Hurewicz.cubeChain_transAt_zero_extra_zero`, `Hurewicz.cubeChain_transAt_zero_extra_eq_smul`\n-/",
+   "out": "/home/goblin/hopf-w1-hurewicz2/Lib/AlgebraicTopology/Hurewicz/CubeChainDecomposition/Concatenation.lean"
+  },
+  {
+   "name": "KuhnDecomposition",
+   "ranges": [
+    [
+     1909,
+     2089
+    ]
+   ],
+   "imports": [
+    "Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition.PermutationInsertion",
+    "Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition.CubeChain"
+   ],
+   "doc": "/-!\n# The Kuhn decomposition of the cube chain\n\nThe cube chain of a based `n`-cube is the signed sum of its `n!` Kuhn simplices:\n\n`cubeChain p = \u2211 e : Perm (Fin n), cubeOrientation e \u2022 simplexChain X n (p \u2218 cubeSimplex e)`\n\n(`Hurewicz.cubeChain_eq_sum_simplices`). The proof is by induction on `n` through the\nprism: the base cases are the interval (`cubeChain_one`) and the square, whose two\ntriangles are the Kuhn cells of the identity and of the transposition\n(`lowerSquareTriangle_eq_cubeSimplex_one`, `upperSquareTriangle_eq_cubeSimplex_swap`,\n`cubeChain_two`); the step (`cubeChain_eq_sum_simplices_step`) writes the cross product of\nthe interval chain with each Kuhn simplex of the curried cube as a prism realization,\nreplaces the edge cross product by the standard prism, and reindexes the shuffle\nsimplices by permutation insertion.\n\nTogether with the boundary of the constant simplex (`boundary_const_simplex`) this is the\nchain identity behind the Hurewicz theorem: the singular chain of a spheroid is the\nalternating sum of the simplices of the Kuhn (Freudenthal) triangulation of the cube\n(Hatcher, *Algebraic Topology*, proof of Theorem 4.32; cross-product convention of\n\u00a73.B).\n\n## Main results\n\n* `Hurewicz.boundary_const_simplex`\n* `Hurewicz.cubeChain_two`\n* `Hurewicz.cubeChain_eq_sum_simplices_step`, `Hurewicz.cubeChain_eq_sum_simplices`\n-/",
+   "out": "/home/goblin/hopf-w1-hurewicz2/Lib/AlgebraicTopology/Hurewicz/CubeChainDecomposition/KuhnDecomposition.lean"
+  },
+  {
+   "name": "Cycle",
+   "ranges": [
+    [
+     2090,
+     2266
+    ]
+   ],
+   "imports": [
+    "Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition.KuhnDecomposition"
+   ],
+   "doc": "/-!\n# The cube cycle of a based cube\n\nThe cube chain of a based cube `p : GenLoop (Fin (m + 2)) X x` is a cycle\n(`Hurewicz.cubeChain_boundary`): by the Kuhn decomposition its boundary is the signed\nsum over the chambers `e` of the faces of the Kuhn simplices, and the face trichotomy\n(`CubeTriangulation.sum_face_trichotomy`) sorts them into the zeroth face, the interior\nfaces and the last face. The interior faces are shared by the chambers `e` and\n`(swap j j+1) \u2218 e`, which carry opposite orientations, so they cancel\n(`CubeTriangulation.sum_cubeOrientation_faces`); the two outer faces lie on the cube\nboundary, where `p` is constant, and their constant simplices cancel because the\norientations sum to zero.\n\n`Hurewicz.cubeCycle p` packages the chain as a cycle and `Hurewicz.cubeHomologyClass p`\nis its homology class \u2014 the Hurewicz image of `p` \u2014 which vanishes for the constant\ncube (`cubeHomologyClass_const`).\n\nThis is the statement that the Hurewicz map is well defined on chains (Hatcher,\n*Algebraic Topology*, \u00a74.2, before Theorem 4.32).\n\n## Main definitions\n\n* `Hurewicz.cubeCycle`, `Hurewicz.cubeHomologyClass`\n\n## Main results\n\n* `Hurewicz.CubeTriangulation.sum_face_trichotomy`, `Hurewicz.CubeTriangulation.sum_cubeOrientation_faces`\n* `Hurewicz.cubeChain_boundary`\n* `Hurewicz.cubeHomologyClass_const`\n-/",
+   "out": "/home/goblin/hopf-w1-hurewicz2/Lib/AlgebraicTopology/Hurewicz/CubeChainDecomposition/Cycle.lean"
+  }
+ ]
+}
