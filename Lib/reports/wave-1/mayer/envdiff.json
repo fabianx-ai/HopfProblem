@@ -1,0 +1,560 @@
+{
+ "before": "/home/goblin/.claude/jobs/06995e68/tmp/wave1/dump_head.jsonl",
+ "after": "/home/goblin/.claude/jobs/06995e68/tmp/wave1/mayer/dump_after.jsonl",
+ "prefix": "",
+ "constants": [
+  38248,
+  38260
+ ],
+ "lost": [
+  [
+   "CoverNaturality.chainSequenceSwap._proof_1",
+   470474317,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.Naturality": 1
+   }
+  ],
+  [
+   "CoverNaturality.chainSequenceSwap._proof_2",
+   1890398342,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.Naturality": 1
+   }
+  ],
+  [
+   "SingularMayerVietoris.SingularHomology._proof_1",
+   2955129997,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris": 1
+   }
+  ],
+  [
+   "SingularMayerVietoris.SmallHomology._proof_1",
+   5494786,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris": 1
+   }
+  ],
+  [
+   "SingularMayerVietoris.connectingHomomorphism._proof_1",
+   957241875,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris": 1
+   }
+  ],
+  [
+   "SingularMayerVietoris.connectingHomomorphism._proof_2",
+   2985765952,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris": 1
+   }
+  ],
+  [
+   "SingularMayerVietoris.connectingHomomorphism.eq_1",
+   4155680907,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris": 1
+   }
+  ],
+  [
+   "SingularMayerVietoris.connectingMap._proof_2",
+   899080153,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris": 1
+   }
+  ],
+  [
+   "SingularMayerVietoris.connectingMap._proof_3",
+   852754117,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris": 1
+   }
+  ],
+  [
+   "SingularMayerVietoris.formalSimplex_mem_supported_iff._simp_1_3",
+   3137220829,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris": 1
+   }
+  ],
+  [
+   "SingularMayerVietoris.formalSubdivisionIteratedHomotopy.eq_1",
+   1919159929,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris": 1
+   }
+  ],
+  [
+   "SingularMayerVietoris.homologyBiprodEquiv._proof_3",
+   3957068070,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris": 1
+   }
+  ],
+  [
+   "SingularMayerVietoris.homologyBiprodEquiv._proof_4",
+   767568128,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris": 1
+   }
+  ],
+  [
+   "SingularMayerVietoris.homologyClassOfCycle.eq_1",
+   4070199763,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CircleProduct": 1
+   }
+  ],
+  [
+   "SingularMayerVietoris.homologyLinearMap._proof_1",
+   938989362,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris": 1
+   }
+  ],
+  [
+   "SingularMayerVietoris.inl_rightMap",
+   62707364,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris": 1
+   }
+  ],
+  [
+   "SingularMayerVietoris.inr_rightMap",
+   873701905,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris": 1
+   }
+  ],
+  [
+   "SingularMayerVietoris.leftMap_fst",
+   3879107237,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris": 1
+   }
+  ],
+  [
+   "SingularMayerVietoris.leftMap_snd",
+   3201112993,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris": 1
+   }
+  ],
+  [
+   "SingularMayerVietoris.middleComplex._proof_1",
+   1567396540,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris": 1
+   }
+  ],
+  [
+   "SingularMayerVietoris.smallHomologyIso._proof_1",
+   1869050116,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris": 1
+   }
+  ],
+  [
+   "SingularMayerVietoris.smallLeftHomologyMap_components",
+   395791457,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris": 1
+   }
+  ],
+  [
+   "SingularMayerVietoris.smallRightHomologyMap_components",
+   58810413,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris": 1
+   }
+  ],
+  [
+   "SingularMayerVietoris.toSmallLeft._proof_1",
+   3243782329,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris": 1
+   }
+  ],
+  [
+   "SingularMayerVietoris.toSmallRight._proof_1",
+   3085748086,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris": 1
+   }
+  ]
+ ],
+ "added": [
+  [
+   "CoverNaturality.chainSequenceSwap._proof_1",
+   1825200221,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.Naturality": 1
+   }
+  ],
+  [
+   "CoverNaturality.chainSequenceSwap._proof_2",
+   2319132881,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.Naturality": 1
+   }
+  ],
+  [
+   "SingularMayerVietoris.SingularHomology._proof_1",
+   1635492264,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris.SingularHomology": 1
+   }
+  ],
+  [
+   "SingularMayerVietoris.SingularHomology._proof_2",
+   1202459432,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris.SingularHomology": 1
+   }
+  ],
+  [
+   "SingularMayerVietoris.SmallHomology._proof_1",
+   1635492264,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris.SmallHomology": 1
+   }
+  ],
+  [
+   "SingularMayerVietoris.SmallHomology._proof_2",
+   2288662010,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris.SmallHomology": 1
+   }
+  ],
+  [
+   "SingularMayerVietoris.connectingHomomorphism._proof_1",
+   2096436044,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris.Sequence": 1
+   }
+  ],
+  [
+   "SingularMayerVietoris.connectingHomomorphism._proof_2",
+   1635492264,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris.Sequence": 1
+   }
+  ],
+  [
+   "SingularMayerVietoris.connectingHomomorphism._proof_3",
+   2709443010,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris.Sequence": 1
+   }
+  ],
+  [
+   "SingularMayerVietoris.connectingHomomorphism._proof_4",
+   1197342865,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris.Sequence": 1
+   }
+  ],
+  [
+   "SingularMayerVietoris.connectingHomomorphism.eq_1",
+   2576658301,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris.Sequence": 1
+   }
+  ],
+  [
+   "SingularMayerVietoris.connectingMap._proof_2",
+   4283473839,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris.HomologyLongExact": 1
+   }
+  ],
+  [
+   "SingularMayerVietoris.connectingMap._proof_3",
+   2438398402,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris.HomologyLongExact": 1
+   }
+  ],
+  [
+   "SingularMayerVietoris.formalSimplex_mem_supported_iff._simp_1_2",
+   3137220829,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris.Support": 1
+   }
+  ],
+  [
+   "SingularMayerVietoris.formalSubdivisionIteratedHomotopy._proof_1",
+   2096436044,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris.FormalSubdivision": 1
+   }
+  ],
+  [
+   "SingularMayerVietoris.formalSubdivisionIteratedHomotopy.eq_1",
+   929871627,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris.FormalSubdivision": 1
+   }
+  ],
+  [
+   "SingularMayerVietoris.homologyBiprodEquiv._proof_3",
+   1635492264,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris.BiprodSequence": 1
+   }
+  ],
+  [
+   "SingularMayerVietoris.homologyBiprodEquiv._proof_4",
+   3427659504,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris.BiprodSequence": 1
+   }
+  ],
+  [
+   "SingularMayerVietoris.homologyBiprodEquiv._proof_5",
+   2517950485,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris.BiprodSequence": 1
+   }
+  ],
+  [
+   "SingularMayerVietoris.homologyBiprodEquiv._proof_6",
+   712766430,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris.BiprodSequence": 1
+   }
+  ],
+  [
+   "SingularMayerVietoris.homologyClassOfCycle.eq_1",
+   3532992362,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CircleProduct": 1
+   }
+  ],
+  [
+   "SingularMayerVietoris.homologyLinearMap._proof_1",
+   1635492264,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris.HomologyLongExact": 1
+   }
+  ],
+  [
+   "SingularMayerVietoris.homologyLinearMap._proof_2",
+   1064300304,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris.HomologyLongExact": 1
+   }
+  ],
+  [
+   "SingularMayerVietoris.inl_rightMap",
+   375370963,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris.ChainSequence": 1
+   }
+  ],
+  [
+   "SingularMayerVietoris.inr_rightMap",
+   607036414,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris.ChainSequence": 1
+   }
+  ],
+  [
+   "SingularMayerVietoris.leftMap_fst",
+   2086310683,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris.ChainSequence": 1
+   }
+  ],
+  [
+   "SingularMayerVietoris.leftMap_snd",
+   1027802954,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris.ChainSequence": 1
+   }
+  ],
+  [
+   "SingularMayerVietoris.middleComplex._proof_1",
+   3035178675,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris.ChainSequence": 1
+   }
+  ],
+  [
+   "SingularMayerVietoris.smallHomologyIso._proof_1",
+   1635492264,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris.SmallSimplices": 1
+   }
+  ],
+  [
+   "SingularMayerVietoris.smallHomologyIso._proof_2",
+   3239464798,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris.SmallSimplices": 1
+   }
+  ],
+  [
+   "SingularMayerVietoris.smallHomologyIso._proof_3",
+   2073459180,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris.SmallSimplices": 1
+   }
+  ],
+  [
+   "SingularMayerVietoris.smallHomologyIso._proof_4",
+   3406296379,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris.SmallSimplices": 1
+   }
+  ],
+  [
+   "SingularMayerVietoris.smallLeftHomologyMap_components",
+   3393917008,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris.SmallHomology": 1
+   }
+  ],
+  [
+   "SingularMayerVietoris.smallRightHomologyMap_components",
+   3830137233,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris.SmallHomology": 1
+   }
+  ],
+  [
+   "SingularMayerVietoris.toSmallLeft._proof_1",
+   1635492264,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris.ChainSequence": 1
+   }
+  ],
+  [
+   "SingularMayerVietoris.toSmallLeft._proof_2",
+   2036396828,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris.ChainSequence": 1
+   }
+  ],
+  [
+   "SingularMayerVietoris.toSmallRight._proof_1",
+   658287007,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris.ChainSequence": 1
+   }
+  ]
+ ],
+ "changed_type_source": [],
+ "changed_type_proof_naming": [
+  "SingularMayerVietoris.inl_rightMap",
+  "SingularMayerVietoris.inr_rightMap",
+  "SingularMayerVietoris.leftMap_fst",
+  "SingularMayerVietoris.leftMap_snd",
+  "SingularMayerVietoris.smallLeftHomologyMap_components",
+  "SingularMayerVietoris.smallRightHomologyMap_components"
+ ],
+ "changed_type_accepted": [],
+ "added_accepted": [],
+ "accept_without_effect": [],
+ "changed_type_all": [
+  "CoverNaturality.chainSequenceSwap._proof_1",
+  "CoverNaturality.chainSequenceSwap._proof_2",
+  "SingularMayerVietoris.SingularHomology._proof_1",
+  "SingularMayerVietoris.SmallHomology._proof_1",
+  "SingularMayerVietoris.connectingHomomorphism._proof_1",
+  "SingularMayerVietoris.connectingHomomorphism._proof_2",
+  "SingularMayerVietoris.connectingHomomorphism.eq_1",
+  "SingularMayerVietoris.connectingMap._proof_2",
+  "SingularMayerVietoris.connectingMap._proof_3",
+  "SingularMayerVietoris.formalSubdivisionIteratedHomotopy.eq_1",
+  "SingularMayerVietoris.homologyBiprodEquiv._proof_3",
+  "SingularMayerVietoris.homologyBiprodEquiv._proof_4",
+  "SingularMayerVietoris.homologyClassOfCycle.eq_1",
+  "SingularMayerVietoris.homologyLinearMap._proof_1",
+  "SingularMayerVietoris.inl_rightMap",
+  "SingularMayerVietoris.inr_rightMap",
+  "SingularMayerVietoris.leftMap_fst",
+  "SingularMayerVietoris.leftMap_snd",
+  "SingularMayerVietoris.middleComplex._proof_1",
+  "SingularMayerVietoris.smallHomologyIso._proof_1",
+  "SingularMayerVietoris.smallLeftHomologyMap_components",
+  "SingularMayerVietoris.smallRightHomologyMap_components",
+  "SingularMayerVietoris.toSmallLeft._proof_1",
+  "SingularMayerVietoris.toSmallRight._proof_1"
+ ],
+ "moves": [
+  [
+   "Lib.AlgebraicTopology.SingularHomology.MayerVietoris",
+   "Lib.AlgebraicTopology.SingularHomology.MayerVietoris.AffineSimplex",
+   11
+  ],
+  [
+   "Lib.AlgebraicTopology.SingularHomology.MayerVietoris",
+   "Lib.AlgebraicTopology.SingularHomology.MayerVietoris.BiprodSequence",
+   15
+  ],
+  [
+   "Lib.AlgebraicTopology.SingularHomology.MayerVietoris",
+   "Lib.AlgebraicTopology.SingularHomology.MayerVietoris.ChainSequence",
+   20
+  ],
+  [
+   "Lib.AlgebraicTopology.SingularHomology.MayerVietoris",
+   "Lib.AlgebraicTopology.SingularHomology.MayerVietoris.FormalChains",
+   17
+  ],
+  [
+   "Lib.AlgebraicTopology.SingularHomology.MayerVietoris",
+   "Lib.AlgebraicTopology.SingularHomology.MayerVietoris.FormalSubdivision",
+   20
+  ],
+  [
+   "Lib.AlgebraicTopology.SingularHomology.MayerVietoris",
+   "Lib.AlgebraicTopology.SingularHomology.MayerVietoris.HomologyLongExact",
+   12
+  ],
+  [
+   "Lib.AlgebraicTopology.SingularHomology.MayerVietoris",
+   "Lib.AlgebraicTopology.SingularHomology.MayerVietoris.Mesh",
+   32
+  ],
+  [
+   "Lib.AlgebraicTopology.SingularHomology.MayerVietoris",
+   "Lib.AlgebraicTopology.SingularHomology.MayerVietoris.Sequence",
+   15
+  ],
+  [
+   "Lib.AlgebraicTopology.SingularHomology.MayerVietoris",
+   "Lib.AlgebraicTopology.SingularHomology.MayerVietoris.SingularHomology",
+   3
+  ],
+  [
+   "Lib.AlgebraicTopology.SingularHomology.MayerVietoris",
+   "Lib.AlgebraicTopology.SingularHomology.MayerVietoris.SmallChains",
+   30
+  ],
+  [
+   "Lib.AlgebraicTopology.SingularHomology.MayerVietoris",
+   "Lib.AlgebraicTopology.SingularHomology.MayerVietoris.SmallHomology",
+   17
+  ],
+  [
+   "Lib.AlgebraicTopology.SingularHomology.MayerVietoris",
+   "Lib.AlgebraicTopology.SingularHomology.MayerVietoris.SmallSimplices",
+   12
+  ],
+  [
+   "Lib.AlgebraicTopology.SingularHomology.MayerVietoris",
+   "Lib.AlgebraicTopology.SingularHomology.MayerVietoris.Subdivision",
+   22
+  ],
+  [
+   "Lib.AlgebraicTopology.SingularHomology.MayerVietoris",
+   "Lib.AlgebraicTopology.SingularHomology.MayerVietoris.Support",
+   17
+  ]
+ ],
+ "ambiguous": [],
+ "auxiliary_moved": 47,
+ "verdict": "PASS"
+}
