@@ -66,7 +66,7 @@ theorem Hurewicz.DegreeTwo.SimplyConnected.subdivisionTriangle_coordinate_sum
   linarith
 
 /-- `p (lowerSquareTriangle s) = x` for `s` on the triangle boundary. -/
-theorem Hurewicz.DegreeTwo.SimplyConnected.subdivisionLowerSquareTriangle_based {X : Type}
+theorem Hurewicz.DegreeTwo.SimplyConnected.subdivisionLowerSquareTriangle_based {X : Type*}
     [TopologicalSpace X] {x : X} (p : GenLoop (Fin 2) X x)
     (hd : ∀ t : (unitInterval), p ![t, t] = x) (s : SingularChains.Simplex 2)
     (hs : s ∈ triangleBoundary) : p (lowerSquareTriangle s) = x := by
@@ -90,7 +90,7 @@ theorem Hurewicz.DegreeTwo.SimplyConnected.subdivisionLowerSquareTriangle_based 
     simpa using hi
 
 /-- `p (upperSquareTriangle s) = x` for `s` on the triangle boundary. -/
-theorem Hurewicz.DegreeTwo.SimplyConnected.subdivisionUpperNegativeSquareTriangle_based {X : Type}
+theorem Hurewicz.DegreeTwo.SimplyConnected.subdivisionUpperNegativeSquareTriangle_based {X : Type*}
     [TopologicalSpace X] {x : X} (p : GenLoop (Fin 2) X x)
     (hd : ∀ t : (unitInterval), p ![t, t] = x) (s : SingularChains.Simplex 2)
     (hs : s ∈ triangleBoundary) : p (upperSquareTriangle s) = x := by
@@ -114,7 +114,7 @@ theorem Hurewicz.DegreeTwo.SimplyConnected.subdivisionUpperNegativeSquareTriangl
     simpa using hi
 
 /-- `p (subdivisionUpperPositiveSquareTriangle s) = x` for `s` on the triangle boundary. -/
-theorem Hurewicz.DegreeTwo.SimplyConnected.subdivisionUpperPositiveSquareTriangle_based {X : Type}
+theorem Hurewicz.DegreeTwo.SimplyConnected.subdivisionUpperPositiveSquareTriangle_based {X : Type*}
     [TopologicalSpace X] {x : X} (p : GenLoop (Fin 2) X x)
     (hd : ∀ t : (unitInterval), p ![t, t] = x) (s : SingularChains.Simplex 2)
     (hs : s ∈ triangleBoundary) : p (subdivisionUpperPositiveSquareTriangle s) = x := by

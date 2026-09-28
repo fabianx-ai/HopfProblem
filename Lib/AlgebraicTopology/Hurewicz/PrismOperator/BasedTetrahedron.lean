@@ -96,7 +96,7 @@ theorem Hurewicz.DegreeTwo.SimplyConnected.tetrahedronSimplexBlend_self {n : ℕ
   ring
 
 /-- The blend of two tetrahedron maps as a continuous map on the cylinder. -/
-def Hurewicz.DegreeTwo.SimplyConnected.tetrahedronSimplexBlendMap {n : ℕ} {Y : Type}
+def Hurewicz.DegreeTwo.SimplyConnected.tetrahedronSimplexBlendMap {n : ℕ} {Y : Type*}
     [TopologicalSpace Y] (f g : C(Y, SingularChains.Simplex n)) :
     C((unitInterval) × Y, SingularChains.Simplex n)
     where

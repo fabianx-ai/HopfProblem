@@ -71,7 +71,7 @@ theorem Hurewicz.DegreeTwo.SimplyConnected.upperSquareTriangle_verticesBased {X 
     simp [hi, stdSimplex.vertex]
 
 /-- The face-`1` restrictions of the lower and upper square triangles of `p` agree. -/
-theorem Hurewicz.DegreeTwo.SimplyConnected.squareTriangles_diagonal {X : Type} [TopologicalSpace X]
+theorem Hurewicz.DegreeTwo.SimplyConnected.squareTriangles_diagonal {X : Type*} [TopologicalSpace X]
     {x : X} (p : GenLoop (Fin 2) X x) :
     (p.val.comp lowerSquareTriangle).comp (SingularChains.simplexFace 1 1) =
       (p.val.comp upperSquareTriangle).comp (SingularChains.simplexFace 1 1) := by
@@ -96,7 +96,7 @@ theorem Hurewicz.DegreeTwo.SimplyConnected.squareTriangles_diagonal {X : Type} [
       zero_add]
 
 /-- For `i ≠ 1`, face `i` of the lower square triangle of `p` is constant `x`. -/
-theorem Hurewicz.DegreeTwo.SimplyConnected.lowerSquareTriangle_outerFace {X : Type}
+theorem Hurewicz.DegreeTwo.SimplyConnected.lowerSquareTriangle_outerFace {X : Type*}
     [TopologicalSpace X] {x : X} (p : GenLoop (Fin 2) X x) (i : Fin 3) (hi : i ≠ 1) :
     (p.val.comp lowerSquareTriangle).comp (SingularChains.simplexFace 1 i) =
       ContinuousMap.const (SingularChains.Simplex 1) x := by
@@ -126,7 +126,7 @@ theorem Hurewicz.DegreeTwo.SimplyConnected.lowerSquareTriangle_outerFace {X : Ty
     rw [lowerSquareTriangle_one, SingularChains.simplexFace_apply_self]
 
 /-- For `i ≠ 1`, face `i` of the upper square triangle of `p` is constant `x`. -/
-theorem Hurewicz.DegreeTwo.SimplyConnected.upperSquareTriangle_outerFace {X : Type}
+theorem Hurewicz.DegreeTwo.SimplyConnected.upperSquareTriangle_outerFace {X : Type*}
     [TopologicalSpace X] {x : X} (p : GenLoop (Fin 2) X x) (i : Fin 3) (hi : i ≠ 1) :
     (p.val.comp upperSquareTriangle).comp (SingularChains.simplexFace 1 i) =
       ContinuousMap.const (SingularChains.Simplex 1) x := by

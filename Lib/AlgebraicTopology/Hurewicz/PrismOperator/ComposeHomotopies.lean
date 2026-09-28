@@ -45,7 +45,7 @@ def Hurewicz.cylinderHomotopy {A X : Type} [TopologicalSpace A] [TopologicalSpac
   map_one_left _ := rfl
 
 /-- Transitivity of homotopies commutes with precomposition by a continuous map. -/
-theorem Hurewicz.homotopyTrans_compContinuousMap {A B X : Type} [TopologicalSpace A]
+theorem Hurewicz.homotopyTrans_compContinuousMap {A B X : Type*} [TopologicalSpace A]
     [TopologicalSpace B] [TopologicalSpace X] {f₀ f₁ f₂ : C(A, X)} (F : f₀.Homotopy f₁)
     (G : f₁.Homotopy f₂) (f : C(B, A)) :
     (F.trans G).toContinuousMap.comp ((ContinuousMap.id (unitInterval)).prodMap f) =
@@ -56,7 +56,7 @@ theorem Hurewicz.homotopyTrans_compContinuousMap {A B X : Type} [TopologicalSpac
   split_ifs <;> rfl
 
 /-- The concatenation of two constant homotopies is the constant homotopy. -/
-theorem Hurewicz.homotopyTrans_const {A X : Type} [TopologicalSpace A] [TopologicalSpace X]
+theorem Hurewicz.homotopyTrans_const {A X : Type*} [TopologicalSpace A] [TopologicalSpace X]
     {f₀ f₁ f₂ : C(A, X)} (F : f₀.Homotopy f₁) (G : f₁.Homotopy f₂) (x : X)
     (hF : F.toContinuousMap = ContinuousMap.const ((unitInterval) × A) x)
     (hG : G.toContinuousMap = ContinuousMap.const ((unitInterval) × A) x) :
@@ -69,7 +69,7 @@ theorem Hurewicz.homotopyTrans_const {A X : Type} [TopologicalSpace A] [Topologi
   · exact ContinuousMap.congr_fun hG _
 
 /-- `HomotopyRel` transitivity respects equality of the homotopies. -/
-theorem Hurewicz.homotopyTrans_congr {A X : Type} [TopologicalSpace A] [TopologicalSpace X]
+theorem Hurewicz.homotopyTrans_congr {A X : Type*} [TopologicalSpace A] [TopologicalSpace X]
     {f₀ f₁ f₂ g₀ g₁ g₂ : C(A, X)} (F : f₀.Homotopy f₁) (G : f₁.Homotopy f₂) (F' : g₀.Homotopy g₁)
     (G' : g₁.Homotopy g₂) (hF : F.toContinuousMap = F'.toContinuousMap)
     (hG : G.toContinuousMap = G'.toContinuousMap) :
