@@ -42,6 +42,9 @@ open scoped ContDiff ContinuousMap
 
 noncomputable section
 
+/-- Let `S` be a surgery-window system of `f` on a compact path-connected manifold such that for
+every index-`1` critical point `p` all core boundary points are joined in the lower sublevel set
+to one point.  Then `f` has exactly one critical point of index `0`. -/
 theorem MorseCancellation.native_minimum_count_one_of_one_handle_components {E M : Type}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M]
@@ -110,6 +113,9 @@ theorem MorseCancellation.native_minimum_count_one_of_one_handle_components {E M
       exact hx ▸ ⟨(S.first hn).property, hfirst⟩
   exact Set.ncard_eq_one.mpr ⟨(S.first hn).val, hset⟩
 
+/-- If `f` on a compact path-connected manifold does not have exactly one minimum, there is an
+index-`1` critical point `p` whose two core boundary points are not joined in the lower sublevel
+set. -/
 theorem MorseCancellation.exists_native_one_handle_joining_components {E M : Type}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M]
@@ -131,6 +137,11 @@ theorem MorseCancellation.exists_native_one_handle_joining_components {E M : Typ
   by_contra huv
   exact h ⟨p, hp, u, v, huv⟩
 
+/-- Let `p`, `r`, `q` be critical points of `f₀` of indices `0`, `?`, `1` with `f₀ r < f₀ p < S.lower q`,
+`V` a gradient-like field with flow `G` whose backward basin of `q` in the lower level is the
+attaching sphere, with the attaching points `u`, `v` flowing to `p`, `r`, and no flow line from `q`
+to another critical point.  Then there is a Morse function with distinct critical values and two
+critical points fewer than `f₀`. -/
 theorem MorseCancellation.cancel_realized_higher_minimum {E M : Type} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] [PathConnectedSpace M] {f₀ : M → ℝ}
@@ -199,6 +210,9 @@ theorem MorseCancellation.cancel_realized_higher_minimum {E M : Type} [NormedAdd
     distinct_critical_values_of_surviving_germs hinj (fun x hx => ((hcritg x).mp hx).1) hkeep
   exact ⟨g, hg, hmg, hinjg, hcard.trans (congrArg Set.ncard hcrit)⟩
 
+/-- If a Morse function `f₀` with an `AdaptedWindows` package on a compact path-connected manifold
+does not have exactly one minimum, there is a Morse function with distinct critical values and two
+critical points fewer. -/
 theorem MorseCancellation.exists_excellent_morse_reduction_of_multiple_minima {E M : Type}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M]
@@ -232,6 +246,9 @@ theorem MorseCancellation.exists_excellent_morse_reduction_of_multiple_minima {E
       cancel_realized_higher_minimum S.toSurgeryWindows hf₀ hm₀ hV G hG hzero hdesc hmodels p r q
         hpzero hqone hgt hp u v hback hu hv hnoconnection
 
+/-- Milnor, h-cobordism Theorem 8.1: a Morse function with an `AdaptedWindows` package on a compact
+path-connected manifold with the least number of critical points among Morse functions with
+distinct critical values has exactly one critical point of index `0`. -/
 theorem MorseCancellation.minimal_excellent_morse_minimum_count_one {E M : Type} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] [PathConnectedSpace M] {f : M → ℝ}
@@ -250,6 +267,8 @@ theorem MorseCancellation.minimal_excellent_morse_minimum_count_one {E M : Type}
     exists_excellent_morse_reduction_of_multiple_minima S hf hm hmin
   exact minimal_excellent_morse_forbids_pair_removal hminimal hg hmg hinjg hcount
 
+/-- A minimal Morse function as in `minimal_excellent_morse_minimum_count_one` has exactly one
+critical point of index `0` and exactly one of index `dim E`. -/
 theorem MorseCancellation.minimal_excellent_morse_extreme_counts_one {E M : Type} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] [PathConnectedSpace M] {f : M → ℝ}
