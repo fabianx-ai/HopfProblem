@@ -7453,3 +7453,6 @@ is an evidence command rather than library content.
 
 #check RiemannSphere.closedOrientedHalfPlane_topology
 #print axioms RiemannSphere.closedOrientedHalfPlane_topology
+
+#check RiemannSphere.closedDiscHalfPlaneHomeomorph_inverse_receipt
+#print axioms RiemannSphere.closedDiscHalfPlaneHomeomorph_inverse_receipt

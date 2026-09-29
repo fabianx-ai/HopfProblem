@@ -688,3 +688,261 @@ theorem RiemannSphere.closedOrientedHalfPlane_topology (k : ℝ) (hk : k ≠ 0) 
     rfl
   · rw [hP, L.frontier_preimage hsurj, frontier_Ici]
     exact hzero
+
+/-- The explicit rational inverse of the three-point normalization, with both
+punctured-plane inverse laws, all closed/strict/real ranges and preimages,
+and both quotient and subtype continuities. This is the FREE F5–F9 calculation
+of `CENTER_LCP_FREE_MARKED_NORMALIZATION_TEXTBOOK.md`, P95–137.
+The inverse is identified with the same existing disc/half-plane homeomorphism;
+no orientation sign or native construction data is assumed. -/
+theorem RiemannSphere.closedDiscHalfPlaneHomeomorph_inverse_receipt
+    (a b c : ℂ) (hab : a ≠ b) (hac : a ≠ c) (hbc : b ≠ c)
+    (ha : ‖a‖ = 1) (hb : ‖b‖ = 1) (hc : ‖c‖ = 1) :
+    let d := RiemannSphere.MobiusCircle.coefficient a b c
+    let k := RiemannSphere.MobiusCircle.orientation a b c
+    let M := RiemannSphere.MobiusCircle.crossRatio a b c
+    let R := fun w : ℂ => (w * c - d * a) / (w - d)
+    let B := RiemannSphere.closedDiscWithoutPole c
+    let P := RiemannSphere.closedOrientedHalfPlane k
+    let U : Set ℂ := {z | ‖z‖ < 1}
+    let S : Set ℂ := {z | ‖z‖ = 1 ∧ z ≠ c}
+    let V : Set ℂ := {w | 0 < k * w.im}
+    let A : Set ℂ := {w | w.im = 0}
+    let H := RiemannSphere.closedDiscHalfPlaneHomeomorph hab hac hbc ha hb hc
+    (∀ z : ℂ, z ≠ c →
+      (z - c) * (b - a) ≠ 0 ∧
+      M z - d = d * (c - a) / (z - c) ∧ M z - d ≠ 0 ∧
+      M z * c - d * a = d * z * (c - a) / (z - c) ∧ R (M z) = z) ∧
+    (∀ w : ℂ, w ≠ d →
+      w - d ≠ 0 ∧ R w - c = d * (c - a) / (w - d) ∧ R w - c ≠ 0 ∧
+      R w - a = w * (c - a) / (w - d) ∧ M (R w) = w) ∧
+    Set.BijOn M {z | z ≠ c} {w | w ≠ d} ∧
+    Set.BijOn R {w | w ≠ d} {z | z ≠ c} ∧
+    k * d.im = -(k ^ 2) ∧ k * d.im < 0 ∧
+    (∀ w ∈ P, w ≠ d ∧ R w ∈ B) ∧
+    Set.MapsTo M B P ∧ Set.BijOn M B P ∧ Set.BijOn R P B ∧
+    M '' B = P ∧ R '' P = B ∧
+    (∀ w ∈ P, (‖R w‖ < 1 ↔ 0 < k * w.im) ∧
+      (R w ∈ S ↔ w.im = 0)) ∧
+    M '' U = V ∧ R '' V = U ∧ M '' S = A ∧ R '' A = S ∧
+    B ∩ M ⁻¹' V = U ∧ B ∩ M ⁻¹' A = S ∧
+    P ∩ R ⁻¹' U = V ∧ P ∩ R ⁻¹' S = A ∧
+    ContinuousOn M {z | z ≠ c} ∧ ContinuousOn R {w | w ≠ d} ∧
+    (∀ hM : ∀ z : B, M z ∈ P,
+      Continuous (fun z : B => (⟨M z, hM z⟩ : P))) ∧
+    (∀ hR : ∀ w : P, R w ∈ B,
+      Continuous (fun w : P => (⟨R w, hR w⟩ : B))) ∧
+    (∀ z : B, (H z : ℂ) = M z) ∧
+    (∀ w : P, (H.symm w : ℂ) = R w) := by
+  classical
+  -- F5a/F5b: full distinct-triple algebra, independent of unit norms.
+  have f5_forward (a b c : ℂ) (hab : a ≠ b) (hac : a ≠ c) (hbc : b ≠ c) :
+      let d := RiemannSphere.MobiusCircle.coefficient a b c
+      let M := RiemannSphere.MobiusCircle.crossRatio a b c
+      let R := fun w : ℂ => (w * c - d * a) / (w - d)
+      ∀ z : ℂ, z ≠ c →
+        (z - c) * (b - a) ≠ 0 ∧
+        M z - d = d * (c - a) / (z - c) ∧ M z - d ≠ 0 ∧
+        M z * c - d * a = d * z * (c - a) / (z - c) ∧ R (M z) = z := by
+    dsimp only
+    let d := RiemannSphere.MobiusCircle.coefficient a b c
+    have hd : d ≠ 0 := RiemannSphere.MobiusCircle.coefficient_ne_zero hab.symm hbc
+    have hca : c - a ≠ 0 := sub_ne_zero.mpr hac.symm
+    intro z hz
+    have hzc : z - c ≠ 0 := sub_ne_zero.mpr hz
+    have hden : (z - c) * (b - a) ≠ 0 :=
+      mul_ne_zero hzc (sub_ne_zero.mpr hab.symm)
+    have hdiff : RiemannSphere.MobiusCircle.crossRatio a b c z - d =
+        d * (c - a) / (z - c) := by
+      rw [RiemannSphere.MobiusCircle.crossRatio_eq_coefficient]
+      change d * ((z - a) / (z - c)) - d = d * (c - a) / (z - c)
+      field_simp
+      <;> ring
+    have hnonzero : RiemannSphere.MobiusCircle.crossRatio a b c z - d ≠ 0 := by
+      rw [hdiff]
+      exact div_ne_zero (mul_ne_zero hd hca) hzc
+    have hnum : RiemannSphere.MobiusCircle.crossRatio a b c z * c - d * a =
+        d * z * (c - a) / (z - c) := by
+      rw [RiemannSphere.MobiusCircle.crossRatio_eq_coefficient]
+      change d * ((z - a) / (z - c)) * c - d * a = d * z * (c - a) / (z - c)
+      field_simp
+      <;> ring
+    refine ⟨hden, hdiff, hnonzero, hnum, ?_⟩
+    change (RiemannSphere.MobiusCircle.crossRatio a b c z * c - d * a) /
+      (RiemannSphere.MobiusCircle.crossRatio a b c z - d) = z
+    rw [hnum, hdiff]
+    field_simp
+    <;> ring
+
+  have f5_reverse (a b c : ℂ) (hab : a ≠ b) (hac : a ≠ c) (hbc : b ≠ c) :
+      let d := RiemannSphere.MobiusCircle.coefficient a b c
+      let M := RiemannSphere.MobiusCircle.crossRatio a b c
+      let R := fun w : ℂ => (w * c - d * a) / (w - d)
+      ∀ w : ℂ, w ≠ d →
+        w - d ≠ 0 ∧ R w - c = d * (c - a) / (w - d) ∧ R w - c ≠ 0 ∧
+        R w - a = w * (c - a) / (w - d) ∧ M (R w) = w := by
+    dsimp only
+    let d := RiemannSphere.MobiusCircle.coefficient a b c
+    have hd : d ≠ 0 := RiemannSphere.MobiusCircle.coefficient_ne_zero hab.symm hbc
+    have hca : c - a ≠ 0 := sub_ne_zero.mpr hac.symm
+    intro w hw
+    have hwd : w - d ≠ 0 := sub_ne_zero.mpr hw
+    have hdiff : (w * c - d * a) / (w - d) - c = d * (c - a) / (w - d) := by
+      field_simp
+      <;> ring
+    have hnonzero : (w * c - d * a) / (w - d) - c ≠ 0 := by
+      rw [hdiff]
+      exact div_ne_zero (mul_ne_zero hd hca) hwd
+    have hnum : (w * c - d * a) / (w - d) - a = w * (c - a) / (w - d) := by
+      field_simp
+      <;> ring
+    refine ⟨hwd, hdiff, hnonzero, hnum, ?_⟩
+    rw [RiemannSphere.MobiusCircle.crossRatio_eq_coefficient]
+    change d * (((w * c - d * a) / (w - d) - a) /
+      ((w * c - d * a) / (w - d) - c)) = w
+    rw [hnum, hdiff]
+    field_simp
+    <;> ring
+  dsimp only
+  let d := RiemannSphere.MobiusCircle.coefficient a b c
+  let k := RiemannSphere.MobiusCircle.orientation a b c
+  let M := RiemannSphere.MobiusCircle.crossRatio a b c
+  let R := fun w : ℂ => (w * c - d * a) / (w - d)
+  let B := RiemannSphere.closedDiscWithoutPole c
+  let P := RiemannSphere.closedOrientedHalfPlane k
+  let U : Set ℂ := {z | ‖z‖ < 1}
+  let S : Set ℂ := {z | ‖z‖ = 1 ∧ z ≠ c}
+  let V : Set ℂ := {w | 0 < k * w.im}
+  let A : Set ℂ := {w | w.im = 0}
+  let H := RiemannSphere.closedDiscHalfPlaneHomeomorph hab hac hbc ha hb hc
+  -- F5: exact algebra obligations feed inverse-on and bijection APIs.
+  have hforward := f5_forward a b c hab hac hbc
+  have hreverse := f5_reverse a b c hab hac hbc
+  have hRM (z : ℂ) (hz : z ≠ c) : R (M z) = z := (hforward z hz).2.2.2.2
+  have hMR (w : ℂ) (hw : w ≠ d) : M (R w) = w := (hreverse w hw).2.2.2.2
+  have hMc (z : ℂ) (hz : z ≠ c) : M z ≠ d :=
+    sub_ne_zero.mp (hforward z hz).2.2.1
+  have hRc (w : ℂ) (hw : w ≠ d) : R w ≠ c :=
+    sub_ne_zero.mp (hreverse w hw).2.2.1
+  have inv (s t : Set ℂ) (hs : s ⊆ {z | z ≠ c}) (ht : t ⊆ {w | w ≠ d}) :
+      Set.InvOn R M s t :=
+    ⟨fun z hz => hRM z (hs hz), fun w hw => hMR w (ht hw)⟩
+  have bij (s t : Set ℂ) (hs : s ⊆ {z | z ≠ c}) (ht : t ⊆ {w | w ≠ d})
+      (hm : Set.MapsTo M s t) (hr : Set.MapsTo R t s) :
+      Set.BijOn M s t ∧ Set.BijOn R t s :=
+    ⟨(inv s t hs ht).bijOn hm hr, (inv s t hs ht).symm.bijOn hr hm⟩
+  have hplanes := bij {z | z ≠ c} {w | w ≠ d} (fun _ h => h) (fun _ h => h)
+    (fun z hz => hMc z hz) (fun w hw => hRc w hw)
+  -- F4/F6: actual weak/strict suppliers, with no positive orientation premise.
+  have hk : k ≠ 0 :=
+    RiemannSphere.MobiusCircle.orientation_ne_zero ha hb hc hab.symm hbc hac
+  have hweak (z : ℂ) (hz : z ≠ c) : 0 ≤ k * (M z).im ↔ ‖z‖ ≤ 1 :=
+    RiemannSphere.orientation_mul_crossRatio_im_nonneg_iff hab hac hbc ha hb hc hz
+  have hstrict (z : ℂ) (hz : z ≠ c) : 0 < k * (M z).im ↔ ‖z‖ < 1 :=
+    RiemannSphere.MobiusCircle.orientation_mul_crossRatio_im_pos_iff
+      ha hb hc hab.symm hbc hac hz
+  have hequal (z : ℂ) (hz : z ≠ c) : (M z).im = 0 ↔ ‖z‖ = 1 := by
+    constructor
+    · intro he
+      have hw : ‖z‖ ≤ 1 := (hweak z hz).mp (by rw [he]; simp)
+      have hn : ¬ ‖z‖ < 1 := by
+        intro hn
+        have hp := (hstrict z hz).mpr hn
+        rw [he, mul_zero] at hp
+        exact lt_irrefl 0 hp
+      exact le_antisymm hw (le_of_not_gt hn)
+    · intro he
+      have hw : 0 ≤ k * (M z).im := (hweak z hz).mpr he.le
+      have hn : ¬ 0 < k * (M z).im := by
+        intro hn
+        have hp := (hstrict z hz).mp hn
+        rw [he] at hp
+        exact lt_irrefl 1 hp
+      exact (mul_eq_zero.mp (le_antisymm (le_of_not_gt hn) hw)).resolve_left hk
+  have hdim : k * d.im = -(k ^ 2) :=
+    RiemannSphere.MobiusCircle.orientation_mul_coefficient_im a b c
+  have hdneg : k * d.im < 0 :=
+    RiemannSphere.MobiusCircle.orientation_mul_coefficient_im_neg ha hb hc hab.symm hbc hac
+  have hPd (w : ℂ) (hw : w ∈ P) : w ≠ d := by
+    intro he
+    subst w
+    exact (not_le_of_gt hdneg) hw
+  have hMP : Set.MapsTo M B P := fun z hz => (hweak z hz.2).mpr hz.1
+  have hRP (w : ℂ) (hw : w ∈ P) : w ≠ d ∧ R w ∈ B := by
+    have hd := hPd w hw
+    have hc := hRc w hd
+    refine ⟨hd, ?_, hc⟩
+    apply (hweak (R w) hc).mp
+    change 0 ≤ k * w.im at hw
+    simpa only [hMR w hd] using hw
+  have hclosed := bij B P (fun z hz => hz.2) hPd hMP (fun w hw => (hRP w hw).2)
+  -- F7: complete finer range equivalences before the image/preimage recipes.
+  have hRstrict (w : ℂ) (hw : w ∈ P) : ‖R w‖ < 1 ↔ 0 < k * w.im := by
+    have hi := hstrict (R w) (hRP w hw).2.2
+    rw [hMR w (hPd w hw)] at hi
+    exact hi.symm
+  have hRreal (w : ℂ) (hw : w ∈ P) : R w ∈ S ↔ w.im = 0 := by
+    have hi := hequal (R w) (hRP w hw).2.2
+    rw [hMR w (hPd w hw)] at hi
+    exact ⟨fun h => hi.mpr h.1, fun h => ⟨hi.mp h, (hRP w hw).2.2⟩⟩
+  have hUc (z : ℂ) (hz : z ∈ U) : z ≠ c := by
+    intro he
+    subst z
+    exact (not_lt_of_ge hc.ge) hz
+  have hVP : V ⊆ P := fun w hw =>
+    show 0 ≤ k * w.im from le_of_lt (show 0 < k * w.im from hw)
+  have hAP : A ⊆ P := by
+    intro w hw
+    change 0 ≤ k * w.im
+    rw [show w.im = 0 from hw, mul_zero]
+  have hopen := bij U V hUc (fun w hw => hPd w (hVP hw))
+    (fun z hz => (hstrict z (hUc z hz)).mpr hz)
+    (fun w hw => (hRstrict w (hVP hw)).mpr hw)
+  have hcircle := bij S A (fun z hz => hz.2) (fun w hw => hPd w (hAP hw))
+    (fun z hz => (hequal z hz.2).mpr hz.1)
+    (fun w hw => (hRreal w (hAP hw)).mpr hw)
+  have hpreU : B ∩ M ⁻¹' V = U := by
+    ext z
+    exact ⟨fun h => (hstrict z h.1.2).mp h.2,
+      fun h => ⟨⟨le_of_lt h, hUc z h⟩, (hstrict z (hUc z h)).mpr h⟩⟩
+  have hpreS : B ∩ M ⁻¹' A = S := by
+    ext z
+    exact ⟨fun h => ⟨(hequal z h.1.2).mp h.2, h.1.2⟩,
+      fun h => ⟨⟨h.1.le, h.2⟩, (hequal z h.2).mpr h.1⟩⟩
+  have hpreV : P ∩ R ⁻¹' U = V := by
+    ext w
+    exact ⟨fun h => (hRstrict w h.1).mp h.2,
+      fun h => ⟨hVP h, (hRstrict w (hVP h)).mpr h⟩⟩
+  have hpreA : P ∩ R ⁻¹' S = A := by
+    ext w
+    exact ⟨fun h => (hRreal w h.1).mp h.2,
+      fun h => ⟨hAP h, (hRreal w (hAP h)).mpr h⟩⟩
+  -- F8: actual quotient continuities, then domain and codomain restriction.
+  have hCM : ContinuousOn M {z : ℂ | z ≠ c} :=
+    ((continuous_id.sub continuous_const).mul continuous_const).continuousOn.div
+      ((continuous_id.sub continuous_const).mul continuous_const).continuousOn
+      (fun z hz => mul_ne_zero (sub_ne_zero.mpr hz) (sub_ne_zero.mpr hab.symm))
+  have hCR : ContinuousOn R {w : ℂ | w ≠ d} :=
+    ((continuous_id.mul continuous_const).sub continuous_const).continuousOn.div
+      (continuous_id.sub continuous_const).continuousOn (fun w hw => sub_ne_zero.mpr hw)
+  have hCMsub (hM : ∀ z : B, M z ∈ P) :
+      Continuous (fun z : B => (⟨M z, hM z⟩ : P)) :=
+    (hCM.mono (fun z hz => hz.2)).domRestrict.subtype_mk hM
+  have hCRsub (hR : ∀ w : P, R w ∈ B) :
+      Continuous (fun w : P => (⟨R w, hR w⟩ : B)) :=
+    (hCR.mono hPd).domRestrict.subtype_mk hR
+  -- F9: identify the independently verified rational inverse with SAME H.symm.
+  have hH (z : B) : (H z : ℂ) = M z :=
+    RiemannSphere.closedDiscHalfPlaneHomeomorph_apply hab hac hbc ha hb hc z
+  have hHs (w : P) : (H.symm w : ℂ) = R w := by
+    have hm : M (H.symm w) = (w : ℂ) := by
+      rw [← hH]
+      exact congrArg Subtype.val (H.apply_symm_apply w)
+    have hr := hRM (H.symm w) (H.symm w).property.2
+    rw [hm] at hr
+    exact hr.symm
+  exact ⟨hforward, hreverse, hplanes.1, hplanes.2, hdim, hdneg, hRP,
+    hMP, hclosed.1, hclosed.2, hclosed.1.image_eq, hclosed.2.image_eq,
+    fun w hw => ⟨hRstrict w hw, hRreal w hw⟩,
+    hopen.1.image_eq, hopen.2.image_eq, hcircle.1.image_eq, hcircle.2.image_eq,
+    hpreU, hpreS, hpreV, hpreA, hCM, hCR, hCMsub, hCRsub, hH, hHs⟩
