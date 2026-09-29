@@ -7718,3 +7718,15 @@ is an evidence command rather than library content.
 
 #check Manifold.speedWithin_comp_of_tensorPreserving
 #print axioms Manifold.speedWithin_comp_of_tensorPreserving
+
+#check Manifold.mfderiv_symm_comp_of_diffeomorph
+#print axioms Manifold.mfderiv_symm_comp_of_diffeomorph
+
+#check Manifold.mfderiv_comp_symm_of_diffeomorph
+#print axioms Manifold.mfderiv_comp_symm_of_diffeomorph
+
+#check Manifold.symm_tensorPreserving_of_diffeomorph
+#print axioms Manifold.symm_tensorPreserving_of_diffeomorph
+
+#check Manifold.symm_norm_enorm_of_tensorPreserving
+#print axioms Manifold.symm_norm_enorm_of_tensorPreserving
