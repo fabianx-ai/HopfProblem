@@ -7456,3 +7456,54 @@ is an evidence command rather than library content.
 
 #check RiemannSphere.closedDiscHalfPlaneHomeomorph_inverse_receipt
 #print axioms RiemannSphere.closedDiscHalfPlaneHomeomorph_inverse_receipt
+
+#check Hyperbolic.upperHalfPlaneToHyperboloidCoords_mem
+#print axioms Hyperbolic.upperHalfPlaneToHyperboloidCoords_mem
+
+#check Hyperbolic.upperHalfPlaneToHyperboloidCoords_sub
+#print axioms Hyperbolic.upperHalfPlaneToHyperboloidCoords_sub
+
+#check Hyperbolic.upperHalfPlaneToHyperboloidCoords_add
+#print axioms Hyperbolic.upperHalfPlaneToHyperboloidCoords_add
+
+#check Hyperbolic.hyperboloid_abs_y_lt_t
+#print axioms Hyperbolic.hyperboloid_abs_y_lt_t
+
+#check Hyperbolic.hyperboloid_denominator_pos
+#print axioms Hyperbolic.hyperboloid_denominator_pos
+
+#check Hyperbolic.hyperboloidToUpperHalfPlaneCoords_im_pos
+#print axioms Hyperbolic.hyperboloidToUpperHalfPlaneCoords_im_pos
+
+#check Hyperbolic.hyperboloidCoords_left_inv
+#print axioms Hyperbolic.hyperboloidCoords_left_inv
+
+#check Hyperbolic.hyperboloidCoords_right_inv
+#print axioms Hyperbolic.hyperboloidCoords_right_inv
+
+#check Hyperbolic.toHyperboloid
+#print axioms Hyperbolic.toHyperboloid
+
+#check Hyperbolic.fromHyperboloid
+#print axioms Hyperbolic.fromHyperboloid
+
+#check Hyperbolic.toHyperboloid_val
+#print axioms Hyperbolic.toHyperboloid_val
+
+#check Hyperbolic.fromHyperboloid_coe
+#print axioms Hyperbolic.fromHyperboloid_coe
+
+#check Hyperbolic.fromHyperboloid_toHyperboloid
+#print axioms Hyperbolic.fromHyperboloid_toHyperboloid
+
+#check Hyperbolic.toHyperboloid_fromHyperboloid
+#print axioms Hyperbolic.toHyperboloid_fromHyperboloid
+
+#check Hyperbolic.upperHalfPlaneEquivHyperboloid
+#print axioms Hyperbolic.upperHalfPlaneEquivHyperboloid
+
+#check Hyperbolic.upperHalfPlaneEquivHyperboloid_apply
+#print axioms Hyperbolic.upperHalfPlaneEquivHyperboloid_apply
+
+#check Hyperbolic.upperHalfPlaneEquivHyperboloid_symm_apply
+#print axioms Hyperbolic.upperHalfPlaneEquivHyperboloid_symm_apply

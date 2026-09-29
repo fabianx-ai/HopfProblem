@@ -439,6 +439,7 @@ import Lib.Algebra.Homology.DerivedCategory.Ext.ShortExactDegreeOne
 import Lib.Algebra.Homology.DerivedCategory.Ext.AcyclicResolutionH2H3
 import Lib.Algebra.Homology.DerivedCategory.Ext.AcyclicResolutionFiniteCompatibility
 import Lib.Topology.Sheaves.Cohomology.DerivedGlobalSections
+import Lib.Geometry.Hyperbolic.Models
 /-!
 # Reusable V10 Section 6 library
 
