@@ -4,6 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 SPDX-License-Identifier: Apache-2.0
 -/
 import Hopf.Proof.Topology.Sheaves.Cohomology.SphereTwo
+import Hopf.Proof.Analysis.Complex.RiemannMapping.SectorRoots
 
 /-!
 # Axiom probes for declarations outside the final theorem's closure
@@ -33,3 +34,8 @@ nothing about them.
 #print axioms TopCat.Sheaf.higherDirectImage_derivedGlobalSections_isZero_of_homeomorph_sphereTwo
 #check @TopCat.Sheaf.higherDirectImage_one_derivedGlobalSections_three_four_isZero_of_homeomorph_sphereTwo
 #print axioms TopCat.Sheaf.higherDirectImage_one_derivedGlobalSections_three_four_isZero_of_homeomorph_sphereTwo
+
+/-! ## `Hopf.Proof.Analysis.Complex.RiemannMapping.SectorRoots` -/
+
+#check RiemannBoundary.rotatedPrincipalRootFour_reverse_of_wedge
+#print axioms RiemannBoundary.rotatedPrincipalRootFour_reverse_of_wedge
