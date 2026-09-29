@@ -7712,3 +7712,9 @@ is an evidence command rather than library content.
 
 #check Hyperbolic.contMDiff_hyperboloidTangentTensor
 #print axioms Hyperbolic.contMDiff_hyperboloidTangentTensor
+
+#check Manifold.speed_comp_of_tensorPreserving
+#print axioms Manifold.speed_comp_of_tensorPreserving
+
+#check Manifold.speedWithin_comp_of_tensorPreserving
+#print axioms Manifold.speedWithin_comp_of_tensorPreserving
