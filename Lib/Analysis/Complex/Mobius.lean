@@ -626,3 +626,65 @@ theorem Complex.fractionalLinear_reverse_local (α β : ℂ) (hαβ : α ≠ β)
     have hz0 : (α - β) / (z - β) = 0 := by rw [← hi.1, heq]; simp
     exact hi.2.1 hz0
   exact ⟨hd, hdhalf, hn, hsmall, hhalf, hzb, hu⟩
+
+/-- The closed half-plane oriented by any nonzero real factor has its strict
+half-plane as interior and the real axis as frontier. This is F11 of
+`CENTER_LCP_FREE_MARKED_NORMALIZATION_TEXTBOOK.md`, P141–150: the open signed
+sets and the two paths `w ± i*t*k` are preserved, without choosing a sign for `k`. -/
+theorem RiemannSphere.closedOrientedHalfPlane_topology (k : ℝ) (hk : k ≠ 0) :
+    interior (RiemannSphere.closedOrientedHalfPlane k) = {w : ℂ | 0 < k * w.im} ∧
+    frontier (RiemannSphere.closedOrientedHalfPlane k) = {w : ℂ | w.im = 0} := by
+  -- The canonical open sets and both approaching paths are retained for every real boundary point.
+  have boundary_witnesses (w : ℂ) (hw : w.im = 0) :
+      IsOpen {z : ℂ | 0 < k * z.im} ∧
+      IsOpen {z : ℂ | k * z.im < 0} ∧
+      IsClosed (RiemannSphere.closedOrientedHalfPlane k) ∧
+      (∀ t : ℝ, k * (w + Complex.I * (t : ℂ) * (k : ℂ)).im = t * k ^ 2) ∧
+      (∀ t : ℝ, k * (w - Complex.I * (t : ℂ) * (k : ℂ)).im = -(t * k ^ 2)) ∧
+      Tendsto (fun t : ℝ => w + Complex.I * (t : ℂ) * (k : ℂ)) (𝓝 0) (𝓝 w) ∧
+      Tendsto (fun t : ℝ => w - Complex.I * (t : ℂ) * (k : ℂ)) (𝓝 0) (𝓝 w) := by
+    have hL : Continuous (fun z : ℂ => k * z.im) :=
+      continuous_const.mul Complex.continuous_im
+    have hp : Continuous (fun t : ℝ => w + Complex.I * (t : ℂ) * (k : ℂ)) := by
+      fun_prop
+    have hm : Continuous (fun t : ℝ => w - Complex.I * (t : ℂ) * (k : ℂ)) := by
+      fun_prop
+    refine ⟨isOpen_lt continuous_const hL, isOpen_lt hL continuous_const,
+      isClosed_le continuous_const hL, ?_, ?_, ?_, ?_⟩
+    · intro t
+      simp [Complex.mul_im, hw]
+      <;> ring
+    · intro t
+      simp [Complex.mul_im, hw]
+      <;> ring
+    · simpa using hp.continuousAt.tendsto (x := (0 : ℝ))
+    · simpa using hm.continuousAt.tendsto (x := (0 : ℝ))
+  -- For positive t the paths have opposite strict signs, regardless of the sign of k.
+  have boundary_signs (t : ℝ) (ht : 0 < t) :
+      0 < t * k ^ 2 ∧ -(t * k ^ 2) < 0 := by
+    have h : 0 < t * k ^ 2 := mul_pos ht (sq_pos_of_ne_zero hk)
+    exact ⟨h, neg_neg_of_pos h⟩
+  -- The signed coordinate is onto: I*(y/k) maps to y. Apply the existing
+  -- interior/frontier preimage theorems with this same surjectivity witness.
+  let L : ℂ →L[ℝ] ℝ := k • Complex.imCLM
+  have hL (w : ℂ) : L w = k * w.im := rfl
+  have hsurj : Function.Surjective L := by
+    intro y
+    refine ⟨Complex.I * ((y / k : ℝ) : ℂ), ?_⟩
+    change k * (Complex.I * ((y / k : ℝ) : ℂ)).im = y
+    simp only [Complex.mul_im, Complex.I_re, Complex.ofReal_im, mul_zero,
+      Complex.I_im, Complex.ofReal_re, one_mul, zero_add]
+    field_simp
+  have hP : RiemannSphere.closedOrientedHalfPlane k = L ⁻¹' Set.Ici 0 := by
+    ext w
+    rfl
+  have hzero : L ⁻¹' ({0} : Set ℝ) = {w : ℂ | w.im = 0} := by
+    ext w
+    simp only [Set.mem_preimage, Set.mem_singleton_iff, Set.mem_ofPred_eq, hL]
+    exact mul_eq_zero.trans (or_iff_right hk)
+  constructor
+  · rw [hP, L.interior_preimage hsurj, interior_Ici]
+    ext w
+    rfl
+  · rw [hP, L.frontier_preimage hsurj, frontier_Ici]
+    exact hzero

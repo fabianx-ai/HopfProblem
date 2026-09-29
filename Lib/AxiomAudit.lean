@@ -7450,3 +7450,6 @@ is an evidence command rather than library content.
 
 #check Compactification.exists_homeomorph_of_paired_limits
 #print axioms Compactification.exists_homeomorph_of_paired_limits
+
+#check RiemannSphere.closedOrientedHalfPlane_topology
+#print axioms RiemannSphere.closedOrientedHalfPlane_topology
