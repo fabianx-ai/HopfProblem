@@ -7613,3 +7613,12 @@ is an evidence command rather than library content.
 
 #check Hyperbolic.hyperboloid_chart_inverse_eventually
 #print axioms Hyperbolic.hyperboloid_chart_inverse_eventually
+
+#check ContinuousLinearMap.isVonNBounded_positiveBilinear_unitBall
+#print axioms ContinuousLinearMap.isVonNBounded_positiveBilinear_unitBall
+
+#check Bundle.smoothMetricOfPositive
+#print axioms Bundle.smoothMetricOfPositive
+
+#check Bundle.smoothMetricOfPositive_inner
+#print axioms Bundle.smoothMetricOfPositive_inner
