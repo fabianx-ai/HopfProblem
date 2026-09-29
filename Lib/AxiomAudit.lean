@@ -7622,3 +7622,93 @@ is an evidence command rather than library content.
 
 #check Bundle.smoothMetricOfPositive_inner
 #print axioms Bundle.smoothMetricOfPositive_inner
+
+#check Hyperbolic.lorentzBilinear
+#print axioms Hyperbolic.lorentzBilinear
+
+#check Hyperbolic.upperHalfPlaneCoordinateTensor
+#print axioms Hyperbolic.upperHalfPlaneCoordinateTensor
+
+#check Hyperbolic.lorentzBilinear_apply
+#print axioms Hyperbolic.lorentzBilinear_apply
+
+#check Hyperbolic.lorentzBilinear_eq_functional
+#print axioms Hyperbolic.lorentzBilinear_eq_functional
+
+#check Hyperbolic.upperHalfPlaneCoordinateTensor_apply
+#print axioms Hyperbolic.upperHalfPlaneCoordinateTensor_apply
+
+#check Hyperbolic.fderiv_upperHalfPlaneToHyperboloidCoords_x
+#print axioms Hyperbolic.fderiv_upperHalfPlaneToHyperboloidCoords_x
+
+#check Hyperbolic.fderiv_upperHalfPlaneToHyperboloidCoords_sub
+#print axioms Hyperbolic.fderiv_upperHalfPlaneToHyperboloidCoords_sub
+
+#check Hyperbolic.fderiv_upperHalfPlaneToHyperboloidCoords_add
+#print axioms Hyperbolic.fderiv_upperHalfPlaneToHyperboloidCoords_add
+
+#check Hyperbolic.lorentz_fderiv_eq_auxiliary
+#print axioms Hyperbolic.lorentz_fderiv_eq_auxiliary
+
+#check Hyperbolic.auxiliary_fderiv_quadratic
+#print axioms Hyperbolic.auxiliary_fderiv_quadratic
+
+#check Hyperbolic.lorentz_fderiv_quadratic
+#print axioms Hyperbolic.lorentz_fderiv_quadratic
+
+#check Hyperbolic.lorentzBilinear_symm
+#print axioms Hyperbolic.lorentzBilinear_symm
+
+#check Hyperbolic.upperHalfPlaneCoordinateTensor_symm
+#print axioms Hyperbolic.upperHalfPlaneCoordinateTensor_symm
+
+#check Hyperbolic.lorentz_fderiv_bilinear
+#print axioms Hyperbolic.lorentz_fderiv_bilinear
+
+#check Hyperbolic.upperHalfPlaneCoordinateTensor_pos
+#print axioms Hyperbolic.upperHalfPlaneCoordinateTensor_pos
+
+#check Hyperbolic.lorentzBilinear_pos_on_ker
+#print axioms Hyperbolic.lorentzBilinear_pos_on_ker
+
+#check Hyperbolic.upperHalfPlaneTangentTensor
+#print axioms Hyperbolic.upperHalfPlaneTangentTensor
+
+#check Hyperbolic.hyperboloidTangentTensor
+#print axioms Hyperbolic.hyperboloidTangentTensor
+
+#check Hyperbolic.upperHalfPlaneTangentTensor_apply
+#print axioms Hyperbolic.upperHalfPlaneTangentTensor_apply
+
+#check Hyperbolic.hyperboloidTangentTensor_apply
+#print axioms Hyperbolic.hyperboloidTangentTensor_apply
+
+#check Hyperbolic.upperHalfPlaneTangentTensor_symm
+#print axioms Hyperbolic.upperHalfPlaneTangentTensor_symm
+
+#check Hyperbolic.hyperboloidTangentTensor_symm
+#print axioms Hyperbolic.hyperboloidTangentTensor_symm
+
+#check Hyperbolic.upperHalfPlaneTangentTensor_pos
+#print axioms Hyperbolic.upperHalfPlaneTangentTensor_pos
+
+#check Hyperbolic.hyperboloidTangentTensor_pos
+#print axioms Hyperbolic.hyperboloidTangentTensor_pos
+
+#check Hyperbolic.toHyperboloid_preserves_tangentTensor
+#print axioms Hyperbolic.toHyperboloid_preserves_tangentTensor
+
+#check Hyperbolic.upperHalfPlaneTangentTensor_inCoordinates
+#print axioms Hyperbolic.upperHalfPlaneTangentTensor_inCoordinates
+
+#check Hyperbolic.hyperboloidTangentTensor_inCoordinates
+#print axioms Hyperbolic.hyperboloidTangentTensor_inCoordinates
+
+#check Hyperbolic.contMDiff_upperHalfPlaneCoordinateTensor
+#print axioms Hyperbolic.contMDiff_upperHalfPlaneCoordinateTensor
+
+#check Hyperbolic.contMDiff_upperHalfPlaneTangentTensor
+#print axioms Hyperbolic.contMDiff_upperHalfPlaneTangentTensor
+
+#check Hyperbolic.contMDiff_hyperboloidTangentTensor
+#print axioms Hyperbolic.contMDiff_hyperboloidTangentTensor

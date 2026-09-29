@@ -14,6 +14,12 @@ public import Mathlib.Analysis.Calculus.ContDiff.Operations
 public import Mathlib.Analysis.Calculus.FDeriv.Pow
 public import Mathlib.Analysis.Calculus.Deriv.Inv
 
+public import Mathlib.LinearAlgebra.BilinearForm.Properties
+public import Mathlib.LinearAlgebra.BilinearForm.Hom
+public import Mathlib.Geometry.Manifold.VectorBundle.Tangent
+public import Mathlib.Geometry.Manifold.VectorBundle.Hom
+public import Mathlib.Topology.Algebra.Module.Spaces.ContinuousLinearMap
+
 /-!
 # Upper-half-plane and hyperboloid coordinates
 
@@ -24,8 +30,10 @@ We prove the domain inequalities, both auxiliary coordinates `T-Y` and
 `T+Y`, and both inverse identities before packaging the same maps as an
 equivalence. The subsequent real smooth-coordinate section identifies the
 actual ambient tangent image with the Lorentz perpendicular kernel, with
-the literal inverse differential. Tensor, angle and length preservation
-are separate later results and are not asserted here.
+the literal inverse differential. The displayed auxiliary-coordinate calculation
+then gives the Lorentz tensor identity, positivity on all actual tangent fibers,
+and smooth intrinsic tensor sections. Angle, curve-length and distance
+preservation remain separate later results and are not asserted here.
 
 Textbook source: the reviewed ideal-reflection model bridge, section 2,
 coordinate formulas and inverse (G01.a/b/c, canonical lines 82–89).
@@ -527,5 +535,433 @@ theorem hyperboloid_chart_inverse_eventually (p : Hyperboloid) :
     (fun z : ℂ => ((extChartAt I p).symm z).val) =ᶠ[nhds (fromHyperboloid p : ℂ)] F :=
   Filter.mem_of_superset ((isOpen_lt continuous_const Complex.continuous_im).mem_nhds
     (fromHyperboloid p).im_pos) (fun z hz => hyperboloid_extChartAt_symm_val p z hz)
+
+/-! ## The displayed Lorentz calculation and the actual positive smooth tensors
+
+This section follows G01.f/g, canonical lines 89–98: auxiliary coordinates,
+quadratic identity, polarization, positivity, intrinsic restriction and smooth sections.
+-/
+
+open scoped Bundle
+local notation "K" => (ℂ →L[ℝ] ℂ →L[ℝ] ℝ)
+
+/-- The continuous symmetric Lorentz form with coordinates ordered X,Y,T. (G01.f/g) -/
+def lorentzBilinear : V →L[ℝ] V →L[ℝ] ℝ :=
+  (ContinuousLinearMap.proj (R := ℝ) (0 : Fin 3) : V →L[ℝ] ℝ).smulRight
+      (ContinuousLinearMap.proj (R := ℝ) (0 : Fin 3) : V →L[ℝ] ℝ) +
+    (ContinuousLinearMap.proj (R := ℝ) (1 : Fin 3) : V →L[ℝ] ℝ).smulRight
+      (ContinuousLinearMap.proj (R := ℝ) (1 : Fin 3) : V →L[ℝ] ℝ) -
+    (ContinuousLinearMap.proj (R := ℝ) (2 : Fin 3) : V →L[ℝ] ℝ).smulRight
+      (ContinuousLinearMap.proj (R := ℝ) (2 : Fin 3) : V →L[ℝ] ℝ)
+
+/-- The upper-half-plane form, the Euclidean coordinate form divided by height squared. (G01.f/g) -/
+def upperHalfPlaneCoordinateTensor (z : UpperHalfPlane) : K :=
+  (z.im ^ 2)⁻¹ •
+    (Complex.reCLM.smulRight Complex.reCLM + Complex.imCLM.smulRight Complex.imCLM)
+
+/-- Evaluation of the literal Lorentz form in the three ambient coordinates. (G01.f/g) -/
+theorem lorentzBilinear_apply (v w : V) :
+  lorentzBilinear v w = v 0 * w 0 + v 1 * w 1 - v 2 * w 2 := by
+  rfl
+
+/-- Fixing the first Lorentz argument gives the same constraint functional as the tangent kernel. (G01.f/g) -/
+theorem lorentzBilinear_eq_functional (p : V) :
+  lorentzBilinear p = lorentzFunctional p := by
+  ext w
+  rfl
+
+/-- Evaluation of the source metric is the displayed height-weighted scalar product. (G01.f/g) -/
+theorem upperHalfPlaneCoordinateTensor_apply (z : UpperHalfPlane) (v w : ℂ) :
+  upperHalfPlaneCoordinateTensor z v w = (v.re * w.re + v.im * w.im) / z.im ^ 2 := by
+  change (z.im ^ 2)⁻¹ * (v.re * w.re + v.im * w.im) = _
+  rw [div_eq_mul_inv, mul_comm]
+
+/-- The displayed differential dX of X=x/y. (G01.f/g) -/
+theorem fderiv_upperHalfPlaneToHyperboloidCoords_x (z : UpperHalfPlane) (v : ℂ) :
+  fderiv ℝ F (z : ℂ) v 0 = v.re / z.im - z.re * v.im / z.im ^ 2 := by
+  rw [fderiv_upperHalfPlaneToHyperboloidCoords]
+  rfl
+
+
+/-- The displayed differential dA of A=T-Y=1/y. (G01.f/g) -/
+theorem fderiv_upperHalfPlaneToHyperboloidCoords_sub (z : UpperHalfPlane) (v : ℂ) :
+  fderiv ℝ F (z : ℂ) v 2 - fderiv ℝ F (z : ℂ) v 1 = -v.im / z.im ^ 2 := by
+  rw [fderiv_upperHalfPlaneToHyperboloidCoords]
+  change (z.re * v.re / z.im + (z.im ^ 2 - z.re ^ 2 - 1) * v.im / (2 * z.im ^ 2)) -
+    (z.re * v.re / z.im + (z.im ^ 2 - z.re ^ 2 + 1) * v.im / (2 * z.im ^ 2)) = _
+  field_simp
+  <;> ring
+
+
+/-- The displayed differential dB of B=T+Y=(x²+y²)/y. (G01.f/g) -/
+theorem fderiv_upperHalfPlaneToHyperboloidCoords_add (z : UpperHalfPlane) (v : ℂ) :
+  fderiv ℝ F (z : ℂ) v 2 + fderiv ℝ F (z : ℂ) v 1 =
+    2 * z.re * v.re / z.im + (1 - z.re ^ 2 / z.im ^ 2) * v.im := by
+  rw [fderiv_upperHalfPlaneToHyperboloidCoords]
+  change (z.re * v.re / z.im + (z.im ^ 2 - z.re ^ 2 - 1) * v.im / (2 * z.im ^ 2)) +
+    (z.re * v.re / z.im + (z.im ^ 2 - z.re ^ 2 + 1) * v.im / (2 * z.im ^ 2)) = _
+  field_simp
+  <;> ring
+
+
+/-- Rewrite the Lorentz quadratic differential as dX²-dA dB. (G01.f/g) -/
+theorem lorentz_fderiv_eq_auxiliary (z : UpperHalfPlane) (v : ℂ) :
+  lorentzBilinear (fderiv ℝ F (z : ℂ) v) (fderiv ℝ F (z : ℂ) v) =
+    (fderiv ℝ F (z : ℂ) v 0) ^ 2 -
+      (fderiv ℝ F (z : ℂ) v 2 - fderiv ℝ F (z : ℂ) v 1) *
+      (fderiv ℝ F (z : ℂ) v 2 + fderiv ℝ F (z : ℂ) v 1) := by
+  rw [lorentzBilinear_apply]
+  ring
+
+
+/-- Substitute the three displayed differentials into dX²-dA dB. (G01.f/g) -/
+theorem auxiliary_fderiv_quadratic (z : UpperHalfPlane) (v : ℂ) :
+  (fderiv ℝ F (z : ℂ) v 0) ^ 2 -
+      (fderiv ℝ F (z : ℂ) v 2 - fderiv ℝ F (z : ℂ) v 1) *
+      (fderiv ℝ F (z : ℂ) v 2 + fderiv ℝ F (z : ℂ) v 1) =
+    (v.re ^ 2 + v.im ^ 2) / z.im ^ 2 := by
+  rw [fderiv_upperHalfPlaneToHyperboloidCoords_x,
+    fderiv_upperHalfPlaneToHyperboloidCoords_sub,
+    fderiv_upperHalfPlaneToHyperboloidCoords_add]
+  field_simp
+  <;> ring
+
+
+/-- The Lorentz quadratic form pulls back to the height-weighted Euclidean form. (G01.f/g) -/
+theorem lorentz_fderiv_quadratic (z : UpperHalfPlane) (v : ℂ) :
+  lorentzBilinear (fderiv ℝ F (z : ℂ) v) (fderiv ℝ F (z : ℂ) v) =
+    (v.re ^ 2 + v.im ^ 2) / z.im ^ 2 := by
+  exact (lorentz_fderiv_eq_auxiliary z v).trans (auxiliary_fderiv_quadratic z v)
+
+
+/-- Symmetry of the ambient Lorentz form. (G01.f/g) -/
+theorem lorentzBilinear_symm (v w : V) : lorentzBilinear v w = lorentzBilinear w v
+ := by
+  simp only [lorentzBilinear_apply]
+  ring
+/-- Symmetry of the height-weighted coordinate form. (G01.f/g) -/
+theorem upperHalfPlaneCoordinateTensor_symm (z : UpperHalfPlane) (v w : ℂ) :
+  upperHalfPlaneCoordinateTensor z v w = upperHalfPlaneCoordinateTensor z w v := by
+  simp only [upperHalfPlaneCoordinateTensor_apply]
+  ring
+
+
+/-- Polarization of the computed quadratic identity gives the full tensor identity. (G01.f/g) -/
+theorem lorentz_fderiv_bilinear (z : UpperHalfPlane) (v w : ℂ) :
+  lorentzBilinear (fderiv ℝ F (z : ℂ) v) (fderiv ℝ F (z : ℂ) w) =
+    upperHalfPlaneCoordinateTensor z v w := by
+  let L : LinearMap.BilinForm ℝ V :=
+    (ContinuousLinearMap.coeLM ℝ).comp lorentzBilinear.toLinearMap
+  let U : LinearMap.BilinForm ℝ ℂ :=
+    (ContinuousLinearMap.coeLM ℝ).comp (upperHalfPlaneCoordinateTensor z).toLinearMap
+  let P := L.comp (fderiv ℝ F (z : ℂ)).toLinearMap (fderiv ℝ F (z : ℂ)).toLinearMap
+  have hdiag (a : ℂ) : P a a = U a a := by
+    change lorentzBilinear (fderiv ℝ F (z : ℂ) a) (fderiv ℝ F (z : ℂ) a) =
+      upperHalfPlaneCoordinateTensor z a a
+    rw [lorentz_fderiv_quadratic, upperHalfPlaneCoordinateTensor_apply]
+    simp only [pow_two]
+  have heq : P = U := LinearMap.BilinForm.ext_of_isSymm
+    ⟨fun a b => lorentzBilinear_symm _ _⟩
+    ⟨fun a b => upperHalfPlaneCoordinateTensor_symm z a b⟩ hdiag
+  exact congrArg (fun Q : LinearMap.BilinForm ℝ ℂ => Q v w) heq
+
+
+/-- The source coordinate form is strictly positive on every nonzero real vector. (G01.f/g) -/
+theorem upperHalfPlaneCoordinateTensor_pos (z : UpperHalfPlane) (v : ℂ) (hv : v ≠ 0) :
+  0 < upperHalfPlaneCoordinateTensor z v v := by
+  rw [upperHalfPlaneCoordinateTensor_apply]
+  have hp : 0 < v.re ^ 2 + v.im ^ 2 := by
+    have hr := sq_nonneg v.re
+    have hi := sq_nonneg v.im
+    by_contra h
+    have hz : v = 0 := by
+      apply Complex.ext <;> simp only [Complex.zero_re, Complex.zero_im]
+      · nlinarith
+      · nlinarith
+    exact hv hz
+  simpa only [pow_two] using div_pos hp (sq_pos_of_pos z.im_pos)
+
+
+/-- The Lorentz form is positive on every nonzero tangent-kernel vector, using the same inverse differential. (G01.f/g) -/
+theorem lorentzBilinear_pos_on_ker (p : Hyperboloid) (w : V)
+    (hw : w ∈ (lorentzFunctional p.val).ker) (hwn : w ≠ 0) :
+  0 < lorentzBilinear w w := by
+  let v := fderiv ℝ B p.val w
+  have heq : fderiv ℝ F (fromHyperboloid p : ℂ) v = w :=
+    fderiv_hyperboloid_right_inv p w hw
+  have hv : v ≠ 0 := by
+    intro h
+    apply hwn
+    simpa only [h, map_zero] using heq.symm
+  rw [← heq, lorentz_fderiv_bilinear]
+  exact upperHalfPlaneCoordinateTensor_pos (fromHyperboloid p) v hv
+
+
+/-- The source tensor on intrinsic tangents, defined through the actual coordinate inclusion differential. (G01.f/g) -/
+def upperHalfPlaneTangentTensor (z : UpperHalfPlane) :
+    TangentSpace I z →L[ℝ] TangentSpace I z →L[ℝ] ℝ :=
+  let c : TangentSpace I z →L[ℝ] ℂ :=
+    mfderiv I I (fun q : UpperHalfPlane => (q : ℂ)) z
+  let r := Complex.reCLM.comp c
+  let s := Complex.imCLM.comp c
+  (z.im ^ 2)⁻¹ • (r.smulRight r + s.smulRight s)
+
+/-- The Lorentz restriction on intrinsic hyperboloid tangents through the actual ambient inclusion. (G01.f/g) -/
+def hyperboloidTangentTensor (p : Hyperboloid) :
+    TangentSpace I p →L[ℝ] TangentSpace I p →L[ℝ] ℝ :=
+  let d : TangentSpace I p →L[ℝ] V := mfderiv I J (fun q : Hyperboloid => q.val) p
+  let x := (ContinuousLinearMap.proj (R := ℝ) (0 : Fin 3)).comp d
+  let y := (ContinuousLinearMap.proj (R := ℝ) (1 : Fin 3)).comp d
+  let t := (ContinuousLinearMap.proj (R := ℝ) (2 : Fin 3)).comp d
+  x.smulRight x + y.smulRight y - t.smulRight t
+
+/-- The source intrinsic tensor evaluates as its coordinate form on the inclusion differential. (G01.f/g) -/
+theorem upperHalfPlaneTangentTensor_apply (z : UpperHalfPlane) (v w : TangentSpace I z) :
+  upperHalfPlaneTangentTensor z v w = upperHalfPlaneCoordinateTensor z
+    (mfderiv I I (fun q : UpperHalfPlane => (q : ℂ)) z v)
+    (mfderiv I I (fun q : UpperHalfPlane => (q : ℂ)) z w) := by
+  rfl
+
+/-- The target intrinsic tensor evaluates as the Lorentz form on ambient inclusion differentials. (G01.f/g) -/
+theorem hyperboloidTangentTensor_apply (p : Hyperboloid) (v w : TangentSpace I p) :
+  hyperboloidTangentTensor p v w = lorentzBilinear
+    (mfderiv I J (fun q : Hyperboloid => q.val) p v)
+    (mfderiv I J (fun q : Hyperboloid => q.val) p w) := by
+  rfl
+
+private theorem z_tangent_coordinates (z₀ z : UpperHalfPlane) (v : TangentSpace I z) :
+    (trivializationAt ℂ (fun q : UpperHalfPlane => TangentSpace I q) z₀
+      (Bundle.TotalSpace.mk' ℂ z v)).2 =
+      mfderiv I I (fun q : UpperHalfPlane => (q : ℂ)) z v := by
+  have hs : z ∈ (chartAt ℂ z₀).source := by
+    change z ∈ Set.univ
+    trivial
+  have hb : z ∈ (trivializationAt ℂ (TangentSpace I) z₀).baseSet := by
+    simpa only [TangentBundle.trivializationAt_baseSet] using hs
+  rw [← Bundle.Trivialization.continuousLinearMapAt_apply_of_mem ℝ _ hb,
+    TangentBundle.continuousLinearMapAt_trivializationAt hs]
+  rfl
+
+private theorem p_tangent_coordinates (p₀ p : Hyperboloid) (v : TangentSpace I p) :
+    (trivializationAt ℂ (fun q : Hyperboloid => TangentSpace I q) p₀
+      (Bundle.TotalSpace.mk' ℂ p v)).2 =
+      mfderiv I I (fun q : Hyperboloid => hyperboloidToUpperHalfPlaneCoords q.val) p v := by
+  have hs : p ∈ (chartAt ℂ p₀).source := by
+    change p ∈ Set.univ
+    trivial
+  have hb : p ∈ (trivializationAt ℂ (TangentSpace I) p₀).baseSet := by
+    simpa only [TangentBundle.trivializationAt_baseSet] using hs
+  rw [← Bundle.Trivialization.continuousLinearMapAt_apply_of_mem ℝ _ hb,
+    TangentBundle.continuousLinearMapAt_trivializationAt hs]
+  rfl
+
+private theorem source_chart_derivative (z : UpperHalfPlane) :
+    mfderiv I I (fun q : UpperHalfPlane => (q : ℂ)) z =
+      ContinuousLinearMap.id ℝ ℂ := by
+  change mfderiv I I (extChartAt I z) z = _
+  exact mfderiv_extChartAt_self
+
+private theorem target_chart_derivative (p : Hyperboloid) :
+    mfderiv I I (fun q : Hyperboloid => hyperboloidToUpperHalfPlaneCoords q.val) p =
+      ContinuousLinearMap.id ℝ ℂ := by
+  change mfderiv I I (extChartAt I p) p = _
+  exact mfderiv_extChartAt_self
+
+private theorem actual_chain (z : UpperHalfPlane) (v : TangentSpace I z) :
+    (mfderiv I J (fun p : Hyperboloid => p.val) (toHyperboloid z))
+      (mfderiv I I toHyperboloid z v) =
+    fderiv ℝ F (z : ℂ) (mfderiv I I (fun q : UpperHalfPlane => (q : ℂ)) z v) := by
+  have hc : MDifferentiableAt I I (fun q : UpperHalfPlane => (q : ℂ)) z := by
+    change MDifferentiableAt I I (extChartAt I z) z
+    exact mdifferentiableAt_extChartAt (mem_chart_source ℂ z)
+  have hn : {w : ℂ | 0 < w.im} ∈ nhds (z : ℂ) :=
+    (isOpen_lt continuous_const Complex.continuous_im).mem_nhds z.im_pos
+  have hf : DifferentiableAt ℝ F (z : ℂ) :=
+    ((contDiffOn_upperHalfPlaneToHyperboloidCoords _ z.im_pos).contDiffAt hn).differentiableAt
+      (by simp)
+  have hleft := mfderiv_comp z
+    (contMDiff_hyperboloid_val.mdifferentiable (by simp) (toHyperboloid z))
+    (contMDiff_toHyperboloid.mdifferentiable (by simp) z)
+  have hright := mfderiv_comp z hf.mdifferentiableAt hc
+  have heq : (fun p : Hyperboloid => p.val) ∘ toHyperboloid =
+      F ∘ (fun q : UpperHalfPlane => (q : ℂ)) := rfl
+  rw [heq] at hleft
+  rw [mfderiv_eq_fderiv] at hright
+  exact congrArg (fun L => L v) (hleft.symm.trans hright)
+
+/-- Symmetry of the actual source tangent tensor. (G01.f/g) -/
+theorem upperHalfPlaneTangentTensor_symm (z : UpperHalfPlane) (v w : TangentSpace I z) :
+  upperHalfPlaneTangentTensor z v w = upperHalfPlaneTangentTensor z w v
+ := by
+  simp only [upperHalfPlaneTangentTensor_apply]
+  exact upperHalfPlaneCoordinateTensor_symm z _ _
+/-- Symmetry of the actual target tangent tensor. (G01.f/g) -/
+theorem hyperboloidTangentTensor_symm (p : Hyperboloid) (v w : TangentSpace I p) :
+  hyperboloidTangentTensor p v w = hyperboloidTangentTensor p w v := by
+  simp only [hyperboloidTangentTensor_apply]
+  exact lorentzBilinear_symm _ _
+
+
+/-- Strict positivity for all nonzero intrinsic source tangents. (G01.f/g) -/
+theorem upperHalfPlaneTangentTensor_pos (z : UpperHalfPlane) (v : TangentSpace I z)
+    (hv : v ≠ 0) : 0 < upperHalfPlaneTangentTensor z v v
+ := by
+  rw [upperHalfPlaneTangentTensor_apply, source_chart_derivative]
+  exact upperHalfPlaneCoordinateTensor_pos z v hv
+/-- Strict positivity for all nonzero intrinsic target tangents, via the actual tangent-kernel equivalence. (G01.f/g) -/
+theorem hyperboloidTangentTensor_pos (p : Hyperboloid) (v : TangentSpace I p)
+    (hv : v ≠ 0) : 0 < hyperboloidTangentTensor p v v := by
+  rw [hyperboloidTangentTensor_apply]
+  let e := hyperboloidTangentEquivKer p
+  have he : (e v).val = mfderiv I J (fun q : Hyperboloid => q.val) p v :=
+    hyperboloidTangentEquivKer_apply p v
+  rw [← he]
+  apply lorentzBilinear_pos_on_ker p (e v).val (e v).property
+  intro hz
+  apply hv
+  apply e.injective
+  apply Subtype.ext
+  simpa only [map_zero, ZeroMemClass.coe_zero] using hz
+
+
+/-- The actual manifold differential of the forward map preserves the two intrinsic tensors. (G01.f/g) -/
+theorem toHyperboloid_preserves_tangentTensor (z : UpperHalfPlane) (v w : TangentSpace I z) :
+  hyperboloidTangentTensor (toHyperboloid z)
+    (mfderiv I I toHyperboloid z v) (mfderiv I I toHyperboloid z w) =
+      upperHalfPlaneTangentTensor z v w := by
+  rw [hyperboloidTangentTensor_apply, upperHalfPlaneTangentTensor_apply,
+    actual_chain, actual_chain]
+  exact lorentz_fderiv_bilinear z _ _
+
+
+/-- The source tensor coefficients in every preferred singleton-chart hom trivialization. (G01.f/g) -/
+theorem upperHalfPlaneTangentTensor_inCoordinates (z₀ z : UpperHalfPlane) :
+  (trivializationAt K
+    (fun q : UpperHalfPlane => TangentSpace I q →L[ℝ] TangentSpace I q →L[ℝ] ℝ) z₀
+    (Bundle.TotalSpace.mk' K z (upperHalfPlaneTangentTensor z))).2 =
+      upperHalfPlaneCoordinateTensor z := by
+  let e := trivializationAt ℂ (fun q : UpperHalfPlane => TangentSpace I q) z₀
+  have hs : z ∈ (chartAt ℂ z₀).source := by
+    change z ∈ Set.univ
+    trivial
+  have hb : z ∈ e.baseSet := by
+    simpa only [e, TangentBundle.trivializationAt_baseSet] using hs
+  have hr : z ∈ (trivializationAt ℝ (fun _ : UpperHalfPlane => ℝ) z₀).baseSet := by
+    change z ∈ Set.univ
+    trivial
+  have hforward (a : TangentSpace I z) : e.continuousLinearMapAt ℝ z a = a := by
+    rw [Bundle.Trivialization.continuousLinearMapAt_apply_of_mem ℝ e hb]
+    rw [z_tangent_coordinates, source_chart_derivative]
+    rfl
+  have hback (a : ℂ) : e.symm z a = a := by
+    rw [← e.symmL_apply (R := ℝ) hb]
+    exact (hforward (e.symmL ℝ z a)).symm.trans
+      (e.continuousLinearMapAt_symmL (R := ℝ) hb a)
+  ext v w
+  change ContinuousLinearMap.inCoordinates ℂ (TangentSpace I)
+    (ℂ →L[ℝ] ℝ) (fun q : UpperHalfPlane => TangentSpace I q →L[ℝ] ℝ)
+    z₀ z z₀ z (upperHalfPlaneTangentTensor z) v w = _
+  rw [inCoordinates_apply_eq₂ hb hb hr]
+  simp only [Bundle.Trivial.eq_trivialization UpperHalfPlane ℝ
+    (trivializationAt ℝ (Bundle.Trivial UpperHalfPlane ℝ) z₀),
+    Bundle.Trivial.linearMapAt_trivialization, LinearMap.id_apply]
+  change upperHalfPlaneTangentTensor z (e.symm z v) (e.symm z w) = _
+  rw [upperHalfPlaneTangentTensor_apply, source_chart_derivative]
+  change upperHalfPlaneCoordinateTensor z (e.symm z v) (e.symm z w) = _
+  rw [hback, hback]
+
+
+/-- The target tensor coefficients are the same source coefficients at the inverse coordinate point. (G01.f/g) -/
+theorem hyperboloidTangentTensor_inCoordinates (p₀ p : Hyperboloid) :
+  (trivializationAt K
+    (fun q : Hyperboloid => TangentSpace I q →L[ℝ] TangentSpace I q →L[ℝ] ℝ) p₀
+    (Bundle.TotalSpace.mk' K p (hyperboloidTangentTensor p))).2 =
+      upperHalfPlaneCoordinateTensor (fromHyperboloid p) := by
+  let e := trivializationAt ℂ (fun q : Hyperboloid => TangentSpace I q) p₀
+  have hs : p ∈ (chartAt ℂ p₀).source := by
+    change p ∈ Set.univ
+    trivial
+  have hb : p ∈ e.baseSet := by
+    simpa only [e, TangentBundle.trivializationAt_baseSet] using hs
+  have hr : p ∈ (trivializationAt ℝ (fun _ : Hyperboloid => ℝ) p₀).baseSet := by
+    change p ∈ Set.univ
+    trivial
+  have hforward (a : TangentSpace I p) : e.continuousLinearMapAt ℝ p a = a := by
+    rw [Bundle.Trivialization.continuousLinearMapAt_apply_of_mem ℝ e hb]
+    rw [p_tangent_coordinates, target_chart_derivative]
+    rfl
+  have hback (a : ℂ) : e.symm p a = a := by
+    rw [← e.symmL_apply (R := ℝ) hb]
+    exact (hforward (e.symmL ℝ p a)).symm.trans
+      (e.continuousLinearMapAt_symmL (R := ℝ) hb a)
+  ext v w
+  change ContinuousLinearMap.inCoordinates ℂ (TangentSpace I)
+    (ℂ →L[ℝ] ℝ) (fun q : Hyperboloid => TangentSpace I q →L[ℝ] ℝ)
+    p₀ p p₀ p (hyperboloidTangentTensor p) v w = _
+  rw [inCoordinates_apply_eq₂ hb hb hr]
+  simp only [Bundle.Trivial.eq_trivialization Hyperboloid ℝ
+    (trivializationAt ℝ (Bundle.Trivial Hyperboloid ℝ) p₀),
+    Bundle.Trivial.linearMapAt_trivialization, LinearMap.id_apply]
+  change hyperboloidTangentTensor p (e.symm p v) (e.symm p w) = _
+  rw [hyperboloidTangentTensor_apply, mfderiv_hyperboloid_val]
+  rw [hback, hback]
+  exact lorentz_fderiv_bilinear (fromHyperboloid p) v w
+
+
+
+/-- The height-weighted coordinate bilinear form varies smoothly in real coordinates. (G01.f/g) -/
+theorem contMDiff_upperHalfPlaneCoordinateTensor :
+  ContMDiff I 𝓘(ℝ, K) ∞ upperHalfPlaneCoordinateTensor := by
+  let coefficientBase : K :=
+    Complex.reCLM.smulRight Complex.reCLM + Complex.imCLM.smulRight Complex.imCLM
+  let L : ℝ →L[ℝ] K := (ContinuousLinearMap.id ℝ ℝ).smulRight coefficientBase
+  have hL : ContDiff ℝ ∞ (L : ℝ → K) :=
+    ContinuousLinearMap.contDiff (𝕜 := ℝ) (E := ℝ) («F» := K) L
+  let Q : ℂ → K := fun z => (z.im ^ 2)⁻¹ •
+    (Complex.reCLM.smulRight Complex.reCLM + Complex.imCLM.smulRight Complex.imCLM)
+  have hQ : ContDiffOn ℝ ∞ Q {z : ℂ | 0 < z.im} := by
+    have hi : ContDiffOn ℝ ∞ (fun z : ℂ => (z.im ^ 2)⁻¹) {z : ℂ | 0 < z.im} :=
+      (Complex.imCLM.contDiff.contDiffOn.pow 2).inv
+        (fun z hz => pow_ne_zero 2 (ne_of_gt hz))
+    exact hL.comp_contDiffOn hi
+  intro z
+  have hc : ContMDiffAt I I ∞ (fun q : UpperHalfPlane => (q : ℂ)) z := by
+    change ContMDiffAt I I ∞ (extChartAt I z) z
+    exact contMDiffAt_extChartAt
+  have hn : {w : ℂ | 0 < w.im} ∈ nhds (z : ℂ) :=
+    (isOpen_lt continuous_const Complex.continuous_im).mem_nhds z.im_pos
+  exact ((hQ (z : ℂ) z.im_pos).contDiffAt hn).contMDiffAt.comp z hc
+
+
+/-- The actual source tangent tensor is a smooth section of the bilinear hom bundle. (G01.f/g) -/
+theorem contMDiff_upperHalfPlaneTangentTensor :
+  ContMDiff I ((𝓘(ℝ, ℂ)).prod 𝓘(ℝ, K)) ∞
+    (fun z : UpperHalfPlane => Bundle.TotalSpace.mk' K z (upperHalfPlaneTangentTensor z)) := by
+  intro z₀
+  apply (Bundle.contMDiffAt_section z₀).2
+  have heq : (fun z : UpperHalfPlane =>
+      (trivializationAt K
+        (fun q : UpperHalfPlane => TangentSpace I q →L[ℝ] TangentSpace I q →L[ℝ] ℝ) z₀
+        (Bundle.TotalSpace.mk' K z (upperHalfPlaneTangentTensor z))).2) =
+      upperHalfPlaneCoordinateTensor := funext (upperHalfPlaneTangentTensor_inCoordinates z₀)
+  rw [heq]
+  exact contMDiff_upperHalfPlaneCoordinateTensor z₀
+
+
+/-- The actual target Lorentz tangent tensor is a smooth section of the bilinear hom bundle. (G01.f/g) -/
+theorem contMDiff_hyperboloidTangentTensor :
+  ContMDiff I ((𝓘(ℝ, ℂ)).prod 𝓘(ℝ, K)) ∞
+    (fun p : Hyperboloid => Bundle.TotalSpace.mk' K p (hyperboloidTangentTensor p))
+ := by
+  intro p₀
+  apply (Bundle.contMDiffAt_section p₀).2
+  have heq : (fun p : Hyperboloid =>
+      (trivializationAt K
+        (fun q : Hyperboloid => TangentSpace I q →L[ℝ] TangentSpace I q →L[ℝ] ℝ) p₀
+        (Bundle.TotalSpace.mk' K p (hyperboloidTangentTensor p))).2) =
+      upperHalfPlaneCoordinateTensor ∘ fromHyperboloid :=
+    funext (hyperboloidTangentTensor_inCoordinates p₀)
+  rw [heq]
+  exact (contMDiff_upperHalfPlaneCoordinateTensor.comp contMDiff_fromHyperboloid) p₀
 
 end Hyperbolic
