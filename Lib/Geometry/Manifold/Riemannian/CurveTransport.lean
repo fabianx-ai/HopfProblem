@@ -11,8 +11,10 @@ public import Mathlib.Analysis.Normed.Operator.Mul
 public import Mathlib.Geometry.Manifold.MFDeriv.Atlas
 public import Mathlib.Geometry.Manifold.Diffeomorph
 public import Mathlib.Geometry.Manifold.MFDeriv.SpecificFunctions
+public import Mathlib.Order.Fin.Basic
+public import Mathlib.Geometry.Manifold.ContMDiff.Basic
 /-!
-# Pointwise speed and inverse tensor-preserving differentials
+# Pointwise speed, inverse differentials and fixed-subdivision curve transport
 
 For the SAME positive smooth tangent metrics, differentiating a composed
 curve applies the map's differential to its original velocity. The tensor
@@ -29,6 +31,11 @@ For a smooth diffeomorphism, differentiating both inverse identities gives
 the two inverse differential laws. Forward tensor preservation then yields
 inverse tensor preservation at every target point, using its actual base
 identity, and hence both inverse norm equalities for the same metrics.
+
+Smooth composition also preserves the full class of continuous curves that
+are C1 on each strict closed piece of a fixed weak subdivision. A smooth
+diffeomorphism gives both inverse transports with the same cuts and literal
+endpoints, independently of the tensor results. No length assertion is made.
 -/
 
 @[expose] public section
@@ -265,5 +272,91 @@ theorem symm_norm_enorm_of_tensorPreserving
   let L : TangentSpace J y →ₗᵢ[ℝ] TangentSpace I (e.symm y) :=
     A.isometryOfInner hInner
   exact ⟨L.norm_map u, L.enorm_map u⟩
+
+variable {E : Type uE} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  {H : Type uH} [TopologicalSpace H] {I : ModelWithCorners ℝ E H}
+  {M : Type uM} [TopologicalSpace M] [ChartedSpace H M]
+  {F : Type uF} [NormedAddCommGroup F] [NormedSpace ℝ F]
+  {K : Type uK} [TopologicalSpace K] {J : ModelWithCorners ℝ F K}
+  {N : Type uN} [TopologicalSpace N] [ChartedSpace K N]
+
+/-- Continuous curves on a fixed weak subdivision, C1 on each strict closed piece.
+Repeated cuts impose no singleton derivative condition. -/
+def IsPiecewiseC1On (I : ModelWithCorners ℝ E H)
+    (γ : ℝ → M) (a b : ℝ) (n : ℕ) (cut : Fin (n + 1) → ℝ) : Prop :=
+  Monotone cut ∧ cut 0 = a ∧ cut (Fin.last n) = b ∧
+  ContinuousOn γ (Set.Icc a b) ∧
+  ∀ i : Fin n, cut i.castSucc < cut i.succ →
+    ContMDiffOn 𝓘(ℝ, ℝ) I 1 γ (Set.Icc (cut i.castSucc) (cut i.succ))
+
+/-- Fixed-subdivision piecewise C1 curves with literal endpoints and arbitrary
+values outside the parameter interval. -/
+def PiecewiseC1CurveOn (I : ModelWithCorners ℝ E H)
+    (a b : ℝ) (n : ℕ) (cut : Fin (n + 1) → ℝ) (p q : M) :=
+  {γ : ℝ → M // IsPiecewiseC1On I γ a b n cut ∧ γ a = p ∧ γ b = q}
+
+/-- Smooth composition preserves the same weak subdivision and closed pieces. -/
+theorem IsPiecewiseC1On.comp_contMDiff
+    {γ : ℝ → M} {a b : ℝ} {n : ℕ} {cut : Fin (n + 1) → ℝ}
+    (hγ : IsPiecewiseC1On I γ a b n cut)
+    {f : M → N} (hf : ContMDiff I J ∞ f) :
+    IsPiecewiseC1On J (f ∘ γ) a b n cut := by
+  refine ⟨hγ.1, hγ.2.1, hγ.2.2.1,
+    hf.continuous.comp_continuousOn hγ.2.2.2.1, ?_⟩
+  intro i hi
+  exact (hf.of_le (by simp)).comp_contMDiffOn (hγ.2.2.2.2 i hi)
+
+/-- Compose a fixed-subdivision curve with a smooth map, preserving both endpoints. -/
+def PiecewiseC1CurveOn.map
+    {a b : ℝ} {n : ℕ} {cut : Fin (n + 1) → ℝ} {p q : M}
+    (f : M → N) (hf : ContMDiff I J ∞ f)
+    (γ : PiecewiseC1CurveOn I a b n cut p q) :
+    PiecewiseC1CurveOn J a b n cut (f p) (f q) :=
+  ⟨f ∘ γ.val, γ.property.1.comp_contMDiff hf,
+    congrArg f γ.property.2.1, congrArg f γ.property.2.2⟩
+
+/-- The mapped curve is pointwise the actual composition, at every parameter. -/
+theorem PiecewiseC1CurveOn.map_apply
+    {a b : ℝ} {n : ℕ} {cut : Fin (n + 1) → ℝ} {p q : M}
+    (f : M → N) (hf : ContMDiff I J ∞ f)
+    (γ : PiecewiseC1CurveOn I a b n cut p q) (t : ℝ) :
+    (PiecewiseC1CurveOn.map f hf γ).val t = f (γ.val t) := rfl
+
+/-- A diffeomorphism gives an equivalence of the full fixed-subdivision curve
+classes; its inverse is composition with the actual inverse diffeomorphism. -/
+def PiecewiseC1CurveOn.mapEquiv
+    {a b : ℝ} {n : ℕ} {cut : Fin (n + 1) → ℝ} {p q : M}
+    (e : M ≃ₘ⟮I, J⟯ N) :
+    PiecewiseC1CurveOn I a b n cut p q ≃
+      PiecewiseC1CurveOn J a b n cut (e p) (e q) :=
+  { toFun := PiecewiseC1CurveOn.map e e.contMDiff
+    invFun := fun η =>
+      ⟨e.symm ∘ η.val, η.property.1.comp_contMDiff e.symm.contMDiff,
+        (congrArg e.symm η.property.2.1).trans (e.symm_apply_apply p),
+        (congrArg e.symm η.property.2.2).trans (e.symm_apply_apply q)⟩
+    left_inv := fun γ => Subtype.ext (funext (fun t =>
+      (congrArg e.symm (PiecewiseC1CurveOn.map_apply e e.contMDiff γ t)).trans
+        (e.symm_apply_apply (γ.val t))))
+    right_inv := fun η => Subtype.ext (funext (fun t =>
+      (PiecewiseC1CurveOn.map_apply e e.contMDiff
+        ⟨e.symm ∘ η.val, η.property.1.comp_contMDiff e.symm.contMDiff,
+          (congrArg e.symm η.property.2.1).trans (e.symm_apply_apply p),
+          (congrArg e.symm η.property.2.2).trans (e.symm_apply_apply q)⟩ t).trans
+        (e.apply_symm_apply (η.val t)))) }
+
+/-- The forward equivalence function is the smooth composition constructor. -/
+theorem PiecewiseC1CurveOn.mapEquiv_apply
+    {a b : ℝ} {n : ℕ} {cut : Fin (n + 1) → ℝ} {p q : M}
+    (e : M ≃ₘ⟮I, J⟯ N)
+    (γ : PiecewiseC1CurveOn I a b n cut p q) :
+    PiecewiseC1CurveOn.mapEquiv e γ =
+      PiecewiseC1CurveOn.map e e.contMDiff γ := rfl
+
+/-- The inverse equivalence evaluates to the actual inverse composition. -/
+theorem PiecewiseC1CurveOn.mapEquiv_symm_apply
+    {a b : ℝ} {n : ℕ} {cut : Fin (n + 1) → ℝ} {p q : M}
+    (e : M ≃ₘ⟮I, J⟯ N)
+    (η : PiecewiseC1CurveOn J a b n cut (e p) (e q)) (t : ℝ) :
+    ((PiecewiseC1CurveOn.mapEquiv e).symm η).val t = e.symm (η.val t) := rfl
 
 end Manifold

@@ -7730,3 +7730,27 @@ is an evidence command rather than library content.
 
 #check Manifold.symm_norm_enorm_of_tensorPreserving
 #print axioms Manifold.symm_norm_enorm_of_tensorPreserving
+
+#check Manifold.IsPiecewiseC1On
+#print axioms Manifold.IsPiecewiseC1On
+
+#check Manifold.PiecewiseC1CurveOn
+#print axioms Manifold.PiecewiseC1CurveOn
+
+#check Manifold.IsPiecewiseC1On.comp_contMDiff
+#print axioms Manifold.IsPiecewiseC1On.comp_contMDiff
+
+#check Manifold.PiecewiseC1CurveOn.map
+#print axioms Manifold.PiecewiseC1CurveOn.map
+
+#check Manifold.PiecewiseC1CurveOn.map_apply
+#print axioms Manifold.PiecewiseC1CurveOn.map_apply
+
+#check Manifold.PiecewiseC1CurveOn.mapEquiv
+#print axioms Manifold.PiecewiseC1CurveOn.mapEquiv
+
+#check Manifold.PiecewiseC1CurveOn.mapEquiv_apply
+#print axioms Manifold.PiecewiseC1CurveOn.mapEquiv_apply
+
+#check Manifold.PiecewiseC1CurveOn.mapEquiv_symm_apply
+#print axioms Manifold.PiecewiseC1CurveOn.mapEquiv_symm_apply
