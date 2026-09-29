@@ -7507,3 +7507,109 @@ is an evidence command rather than library content.
 
 #check Hyperbolic.upperHalfPlaneEquivHyperboloid_symm_apply
 #print axioms Hyperbolic.upperHalfPlaneEquivHyperboloid_symm_apply
+
+-- Real smooth coordinates and the actual Lorentz-kernel tangent identification.
+#check Hyperbolic.contDiffOn_upperHalfPlaneToHyperboloidCoords
+#print axioms Hyperbolic.contDiffOn_upperHalfPlaneToHyperboloidCoords
+
+#check Hyperbolic.contDiffOn_hyperboloidToUpperHalfPlaneCoords
+#print axioms Hyperbolic.contDiffOn_hyperboloidToUpperHalfPlaneCoords
+
+#check Hyperbolic.continuous_toHyperboloid
+#print axioms Hyperbolic.continuous_toHyperboloid
+
+#check Hyperbolic.continuous_fromHyperboloid
+#print axioms Hyperbolic.continuous_fromHyperboloid
+
+#check Hyperbolic.upperHalfPlaneHomeomorphHyperboloid
+#print axioms Hyperbolic.upperHalfPlaneHomeomorphHyperboloid
+
+#check Hyperbolic.upperHalfPlaneHomeomorphHyperboloid_toEquiv
+#print axioms Hyperbolic.upperHalfPlaneHomeomorphHyperboloid_toEquiv
+
+#check Hyperbolic.isOpenEmbedding_hyperboloidCoords
+#print axioms Hyperbolic.isOpenEmbedding_hyperboloidCoords
+
+#check Hyperbolic.range_hyperboloidCoords
+#print axioms Hyperbolic.range_hyperboloidCoords
+
+#check Hyperbolic.hyperboloidNonempty
+#print axioms Hyperbolic.hyperboloidNonempty
+
+#check Hyperbolic.hyperboloidChartedSpace
+#print axioms Hyperbolic.hyperboloidChartedSpace
+
+#check Hyperbolic.hyperboloidIsManifoldReal
+#print axioms Hyperbolic.hyperboloidIsManifoldReal
+
+#check Hyperbolic.upperHalfPlaneIsManifoldReal
+#print axioms Hyperbolic.upperHalfPlaneIsManifoldReal
+
+#check Hyperbolic.hyperboloid_chartAt
+#print axioms Hyperbolic.hyperboloid_chartAt
+
+#check Hyperbolic.hyperboloid_extChartAt
+#print axioms Hyperbolic.hyperboloid_extChartAt
+
+#check Hyperbolic.hyperboloid_extChartAt_symm_val
+#print axioms Hyperbolic.hyperboloid_extChartAt_symm_val
+
+#check Hyperbolic.contMDiff_toHyperboloid
+#print axioms Hyperbolic.contMDiff_toHyperboloid
+
+#check Hyperbolic.contMDiff_fromHyperboloid
+#print axioms Hyperbolic.contMDiff_fromHyperboloid
+
+#check Hyperbolic.contMDiff_hyperboloid_val
+#print axioms Hyperbolic.contMDiff_hyperboloid_val
+
+#check Hyperbolic.fderiv_upperHalfPlaneToHyperboloidCoords
+#print axioms Hyperbolic.fderiv_upperHalfPlaneToHyperboloidCoords
+
+#check Hyperbolic.fderiv_hyperboloidToUpperHalfPlaneCoords
+#print axioms Hyperbolic.fderiv_hyperboloidToUpperHalfPlaneCoords
+
+#check Hyperbolic.lorentzFunctional
+#print axioms Hyperbolic.lorentzFunctional
+
+#check Hyperbolic.lorentzFunctional_apply
+#print axioms Hyperbolic.lorentzFunctional_apply
+
+#check Hyperbolic.fderiv_toHyperboloid_mem_ker
+#print axioms Hyperbolic.fderiv_toHyperboloid_mem_ker
+
+#check Hyperbolic.fderiv_hyperboloid_left_inv
+#print axioms Hyperbolic.fderiv_hyperboloid_left_inv
+
+#check Hyperbolic.fderiv_hyperboloid_right_inv
+#print axioms Hyperbolic.fderiv_hyperboloid_right_inv
+
+#check Hyperbolic.range_fderiv_toHyperboloid
+#print axioms Hyperbolic.range_fderiv_toHyperboloid
+
+#check Hyperbolic.injective_fderiv_toHyperboloid
+#print axioms Hyperbolic.injective_fderiv_toHyperboloid
+
+#check Hyperbolic.mfderiv_hyperboloid_val
+#print axioms Hyperbolic.mfderiv_hyperboloid_val
+
+#check Hyperbolic.range_mfderiv_hyperboloid_val
+#print axioms Hyperbolic.range_mfderiv_hyperboloid_val
+
+#check Hyperbolic.mfderiv_fromHyperboloid_comp_toHyperboloid
+#print axioms Hyperbolic.mfderiv_fromHyperboloid_comp_toHyperboloid
+
+#check Hyperbolic.mfderiv_toHyperboloid_comp_fromHyperboloid
+#print axioms Hyperbolic.mfderiv_toHyperboloid_comp_fromHyperboloid
+
+#check Hyperbolic.hyperboloidTangentEquivKer
+#print axioms Hyperbolic.hyperboloidTangentEquivKer
+
+#check Hyperbolic.hyperboloidTangentEquivKer_apply
+#print axioms Hyperbolic.hyperboloidTangentEquivKer_apply
+
+#check Hyperbolic.hyperboloidTangentEquivKer_symm_apply
+#print axioms Hyperbolic.hyperboloidTangentEquivKer_symm_apply
+
+#check Hyperbolic.hyperboloid_chart_inverse_eventually
+#print axioms Hyperbolic.hyperboloid_chart_inverse_eventually
