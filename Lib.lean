@@ -5,6 +5,7 @@ import Lib.Algebra.Homology.MayerVietorisShortExact
 import Lib.Topology.Homotopy.Suspension
 import Lib.Topology.Algebra.FreeActionLocus
 import Lib.Topology.OnePointCollapse
+import Lib.Topology.Compactification.BoundaryLimits
 import Lib.AlgebraicTopology.SingularHomology.Chains
 import Lib.AlgebraicTopology.SingularHomology.ModuleHomology
 import Lib.AlgebraicTopology.SingularHomology.MayerVietoris

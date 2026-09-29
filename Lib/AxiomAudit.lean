@@ -7447,3 +7447,6 @@ is an evidence command rather than library content.
 
 #check RiemannBoundary.principalRoot_three_reverse_of_wedge
 #print axioms RiemannBoundary.principalRoot_three_reverse_of_wedge
+
+#check Compactification.exists_homeomorph_of_paired_limits
+#print axioms Compactification.exists_homeomorph_of_paired_limits
