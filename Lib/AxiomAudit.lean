@@ -7966,3 +7966,33 @@ is an evidence command rather than library content.
 
 #check Manifold.piecewiseC1EDist_finite_of_curve
 #print axioms Manifold.piecewiseC1EDist_finite_of_curve
+
+#check Hyperbolic.upperHalfPlaneSegment
+#print axioms Hyperbolic.upperHalfPlaneSegment
+
+#check Hyperbolic.upperHalfPlaneSegment_properties
+#print axioms Hyperbolic.upperHalfPlaneSegment_properties
+
+#check Hyperbolic.upperHalfPlane_exists_finiteCurve
+#print axioms Hyperbolic.upperHalfPlane_exists_finiteCurve
+
+#check Hyperbolic.hyperboloid_exists_finiteCurve
+#print axioms Hyperbolic.hyperboloid_exists_finiteCurve
+
+#check Hyperbolic.toHyperboloid_piecewiseC1EDist_le
+#print axioms Hyperbolic.toHyperboloid_piecewiseC1EDist_le
+
+#check Hyperbolic.fromHyperboloid_piecewiseC1EDist_le
+#print axioms Hyperbolic.fromHyperboloid_piecewiseC1EDist_le
+
+#check Hyperbolic.upperHalfPlane_intrinsicEDist_finite
+#print axioms Hyperbolic.upperHalfPlane_intrinsicEDist_finite
+
+#check Hyperbolic.hyperboloid_intrinsicEDist_finite
+#print axioms Hyperbolic.hyperboloid_intrinsicEDist_finite
+
+#check Hyperbolic.toHyperboloid_intrinsicEDist
+#print axioms Hyperbolic.toHyperboloid_intrinsicEDist
+
+#check Hyperbolic.fromHyperboloid_intrinsicEDist
+#print axioms Hyperbolic.fromHyperboloid_intrinsicEDist

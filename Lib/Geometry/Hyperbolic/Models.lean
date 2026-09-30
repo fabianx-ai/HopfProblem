@@ -21,6 +21,8 @@ public import Mathlib.Geometry.Manifold.VectorBundle.Hom
 public import Mathlib.Topology.Algebra.Module.Spaces.ContinuousLinearMap
 public import Lib.Geometry.Manifold.Riemannian.CurveTransport
 public import Mathlib.Geometry.Euclidean.Angle.Unoriented.Basic
+public import Mathlib.Analysis.Calculus.AddTorsor.AffineMap
+public import Mathlib.Analysis.Convex.Basic
 
 /-!
 # Upper-half-plane and hyperboloid coordinates
@@ -1224,5 +1226,203 @@ theorem upperHalfPlaneDiffeomorphHyperboloid_curveFamily_length {a b : ℝ} {n :
  := by
   exact PiecewiseC1CurveOn.mapEquiv_length upperHalfPlaneMetric hyperboloidMetric
     upperHalfPlaneDiffeomorphHyperboloid toHyperboloid_preserves_tangentTensor
+
+
+/-! ## Intrinsic distance correspondence and actual finite witnesses (G01.l) -/
+
+private theorem modelSegment_pos (u v : UpperHalfPlane) {t : ℝ} (ht : t ∈ Icc (0 : ℝ) 1) :
+    0 < (AffineMap.lineMap (u : ℂ) (v : ℂ) t).im := by
+  have hc : Convex ℝ {z : ℂ | 0 < z.im} :=
+    (convex_Ioi (𝕜 := ℝ) (0 : ℝ)).linear_preimage Complex.imLm
+  exact hc.lineMap_mem u.im_pos v.im_pos ht
+
+
+private theorem modelSegment_onePiece {γ : ℝ → UpperHalfPlane}
+    (hγ : ContMDiffOn 𝓘(ℝ, ℝ) I 1 γ (Icc 0 1)) :
+    IsPiecewiseC1On I γ 0 1 1 (fun i : Fin 2 => if i = 0 then (0 : ℝ) else 1) := by
+  refine ⟨?_, by simp, by simp, hγ.continuousOn, ?_⟩
+  · intro i j hij
+    fin_cases i <;> fin_cases j <;> simp_all
+  · intro i hi
+    fin_cases i
+    simpa using hγ
+
+/-- The canonical upper-half-plane segment is the real affine coordinate segment on the unit interval (G01.l). Values outside that interval are arbitrary chart-inverse values. -/
+def upperHalfPlaneSegment (u v : UpperHalfPlane) (t : ℝ) : UpperHalfPlane :=
+  UpperHalfPlane.ofComplex (AffineMap.lineMap (u : ℂ) (v : ℂ) t)
+
+/-- The canonical segment has literal affine coordinates, exact endpoints and real C1 regularity on the closed unit interval (G01.l); no global C1 extension is asserted. -/
+theorem upperHalfPlaneSegment_properties (u v : UpperHalfPlane) :
+  (∀ t ∈ Icc (0 : ℝ) 1, (upperHalfPlaneSegment u v t : ℂ) =
+    AffineMap.lineMap (u : ℂ) (v : ℂ) t) ∧
+  upperHalfPlaneSegment u v 0 = u ∧ upperHalfPlaneSegment u v 1 = v ∧
+  ContMDiffOn 𝓘(ℝ, ℝ) I 1 (upperHalfPlaneSegment u v) (Icc 0 1) := by
+  have hs : ContMDiffOn 𝓘(ℝ, ℝ) I 1 (upperHalfPlaneSegment u v) (Icc 0 1) := by
+    have hg : ContMDiffOn I I 1 UpperHalfPlane.ofComplex
+        (range (UpperHalfPlane.coe : UpperHalfPlane → ℂ)) :=
+      contMDiffOn_isOpenEmbedding_symm UpperHalfPlane.isOpenEmbedding_coe
+    have hf : ContMDiff 𝓘(ℝ, ℝ) I 1 (AffineMap.lineMap (u : ℂ) (v : ℂ) : ℝ → ℂ) :=
+      (AffineMap.contDiff_lineMap (𝕜 := ℝ) (u : ℂ) (v : ℂ)).contMDiff
+    exact hg.comp hf.contMDiffOn (fun t ht => ⟨⟨_, modelSegment_pos u v ht⟩, rfl⟩)
+  refine ⟨?_, ?_, ?_, hs⟩
+  · intro t ht
+    simp only [upperHalfPlaneSegment, UpperHalfPlane.ofComplex_apply_of_im_pos (modelSegment_pos u v ht)]
+  · simp [upperHalfPlaneSegment]
+  · simp [upperHalfPlaneSegment]
+
+/-- Every upper-half-plane pair admits the literal one-piece segment as a finite-length curve for the actual coordinate metric (G01.l). -/
+theorem upperHalfPlane_exists_finiteCurve (u v : UpperHalfPlane) :
+  letI : Bundle.RiemannianBundle (fun z : UpperHalfPlane => TangentSpace I z) :=
+    ⟨upperHalfPlaneMetric.toRiemannianMetric⟩
+  ∃ γ : PiecewiseC1CurveOn I 0 1 1 (fun i : Fin 2 => if i = 0 then (0 : ℝ) else 1) u v,
+    γ.val = upperHalfPlaneSegment u v ∧
+    0 ≤ piecewiseC1Length upperHalfPlaneMetric γ.val (fun i : Fin 2 => if i = 0 then (0 : ℝ) else 1) ∧
+    pathELength I γ.val 0 1 =
+      ENNReal.ofReal (piecewiseC1Length upperHalfPlaneMetric γ.val (fun i : Fin 2 => if i = 0 then (0 : ℝ) else 1)) ∧
+    pathELength I γ.val 0 1 < (⊤ : ℝ≥0∞) := by
+  letI : Bundle.RiemannianBundle (fun z : UpperHalfPlane => TangentSpace I z) :=
+    ⟨upperHalfPlaneMetric.toRiemannianMetric⟩
+  rcases upperHalfPlaneSegment_properties u v with ⟨hcoe, h0, h1, hc⟩
+  let γ : PiecewiseC1CurveOn I 0 1 1 (fun i : Fin 2 => if i = 0 then (0 : ℝ) else 1) u v :=
+    ⟨upperHalfPlaneSegment u v, modelSegment_onePiece hc, h0, h1⟩
+  rcases γ.property.1.speed_length upperHalfPlaneMetric with
+    ⟨hi, hii, hm, hint, hr, hs, hn, hpi, hpf, hsum, hwhole, hpath, hfinite⟩
+  exact ⟨γ, rfl, hn, hpath, hfinite⟩
+
+/-- Every hyperboloid pair admits the forward image of the segment between its inverse coordinates, with exact endpoints and finite Lorentz-restriction length (G01.l). -/
+theorem hyperboloid_exists_finiteCurve (p q : Hyperboloid) :
+  letI : Bundle.RiemannianBundle (fun p : Hyperboloid => TangentSpace I p) :=
+    ⟨hyperboloidMetric.toRiemannianMetric⟩
+  ∃ γ : PiecewiseC1CurveOn I 0 1 1 (fun i : Fin 2 => if i = 0 then (0 : ℝ) else 1) p q,
+    γ.val = toHyperboloid ∘ upperHalfPlaneSegment (fromHyperboloid p) (fromHyperboloid q) ∧
+    0 ≤ piecewiseC1Length hyperboloidMetric γ.val (fun i : Fin 2 => if i = 0 then (0 : ℝ) else 1) ∧
+    pathELength I γ.val 0 1 =
+      ENNReal.ofReal (piecewiseC1Length hyperboloidMetric γ.val (fun i : Fin 2 => if i = 0 then (0 : ℝ) else 1)) ∧
+    pathELength I γ.val 0 1 < (⊤ : ℝ≥0∞) := by
+  letI : Bundle.RiemannianBundle (fun z : UpperHalfPlane => TangentSpace I z) :=
+    ⟨upperHalfPlaneMetric.toRiemannianMetric⟩
+  letI : Bundle.RiemannianBundle (fun p : Hyperboloid => TangentSpace I p) :=
+    ⟨hyperboloidMetric.toRiemannianMetric⟩
+  rcases upperHalfPlane_exists_finiteCurve (fromHyperboloid p) (fromHyperboloid q) with
+    ⟨γ, hval, hn, hpath, hfinite⟩
+  rcases toHyperboloid_length γ.property.1 with
+    ⟨hc, ha, hb, hp, hr, hnU, hnQ, he, hfU, hfQ, hbrU, hbrQ, hpe, hpfU, hpfQ⟩
+  let η : PiecewiseC1CurveOn I 0 1 1 (fun i : Fin 2 => if i = 0 then (0 : ℝ) else 1) p q :=
+    ⟨toHyperboloid ∘ γ.val, hc, by simp [γ.property.2.1, toHyperboloid_fromHyperboloid],
+      by simp [γ.property.2.2, toHyperboloid_fromHyperboloid]⟩
+  exact ⟨η, congrArg (fun f => toHyperboloid ∘ f) hval, hnQ, hbrQ, hfQ⟩
+
+/-- Forward transport of every admissible curve with unchanged interval and subdivision gives the first intrinsic finite-piece-distance inequality (G01.l). -/
+theorem toHyperboloid_piecewiseC1EDist_le (u v : UpperHalfPlane) :
+  piecewiseC1EDist hyperboloidMetric (toHyperboloid u) (toHyperboloid v) ≤
+    piecewiseC1EDist upperHalfPlaneMetric u v := by
+  letI : Bundle.RiemannianBundle (fun z : UpperHalfPlane => TangentSpace I z) :=
+    ⟨upperHalfPlaneMetric.toRiemannianMetric⟩
+  letI : Bundle.RiemannianBundle (fun p : Hyperboloid => TangentSpace I p) :=
+    ⟨hyperboloidMetric.toRiemannianMetric⟩
+  unfold piecewiseC1EDist
+  refine le_iInf fun a => le_iInf fun b => le_iInf fun n => le_iInf fun cut =>
+    le_iInf fun γ => ?_
+  rcases toHyperboloid_length γ.property.1 with
+    ⟨hc, ha, hb, hp, hr, hnU, hnQ, he, hfU, hfQ, hbrU, hbrQ, hpe, hpfU, hpfQ⟩
+  let η : PiecewiseC1CurveOn I a b n cut (toHyperboloid u) (toHyperboloid v) :=
+    ⟨toHyperboloid ∘ γ.val, hc, by simp [γ.property.2.1], by simp [γ.property.2.2]⟩
+  exact iInf_le_of_le a (iInf_le_of_le b (iInf_le_of_le n
+    (iInf_le_of_le cut (iInf_le_of_le η (le_of_eq (congrArg ENNReal.ofReal hr))))))
+
+/-- Backward transport of every arbitrary target curve gives the inverse intrinsic finite-piece-distance inequality for the same metrics and curve family (G01.l). -/
+theorem fromHyperboloid_piecewiseC1EDist_le (p q : Hyperboloid) :
+  piecewiseC1EDist upperHalfPlaneMetric (fromHyperboloid p) (fromHyperboloid q) ≤
+    piecewiseC1EDist hyperboloidMetric p q := by
+  letI : Bundle.RiemannianBundle (fun z : UpperHalfPlane => TangentSpace I z) :=
+    ⟨upperHalfPlaneMetric.toRiemannianMetric⟩
+  letI : Bundle.RiemannianBundle (fun p : Hyperboloid => TangentSpace I p) :=
+    ⟨hyperboloidMetric.toRiemannianMetric⟩
+  unfold piecewiseC1EDist
+  refine le_iInf fun a => le_iInf fun b => le_iInf fun n => le_iInf fun cut =>
+    le_iInf fun γ => ?_
+  rcases fromHyperboloid_length γ.property.1 with
+    ⟨hc, ha, hb, hp, hr, hnQ, hnU, he, hfQ, hfU, hbrQ, hbrU, hpe, hpfQ, hpfU⟩
+  let η : PiecewiseC1CurveOn I a b n cut (fromHyperboloid p) (fromHyperboloid q) :=
+    ⟨fromHyperboloid ∘ γ.val, hc, by simp [γ.property.2.1], by simp [γ.property.2.2]⟩
+  exact iInf_le_of_le a (iInf_le_of_le b (iInf_le_of_le n
+    (iInf_le_of_le cut (iInf_le_of_le η (le_of_eq (congrArg ENNReal.ofReal hr))))))
+
+/-- The actual segment witness makes both intrinsic distance conventions finite for every upper-half-plane pair (G01.l). -/
+theorem upperHalfPlane_intrinsicEDist_finite (u v : UpperHalfPlane) :
+  letI : Bundle.RiemannianBundle (fun z : UpperHalfPlane => TangentSpace I z) :=
+    ⟨upperHalfPlaneMetric.toRiemannianMetric⟩
+  piecewiseC1EDist upperHalfPlaneMetric u v < (⊤ : ℝ≥0∞) ∧
+  riemannianEDist I u v < (⊤ : ℝ≥0∞) := by
+  letI : Bundle.RiemannianBundle (fun z : UpperHalfPlane => TangentSpace I z) :=
+    ⟨upperHalfPlaneMetric.toRiemannianMetric⟩
+  rcases upperHalfPlane_exists_finiteCurve u v with ⟨γ, hγ⟩
+  exact (piecewiseC1EDist_finite_of_curve upperHalfPlaneMetric γ).2.2
+
+/-- The actual transported segment witness makes both intrinsic distance conventions finite for every hyperboloid pair (G01.l). -/
+theorem hyperboloid_intrinsicEDist_finite (p q : Hyperboloid) :
+  letI : Bundle.RiemannianBundle (fun p : Hyperboloid => TangentSpace I p) :=
+    ⟨hyperboloidMetric.toRiemannianMetric⟩
+  piecewiseC1EDist hyperboloidMetric p q < (⊤ : ℝ≥0∞) ∧
+  riemannianEDist I p q < (⊤ : ℝ≥0∞) := by
+  letI : Bundle.RiemannianBundle (fun p : Hyperboloid => TangentSpace I p) :=
+    ⟨hyperboloidMetric.toRiemannianMetric⟩
+  rcases hyperboloid_exists_finiteCurve p q with ⟨γ, hγ⟩
+  exact (piecewiseC1EDist_finite_of_curve hyperboloidMetric γ).2.2
+
+/-- The actual forward coordinates preserve the all-family finite-piece and C1 intrinsic extended distances, with both values finite and equal real values (G01.l). -/
+theorem toHyperboloid_intrinsicEDist (u v : UpperHalfPlane) :
+  letI : Bundle.RiemannianBundle (fun z : UpperHalfPlane => TangentSpace I z) :=
+    ⟨upperHalfPlaneMetric.toRiemannianMetric⟩
+  letI : Bundle.RiemannianBundle (fun p : Hyperboloid => TangentSpace I p) :=
+    ⟨hyperboloidMetric.toRiemannianMetric⟩
+  piecewiseC1EDist hyperboloidMetric (toHyperboloid u) (toHyperboloid v) =
+    piecewiseC1EDist upperHalfPlaneMetric u v ∧
+  riemannianEDist I (toHyperboloid u) (toHyperboloid v) = riemannianEDist I u v ∧
+  riemannianEDist I u v < (⊤ : ℝ≥0∞) ∧
+  riemannianEDist I (toHyperboloid u) (toHyperboloid v) < (⊤ : ℝ≥0∞) ∧
+  (riemannianEDist I (toHyperboloid u) (toHyperboloid v)).toReal =
+    (riemannianEDist I u v).toReal := by
+  letI : Bundle.RiemannianBundle (fun z : UpperHalfPlane => TangentSpace I z) :=
+    ⟨upperHalfPlaneMetric.toRiemannianMetric⟩
+  letI : Bundle.RiemannianBundle (fun p : Hyperboloid => TangentSpace I p) :=
+    ⟨hyperboloidMetric.toRiemannianMetric⟩
+  have hle := toHyperboloid_piecewiseC1EDist_le u v
+  have hge := fromHyperboloid_piecewiseC1EDist_le (toHyperboloid u) (toHyperboloid v)
+  simp only [fromHyperboloid_toHyperboloid] at hge
+  have hp := le_antisymm hle hge
+  have he : riemannianEDist I (toHyperboloid u) (toHyperboloid v) = riemannianEDist I u v := by
+    simpa only [piecewiseC1EDist_eq_riemannianEDist] using hp
+  exact ⟨hp, he, (upperHalfPlane_intrinsicEDist_finite u v).2,
+    (hyperboloid_intrinsicEDist_finite (toHyperboloid u) (toHyperboloid v)).2,
+    congrArg ENNReal.toReal he⟩
+
+/-- The actual inverse coordinates preserve both intrinsic distance conventions for arbitrary hyperboloid endpoints, with finite and equal real values (G01.l). -/
+theorem fromHyperboloid_intrinsicEDist (p q : Hyperboloid) :
+  letI : Bundle.RiemannianBundle (fun z : UpperHalfPlane => TangentSpace I z) :=
+    ⟨upperHalfPlaneMetric.toRiemannianMetric⟩
+  letI : Bundle.RiemannianBundle (fun p : Hyperboloid => TangentSpace I p) :=
+    ⟨hyperboloidMetric.toRiemannianMetric⟩
+  piecewiseC1EDist upperHalfPlaneMetric (fromHyperboloid p) (fromHyperboloid q) =
+    piecewiseC1EDist hyperboloidMetric p q ∧
+  riemannianEDist I (fromHyperboloid p) (fromHyperboloid q) = riemannianEDist I p q ∧
+  riemannianEDist I p q < (⊤ : ℝ≥0∞) ∧
+  riemannianEDist I (fromHyperboloid p) (fromHyperboloid q) < (⊤ : ℝ≥0∞) ∧
+  (riemannianEDist I (fromHyperboloid p) (fromHyperboloid q)).toReal =
+    (riemannianEDist I p q).toReal := by
+  letI : Bundle.RiemannianBundle (fun z : UpperHalfPlane => TangentSpace I z) :=
+    ⟨upperHalfPlaneMetric.toRiemannianMetric⟩
+  letI : Bundle.RiemannianBundle (fun p : Hyperboloid => TangentSpace I p) :=
+    ⟨hyperboloidMetric.toRiemannianMetric⟩
+  have hle := fromHyperboloid_piecewiseC1EDist_le p q
+  have hge := toHyperboloid_piecewiseC1EDist_le (fromHyperboloid p) (fromHyperboloid q)
+  simp only [toHyperboloid_fromHyperboloid] at hge
+  have hp := le_antisymm hle hge
+  have he : riemannianEDist I (fromHyperboloid p) (fromHyperboloid q) = riemannianEDist I p q := by
+    simpa only [piecewiseC1EDist_eq_riemannianEDist] using hp
+  exact ⟨hp, he, (hyperboloid_intrinsicEDist_finite p q).2,
+    (upperHalfPlane_intrinsicEDist_finite (fromHyperboloid p) (fromHyperboloid q)).2,
+    congrArg ENNReal.toReal he⟩
+
 
 end Hyperbolic
