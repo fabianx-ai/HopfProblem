@@ -66,6 +66,10 @@ public import Mathlib.Geometry.Manifold.Riemannian.Basic
 public import Mathlib.Topology.MetricSpace.Basic
 public import Mathlib.Topology.MetricSpace.Isometry
 public import Mathlib.Topology.MetricSpace.ProperSpace
+public import Mathlib.Topology.MetricSpace.Cauchy
+public import Mathlib.Topology.Sequences
+public import Mathlib.Order.WellFounded
+public import Mathlib.Topology.Neighborhoods
 
 /-!
 # Upper-half-plane and hyperboloid coordinates
@@ -5872,5 +5876,154 @@ theorem properSpace_upperHalfPlaneLengthMetricSpace :
   exact ⟨fun u R => Hyperbolic.isCompact_upperHalfPlaneLengthMetricSpace_closedBall u R⟩
 
 end ProperLengthBalls
+
+section CompleteLengthMetrics
+
+open Set Filter
+open scoped Topology
+
+/-- Every Cauchy sequence for the hyperboloid length metric converges inside the model, by a compact tail and the epsilon-half estimate (G04.E, canonical lines 123–125). -/
+theorem cauchySeq_tendsto_hyperboloidLengthMetricSpace (x : ℕ → Hyperboloid) :
+  letI : MetricSpace Hyperboloid := hyperboloidLengthMetricSpace
+  letI : PseudoMetricSpace Hyperboloid := hyperboloidLengthMetricSpace.toPseudoMetricSpace
+  letI : PseudoEMetricSpace Hyperboloid :=
+    @PseudoMetricSpace.toPseudoEMetricSpace Hyperboloid hyperboloidLengthMetricSpace.toPseudoMetricSpace
+  letI : WeakPseudoEMetricSpace Hyperboloid :=
+    @PseudoEMetricSpace.toWeakPseudoEMetricSpace Hyperboloid
+      (@PseudoMetricSpace.toPseudoEMetricSpace Hyperboloid hyperboloidLengthMetricSpace.toPseudoMetricSpace)
+  letI : UniformSpace Hyperboloid := hyperboloidLengthMetricSpace.toPseudoMetricSpace.toUniformSpace
+  letI : TopologicalSpace Hyperboloid :=
+    hyperboloidLengthMetricSpace.toPseudoMetricSpace.toUniformSpace.toTopologicalSpace
+  CauchySeq x → ∃ p : Hyperboloid, Tendsto x atTop (𝓝 p) := by
+  letI : MetricSpace Hyperboloid := hyperboloidLengthMetricSpace
+  letI : PseudoMetricSpace Hyperboloid := hyperboloidLengthMetricSpace.toPseudoMetricSpace
+  letI : PseudoEMetricSpace Hyperboloid :=
+    @PseudoMetricSpace.toPseudoEMetricSpace Hyperboloid hyperboloidLengthMetricSpace.toPseudoMetricSpace
+  letI : WeakPseudoEMetricSpace Hyperboloid :=
+    @PseudoEMetricSpace.toWeakPseudoEMetricSpace Hyperboloid
+      (@PseudoMetricSpace.toPseudoEMetricSpace Hyperboloid hyperboloidLengthMetricSpace.toPseudoMetricSpace)
+  letI : UniformSpace Hyperboloid := hyperboloidLengthMetricSpace.toPseudoMetricSpace.toUniformSpace
+  letI : TopologicalSpace Hyperboloid :=
+    hyperboloidLengthMetricSpace.toPseudoMetricSpace.toUniformSpace.toTopologicalSpace
+  intro hx
+  rcases Metric.cauchySeq_iff.1 hx 1 zero_lt_one with ⟨N, hN⟩
+  let y : ℕ → Hyperboloid := fun n => x (N + n)
+  have hy : ∀ n, y n ∈ Metric.closedBall (x N) 1 := by
+    intro n
+    change dist (x (N + n)) (x N) ≤ 1
+    exact (hN (N + n) (Nat.le_add_right N n) N le_rfl).le
+  -- Actual committed D compact-ball dependency.
+  have hcompact : IsCompact (Metric.closedBall (x N) 1) :=
+    Hyperbolic.isCompact_hyperboloidLengthMetricSpace_closedBall (x N) 1
+  obtain ⟨p, hp, φ, hφ, hlim⟩ := hcompact.tendsto_subseq hy
+  have hlim' : Tendsto (fun k => x (N + φ k)) atTop (𝓝 p) := by
+    simpa only [Function.comp_def, y] using hlim
+  have hshift : StrictMono (fun k => N + φ k) := by
+    intro i j hij
+    exact Nat.add_lt_add_left (hφ hij) N
+  refine ⟨p, Metric.tendsto_atTop.2 ?_⟩
+  intro ε hε
+  rcases Metric.cauchySeq_iff.1 hx (ε / 2) (half_pos hε) with ⟨cauchyIndex, hK⟩
+  rcases Metric.tendsto_atTop.1 hlim' (ε / 2) (half_pos hε) with ⟨L, hL⟩
+  let k := max cauchyIndex L
+  have hkL : L ≤ k := le_max_right _ _
+  have hkK : cauchyIndex ≤ k := le_max_left _ _
+  have hKidx : cauchyIndex ≤ N + φ k :=
+    hkK.trans ((hφ.id_le k).trans (Nat.le_add_left (φ k) N))
+  have hsub : dist (x (N + φ k)) p < ε / 2 := hL k hkL
+  refine ⟨cauchyIndex, ?_⟩
+  intro n hn
+  calc
+    dist (x n) p ≤ dist (x n) (x (N + φ k)) + dist (x (N + φ k)) p :=
+      dist_triangle _ _ _
+    _ < ε / 2 + ε / 2 := add_lt_add (hK n hn (N + φ k) hKidx) hsub
+    _ = ε := add_halves ε
+
+/-- The hyperboloid length metric is complete, packaged without a global instance (G04.E, canonical line 125). -/
+theorem completeSpace_hyperboloidLengthMetricSpace :
+  letI : MetricSpace Hyperboloid := hyperboloidLengthMetricSpace
+  letI : PseudoMetricSpace Hyperboloid := hyperboloidLengthMetricSpace.toPseudoMetricSpace
+  letI : PseudoEMetricSpace Hyperboloid :=
+    @PseudoMetricSpace.toPseudoEMetricSpace Hyperboloid hyperboloidLengthMetricSpace.toPseudoMetricSpace
+  letI : WeakPseudoEMetricSpace Hyperboloid :=
+    @PseudoEMetricSpace.toWeakPseudoEMetricSpace Hyperboloid
+      (@PseudoMetricSpace.toPseudoEMetricSpace Hyperboloid hyperboloidLengthMetricSpace.toPseudoMetricSpace)
+  letI : UniformSpace Hyperboloid := hyperboloidLengthMetricSpace.toPseudoMetricSpace.toUniformSpace
+  letI : TopologicalSpace Hyperboloid :=
+    hyperboloidLengthMetricSpace.toPseudoMetricSpace.toUniformSpace.toTopologicalSpace
+  CompleteSpace Hyperboloid := by
+  letI : MetricSpace Hyperboloid := hyperboloidLengthMetricSpace
+  letI : PseudoMetricSpace Hyperboloid := hyperboloidLengthMetricSpace.toPseudoMetricSpace
+  letI : PseudoEMetricSpace Hyperboloid :=
+    @PseudoMetricSpace.toPseudoEMetricSpace Hyperboloid hyperboloidLengthMetricSpace.toPseudoMetricSpace
+  letI : WeakPseudoEMetricSpace Hyperboloid :=
+    @PseudoEMetricSpace.toWeakPseudoEMetricSpace Hyperboloid
+      (@PseudoMetricSpace.toPseudoEMetricSpace Hyperboloid hyperboloidLengthMetricSpace.toPseudoMetricSpace)
+  letI : UniformSpace Hyperboloid := hyperboloidLengthMetricSpace.toPseudoMetricSpace.toUniformSpace
+  letI : TopologicalSpace Hyperboloid :=
+    hyperboloidLengthMetricSpace.toPseudoMetricSpace.toUniformSpace.toTopologicalSpace
+  exact Metric.complete_of_cauchySeq_tendsto
+    (fun x hx => Hyperbolic.cauchySeq_tendsto_hyperboloidLengthMetricSpace x hx)
+
+/-- Every Cauchy sequence for the upper-half-plane length metric converges inside the model, by a compact tail and the epsilon-half estimate (G04.E, canonical lines 123–125). -/
+theorem cauchySeq_tendsto_upperHalfPlaneLengthMetricSpace (x : ℕ → UpperHalfPlane) :
+  letI : MetricSpace UpperHalfPlane := upperHalfPlaneLengthMetricSpace
+  letI : UniformSpace UpperHalfPlane := upperHalfPlaneLengthMetricSpace.toPseudoMetricSpace.toUniformSpace
+  letI : TopologicalSpace UpperHalfPlane :=
+    upperHalfPlaneLengthMetricSpace.toPseudoMetricSpace.toUniformSpace.toTopologicalSpace
+  CauchySeq x → ∃ p : UpperHalfPlane, Tendsto x atTop (𝓝 p) := by
+  letI : MetricSpace UpperHalfPlane := upperHalfPlaneLengthMetricSpace
+  letI : UniformSpace UpperHalfPlane := upperHalfPlaneLengthMetricSpace.toPseudoMetricSpace.toUniformSpace
+  letI : TopologicalSpace UpperHalfPlane :=
+    upperHalfPlaneLengthMetricSpace.toPseudoMetricSpace.toUniformSpace.toTopologicalSpace
+  intro hx
+  rcases Metric.cauchySeq_iff.1 hx 1 zero_lt_one with ⟨N, hN⟩
+  let y : ℕ → UpperHalfPlane := fun n => x (N + n)
+  have hy : ∀ n, y n ∈ Metric.closedBall (x N) 1 := by
+    intro n
+    change dist (x (N + n)) (x N) ≤ 1
+    exact (hN (N + n) (Nat.le_add_right N n) N le_rfl).le
+  -- Actual committed D compact-ball dependency.
+  have hcompact : IsCompact (Metric.closedBall (x N) 1) :=
+    Hyperbolic.isCompact_upperHalfPlaneLengthMetricSpace_closedBall (x N) 1
+  obtain ⟨p, hp, φ, hφ, hlim⟩ := hcompact.tendsto_subseq hy
+  have hlim' : Tendsto (fun k => x (N + φ k)) atTop (𝓝 p) := by
+    simpa only [Function.comp_def, y] using hlim
+  have hshift : StrictMono (fun k => N + φ k) := by
+    intro i j hij
+    exact Nat.add_lt_add_left (hφ hij) N
+  refine ⟨p, Metric.tendsto_atTop.2 ?_⟩
+  intro ε hε
+  rcases Metric.cauchySeq_iff.1 hx (ε / 2) (half_pos hε) with ⟨cauchyIndex, hK⟩
+  rcases Metric.tendsto_atTop.1 hlim' (ε / 2) (half_pos hε) with ⟨L, hL⟩
+  let k := max cauchyIndex L
+  have hkL : L ≤ k := le_max_right _ _
+  have hkK : cauchyIndex ≤ k := le_max_left _ _
+  have hKidx : cauchyIndex ≤ N + φ k :=
+    hkK.trans ((hφ.id_le k).trans (Nat.le_add_left (φ k) N))
+  have hsub : dist (x (N + φ k)) p < ε / 2 := hL k hkL
+  refine ⟨cauchyIndex, ?_⟩
+  intro n hn
+  calc
+    dist (x n) p ≤ dist (x n) (x (N + φ k)) + dist (x (N + φ k)) p :=
+      dist_triangle _ _ _
+    _ < ε / 2 + ε / 2 := add_lt_add (hK n hn (N + φ k) hKidx) hsub
+    _ = ε := add_halves ε
+
+/-- The upper-half-plane length metric is complete, packaged without a global instance (G04.E, canonical line 125). -/
+theorem completeSpace_upperHalfPlaneLengthMetricSpace :
+  letI : MetricSpace UpperHalfPlane := upperHalfPlaneLengthMetricSpace
+  letI : UniformSpace UpperHalfPlane := upperHalfPlaneLengthMetricSpace.toPseudoMetricSpace.toUniformSpace
+  letI : TopologicalSpace UpperHalfPlane :=
+    upperHalfPlaneLengthMetricSpace.toPseudoMetricSpace.toUniformSpace.toTopologicalSpace
+  CompleteSpace UpperHalfPlane := by
+  letI : MetricSpace UpperHalfPlane := upperHalfPlaneLengthMetricSpace
+  letI : UniformSpace UpperHalfPlane := upperHalfPlaneLengthMetricSpace.toPseudoMetricSpace.toUniformSpace
+  letI : TopologicalSpace UpperHalfPlane :=
+    upperHalfPlaneLengthMetricSpace.toPseudoMetricSpace.toUniformSpace.toTopologicalSpace
+  exact Metric.complete_of_cauchySeq_tendsto
+    (fun x hx => Hyperbolic.cauchySeq_tendsto_upperHalfPlaneLengthMetricSpace x hx)
+
+end CompleteLengthMetrics
 
 end Hyperbolic

@@ -8434,3 +8434,15 @@ is an evidence command rather than library content.
 
 #check Hyperbolic.properSpace_upperHalfPlaneLengthMetricSpace
 #print axioms Hyperbolic.properSpace_upperHalfPlaneLengthMetricSpace
+
+#check Hyperbolic.cauchySeq_tendsto_hyperboloidLengthMetricSpace
+#print axioms Hyperbolic.cauchySeq_tendsto_hyperboloidLengthMetricSpace
+
+#check Hyperbolic.completeSpace_hyperboloidLengthMetricSpace
+#print axioms Hyperbolic.completeSpace_hyperboloidLengthMetricSpace
+
+#check Hyperbolic.cauchySeq_tendsto_upperHalfPlaneLengthMetricSpace
+#print axioms Hyperbolic.cauchySeq_tendsto_upperHalfPlaneLengthMetricSpace
+
+#check Hyperbolic.completeSpace_upperHalfPlaneLengthMetricSpace
+#print axioms Hyperbolic.completeSpace_upperHalfPlaneLengthMetricSpace
