@@ -254,4 +254,42 @@ theorem variation_bounds_integral_abs_deriv
   · exact (ENNReal.toReal_mono ENNReal.ofReal_ne_top hbound).trans_eq
       (ENNReal.toReal_ofReal hJ)
 
+/-- Equality between the integral of the absolute derivative and the net increase
+forces a real absolutely continuous function to be nondecreasing on the whole
+closed interval. The nonnegative integrable loss `|f'| - f'` has zero integral,
+so the derivative is nonnegative almost everywhere. Restricting the same function
+and applying the fundamental theorem gives every ordered endpoint increment.
+Singleton intervals, constant portions and arbitrary exterior values are allowed. -/
+theorem monotoneOn_of_integral_abs_deriv_eq_sub {f : ℝ → ℝ} {a b : ℝ}
+    (hf : AbsolutelyContinuousOnInterval f a b) (hab : a ≤ b)
+    (heq : (∫ t in a..b, |deriv f t|) = f b - f a) :
+    MonotoneOn f (Icc a b) := by
+  have hi := hf.intervalIntegrable_deriv
+  have hloss : IntervalIntegrable (fun t => |deriv f t| - deriv f t) volume a b :=
+    hi.abs.sub hi
+  have hz : (∫ t in a..b, |deriv f t| - deriv f t) = 0 := by
+    rw [intervalIntegral.integral_sub hi.abs hi, heq, hf.integral_deriv_eq_sub, sub_self]
+  have hzero : (fun t => |deriv f t| - deriv f t) =ᵐ[volume.restrict (Ioc a b)] 0 :=
+    (intervalIntegral.integral_eq_zero_iff_of_le_of_nonneg_ae hab
+      (Filter.Eventually.of_forall (fun t => sub_nonneg.mpr (le_abs_self (deriv f t))))
+      hloss).mp hz
+  have hsign : 0 ≤ᵐ[volume.restrict (Ioc a b)] deriv f := by
+    filter_upwards [hzero] with t ht
+    have he : |deriv f t| = deriv f t := sub_eq_zero.mp ht
+    rw [← he]
+    exact abs_nonneg _
+  have hclosed : 0 ≤ᵐ[volume.restrict (Icc a b)] deriv f := by
+    simpa only [MeasureTheory.restrict_Ioc_eq_restrict_Icc] using hsign
+  intro x hx y hy hxy
+  have hs : Icc x y ⊆ Icc a b :=
+    fun _ ht => ⟨hx.1.trans ht.1, ht.2.trans hy.2⟩
+  have hus : uIcc x y ⊆ uIcc a b := by
+    simpa only [uIcc_of_le hxy, uIcc_of_le hab] using hs
+  have hrestricted := hf.mono hus
+  have hnonneg : 0 ≤ ∫ t in x..y, deriv f t :=
+    intervalIntegral.integral_nonneg_of_ae_restrict hxy
+      (ae_restrict_of_ae_restrict_of_subset hs hclosed)
+  rw [hrestricted.integral_deriv_eq_sub] at hnonneg
+  exact sub_nonneg.mp hnonneg
+
 end AbsolutelyContinuousOnInterval

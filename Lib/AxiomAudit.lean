@@ -8245,3 +8245,6 @@ is an evidence command rather than library content.
 
 #check Hyperbolic.hyperboloidRadius_variation_le_length
 #print axioms Hyperbolic.hyperboloidRadius_variation_le_length
+
+#check AbsolutelyContinuousOnInterval.monotoneOn_of_integral_abs_deriv_eq_sub
+#print axioms AbsolutelyContinuousOnInterval.monotoneOn_of_integral_abs_deriv_eq_sub
