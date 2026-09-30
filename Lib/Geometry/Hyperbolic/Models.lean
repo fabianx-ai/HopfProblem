@@ -23,6 +23,9 @@ public import Lib.Geometry.Manifold.Riemannian.CurveTransport
 public import Mathlib.Geometry.Euclidean.Angle.Unoriented.Basic
 public import Mathlib.Analysis.Calculus.AddTorsor.AffineMap
 public import Mathlib.Analysis.Convex.Basic
+public import Mathlib.Algebra.Order.BigOperators.Ring.Finset
+public import Mathlib.LinearAlgebra.FiniteDimensional.Lemmas
+public import Mathlib.Analysis.Normed.Operator.Bilinear
 
 /-!
 # Upper-half-plane and hyperboloid coordinates
@@ -1423,6 +1426,147 @@ theorem fromHyperboloid_intrinsicEDist (p q : Hyperboloid) :
   exact ⟨hp, he, (hyperboloid_intrinsicEDist_finite p q).2,
     (upperHalfPlane_intrinsicEDist_finite (fromHyperboloid p) (fromHyperboloid q)).2,
     congrArg ENNReal.toReal he⟩
+
+
+
+/-! ## Independent positive Lorentz tangent plane (G02.a) -/
+
+/-- The Lorentz-perpendicular equation gives the time component in terms of the spatial coordinates (G02.a/A01). -/
+theorem lorentzKer_time_eq (p : Hyperboloid) (v : V)
+    (hv : v ∈ (lorentzFunctional p.val).ker) :
+    p.val 2 * v 2 = p.val 0 * v 0 + p.val 1 * v 1 := by
+  have h : p.val 0 * v 0 + p.val 1 * v 1 - p.val 2 * v 2 = 0 := hv
+  linarith
+
+/-- Independent Cauchy–Schwarz on the two spatial coordinates gives a quantitative lower bound for the Lorentz quadratic form on the perpendicular plane (G02.a/A02). -/
+theorem lorentzKer_quadratic_lowerBound (p : Hyperboloid) (v : V)
+    (hv : v ∈ (lorentzFunctional p.val).ker) :
+    (v 0 ^ 2 + v 1 ^ 2) / p.val 2 ^ 2 ≤ lorentzBilinear v v := by
+  have hcs : (p.val 0 * v 0 + p.val 1 * v 1)^2 ≤
+      (p.val 0^2 + p.val 1^2) * (v 0^2 + v 1^2) := by
+    simpa [Fin.sum_univ_two] using
+      (Finset.sum_mul_sq_le_sq_mul_sq Finset.univ
+        (fun i : Fin 2 => p.val i.castSucc) (fun i : Fin 2 => v i.castSucc))
+  rw [← lorentzKer_time_eq p v hv] at hcs
+  have hmodel : p.val 2^2 = 1 + p.val 0^2 + p.val 1^2 := by
+    nlinarith [p.property.1]
+  apply (div_le_iff₀ (sq_pos_of_pos p.property.2)).2
+  rw [lorentzBilinear_apply]
+  nlinarith [congrArg (fun x : ℝ => x * (v 0^2 + v 1^2)) hmodel]
+
+/-- The Lorentz quadratic form is nonnegative on the perpendicular plane, by its independent quantitative bound (G02.a/A03). -/
+theorem lorentzKer_quadratic_nonneg (p : Hyperboloid) (v : V)
+    (hv : v ∈ (lorentzFunctional p.val).ker) :
+    0 ≤ lorentzBilinear v v := by
+  exact (div_nonneg (add_nonneg (sq_nonneg _) (sq_nonneg _)) (sq_nonneg _)).trans
+    (lorentzKer_quadratic_lowerBound p v hv)
+
+/-- The independent bound and perpendicular equation show that only the zero perpendicular vector has zero Lorentz square (G02.a/A04). -/
+theorem lorentzKer_quadratic_eq_zero_iff (p : Hyperboloid) (v : V)
+    (hv : v ∈ (lorentzFunctional p.val).ker) :
+    lorentzBilinear v v = 0 ↔ v = 0 := by
+  constructor
+  · intro hz
+    have hdiv := lorentzKer_quadratic_lowerBound p v hv
+    rw [hz] at hdiv
+    have hsum : v 0^2 + v 1^2 ≤ 0 := by
+      simpa using (div_le_iff₀ (sq_pos_of_pos p.property.2)).mp hdiv
+    have h0 : v 0 = 0 := by nlinarith [sq_nonneg (v 1)]
+    have h1 : v 1 = 0 := by nlinarith [sq_nonneg (v 0)]
+    have ht := lorentzKer_time_eq p v hv
+    rw [h0, h1, mul_zero, mul_zero, add_zero] at ht
+    have h2 : v 2 = 0 := (mul_eq_zero.mp ht).resolve_left (ne_of_gt p.property.2)
+    ext i
+    fin_cases i <;> assumption
+  · rintro rfl
+    simp
+
+/-- The Lorentz restriction is strictly positive on nonzero perpendicular vectors, by the independent equality criterion (G02.a/A05). -/
+theorem lorentzKer_quadratic_pos (p : Hyperboloid) (v : V)
+    (hv : v ∈ (lorentzFunctional p.val).ker) (hne : v ≠ 0) :
+    0 < lorentzBilinear v v := by
+  exact lt_of_le_of_ne (lorentzKer_quadratic_nonneg p v hv)
+    (fun he => hne ((lorentzKer_quadratic_eq_zero_iff p v hv).mp he.symm))
+
+/-- The Lorentz functional is onto the real line because it takes the unit timelike center to minus one; rank-nullity gives a two-dimensional kernel (G02.a/A06). -/
+theorem finrank_lorentzKer (p : Hyperboloid) :
+    Module.finrank ℝ (lorentzFunctional p.val).ker = 2 := by
+  have hself : lorentzFunctional p.val p.val = -1 := by
+    simpa only [lorentzFunctional_apply, pow_two] using p.property.1
+  have hsurj : Function.Surjective (lorentzFunctional p.val).toLinearMap := by
+    intro r
+    refine ⟨(-r) • p.val, ?_⟩
+    change lorentzFunctional p.val ((-r) • p.val) = r
+    rw [map_smul, hself]
+    simp
+  have hrange : (lorentzFunctional p.val).toLinearMap.range = ⊤ :=
+    LinearMap.range_eq_top.mpr hsurj
+  have hrank : Module.finrank ℝ (lorentzFunctional p.val).toLinearMap.range +
+      Module.finrank ℝ (lorentzFunctional p.val).ker = 3 := by
+    simpa using (lorentzFunctional p.val).toLinearMap.finrank_range_add_finrank_ker
+  have hdim : Module.finrank ℝ (lorentzFunctional p.val).toLinearMap.range = 1 := by
+    rw [hrange]
+    simp
+  omega
+
+/-- The same continuous Lorentz bilinear form restricted through both actual kernel inclusions; no norm or frame is chosen (G02.a/A07). -/
+def lorentzKerBilinear (p : Hyperboloid) :
+    (lorentzFunctional p.val).ker →L[ℝ] (lorentzFunctional p.val).ker →L[ℝ] ℝ :=
+  lorentzBilinear.bilinearComp (lorentzFunctional p.val).ker.subtypeL
+    (lorentzFunctional p.val).ker.subtypeL
+
+/-- The actual perpendicular restriction is symmetric, nonnegative and positive definite, with its literal ambient evaluation (G02.a/A08). -/
+theorem lorentzKerBilinear_properties (p : Hyperboloid) :
+    (∀ v w, lorentzKerBilinear p v w = lorentzBilinear v.val w.val) ∧
+    (∀ v w, lorentzKerBilinear p v w = lorentzKerBilinear p w v) ∧
+    (∀ v, 0 ≤ lorentzKerBilinear p v v) ∧
+    (∀ v, lorentzKerBilinear p v v = 0 ↔ v = 0) ∧
+    (∀ v, v ≠ 0 → 0 < lorentzKerBilinear p v v) := by
+  refine ⟨fun _ _ => rfl, fun _ _ => lorentzBilinear_symm _ _,
+    fun v => lorentzKer_quadratic_nonneg p v.val v.property, ?_, ?_⟩
+  · intro v
+    exact (lorentzKer_quadratic_eq_zero_iff p v.val v.property).trans
+      Submodule.coe_eq_zero
+  · intro v hv
+    exact lorentzKer_quadratic_pos p v.val v.property
+      (fun h => hv (Subtype.val_injective h))
+
+/-- The actual tangent inclusion identifies the perpendicular plane of dimension two, and carries the independent quantitative Lorentz bound and positive-definiteness to the stated intrinsic tensor (G02.a/A09). -/
+theorem hyperboloid_tangent_lorentz_positive (p : Hyperboloid) :
+    (mfderiv I J (fun q : Hyperboloid => q.val) p).range =
+      (lorentzFunctional p.val).ker ∧
+    Module.finrank ℝ (lorentzFunctional p.val).ker = 2 ∧
+    (∀ v : TangentSpace I p,
+      let w := (hyperboloidTangentEquivKer p v).val
+      (w 0 ^ 2 + w 1 ^ 2) / p.val 2 ^ 2 ≤ hyperboloidTangentTensor p v v) ∧
+    (∀ v : TangentSpace I p, 0 ≤ hyperboloidTangentTensor p v v) ∧
+    (∀ v : TangentSpace I p, hyperboloidTangentTensor p v v = 0 ↔ v = 0) ∧
+    (∀ v : TangentSpace I p, v ≠ 0 → 0 < hyperboloidTangentTensor p v v) := by
+  have hTensor (v : TangentSpace I p) :
+      hyperboloidTangentTensor p v v =
+        lorentzBilinear (hyperboloidTangentEquivKer p v).val
+          (hyperboloidTangentEquivKer p v).val := by
+    rw [hyperboloidTangentTensor_apply]
+    simp only [hyperboloidTangentEquivKer_apply]
+  have hzero (v : TangentSpace I p) :
+      (hyperboloidTangentEquivKer p v).val = 0 ↔ v = 0 := by
+    rw [Submodule.coe_eq_zero]
+    exact (hyperboloidTangentEquivKer p).map_eq_zero_iff
+  refine ⟨range_mfderiv_hyperboloid_val p, finrank_lorentzKer p, ?_, ?_, ?_, ?_⟩
+  · intro v
+    rw [hTensor]
+    exact lorentzKer_quadratic_lowerBound p _ (hyperboloidTangentEquivKer p v).property
+  · intro v
+    rw [hTensor]
+    exact lorentzKer_quadratic_nonneg p _ (hyperboloidTangentEquivKer p v).property
+  · intro v
+    rw [hTensor]
+    exact (lorentzKer_quadratic_eq_zero_iff p _
+      (hyperboloidTangentEquivKer p v).property).trans (hzero v)
+  · intro v hv
+    rw [hTensor]
+    exact lorentzKer_quadratic_pos p _ (hyperboloidTangentEquivKer p v).property
+      (fun h => hv ((hzero v).mp h))
 
 
 end Hyperbolic

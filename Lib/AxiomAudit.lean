@@ -7996,3 +7996,30 @@ is an evidence command rather than library content.
 
 #check Hyperbolic.fromHyperboloid_intrinsicEDist
 #print axioms Hyperbolic.fromHyperboloid_intrinsicEDist
+
+#check Hyperbolic.lorentzKer_time_eq
+#print axioms Hyperbolic.lorentzKer_time_eq
+
+#check Hyperbolic.lorentzKer_quadratic_lowerBound
+#print axioms Hyperbolic.lorentzKer_quadratic_lowerBound
+
+#check Hyperbolic.lorentzKer_quadratic_nonneg
+#print axioms Hyperbolic.lorentzKer_quadratic_nonneg
+
+#check Hyperbolic.lorentzKer_quadratic_eq_zero_iff
+#print axioms Hyperbolic.lorentzKer_quadratic_eq_zero_iff
+
+#check Hyperbolic.lorentzKer_quadratic_pos
+#print axioms Hyperbolic.lorentzKer_quadratic_pos
+
+#check Hyperbolic.finrank_lorentzKer
+#print axioms Hyperbolic.finrank_lorentzKer
+
+#check Hyperbolic.lorentzKerBilinear
+#print axioms Hyperbolic.lorentzKerBilinear
+
+#check Hyperbolic.lorentzKerBilinear_properties
+#print axioms Hyperbolic.lorentzKerBilinear_properties
+
+#check Hyperbolic.hyperboloid_tangent_lorentz_positive
+#print axioms Hyperbolic.hyperboloid_tangent_lorentz_positive
