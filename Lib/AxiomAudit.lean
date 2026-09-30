@@ -8173,3 +8173,75 @@ is an evidence command rather than library content.
 
 #check AbsolutelyContinuousOnInterval.variation_bounds_integral_abs_deriv
 #print axioms AbsolutelyContinuousOnInterval.variation_bounds_integral_abs_deriv
+
+#check Hyperbolic.hyperboloidSpatial
+#print axioms Hyperbolic.hyperboloidSpatial
+
+#check Hyperbolic.hyperboloidRadius
+#print axioms Hyperbolic.hyperboloidRadius
+
+#check Hyperbolic.hyperboloidPolarCoords
+#print axioms Hyperbolic.hyperboloidPolarCoords
+
+#check Hyperbolic.hyperboloidPolarCoords_mem
+#print axioms Hyperbolic.hyperboloidPolarCoords_mem
+
+#check Hyperbolic.hyperboloidPolar
+#print axioms Hyperbolic.hyperboloidPolar
+
+#check Hyperbolic.hyperboloidRadius_properties
+#print axioms Hyperbolic.hyperboloidRadius_properties
+
+#check Hyperbolic.hyperboloidPolar_radius
+#print axioms Hyperbolic.hyperboloidPolar_radius
+
+#check Hyperbolic.hyperboloidPolar_arg
+#print axioms Hyperbolic.hyperboloidPolar_arg
+
+#check Hyperbolic.hyperboloidPolar_eq_iff
+#print axioms Hyperbolic.hyperboloidPolar_eq_iff
+
+#check Hyperbolic.hyperboloidPolar_center_direction
+#print axioms Hyperbolic.hyperboloidPolar_center_direction
+
+#check Hyperbolic.contMDiffAt_hyperboloidRadius
+#print axioms Hyperbolic.contMDiffAt_hyperboloidRadius
+
+#check Hyperbolic.hyperboloidPolar_local_coordinates
+#print axioms Hyperbolic.hyperboloidPolar_local_coordinates
+
+#check Hyperbolic.contMDiff_hyperboloidPolar
+#print axioms Hyperbolic.contMDiff_hyperboloidPolar
+
+#check Hyperbolic.mfderiv_hyperboloidPolar_val
+#print axioms Hyperbolic.mfderiv_hyperboloidPolar_val
+
+#check Hyperbolic.hyperboloidPolar_tangentTensor
+#print axioms Hyperbolic.hyperboloidPolar_tangentTensor
+
+#check Hyperbolic.hyperboloidPolar_metric
+#print axioms Hyperbolic.hyperboloidPolar_metric
+
+#check Hyperbolic.hyperboloidPolar_norm
+#print axioms Hyperbolic.hyperboloidPolar_norm
+
+#check Hyperbolic.hyperboloidPolar_curve_speed
+#print axioms Hyperbolic.hyperboloidPolar_curve_speed
+
+#check Hyperbolic.hyperboloidRadius_lipschitzOn_piece
+#print axioms Hyperbolic.hyperboloidRadius_lipschitzOn_piece
+
+#check Hyperbolic.hyperboloidRadius_absolutelyContinuous
+#print axioms Hyperbolic.hyperboloidRadius_absolutelyContinuous
+
+#check Hyperbolic.hyperboloidRadius_deriv_le_pieceSpeed
+#print axioms Hyperbolic.hyperboloidRadius_deriv_le_pieceSpeed
+
+#check Hyperbolic.hyperboloidRadius_ae_deriv_le_pieceSpeed
+#print axioms Hyperbolic.hyperboloidRadius_ae_deriv_le_pieceSpeed
+
+#check Hyperbolic.hyperboloidRadius_piece_variation
+#print axioms Hyperbolic.hyperboloidRadius_piece_variation
+
+#check Hyperbolic.hyperboloidRadius_variation_le_length
+#print axioms Hyperbolic.hyperboloidRadius_variation_le_length

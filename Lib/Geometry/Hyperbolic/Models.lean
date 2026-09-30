@@ -30,6 +30,20 @@ public import Mathlib.Analysis.InnerProductSpace.PiL2
 public import Mathlib.LinearAlgebra.Basis.Prod
 public import Mathlib.LinearAlgebra.Projection
 public import Mathlib.Logic.Equiv.Fin.Basic
+public import Lib.Analysis.Calculus.CurveVariation
+public import Mathlib.Analysis.SpecialFunctions.Arsinh
+public import Mathlib.Analysis.SpecialFunctions.Complex.LogDeriv
+public import Mathlib.Analysis.SpecialFunctions.Complex.Arg
+public import Mathlib.Analysis.InnerProductSpace.Calculus
+public import Mathlib.Analysis.Calculus.ContDiff.RCLike
+public import Mathlib.Analysis.Calculus.LocalExtr.Basic
+public import Mathlib.MeasureTheory.Integral.IntervalIntegral.AbsolutelyContinuousFun
+public import Mathlib.Data.ENNReal.BigOperators
+public import Mathlib.Analysis.SpecialFunctions.Trigonometric.Deriv
+public import Mathlib.Geometry.Manifold.ContMDiff.NormedSpace
+public import Mathlib.Topology.Algebra.Module.ContinuousLinearMap.PiProd
+public import Mathlib.MeasureTheory.Measure.Typeclasses.NullSingletonClass
+public import Mathlib.Algebra.BigOperators.Fin
 
 /-!
 # Upper-half-plane and hyperboloid coordinates
@@ -2319,5 +2333,620 @@ theorem centerHyperboloid_curveFamily_length (c : Hyperboloid) {a b : ℝ} {n : 
     (∀ η, Φ (Φ.symm η) = η) := by
   exact PiecewiseC1CurveOn.mapEquiv_length hyperboloidMetric hyperboloidMetric
     (centerHyperboloidDiffeomorph c) (centerHyperboloid_preserves_metric c)
+
+
+section PolarRadial
+
+open Set MeasureTheory Filter
+open scoped Manifold Topology BigOperators ENNReal NNReal ContDiff Bundle
+local notation "K" => 𝓘(ℝ, ℝ × ℝ)
+
+/-- The two spatial coordinates as a complex number, with their ordinary Euclidean norm. (G03.a) -/
+def hyperboloidSpatial (q : Hyperboloid) : ℂ := ⟨q.val 0, q.val 1⟩
+
+/-- The nonnegative radial coordinate is arsinh of the spatial norm. (G03.a) -/
+def hyperboloidRadius (q : Hyperboloid) : ℝ :=
+  Real.arsinh ‖hyperboloidSpatial q‖
+
+/-- Signed polar coordinates in the ambient Lorentz space; geometric radii are nonnegative. (G03.a) -/
+def hyperboloidPolarCoords (r θ : ℝ) : Fin 3 → ℝ :=
+  ![Real.sinh r * Real.cos θ, Real.sinh r * Real.sin θ, Real.cosh r]
+
+/-- The polar formula lies on the positive unit hyperboloid, by the circular and hyperbolic identities. (G03.a) -/
+theorem hyperboloidPolarCoords_mem (r θ : ℝ) :
+  (hyperboloidPolarCoords r θ 0) ^ 2 +
+      (hyperboloidPolarCoords r θ 1) ^ 2 -
+      (hyperboloidPolarCoords r θ 2) ^ 2 = -1 ∧
+    0 < hyperboloidPolarCoords r θ 2 := by
+  constructor
+  · change (Real.sinh r * Real.cos θ)^2 + (Real.sinh r * Real.sin θ)^2 -
+      Real.cosh r ^ 2 = -1
+    calc
+      _ = Real.sinh r ^ 2 * (Real.cos θ ^ 2 + Real.sin θ ^ 2) - Real.cosh r ^ 2 := by ring
+      _ = -1 := by
+        rw [Real.cos_sq_add_sin_sq, mul_one]
+        nlinarith [Real.cosh_sq_sub_sinh_sq r]
+  · exact Real.cosh_pos r
+
+/-- The actual hyperboloid point represented by signed polar coordinates. (G03.a) -/
+def hyperboloidPolar (r θ : ℝ) : Hyperboloid :=
+  ⟨hyperboloidPolarCoords r θ, hyperboloidPolarCoords_mem r θ⟩
+
+/-- The radius recovers the spatial norm and positive time; zero radius is precisely the center. (G03.a) -/
+theorem hyperboloidRadius_properties (q : Hyperboloid) :
+  0 ≤ hyperboloidRadius q ∧
+  Real.sinh (hyperboloidRadius q) = ‖hyperboloidSpatial q‖ ∧
+  Real.cosh (hyperboloidRadius q) = q.val 2 ∧
+  (hyperboloidRadius q = 0 ↔ q.val = ![0, 0, 1]) ∧
+  (hyperboloidSpatial q = 0 ↔ hyperboloidRadius q = 0) := by
+  have hs : Real.sinh (hyperboloidRadius q) = ‖hyperboloidSpatial q‖ := Real.sinh_arsinh _
+  have hn : ‖hyperboloidSpatial q‖ ^ 2 = q.val 0 ^ 2 + q.val 1 ^ 2 := by
+    rw [Complex.norm_eq_sqrt_sq_add_sq, Real.sq_sqrt (add_nonneg (sq_nonneg _) (sq_nonneg _))]
+    rfl
+  have ht : Real.cosh (hyperboloidRadius q) = q.val 2 := by
+    have h := Real.cosh_sq_sub_sinh_sq (hyperboloidRadius q)
+    rw [hs, hn] at h
+    nlinarith [q.property.1, q.property.2, Real.cosh_pos (hyperboloidRadius q)]
+  have hz : hyperboloidRadius q = 0 ↔ hyperboloidSpatial q = 0 := by
+    constructor
+    · intro h
+      apply norm_eq_zero.mp
+      rw [← hs, h, Real.sinh_zero]
+    · intro h
+      simp [hyperboloidRadius, h]
+  refine ⟨Real.arsinh_nonneg_iff.mpr (norm_nonneg _), hs, ht, ?_, hz.symm⟩
+  constructor
+  · intro h
+    have hx := congrArg Complex.re (hz.mp h)
+    have hy := congrArg Complex.im (hz.mp h)
+    have htt : q.val 2 = 1 := by simpa [h] using ht.symm
+    funext i
+    fin_cases i
+    · exact hx
+    · exact hy
+    · exact htt
+  · intro h
+    apply hz.mpr
+    apply Complex.ext <;> simp [hyperboloidSpatial, h]
+
+/-- The nonnegative polar parameter is the actual radial coordinate. (G03.a) -/
+theorem hyperboloidPolar_radius {r : ℝ} (hr : 0 ≤ r) (θ : ℝ) :
+  hyperboloidRadius (hyperboloidPolar r θ) = r := by
+  have he : hyperboloidSpatial (hyperboloidPolar r θ) =
+      (Real.sinh r : ℂ) * ((Real.cos θ : ℂ) + (Real.sin θ : ℂ) * Complex.I) := by
+    apply Complex.ext <;>
+      simp only [hyperboloidSpatial, hyperboloidPolar, hyperboloidPolarCoords,
+        Matrix.cons_val_zero, Matrix.cons_val_one, Complex.mul_re, Complex.mul_im,
+        Complex.add_re, Complex.add_im, Complex.ofReal_re, Complex.ofReal_im,
+        Complex.I_re, Complex.I_im] <;> ring
+  have hn : ‖hyperboloidSpatial (hyperboloidPolar r θ)‖ = |Real.sinh r| := by
+    rw [he, norm_mul]
+    simpa only [Complex.norm_real, Real.norm_eq_abs, ← Complex.ofReal_cos,
+      ← Complex.ofReal_sin, mul_one] using
+      congrArg (fun x : ℝ => |Real.sinh r| * x) (Complex.norm_cos_add_sin_mul_I θ)
+  have hs : 0 ≤ Real.sinh r :=
+    Real.arsinh_nonneg_iff.mp (by simpa only [Real.arsinh_sinh] using hr)
+  unfold hyperboloidRadius
+  rw [hn, abs_of_nonneg hs, Real.arsinh_sinh]
+
+/-- Pointwise complex argument reconstructs every point, including the center. (G03.a) -/
+theorem hyperboloidPolar_arg (q : Hyperboloid) :
+  hyperboloidPolar (hyperboloidRadius q) (Complex.arg (hyperboloidSpatial q)) = q := by
+  apply Subtype.ext
+  funext i
+  fin_cases i
+  · change Real.sinh (hyperboloidRadius q) * Real.cos (Complex.arg (hyperboloidSpatial q)) = q.val 0
+    rw [(hyperboloidRadius_properties q).2.1]
+    exact Complex.norm_mul_cos_arg _
+  · change Real.sinh (hyperboloidRadius q) * Real.sin (Complex.arg (hyperboloidSpatial q)) = q.val 1
+    rw [(hyperboloidRadius_properties q).2.1]
+    exact Complex.norm_mul_sin_arg _
+  · exact (hyperboloidRadius_properties q).2.2.1
+
+/-- Polar parameters are unique modulo turns away from the center; all center angles coincide. (G03.a) -/
+theorem hyperboloidPolar_eq_iff {r s θ φ : ℝ}
+    (hr : 0 ≤ r) (hs : 0 ≤ s) :
+  hyperboloidPolar r θ = hyperboloidPolar s φ ↔
+    r = s ∧ (r = 0 ∨ (θ : Real.Angle) = (φ : Real.Angle)) := by
+  have harg {t : ℝ} (ht : 0 < t) (α : ℝ) :
+      (Complex.arg (hyperboloidSpatial (hyperboloidPolar t α)) : Real.Angle) =
+        (α : Real.Angle) := by
+    have he : hyperboloidSpatial (hyperboloidPolar t α) =
+        (Real.sinh t : ℂ) * ((Real.cos α : ℂ) + (Real.sin α : ℂ) * Complex.I) := by
+      apply Complex.ext <;>
+        simp only [hyperboloidSpatial, hyperboloidPolar, hyperboloidPolarCoords,
+          Matrix.cons_val_zero, Matrix.cons_val_one, Complex.mul_re, Complex.mul_im,
+          Complex.add_re, Complex.add_im, Complex.ofReal_re, Complex.ofReal_im,
+          Complex.I_re, Complex.I_im] <;> ring
+    rw [he]
+    have hsinh : 0 < Real.sinh t :=
+      Real.arsinh_pos_iff.mp (by simpa only [Real.arsinh_sinh] using ht)
+    simpa only [Real.Angle.cos_coe, Real.Angle.sin_coe] using
+      Complex.arg_mul_cos_add_sin_mul_I_coe_angle hsinh (α : Real.Angle)
+  constructor
+  · intro h
+    have hrs : r = s := by
+      rw [← hyperboloidPolar_radius hr θ, h, hyperboloidPolar_radius hs φ]
+    refine ⟨hrs, ?_⟩
+    by_cases hz : r = 0
+    · exact Or.inl hz
+    · right
+      have hpos := lt_of_le_of_ne hr (Ne.symm hz)
+      rw [← harg hpos θ, ← harg (hrs ▸ hpos) φ, h]
+  · rintro ⟨hrs, h | h⟩
+    ·
+      apply Subtype.ext
+      simp [hyperboloidPolar, hyperboloidPolarCoords, ← hrs, h]
+    · have hc : Real.cos θ = Real.cos φ := congrArg Real.Angle.cos h
+      have hs : Real.sin θ = Real.sin φ := congrArg Real.Angle.sin h
+      apply Subtype.ext
+      simp only [hyperboloidPolar, hyperboloidPolarCoords, ← hrs, hc, hs]
+
+/-- The center is independent of angle, and positive radius has the displayed unit direction. (G03.a) -/
+theorem hyperboloidPolar_center_direction (θ : ℝ) (q : Hyperboloid) :
+  (hyperboloidPolar 0 θ).val = ![0, 0, 1] ∧
+  (0 < hyperboloidRadius q →
+    hyperboloidSpatial q / (‖hyperboloidSpatial q‖ : ℂ) =
+      (Real.cos (Complex.arg (hyperboloidSpatial q)) : ℂ) +
+        (Real.sin (Complex.arg (hyperboloidSpatial q)) : ℂ) * Complex.I) := by
+  constructor
+  · simp [hyperboloidPolar, hyperboloidPolarCoords]
+  · intro hq
+    have hz : hyperboloidSpatial q ≠ 0 := by
+      intro hz
+      exact (ne_of_gt hq) ((hyperboloidRadius_properties q).2.2.2.2.mp hz)
+    have hn : (‖hyperboloidSpatial q‖ : ℂ) ≠ 0 := by
+      exact_mod_cast (norm_ne_zero_iff.mpr hz)
+    rw [div_eq_iff hn]
+    simpa only [← Complex.ofReal_cos, ← Complex.ofReal_sin, mul_comm] using
+      (Complex.norm_mul_cos_add_sin_mul_I (hyperboloidSpatial q)).symm
+
+private theorem contMDiff_hyperboloidSpatial : ContMDiff I I ∞ hyperboloidSpatial := by
+  let L : (Fin 3 → ℝ) →L[ℝ] ℂ :=
+    Complex.equivRealProdCLM.symm.toContinuousLinearMap.comp
+      ((ContinuousLinearMap.proj (0 : Fin 3) : (Fin 3 → ℝ) →L[ℝ] ℝ).prod
+        (ContinuousLinearMap.proj (1 : Fin 3) : (Fin 3 → ℝ) →L[ℝ] ℝ))
+  have hL (q : Hyperboloid) : L q.val = hyperboloidSpatial q := by
+    apply Complex.ext <;> simp [L, hyperboloidSpatial]
+  simpa only [Function.comp_def, hL] using
+    L.contDiff.comp_contMDiff contMDiff_hyperboloid_val
+
+/-- Away from the center the spatial norm, hence the radius, is smooth. (G03.b) -/
+theorem contMDiffAt_hyperboloidRadius {q : Hyperboloid}
+    (hq : 0 < hyperboloidRadius q) :
+  ContMDiffAt I 𝓘(ℝ, ℝ) ∞ hyperboloidRadius q := by
+  have hz : hyperboloidSpatial q ≠ 0 := by
+    intro hz
+    exact (ne_of_gt hq) ((hyperboloidRadius_properties q).2.2.2.2.mp hz)
+  exact Real.contDiff_arsinh.contDiffAt.comp_contMDiffAt
+    ((contDiffAt_norm ℝ hz).comp_contMDiffAt contMDiff_hyperboloidSpatial.contMDiffAt)
+
+/-- Each noncentral point has a smooth real angle on a neighborhood; either slit branch may be used. (G03.b) -/
+theorem hyperboloidPolar_local_coordinates {q : Hyperboloid}
+    (hq : 0 < hyperboloidRadius q) :
+  ∃ (U : Set Hyperboloid) (θ : Hyperboloid → ℝ),
+    IsOpen U ∧ q ∈ U ∧
+    ContMDiffOn I 𝓘(ℝ, ℝ) ∞ hyperboloidRadius U ∧
+    ContMDiffOn I 𝓘(ℝ, ℝ) ∞ θ U ∧
+    (∀ x ∈ U, 0 < hyperboloidRadius x) ∧
+    (∀ x ∈ U, hyperboloidPolar (hyperboloidRadius x) (θ x) = x) := by
+  let θp : Hyperboloid → ℝ := fun x => (Complex.log (hyperboloidSpatial x)).im
+  let θm : Hyperboloid → ℝ := fun x => (Complex.log (-hyperboloidSpatial x)).im + Real.pi
+  let Up : Set Hyperboloid :=
+    {x | 0 < hyperboloidRadius x} ∩ hyperboloidSpatial ⁻¹' Complex.slitPlane
+  let Um : Set Hyperboloid :=
+    {x | 0 < hyperboloidRadius x} ∩ (fun x => -hyperboloidSpatial x) ⁻¹' Complex.slitPlane
+  have hr : Continuous hyperboloidRadius :=
+    Real.continuous_arsinh.comp contMDiff_hyperboloidSpatial.continuous.norm
+  have hop : IsOpen Up := (isOpen_lt continuous_const hr).inter
+    (Complex.isOpen_slitPlane.preimage contMDiff_hyperboloidSpatial.continuous)
+  have hom : IsOpen Um := (isOpen_lt continuous_const hr).inter
+    (Complex.isOpen_slitPlane.preimage contMDiff_hyperboloidSpatial.continuous.neg)
+  have hz : hyperboloidSpatial q ≠ 0 := by
+    intro hz
+    exact (ne_of_gt hq) ((hyperboloidRadius_properties q).2.2.2.2.mp hz)
+  rcases Complex.mem_slitPlane_or_neg_mem_slitPlane hz with hp | hm
+  · refine ⟨Up, θp, hop, ⟨hq, hp⟩, ?_, ?_, (fun x hx => hx.1), ?_⟩
+    · intro x hx
+      exact (contMDiffAt_hyperboloidRadius hx.1).contMDiffWithinAt
+    · intro x hx
+      have hl : ContDiffAt ℝ ∞ Complex.log (hyperboloidSpatial x) :=
+        (Complex.contDiffAt_log hx.2).restrict_scalars ℝ
+      exact ((Complex.imCLM.contDiff.contDiffAt.comp _ hl).comp_contMDiffAt
+        contMDiff_hyperboloidSpatial.contMDiffAt).contMDiffWithinAt
+    · intro x hx
+      simpa only [θp, Complex.log_im] using hyperboloidPolar_arg x
+  · refine ⟨Um, θm, hom, ⟨hq, hm⟩, ?_, ?_, (fun x hx => hx.1), ?_⟩
+    · intro x hx
+      exact (contMDiffAt_hyperboloidRadius hx.1).contMDiffWithinAt
+    · intro x hx
+      have hl : ContDiffAt ℝ ∞ Complex.log (-hyperboloidSpatial x) :=
+        (Complex.contDiffAt_log hx.2).restrict_scalars ℝ
+      have hn : ContDiffAt ℝ ∞ (fun z : ℂ => -z) (hyperboloidSpatial x) := contDiffAt_id.neg
+      have ha := ((Complex.imCLM.contDiff.contDiffAt.comp _ hl).comp _ hn).add
+        (contDiffAt_const (c := Real.pi))
+      exact (ha.comp_contMDiffAt contMDiff_hyperboloidSpatial.contMDiffAt).contMDiffWithinAt
+    · intro x hx
+      apply Subtype.ext
+      have hrs := (hyperboloidRadius_properties x).2.1
+      have htt := (hyperboloidRadius_properties x).2.2.1
+      have hc := Complex.norm_mul_cos_arg (-hyperboloidSpatial x)
+      have hs := Complex.norm_mul_sin_arg (-hyperboloidSpatial x)
+      simp only [norm_neg, Complex.neg_re, Complex.neg_im] at hc hs
+      funext i
+      fin_cases i
+      · change Real.sinh (hyperboloidRadius x) * Real.cos (θm x) = x.val 0
+        simp only [θm, Complex.log_im, Real.cos_add_pi, hrs]
+        change ‖hyperboloidSpatial x‖ * Real.cos (-hyperboloidSpatial x).arg = -x.val 0 at hc
+        nlinarith
+      · change Real.sinh (hyperboloidRadius x) * Real.sin (θm x) = x.val 1
+        simp only [θm, Complex.log_im, Real.sin_add_pi, hrs]
+        change ‖hyperboloidSpatial x‖ * Real.sin (-hyperboloidSpatial x).arg = -x.val 1 at hs
+        nlinarith
+      · exact htt
+
+/-- The signed polar parametrization is smooth in the actual hyperboloid atlas, including at radius zero. (G03.b) -/
+theorem contMDiff_hyperboloidPolar :
+  ContMDiff K I ∞ (fun x : ℝ × ℝ => hyperboloidPolar x.1 x.2) := by
+  have hc : ContDiff ℝ ∞ (fun x : ℝ × ℝ => hyperboloidPolarCoords x.1 x.2) := by
+    apply contDiff_pi.mpr
+    intro i
+    fin_cases i
+    · change ContDiff ℝ ∞ (fun x : ℝ × ℝ => Real.sinh x.1 * Real.cos x.2)
+      fun_prop
+    · change ContDiff ℝ ∞ (fun x : ℝ × ℝ => Real.sinh x.1 * Real.sin x.2)
+      fun_prop
+    · change ContDiff ℝ ∞ (fun x : ℝ × ℝ => Real.cosh x.1)
+      fun_prop
+  apply ContMDiff.of_comp_isOpenEmbedding isOpenEmbedding_hyperboloidCoords
+  exact contDiffOn_hyperboloidToUpperHalfPlaneCoords.contMDiffOn.comp_contMDiff
+    hc.contMDiff (fun x => hyperboloid_denominator_pos (hyperboloidPolar x.1 x.2))
+
+set_option backward.isDefEq.respectTransparency false in
+/-- The intrinsic polar differential, followed by the actual inclusion, is its displayed ambient derivative. (G03.b) -/
+theorem mfderiv_hyperboloidPolar_val (r θ : ℝ) (u : ℝ × ℝ) :
+  mfderiv I J (fun q : Hyperboloid => q.val) (hyperboloidPolar r θ)
+    (mfderiv K I (fun x : ℝ × ℝ => hyperboloidPolar x.1 x.2) (r, θ) u) =
+  ![Real.cosh r * Real.cos θ * u.1 - Real.sinh r * Real.sin θ * u.2,
+    Real.cosh r * Real.sin θ * u.1 + Real.sinh r * Real.cos θ * u.2,
+    Real.sinh r * u.1] := by
+  let D : (ℝ × ℝ) →L[ℝ] (Fin 3 → ℝ) := ContinuousLinearMap.pi
+    ![Real.sinh r • (-Real.sin θ • ContinuousLinearMap.snd ℝ ℝ ℝ) +
+        Real.cos θ • (Real.cosh r • ContinuousLinearMap.fst ℝ ℝ ℝ),
+      Real.sinh r • (Real.cos θ • ContinuousLinearMap.snd ℝ ℝ ℝ) +
+        Real.sin θ • (Real.cosh r • ContinuousLinearMap.fst ℝ ℝ ℝ),
+      Real.sinh r • ContinuousLinearMap.fst ℝ ℝ ℝ]
+  have hd : HasFDerivAt (fun x : ℝ × ℝ => hyperboloidPolarCoords x.1 x.2) D (r, θ) := by
+    have hf : HasFDerivAt (fun x : ℝ × ℝ => x.1)
+        (ContinuousLinearMap.fst ℝ ℝ ℝ) (r, θ) := hasFDerivAt_fst
+    have hg : HasFDerivAt (fun x : ℝ × ℝ => x.2)
+        (ContinuousLinearMap.snd ℝ ℝ ℝ) (r, θ) := hasFDerivAt_snd
+    have h0 := hf.sinh.mul hg.cos
+    have h1 := hf.sinh.mul hg.sin
+    have h2 := hf.cosh
+    apply hasFDerivAt_pi.mpr
+    intro i
+    fin_cases i
+    · exact h0
+    · exact h1
+    · exact h2
+  have he : (mfderiv K J (fun x : ℝ × ℝ => (hyperboloidPolar x.1 x.2).val)
+      (r, θ) : (ℝ × ℝ) →L[ℝ] (Fin 3 → ℝ)) = D :=
+    mfderiv_eq_fderiv.trans hd.fderiv
+  have hi := mfderiv_comp_apply (r, θ)
+    (contMDiff_hyperboloid_val.mdifferentiable (by simp) _)
+    (contMDiff_hyperboloidPolar.mdifferentiable (by simp) _) u
+  have hv := congrArg (fun L : (ℝ × ℝ) →L[ℝ] (Fin 3 → ℝ) => L u) he
+  calc
+    _ = D u := hi.symm.trans hv
+    _ = _ := by
+      ext i
+      fin_cases i <;> simp [D] <;> ring
+
+/-- The Lorentz restriction in polar coordinates has radial coefficient one and angular coefficient sinh squared. (G03.b) -/
+theorem hyperboloidPolar_tangentTensor (r θ : ℝ) (u v : ℝ × ℝ) :
+  hyperboloidTangentTensor (hyperboloidPolar r θ)
+    (mfderiv K I (fun x : ℝ × ℝ => hyperboloidPolar x.1 x.2) (r, θ) u)
+    (mfderiv K I (fun x : ℝ × ℝ => hyperboloidPolar x.1 x.2) (r, θ) v) =
+      u.1 * v.1 + (Real.sinh r) ^ 2 * u.2 * v.2 := by
+  rw [hyperboloidTangentTensor_apply, mfderiv_hyperboloidPolar_val,
+    mfderiv_hyperboloidPolar_val]
+  change
+    (Real.cosh r * Real.cos θ * u.1 - Real.sinh r * Real.sin θ * u.2) *
+      (Real.cosh r * Real.cos θ * v.1 - Real.sinh r * Real.sin θ * v.2) +
+    (Real.cosh r * Real.sin θ * u.1 + Real.sinh r * Real.cos θ * u.2) *
+      (Real.cosh r * Real.sin θ * v.1 + Real.sinh r * Real.cos θ * v.2) -
+    (Real.sinh r * u.1) * (Real.sinh r * v.1) = _
+  calc
+    _ = (Real.cosh r ^ 2 * (Real.cos θ ^ 2 + Real.sin θ ^ 2) - Real.sinh r ^ 2) *
+          u.1 * v.1 + Real.sinh r ^ 2 * (Real.cos θ ^ 2 + Real.sin θ ^ 2) * u.2 * v.2 := by ring
+    _ = _ := by rw [Real.cos_sq_add_sin_sq, mul_one, mul_one,
+      Real.cosh_sq_sub_sinh_sq, one_mul]
+
+/-- The same smooth metric has the computed polar bilinear form. (G03.b) -/
+theorem hyperboloidPolar_metric (r θ : ℝ) (u v : ℝ × ℝ) :
+  hyperboloidMetric.inner (hyperboloidPolar r θ)
+    (mfderiv K I (fun x : ℝ × ℝ => hyperboloidPolar x.1 x.2) (r, θ) u)
+    (mfderiv K I (fun x : ℝ × ℝ => hyperboloidPolar x.1 x.2) (r, θ) v) =
+      u.1 * v.1 + (Real.sinh r) ^ 2 * u.2 * v.2 := by
+  rw [hyperboloidMetric_inner]
+  exact hyperboloidPolar_tangentTensor r θ u v
+
+/-- The actual intrinsic metric norm is the square root of the polar quadratic form. (G03.b) -/
+theorem hyperboloidPolar_norm (r θ : ℝ) (u : ℝ × ℝ) :
+  letI : Bundle.RiemannianBundle (fun q : Hyperboloid => TangentSpace I q) :=
+    ⟨hyperboloidMetric.toRiemannianMetric⟩
+  ‖mfderiv K I (fun x : ℝ × ℝ => hyperboloidPolar x.1 x.2) (r, θ) u‖ =
+    Real.sqrt (u.1 ^ 2 + (Real.sinh r) ^ 2 * u.2 ^ 2) := by
+  letI : Bundle.RiemannianBundle (fun q : Hyperboloid => TangentSpace I q) :=
+    ⟨hyperboloidMetric.toRiemannianMetric⟩
+  let v := mfderiv K I (fun x : ℝ × ℝ => hyperboloidPolar x.1 x.2) (r, θ) u
+  have hn : ‖v‖ ^ 2 = u.1 ^ 2 + Real.sinh r ^ 2 * u.2 ^ 2 := by
+    have hi := hyperboloidPolar_metric r θ u u
+    have hs : ‖v‖ ^ 2 = hyperboloidMetric.inner (hyperboloidPolar r θ) v v :=
+      (real_inner_self_eq_norm_sq v).symm
+    rw [hs, hi]
+    ring
+  rw [← hn, Real.sqrt_sq (norm_nonneg _)]
+
+set_option backward.isDefEq.respectTransparency false in
+/-- A local polar representation gives the actual curve speed; the metric base point is transported as well. (G03.b) -/
+theorem hyperboloidPolar_curve_speed
+    (γ : ℝ → Hyperboloid) (ρ θ : ℝ → ℝ) (t a b : ℝ)
+    (hρ : HasDerivAt ρ a t) (hθ : HasDerivAt θ b t)
+    (hγ : ∀ᶠ s in nhds t, γ s = hyperboloidPolar (ρ s) (θ s)) :
+  letI : Bundle.RiemannianBundle (fun q : Hyperboloid => TangentSpace I q) :=
+    ⟨hyperboloidMetric.toRiemannianMetric⟩
+  ‖mfderiv 𝓘(ℝ, ℝ) I γ t (1 : ℝ)‖ =
+    Real.sqrt (a ^ 2 + (Real.sinh (ρ t)) ^ 2 * b ^ 2) := by
+  letI : Bundle.RiemannianBundle (fun q : Hyperboloid => TangentSpace I q) :=
+    ⟨hyperboloidMetric.toRiemannianMetric⟩
+  let δ : ℝ → Hyperboloid := fun s => hyperboloidPolar (ρ s) (θ s)
+  have hp := hρ.hasFDerivAt.prodMk hθ.hasFDerivAt
+  have hpair : mfderiv 𝓘(ℝ, ℝ) K (fun s => (ρ s, θ s)) t 1 = (a, b) := by
+    have he : (mfderiv 𝓘(ℝ, ℝ) K (fun s => (ρ s, θ s)) t : ℝ →L[ℝ] (ℝ × ℝ)) =
+        (ContinuousLinearMap.toSpanSingleton ℝ a).prod
+          (ContinuousLinearMap.toSpanSingleton ℝ b) :=
+      mfderiv_eq_fderiv.trans hp.fderiv
+    exact (congrArg (fun L : ℝ →L[ℝ] (ℝ × ℝ) => L 1) he).trans (by simp)
+  have hd := mfderiv_comp_apply t
+    (contMDiff_hyperboloidPolar.mdifferentiable (by simp) (ρ t, θ t))
+    hp.differentiableAt.mdifferentiableAt (1 : ℝ)
+  rw [hpair] at hd
+  change mfderiv 𝓘(ℝ, ℝ) I δ t 1 =
+    mfderiv K I (fun x : ℝ × ℝ => hyperboloidPolar x.1 x.2) (ρ t, θ t) (a, b) at hd
+  have hlocal : γ =ᶠ[nhds t] δ := hγ
+  have hb : γ t = δ t := hlocal.eq_of_nhds
+  have he : mfderiv 𝓘(ℝ, ℝ) I γ t = mfderiv 𝓘(ℝ, ℝ) I δ t := hlocal.mfderiv_eq
+  have hv := congrArg (fun L : ℝ →L[ℝ] ℂ => L 1) he
+  have hn : ‖mfderiv 𝓘(ℝ, ℝ) I γ t 1‖ = ‖mfderiv 𝓘(ℝ, ℝ) I δ t 1‖ :=
+    congrArg₂ (fun (q : Hyperboloid) (v : ℂ) => @norm (TangentSpace I q) inferInstance v) hb hv
+  rw [hn]
+  exact (congrArg (fun v : TangentSpace I (δ t) => ‖v‖) hd).trans
+    (hyperboloidPolar_norm (ρ t) (θ t) (a, b))
+
+/-- On a compact C1 piece the spatial map, norm and arsinh compose to a Lipschitz radius. (G03.c) -/
+theorem hyperboloidRadius_lipschitzOn_piece
+    {γ : ℝ → Hyperboloid} {a b : ℝ} (hab : a < b)
+    (hγ : ContMDiffOn 𝓘(ℝ, ℝ) I 1 γ (Icc a b)) :
+  ∃ κ : ℝ≥0, LipschitzOnWith κ
+    (fun t => hyperboloidRadius (γ t)) (Icc a b) := by
+  have hz : ContDiffOn ℝ 1 (fun t => hyperboloidSpatial (γ t)) (Icc a b) :=
+    contMDiffOn_iff_contDiffOn.mp
+      ((contMDiff_hyperboloidSpatial.of_le (by simp)).comp_contMDiffOn hγ)
+  obtain ⟨κz, hκz⟩ := hz.exists_lipschitzOnWith one_ne_zero (convex_Icc a b) isCompact_Icc
+  obtain ⟨R, hR⟩ := isCompact_Icc.exists_bound_of_continuousOn hz.continuousOn
+  have hm : MapsTo (fun t => ‖hyperboloidSpatial (γ t)‖) (Icc a b) (Icc 0 R) :=
+    fun t ht => ⟨norm_nonneg _, hR t ht⟩
+  obtain ⟨κa, hκa⟩ := (Real.contDiff_arsinh (n := 1)).contDiffOn.exists_lipschitzOnWith
+    one_ne_zero (convex_Icc 0 R) isCompact_Icc
+  have hn : LipschitzOnWith (1 * κz) (fun t => ‖hyperboloidSpatial (γ t)‖) (Icc a b) :=
+    lipschitzWith_one_norm.lipschitzOnWith.comp hκz (mapsTo_univ _ _)
+  exact ⟨κa * (1 * κz), hκa.comp hn hm⟩
+
+/-- The radius is absolutely continuous on the whole weak finite subdivision, with unrestricted center visits. (G03.c) -/
+theorem hyperboloidRadius_absolutelyContinuous
+    {γ : ℝ → Hyperboloid} {a b : ℝ} {n : ℕ}
+    {cut : Fin (n + 1) → ℝ}
+    (hγ : Manifold.IsPiecewiseC1On I γ a b n cut) :
+  AbsolutelyContinuousOnInterval (fun t => hyperboloidRadius (γ t)) a b := by
+  apply AbsolutelyContinuousOnInterval.of_monotone_subdivision
+    cut hγ.1 hγ.2.1 hγ.2.2.1
+  intro i hi
+  obtain ⟨κ, hκ⟩ :=
+    hyperboloidRadius_lipschitzOn_piece hi (hγ.2.2.2.2 i hi)
+  apply LipschitzOnWith.absolutelyContinuousOnInterval
+  simpa only [uIcc_of_le (le_of_lt hi)] using hκ
+
+/-- On a strict-piece interior radial derivative is bounded by speed; at the center a local minimum gives zero. (G03.c) -/
+theorem hyperboloidRadius_deriv_le_pieceSpeed
+    {γ : ℝ → Hyperboloid} {a b t : ℝ}
+    (hγ : ContMDiffOn 𝓘(ℝ, ℝ) I 1 γ (Icc a b))
+    (ht : t ∈ Ioo a b)
+    (hρ : DifferentiableAt ℝ (fun s => hyperboloidRadius (γ s)) t) :
+  letI : Bundle.RiemannianBundle
+      (fun q : Hyperboloid => TangentSpace I q) :=
+    ⟨hyperboloidMetric.toRiemannianMetric⟩
+  |deriv (fun s => hyperboloidRadius (γ s)) t| ≤
+    ‖mfderivWithin 𝓘(ℝ, ℝ) I γ (Icc a b) t (1 : ℝ)‖ := by
+  letI : Bundle.RiemannianBundle (fun q : Hyperboloid => TangentSpace I q) :=
+    ⟨hyperboloidMetric.toRiemannianMetric⟩
+  by_cases hz : hyperboloidRadius (γ t) = 0
+  · have hd : deriv (fun s => hyperboloidRadius (γ s)) t = 0 := by
+      apply IsLocalMin.deriv_eq_zero
+      apply Filter.Eventually.of_forall
+      intro s
+      change hyperboloidRadius (γ t) ≤ hyperboloidRadius (γ s)
+      rw [hz]
+      exact (hyperboloidRadius_properties (γ s)).1
+    rw [hd, abs_zero]
+    exact norm_nonneg _
+  · have hr : 0 < hyperboloidRadius (γ t) :=
+      lt_of_le_of_ne (hyperboloidRadius_properties (γ t)).1 (Ne.symm hz)
+    obtain ⟨U, θ, hU, hmem, hrad, hθ, hpos, hrec⟩ := hyperboloidPolar_local_coordinates hr
+    have hg := hγ.contMDiffAt (Icc_mem_nhds ht.1 ht.2)
+    have ha := ((hθ.contMDiffAt (hU.mem_nhds hmem)).of_le (by simp)).comp t hg
+    have hda := ha.contDiffAt.differentiableAt one_ne_zero
+    have he : γ =ᶠ[nhds t] (fun s => hyperboloidPolar (hyperboloidRadius (γ s)) (θ (γ s))) := by
+      filter_upwards [hg.continuousAt (hU.mem_nhds hmem)] with s hs
+      exact (hrec (γ s) hs).symm
+    have hspeed := hyperboloidPolar_curve_speed γ
+      (fun s => hyperboloidRadius (γ s)) (fun s => θ (γ s)) t
+      (deriv (fun s => hyperboloidRadius (γ s)) t) (deriv (fun s => θ (γ s)) t)
+      hρ.hasDerivAt hda.hasDerivAt he
+    rw [mfderivWithin_of_mem_nhds (Icc_mem_nhds ht.1 ht.2), hspeed]
+    exact Real.abs_le_sqrt
+      (le_add_of_nonneg_right (mul_nonneg (sq_nonneg _) (sq_nonneg _)))
+
+/-- Radial derivative is bounded by the same piece speed almost everywhere, removing only endpoint singletons. (G03.c) -/
+theorem hyperboloidRadius_ae_deriv_le_pieceSpeed
+    {γ : ℝ → Hyperboloid} {a b : ℝ} (hab : a < b)
+    (hγ : ContMDiffOn 𝓘(ℝ, ℝ) I 1 γ (Icc a b)) :
+  letI : Bundle.RiemannianBundle
+      (fun q : Hyperboloid => TangentSpace I q) :=
+    ⟨hyperboloidMetric.toRiemannianMetric⟩
+  ∀ᵐ t ∂volume.restrict (Ioc a b),
+    |deriv (fun s => hyperboloidRadius (γ s)) t| ≤
+      ‖mfderivWithin 𝓘(ℝ, ℝ) I γ (Icc a b) t (1 : ℝ)‖ := by
+  letI : Bundle.RiemannianBundle (fun q : Hyperboloid => TangentSpace I q) :=
+    ⟨hyperboloidMetric.toRiemannianMetric⟩
+  obtain ⟨κ, hκ⟩ := hyperboloidRadius_lipschitzOn_piece hab hγ
+  have hac : AbsolutelyContinuousOnInterval (fun t => hyperboloidRadius (γ t)) a b := by
+    apply LipschitzOnWith.absolutelyContinuousOnInterval
+    simpa only [uIcc_of_le hab.le] using hκ
+  rw [← restrict_Ioo_eq_restrict_Ioc]
+  apply (ae_restrict_iff' measurableSet_Ioo).2
+  filter_upwards [hac.ae_differentiableAt] with t ht hmem
+  have hmem' : t ∈ uIcc a b := by
+    rw [uIcc_of_le hab.le]
+    exact ⟨hmem.1.le, hmem.2.le⟩
+  exact hyperboloidRadius_deriv_le_pieceSpeed hγ hmem (ht hmem')
+
+/-- Scalar absolute continuity bounds each piece's extended variation, hence its finite real variation, by its length. (G03.c) -/
+theorem hyperboloidRadius_piece_variation
+    {γ : ℝ → Hyperboloid} {a b : ℝ} (hab : a < b)
+    (hγ : ContMDiffOn 𝓘(ℝ, ℝ) I 1 γ (Icc a b)) :
+  letI : Bundle.RiemannianBundle
+      (fun q : Hyperboloid => TangentSpace I q) :=
+    ⟨hyperboloidMetric.toRiemannianMetric⟩
+  let L := ∫ t in a..b,
+    ‖mfderivWithin 𝓘(ℝ, ℝ) I γ (Icc a b) t (1 : ℝ)‖
+  eVariationOn (fun t => hyperboloidRadius (γ t)) (Icc a b) ≤
+      ENNReal.ofReal L ∧
+    eVariationOn (fun t => hyperboloidRadius (γ t)) (Icc a b) ≠ ⊤ ∧
+    (eVariationOn (fun t => hyperboloidRadius (γ t)) (Icc a b)).toReal ≤ L := by
+  letI : Bundle.RiemannianBundle (fun q : Hyperboloid => TangentSpace I q) :=
+    ⟨hyperboloidMetric.toRiemannianMetric⟩
+  let L := ∫ t in a..b, ‖mfderivWithin 𝓘(ℝ, ℝ) I γ (Icc a b) t (1 : ℝ)‖
+  obtain ⟨κ, hκ⟩ := hyperboloidRadius_lipschitzOn_piece hab hγ
+  have hac : AbsolutelyContinuousOnInterval (fun t => hyperboloidRadius (γ t)) a b := by
+    apply LipschitzOnWith.absolutelyContinuousOnInterval
+    simpa only [uIcc_of_le hab.le] using hκ
+  have hspeed : IntervalIntegrable
+      (fun t => ‖mfderivWithin 𝓘(ℝ, ℝ) I γ (Icc a b) t (1 : ℝ)‖) volume a b :=
+    (intervalIntegrable_iff_integrableOn_Icc_of_le hab.le).mpr
+      (Manifold.continuousOn_pieceSpeed hyperboloidMetric γ hab hγ).integrableOn_Icc
+  have hae : ∀ᵐ t ∂volume.restrict (Icc a b),
+      |deriv (fun s => hyperboloidRadius (γ s)) t| ≤
+        ‖mfderivWithin 𝓘(ℝ, ℝ) I γ (Icc a b) t (1 : ℝ)‖ := by
+    rw [← restrict_Ioc_eq_restrict_Icc]
+    exact hyperboloidRadius_ae_deriv_le_pieceSpeed hab hγ
+  have hInt : (∫ t in a..b, |deriv (fun s => hyperboloidRadius (γ s)) t|) ≤ L :=
+    intervalIntegral.integral_mono_ae_restrict
+      hab.le hac.intervalIntegrable_deriv.abs hspeed hae
+  have hbound : eVariationOn (fun t => hyperboloidRadius (γ t)) (Icc a b) ≤ ENNReal.ofReal L :=
+    (hac.eVariationOn_le_ofReal_integral_abs_deriv hab.le).trans (ENNReal.ofReal_le_ofReal hInt)
+  have hL : 0 ≤ L := intervalIntegral.integral_nonneg hab.le (fun t ht => norm_nonneg _)
+  refine ⟨hbound, ne_top_of_le_ne_top ENNReal.ofReal_ne_top hbound, ?_⟩
+  exact (ENNReal.toReal_mono ENNReal.ofReal_ne_top hbound).trans_eq (ENNReal.toReal_ofReal hL)
+
+/-- Finite variation additivity on the weak subdivision bounds whole radial variation and endpoint change by actual piecewise length. (G03.c) -/
+theorem hyperboloidRadius_variation_le_length
+    {γ : ℝ → Hyperboloid} {a b : ℝ} {n : ℕ}
+    {cut : Fin (n + 1) → ℝ}
+    (hγ : Manifold.IsPiecewiseC1On I γ a b n cut) :
+  AbsolutelyContinuousOnInterval (fun t => hyperboloidRadius (γ t)) a b ∧
+  eVariationOn (fun t => hyperboloidRadius (γ t)) (Icc a b) ≤
+    ENNReal.ofReal (Manifold.piecewiseC1Length hyperboloidMetric γ cut) ∧
+  eVariationOn (fun t => hyperboloidRadius (γ t)) (Icc a b) ≠ ⊤ ∧
+  |hyperboloidRadius (γ b) - hyperboloidRadius (γ a)| ≤
+    (eVariationOn (fun t => hyperboloidRadius (γ t)) (Icc a b)).toReal ∧
+  (eVariationOn (fun t => hyperboloidRadius (γ t)) (Icc a b)).toReal ≤
+    Manifold.piecewiseC1Length hyperboloidMetric γ cut := by
+  letI : Bundle.RiemannianBundle (fun q : Hyperboloid => TangentSpace I q) :=
+    ⟨hyperboloidMetric.toRiemannianMetric⟩
+  let f : ℝ → ℝ := fun t => hyperboloidRadius (γ t)
+  have hc : Monotone cut := hγ.1
+  have hsumcut : (∑ i : Fin n, eVariationOn f (Icc (cut i.castSucc) (cut i.succ))) =
+      eVariationOn f (Icc (cut 0) (cut (Fin.last n))) := by
+    let u : ℕ → ℝ :=
+      fun k => cut ⟨min k n, Nat.lt_succ_of_le (Nat.min_le_right k n)⟩
+    have hu : Monotone u := by
+      intro i j hij
+      apply hc
+      change min i n ≤ min j n
+      exact min_le_min_right n hij
+    have h0 : u 0 = cut 0 := by simp [u]
+    have hn : u n = cut (Fin.last n) := by simp [u, Fin.last]
+    have hleft (i : Fin n) : u i.val = cut i.castSucc := by
+      dsimp [u]
+      congr 1
+      apply Fin.ext
+      exact Nat.min_eq_left i.isLt.le
+    have hright (i : Fin n) : u (i.val+1) = cut i.succ := by
+      dsimp [u]
+      congr 1
+      apply Fin.ext
+      exact Nat.min_eq_left (by omega)
+    have hFinRange :
+        (∑ i : Fin n, eVariationOn f (Icc (u i.val) (u (i.val+1)))) =
+          ∑ k ∈ Finset.range n, eVariationOn f (Icc (u k) (u (k+1))) :=
+      Fin.sum_univ_eq_sum_range
+        (fun k => eVariationOn f (Icc (u k) (u (k+1)))) n
+    calc
+      (∑ i : Fin n, eVariationOn f (Icc (cut i.castSucc) (cut i.succ))) =
+          ∑ i : Fin n, eVariationOn f (Icc (u i.val) (u (i.val+1))) := by
+        apply Finset.sum_congr rfl
+        intro i hi
+        rw [hleft i, hright i]
+      _ = ∑ k ∈ Finset.range n, eVariationOn f (Icc (u k) (u (k+1))) := hFinRange
+      _ = eVariationOn f (Icc (u 0) (u n)) := eVariationOn.sum' f hu
+      _ = eVariationOn f (Icc (cut 0) (cut (Fin.last n))) := by rw [h0, hn]
+  let L : Fin n → ℝ := fun i =>
+    ∫ t in cut i.castSucc..cut i.succ,
+      ‖mfderivWithin 𝓘(ℝ, ℝ) I γ (Icc (cut i.castSucc) (cut i.succ)) t (1 : ℝ)‖
+  have hle (i : Fin n) : cut i.castSucc ≤ cut i.succ :=
+    hγ.1 (show i.castSucc ≤ i.succ by change i.val ≤ i.val+1; omega)
+  have hnonneg (i : Fin n) : 0 ≤ L i :=
+    intervalIntegral.integral_nonneg (hle i) (fun t ht => norm_nonneg _)
+  have hpiece (i : Fin n) :
+      eVariationOn f (Icc (cut i.castSucc) (cut i.succ)) ≤ ENNReal.ofReal (L i) := by
+    rcases lt_or_eq_of_le (hle i) with hi | hi
+    · exact (hyperboloidRadius_piece_variation hi (hγ.2.2.2.2 i hi)).1
+    · simp [L, hi]
+  have hsum : (∑ i : Fin n, eVariationOn f (Icc (cut i.castSucc) (cut i.succ))) =
+      eVariationOn f (Icc a b) := by
+    rw [hsumcut, hγ.2.1, hγ.2.2.1]
+  have hlength : Manifold.piecewiseC1Length hyperboloidMetric γ cut = ∑ i : Fin n, L i := rfl
+  have hbound : eVariationOn f (Icc a b) ≤
+      ENNReal.ofReal (Manifold.piecewiseC1Length hyperboloidMetric γ cut) := by
+    rw [← hsum, hlength, ENNReal.ofReal_sum_of_nonneg (fun i hi => hnonneg i)]
+    exact Finset.sum_le_sum (fun i hi => hpiece i)
+  have hL : 0 ≤ Manifold.piecewiseC1Length hyperboloidMetric γ cut := by
+    rw [hlength]
+    exact Finset.sum_nonneg (fun i hi => hnonneg i)
+  have hfinite : eVariationOn f (Icc a b) ≠ ⊤ :=
+    ne_top_of_le_ne_top ENNReal.ofReal_ne_top hbound
+  have hab : a ≤ b := by
+    rw [← hγ.2.1, ← hγ.2.2.1]
+    exact hγ.1 (Fin.zero_le _)
+  refine ⟨hyperboloidRadius_absolutelyContinuous hγ, hbound, hfinite, ?_, ?_⟩
+  · have hv : BoundedVariationOn f (Icc a b) := hfinite
+    simpa only [Real.dist_eq] using
+      hv.dist_le (show b ∈ Icc a b from ⟨hab, le_rfl⟩)
+        (show a ∈ Icc a b from ⟨le_rfl, hab⟩)
+  · exact (ENNReal.toReal_mono ENNReal.ofReal_ne_top hbound).trans_eq (ENNReal.toReal_ofReal hL)
+
+end PolarRadial
 
 end Hyperbolic
