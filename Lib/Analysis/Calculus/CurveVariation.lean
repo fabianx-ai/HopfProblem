@@ -1,6 +1,8 @@
 module
 
 public import Mathlib.MeasureTheory.Function.AbsolutelyContinuous
+public import Mathlib.MeasureTheory.Integral.IntervalIntegral.AbsolutelyContinuousFun
+public import Mathlib.Data.ENNReal.BigOperators
 
 /-!
 # Absolute continuity across finite weak subdivisions
@@ -169,5 +171,87 @@ theorem of_monotone_subdivision {f : ℝ → X} {a b : ℝ} {n : ℕ}
   have hfinal := hprefix n (Nat.zero_le n) le_rfl
   simpa only [hfirst, show (⟨n, by omega⟩ : Fin (n+1)) = Fin.last n from rfl, hlast]
     using hfinal
+
+/-! ## Scalar absolute continuity and total variation -/
+
+open MeasureTheory
+open scoped ENNReal
+
+/-- Every weak partition of a compact interval has its sum of absolute
+increments bounded by the integral of the absolute derivative. Restrict the
+same function to each piece, apply the absolute-continuity fundamental theorem,
+then add adjacent integrals and enlarge the interval using nonnegativity. -/
+theorem sum_abs_sub_le_integral_abs_deriv
+    {f : ℝ → ℝ} {a b : ℝ}
+    (hf : AbsolutelyContinuousOnInterval f a b) (hab : a ≤ b)
+    (N : ℕ) (u : ℕ → ℝ) (hu : Monotone u)
+    (hu_mem : ∀ i, u i ∈ Set.Icc a b) :
+    (∑ i ∈ Finset.range N, |f (u (i + 1)) - f (u i)|) ≤
+      ∫ t in a..b, |deriv f t| := by
+  have hsub (k : ℕ) : uIcc (u k) (u (k+1)) ⊆ uIcc a b := by
+    rw [uIcc_of_le (hu (Nat.le_succ k)), uIcc_of_le hab]
+    intro t ht
+    exact ⟨(hu_mem k).1.trans ht.1, ht.2.trans (hu_mem (k+1)).2⟩
+  have hg := hf.intervalIntegrable_deriv.abs
+  have hincrement (k : ℕ) :
+      |f (u (k+1)) - f (u k)| ≤ ∫ t in u k..u (k+1), |deriv f t| := by
+    rw [← (hf.mono (hsub k)).integral_deriv_eq_sub]
+    exact intervalIntegral.abs_integral_le_integral_abs (hu (Nat.le_succ k))
+  calc
+    (∑ i ∈ range N, |f (u (i+1)) - f (u i)|) ≤
+        ∑ i ∈ range N, ∫ t in u i..u (i+1), |deriv f t| :=
+      Finset.sum_le_sum (fun i hi => hincrement i)
+    _ = ∫ t in u 0..u N, |deriv f t| :=
+      intervalIntegral.sum_integral_adjacent_intervals (fun k hk => hg.mono_set (hsub k))
+    _ ≤ ∫ t in a..b, |deriv f t| :=
+      intervalIntegral.integral_mono_interval (hu_mem 0).1
+        (hu (Nat.zero_le N)) (hu_mem N).2
+        (Filter.Eventually.of_forall (fun t => abs_nonneg (deriv f t))) hg
+
+/-- The extended total variation of a real absolutely continuous function is
+bounded by the finite integral of its absolute derivative. Convert each actual
+variation partition to its nonnegative real sum before taking the supremum;
+no finiteness of the variation is assumed. -/
+theorem eVariationOn_le_ofReal_integral_abs_deriv
+    {f : ℝ → ℝ} {a b : ℝ}
+    (hf : AbsolutelyContinuousOnInterval f a b) (hab : a ≤ b) :
+    eVariationOn f (Set.Icc a b) ≤
+      ENNReal.ofReal (∫ t in a..b, |deriv f t|) := by
+  unfold eVariationOn
+  apply iSup_le
+  intro p
+  calc
+    (∑ i ∈ range p.1, edist (f (p.2.1 (i+1))) (f (p.2.1 i))) =
+        ENNReal.ofReal (∑ i ∈ range p.1, |f (p.2.1 (i+1)) - f (p.2.1 i)|) := by
+      rw [ENNReal.ofReal_sum_of_nonneg (fun i hi => abs_nonneg _)]
+      simp only [edist_dist, Real.dist_eq]
+    _ ≤ ENNReal.ofReal (∫ t in a..b, |deriv f t|) :=
+      ENNReal.ofReal_le_ofReal
+        (sum_abs_sub_le_integral_abs_deriv hf hab p.1 p.2.1 p.2.2.1 p.2.2.2)
+
+/-- Total variation is finite before it is interpreted as a real number;
+that real variation lies between the absolute endpoint increment and the
+integral of the absolute derivative. The endpoint estimate is the existing
+bounded-variation inequality, while the upper bound comes from the extended
+partition supremum. This states inequalities, not an equality characterization. -/
+theorem variation_bounds_integral_abs_deriv
+    {f : ℝ → ℝ} {a b : ℝ}
+    (hf : AbsolutelyContinuousOnInterval f a b) (hab : a ≤ b) :
+    eVariationOn f (Set.Icc a b) ≠ ⊤ ∧
+      |f b - f a| ≤ (eVariationOn f (Set.Icc a b)).toReal ∧
+      (eVariationOn f (Set.Icc a b)).toReal ≤
+        ∫ t in a..b, |deriv f t| := by
+  have hbound := eVariationOn_le_ofReal_integral_abs_deriv hf hab
+  have hfinite : eVariationOn f (Icc a b) ≠ ⊤ :=
+    ne_top_of_le_ne_top ENNReal.ofReal_ne_top hbound
+  have hJ : 0 ≤ ∫ t in a..b, |deriv f t| :=
+    intervalIntegral.integral_nonneg_of_forall hab (fun t => abs_nonneg _)
+  refine ⟨hfinite, ?_, ?_⟩
+  · have hvariation : BoundedVariationOn f (Icc a b) := hfinite
+    simpa only [Real.dist_eq] using
+      hvariation.dist_le (show b ∈ Icc a b from ⟨hab, le_rfl⟩)
+        (show a ∈ Icc a b from ⟨le_rfl, hab⟩)
+  · exact (ENNReal.toReal_mono ENNReal.ofReal_ne_top hbound).trans_eq
+      (ENNReal.toReal_ofReal hJ)
 
 end AbsolutelyContinuousOnInterval

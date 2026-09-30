@@ -8164,3 +8164,12 @@ is an evidence command rather than library content.
 
 #check AbsolutelyContinuousOnInterval.of_monotone_subdivision
 #print axioms AbsolutelyContinuousOnInterval.of_monotone_subdivision
+
+#check AbsolutelyContinuousOnInterval.sum_abs_sub_le_integral_abs_deriv
+#print axioms AbsolutelyContinuousOnInterval.sum_abs_sub_le_integral_abs_deriv
+
+#check AbsolutelyContinuousOnInterval.eVariationOn_le_ofReal_integral_abs_deriv
+#print axioms AbsolutelyContinuousOnInterval.eVariationOn_le_ofReal_integral_abs_deriv
+
+#check AbsolutelyContinuousOnInterval.variation_bounds_integral_abs_deriv
+#print axioms AbsolutelyContinuousOnInterval.variation_bounds_integral_abs_deriv
