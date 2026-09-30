@@ -8380,3 +8380,24 @@ is an evidence command rather than library content.
 
 #check Hyperbolic.hyperboloid_distinct_span_plane
 #print axioms Hyperbolic.hyperboloid_distinct_span_plane
+
+#check Hyperbolic.hyperboloidLengthMetricSpace
+#print axioms Hyperbolic.hyperboloidLengthMetricSpace
+
+#check Hyperbolic.upperHalfPlaneLengthMetricSpace
+#print axioms Hyperbolic.upperHalfPlaneLengthMetricSpace
+
+#check Hyperbolic.hyperboloidLengthMetricSpace_coherence
+#print axioms Hyperbolic.hyperboloidLengthMetricSpace_coherence
+
+#check Hyperbolic.upperHalfPlaneLengthMetricSpace_coherence
+#print axioms Hyperbolic.upperHalfPlaneLengthMetricSpace_coherence
+
+#check Hyperbolic.hyperboloidLengthDist_nhds
+#print axioms Hyperbolic.hyperboloidLengthDist_nhds
+
+#check Hyperbolic.upperHalfPlaneLengthDist_nhds
+#print axioms Hyperbolic.upperHalfPlaneLengthDist_nhds
+
+#check Hyperbolic.modelLengthMetric_isometries
+#print axioms Hyperbolic.modelLengthMetric_isometries

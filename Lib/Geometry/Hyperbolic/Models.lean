@@ -56,6 +56,8 @@ public import Mathlib.LinearAlgebra.LinearIndependent.Lemmas
 public import Mathlib.LinearAlgebra.Dimension.Constructions
 public import Mathlib.Topology.Connected.Clopen
 public import Mathlib.LinearAlgebra.FiniteDimensional.Basic
+public import Mathlib.Geometry.Manifold.Riemannian.Basic
+public import Mathlib.Topology.MetricSpace.Basic
 
 /-!
 # Upper-half-plane and hyperboloid coordinates
@@ -5303,5 +5305,200 @@ theorem hyperboloid_distinct_span_plane (p q : Hyperboloid) (hpq : p ≠ q) :
     change Set.range (hyperboloidGeodesic p v hvp hvv) = {r : Hyperboloid | r.val ∈ S}
     rw [hST]
     exact hr
+
+section LengthTopology
+
+open Bundle
+
+/-- The finite Riemannian length metric on the hyperboloid, retaining its original topology. -/
+def hyperboloidLengthMetricSpace : MetricSpace Hyperboloid :=
+  letI : Bundle.RiemannianBundle (fun p : Hyperboloid => TangentSpace I p) :=
+    ⟨hyperboloidMetric.toRiemannianMetric⟩
+  letI : IsContinuousRiemannianBundle ℂ
+      (fun p : Hyperboloid => TangentSpace I p) :=
+    ⟨⟨hyperboloidMetric.toContinuousRiemannianMetric.inner,
+      hyperboloidMetric.toContinuousRiemannianMetric.continuous,
+      fun _ _ _ => rfl⟩⟩
+  letI : EMetricSpace Hyperboloid := EMetricSpace.ofRiemannianMetric I Hyperboloid
+  EMetricSpace.toMetricSpace (fun p q => by
+    change riemannianEDist I p q ≠ ⊤
+    exact ne_of_lt (hyperboloid_intrinsicEDist_finite p q).2)
+
+/-- The finite Riemannian length metric on the upper half-plane, retaining its original topology. -/
+def upperHalfPlaneLengthMetricSpace : MetricSpace UpperHalfPlane :=
+  letI : Bundle.RiemannianBundle (fun z : UpperHalfPlane => TangentSpace I z) :=
+    ⟨upperHalfPlaneMetric.toRiemannianMetric⟩
+  letI : IsContinuousRiemannianBundle ℂ
+      (fun z : UpperHalfPlane => TangentSpace I z) :=
+    ⟨⟨upperHalfPlaneMetric.toContinuousRiemannianMetric.inner,
+      upperHalfPlaneMetric.toContinuousRiemannianMetric.continuous,
+      fun _ _ _ => rfl⟩⟩
+  letI : EMetricSpace UpperHalfPlane := EMetricSpace.ofRiemannianMetric I UpperHalfPlane
+  EMetricSpace.toMetricSpace (fun u v => by
+    change riemannianEDist I u v ≠ ⊤
+    exact ne_of_lt (upperHalfPlane_intrinsicEDist_finite u v).2)
+
+set_option backward.isDefEq.respectTransparency false in
+/-- The hyperboloid length metric has the original topology and the same finite-piece distances. -/
+theorem hyperboloidLengthMetricSpace_coherence :
+    hyperboloidLengthMetricSpace.toPseudoMetricSpace.toUniformSpace.toTopologicalSpace =
+      (inferInstance : TopologicalSpace Hyperboloid) ∧
+    (letI : MetricSpace Hyperboloid := hyperboloidLengthMetricSpace
+     letI : PseudoMetricSpace Hyperboloid := hyperboloidLengthMetricSpace.toPseudoMetricSpace
+     letI : PseudoEMetricSpace Hyperboloid :=
+       @PseudoMetricSpace.toPseudoEMetricSpace Hyperboloid hyperboloidLengthMetricSpace.toPseudoMetricSpace
+     letI : WeakPseudoEMetricSpace Hyperboloid :=
+       @PseudoEMetricSpace.toWeakPseudoEMetricSpace Hyperboloid
+         (@PseudoMetricSpace.toPseudoEMetricSpace Hyperboloid hyperboloidLengthMetricSpace.toPseudoMetricSpace)
+     (∀ p q : Hyperboloid,
+       edist p q = piecewiseC1EDist hyperboloidMetric p q) ∧
+     (∀ p q : Hyperboloid, dist p q = hyperboloidLengthDist p q)) := by
+  let originalTopology : TopologicalSpace Hyperboloid := inferInstance
+  letI : Bundle.RiemannianBundle (fun x : Hyperboloid => TangentSpace I x) :=
+    ⟨hyperboloidMetric.toRiemannianMetric⟩
+  letI : IsContinuousRiemannianBundle ℂ (fun x : Hyperboloid => TangentSpace I x) :=
+    ⟨⟨hyperboloidMetric.toContinuousRiemannianMetric.inner,
+      hyperboloidMetric.toContinuousRiemannianMetric.continuous, fun _ _ _ => rfl⟩⟩
+  have hfinite (x y : Hyperboloid) : riemannianEDist I x y ≠ ⊤ :=
+    ne_of_lt (hyperboloid_intrinsicEDist_finite x y).2
+  have hpieceFinite (x y : Hyperboloid) : piecewiseC1EDist hyperboloidMetric x y ≠ ⊤ :=
+    ne_of_lt (hyperboloid_intrinsicEDist_finite x y).1
+  have htop : hyperboloidLengthMetricSpace.toPseudoMetricSpace.toUniformSpace.toTopologicalSpace = originalTopology := rfl
+  refine ⟨htop, ?_⟩
+  letI : MetricSpace Hyperboloid := hyperboloidLengthMetricSpace
+  letI : PseudoMetricSpace Hyperboloid := hyperboloidLengthMetricSpace.toPseudoMetricSpace
+  letI : PseudoEMetricSpace Hyperboloid :=
+    @PseudoMetricSpace.toPseudoEMetricSpace Hyperboloid hyperboloidLengthMetricSpace.toPseudoMetricSpace
+  letI : WeakPseudoEMetricSpace Hyperboloid :=
+    @PseudoEMetricSpace.toWeakPseudoEMetricSpace Hyperboloid
+      (@PseudoMetricSpace.toPseudoEMetricSpace Hyperboloid hyperboloidLengthMetricSpace.toPseudoMetricSpace)
+  constructor
+  · intro x y
+    change riemannianEDist I x y = piecewiseC1EDist hyperboloidMetric x y
+    exact (piecewiseC1EDist_eq_riemannianEDist hyperboloidMetric x y).symm
+  · intro x y
+    change (riemannianEDist I x y).toReal =
+      (piecewiseC1EDist hyperboloidMetric x y).toReal
+    exact congrArg ENNReal.toReal
+      (piecewiseC1EDist_eq_riemannianEDist hyperboloidMetric x y).symm
+
+/-- The upper-half-plane length metric has the original topology and the same finite-piece distances. -/
+theorem upperHalfPlaneLengthMetricSpace_coherence :
+    upperHalfPlaneLengthMetricSpace.toPseudoMetricSpace.toUniformSpace.toTopologicalSpace =
+      (inferInstance : TopologicalSpace UpperHalfPlane) ∧
+    (letI : MetricSpace UpperHalfPlane := upperHalfPlaneLengthMetricSpace
+     (∀ u v : UpperHalfPlane,
+       edist u v = piecewiseC1EDist upperHalfPlaneMetric u v) ∧
+     (∀ u v : UpperHalfPlane,
+       dist u v = (piecewiseC1EDist upperHalfPlaneMetric u v).toReal)) := by
+  let originalTopology : TopologicalSpace UpperHalfPlane := inferInstance
+  letI : Bundle.RiemannianBundle (fun x : UpperHalfPlane => TangentSpace I x) :=
+    ⟨upperHalfPlaneMetric.toRiemannianMetric⟩
+  letI : IsContinuousRiemannianBundle ℂ (fun x : UpperHalfPlane => TangentSpace I x) :=
+    ⟨⟨upperHalfPlaneMetric.toContinuousRiemannianMetric.inner,
+      upperHalfPlaneMetric.toContinuousRiemannianMetric.continuous, fun _ _ _ => rfl⟩⟩
+  have hfinite (x y : UpperHalfPlane) : riemannianEDist I x y ≠ ⊤ :=
+    ne_of_lt (upperHalfPlane_intrinsicEDist_finite x y).2
+  have hpieceFinite (x y : UpperHalfPlane) : piecewiseC1EDist upperHalfPlaneMetric x y ≠ ⊤ :=
+    ne_of_lt (upperHalfPlane_intrinsicEDist_finite x y).1
+  have htop : upperHalfPlaneLengthMetricSpace.toPseudoMetricSpace.toUniformSpace.toTopologicalSpace = originalTopology := rfl
+  refine ⟨htop, ?_⟩
+  letI : MetricSpace UpperHalfPlane := upperHalfPlaneLengthMetricSpace
+  constructor
+  · intro x y
+    change riemannianEDist I x y = piecewiseC1EDist upperHalfPlaneMetric x y
+    exact (piecewiseC1EDist_eq_riemannianEDist upperHalfPlaneMetric x y).symm
+  · intro x y
+    change (riemannianEDist I x y).toReal =
+      (piecewiseC1EDist upperHalfPlaneMetric x y).toReal
+    exact congrArg ENNReal.toReal
+      (piecewiseC1EDist_eq_riemannianEDist upperHalfPlaneMetric x y).symm
+
+set_option backward.isDefEq.respectTransparency false in
+/-- Hyperboloid length balls form the neighborhood basis in the original topology. -/
+theorem hyperboloidLengthDist_nhds (p : Hyperboloid) (s : Set Hyperboloid) :
+    s ∈ 𝓝 p ↔ ∃ ε : ℝ, 0 < ε ∧
+      {q : Hyperboloid | hyperboloidLengthDist p q < ε} ⊆ s := by
+  let originalTopology : TopologicalSpace Hyperboloid := inferInstance
+  have htop := hyperboloidLengthMetricSpace_coherence.1
+  letI : MetricSpace Hyperboloid := hyperboloidLengthMetricSpace
+  letI : PseudoMetricSpace Hyperboloid := hyperboloidLengthMetricSpace.toPseudoMetricSpace
+  letI : PseudoEMetricSpace Hyperboloid :=
+    @PseudoMetricSpace.toPseudoEMetricSpace Hyperboloid hyperboloidLengthMetricSpace.toPseudoMetricSpace
+  letI : WeakPseudoEMetricSpace Hyperboloid :=
+    @PseudoEMetricSpace.toWeakPseudoEMetricSpace Hyperboloid
+      (@PseudoMetricSpace.toPseudoEMetricSpace Hyperboloid hyperboloidLengthMetricSpace.toPseudoMetricSpace)
+  have hdist : ∀ p y : Hyperboloid, dist p y = hyperboloidLengthDist p y :=
+    hyperboloidLengthMetricSpace_coherence.2.2
+  have hball (ε : ℝ) : Metric.ball p ε =
+      {y : Hyperboloid | hyperboloidLengthDist p y < ε} := by
+    ext y
+    change dist y p < ε ↔ hyperboloidLengthDist p y < ε
+    rw [dist_comm, hdist]
+  have h := (Metric.mem_nhds_iff : s ∈ 𝓝 p ↔
+    ∃ ε : ℝ, 0 < ε ∧ Metric.ball p ε ⊆ s)
+  change s ∈ @nhds Hyperboloid originalTopology p ↔ _
+  simpa only [hball] using h
+
+set_option backward.isDefEq.respectTransparency false in
+/-- Upper-half-plane length balls form the neighborhood basis in the original topology. -/
+theorem upperHalfPlaneLengthDist_nhds (u : UpperHalfPlane)
+    (s : Set UpperHalfPlane) :
+    s ∈ 𝓝 u ↔ ∃ ε : ℝ, 0 < ε ∧
+      {v : UpperHalfPlane |
+        (piecewiseC1EDist upperHalfPlaneMetric u v).toReal < ε} ⊆ s := by
+  let originalTopology : TopologicalSpace UpperHalfPlane := inferInstance
+  have htop := upperHalfPlaneLengthMetricSpace_coherence.1
+  letI : MetricSpace UpperHalfPlane := upperHalfPlaneLengthMetricSpace
+  have hdist : ∀ u y : UpperHalfPlane, dist u y = (fun u y => (piecewiseC1EDist upperHalfPlaneMetric u y).toReal) u y :=
+    upperHalfPlaneLengthMetricSpace_coherence.2.2
+  have hball (ε : ℝ) : Metric.ball u ε =
+      {y : UpperHalfPlane | (fun u y => (piecewiseC1EDist upperHalfPlaneMetric u y).toReal) u y < ε} := by
+    ext y
+    change dist y u < ε ↔ (fun u y => (piecewiseC1EDist upperHalfPlaneMetric u y).toReal) u y < ε
+    rw [dist_comm, hdist]
+  have h := (Metric.mem_nhds_iff : s ∈ 𝓝 u ↔
+    ∃ ε : ℝ, 0 < ε ∧ Metric.ball u ε ⊆ s)
+  change s ∈ @nhds UpperHalfPlane originalTopology u ↔ _
+  simpa only [hball] using h
+
+/-- The coordinate maps are isometries for the two length metrics. -/
+theorem modelLengthMetric_isometries :
+    letI : MetricSpace UpperHalfPlane := upperHalfPlaneLengthMetricSpace
+    letI : MetricSpace Hyperboloid := hyperboloidLengthMetricSpace
+    letI : PseudoMetricSpace Hyperboloid := hyperboloidLengthMetricSpace.toPseudoMetricSpace
+    letI : PseudoEMetricSpace Hyperboloid :=
+      @PseudoMetricSpace.toPseudoEMetricSpace Hyperboloid hyperboloidLengthMetricSpace.toPseudoMetricSpace
+    letI : WeakPseudoEMetricSpace Hyperboloid :=
+      @PseudoEMetricSpace.toWeakPseudoEMetricSpace Hyperboloid
+        (@PseudoMetricSpace.toPseudoEMetricSpace Hyperboloid hyperboloidLengthMetricSpace.toPseudoMetricSpace)
+    Isometry toHyperboloid ∧ Isometry fromHyperboloid := by
+  letI : MetricSpace UpperHalfPlane := upperHalfPlaneLengthMetricSpace
+  letI : MetricSpace Hyperboloid := hyperboloidLengthMetricSpace
+  letI : PseudoMetricSpace Hyperboloid := hyperboloidLengthMetricSpace.toPseudoMetricSpace
+  letI : PseudoEMetricSpace Hyperboloid :=
+    @PseudoMetricSpace.toPseudoEMetricSpace Hyperboloid hyperboloidLengthMetricSpace.toPseudoMetricSpace
+  letI : WeakPseudoEMetricSpace Hyperboloid :=
+    @PseudoEMetricSpace.toWeakPseudoEMetricSpace Hyperboloid
+      (@PseudoMetricSpace.toPseudoEMetricSpace Hyperboloid hyperboloidLengthMetricSpace.toPseudoMetricSpace)
+  letI : Bundle.RiemannianBundle (fun z : UpperHalfPlane => TangentSpace I z) :=
+    ⟨upperHalfPlaneMetric.toRiemannianMetric⟩
+  letI : Bundle.RiemannianBundle (fun p : Hyperboloid => TangentSpace I p) :=
+    ⟨hyperboloidMetric.toRiemannianMetric⟩
+  have hU := upperHalfPlaneLengthMetricSpace_coherence.2.1
+  have hQ := hyperboloidLengthMetricSpace_coherence.2.1
+  have hinvU (u : UpperHalfPlane) : fromHyperboloid (toHyperboloid u) = u :=
+    fromHyperboloid_toHyperboloid u
+  have hinvQ (p : Hyperboloid) : toHyperboloid (fromHyperboloid p) = p :=
+    toHyperboloid_fromHyperboloid p
+  constructor
+  · intro u v
+    rw [hQ, hU]
+    exact (toHyperboloid_intrinsicEDist u v).1
+  · intro p q
+    rw [hU, hQ]
+    exact (fromHyperboloid_intrinsicEDist p q).1
+
+end LengthTopology
 
 end Hyperbolic
