@@ -1,5 +1,11 @@
 module
 
+public import Mathlib.Topology.MetricSpace.Bounded
+public import Mathlib.Analysis.Normed.Group.Bounded
+public import Mathlib.Analysis.Normed.Group.Constructions
+public import Mathlib.Topology.Compactness.Compact
+public import Mathlib.Topology.Order.OrderClosed
+
 public import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
 public import Mathlib.Data.Fin.VecNotation
 public import Mathlib.Algebra.Order.Ring.Abs
@@ -5567,5 +5573,134 @@ theorem hyperboloidLengthDist_center_sublevel_neg (R : ℝ) (hR : R < 0) :
   exact (not_le_of_gt hR) (le_trans hd hq)
 
 end CenteredLengthBalls
+
+section CenteredCompactBalls
+
+open Set
+
+/-- The ambient centered hyperbolic ball is compact: its quadratic equation and weak time bounds are closed, and its coordinate bounds are finite. Textbook Euclidean compactness argument, lines 121–122. -/
+theorem isCompact_hyperboloid_center_ambient (R : ℝ) (hR : 0 ≤ R) :
+    IsCompact {v : Fin 3 → ℝ |
+      v 0 ^ 2 + v 1 ^ 2 - v 2 ^ 2 = -1 ∧
+      1 ≤ v 2 ∧ v 2 ≤ Real.cosh R} := by
+  have hclosed : IsClosed {v : Fin 3 → ℝ | v 0 ^ 2 + v 1 ^ 2 - v 2 ^ 2 = -1 ∧
+      1 ≤ v 2 ∧ v 2 ≤ Real.cosh R} := by
+    have hpoly : Continuous (fun v : Fin 3 → ℝ =>
+        v 0 ^ 2 + v 1 ^ 2 - v 2 ^ 2) :=
+      (((continuous_apply 0).pow 2).add ((continuous_apply 1).pow 2)).sub
+        ((continuous_apply 2).pow 2)
+    change IsClosed ({v : Fin 3 → ℝ |
+        v 0 ^ 2 + v 1 ^ 2 - v 2 ^ 2 = -1} ∩
+      ({v : Fin 3 → ℝ | 1 ≤ v 2} ∩
+        {v : Fin 3 → ℝ | v 2 ≤ Real.cosh R}))
+    exact (isClosed_eq hpoly continuous_const).inter
+      ((isClosed_le continuous_const (continuous_apply 2)).inter
+        (isClosed_le (continuous_apply 2) continuous_const))
+
+  have hbounded : Bornology.IsBounded {v : Fin 3 → ℝ | v 0 ^ 2 + v 1 ^ 2 - v 2 ^ 2 = -1 ∧
+      1 ≤ v 2 ∧ v 2 ≤ Real.cosh R} := by
+    refine isBounded_iff_forall_norm_le.mpr ⟨Real.cosh R, ?_⟩
+    intro v hv
+    let q : Hyperboloid :=
+      ⟨v, hv.1, lt_of_lt_of_le zero_lt_one hv.2.1⟩
+    have hq : hyperboloidLengthDist (hyperboloidPolar 0 0) q ≤ R :=
+      (hyperboloidLengthDist_center_le_iff q R hR).mpr hv.2.2
+    have hb := hyperboloidLengthDist_center_bounds q R hR hq
+    have hsp : v 0 ^ 2 + v 1 ^ 2 ≤ Real.sinh R ^ 2 := hb.2.2
+    have hx : v 0 ^ 2 ≤ Real.cosh R ^ 2 := by
+      nlinarith [Real.cosh_sq_sub_sinh_sq R, sq_nonneg (v 1)]
+    have hy : v 1 ^ 2 ≤ Real.cosh R ^ 2 := by
+      nlinarith [Real.cosh_sq_sub_sinh_sq R, sq_nonneg (v 0)]
+    have hxabs : |v 0| ≤ Real.cosh R := by
+      apply (sq_le_sq₀ (abs_nonneg (v 0)) (Real.cosh_pos R).le).mp
+      simpa only [sq_abs] using hx
+    have hyabs : |v 1| ≤ Real.cosh R := by
+      apply (sq_le_sq₀ (abs_nonneg (v 1)) (Real.cosh_pos R).le).mp
+      simpa only [sq_abs] using hy
+    have ht : 0 ≤ v 2 := le_trans zero_le_one hv.2.1
+    apply (pi_norm_le_iff_of_nonneg (Real.cosh_pos R).le).mpr
+    intro i
+    fin_cases i
+    · simpa [Real.norm_eq_abs] using hxabs
+    · simpa [Real.norm_eq_abs] using hyabs
+    · simpa [Real.norm_eq_abs, abs_of_nonneg ht] using hv.2.2
+
+  have hproper : ProperSpace (Fin 3 → ℝ) := inferInstance
+  exact Metric.isCompact_iff_isClosed_bounded.mpr ⟨hclosed, hbounded⟩
+
+/-- Every centered length-distance sublevel is compact in the original hyperboloid topology. Negative radii give the empty set; nonnegative radii are transferred from the ambient compact set. Textbook lines 121–122. -/
+theorem isCompact_hyperboloidLengthDist_center_sublevel (R : ℝ) :
+    IsCompact {q : Hyperboloid |
+      hyperboloidLengthDist (hyperboloidPolar 0 0) q ≤ R} := by
+  rcases lt_or_ge R 0 with hR | hR
+  · rw [hyperboloidLengthDist_center_sublevel_neg R hR]
+    exact isCompact_empty
+  · have himage :
+        (fun q : Hyperboloid => q.val) ''
+          {q | hyperboloidLengthDist (hyperboloidPolar 0 0) q ≤ R} =
+        {v : Fin 3 → ℝ | v 0 ^ 2 + v 1 ^ 2 - v 2 ^ 2 = -1 ∧
+      1 ≤ v 2 ∧ v 2 ≤ Real.cosh R} := by
+      ext v
+      constructor
+      · rintro ⟨q, hq, rfl⟩
+        have h := hyperboloidLengthDist_center_bounds q R hR hq
+        exact ⟨q.property.1, h.1, h.2.1⟩
+      · intro hv
+        let q : Hyperboloid := ⟨v, hv.1, lt_of_lt_of_le zero_lt_one hv.2.1⟩
+        refine ⟨q, ?_, rfl⟩
+        exact (hyperboloidLengthDist_center_le_iff q R hR).mpr hv.2.2
+
+    apply Subtype.isCompact_iff.mpr
+    rw [himage]
+    exact Hyperbolic.isCompact_hyperboloid_center_ambient R hR
+
+/-- Every centered closed ball for the named hyperbolic length metric is compact. The original subspace compactness is transported through the same metric topology, for all real radii. Textbook lines 121–122. -/
+theorem isCompact_hyperboloidLengthMetricSpace_center_closedBall (R : ℝ) :
+    letI : MetricSpace Hyperboloid := hyperboloidLengthMetricSpace
+    letI : PseudoMetricSpace Hyperboloid :=
+      hyperboloidLengthMetricSpace.toPseudoMetricSpace
+    letI : PseudoEMetricSpace Hyperboloid :=
+      @PseudoMetricSpace.toPseudoEMetricSpace Hyperboloid
+        hyperboloidLengthMetricSpace.toPseudoMetricSpace
+    letI : WeakPseudoEMetricSpace Hyperboloid :=
+      @PseudoEMetricSpace.toWeakPseudoEMetricSpace Hyperboloid
+        (@PseudoMetricSpace.toPseudoEMetricSpace Hyperboloid
+          hyperboloidLengthMetricSpace.toPseudoMetricSpace)
+    IsCompact (Metric.closedBall (hyperboloidPolar 0 0) R) := by
+  let originalTopology : TopologicalSpace Hyperboloid := inferInstance
+  have htop :
+      hyperboloidLengthMetricSpace.toPseudoMetricSpace.toUniformSpace.toTopologicalSpace =
+        originalTopology :=
+    hyperboloidLengthMetricSpace_coherence.1
+  have hOriginal :
+      @IsCompact Hyperboloid originalTopology
+        {q | hyperboloidLengthDist (hyperboloidPolar 0 0) q ≤ R} :=
+    Hyperbolic.isCompact_hyperboloidLengthDist_center_sublevel R
+  have hSame :
+      @IsCompact Hyperboloid
+        hyperboloidLengthMetricSpace.toPseudoMetricSpace.toUniformSpace.toTopologicalSpace
+        {q | hyperboloidLengthDist (hyperboloidPolar 0 0) q ≤ R} := by
+    rw [htop]
+    exact hOriginal
+  letI : MetricSpace Hyperboloid := hyperboloidLengthMetricSpace
+  letI : PseudoMetricSpace Hyperboloid :=
+    hyperboloidLengthMetricSpace.toPseudoMetricSpace
+  letI : PseudoEMetricSpace Hyperboloid :=
+    @PseudoMetricSpace.toPseudoEMetricSpace Hyperboloid
+      hyperboloidLengthMetricSpace.toPseudoMetricSpace
+  letI : WeakPseudoEMetricSpace Hyperboloid :=
+    @PseudoEMetricSpace.toWeakPseudoEMetricSpace Hyperboloid
+      (@PseudoMetricSpace.toPseudoEMetricSpace Hyperboloid
+        hyperboloidLengthMetricSpace.toPseudoMetricSpace)
+  have hball : Metric.closedBall (hyperboloidPolar 0 0) R =
+      {q | hyperboloidLengthDist (hyperboloidPolar 0 0) q ≤ R} := by
+    ext q
+    change dist q (hyperboloidPolar 0 0) ≤ R ↔
+      hyperboloidLengthDist (hyperboloidPolar 0 0) q ≤ R
+    rw [dist_comm, hyperboloidLengthMetricSpace_coherence.2.2]
+  rw [hball]
+  exact hSame
+
+end CenteredCompactBalls
 
 end Hyperbolic

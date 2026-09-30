@@ -8413,3 +8413,12 @@ is an evidence command rather than library content.
 
 #check Hyperbolic.hyperboloidLengthDist_center_sublevel_neg
 #print axioms Hyperbolic.hyperboloidLengthDist_center_sublevel_neg
+
+#check Hyperbolic.isCompact_hyperboloid_center_ambient
+#print axioms Hyperbolic.isCompact_hyperboloid_center_ambient
+
+#check Hyperbolic.isCompact_hyperboloidLengthDist_center_sublevel
+#print axioms Hyperbolic.isCompact_hyperboloidLengthDist_center_sublevel
+
+#check Hyperbolic.isCompact_hyperboloidLengthMetricSpace_center_closedBall
+#print axioms Hyperbolic.isCompact_hyperboloidLengthMetricSpace_center_closedBall
