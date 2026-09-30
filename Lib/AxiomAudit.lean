@@ -7883,3 +7883,56 @@ is an evidence command rather than library content.
 
 #check Manifold.PiecewiseC1CurveOn.mapEquiv_length
 #print axioms Manifold.PiecewiseC1CurveOn.mapEquiv_length
+
+/-! Actual hyperbolic-model norm, angle, speed and finite-length transport (G01.k). -/
+
+#check Hyperbolic.upperHalfPlaneDiffeomorphHyperboloid
+#print axioms Hyperbolic.upperHalfPlaneDiffeomorphHyperboloid
+
+#check Hyperbolic.upperHalfPlaneMetric
+#print axioms Hyperbolic.upperHalfPlaneMetric
+
+#check Hyperbolic.hyperboloidMetric
+#print axioms Hyperbolic.hyperboloidMetric
+
+#check Hyperbolic.upperHalfPlaneDiffeomorphHyperboloid_coe
+#print axioms Hyperbolic.upperHalfPlaneDiffeomorphHyperboloid_coe
+
+#check Hyperbolic.upperHalfPlaneMetric_inner
+#print axioms Hyperbolic.upperHalfPlaneMetric_inner
+
+#check Hyperbolic.hyperboloidMetric_inner
+#print axioms Hyperbolic.hyperboloidMetric_inner
+
+#check Hyperbolic.toHyperboloid_preserves_metric
+#print axioms Hyperbolic.toHyperboloid_preserves_metric
+
+#check Hyperbolic.fromHyperboloid_preserves_metric
+#print axioms Hyperbolic.fromHyperboloid_preserves_metric
+
+#check Hyperbolic.toHyperboloid_norm_angle
+#print axioms Hyperbolic.toHyperboloid_norm_angle
+
+#check Hyperbolic.toHyperboloid_speed
+#print axioms Hyperbolic.toHyperboloid_speed
+
+#check Hyperbolic.toHyperboloid_speedWithin
+#print axioms Hyperbolic.toHyperboloid_speedWithin
+
+#check Hyperbolic.fromHyperboloid_norm_angle
+#print axioms Hyperbolic.fromHyperboloid_norm_angle
+
+#check Hyperbolic.fromHyperboloid_speed
+#print axioms Hyperbolic.fromHyperboloid_speed
+
+#check Hyperbolic.fromHyperboloid_speedWithin
+#print axioms Hyperbolic.fromHyperboloid_speedWithin
+
+#check Hyperbolic.toHyperboloid_length
+#print axioms Hyperbolic.toHyperboloid_length
+
+#check Hyperbolic.fromHyperboloid_length
+#print axioms Hyperbolic.fromHyperboloid_length
+
+#check Hyperbolic.upperHalfPlaneDiffeomorphHyperboloid_curveFamily_length
+#print axioms Hyperbolic.upperHalfPlaneDiffeomorphHyperboloid_curveFamily_length

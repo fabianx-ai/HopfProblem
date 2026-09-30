@@ -19,6 +19,8 @@ public import Mathlib.LinearAlgebra.BilinearForm.Hom
 public import Mathlib.Geometry.Manifold.VectorBundle.Tangent
 public import Mathlib.Geometry.Manifold.VectorBundle.Hom
 public import Mathlib.Topology.Algebra.Module.Spaces.ContinuousLinearMap
+public import Lib.Geometry.Manifold.Riemannian.CurveTransport
+public import Mathlib.Geometry.Euclidean.Angle.Unoriented.Basic
 
 /-!
 # Upper-half-plane and hyperboloid coordinates
@@ -909,6 +911,7 @@ theorem hyperboloidTangentTensor_inCoordinates (p₀ p : Hyperboloid) :
 
 
 
+set_option synthInstance.maxHeartbeats 80000 in
 /-- The height-weighted coordinate bilinear form varies smoothly in real coordinates. (G01.f/g) -/
 theorem contMDiff_upperHalfPlaneCoordinateTensor :
   ContMDiff I 𝓘(ℝ, K) ∞ upperHalfPlaneCoordinateTensor := by
@@ -963,5 +966,263 @@ theorem contMDiff_hyperboloidTangentTensor :
     funext (hyperboloidTangentTensor_inCoordinates p₀)
   rw [heq]
   exact (contMDiff_upperHalfPlaneCoordinateTensor.comp contMDiff_fromHyperboloid) p₀
+
+/-! ## Actual model metric, angle, speed and finite-length transport (G01.k) -/
+
+open scoped ENNReal BigOperators
+open Set MeasureTheory Filter Manifold
+
+/-- The real smooth equivalence between the upper half-plane and the positive
+Lorentz hyperboloid, with the literal coordinate maps in both directions
+(textbook G01.d/e/k). -/
+def upperHalfPlaneDiffeomorphHyperboloid : UpperHalfPlane ≃ₘ⟮I, I⟯ Hyperboloid :=
+  { upperHalfPlaneEquivHyperboloid with
+    contMDiff_toFun := contMDiff_toHyperboloid
+    contMDiff_invFun := contMDiff_fromHyperboloid }
+
+/-- The smooth upper-half-plane metric is the actual positive coordinate
+tensor (dx² + dy²)/y² on intrinsic tangent vectors (textbook G01.f/g/k). -/
+def upperHalfPlaneMetric :
+    Bundle.ContMDiffRiemannianMetric I ∞ ℂ (fun z : UpperHalfPlane => TangentSpace I z) :=
+  letI : ∀ z : UpperHalfPlane, T2Space (TangentSpace I z) :=
+    fun z => FiberBundle.t2Space ℂ (fun z : UpperHalfPlane => TangentSpace I z) z
+  Bundle.smoothMetricOfPositive upperHalfPlaneTangentTensor
+    upperHalfPlaneTangentTensor_symm upperHalfPlaneTangentTensor_pos
+    contMDiff_upperHalfPlaneTangentTensor
+
+/-- The hyperboloid's smooth metric is the Lorentz form restricted through
+the actual ambient inclusion to its tangent planes (textbook G01.f/g/k). -/
+def hyperboloidMetric :
+    Bundle.ContMDiffRiemannianMetric I ∞ ℂ (fun p : Hyperboloid => TangentSpace I p) :=
+  letI : ∀ p : Hyperboloid, T2Space (TangentSpace I p) :=
+    fun p => FiberBundle.t2Space ℂ (fun p : Hyperboloid => TangentSpace I p) p
+  Bundle.smoothMetricOfPositive hyperboloidTangentTensor
+    hyperboloidTangentTensor_symm hyperboloidTangentTensor_pos
+    contMDiff_hyperboloidTangentTensor
+
+
+/-- The smooth model equivalence has exactly the forward and inverse coordinate functions (G01.d/e/k). -/
+theorem upperHalfPlaneDiffeomorphHyperboloid_coe :
+    (⇑upperHalfPlaneDiffeomorphHyperboloid : UpperHalfPlane → Hyperboloid) = toHyperboloid ∧
+    (⇑upperHalfPlaneDiffeomorphHyperboloid.symm : Hyperboloid → UpperHalfPlane) = fromHyperboloid := by
+  exact ⟨rfl, rfl⟩
+
+/-- The constructed source metric has exactly the previously identified intrinsic coordinate tensor (G01.f/g/k). -/
+theorem upperHalfPlaneMetric_inner (x : UpperHalfPlane) (v w : TangentSpace I x) :
+    upperHalfPlaneMetric.inner x v w = upperHalfPlaneTangentTensor x v w := by
+  rfl
+
+/-- The constructed target metric has exactly the actual Lorentz tangent restriction, not an ambient Euclidean inner product (G01.f/g/k). -/
+theorem hyperboloidMetric_inner (x : Hyperboloid) (v w : TangentSpace I x) :
+    hyperboloidMetric.inner x v w = hyperboloidTangentTensor x v w := by
+  rfl
+
+/-- The actual forward differential preserves the two stated model metrics (G01.g/k). -/
+theorem toHyperboloid_preserves_metric (z : UpperHalfPlane) (v w : TangentSpace I z) :
+    hyperboloidMetric.inner (toHyperboloid z)
+      (mfderiv I I toHyperboloid z v) (mfderiv I I toHyperboloid z w) =
+        upperHalfPlaneMetric.inner z v w := by
+  exact toHyperboloid_preserves_tangentTensor z v w
+
+/-- The actual inverse differential preserves the same metrics, by the smooth inverse identities (G01.j.1/k). -/
+theorem fromHyperboloid_preserves_metric (p : Hyperboloid) (v w : TangentSpace I p) :
+    upperHalfPlaneMetric.inner (fromHyperboloid p)
+      (mfderiv I I fromHyperboloid p v) (mfderiv I I fromHyperboloid p w) =
+        hyperboloidMetric.inner p v w := by
+  exact symm_tensorPreserving_of_diffeomorph upperHalfPlaneMetric hyperboloidMetric
+    upperHalfPlaneDiffeomorphHyperboloid toHyperboloid_preserves_tangentTensor p v w
+
+/-- The forward differential preserves real and extended tangent norms and nonzero-direction unoriented angles, and is injective (G01.h/k). -/
+theorem toHyperboloid_norm_angle (x : UpperHalfPlane) :
+    letI : Bundle.RiemannianBundle (fun z : UpperHalfPlane => TangentSpace I z) :=
+      ⟨upperHalfPlaneMetric.toRiemannianMetric⟩
+    letI : Bundle.RiemannianBundle (fun p : Hyperboloid => TangentSpace I p) :=
+      ⟨hyperboloidMetric.toRiemannianMetric⟩
+    (∀ v : TangentSpace I x, ‖mfderiv I I toHyperboloid x v‖ = ‖v‖) ∧
+    (∀ v : TangentSpace I x, ‖mfderiv I I toHyperboloid x v‖ₑ = ‖v‖ₑ) ∧
+    Function.Injective (mfderiv I I toHyperboloid x) ∧
+    (∀ v w : TangentSpace I x, v ≠ 0 → w ≠ 0 →
+      InnerProductGeometry.angle (mfderiv I I toHyperboloid x v) (mfderiv I I toHyperboloid x w) =
+        InnerProductGeometry.angle v w) := by
+  letI : Bundle.RiemannianBundle (fun z : UpperHalfPlane => TangentSpace I z) :=
+    ⟨upperHalfPlaneMetric.toRiemannianMetric⟩
+  letI : Bundle.RiemannianBundle (fun p : Hyperboloid => TangentSpace I p) :=
+    ⟨hyperboloidMetric.toRiemannianMetric⟩
+  let L := (mfderiv I I toHyperboloid x).toLinearMap.isometryOfInner (toHyperboloid_preserves_tangentTensor x)
+  exact ⟨L.norm_map, L.enorm_map, L.injective, fun v w _ _ => L.angle_map v w⟩
+
+/-- The forward coordinate map preserves ordinary real and extended C1 speeds for the stated metrics (G01.i/k). -/
+theorem toHyperboloid_speed (γ : ℝ → UpperHalfPlane) (t : ℝ)
+    (hγ : MDifferentiableAt 𝓘(ℝ, ℝ) I γ t) :
+    letI : Bundle.RiemannianBundle (fun z : UpperHalfPlane => TangentSpace I z) :=
+      ⟨upperHalfPlaneMetric.toRiemannianMetric⟩
+    letI : Bundle.RiemannianBundle (fun p : Hyperboloid => TangentSpace I p) :=
+      ⟨hyperboloidMetric.toRiemannianMetric⟩
+    ‖mfderiv 𝓘(ℝ, ℝ) I (toHyperboloid ∘ γ) t (1 : ℝ)‖ =
+      ‖mfderiv 𝓘(ℝ, ℝ) I γ t (1 : ℝ)‖ ∧
+    ‖mfderiv 𝓘(ℝ, ℝ) I (toHyperboloid ∘ γ) t (1 : ℝ)‖ₑ =
+      ‖mfderiv 𝓘(ℝ, ℝ) I γ t (1 : ℝ)‖ₑ := by
+  exact speed_comp_of_tensorPreserving
+    upperHalfPlaneMetric hyperboloidMetric toHyperboloid contMDiff_toHyperboloid
+    toHyperboloid_preserves_tangentTensor γ t hγ
+
+/-- The forward map preserves within speeds on the same parameter set, including strict-piece one-sided endpoints (G01.i/k). -/
+theorem toHyperboloid_speedWithin (γ : ℝ → UpperHalfPlane) (s : Set ℝ) (t : ℝ)
+    (hγ : MDifferentiableWithinAt 𝓘(ℝ, ℝ) I γ s t)
+    (hs : UniqueMDiffWithinAt 𝓘(ℝ, ℝ) s t) :
+    letI : Bundle.RiemannianBundle (fun z : UpperHalfPlane => TangentSpace I z) :=
+      ⟨upperHalfPlaneMetric.toRiemannianMetric⟩
+    letI : Bundle.RiemannianBundle (fun p : Hyperboloid => TangentSpace I p) :=
+      ⟨hyperboloidMetric.toRiemannianMetric⟩
+    ‖mfderivWithin 𝓘(ℝ, ℝ) I (toHyperboloid ∘ γ) s t (1 : ℝ)‖ =
+      ‖mfderivWithin 𝓘(ℝ, ℝ) I γ s t (1 : ℝ)‖ ∧
+    ‖mfderivWithin 𝓘(ℝ, ℝ) I (toHyperboloid ∘ γ) s t (1 : ℝ)‖ₑ =
+      ‖mfderivWithin 𝓘(ℝ, ℝ) I γ s t (1 : ℝ)‖ₑ := by
+  exact speedWithin_comp_of_tensorPreserving
+    upperHalfPlaneMetric hyperboloidMetric toHyperboloid contMDiff_toHyperboloid
+    toHyperboloid_preserves_tangentTensor γ s t hγ hs
+
+/-- The inverse differential preserves real and extended tangent norms and nonzero-direction unoriented angles, and is injective (G01.h/k). -/
+theorem fromHyperboloid_norm_angle (x : Hyperboloid) :
+    letI : Bundle.RiemannianBundle (fun z : UpperHalfPlane => TangentSpace I z) :=
+      ⟨upperHalfPlaneMetric.toRiemannianMetric⟩
+    letI : Bundle.RiemannianBundle (fun p : Hyperboloid => TangentSpace I p) :=
+      ⟨hyperboloidMetric.toRiemannianMetric⟩
+    (∀ v : TangentSpace I x, ‖mfderiv I I fromHyperboloid x v‖ = ‖v‖) ∧
+    (∀ v : TangentSpace I x, ‖mfderiv I I fromHyperboloid x v‖ₑ = ‖v‖ₑ) ∧
+    Function.Injective (mfderiv I I fromHyperboloid x) ∧
+    (∀ v w : TangentSpace I x, v ≠ 0 → w ≠ 0 →
+      InnerProductGeometry.angle (mfderiv I I fromHyperboloid x v) (mfderiv I I fromHyperboloid x w) =
+        InnerProductGeometry.angle v w) := by
+  letI : Bundle.RiemannianBundle (fun z : UpperHalfPlane => TangentSpace I z) :=
+    ⟨upperHalfPlaneMetric.toRiemannianMetric⟩
+  letI : Bundle.RiemannianBundle (fun p : Hyperboloid => TangentSpace I p) :=
+    ⟨hyperboloidMetric.toRiemannianMetric⟩
+  let L := (mfderiv I I fromHyperboloid x).toLinearMap.isometryOfInner (fromHyperboloid_preserves_metric x)
+  exact ⟨L.norm_map, L.enorm_map, L.injective, fun v w _ _ => L.angle_map v w⟩
+
+/-- The inverse coordinate map preserves ordinary real and extended C1 speeds for the stated metrics (G01.i/k). -/
+theorem fromHyperboloid_speed (γ : ℝ → Hyperboloid) (t : ℝ)
+    (hγ : MDifferentiableAt 𝓘(ℝ, ℝ) I γ t) :
+    letI : Bundle.RiemannianBundle (fun z : UpperHalfPlane => TangentSpace I z) :=
+      ⟨upperHalfPlaneMetric.toRiemannianMetric⟩
+    letI : Bundle.RiemannianBundle (fun p : Hyperboloid => TangentSpace I p) :=
+      ⟨hyperboloidMetric.toRiemannianMetric⟩
+    ‖mfderiv 𝓘(ℝ, ℝ) I (fromHyperboloid ∘ γ) t (1 : ℝ)‖ =
+      ‖mfderiv 𝓘(ℝ, ℝ) I γ t (1 : ℝ)‖ ∧
+    ‖mfderiv 𝓘(ℝ, ℝ) I (fromHyperboloid ∘ γ) t (1 : ℝ)‖ₑ =
+      ‖mfderiv 𝓘(ℝ, ℝ) I γ t (1 : ℝ)‖ₑ := by
+  exact speed_comp_of_tensorPreserving
+    hyperboloidMetric upperHalfPlaneMetric fromHyperboloid contMDiff_fromHyperboloid
+    fromHyperboloid_preserves_metric γ t hγ
+
+/-- The inverse map preserves within speeds on the same parameter set, including strict-piece one-sided endpoints (G01.i/k). -/
+theorem fromHyperboloid_speedWithin (γ : ℝ → Hyperboloid) (s : Set ℝ) (t : ℝ)
+    (hγ : MDifferentiableWithinAt 𝓘(ℝ, ℝ) I γ s t)
+    (hs : UniqueMDiffWithinAt 𝓘(ℝ, ℝ) s t) :
+    letI : Bundle.RiemannianBundle (fun z : UpperHalfPlane => TangentSpace I z) :=
+      ⟨upperHalfPlaneMetric.toRiemannianMetric⟩
+    letI : Bundle.RiemannianBundle (fun p : Hyperboloid => TangentSpace I p) :=
+      ⟨hyperboloidMetric.toRiemannianMetric⟩
+    ‖mfderivWithin 𝓘(ℝ, ℝ) I (fromHyperboloid ∘ γ) s t (1 : ℝ)‖ =
+      ‖mfderivWithin 𝓘(ℝ, ℝ) I γ s t (1 : ℝ)‖ ∧
+    ‖mfderivWithin 𝓘(ℝ, ℝ) I (fromHyperboloid ∘ γ) s t (1 : ℝ)‖ₑ =
+      ‖mfderivWithin 𝓘(ℝ, ℝ) I γ s t (1 : ℝ)‖ₑ := by
+  exact speedWithin_comp_of_tensorPreserving
+    hyperboloidMetric upperHalfPlaneMetric fromHyperboloid contMDiff_fromHyperboloid
+    fromHyperboloid_preserves_metric γ s t hγ hs
+
+/-- Every upper-half-plane finite-piece C1 curve has a forward image with the same cuts, exact endpoints and equal finite real and extended whole and piece lengths (G01.j.7/k). -/
+theorem toHyperboloid_length {γ : ℝ → UpperHalfPlane} {a b : ℝ} {n : ℕ} {cut : Fin (n+1) → ℝ}
+    (hγ : IsPiecewiseC1On I γ a b n cut) :
+    letI : Bundle.RiemannianBundle (fun z : UpperHalfPlane => TangentSpace I z) :=
+      ⟨upperHalfPlaneMetric.toRiemannianMetric⟩
+    letI : Bundle.RiemannianBundle (fun p : Hyperboloid => TangentSpace I p) :=
+      ⟨hyperboloidMetric.toRiemannianMetric⟩
+    let P : Fin n → Set ℝ := fun i => Icc (cut i.castSucc) (cut i.succ)
+    let q : Fin n → ℝ → ℝ := fun i t =>
+      ‖mfderivWithin 𝓘(ℝ, ℝ) I γ (P i) t (1 : ℝ)‖
+    let q' : Fin n → ℝ → ℝ := fun i t =>
+      ‖mfderivWithin 𝓘(ℝ, ℝ) I (toHyperboloid ∘ γ) (P i) t (1 : ℝ)‖
+    IsPiecewiseC1On I (toHyperboloid ∘ γ) a b n cut ∧
+    (toHyperboloid ∘ γ) a = toHyperboloid (γ a) ∧ (toHyperboloid ∘ γ) b = toHyperboloid (γ b) ∧
+    (∀ i : Fin n, (∫ t in cut i.castSucc..cut i.succ, q' i t) =
+      ∫ t in cut i.castSucc..cut i.succ, q i t) ∧
+    piecewiseC1Length hyperboloidMetric (toHyperboloid ∘ γ) cut = piecewiseC1Length upperHalfPlaneMetric γ cut ∧
+    0 ≤ piecewiseC1Length upperHalfPlaneMetric γ cut ∧ 0 ≤ piecewiseC1Length hyperboloidMetric (toHyperboloid ∘ γ) cut ∧
+    pathELength I (toHyperboloid ∘ γ) a b = pathELength I γ a b ∧
+    pathELength I γ a b < (⊤ : ℝ≥0∞) ∧
+    pathELength I (toHyperboloid ∘ γ) a b < (⊤ : ℝ≥0∞) ∧
+    pathELength I γ a b = ENNReal.ofReal (piecewiseC1Length upperHalfPlaneMetric γ cut) ∧
+    pathELength I (toHyperboloid ∘ γ) a b = ENNReal.ofReal (piecewiseC1Length hyperboloidMetric (toHyperboloid ∘ γ) cut) ∧
+    (∀ i : Fin n,
+      (∫⁻ t in P i, ENNReal.ofReal (q' i t)) =
+        ∫⁻ t in P i, ENNReal.ofReal (q i t)) ∧
+    (∀ i : Fin n, (∫⁻ t in P i, ENNReal.ofReal (q i t)) < (⊤ : ℝ≥0∞)) ∧
+    (∀ i : Fin n, (∫⁻ t in P i, ENNReal.ofReal (q' i t)) < (⊤ : ℝ≥0∞))
+ := by
+  exact hγ.length_comp_of_tensorPreserving upperHalfPlaneMetric hyperboloidMetric
+    toHyperboloid contMDiff_toHyperboloid toHyperboloid_preserves_tangentTensor
+
+/-- Every hyperboloid finite-piece C1 curve has an inverse image with the same cuts, exact endpoints and equal finite real and extended whole and piece lengths (G01.j.8/k). -/
+theorem fromHyperboloid_length {γ : ℝ → Hyperboloid} {a b : ℝ} {n : ℕ} {cut : Fin (n+1) → ℝ}
+    (hγ : IsPiecewiseC1On I γ a b n cut) :
+    letI : Bundle.RiemannianBundle (fun z : UpperHalfPlane => TangentSpace I z) :=
+      ⟨upperHalfPlaneMetric.toRiemannianMetric⟩
+    letI : Bundle.RiemannianBundle (fun p : Hyperboloid => TangentSpace I p) :=
+      ⟨hyperboloidMetric.toRiemannianMetric⟩
+    let P : Fin n → Set ℝ := fun i => Icc (cut i.castSucc) (cut i.succ)
+    let q : Fin n → ℝ → ℝ := fun i t =>
+      ‖mfderivWithin 𝓘(ℝ, ℝ) I γ (P i) t (1 : ℝ)‖
+    let q' : Fin n → ℝ → ℝ := fun i t =>
+      ‖mfderivWithin 𝓘(ℝ, ℝ) I (fromHyperboloid ∘ γ) (P i) t (1 : ℝ)‖
+    IsPiecewiseC1On I (fromHyperboloid ∘ γ) a b n cut ∧
+    (fromHyperboloid ∘ γ) a = fromHyperboloid (γ a) ∧ (fromHyperboloid ∘ γ) b = fromHyperboloid (γ b) ∧
+    (∀ i : Fin n, (∫ t in cut i.castSucc..cut i.succ, q' i t) =
+      ∫ t in cut i.castSucc..cut i.succ, q i t) ∧
+    piecewiseC1Length upperHalfPlaneMetric (fromHyperboloid ∘ γ) cut = piecewiseC1Length hyperboloidMetric γ cut ∧
+    0 ≤ piecewiseC1Length hyperboloidMetric γ cut ∧ 0 ≤ piecewiseC1Length upperHalfPlaneMetric (fromHyperboloid ∘ γ) cut ∧
+    pathELength I (fromHyperboloid ∘ γ) a b = pathELength I γ a b ∧
+    pathELength I γ a b < (⊤ : ℝ≥0∞) ∧
+    pathELength I (fromHyperboloid ∘ γ) a b < (⊤ : ℝ≥0∞) ∧
+    pathELength I γ a b = ENNReal.ofReal (piecewiseC1Length hyperboloidMetric γ cut) ∧
+    pathELength I (fromHyperboloid ∘ γ) a b = ENNReal.ofReal (piecewiseC1Length upperHalfPlaneMetric (fromHyperboloid ∘ γ) cut) ∧
+    (∀ i : Fin n,
+      (∫⁻ t in P i, ENNReal.ofReal (q' i t)) =
+        ∫⁻ t in P i, ENNReal.ofReal (q i t)) ∧
+    (∀ i : Fin n, (∫⁻ t in P i, ENNReal.ofReal (q i t)) < (⊤ : ℝ≥0∞)) ∧
+    (∀ i : Fin n, (∫⁻ t in P i, ENNReal.ofReal (q' i t)) < (⊤ : ℝ≥0∞))
+ := by
+  exact hγ.length_comp_of_tensorPreserving hyperboloidMetric upperHalfPlaneMetric
+    fromHyperboloid contMDiff_fromHyperboloid fromHyperboloid_preserves_metric
+
+/-- The actual model equivalence bijects fixed-endpoint finite-piece curve families with unchanged subdivisions and equal finite lengths in both directions (G01.j.8/k). -/
+theorem upperHalfPlaneDiffeomorphHyperboloid_curveFamily_length {a b : ℝ} {n : ℕ}
+    {cut : Fin (n+1) → ℝ} {p q : UpperHalfPlane} :
+    letI : Bundle.RiemannianBundle (fun z : UpperHalfPlane => TangentSpace I z) :=
+      ⟨upperHalfPlaneMetric.toRiemannianMetric⟩
+    letI : Bundle.RiemannianBundle (fun p : Hyperboloid => TangentSpace I p) :=
+      ⟨hyperboloidMetric.toRiemannianMetric⟩
+    let Φ := PiecewiseC1CurveOn.mapEquiv (a := a) (b := b) (cut := cut) (p := p) (q := q) upperHalfPlaneDiffeomorphHyperboloid
+    Function.Bijective Φ ∧
+    (∀ γ : PiecewiseC1CurveOn I a b n cut p q,
+      piecewiseC1Length hyperboloidMetric (Φ γ).val cut = piecewiseC1Length upperHalfPlaneMetric γ.val cut ∧
+      pathELength I (Φ γ).val a b = pathELength I γ.val a b ∧
+      pathELength I γ.val a b < (⊤ : ℝ≥0∞) ∧
+      pathELength I (Φ γ).val a b < (⊤ : ℝ≥0∞) ∧
+      (Φ γ).val a = upperHalfPlaneDiffeomorphHyperboloid p ∧ (Φ γ).val b = upperHalfPlaneDiffeomorphHyperboloid q) ∧
+    (∀ η : PiecewiseC1CurveOn I a b n cut (upperHalfPlaneDiffeomorphHyperboloid p) (upperHalfPlaneDiffeomorphHyperboloid q),
+      piecewiseC1Length upperHalfPlaneMetric (Φ.symm η).val cut = piecewiseC1Length hyperboloidMetric η.val cut ∧
+      pathELength I (Φ.symm η).val a b = pathELength I η.val a b ∧
+      pathELength I η.val a b < (⊤ : ℝ≥0∞) ∧
+      pathELength I (Φ.symm η).val a b < (⊤ : ℝ≥0∞) ∧
+      (Φ.symm η).val a = p ∧ (Φ.symm η).val b = q) ∧
+    (∀ γ t, (Φ γ).val t = upperHalfPlaneDiffeomorphHyperboloid (γ.val t)) ∧
+    (∀ η t, (Φ.symm η).val t = upperHalfPlaneDiffeomorphHyperboloid.symm (η.val t)) ∧
+    (∀ γ, Φ.symm (Φ γ) = γ) ∧
+    (∀ η, Φ (Φ.symm η) = η)
+ := by
+  exact PiecewiseC1CurveOn.mapEquiv_length upperHalfPlaneMetric hyperboloidMetric
+    upperHalfPlaneDiffeomorphHyperboloid toHyperboloid_preserves_tangentTensor
 
 end Hyperbolic
