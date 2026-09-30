@@ -1496,4 +1496,122 @@ theorem IsPiecewiseC1On.refine_length
   have hNew := hγ.refine r hr hr0 hrm hvalues
   exact ⟨hNew, hγ.length_eq G hNew⟩
 
+/-! ## Forward finite-piece length transport (textbook j.7) -/
+
+/-- j.7: a smooth tensor-preserving map has equal real speed integrals on a
+closed piece. Strict pieces use their own within velocities; an equal-endpoint
+piece is zero and requires no derivative hypothesis. No inverse is assumed. -/
+theorem pieceIntegral_comp_of_tensorPreserving
+    [FiniteDimensional ℝ E] [IsManifold I ∞ M]
+    [FiniteDimensional ℝ F] [IsManifold J ∞ N]
+    (G : Bundle.ContMDiffRiemannianMetric I ∞ E (fun x : M => TangentSpace I x))
+    (G' : Bundle.ContMDiffRiemannianMetric J ∞ F (fun y : N => TangentSpace J y))
+    (f : M → N) (hf : ContMDiff I J ∞ f)
+    (hTensor : ∀ (x : M) (v w : TangentSpace I x),
+      G'.inner (f x) (mfderiv I J f x v) (mfderiv I J f x w) = G.inner x v w)
+    (γ : ℝ → M) {a b : ℝ} (hab : a ≤ b)
+    (hγ : a < b → ContMDiffOn 𝓘(ℝ, ℝ) I 1 γ (Icc a b)) :
+    letI : Bundle.RiemannianBundle (fun x : M => TangentSpace I x) :=
+      ⟨G.toRiemannianMetric⟩
+    letI : Bundle.RiemannianBundle (fun y : N => TangentSpace J y) :=
+      ⟨G'.toRiemannianMetric⟩
+    (∫ t in a..b, ‖mfderivWithin 𝓘(ℝ, ℝ) J (f ∘ γ) (Icc a b) t (1 : ℝ)‖) =
+      ∫ t in a..b, ‖mfderivWithin 𝓘(ℝ, ℝ) I γ (Icc a b) t (1 : ℝ)‖ := by
+  letI : Bundle.RiemannianBundle (fun x : M => TangentSpace I x) :=
+    ⟨G.toRiemannianMetric⟩
+  letI : Bundle.RiemannianBundle (fun y : N => TangentSpace J y) :=
+    ⟨G'.toRiemannianMetric⟩
+  rcases lt_or_eq_of_le hab with hstrict | heq
+  · apply intervalIntegral.integral_congr
+    rw [uIcc_of_le hab]
+    intro t ht
+    have hdiff := (hγ hstrict).mdifferentiableOn (by simp) t ht
+    have huniq : UniqueMDiffWithinAt 𝓘(ℝ, ℝ) (Icc a b) t :=
+      (uniqueDiffOn_Icc hstrict t ht).uniqueMDiffWithinAt
+    exact (speedWithin_comp_of_tensorPreserving G G' f hf hTensor γ
+      (Icc a b) t hdiff huniq).1
+  · subst b
+    simp only [intervalIntegral.integral_same]
+
+/-- j.7: summing the equal corresponding piece integrals preserves the full
+finite real and extended length on the same weak subdivision, with literal
+endpoint images. Finiteness and norm conversion use the actual metrics on both
+manifolds; no injectivity, surjectivity or inverse premise is needed. -/
+theorem IsPiecewiseC1On.length_comp_of_tensorPreserving
+    [FiniteDimensional ℝ E] [IsManifold I ∞ M]
+    [FiniteDimensional ℝ F] [IsManifold J ∞ N]
+    (G : Bundle.ContMDiffRiemannianMetric I ∞ E (fun x : M => TangentSpace I x))
+    (G' : Bundle.ContMDiffRiemannianMetric J ∞ F (fun y : N => TangentSpace J y))
+    (f : M → N) (hf : ContMDiff I J ∞ f)
+    (hTensor : ∀ (x : M) (v w : TangentSpace I x),
+      G'.inner (f x) (mfderiv I J f x v) (mfderiv I J f x w) = G.inner x v w)
+    {γ : ℝ → M} {a b : ℝ} {n : ℕ} {cut : Fin (n+1) → ℝ}
+    (hγ : IsPiecewiseC1On I γ a b n cut) :
+    letI : Bundle.RiemannianBundle (fun x : M => TangentSpace I x) :=
+      ⟨G.toRiemannianMetric⟩
+    letI : Bundle.RiemannianBundle (fun y : N => TangentSpace J y) :=
+      ⟨G'.toRiemannianMetric⟩
+    let P : Fin n → Set ℝ := fun i => Icc (cut i.castSucc) (cut i.succ)
+    let q : Fin n → ℝ → ℝ := fun i t =>
+      ‖mfderivWithin 𝓘(ℝ, ℝ) I γ (P i) t (1 : ℝ)‖
+    let q' : Fin n → ℝ → ℝ := fun i t =>
+      ‖mfderivWithin 𝓘(ℝ, ℝ) J (f ∘ γ) (P i) t (1 : ℝ)‖
+    IsPiecewiseC1On J (f ∘ γ) a b n cut ∧
+    (f ∘ γ) a = f (γ a) ∧ (f ∘ γ) b = f (γ b) ∧
+    (∀ i : Fin n, (∫ t in cut i.castSucc..cut i.succ, q' i t) =
+      ∫ t in cut i.castSucc..cut i.succ, q i t) ∧
+    piecewiseC1Length G' (f ∘ γ) cut = piecewiseC1Length G γ cut ∧
+    0 ≤ piecewiseC1Length G γ cut ∧ 0 ≤ piecewiseC1Length G' (f ∘ γ) cut ∧
+    pathELength J (f ∘ γ) a b = pathELength I γ a b ∧
+    pathELength I γ a b < (⊤ : ℝ≥0∞) ∧
+    pathELength J (f ∘ γ) a b < (⊤ : ℝ≥0∞) ∧
+    pathELength I γ a b = ENNReal.ofReal (piecewiseC1Length G γ cut) ∧
+    pathELength J (f ∘ γ) a b = ENNReal.ofReal (piecewiseC1Length G' (f ∘ γ) cut) ∧
+    (∀ i : Fin n,
+      (∫⁻ t in P i, ENNReal.ofReal (q' i t)) =
+        ∫⁻ t in P i, ENNReal.ofReal (q i t)) ∧
+    (∀ i : Fin n, (∫⁻ t in P i, ENNReal.ofReal (q i t)) < (⊤ : ℝ≥0∞)) ∧
+    (∀ i : Fin n, (∫⁻ t in P i, ENNReal.ofReal (q' i t)) < (⊤ : ℝ≥0∞)) := by
+  letI : Bundle.RiemannianBundle (fun x : M => TangentSpace I x) :=
+    ⟨G.toRiemannianMetric⟩
+  letI : Bundle.RiemannianBundle (fun y : N => TangentSpace J y) :=
+    ⟨G'.toRiemannianMetric⟩
+  let P : Fin n → Set ℝ := fun i => Icc (cut i.castSucc) (cut i.succ)
+  let q : Fin n → ℝ → ℝ := fun i t =>
+    ‖mfderivWithin 𝓘(ℝ, ℝ) I γ (P i) t (1 : ℝ)‖
+  let q' : Fin n → ℝ → ℝ := fun i t =>
+    ‖mfderivWithin 𝓘(ℝ, ℝ) J (f ∘ γ) (P i) t (1 : ℝ)‖
+  have himage := hγ.comp_contMDiff hf
+  have hpieces (i : Fin n) :
+      (∫ t in cut i.castSucc..cut i.succ, q' i t) =
+        ∫ t in cut i.castSucc..cut i.succ, q i t :=
+    Manifold.pieceIntegral_comp_of_tensorPreserving G G' f hf hTensor γ
+      (hγ.1 (show i.castSucc ≤ i.succ by change i.val ≤ i.val+1; omega))
+      (hγ.2.2.2.2 i)
+  have hReal : piecewiseC1Length G' (f ∘ γ) cut = piecewiseC1Length G γ cut :=
+    Finset.sum_congr rfl (fun i _ => hpieces i)
+  rcases hγ.speed_length G with
+    ⟨hI, hII, hm, hi, hr, hs, hn, hpieceBridge, hpieceFinite, hsum, hwhole, hpath, hfinite⟩
+  rcases himage.speed_length G' with
+    ⟨hI', hII', hm', hi', hr', hs', hn', hpieceBridge', hpieceFinite', hsum', hwhole', hpath', hfinite'⟩
+  have hExt (i : Fin n) :
+      (∫⁻ t in P i, ENNReal.ofReal (q' i t)) =
+        ∫⁻ t in P i, ENNReal.ofReal (q i t) := by
+    have hA : (∫⁻ t in P i, ENNReal.ofReal (q i t)) =
+        ENNReal.ofReal (∫ t in cut i.castSucc..cut i.succ, q i t) :=
+      (lintegral_congr (fun t => ofReal_norm _)).trans (hpieceBridge i).symm
+    have hB : (∫⁻ t in P i, ENNReal.ofReal (q' i t)) =
+        ENNReal.ofReal (∫ t in cut i.castSucc..cut i.succ, q' i t) :=
+      (lintegral_congr (fun t => ofReal_norm _)).trans (hpieceBridge' i).symm
+    exact hB.trans ((congrArg ENNReal.ofReal (hpieces i)).trans hA.symm)
+  have hFin (i : Fin n) :
+      (∫⁻ t in P i, ENNReal.ofReal (q i t)) < (⊤ : ℝ≥0∞) := by
+    simpa only [q, ofReal_norm] using hpieceFinite i
+  have hFin' (i : Fin n) :
+      (∫⁻ t in P i, ENNReal.ofReal (q' i t)) < (⊤ : ℝ≥0∞) := by
+    simpa only [q', ofReal_norm] using hpieceFinite' i
+  exact ⟨himage, rfl, rfl, hpieces, hReal, hn, hn',
+    hpath'.trans ((congrArg ENNReal.ofReal hReal).trans hpath.symm),
+    hfinite, hfinite', hpath, hpath', hExt, hFin, hFin'⟩
+
 end Manifold

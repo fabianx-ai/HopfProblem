@@ -7871,3 +7871,9 @@ is an evidence command rather than library content.
 
 #check Manifold.IsPiecewiseC1On.refine_length
 #print axioms Manifold.IsPiecewiseC1On.refine_length
+
+#check Manifold.pieceIntegral_comp_of_tensorPreserving
+#print axioms Manifold.pieceIntegral_comp_of_tensorPreserving
+
+#check Manifold.IsPiecewiseC1On.length_comp_of_tensorPreserving
+#print axioms Manifold.IsPiecewiseC1On.length_comp_of_tensorPreserving
