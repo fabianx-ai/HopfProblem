@@ -64,6 +64,8 @@ public import Mathlib.Topology.Connected.Clopen
 public import Mathlib.LinearAlgebra.FiniteDimensional.Basic
 public import Mathlib.Geometry.Manifold.Riemannian.Basic
 public import Mathlib.Topology.MetricSpace.Basic
+public import Mathlib.Topology.MetricSpace.Isometry
+public import Mathlib.Topology.MetricSpace.ProperSpace
 
 /-!
 # Upper-half-plane and hyperboloid coordinates
@@ -5702,5 +5704,173 @@ theorem isCompact_hyperboloidLengthMetricSpace_center_closedBall (R : ℝ) :
   exact hSame
 
 end CenteredCompactBalls
+
+section ProperLengthBalls
+
+open Set
+
+/-- Every closed ball for the hyperboloid length metric is compact. The chosen inverse center change transports the centered compact ball (G04.D, canonical line 122). -/
+theorem isCompact_hyperboloidLengthMetricSpace_closedBall (p : Hyperboloid) (R : ℝ) :
+    letI : MetricSpace Hyperboloid := hyperboloidLengthMetricSpace
+    letI : PseudoMetricSpace Hyperboloid :=
+      hyperboloidLengthMetricSpace.toPseudoMetricSpace
+    letI : PseudoEMetricSpace Hyperboloid :=
+      @PseudoMetricSpace.toPseudoEMetricSpace Hyperboloid
+        hyperboloidLengthMetricSpace.toPseudoMetricSpace
+    letI : WeakPseudoEMetricSpace Hyperboloid :=
+      @PseudoEMetricSpace.toWeakPseudoEMetricSpace Hyperboloid
+        (@PseudoMetricSpace.toPseudoEMetricSpace Hyperboloid
+          hyperboloidLengthMetricSpace.toPseudoMetricSpace)
+    IsCompact (Metric.closedBall p R) := by
+  let originalTopology : TopologicalSpace Hyperboloid := inferInstance
+  have hc : centerHyperboloid p p = hyperboloidPolar 0 0 := by
+    apply Subtype.ext
+    exact (centerHyperboloid_properties p).2.2.2.2.1.trans
+      (hyperboloidPolar_center_direction 0 p).1.symm
+  have huc : ∀ q, uncenterHyperboloid p (centerHyperboloid p q) = q :=
+    (centerHyperboloid_properties p).2.2.1
+  have hcu : ∀ q, centerHyperboloid p (uncenterHyperboloid p q) = q :=
+    (centerHyperboloid_properties p).2.2.2.1
+  have hforward (q : Hyperboloid) :
+      hyperboloidLengthDist (hyperboloidPolar 0 0) (centerHyperboloid p q) =
+        hyperboloidLengthDist p q := by
+    have h := hyperboloidLengthDist_center p q
+    exact (congrArg ENNReal.toReal (le_antisymm h.1 h.2.1)).symm
+  have hinverse (q : Hyperboloid) :
+      hyperboloidLengthDist p (uncenterHyperboloid p q) =
+        hyperboloidLengthDist (hyperboloidPolar 0 0) q := by
+    have h := (hforward (uncenterHyperboloid p q)).symm
+    simpa only [hcu] using h
+  have hmap :
+      centerHyperboloid p '' {q | hyperboloidLengthDist p q ≤ R} =
+        {q | hyperboloidLengthDist (hyperboloidPolar 0 0) q ≤ R} := by
+    ext q
+    constructor
+    · rintro ⟨x, hx, rfl⟩
+      change hyperboloidLengthDist (hyperboloidPolar 0 0) (centerHyperboloid p x) ≤ R
+      rw [hforward]
+      exact hx
+    · intro hq
+      refine ⟨uncenterHyperboloid p q, ?_, hcu q⟩
+      change hyperboloidLengthDist p (uncenterHyperboloid p q) ≤ R
+      rw [hinverse]
+      exact hq
+  have hback :
+      uncenterHyperboloid p ''
+        {q | hyperboloidLengthDist (hyperboloidPolar 0 0) q ≤ R} =
+        {q | hyperboloidLengthDist p q ≤ R} := by
+    ext q
+    constructor
+    · rintro ⟨x, hx, rfl⟩
+      change hyperboloidLengthDist p (uncenterHyperboloid p x) ≤ R
+      rw [hinverse]
+      exact hx
+    · intro hq
+      refine ⟨centerHyperboloid p q, ?_, huc q⟩
+      change hyperboloidLengthDist (hyperboloidPolar 0 0) (centerHyperboloid p q) ≤ R
+      rw [hforward]
+      exact hq
+  have hOriginal :
+      @IsCompact Hyperboloid originalTopology {q | hyperboloidLengthDist p q ≤ R} := by
+    rw [← hback]
+    exact (Hyperbolic.isCompact_hyperboloidLengthDist_center_sublevel R).image
+      (contMDiff_uncenterHyperboloid p).continuous
+  have htop :
+      hyperboloidLengthMetricSpace.toPseudoMetricSpace.toUniformSpace.toTopologicalSpace =
+        originalTopology := hyperboloidLengthMetricSpace_coherence.1
+  have hSame :
+      @IsCompact Hyperboloid
+        hyperboloidLengthMetricSpace.toPseudoMetricSpace.toUniformSpace.toTopologicalSpace
+        {q | hyperboloidLengthDist p q ≤ R} := by
+    rw [htop]
+    exact hOriginal
+  letI : MetricSpace Hyperboloid := hyperboloidLengthMetricSpace
+  letI : PseudoMetricSpace Hyperboloid :=
+    hyperboloidLengthMetricSpace.toPseudoMetricSpace
+  letI : PseudoEMetricSpace Hyperboloid :=
+    @PseudoMetricSpace.toPseudoEMetricSpace Hyperboloid
+      hyperboloidLengthMetricSpace.toPseudoMetricSpace
+  letI : WeakPseudoEMetricSpace Hyperboloid :=
+    @PseudoEMetricSpace.toWeakPseudoEMetricSpace Hyperboloid
+      (@PseudoMetricSpace.toPseudoEMetricSpace Hyperboloid
+        hyperboloidLengthMetricSpace.toPseudoMetricSpace)
+  have hball : Metric.closedBall p R = {q | hyperboloidLengthDist p q ≤ R} := by
+    ext q
+    change dist q p ≤ R ↔ hyperboloidLengthDist p q ≤ R
+    rw [dist_comm, hyperboloidLengthMetricSpace_coherence.2.2]
+  rw [hball]
+  exact hSame
+
+/-- The hyperboloid length metric is proper, packaged without a global instance (G04.D, canonical line 122). -/
+theorem properSpace_hyperboloidLengthMetricSpace :
+    letI : MetricSpace Hyperboloid := hyperboloidLengthMetricSpace
+    letI : PseudoMetricSpace Hyperboloid :=
+      hyperboloidLengthMetricSpace.toPseudoMetricSpace
+    letI : PseudoEMetricSpace Hyperboloid :=
+      @PseudoMetricSpace.toPseudoEMetricSpace Hyperboloid
+        hyperboloidLengthMetricSpace.toPseudoMetricSpace
+    letI : WeakPseudoEMetricSpace Hyperboloid :=
+      @PseudoEMetricSpace.toWeakPseudoEMetricSpace Hyperboloid
+        (@PseudoMetricSpace.toPseudoEMetricSpace Hyperboloid
+          hyperboloidLengthMetricSpace.toPseudoMetricSpace)
+    ProperSpace Hyperboloid := by
+  letI : MetricSpace Hyperboloid := hyperboloidLengthMetricSpace
+  letI : PseudoMetricSpace Hyperboloid :=
+    hyperboloidLengthMetricSpace.toPseudoMetricSpace
+  letI : PseudoEMetricSpace Hyperboloid :=
+    @PseudoMetricSpace.toPseudoEMetricSpace Hyperboloid
+      hyperboloidLengthMetricSpace.toPseudoMetricSpace
+  letI : WeakPseudoEMetricSpace Hyperboloid :=
+    @PseudoEMetricSpace.toWeakPseudoEMetricSpace Hyperboloid
+      (@PseudoMetricSpace.toPseudoEMetricSpace Hyperboloid
+        hyperboloidLengthMetricSpace.toPseudoMetricSpace)
+  exact ⟨fun p R => Hyperbolic.isCompact_hyperboloidLengthMetricSpace_closedBall p R⟩
+
+/-- Every closed ball for the upper-half-plane length metric is compact by the actual inverse model map (G04.D, canonical line 122). -/
+theorem isCompact_upperHalfPlaneLengthMetricSpace_closedBall
+    (u : UpperHalfPlane) (R : ℝ) :
+    letI : MetricSpace UpperHalfPlane := upperHalfPlaneLengthMetricSpace
+    IsCompact (Metric.closedBall u R) := by
+  letI : MetricSpace UpperHalfPlane := upperHalfPlaneLengthMetricSpace
+  letI : MetricSpace Hyperboloid := hyperboloidLengthMetricSpace
+  letI : PseudoMetricSpace Hyperboloid :=
+    hyperboloidLengthMetricSpace.toPseudoMetricSpace
+  letI : PseudoEMetricSpace Hyperboloid :=
+    @PseudoMetricSpace.toPseudoEMetricSpace Hyperboloid
+      hyperboloidLengthMetricSpace.toPseudoMetricSpace
+  letI : WeakPseudoEMetricSpace Hyperboloid :=
+    @PseudoEMetricSpace.toWeakPseudoEMetricSpace Hyperboloid
+      (@PseudoMetricSpace.toPseudoEMetricSpace Hyperboloid
+        hyperboloidLengthMetricSpace.toPseudoMetricSpace)
+  have hTo := modelLengthMetric_isometries.1
+  have hFrom := modelLengthMetric_isometries.2
+  have hQ : IsCompact (Metric.closedBall (toHyperboloid u) R) :=
+    Hyperbolic.isCompact_hyperboloidLengthMetricSpace_closedBall (toHyperboloid u) R
+  have hback :
+      fromHyperboloid '' Metric.closedBall (toHyperboloid u) R = Metric.closedBall u R := by
+    ext v
+    constructor
+    · rintro ⟨q, hq, rfl⟩
+      change dist (fromHyperboloid q) u ≤ R
+      have hd := hFrom.dist_eq q (toHyperboloid u)
+      rw [fromHyperboloid_toHyperboloid] at hd
+      rw [hd]
+      exact hq
+    · intro hv
+      refine ⟨toHyperboloid v, ?_, fromHyperboloid_toHyperboloid v⟩
+      change dist (toHyperboloid v) (toHyperboloid u) ≤ R
+      rw [hTo.dist_eq]
+      exact hv
+  rw [← hback]
+  exact hQ.image hFrom.continuous
+
+/-- The upper-half-plane length metric is proper, packaged without a global instance (G04.D, canonical line 122). -/
+theorem properSpace_upperHalfPlaneLengthMetricSpace :
+    letI : MetricSpace UpperHalfPlane := upperHalfPlaneLengthMetricSpace
+    ProperSpace UpperHalfPlane := by
+  letI : MetricSpace UpperHalfPlane := upperHalfPlaneLengthMetricSpace
+  exact ⟨fun u R => Hyperbolic.isCompact_upperHalfPlaneLengthMetricSpace_closedBall u R⟩
+
+end ProperLengthBalls
 
 end Hyperbolic

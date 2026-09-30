@@ -8422,3 +8422,15 @@ is an evidence command rather than library content.
 
 #check Hyperbolic.isCompact_hyperboloidLengthMetricSpace_center_closedBall
 #print axioms Hyperbolic.isCompact_hyperboloidLengthMetricSpace_center_closedBall
+
+#check Hyperbolic.isCompact_hyperboloidLengthMetricSpace_closedBall
+#print axioms Hyperbolic.isCompact_hyperboloidLengthMetricSpace_closedBall
+
+#check Hyperbolic.properSpace_hyperboloidLengthMetricSpace
+#print axioms Hyperbolic.properSpace_hyperboloidLengthMetricSpace
+
+#check Hyperbolic.isCompact_upperHalfPlaneLengthMetricSpace_closedBall
+#print axioms Hyperbolic.isCompact_upperHalfPlaneLengthMetricSpace_closedBall
+
+#check Hyperbolic.properSpace_upperHalfPlaneLengthMetricSpace
+#print axioms Hyperbolic.properSpace_upperHalfPlaneLengthMetricSpace
