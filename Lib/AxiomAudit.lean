@@ -7754,3 +7754,120 @@ is an evidence command rather than library content.
 
 #check Manifold.PiecewiseC1CurveOn.mapEquiv_symm_apply
 #print axioms Manifold.PiecewiseC1CurveOn.mapEquiv_symm_apply
+
+#check Fin.commonCutValues
+#print axioms Fin.commonCutValues
+
+#check Fin.commonCutCount
+#print axioms Fin.commonCutCount
+
+#check Fin.commonCutValues_nonempty
+#print axioms Fin.commonCutValues_nonempty
+
+#check Fin.commonCutValues_card
+#print axioms Fin.commonCutValues_card
+
+#check Fin.commonCut
+#print axioms Fin.commonCut
+
+#check Fin.commonCutRankLeft
+#print axioms Fin.commonCutRankLeft
+
+#check Fin.commonCutRankRight
+#print axioms Fin.commonCutRankRight
+
+#check Fin.commonCut_properties
+#print axioms Fin.commonCut_properties
+
+#check Fin.commonCut_order_endpoints
+#print axioms Fin.commonCut_order_endpoints
+
+#check Fin.commonCutCount_eq_zero
+#print axioms Fin.commonCutCount_eq_zero
+
+#check Fin.rankBlock
+#print axioms Fin.rankBlock
+
+#check Fin.rankBlockSize
+#print axioms Fin.rankBlockSize
+
+#check Fin.rankBlock_disjoint
+#print axioms Fin.rankBlock_disjoint
+
+#check Fin.rankBlock_cover
+#print axioms Fin.rankBlock_cover
+
+#check Fin.rankBlock_unique_owner
+#print axioms Fin.rankBlock_unique_owner
+
+#check Fin.rankBlock_empty
+#print axioms Fin.rankBlock_empty
+
+#check Fin.rankBlock_strict
+#print axioms Fin.rankBlock_strict
+
+#check Fin.rankTarget_zero_of_source_zero
+#print axioms Fin.rankTarget_zero_of_source_zero
+
+#check Fin.rankBlockEquiv
+#print axioms Fin.rankBlockEquiv
+
+#check Fin.rankBlockEquiv_val
+#print axioms Fin.rankBlockEquiv_val
+
+#check Fin.rankBlockCut_bound
+#print axioms Fin.rankBlockCut_bound
+
+#check Fin.rankBlockCuts
+#print axioms Fin.rankBlockCuts
+
+#check Fin.rankBlockCuts_endpoints
+#print axioms Fin.rankBlockCuts_endpoints
+
+#check Fin.rankBlockCuts_monotone
+#print axioms Fin.rankBlockCuts_monotone
+
+#check Fin.rankBlockCuts_adjacent
+#print axioms Fin.rankBlockCuts_adjacent
+
+#check Fin.rankBlock_interval_subset
+#print axioms Fin.rankBlock_interval_subset
+
+#check Fin.rankBlock_strict_interval
+#print axioms Fin.rankBlock_strict_interval
+
+#check Fin.exists_strict_piece_containing_of_range_subset
+#print axioms Fin.exists_strict_piece_containing_of_range_subset
+
+#check Manifold.piecewiseC1Length
+#print axioms Manifold.piecewiseC1Length
+
+#check Manifold.continuousOn_pieceSpeed
+#print axioms Manifold.continuousOn_pieceSpeed
+
+#check Manifold.IsPiecewiseC1On.speedRepresentative_length
+#print axioms Manifold.IsPiecewiseC1On.speedRepresentative_length
+
+#check Manifold.IsPiecewiseC1On.speed_length
+#print axioms Manifold.IsPiecewiseC1On.speed_length
+
+#check Manifold.IsPiecewiseC1On.speed_extension
+#print axioms Manifold.IsPiecewiseC1On.speed_extension
+
+#check Manifold.IsPiecewiseC1On.piecewiseC1Length_eq_zero
+#print axioms Manifold.IsPiecewiseC1On.piecewiseC1Length_eq_zero
+
+#check Manifold.IsPiecewiseC1On.refine
+#print axioms Manifold.IsPiecewiseC1On.refine
+
+#check Manifold.IsPiecewiseC1On.pieceIntegral_eq_sum_rankBlock
+#print axioms Manifold.IsPiecewiseC1On.pieceIntegral_eq_sum_rankBlock
+
+#check Manifold.IsPiecewiseC1On.length_eq_of_strictRefinement
+#print axioms Manifold.IsPiecewiseC1On.length_eq_of_strictRefinement
+
+#check Manifold.IsPiecewiseC1On.length_eq
+#print axioms Manifold.IsPiecewiseC1On.length_eq
+
+#check Manifold.IsPiecewiseC1On.refine_length
+#print axioms Manifold.IsPiecewiseC1On.refine_length
