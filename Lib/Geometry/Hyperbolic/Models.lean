@@ -44,6 +44,8 @@ public import Mathlib.Geometry.Manifold.ContMDiff.NormedSpace
 public import Mathlib.Topology.Algebra.Module.ContinuousLinearMap.PiProd
 public import Mathlib.MeasureTheory.Measure.Typeclasses.NullSingletonClass
 public import Mathlib.Algebra.BigOperators.Fin
+public import Mathlib.Analysis.Complex.RealDeriv
+public import Mathlib.Topology.Order.IntermediateValue
 
 /-!
 # Upper-half-plane and hyperboloid coordinates
@@ -2946,6 +2948,979 @@ theorem hyperboloidRadius_variation_le_length
       hv.dist_le (show b ∈ Icc a b from ⟨hab, le_rfl⟩)
         (show a ∈ Icc a b from ⟨le_rfl, hab⟩)
   · exact (ENNReal.toReal_mono ENNReal.ofReal_ne_top hbound).trans_eq (ENNReal.toReal_ofReal hL)
+
+
+/-! Centered radial realization and equality in the length bound (G03.d–e). -/
+
+/-- The fixed-target radial curve is constant at the center when its radius is zero. (G03.d) -/
+def hyperboloidRadialCurve (q : Hyperboloid) (s : ℝ) : Hyperboloid :=
+  if hyperboloidRadius q = 0 then hyperboloidPolar 0 0
+  else hyperboloidPolar s (Complex.arg (hyperboloidSpatial q))
+
+/-- The radial competitor is smooth with the prescribed endpoints; at positive radius its SAME-metric speed is one. (G03.d) -/
+theorem hyperboloidRadialCurve_properties (q : Hyperboloid) :
+  ContMDiff 𝓘(ℝ, ℝ) I ∞ (hyperboloidRadialCurve q) ∧
+  hyperboloidRadialCurve q 0 = hyperboloidPolar 0 0 ∧
+  hyperboloidRadialCurve q (hyperboloidRadius q) = q ∧
+  (hyperboloidRadius q = 0 →
+    ∀ s, hyperboloidRadialCurve q s = hyperboloidPolar 0 0) ∧
+  (0 < hyperboloidRadius q →
+    letI : Bundle.RiemannianBundle
+        (fun p : Hyperboloid => TangentSpace I p) :=
+      ⟨hyperboloidMetric.toRiemannianMetric⟩
+    ∀ s : ℝ, ‖mfderiv 𝓘(ℝ, ℝ) I (hyperboloidRadialCurve q) s (1 : ℝ)‖ = 1) := by
+  have radialSmooth (q : Hyperboloid) :
+      ContMDiff 𝓘(ℝ, ℝ) I ∞ (hyperboloidRadialCurve q) := by
+    by_cases hz : hyperboloidRadius q = 0
+    · change ContMDiff 𝓘(ℝ, ℝ) I ∞ (fun s => hyperboloidRadialCurve q s)
+      simpa only [hyperboloidRadialCurve, if_pos hz] using
+        (contMDiff_const : ContMDiff 𝓘(ℝ, ℝ) I ∞
+          (fun _ : ℝ => hyperboloidPolar 0 0))
+    · have hp : ContMDiff 𝓘(ℝ, ℝ) 𝓘(ℝ, ℝ × ℝ) ∞
+          (fun s : ℝ => (s, Complex.arg (hyperboloidSpatial q))) :=
+        contMDiff_id.prodMk_space contMDiff_const
+      change ContMDiff 𝓘(ℝ, ℝ) I ∞ (fun s => hyperboloidRadialCurve q s)
+      simpa only [hyperboloidRadialCurve, if_neg hz, Function.comp_def] using
+        contMDiff_hyperboloidPolar.comp hp
+  have radialEndpoints (q : Hyperboloid) :
+      hyperboloidRadialCurve q 0 = hyperboloidPolar 0 0 ∧
+      hyperboloidRadialCurve q (hyperboloidRadius q) = q ∧
+      (hyperboloidRadius q = 0 →
+        ∀ s, hyperboloidRadialCurve q s = hyperboloidPolar 0 0) := by
+    have hc (θ : ℝ) : hyperboloidPolar 0 θ = hyperboloidPolar 0 0 := by
+      apply Subtype.ext
+      exact (hyperboloidPolar_center_direction θ q).1.trans
+        (hyperboloidPolar_center_direction 0 q).1.symm
+    by_cases hz : hyperboloidRadius q = 0
+    · have hq : q = hyperboloidPolar 0 0 := by
+        apply Subtype.ext
+        exact ((hyperboloidRadius_properties q).2.2.2.1.mp hz).trans
+          (hyperboloidPolar_center_direction 0 q).1.symm
+      simp only [hyperboloidRadialCurve, if_pos hz]
+      exact ⟨True.intro, hq.symm, fun _ _ => True.intro⟩
+    · refine ⟨?_, ?_, fun h => (hz h).elim⟩
+      · simpa only [hyperboloidRadialCurve, if_neg hz] using
+          hc (Complex.arg (hyperboloidSpatial q))
+      · simpa only [hyperboloidRadialCurve, if_neg hz] using hyperboloidPolar_arg q
+  have radialSpeed (q : Hyperboloid) (hq : 0 < hyperboloidRadius q) :
+      letI : Bundle.RiemannianBundle (fun p : Hyperboloid => TangentSpace I p) :=
+        ⟨hyperboloidMetric.toRiemannianMetric⟩
+      ∀ s : ℝ, ‖mfderiv 𝓘(ℝ, ℝ) I (hyperboloidRadialCurve q) s (1 : ℝ)‖ = 1 := by
+    letI : Bundle.RiemannianBundle (fun p : Hyperboloid => TangentSpace I p) :=
+      ⟨hyperboloidMetric.toRiemannianMetric⟩
+    intro s
+    have hlocal : ∀ᶠ t in nhds s, hyperboloidRadialCurve q t =
+        hyperboloidPolar t (Complex.arg (hyperboloidSpatial q)) :=
+      Filter.Eventually.of_forall (fun t => by
+        simp only [hyperboloidRadialCurve, if_neg (ne_of_gt hq)])
+    have hspeed := hyperboloidPolar_curve_speed (hyperboloidRadialCurve q)
+      (fun t : ℝ => t) (fun _ : ℝ => Complex.arg (hyperboloidSpatial q)) s 1 0
+      (hasDerivAt_id s) (hasDerivAt_const s _) hlocal
+    simpa using hspeed
+  exact ⟨radialSmooth q, (radialEndpoints q).1, (radialEndpoints q).2.1,
+    (radialEndpoints q).2.2, radialSpeed q⟩
+
+/-- The one-piece radial competitor realizes its radius as both real and extended finite length, including radius zero. (G03.d) -/
+theorem hyperboloidRadialCurve_length (q : Hyperboloid) :
+  let cut : Fin 2 → ℝ := fun i => if i = 0 then 0 else hyperboloidRadius q
+  letI : Bundle.RiemannianBundle
+      (fun p : Hyperboloid => TangentSpace I p) :=
+    ⟨hyperboloidMetric.toRiemannianMetric⟩
+  IsPiecewiseC1On I (hyperboloidRadialCurve q) 0 (hyperboloidRadius q) 1 cut ∧
+  piecewiseC1Length hyperboloidMetric (hyperboloidRadialCurve q) cut =
+    hyperboloidRadius q ∧
+  pathELength I (hyperboloidRadialCurve q) 0 (hyperboloidRadius q) =
+    ENNReal.ofReal (hyperboloidRadius q) ∧
+  pathELength I (hyperboloidRadialCurve q) 0 (hyperboloidRadius q) < ⊤ := by
+  have radialWitness (q : Hyperboloid) :
+      let cut : Fin 2 → ℝ := fun i => if i = 0 then 0 else hyperboloidRadius q
+      IsPiecewiseC1On I (hyperboloidRadialCurve q) 0 (hyperboloidRadius q) 1 cut := by
+    let cut : Fin 2 → ℝ := fun i => if i = 0 then 0 else hyperboloidRadius q
+    have hs := (hyperboloidRadialCurve_properties q).1
+    refine ⟨?_, by simp [cut], by simp [cut], hs.continuous.continuousOn, ?_⟩
+    · intro i j hij
+      have hR := (hyperboloidRadius_properties q).1
+      fin_cases i <;> fin_cases j <;> simp_all [cut]
+    · intro i hi
+      exact (hs.of_le (by simp)).contMDiffOn
+  have radialIntegral (q : Hyperboloid) :
+      letI : Bundle.RiemannianBundle (fun p : Hyperboloid => TangentSpace I p) :=
+        ⟨hyperboloidMetric.toRiemannianMetric⟩
+      (∫ s in (0 : ℝ)..hyperboloidRadius q,
+        ‖mfderiv 𝓘(ℝ, ℝ) I (hyperboloidRadialCurve q) s (1 : ℝ)‖) =
+        hyperboloidRadius q := by
+    letI : Bundle.RiemannianBundle (fun p : Hyperboloid => TangentSpace I p) :=
+      ⟨hyperboloidMetric.toRiemannianMetric⟩
+    by_cases hz : hyperboloidRadius q = 0
+    · simp [hz]
+    · have hp : 0 < hyperboloidRadius q :=
+        lt_of_le_of_ne (hyperboloidRadius_properties q).1 (Ne.symm hz)
+      have hs := (hyperboloidRadialCurve_properties q).2.2.2.2 hp
+      simp only [hs, intervalIntegral.integral_const, sub_zero, smul_eq_mul, mul_one]
+  have radialLengthPack (q : Hyperboloid)
+      (hw : let cut : Fin 2 → ℝ := fun i => if i = 0 then 0 else hyperboloidRadius q
+        IsPiecewiseC1On I (hyperboloidRadialCurve q) 0 (hyperboloidRadius q) 1 cut)
+      (hi : letI : Bundle.RiemannianBundle (fun p : Hyperboloid => TangentSpace I p) :=
+          ⟨hyperboloidMetric.toRiemannianMetric⟩
+        (∫ s in (0 : ℝ)..hyperboloidRadius q,
+          ‖mfderiv 𝓘(ℝ, ℝ) I (hyperboloidRadialCurve q) s (1 : ℝ)‖) =
+          hyperboloidRadius q) :
+      let cut : Fin 2 → ℝ := fun i => if i = 0 then 0 else hyperboloidRadius q
+      letI : Bundle.RiemannianBundle (fun p : Hyperboloid => TangentSpace I p) :=
+        ⟨hyperboloidMetric.toRiemannianMetric⟩
+      piecewiseC1Length hyperboloidMetric (hyperboloidRadialCurve q) cut = hyperboloidRadius q ∧
+      pathELength I (hyperboloidRadialCurve q) 0 (hyperboloidRadius q) =
+        ENNReal.ofReal (hyperboloidRadius q) ∧
+      pathELength I (hyperboloidRadialCurve q) 0 (hyperboloidRadius q) < ⊤ := by
+    letI : Bundle.RiemannianBundle (fun p : Hyperboloid => TangentSpace I p) :=
+      ⟨hyperboloidMetric.toRiemannianMetric⟩
+    rcases hw.speed_length hyperboloidMetric with
+      ⟨hpInt, hpInterval, hmeas, hInt, hreal, hset, hnonneg,
+        hofpiece, hfinpiece, hsum, hlin, hpath, hfinite⟩
+    have hL := hreal.symm.trans hi
+    exact ⟨hL, hpath.trans (congrArg ENNReal.ofReal hL), hfinite⟩
+  exact ⟨radialWitness q, radialLengthPack q (radialWitness q) (radialIntegral q)⟩
+
+/-- The actual all-family length infimum from the center equals the radius, by both competitor inequalities. (G03.d) -/
+theorem hyperboloid_centered_piecewiseC1EDist (q : Hyperboloid) :
+  ENNReal.ofReal (hyperboloidRadius q) ≤
+    piecewiseC1EDist hyperboloidMetric (hyperboloidPolar 0 0) q ∧
+  piecewiseC1EDist hyperboloidMetric (hyperboloidPolar 0 0) q ≤
+    ENNReal.ofReal (hyperboloidRadius q) ∧
+  piecewiseC1EDist hyperboloidMetric (hyperboloidPolar 0 0) q =
+    ENNReal.ofReal (hyperboloidRadius q) ∧
+  piecewiseC1EDist hyperboloidMetric (hyperboloidPolar 0 0) q < ⊤ ∧
+  (piecewiseC1EDist hyperboloidMetric (hyperboloidPolar 0 0) q).toReal =
+    hyperboloidRadius q := by
+  have radialUpper (q : Hyperboloid) :
+      piecewiseC1EDist hyperboloidMetric (hyperboloidPolar 0 0) q ≤
+        ENNReal.ofReal (hyperboloidRadius q) := by
+    let cut : Fin 2 → ℝ := fun i => if i = 0 then 0 else hyperboloidRadius q
+    have hp := hyperboloidRadialCurve_properties q
+    have hL := hyperboloidRadialCurve_length q
+    let γ : PiecewiseC1CurveOn I 0 (hyperboloidRadius q) 1 cut
+        (hyperboloidPolar 0 0) q :=
+      ⟨hyperboloidRadialCurve q, hL.1, hp.2.1, hp.2.2.1⟩
+    have h := (piecewiseC1EDist_finite_of_curve hyperboloidMetric γ).1
+    change piecewiseC1EDist hyperboloidMetric (hyperboloidPolar 0 0) q ≤
+      ENNReal.ofReal (piecewiseC1Length hyperboloidMetric (hyperboloidRadialCurve q) cut) at h
+    exact h.trans_eq (congrArg ENNReal.ofReal hL.2.1)
+  have radialLower (q : Hyperboloid) :
+      ENNReal.ofReal (hyperboloidRadius q) ≤
+        piecewiseC1EDist hyperboloidMetric (hyperboloidPolar 0 0) q := by
+    unfold piecewiseC1EDist
+    refine le_iInf (fun a => le_iInf (fun b => le_iInf (fun n =>
+      le_iInf (fun cut => le_iInf (fun γ => ?_)))))
+    have h := hyperboloidRadius_variation_le_length γ.property.1
+    have hb := h.2.2.2.1.trans h.2.2.2.2
+    have hR : hyperboloidRadius q ≤ piecewiseC1Length hyperboloidMetric γ.val cut := by
+      simpa only [γ.property.2.1, γ.property.2.2,
+        hyperboloidPolar_radius (le_refl 0) 0, sub_zero,
+        abs_of_nonneg (hyperboloidRadius_properties q).1] using hb
+    exact ENNReal.ofReal_le_ofReal hR
+  have radialDistancePack (q : Hyperboloid)
+      (hl : ENNReal.ofReal (hyperboloidRadius q) ≤
+        piecewiseC1EDist hyperboloidMetric (hyperboloidPolar 0 0) q)
+      (hu : piecewiseC1EDist hyperboloidMetric (hyperboloidPolar 0 0) q ≤
+        ENNReal.ofReal (hyperboloidRadius q)) :
+      ENNReal.ofReal (hyperboloidRadius q) ≤
+        piecewiseC1EDist hyperboloidMetric (hyperboloidPolar 0 0) q ∧
+      piecewiseC1EDist hyperboloidMetric (hyperboloidPolar 0 0) q ≤
+        ENNReal.ofReal (hyperboloidRadius q) ∧
+      piecewiseC1EDist hyperboloidMetric (hyperboloidPolar 0 0) q =
+        ENNReal.ofReal (hyperboloidRadius q) ∧
+      piecewiseC1EDist hyperboloidMetric (hyperboloidPolar 0 0) q < ⊤ ∧
+      (piecewiseC1EDist hyperboloidMetric (hyperboloidPolar 0 0) q).toReal =
+        hyperboloidRadius q := by
+    have he := le_antisymm hu hl
+    refine ⟨hl, hu, he, hu.trans_lt ENNReal.ofReal_lt_top, ?_⟩
+    rw [he, ENNReal.toReal_ofReal (hyperboloidRadius_properties q).1]
+  exact radialDistancePack q (radialLower q) (radialUpper q)
+
+/-- Proof-local sharing of the actual two loss sums, finite variation squeeze and radial monotonicity. -/
+private theorem hyperboloid_centered_loss_data {a b : ℝ} {n : ℕ} {cut : Fin (n+1) → ℝ} {q : Hyperboloid}
+    (γ : PiecewiseC1CurveOn I a b n cut (hyperboloidPolar 0 0) q)
+    (hmin : piecewiseC1Length hyperboloidMetric γ.val cut = hyperboloidRadius q) :
+    letI : Bundle.RiemannianBundle (fun p : Hyperboloid => TangentSpace I p) :=
+      ⟨hyperboloidMetric.toRiemannianMetric⟩
+    let ρ : ℝ → ℝ := fun t => hyperboloidRadius (γ.val t)
+    let v : Fin n → ℝ → ℝ := fun i t =>
+      ‖mfderivWithin 𝓘(ℝ, ℝ) I γ.val (Icc (cut i.castSucc) (cut i.succ)) t (1 : ℝ)‖
+    (eVariationOn ρ (Icc a b)).toReal = hyperboloidRadius q ∧
+    (∀ i : Fin n, (∫ t in cut i.castSucc..cut i.succ, v i t - |deriv ρ t|) = 0) ∧
+    (∀ i : Fin n, (∫ t in cut i.castSucc..cut i.succ, |deriv ρ t| - deriv ρ t) = 0) ∧
+    (∀ i : Fin n, ∀ᵐ t ∂volume.restrict (Ioc (cut i.castSucc) (cut i.succ)),
+      v i t = |deriv ρ t| ∧ |deriv ρ t| = deriv ρ t) ∧
+    MonotoneOn ρ (Icc a b) := by
+  have lossL01 (γ : PiecewiseC1CurveOn I a b n cut (hyperboloidPolar 0 0) q) : a ≤ b ∧
+      AbsolutelyContinuousOnInterval (fun t => hyperboloidRadius (γ.val t)) a b ∧
+      (∫ t in a..b, deriv (fun s => hyperboloidRadius (γ.val s)) t) =
+        hyperboloidRadius q := by
+    have hab : a ≤ b := by
+      rw [← γ.property.1.2.1, ← γ.property.1.2.2.1]
+      exact γ.property.1.1 (Fin.zero_le _)
+    have hac := hyperboloidRadius_absolutelyContinuous γ.property.1
+    refine ⟨hab, hac, ?_⟩
+    simpa only [γ.property.2.1, γ.property.2.2,
+      hyperboloidPolar_radius (le_refl 0) 0, sub_zero] using hac.integral_deriv_eq_sub
+  have lossL02 (γ : PiecewiseC1CurveOn I a b n cut (hyperboloidPolar 0 0) q) :
+      letI : Bundle.RiemannianBundle (fun p : Hyperboloid => TangentSpace I p) :=
+        ⟨hyperboloidMetric.toRiemannianMetric⟩
+      let ρ : ℝ → ℝ := fun t => hyperboloidRadius (γ.val t)
+      let v : Fin n → ℝ → ℝ := fun i t =>
+        ‖mfderivWithin 𝓘(ℝ, ℝ) I γ.val (Icc (cut i.castSucc) (cut i.succ)) t (1 : ℝ)‖
+      ∀ i : Fin n,
+        IntervalIntegrable (v i) volume (cut i.castSucc) (cut i.succ) ∧
+        IntervalIntegrable (deriv ρ) volume (cut i.castSucc) (cut i.succ) ∧
+        (∀ᵐ t ∂volume.restrict (Ioc (cut i.castSucc) (cut i.succ)),
+          |deriv ρ t| ≤ v i t) := by
+    letI : Bundle.RiemannianBundle (fun p : Hyperboloid => TangentSpace I p) :=
+      ⟨hyperboloidMetric.toRiemannianMetric⟩
+    have hc := γ.property.1.1
+    have hab : a ≤ b := by
+      rw [← γ.property.1.2.1, ← γ.property.1.2.2.1]
+      exact hc (Fin.zero_le _)
+    have hac := hyperboloidRadius_absolutelyContinuous γ.property.1
+    dsimp only
+    intro i
+    have hi : cut i.castSucc ≤ cut i.succ := hc (by change i.val ≤ i.val+1; omega)
+    have hsub : uIcc (cut i.castSucc) (cut i.succ) ⊆ uIcc a b := by
+      rw [uIcc_of_le hi, uIcc_of_le hab]
+      intro t ht
+      have hl : a ≤ cut i.castSucc := by
+        rw [← γ.property.1.2.1]
+        exact hc (Fin.zero_le _)
+      have hr : cut i.succ ≤ b := by
+        rw [← γ.property.1.2.2.1]
+        exact hc (Fin.le_last _)
+      exact ⟨hl.trans ht.1, ht.2.trans hr⟩
+    refine ⟨(γ.property.1.speed_length hyperboloidMetric).2.1 i,
+      (hac.mono hsub).intervalIntegrable_deriv, ?_⟩
+    rcases lt_or_eq_of_le hi with hlt | heq
+    · exact hyperboloidRadius_ae_deriv_le_pieceSpeed hlt (γ.property.1.2.2.2.2 i hlt)
+    · simp [heq]
+  have lossL03 {l r : ℝ} {s d : ℝ → ℝ}
+      (hs : IntervalIntegrable s volume l r)
+      (hd : IntervalIntegrable d volume l r)
+      (hbound : ∀ᵐ t ∂volume.restrict (Ioc l r), |d t| ≤ s t) :
+      IntervalIntegrable (fun t => s t - |d t|) volume l r ∧
+      IntervalIntegrable (fun t => |d t| - d t) volume l r ∧
+      (0 ≤ᵐ[volume.restrict (Ioc l r)] (fun t => s t - |d t|)) ∧
+      (0 ≤ᵐ[volume.restrict (Ioc l r)] (fun t => |d t| - d t)) := by
+    refine ⟨hs.sub hd.abs, hd.abs.sub hd, ?_, ?_⟩
+    · filter_upwards [hbound] with t ht
+      exact sub_nonneg.mpr ht
+    · exact Filter.Eventually.of_forall (fun t => sub_nonneg.mpr (le_abs_self (d t)))
+  have lossL04 (γ : PiecewiseC1CurveOn I a b n cut (hyperboloidPolar 0 0) q) (g : ℝ → ℝ) (hg : IntervalIntegrable g volume a b) :
+      (∑ i : Fin n, ∫ t in cut i.castSucc..cut i.succ, g t) = ∫ t in a..b, g t := by
+    have hc := γ.property.1.1
+    let u : ℕ → ℝ := fun k => cut ⟨min k n, Nat.lt_succ_of_le (Nat.min_le_right k n)⟩
+    have hu : Monotone u := by
+      intro i j hij
+      apply hc
+      change min i n ≤ min j n
+      exact min_le_min_right n hij
+    have h0 : u 0 = a := by simpa [u] using γ.property.1.2.1
+    have hn : u n = b := by simpa [u, Fin.last] using γ.property.1.2.2.1
+    have hleft (i : Fin n) : u i.val = cut i.castSucc := by
+      dsimp [u]
+      congr 1
+      apply Fin.ext
+      exact Nat.min_eq_left i.isLt.le
+    have hright (i : Fin n) : u (i.val+1) = cut i.succ := by
+      dsimp [u]
+      congr 1
+      apply Fin.ext
+      exact Nat.min_eq_left (by omega)
+    have hab : a ≤ b := by simpa only [h0, hn] using hu (Nat.zero_le n)
+    have hsub (k : ℕ) (hk : k < n) : uIcc (u k) (u (k+1)) ⊆ uIcc a b := by
+      rw [uIcc_of_le (hu (Nat.le_succ k)), uIcc_of_le hab]
+      intro t ht
+      constructor
+      · exact (show a ≤ u k from h0 ▸ hu (Nat.zero_le k)).trans ht.1
+      · exact ht.2.trans (show u (k+1) ≤ b from hn ▸ hu (by omega))
+    calc
+      (∑ i : Fin n, ∫ t in cut i.castSucc..cut i.succ, g t) =
+          ∑ i : Fin n, ∫ t in u i.val..u (i.val+1), g t := by
+        apply Finset.sum_congr rfl
+        intro i hi
+        rw [hleft i, hright i]
+      _ = ∑ k ∈ Finset.range n, ∫ t in u k..u (k+1), g t :=
+        Fin.sum_univ_eq_sum_range (fun k => ∫ t in u k..u (k+1), g t) n
+      _ = ∫ t in u 0..u n, g t :=
+        intervalIntegral.sum_integral_adjacent_intervals (fun k hk => hg.mono_set (hsub k hk))
+      _ = ∫ t in a..b, g t := by rw [h0, hn]
+  have lossL05 (lossA lossB : Fin n → ℝ) (lossJ R : ℝ)
+      (hA : ∀ i, 0 ≤ lossA i) (hB : ∀ i, 0 ≤ lossB i)
+      (hsA : (∑ i, lossA i) = R - lossJ) (hsB : (∑ i, lossB i) = lossJ - R) :
+      lossJ = R ∧ (∀ i, lossA i = 0) ∧ (∀ i, lossB i = 0) := by
+    have ha : 0 ≤ ∑ i, lossA i := Finset.sum_nonneg (fun i hi => hA i)
+    have hb : 0 ≤ ∑ i, lossB i := Finset.sum_nonneg (fun i hi => hB i)
+    have hJ : lossJ = R := by rw [hsA] at ha; rw [hsB] at hb; linarith
+    have ha0 : (∑ i, lossA i) = 0 := by rw [hsA, hJ, sub_self]
+    have hb0 : (∑ i, lossB i) = 0 := by rw [hsB, hJ, sub_self]
+    refine ⟨hJ, ?_, ?_⟩
+    · exact fun i => (Finset.sum_eq_zero_iff_of_nonneg (fun j hj => hA j)).mp ha0 i (Finset.mem_univ i)
+    · exact fun i => (Finset.sum_eq_zero_iff_of_nonneg (fun j hj => hB j)).mp hb0 i (Finset.mem_univ i)
+  have lossL06 {l r : ℝ} {loss : ℝ → ℝ} (hlr : l ≤ r)
+      (hn : 0 ≤ᵐ[volume.restrict (Ioc l r)] loss) :
+      0 ≤ ∫ t in l..r, loss t := by
+    apply intervalIntegral.integral_nonneg_of_ae_restrict hlr
+    simpa only [restrict_Ioc_eq_restrict_Icc] using hn
+  have lossL07 {l r : ℝ} {s d : ℝ → ℝ} (hlr : l ≤ r)
+      (hI : IntervalIntegrable (fun t => s t - |d t|) volume l r)
+      (hJ : IntervalIntegrable (fun t => |d t| - d t) volume l r)
+      (hN : 0 ≤ᵐ[volume.restrict (Ioc l r)] (fun t => s t - |d t|))
+      (hM : 0 ≤ᵐ[volume.restrict (Ioc l r)] (fun t => |d t| - d t))
+      (hZ : (∫ t in l..r, s t - |d t|) = 0)
+      (hW : (∫ t in l..r, |d t| - d t) = 0) :
+      ∀ᵐ t ∂volume.restrict (Ioc l r), s t = |d t| ∧ |d t| = d t := by
+    have h1 := (intervalIntegral.integral_eq_zero_iff_of_le_of_nonneg_ae hlr hN hI).mp hZ
+    have h2 := (intervalIntegral.integral_eq_zero_iff_of_le_of_nonneg_ae hlr hM hJ).mp hW
+    filter_upwards [h1, h2] with t ht hu
+    exact ⟨sub_eq_zero.mp ht, sub_eq_zero.mp hu⟩
+  have lossL08 (γ : PiecewiseC1CurveOn I a b n cut (hyperboloidPolar 0 0) q) (hmin : piecewiseC1Length hyperboloidMetric γ.val cut = hyperboloidRadius q) :
+      eVariationOn (fun t => hyperboloidRadius (γ.val t)) (Icc a b) ≠ ⊤ ∧
+      (eVariationOn (fun t => hyperboloidRadius (γ.val t)) (Icc a b)).toReal =
+        hyperboloidRadius q := by
+    have h := hyperboloidRadius_variation_le_length γ.property.1
+    refine ⟨h.2.2.1, le_antisymm ?_ ?_⟩
+    · exact h.2.2.2.2.trans_eq hmin
+    · simpa only [γ.property.2.1, γ.property.2.2,
+        hyperboloidPolar_radius (le_refl 0) 0, sub_zero,
+        abs_of_nonneg (hyperboloidRadius_properties q).1] using h.2.2.2.1
+  have lossL09 (γ : PiecewiseC1CurveOn I a b n cut (hyperboloidPolar 0 0) q) (hJ : (∫ t in a..b, |deriv (fun s => hyperboloidRadius (γ.val s)) t|) =
+        hyperboloidRadius q) :
+      MonotoneOn (fun t => hyperboloidRadius (γ.val t)) (Icc a b) := by
+    have hac := hyperboloidRadius_absolutelyContinuous γ.property.1
+    have hab : a ≤ b := by
+      rw [← γ.property.1.2.1, ← γ.property.1.2.2.1]
+      exact γ.property.1.1 (Fin.zero_le _)
+    apply AbsolutelyContinuousOnInterval.monotoneOn_of_integral_abs_deriv_eq_sub hac hab
+    simpa only [γ.property.2.1, γ.property.2.2,
+      hyperboloidPolar_radius (le_refl 0) 0, sub_zero] using hJ
+  have lossL10 (γ : PiecewiseC1CurveOn I a b n cut (hyperboloidPolar 0 0) q) (hmin : piecewiseC1Length hyperboloidMetric γ.val cut = hyperboloidRadius q)
+      (hI : letI : Bundle.RiemannianBundle (fun p : Hyperboloid => TangentSpace I p) :=
+          ⟨hyperboloidMetric.toRiemannianMetric⟩
+        ∀ i : Fin n,
+          IntervalIntegrable (fun t => ‖mfderivWithin 𝓘(ℝ, ℝ) I γ.val
+            (Icc (cut i.castSucc) (cut i.succ)) t (1 : ℝ)‖)
+            volume (cut i.castSucc) (cut i.succ) ∧
+          IntervalIntegrable (deriv (fun s => hyperboloidRadius (γ.val s)))
+            volume (cut i.castSucc) (cut i.succ))
+      (hsumD : (∑ i : Fin n, ∫ t in cut i.castSucc..cut i.succ,
+          deriv (fun s => hyperboloidRadius (γ.val s)) t) =
+        ∫ t in a..b, deriv (fun s => hyperboloidRadius (γ.val s)) t)
+      (hsumA : (∑ i : Fin n, ∫ t in cut i.castSucc..cut i.succ,
+          |deriv (fun s => hyperboloidRadius (γ.val s)) t|) =
+        ∫ t in a..b, |deriv (fun s => hyperboloidRadius (γ.val s)) t|) :
+      letI : Bundle.RiemannianBundle (fun p : Hyperboloid => TangentSpace I p) :=
+        ⟨hyperboloidMetric.toRiemannianMetric⟩
+      let ρ : ℝ → ℝ := fun t => hyperboloidRadius (γ.val t)
+      let v : Fin n → ℝ → ℝ := fun i t =>
+        ‖mfderivWithin 𝓘(ℝ, ℝ) I γ.val (Icc (cut i.castSucc) (cut i.succ)) t (1 : ℝ)‖
+      ((∑ i : Fin n, ∫ t in cut i.castSucc..cut i.succ, v i t - |deriv ρ t|) =
+        hyperboloidRadius q - ∫ t in a..b, |deriv ρ t|) ∧
+      ((∑ i : Fin n, ∫ t in cut i.castSucc..cut i.succ, |deriv ρ t| - deriv ρ t) =
+        (∫ t in a..b, |deriv ρ t|) - hyperboloidRadius q) := by
+    letI : Bundle.RiemannianBundle (fun p : Hyperboloid => TangentSpace I p) :=
+      ⟨hyperboloidMetric.toRiemannianMetric⟩
+    let ρ : ℝ → ℝ := fun t => hyperboloidRadius (γ.val t)
+    let v : Fin n → ℝ → ℝ := fun i t =>
+      ‖mfderivWithin 𝓘(ℝ, ℝ) I γ.val (Icc (cut i.castSucc) (cut i.succ)) t (1 : ℝ)‖
+    have hFTC : (∫ t in a..b, deriv ρ t) = hyperboloidRadius q := by
+      simpa only [γ.property.2.1, γ.property.2.2,
+        hyperboloidPolar_radius (le_refl 0) 0, sub_zero] using
+        (hyperboloidRadius_absolutelyContinuous γ.property.1).integral_deriv_eq_sub
+    have hspeed : (∑ i : Fin n, ∫ t in cut i.castSucc..cut i.succ, v i t) =
+        hyperboloidRadius q := hmin
+    constructor
+    · calc
+        (∑ i : Fin n, ∫ t in cut i.castSucc..cut i.succ, v i t - |deriv ρ t|) =
+            ∑ i : Fin n, ((∫ t in cut i.castSucc..cut i.succ, v i t) -
+              ∫ t in cut i.castSucc..cut i.succ, |deriv ρ t|) := by
+          apply Finset.sum_congr rfl
+          intro i hi
+          exact intervalIntegral.integral_sub (hI i).1 (hI i).2.abs
+        _ = hyperboloidRadius q - ∫ t in a..b, |deriv ρ t| := by
+          rw [Finset.sum_sub_distrib, hspeed, hsumA]
+    · calc
+        (∑ i : Fin n, ∫ t in cut i.castSucc..cut i.succ, |deriv ρ t| - deriv ρ t) =
+            ∑ i : Fin n, ((∫ t in cut i.castSucc..cut i.succ, |deriv ρ t|) -
+              ∫ t in cut i.castSucc..cut i.succ, deriv ρ t) := by
+          apply Finset.sum_congr rfl
+          intro i hi
+          exact intervalIntegral.integral_sub (hI i).2.abs (hI i).2
+        _ = (∫ t in a..b, |deriv ρ t|) - hyperboloidRadius q := by
+          rw [Finset.sum_sub_distrib, hsumA, hsumD, hFTC]
+  letI : Bundle.RiemannianBundle (fun p : Hyperboloid => TangentSpace I p) :=
+    ⟨hyperboloidMetric.toRiemannianMetric⟩
+  let ρ : ℝ → ℝ := fun t => hyperboloidRadius (γ.val t)
+  let v : Fin n → ℝ → ℝ := fun i t =>
+    ‖mfderivWithin 𝓘(ℝ, ℝ) I γ.val (Icc (cut i.castSucc) (cut i.succ)) t (1 : ℝ)‖
+  let lossA : Fin n → ℝ := fun i => ∫ t in cut i.castSucc..cut i.succ, v i t - |deriv ρ t|
+  let lossB : Fin n → ℝ := fun i => ∫ t in cut i.castSucc..cut i.succ, |deriv ρ t| - deriv ρ t
+  let lossJ : ℝ := ∫ t in a..b, |deriv ρ t|
+  have hac := (lossL01 γ).2.1
+  have hp := lossL02 γ
+  have hi (i : Fin n) : cut i.castSucc ≤ cut i.succ :=
+    γ.property.1.1 (by change i.val ≤ i.val+1; omega)
+  have hl (i : Fin n) := lossL03 (hp i).1 (hp i).2.1 (hp i).2.2
+  have hA (i : Fin n) : 0 ≤ lossA i := lossL06 (hi i) (hl i).2.2.1
+  have hB (i : Fin n) : 0 ≤ lossB i := lossL06 (hi i) (hl i).2.2.2
+  have hsumD := lossL04 γ (deriv ρ) hac.intervalIntegrable_deriv
+  have hsumA := lossL04 γ (fun t => |deriv ρ t|) hac.intervalIntegrable_deriv.abs
+  have hs := lossL10 γ hmin (fun i => ⟨(hp i).1, (hp i).2.1⟩) hsumD hsumA
+  have hz := lossL05 lossA lossB lossJ (hyperboloidRadius q) hA hB hs.1 hs.2
+  refine ⟨(lossL08 γ hmin).2, hz.2.1, hz.2.2, ?_, lossL09 γ hz.1⟩
+  intro i
+  exact lossL07 (hi i) (hl i).1 (hl i).2.1 (hl i).2.2.1 (hl i).2.2.2
+    (hz.2.1 i) (hz.2.2 i)
+
+/-- A centered minimizing curve has zero speed-versus-radial and radial-backtracking losses on every weak piece. (G03.e) -/
+theorem hyperboloid_centered_minimizer_losses
+    {a b : ℝ} {n : ℕ} {cut : Fin (n + 1) → ℝ} {q : Hyperboloid}
+    (γ : PiecewiseC1CurveOn I a b n cut (hyperboloidPolar 0 0) q)
+    (hmin : piecewiseC1Length hyperboloidMetric γ.val cut = hyperboloidRadius q) :
+  letI : Bundle.RiemannianBundle
+      (fun p : Hyperboloid => TangentSpace I p) :=
+    ⟨hyperboloidMetric.toRiemannianMetric⟩
+  let ρ : ℝ → ℝ := fun t => hyperboloidRadius (γ.val t)
+  (eVariationOn ρ (Icc a b)).toReal = hyperboloidRadius q ∧
+  (∀ i : Fin n,
+    (∫ t in cut i.castSucc..cut i.succ,
+      (‖mfderivWithin 𝓘(ℝ, ℝ) I γ.val
+          (Icc (cut i.castSucc) (cut i.succ)) t (1 : ℝ)‖ -
+        |deriv ρ t|)) = 0) ∧
+  (∀ i : Fin n,
+    (∫ t in cut i.castSucc..cut i.succ,
+      (|deriv ρ t| - deriv ρ t)) = 0) ∧
+  (∀ i : Fin n, ∀ᵐ t ∂volume.restrict (Ioc (cut i.castSucc) (cut i.succ)),
+    ‖mfderivWithin 𝓘(ℝ, ℝ) I γ.val
+        (Icc (cut i.castSucc) (cut i.succ)) t (1 : ℝ)‖ = |deriv ρ t| ∧
+      |deriv ρ t| = deriv ρ t) := by
+  rcases hyperboloid_centered_loss_data γ hmin with ⟨hV, hA, hB, hae, hm⟩
+  exact ⟨hV, hA, hB, hae⟩
+
+/-- The radius of a centered minimizing curve is nondecreasing on its whole closed parameter interval. (G03.e) -/
+theorem hyperboloid_centered_minimizer_radius_monotone
+    {a b : ℝ} {n : ℕ} {cut : Fin (n + 1) → ℝ} {q : Hyperboloid}
+    (γ : PiecewiseC1CurveOn I a b n cut (hyperboloidPolar 0 0) q)
+    (hmin : piecewiseC1Length hyperboloidMetric γ.val cut = hyperboloidRadius q) :
+  MonotoneOn (fun t => hyperboloidRadius (γ.val t)) (Icc a b) := by
+  exact (hyperboloid_centered_loss_data γ hmin).2.2.2.2
+
+/-- On positive-radius piece interiors the actual normalized spatial direction has derivative zero almost everywhere. (G03.e) -/
+theorem hyperboloid_centered_minimizer_direction_deriv
+    {a b : ℝ} {n : ℕ} {cut : Fin (n + 1) → ℝ} {q : Hyperboloid}
+    (γ : PiecewiseC1CurveOn I a b n cut (hyperboloidPolar 0 0) q)
+    (hmin : piecewiseC1Length hyperboloidMetric γ.val cut = hyperboloidRadius q) :
+  ∀ i : Fin n,
+    ∀ᵐ t ∂volume.restrict
+      (Ioo (cut i.castSucc) (cut i.succ) ∩
+        {t | 0 < hyperboloidRadius (γ.val t)}),
+      HasDerivAt
+        (fun s => hyperboloidSpatial (γ.val s) /
+          (‖hyperboloidSpatial (γ.val s)‖ : ℂ)) (0 : ℂ) t := by
+  have directionA01 {γ : ℝ → Hyperboloid} {l r t : ℝ}
+      (hγ : ContMDiffOn 𝓘(ℝ, ℝ) I 1 γ (Icc l r)) (ht : t ∈ Ioo l r)
+      (hp : 0 < hyperboloidRadius (γ t)) :
+      ∃ θ : Hyperboloid → ℝ,
+        HasDerivAt (fun s => hyperboloidRadius (γ s))
+          (deriv (fun s => hyperboloidRadius (γ s)) t) t ∧
+        HasDerivAt (fun s => θ (γ s)) (deriv (fun s => θ (γ s)) t) t ∧
+        (∀ᶠ s in nhds t, 0 < hyperboloidRadius (γ s) ∧
+          γ s = hyperboloidPolar (hyperboloidRadius (γ s)) (θ (γ s))) := by
+    obtain ⟨U, θ, hU, hmem, hrad, hθ, hpos, hrec⟩ := hyperboloidPolar_local_coordinates hp
+    have hg := hγ.contMDiffAt (Icc_mem_nhds ht.1 ht.2)
+    have hr := ((hrad.contMDiffAt (hU.mem_nhds hmem)).of_le (by simp)).comp t hg
+    have ha := ((hθ.contMDiffAt (hU.mem_nhds hmem)).of_le (by simp)).comp t hg
+    refine ⟨θ, (hr.contDiffAt.differentiableAt one_ne_zero).hasDerivAt,
+      (ha.contDiffAt.differentiableAt one_ne_zero).hasDerivAt, ?_⟩
+    filter_upwards [hg.continuousAt (hU.mem_nhds hmem)] with s hs
+    exact ⟨hpos (γ s) hs, (hrec (γ s) hs).symm⟩
+  have directionA02 {γ : ℝ → Hyperboloid} {θ : Hyperboloid → ℝ} {l r t : ℝ}
+      (ht : t ∈ Ioo l r) (hp : 0 < hyperboloidRadius (γ t))
+      (hr : HasDerivAt (fun s => hyperboloidRadius (γ s))
+        (deriv (fun s => hyperboloidRadius (γ s)) t) t)
+      (ha : HasDerivAt (fun s => θ (γ s)) (deriv (fun s => θ (γ s)) t) t)
+      (hrec : ∀ᶠ s in nhds t,
+        γ s = hyperboloidPolar (hyperboloidRadius (γ s)) (θ (γ s)))
+      (he : letI : Bundle.RiemannianBundle (fun p : Hyperboloid => TangentSpace I p) :=
+          ⟨hyperboloidMetric.toRiemannianMetric⟩
+        ‖mfderivWithin 𝓘(ℝ, ℝ) I γ (Icc l r) t (1 : ℝ)‖ =
+          |deriv (fun s => hyperboloidRadius (γ s)) t|) :
+      HasDerivAt (fun s => θ (γ s)) 0 t := by
+    letI : Bundle.RiemannianBundle (fun p : Hyperboloid => TangentSpace I p) :=
+      ⟨hyperboloidMetric.toRiemannianMetric⟩
+    have hv := hyperboloidPolar_curve_speed γ
+      (fun s => hyperboloidRadius (γ s)) (fun s => θ (γ s)) t _ _ hr ha hrec
+    rw [mfderivWithin_of_mem_nhds (Icc_mem_nhds ht.1 ht.2), hv] at he
+    have hs : 0 < Real.sinh (hyperboloidRadius (γ t)) :=
+      Real.arsinh_pos_iff.mp (by simpa only [Real.arsinh_sinh] using hp)
+    have hnn : 0 ≤ (deriv (fun s => hyperboloidRadius (γ s)) t)^2 +
+        (Real.sinh (hyperboloidRadius (γ t)))^2 * (deriv (fun s => θ (γ s)) t)^2 :=
+      add_nonneg (sq_nonneg _) (mul_nonneg (sq_nonneg _) (sq_nonneg _))
+    have hsq := Real.sq_sqrt hnn
+    rw [he, sq_abs] at hsq
+    have haz : deriv (fun s => θ (γ s)) t = 0 := by
+      have hz : (Real.sinh (hyperboloidRadius (γ t)))^2 *
+          (deriv (fun s => θ (γ s)) t)^2 = 0 := by nlinarith [hsq]
+      exact sq_eq_zero_iff.mp ((mul_eq_zero.mp hz).resolve_left (ne_of_gt (sq_pos_of_pos hs)))
+    exact ha.congr_deriv haz
+  have directionA03 (x : Hyperboloid) (r θ : ℝ) (hr : 0 < r)
+      (hx : hyperboloidPolar r θ = x) :
+      hyperboloidSpatial x / (‖hyperboloidSpatial x‖ : ℂ) =
+        (Real.cos θ : ℂ) + (Real.sin θ : ℂ) * Complex.I := by
+    have hs : 0 < Real.sinh r :=
+      Real.arsinh_pos_iff.mp (by simpa only [Real.arsinh_sinh] using hr)
+    have hn : ‖hyperboloidSpatial x‖ = Real.sinh r := by
+      rw [← (hyperboloidRadius_properties x).2.1, ← hx, hyperboloidPolar_radius hr.le]
+    have hsp : hyperboloidSpatial x = (Real.sinh r : ℂ) *
+        ((Real.cos θ : ℂ) + (Real.sin θ : ℂ) * Complex.I) := by
+      rw [← hx]
+      apply Complex.ext <;>
+        simp [hyperboloidSpatial, hyperboloidPolar, hyperboloidPolarCoords,
+          ← Complex.ofReal_cos, ← Complex.ofReal_sin, ← Complex.ofReal_sinh] <;> ring
+    have hne : (‖hyperboloidSpatial x‖ : ℂ) ≠ 0 := by
+      rw [hn]
+      exact_mod_cast (ne_of_gt hs)
+    rw [div_eq_iff hne, hn, hsp]
+    ring
+  have directionA04 {α : ℝ → ℝ} {t : ℝ} (ha : HasDerivAt α 0 t) :
+      HasDerivAt (fun s => (Real.cos (α s) : ℂ) +
+        (Real.sin (α s) : ℂ) * Complex.I) (0 : ℂ) t := by
+    have hc := ha.cos.ofReal_comp
+    have hs := ha.sin.ofReal_comp
+    convert hc.add (hs.mul_const Complex.I) using 1 <;>
+      first | rfl | simp only [mul_zero, Complex.ofReal_zero, zero_mul, add_zero, Pi.add_def]
+  have directionA05 {γ : ℝ → Hyperboloid} {α : ℝ → ℝ} {t : ℝ}
+      (ha : HasDerivAt α 0 t)
+      (he : (fun s => hyperboloidSpatial (γ s) / (‖hyperboloidSpatial (γ s)‖ : ℂ)) =ᶠ[nhds t]
+        (fun s => (Real.cos (α s) : ℂ) + (Real.sin (α s) : ℂ) * Complex.I)) :
+      HasDerivAt (fun s => hyperboloidSpatial (γ s) /
+        (‖hyperboloidSpatial (γ s)‖ : ℂ)) (0 : ℂ) t := by
+    have hd : HasDerivAt (fun s => (Real.cos (α s) : ℂ) +
+        (Real.sin (α s) : ℂ) * Complex.I) (0 : ℂ) t := by
+      exact directionA04 ha
+    exact hd.congr_of_eventuallyEq he
+  have directionA06 {a b : ℝ} {n : ℕ} {cut : Fin (n+1) → ℝ} {q : Hyperboloid}
+      (γ : PiecewiseC1CurveOn I a b n cut (hyperboloidPolar 0 0) q)
+      (hmin : piecewiseC1Length hyperboloidMetric γ.val cut = hyperboloidRadius q)
+      (i : Fin n) :
+      letI : Bundle.RiemannianBundle (fun p : Hyperboloid => TangentSpace I p) :=
+        ⟨hyperboloidMetric.toRiemannianMetric⟩
+      ∀ᵐ t ∂volume.restrict (Ioo (cut i.castSucc) (cut i.succ) ∩
+        {t | 0 < hyperboloidRadius (γ.val t)}),
+        ‖mfderivWithin 𝓘(ℝ, ℝ) I γ.val (Icc (cut i.castSucc) (cut i.succ)) t (1 : ℝ)‖ =
+          |deriv (fun s => hyperboloidRadius (γ.val s)) t| := by
+    letI : Bundle.RiemannianBundle (fun p : Hyperboloid => TangentSpace I p) :=
+      ⟨hyperboloidMetric.toRiemannianMetric⟩
+    have he := (hyperboloid_centered_minimizer_losses γ hmin).2.2.2 i
+    have hs : Ioo (cut i.castSucc) (cut i.succ) ∩
+        {t | 0 < hyperboloidRadius (γ.val t)} ⊆ Ioc (cut i.castSucc) (cut i.succ) :=
+      fun t ht => ⟨ht.1.1, ht.1.2.le⟩
+    filter_upwards [ae_restrict_of_ae_restrict_of_subset hs he] with t ht
+    exact ht.1
+  intro i
+  let S := Ioo (cut i.castSucc) (cut i.succ) ∩
+    {t | 0 < hyperboloidRadius (γ.val t)}
+  have hS : IsOpen S := by
+    apply isOpen_iff_mem_nhds.mpr
+    intro t ht
+    have hlt : cut i.castSucc < cut i.succ := ht.1.1.trans ht.1.2
+    obtain ⟨θ, hr, ha, hrec⟩ := directionA01 (γ.property.1.2.2.2.2 i hlt) ht.1 ht.2
+    have hp := hr.continuousAt (Ioi_mem_nhds ht.2)
+    filter_upwards [Ioo_mem_nhds ht.1.1 ht.1.2, hp] with s hs hpos
+    exact ⟨hs, hpos⟩
+  have he := directionA06 γ hmin i
+  filter_upwards [he, ae_restrict_mem hS.measurableSet] with t he ht
+  have hlt : cut i.castSucc < cut i.succ := ht.1.1.trans ht.1.2
+  obtain ⟨θ, hr, ha, hrec⟩ := directionA01 (γ.property.1.2.2.2.2 i hlt) ht.1 ht.2
+  have haz := directionA02 ht.1 ht.2 hr ha (hrec.mono (fun s hs => hs.2)) he
+  apply directionA05 haz
+  filter_upwards [hrec] with s hs
+  exact directionA03 (γ.val s) (hyperboloidRadius (γ.val s)) (θ (γ.val s)) hs.1 hs.2.symm
+
+/-- Every two positive-radius points of a centered minimizing curve have the same spatial direction. (G03.e) -/
+theorem hyperboloid_centered_minimizer_direction
+    {a b : ℝ} {n : ℕ} {cut : Fin (n + 1) → ℝ} {q : Hyperboloid}
+    (γ : PiecewiseC1CurveOn I a b n cut (hyperboloidPolar 0 0) q)
+    (hmin : piecewiseC1Length hyperboloidMetric γ.val cut = hyperboloidRadius q) :
+  ∀ s ∈ Icc a b, ∀ t ∈ Icc a b,
+    0 < hyperboloidRadius (γ.val s) →
+    0 < hyperboloidRadius (γ.val t) →
+    hyperboloidSpatial (γ.val s) / (‖hyperboloidSpatial (γ.val s)‖ : ℂ) =
+      hyperboloidSpatial (γ.val t) / (‖hyperboloidSpatial (γ.val t)‖ : ℂ) := by
+  have positiveK3 {a b : ℝ} {n : ℕ} {cut : Fin (n+1) → ℝ} {q : Hyperboloid}
+      (γ : PiecewiseC1CurveOn I a b n cut (hyperboloidPolar 0 0) q)
+      (hmin : piecewiseC1Length hyperboloidMetric γ.val cut = hyperboloidRadius q)
+      {s t : ℝ} (hs : s ∈ Icc a b) (ht : t ∈ Icc a b) (hst : s ≤ t)
+      (hp : 0 < hyperboloidRadius (γ.val s)) :
+      ∀ u ∈ Icc s t,
+        hyperboloidSpatial (γ.val u) / (‖hyperboloidSpatial (γ.val u)‖ : ℂ) =
+          hyperboloidSpatial (γ.val s) / (‖hyperboloidSpatial (γ.val s)‖ : ℂ) := by
+    let z : ℝ → ℂ := fun u => hyperboloidSpatial (γ.val u)
+    let f : ℝ → ℂ := fun u => z u / (‖z u‖ : ℂ)
+    let d : Fin (n+1) → ℝ := fun i => max s (min t (cut i))
+    obtain ⟨hc, h0, hn, hcontinuous, hpieces⟩ := γ.property.1
+    have hsub : Icc s t ⊆ Icc a b :=
+      fun u hu => ⟨hs.1.trans hu.1, hu.2.trans ht.2⟩
+    have hpos : ∀ u ∈ Icc s t, 0 < hyperboloidRadius (γ.val u) := by
+      intro u hu
+      exact hp.trans_le (hyperboloid_centered_minimizer_radius_monotone γ hmin
+        hs (hsub hu) hu.1)
+    have hz_ne : ∀ u ∈ Icc s t, z u ≠ 0 := by
+      intro u hu hz
+      have hr := (hyperboloidRadius_properties (γ.val u)).2.2.2.2.mp hz
+      exact (ne_of_gt (hpos u hu)) hr
+    have hn_ne : ∀ u ∈ Icc s t, (‖z u‖ : ℂ) ≠ 0 := by
+      intro u hu
+      exact_mod_cast (norm_ne_zero_iff.mpr (hz_ne u hu))
+    have hd : Monotone d := by
+      intro i j hij
+      exact max_le_max_left s (min_le_min_left t (hc hij))
+    have hd0 : d 0 = s := by
+      change max s (min t (cut 0)) = s
+      rw [h0]
+      exact max_eq_left ((min_le_right _ _).trans hs.1)
+    have hdn : d (Fin.last n) = t := by
+      change max s (min t (cut (Fin.last n))) = t
+      rw [hn, min_eq_left ht.2, max_eq_right hst]
+    have hdmem : ∀ i, d i ∈ Icc s t := by
+      intro i
+      exact ⟨le_max_left _ _, max_le hst (min_le_left _ _)⟩
+    have hcontain (i : Fin n) (hi : d i.castSucc < d i.succ) :
+        cut i.castSucc < cut i.succ ∧
+        cut i.castSucc ≤ d i.castSucc ∧ d i.succ ≤ cut i.succ := by
+      have hold := hc (show i.castSucc ≤ i.succ by change i.val ≤ i.val+1; omega)
+      dsimp only [d] at hi ⊢
+      constructor
+      · by_contra h
+        have he := le_antisymm hold (le_of_not_gt h)
+        simpa only [he, lt_self_iff_false] using hi
+      · constructor <;> grind
+    have hnewsub (i : Fin n) : Icc (d i.castSucc) (d i.succ) ⊆ Icc s t :=
+      fun u hu => ⟨(hdmem i.castSucc).1.trans hu.1, hu.2.trans (hdmem i.succ).2⟩
+    let L : (Fin 3 → ℝ) →L[ℝ] ℂ :=
+      Complex.equivRealProdCLM.symm.toContinuousLinearMap.comp
+        ((ContinuousLinearMap.proj (0 : Fin 3) : (Fin 3 → ℝ) →L[ℝ] ℝ).prod
+          (ContinuousLinearMap.proj (1 : Fin 3) : (Fin 3 → ℝ) →L[ℝ] ℝ))
+    have hL (x : Hyperboloid) : L x.val = hyperboloidSpatial x := by
+      apply Complex.ext <;> simp [L, hyperboloidSpatial]
+    have hspatial : ContMDiff I I ∞ hyperboloidSpatial := by
+      simpa only [Function.comp_def, hL] using
+        L.contDiff.comp_contMDiff contMDiff_hyperboloid_val
+    have hz_cont : ContinuousOn z (Icc s t) :=
+      hspatial.continuous.comp_continuousOn (hcontinuous.mono hsub)
+    have hf_cont : ContinuousOn f (Icc s t) := by
+      exact hz_cont.div (Complex.continuous_ofReal.comp_continuousOn hz_cont.norm) hn_ne
+    have hf_C1 : ∀ i : Fin n, d i.castSucc < d i.succ →
+        ContDiffOn ℝ 1 f (Icc (d i.castSucc) (d i.succ)) := by
+      intro i hi
+      obtain ⟨hold, hleft, hright⟩ := hcontain i hi
+      have hγ := (hpieces i hold).mono
+        (show Icc (d i.castSucc) (d i.succ) ⊆ Icc (cut i.castSucc) (cut i.succ)
+          from fun u hu => ⟨hleft.trans hu.1, hu.2.trans hright⟩)
+      have hz : ContDiffOn ℝ 1 z (Icc (d i.castSucc) (d i.succ)) :=
+        contMDiffOn_iff_contDiffOn.mp
+          ((hspatial.of_le (by simp)).comp_contMDiffOn hγ)
+      have hnrm := hz.norm ℝ (fun u hu => hz_ne u (hnewsub i hu))
+      have hinv := hnrm.inv (fun u hu => norm_ne_zero_iff.mpr (hz_ne u (hnewsub i hu)))
+      have hcast := Complex.ofRealCLM.contDiff.comp_contDiffOn hinv
+      convert hz.mul hcast using 1
+      all_goals
+        first
+        | rfl
+        | funext u
+          simp only [f, div_eq_mul_inv, Function.comp_apply, Complex.ofRealCLM_apply,
+            Pi.inv_apply, Complex.ofReal_inv]
+    have hf_zero : ∀ i : Fin n,
+        ∀ᵐ u ∂volume.restrict (Ioo (d i.castSucc) (d i.succ)), HasDerivAt f (0 : ℂ) u := by
+      intro i
+      by_cases hi : d i.castSucc < d i.succ
+      · obtain ⟨hold, hleft, hright⟩ := hcontain i hi
+        have hset : Ioo (d i.castSucc) (d i.succ) ⊆
+            Ioo (cut i.castSucc) (cut i.succ) ∩
+              {u | 0 < hyperboloidRadius (γ.val u)} := by
+          intro u hu
+          exact ⟨⟨hleft.trans_lt hu.1, hu.2.trans_le hright⟩,
+            hpos u (hnewsub i ⟨hu.1.le, hu.2.le⟩)⟩
+        exact ae_restrict_of_ae_restrict_of_subset hset
+          (hyperboloid_centered_minimizer_direction_deriv γ hmin i)
+      · simp only [Ioo_eq_empty_of_le (le_of_not_gt hi), Measure.restrict_empty]
+        simp
+    exact AbsolutelyContinuousOnInterval.const_of_monotone_subdivision_of_ae_hasDerivAt_zero
+      d hd hd0 hdn hf_cont hf_C1 hf_zero
+  intro s hs t ht hsp htp
+  rcases le_total s t with hst | hts
+  · exact (positiveK3 γ hmin hs ht hst hsp t ⟨hst, le_rfl⟩).symm
+  · exact positiveK3 γ hmin ht hs hts htp s ⟨hts, le_rfl⟩
+
+/-- A centered minimizer has exactly the radial image, allowing pauses and monotone reparametrizations. (G03.e) -/
+theorem hyperboloid_centered_minimizer_image
+    {a b : ℝ} {n : ℕ} {cut : Fin (n + 1) → ℝ} {q : Hyperboloid}
+    (γ : PiecewiseC1CurveOn I a b n cut (hyperboloidPolar 0 0) q)
+    (hmin : piecewiseC1Length hyperboloidMetric γ.val cut = hyperboloidRadius q) :
+  (∀ t ∈ Icc a b,
+    γ.val t = hyperboloidRadialCurve q (hyperboloidRadius (γ.val t))) ∧
+  γ.val '' Icc a b =
+    hyperboloidRadialCurve q '' Icc 0 (hyperboloidRadius q) := by
+  have finalV01 {a b : ℝ} {n : ℕ} {cut : Fin (n+1) → ℝ} {q : Hyperboloid}
+      (γ : PiecewiseC1CurveOn I a b n cut (hyperboloidPolar 0 0) q)
+      (hmin : piecewiseC1Length hyperboloidMetric γ.val cut = hyperboloidRadius q) :
+      let ρ : ℝ → ℝ := fun t => hyperboloidRadius (γ.val t)
+      a ≤ b ∧ ρ a = 0 ∧ ρ b = hyperboloidRadius q ∧
+        AbsolutelyContinuousOnInterval ρ a b ∧
+        (∀ t ∈ Icc a b, ρ t ∈ Icc 0 (hyperboloidRadius q)) ∧
+        Icc 0 (hyperboloidRadius q) ⊆ ρ '' Icc a b := by
+    let ρ : ℝ → ℝ := fun t => hyperboloidRadius (γ.val t)
+    have hab : a ≤ b := by
+      simpa only [γ.property.1.2.1, γ.property.1.2.2.1] using
+        γ.property.1.1 (show (0 : Fin (n+1)) ≤ Fin.last n by change 0 ≤ n; omega)
+    have h0 : ρ a = 0 := by
+      simp only [ρ, γ.property.2.1, hyperboloidPolar_radius (le_refl 0) 0]
+    have hR : ρ b = hyperboloidRadius q := by simp only [ρ, γ.property.2.2]
+    have hac := hyperboloidRadius_absolutelyContinuous γ.property.1
+    have hm := hyperboloid_centered_minimizer_radius_monotone γ hmin
+    refine ⟨hab, h0, hR, hac, ?_, ?_⟩
+    · intro t ht
+      constructor
+      · exact (hyperboloidRadius_properties (γ.val t)).1
+      · simpa only [ρ, γ.property.2.2] using hm ht (show b ∈ Icc a b from ⟨hab, le_rfl⟩) ht.2
+    · have hc : ContinuousOn ρ (Icc a b) := by
+        simpa only [uIcc_of_le hab] using hac.continuousOn
+      simpa only [h0, hR] using intermediate_value_Icc hab hc
+  have finalV02 (x q : Hyperboloid) (hx : 0 < hyperboloidRadius x)
+      (hq : 0 < hyperboloidRadius q)
+      (hd : hyperboloidSpatial x / (‖hyperboloidSpatial x‖ : ℂ) =
+        hyperboloidSpatial q / (‖hyperboloidSpatial q‖ : ℂ)) :
+      x = hyperboloidRadialCurve q (hyperboloidRadius x) := by
+    have hdx := (hyperboloidPolar_center_direction 0 x).2 hx
+    have hdq := (hyperboloidPolar_center_direction 0 q).2 hq
+    rw [hdx, hdq] at hd
+    have hc : Real.cos (Complex.arg (hyperboloidSpatial x)) =
+        Real.cos (Complex.arg (hyperboloidSpatial q)) := by
+      simpa [← Complex.ofReal_cos, ← Complex.ofReal_sin] using congrArg Complex.re hd
+    have hs : Real.sin (Complex.arg (hyperboloidSpatial x)) =
+        Real.sin (Complex.arg (hyperboloidSpatial q)) := by
+      simpa [← Complex.ofReal_cos, ← Complex.ofReal_sin] using congrArg Complex.im hd
+    rw [hyperboloidRadialCurve, if_neg (ne_of_gt hq)]
+    conv_lhs => rw [← hyperboloidPolar_arg x]
+    apply Subtype.ext
+    simp only [hyperboloidPolar, hyperboloidPolarCoords, hc, hs]
+  have finalV03 (x q : Hyperboloid) (hx : hyperboloidRadius x = 0) :
+      x = hyperboloidRadialCurve q (hyperboloidRadius x) := by
+    have hxval := (hyperboloidRadius_properties x).2.2.2.1.mp hx
+    rw [hx, hyperboloidRadialCurve]
+    split_ifs <;> apply Subtype.ext
+    · exact hxval.trans (hyperboloidPolar_center_direction 0 q).1.symm
+    · exact hxval.trans (hyperboloidPolar_center_direction
+        (Complex.arg (hyperboloidSpatial q)) q).1.symm
+  have finalV04 {a b : ℝ} {n : ℕ} {cut : Fin (n+1) → ℝ} {q : Hyperboloid}
+      (γ : PiecewiseC1CurveOn I a b n cut (hyperboloidPolar 0 0) q)
+      (hmin : piecewiseC1Length hyperboloidMetric γ.val cut = hyperboloidRadius q)
+      {t : ℝ} (ht : t ∈ Icc a b) (hp : 0 < hyperboloidRadius (γ.val t)) :
+      0 < hyperboloidRadius q ∧
+        hyperboloidSpatial (γ.val t) / (‖hyperboloidSpatial (γ.val t)‖ : ℂ) =
+          hyperboloidSpatial q / (‖hyperboloidSpatial q‖ : ℂ) := by
+    have hb : b ∈ Icc a b := ⟨ht.1.trans ht.2, le_rfl⟩
+    have hq : 0 < hyperboloidRadius q := by
+      have hle := hyperboloid_centered_minimizer_radius_monotone γ hmin ht hb ht.2
+      change hyperboloidRadius (γ.val t) ≤ hyperboloidRadius (γ.val b) at hle
+      rw [γ.property.2.2] at hle
+      exact hp.trans_le hle
+    refine ⟨hq, ?_⟩
+    have hqb : 0 < hyperboloidRadius (γ.val b) := by simpa only [γ.property.2.2] using hq
+    simpa only [γ.property.2.2] using
+      hyperboloid_centered_minimizer_direction γ hmin t ht b hb hp hqb
+  have finalV05 {a b : ℝ} {q : Hyperboloid} {γ : ℝ → Hyperboloid}
+      (hbound : ∀ t ∈ Icc a b, hyperboloidRadius (γ t) ∈ Icc 0 (hyperboloidRadius q))
+      (hsurj : Icc 0 (hyperboloidRadius q) ⊆
+        (fun t => hyperboloidRadius (γ t)) '' Icc a b)
+      (hpoint : ∀ t ∈ Icc a b, γ t = hyperboloidRadialCurve q (hyperboloidRadius (γ t))) :
+      γ '' Icc a b = hyperboloidRadialCurve q '' Icc 0 (hyperboloidRadius q) := by
+    apply Set.Subset.antisymm
+    · rintro x ⟨t, ht, rfl⟩
+      exact ⟨hyperboloidRadius (γ t), hbound t ht, (hpoint t ht).symm⟩
+    · rintro x ⟨r, hr, rfl⟩
+      obtain ⟨t, ht, he⟩ := hsurj hr
+      exact ⟨t, ht, (hpoint t ht).trans (congrArg (hyperboloidRadialCurve q) he)⟩
+  have hpoint : ∀ t ∈ Icc a b,
+      γ.val t = hyperboloidRadialCurve q (hyperboloidRadius (γ.val t)) := by
+    intro t ht
+    rcases eq_or_lt_of_le (hyperboloidRadius_properties (γ.val t)).1 with hz | hp
+    · exact finalV03 (γ.val t) q hz.symm
+    · have hd := finalV04 γ hmin ht hp
+      exact finalV02 (γ.val t) q hp hd.1 hd.2
+  have h := finalV01 γ hmin
+  exact ⟨hpoint, finalV05 h.2.2.2.2.1 h.2.2.2.2.2 hpoint⟩
+
+/-- A positive-radius minimizer on its radial interval with unit intrinsic speed equals the radial parametrization. (G03.e) -/
+theorem hyperboloid_centered_unitSpeed_unique
+    (q : Hyperboloid) (hq : 0 < hyperboloidRadius q)
+    {n : ℕ} {cut : Fin (n + 1) → ℝ}
+    (γ : PiecewiseC1CurveOn I 0 (hyperboloidRadius q) n cut (hyperboloidPolar 0 0) q)
+    (hmin : piecewiseC1Length hyperboloidMetric γ.val cut = hyperboloidRadius q)
+    (hunit :
+      letI : Bundle.RiemannianBundle
+          (fun p : Hyperboloid => TangentSpace I p) :=
+        ⟨hyperboloidMetric.toRiemannianMetric⟩
+      ∀ i : Fin n, ∀ t ∈ Ioo (cut i.castSucc) (cut i.succ),
+        ‖mfderivWithin 𝓘(ℝ, ℝ) I γ.val
+          (Icc (cut i.castSucc) (cut i.succ)) t (1 : ℝ)‖ = 1) :
+  ∀ t ∈ Icc 0 (hyperboloidRadius q), γ.val t = hyperboloidRadialCurve q t := by
+  have finalV01 {a b : ℝ} {n : ℕ} {cut : Fin (n+1) → ℝ} {q : Hyperboloid}
+      (γ : PiecewiseC1CurveOn I a b n cut (hyperboloidPolar 0 0) q)
+      (hmin : piecewiseC1Length hyperboloidMetric γ.val cut = hyperboloidRadius q) :
+      let ρ : ℝ → ℝ := fun t => hyperboloidRadius (γ.val t)
+      a ≤ b ∧ ρ a = 0 ∧ ρ b = hyperboloidRadius q ∧
+        AbsolutelyContinuousOnInterval ρ a b ∧
+        (∀ t ∈ Icc a b, ρ t ∈ Icc 0 (hyperboloidRadius q)) ∧
+        Icc 0 (hyperboloidRadius q) ⊆ ρ '' Icc a b := by
+    let ρ : ℝ → ℝ := fun t => hyperboloidRadius (γ.val t)
+    have hab : a ≤ b := by
+      simpa only [γ.property.1.2.1, γ.property.1.2.2.1] using
+        γ.property.1.1 (show (0 : Fin (n+1)) ≤ Fin.last n by change 0 ≤ n; omega)
+    have h0 : ρ a = 0 := by
+      simp only [ρ, γ.property.2.1, hyperboloidPolar_radius (le_refl 0) 0]
+    have hR : ρ b = hyperboloidRadius q := by simp only [ρ, γ.property.2.2]
+    have hac := hyperboloidRadius_absolutelyContinuous γ.property.1
+    have hm := hyperboloid_centered_minimizer_radius_monotone γ hmin
+    refine ⟨hab, h0, hR, hac, ?_, ?_⟩
+    · intro t ht
+      constructor
+      · exact (hyperboloidRadius_properties (γ.val t)).1
+      · simpa only [ρ, γ.property.2.2] using hm ht (show b ∈ Icc a b from ⟨hab, le_rfl⟩) ht.2
+    · have hc : ContinuousOn ρ (Icc a b) := by
+        simpa only [uIcc_of_le hab] using hac.continuousOn
+      simpa only [h0, hR] using intermediate_value_Icc hab hc
+  have finalV06 (q : Hyperboloid) (hq : 0 < hyperboloidRadius q)
+      {n : ℕ} {cut : Fin (n+1) → ℝ}
+      (γ : PiecewiseC1CurveOn I 0 (hyperboloidRadius q) n cut (hyperboloidPolar 0 0) q)
+      (hmin : piecewiseC1Length hyperboloidMetric γ.val cut = hyperboloidRadius q)
+      (hunit : letI : Bundle.RiemannianBundle (fun p : Hyperboloid => TangentSpace I p) :=
+        ⟨hyperboloidMetric.toRiemannianMetric⟩
+        ∀ i : Fin n, ∀ t ∈ Ioo (cut i.castSucc) (cut i.succ),
+          ‖mfderivWithin 𝓘(ℝ, ℝ) I γ.val (Icc (cut i.castSucc) (cut i.succ)) t (1 : ℝ)‖ = 1) :
+      ∀ i : Fin n, ∀ᵐ t ∂volume.restrict (Ioo (cut i.castSucc) (cut i.succ)),
+        deriv (fun s => hyperboloidRadius (γ.val s)) t = 1 := by
+    letI : Bundle.RiemannianBundle (fun p : Hyperboloid => TangentSpace I p) :=
+      ⟨hyperboloidMetric.toRiemannianMetric⟩
+    intro i
+    have he := (hyperboloid_centered_minimizer_losses γ hmin).2.2.2 i
+    have hs : Ioo (cut i.castSucc) (cut i.succ) ⊆ Ioc (cut i.castSucc) (cut i.succ) :=
+      fun t ht => ⟨ht.1, ht.2.le⟩
+    filter_upwards [ae_restrict_of_ae_restrict_of_subset hs he,
+      ae_restrict_mem measurableSet_Ioo] with t ht hmem
+    exact ht.2.symm.trans (ht.1.symm.trans (hunit i t hmem))
+  have finalV07 {ρ : ℝ → ℝ} {R t : ℝ} (hR : 0 ≤ R)
+      (hac : AbsolutelyContinuousOnInterval ρ 0 R) (h0 : ρ 0 = 0)
+      (hderiv : ∀ᵐ s ∂volume.restrict (Icc 0 R), deriv ρ s = 1)
+      (ht : t ∈ Icc 0 R) : ρ t = t := by
+    have hsub : Icc 0 t ⊆ Icc 0 R := fun s hs => ⟨hs.1, hs.2.trans ht.2⟩
+    have hus : uIcc 0 t ⊆ uIcc 0 R := by
+      simpa only [uIcc_of_le ht.1, uIcc_of_le hR] using hsub
+    have hsmall := hac.mono hus
+    have hclosed := ae_restrict_of_ae_restrict_of_subset hsub hderiv
+    have hopen : ∀ᵐ s ∂volume.restrict (uIoc 0 t), deriv ρ s = 1 := by
+      simpa only [uIoc_of_le ht.1, restrict_Ioc_eq_restrict_Icc] using hclosed
+    have hi : (∫ s in 0..t, deriv ρ s) = t := by
+      calc
+        _ = ∫ s in 0..t, (1 : ℝ) := intervalIntegral.integral_congr_ae_restrict hopen
+        _ = t := by simp
+    rw [hsmall.integral_deriv_eq_sub, h0, sub_zero] at hi
+    exact hi
+  have finalV06a (q : Hyperboloid) (hq : 0 < hyperboloidRadius q)
+      {n : ℕ} {cut : Fin (n+1) → ℝ}
+      (γ : PiecewiseC1CurveOn I 0 (hyperboloidRadius q) n cut (hyperboloidPolar 0 0) q)
+      (hmin : piecewiseC1Length hyperboloidMetric γ.val cut = hyperboloidRadius q)
+      (hunit : letI : Bundle.RiemannianBundle (fun p : Hyperboloid => TangentSpace I p) :=
+        ⟨hyperboloidMetric.toRiemannianMetric⟩
+        ∀ i : Fin n, ∀ t ∈ Ioo (cut i.castSucc) (cut i.succ),
+          ‖mfderivWithin 𝓘(ℝ, ℝ) I γ.val (Icc (cut i.castSucc) (cut i.succ)) t (1 : ℝ)‖ = 1) :
+      ∀ᵐ t ∂volume.restrict (Icc 0 (hyperboloidRadius q)),
+        deriv (fun s => hyperboloidRadius (γ.val s)) t = 1 := by
+    have hfirst := γ.property.1.2.1
+    have hlast := γ.property.1.2.2.1
+    have hcover : ∀ t ∈ Icc (0 : ℝ) (hyperboloidRadius q), t ∉ range cut →
+        ∃ i : Fin n, t ∈ Ioo (cut i.castSucc) (cut i.succ) := by
+      let cN : ℕ → ℝ := fun k =>
+        if hk : k < n + 1 then cut ⟨k, hk⟩ else cut (Fin.last n)
+      have hN0 : cN 0 = cut 0 := by simp [cN]
+      have hNlast : cN n = cut (Fin.last n) := by simp [cN, Fin.last]
+      have hNleft : ∀ i : Fin n, cN i.val = cut i.castSucc := by
+        intro i
+        simp only [cN, dif_pos (show i.val < n + 1 by omega)]
+        rfl
+      have hNright : ∀ i : Fin n, cN (i.val + 1) = cut i.succ := by
+        intro i
+        simp only [cN, dif_pos (show i.val + 1 < n + 1 by omega)]
+        rfl
+      have hNcover : Ico (cN 0) (cN n) ⊆
+          ⋃ k ∈ Finset.range n, Ico (cN k) (cN (k + 1)) :=
+        Ico_subset_biUnion_Ico n cN
+      have hindex : (⋃ k ∈ Finset.range n, Ico (cN k) (cN (k + 1))) =
+          ⋃ i : Fin n, Ico (cut i.castSucc) (cut i.succ) := by
+        ext t
+        constructor
+        · intro ht
+          rcases mem_iUnion.1 ht with ⟨k, hk⟩
+          rcases mem_iUnion.1 hk with ⟨hk, ht⟩
+          let i : Fin n := ⟨k, Finset.mem_range.1 hk⟩
+          exact mem_iUnion.2 ⟨i, by simpa only [← hNleft i, ← hNright i] using ht⟩
+        · intro ht
+          rcases mem_iUnion.1 ht with ⟨i, ht⟩
+          exact mem_iUnion.2 ⟨i.val, mem_iUnion.2 ⟨Finset.mem_range.2 i.isLt,
+            by simpa only [hNleft i, hNright i] using ht⟩⟩
+      intro t ht hnot
+      have htb : t < (hyperboloidRadius q) := lt_of_le_of_ne ht.2 (by
+        intro h
+        exact hnot ⟨Fin.last n, hlast.trans h.symm⟩)
+      have hmem : t ∈ Ico (cN 0) (cN n) := by
+        simpa only [hN0, hNlast, hfirst, hlast] using ⟨ht.1, htb⟩
+      have hm := hNcover hmem
+      rw [hindex] at hm
+      rcases mem_iUnion.1 hm with ⟨i, hi⟩
+      exact ⟨i, lt_of_le_of_ne hi.1 (by
+        intro heq
+        exact hnot ⟨i.castSucc, heq⟩), hi.2⟩
+
+    have hpiece := finalV06 q hq γ hmin hunit
+    have hall : ∀ᵐ t ∂volume, ∀ i : Fin n,
+        t ∈ Ioo (cut i.castSucc) (cut i.succ) →
+          deriv (fun s => hyperboloidRadius (γ.val s)) t = 1 :=
+      ae_all_iff.mpr (fun i => (ae_restrict_iff' measurableSet_Ioo).mp (hpiece i))
+    have hnot : ∀ᵐ t ∂volume, t ∉ range cut :=
+      measure_eq_zero_iff_ae_notMem.mp ((Set.finite_range cut).measure_zero volume)
+    apply (ae_restrict_iff' measurableSet_Icc).mpr
+    filter_upwards [hall, hnot] with t ht hn
+    intro hmem
+    obtain ⟨i, hi⟩ := hcover t hmem hn
+    exact ht i hi
+  have h := finalV01 γ hmin
+  have hderiv := finalV06a q hq γ hmin hunit
+  intro t ht
+  have hr := finalV07 (hyperboloidRadius_properties q).1 h.2.2.2.1 h.2.1 hderiv ht
+  exact ((hyperboloid_centered_minimizer_image γ hmin).1 t ht).trans
+    (congrArg (hyperboloidRadialCurve q) hr)
+
+/-- A zero-radius centered minimizer is constant, with no direction or plane choice. (G03.e) -/
+theorem hyperboloid_centered_minimizer_zero
+    {a b : ℝ} {n : ℕ} {cut : Fin (n + 1) → ℝ} {q : Hyperboloid}
+    (γ : PiecewiseC1CurveOn I a b n cut (hyperboloidPolar 0 0) q)
+    (hmin : piecewiseC1Length hyperboloidMetric γ.val cut = hyperboloidRadius q)
+    (hq : hyperboloidRadius q = 0) :
+  ∀ t ∈ Icc a b, γ.val t = hyperboloidPolar 0 0 := by
+  intro t ht
+  have hb : b ∈ Icc a b := ⟨ht.1.trans ht.2, le_rfl⟩
+  have hle := hyperboloid_centered_minimizer_radius_monotone γ hmin ht hb ht.2
+  change hyperboloidRadius (γ.val t) ≤ hyperboloidRadius (γ.val b) at hle
+  rw [γ.property.2.2, hq] at hle
+  have hz := le_antisymm hle (hyperboloidRadius_properties (γ.val t)).1
+  apply Subtype.ext
+  exact ((hyperboloidRadius_properties (γ.val t)).2.2.2.1.mp hz).trans
+    (hyperboloidPolar_center_direction 0 q).1.symm
 
 end PolarRadial
 

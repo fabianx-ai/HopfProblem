@@ -8251,3 +8251,36 @@ is an evidence command rather than library content.
 
 #check AbsolutelyContinuousOnInterval.const_of_monotone_subdivision_of_ae_hasDerivAt_zero
 #print axioms AbsolutelyContinuousOnInterval.const_of_monotone_subdivision_of_ae_hasDerivAt_zero
+
+#check Hyperbolic.hyperboloidRadialCurve
+#print axioms Hyperbolic.hyperboloidRadialCurve
+
+#check Hyperbolic.hyperboloidRadialCurve_properties
+#print axioms Hyperbolic.hyperboloidRadialCurve_properties
+
+#check Hyperbolic.hyperboloidRadialCurve_length
+#print axioms Hyperbolic.hyperboloidRadialCurve_length
+
+#check Hyperbolic.hyperboloid_centered_piecewiseC1EDist
+#print axioms Hyperbolic.hyperboloid_centered_piecewiseC1EDist
+
+#check Hyperbolic.hyperboloid_centered_minimizer_losses
+#print axioms Hyperbolic.hyperboloid_centered_minimizer_losses
+
+#check Hyperbolic.hyperboloid_centered_minimizer_radius_monotone
+#print axioms Hyperbolic.hyperboloid_centered_minimizer_radius_monotone
+
+#check Hyperbolic.hyperboloid_centered_minimizer_direction_deriv
+#print axioms Hyperbolic.hyperboloid_centered_minimizer_direction_deriv
+
+#check Hyperbolic.hyperboloid_centered_minimizer_direction
+#print axioms Hyperbolic.hyperboloid_centered_minimizer_direction
+
+#check Hyperbolic.hyperboloid_centered_minimizer_image
+#print axioms Hyperbolic.hyperboloid_centered_minimizer_image
+
+#check Hyperbolic.hyperboloid_centered_unitSpeed_unique
+#print axioms Hyperbolic.hyperboloid_centered_unitSpeed_unique
+
+#check Hyperbolic.hyperboloid_centered_minimizer_zero
+#print axioms Hyperbolic.hyperboloid_centered_minimizer_zero
