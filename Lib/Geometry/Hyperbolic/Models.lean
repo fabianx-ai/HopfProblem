@@ -5501,4 +5501,71 @@ theorem modelLengthMetric_isometries :
 
 end LengthTopology
 
+section CenteredLengthBalls
+
+open Set
+
+/-- For a nonnegative radius, the length-distance sublevel about the polar center is
+exactly the time-coordinate sublevel. Textbook centered-ball criterion (lines
+120–121). -/
+theorem hyperboloidLengthDist_center_le_iff (q : Hyperboloid) (R : ℝ)
+    (hR : 0 ≤ R) :
+    hyperboloidLengthDist (hyperboloidPolar 0 0) q ≤ R ↔
+      q.val 2 ≤ Real.cosh R := by
+  have hc : (hyperboloidPolar 0 0).val = ![0, 0, 1] := by
+    simp [hyperboloidPolar, hyperboloidPolarCoords]
+  have hpair : -lorentzBilinear (hyperboloidPolar 0 0).val q.val = q.val 2 := by
+    rw [hc]
+    simp [lorentzBilinear_apply]
+  have hd := (hyperboloidLengthDist_nonneg_eq_zero (hyperboloidPolar 0 0) q).1
+  have hcosh := (hyperboloidLengthDist_cosh (hyperboloidPolar 0 0) q).1
+  rw [hpair] at hcosh
+  rw [← hcosh, Real.cosh_le_cosh, abs_of_nonneg hd, abs_of_nonneg hR]
+
+/-- A point in a centered length-distance sublevel has time coordinate between one and
+cosh of the radius, and spatial squared norm at most sinh squared. Textbook
+centered-ball bounds (lines 120–121). -/
+theorem hyperboloidLengthDist_center_bounds (q : Hyperboloid) (R : ℝ)
+    (hR : 0 ≤ R)
+    (hq : hyperboloidLengthDist (hyperboloidPolar 0 0) q ≤ R) :
+    1 ≤ q.val 2 ∧ q.val 2 ≤ Real.cosh R ∧
+      q.val 0 ^ 2 + q.val 1 ^ 2 ≤ Real.sinh R ^ 2 := by
+  have heq := q.property.1
+  have ht := q.property.2
+  have hlo : 1 ≤ q.val 2 := by
+    by_contra h
+    have hlt : q.val 2 < 1 := lt_of_not_ge h
+    have hprod := mul_pos (sub_pos.mpr hlt) (add_pos zero_lt_one ht)
+    nlinarith [sq_nonneg (q.val 0), sq_nonneg (q.val 1)]
+  have hhi := (Hyperbolic.hyperboloidLengthDist_center_le_iff q R hR).mp hq
+  have hprod : 0 ≤ (Real.cosh R - q.val 2) * (Real.cosh R + q.val 2) :=
+    mul_nonneg (sub_nonneg.mpr hhi) (add_nonneg (Real.cosh_pos R).le ht.le)
+  refine ⟨hlo, hhi, ?_⟩
+  nlinarith [Real.cosh_sq_sub_sinh_sq R]
+
+/-- The zero-radius centered length-distance sublevel is the singleton center. Textbook
+centered-ball zero case (lines 120–121). -/
+theorem hyperboloidLengthDist_center_sublevel_zero :
+    {q : Hyperboloid | hyperboloidLengthDist (hyperboloidPolar 0 0) q ≤ 0} =
+      {hyperboloidPolar 0 0} := by
+  ext q
+  change hyperboloidLengthDist (hyperboloidPolar 0 0) q ≤ 0 ↔ q = hyperboloidPolar 0 0
+  have h := hyperboloidLengthDist_nonneg_eq_zero (hyperboloidPolar 0 0) q
+  constructor
+  · intro hq
+    exact (h.2.1.mp (le_antisymm hq h.1)).symm
+  · intro hq
+    exact (h.2.1.mpr hq.symm).le
+
+/-- A negative-radius centered length-distance sublevel is empty. Textbook centered-ball
+negative case (lines 120–121). -/
+theorem hyperboloidLengthDist_center_sublevel_neg (R : ℝ) (hR : R < 0) :
+    {q : Hyperboloid | hyperboloidLengthDist (hyperboloidPolar 0 0) q ≤ R} = ∅ := by
+  apply Set.eq_empty_iff_forall_notMem.mpr
+  intro q hq
+  have hd := (hyperboloidLengthDist_nonneg_eq_zero (hyperboloidPolar 0 0) q).1
+  exact (not_le_of_gt hR) (le_trans hd hq)
+
+end CenteredLengthBalls
+
 end Hyperbolic

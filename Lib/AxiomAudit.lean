@@ -8401,3 +8401,15 @@ is an evidence command rather than library content.
 
 #check Hyperbolic.modelLengthMetric_isometries
 #print axioms Hyperbolic.modelLengthMetric_isometries
+
+#check Hyperbolic.hyperboloidLengthDist_center_le_iff
+#print axioms Hyperbolic.hyperboloidLengthDist_center_le_iff
+
+#check Hyperbolic.hyperboloidLengthDist_center_bounds
+#print axioms Hyperbolic.hyperboloidLengthDist_center_bounds
+
+#check Hyperbolic.hyperboloidLengthDist_center_sublevel_zero
+#print axioms Hyperbolic.hyperboloidLengthDist_center_sublevel_zero
+
+#check Hyperbolic.hyperboloidLengthDist_center_sublevel_neg
+#print axioms Hyperbolic.hyperboloidLengthDist_center_sublevel_neg
