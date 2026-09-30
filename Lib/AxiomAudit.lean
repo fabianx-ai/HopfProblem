@@ -8158,3 +8158,9 @@ is an evidence command rather than library content.
 
 #check Hyperbolic.centerHyperboloid_curveFamily_length
 #print axioms Hyperbolic.centerHyperboloid_curveFamily_length
+
+#check AbsolutelyContinuousOnInterval.trans_of_le
+#print axioms AbsolutelyContinuousOnInterval.trans_of_le
+
+#check AbsolutelyContinuousOnInterval.of_monotone_subdivision
+#print axioms AbsolutelyContinuousOnInterval.of_monotone_subdivision
