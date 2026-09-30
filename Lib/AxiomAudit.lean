@@ -7936,3 +7936,33 @@ is an evidence command rather than library content.
 
 #check Hyperbolic.upperHalfPlaneDiffeomorphHyperboloid_curveFamily_length
 #print axioms Hyperbolic.upperHalfPlaneDiffeomorphHyperboloid_curveFamily_length
+
+#check Manifold.piecewiseC1EDist
+#print axioms Manifold.piecewiseC1EDist
+
+#check Manifold.piecewiseC1EDist_le_pathELength
+#print axioms Manifold.piecewiseC1EDist_le_pathELength
+
+#check Manifold.piecewiseC1EDist_le_riemannianEDist
+#print axioms Manifold.piecewiseC1EDist_le_riemannianEDist
+
+#check Manifold.IsPiecewiseC1On.riemannianEDist_le_piece
+#print axioms Manifold.IsPiecewiseC1On.riemannianEDist_le_piece
+
+#check Manifold.IsPiecewiseC1On.riemannianEDist_le_length
+#print axioms Manifold.IsPiecewiseC1On.riemannianEDist_le_length
+
+#check Manifold.riemannianEDist_le_piecewiseC1EDist
+#print axioms Manifold.riemannianEDist_le_piecewiseC1EDist
+
+#check Manifold.piecewiseC1EDist_eq_riemannianEDist
+#print axioms Manifold.piecewiseC1EDist_eq_riemannianEDist
+
+#check Manifold.piecewiseC1EDist_eq_top_iff
+#print axioms Manifold.piecewiseC1EDist_eq_top_iff
+
+#check Manifold.piecewiseC1EDist_eq_top_iff_no_c1
+#print axioms Manifold.piecewiseC1EDist_eq_top_iff_no_c1
+
+#check Manifold.piecewiseC1EDist_finite_of_curve
+#print axioms Manifold.piecewiseC1EDist_finite_of_curve

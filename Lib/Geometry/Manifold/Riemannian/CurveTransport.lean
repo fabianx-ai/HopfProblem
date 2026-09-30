@@ -1718,4 +1718,240 @@ theorem PiecewiseC1CurveOn.mapEquiv_length
   · intro η t
     exact PiecewiseC1CurveOn.mapEquiv_symm_apply e η t
 
+
+section DistanceConvention
+
+open Set MeasureTheory Filter
+open scoped BigOperators
+
+variable {E : Type uE} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  {H : Type uH} [TopologicalSpace H] {I : ModelWithCorners ℝ E H}
+  {M : Type uM} [TopologicalSpace M] [ChartedSpace H M]
+
+
+private def conventionTwoCut (a b : ℝ) (i : Fin 2) : ℝ := if i = 0 then a else b
+
+private theorem conventionSinglePiece {γ : ℝ → M} {a b : ℝ} (hab : a ≤ b)
+    (hγ : ContMDiffOn 𝓘(ℝ, ℝ) I 1 γ (Icc a b)) :
+    IsPiecewiseC1On I γ a b 1 (conventionTwoCut a b) := by
+  refine ⟨?_, by simp [conventionTwoCut], by simp [conventionTwoCut], hγ.continuousOn, ?_⟩
+  · intro i j hij
+    fin_cases i <;> fin_cases j <;> simp_all [conventionTwoCut]
+  · intro i hi
+    fin_cases i
+    simpa [conventionTwoCut] using hγ
+
+/-- The extended infimum of finite-piece C1 lengths over all intervals, weak subdivisions and exact endpoint curves (CC1). The length remains the finite real piece sum embedded in ENNReal. -/
+def piecewiseC1EDist
+    [FiniteDimensional ℝ E] [IsManifold I ∞ M]
+    (G : Bundle.ContMDiffRiemannianMetric I ∞ E (fun x : M => TangentSpace I x))
+    (x y : M) : ℝ≥0∞ :=
+  ⨅ (a : ℝ) (b : ℝ) (n : ℕ) (cut : Fin (n+1) → ℝ)
+    (γ : PiecewiseC1CurveOn I a b n cut x y),
+      ENNReal.ofReal (piecewiseC1Length G γ.val cut)
+
+/-- A C1 curve on a closed interval is a one-piece competitor of exactly the same length, so bounds the finite-piece infimum (CC1). No globally C1 extension is required. -/
+theorem piecewiseC1EDist_le_pathELength
+    [FiniteDimensional ℝ E] [IsManifold I ∞ M]
+    (G : Bundle.ContMDiffRiemannianMetric I ∞ E (fun x : M => TangentSpace I x))
+    {γ : ℝ → M} {a b : ℝ} (hab : a ≤ b)
+    (hγ : ContMDiffOn 𝓘(ℝ, ℝ) I 1 γ (Icc a b)) :
+    letI : Bundle.RiemannianBundle (fun x : M => TangentSpace I x) :=
+      ⟨G.toRiemannianMetric⟩
+    piecewiseC1EDist G (γ a) (γ b) ≤ pathELength I γ a b := by
+  letI : Bundle.RiemannianBundle (fun x : M => TangentSpace I x) :=
+    ⟨G.toRiemannianMetric⟩
+  let q : PiecewiseC1CurveOn I a b 1 (conventionTwoCut a b) (γ a) (γ b) :=
+    ⟨γ, conventionSinglePiece hab hγ, rfl, rfl⟩
+  have hle : piecewiseC1EDist G (γ a) (γ b) ≤
+      ENNReal.ofReal (piecewiseC1Length G γ (conventionTwoCut a b)) :=
+    iInf_le_of_le a (iInf_le_of_le b (iInf_le_of_le 1
+      (iInf_le_of_le (conventionTwoCut a b) (iInf_le_of_le q le_rfl))))
+  rcases (conventionSinglePiece hab hγ).speed_length G with
+    ⟨hi, hii, hm, hint, hr, hs, hn, hpi, hpf, hsum, hwhole, hpath, hfinite⟩
+  exact hle.trans_eq hpath.symm
+
+/-- The finite-piece infimum is at most the standard C1-path infimum, by the same-length one-piece inclusion (CC2), including an empty comparison family. -/
+theorem piecewiseC1EDist_le_riemannianEDist
+    [FiniteDimensional ℝ E] [IsManifold I ∞ M]
+    (G : Bundle.ContMDiffRiemannianMetric I ∞ E (fun x : M => TangentSpace I x))
+    (x y : M) :
+    letI : Bundle.RiemannianBundle (fun x : M => TangentSpace I x) :=
+      ⟨G.toRiemannianMetric⟩
+    piecewiseC1EDist G x y ≤ riemannianEDist I x y := by
+  letI : Bundle.RiemannianBundle (fun x : M => TangentSpace I x) :=
+    ⟨G.toRiemannianMetric⟩
+  rw [riemannianEDist]
+  refine le_iInf fun γ => le_iInf fun hγ => ?_
+  have hc : ContMDiffOn 𝓘(ℝ, ℝ) I 1 (γ ∘ projIcc 0 1 zero_le_one) (Icc 0 1) :=
+    contMDiffOn_comp_projIcc_iff.mpr hγ
+  have h := piecewiseC1EDist_le_pathELength G zero_le_one hc
+  have he := lintegral_norm_mfderiv_Icc_eq_pathELength_projIcc (I := I) (γ := γ)
+  simpa using h.trans_eq he.symm
+
+/-- Every weak piece bounds the C1 distance between its endpoint values by its extended length (CC3). A repeated piece uses only the zero diagonal and zero singleton integral. -/
+theorem IsPiecewiseC1On.riemannianEDist_le_piece
+    [FiniteDimensional ℝ E] [IsManifold I ∞ M]
+    (G : Bundle.ContMDiffRiemannianMetric I ∞ E (fun x : M => TangentSpace I x))
+    {γ : ℝ → M} {a b : ℝ} {n : ℕ} {cut : Fin (n+1) → ℝ}
+    (hγ : IsPiecewiseC1On I γ a b n cut) (i : Fin n) :
+    letI : Bundle.RiemannianBundle (fun x : M => TangentSpace I x) :=
+      ⟨G.toRiemannianMetric⟩
+    riemannianEDist I (γ (cut i.castSucc)) (γ (cut i.succ)) ≤
+      ∫⁻ t in Icc (cut i.castSucc) (cut i.succ),
+        ‖mfderivWithin 𝓘(ℝ, ℝ) I γ (Icc (cut i.castSucc) (cut i.succ)) t (1 : ℝ)‖ₑ := by
+  letI : Bundle.RiemannianBundle (fun x : M => TangentSpace I x) :=
+    ⟨G.toRiemannianMetric⟩
+  rcases lt_or_eq_of_le (hγ.1 (show i.castSucc ≤ i.succ by
+    change i.val ≤ i.val + 1
+    omega)) with hi | hi
+  · exact (riemannianEDist_le_pathELength (hγ.2.2.2.2 i hi) rfl rfl hi.le).trans_eq
+      pathELength_eq_lintegral_mfderivWithin_Icc
+  · simp [hi, riemannianEDist_self]
+
+/-- The finite triangle induction bounds C1 distance by the full finite-piece length (CC4). The empty base, repeated pieces and literal first/last endpoints are included. -/
+theorem IsPiecewiseC1On.riemannianEDist_le_length
+    [FiniteDimensional ℝ E] [IsManifold I ∞ M]
+    (G : Bundle.ContMDiffRiemannianMetric I ∞ E (fun x : M => TangentSpace I x))
+    {γ : ℝ → M} {a b : ℝ} {n : ℕ} {cut : Fin (n+1) → ℝ}
+    (hγ : IsPiecewiseC1On I γ a b n cut) :
+    letI : Bundle.RiemannianBundle (fun x : M => TangentSpace I x) :=
+      ⟨G.toRiemannianMetric⟩
+    riemannianEDist I (γ a) (γ b) ≤ ENNReal.ofReal (piecewiseC1Length G γ cut) := by
+  letI : Bundle.RiemannianBundle (fun x : M => TangentSpace I x) :=
+    ⟨G.toRiemannianMetric⟩
+  have chain : ∀ (k : ℕ) (p : Fin (k+1) → M) (l : Fin k → ℝ≥0∞),
+      (∀ i, riemannianEDist I (p i.castSucc) (p i.succ) ≤ l i) →
+      riemannianEDist I (p 0) (p (Fin.last k)) ≤ ∑ i, l i := by
+    intro k
+    induction k with
+    | zero =>
+      intro p l hedge
+      simp [riemannianEDist_self]
+    | succ k ih =>
+      intro p l hedge
+      have hIH := ih (fun i => p i.castSucc) (fun i => l i.castSucc) (fun i => by
+        simpa only [show i.succ.castSucc = i.castSucc.succ from Fin.ext rfl]
+          using hedge i.castSucc)
+      calc
+        riemannianEDist I (p 0) (p (Fin.last (k+1))) ≤
+            riemannianEDist I (p 0) (p (Fin.last k).castSucc) +
+            riemannianEDist I (p (Fin.last k).castSucc) (p (Fin.last (k+1))) :=
+          riemannianEDist_triangle
+        _ ≤ (∑ i : Fin k, l i.castSucc) + l (Fin.last k) :=
+          add_le_add hIH (hedge (Fin.last k))
+        _ = ∑ i, l i := (Fin.sum_univ_castSucc l).symm
+  have hchain := chain n (fun i => γ (cut i))
+    (fun i => ∫⁻ t in Icc (cut i.castSucc) (cut i.succ),
+      ‖mfderivWithin 𝓘(ℝ, ℝ) I γ (Icc (cut i.castSucc) (cut i.succ)) t (1 : ℝ)‖ₑ)
+    (fun i => hγ.riemannianEDist_le_piece G i)
+  rcases hγ.speed_length G with
+    ⟨hi, hii, hm, hint, hr, hs, hn, hpi, hpf, hsum, hwhole, hpath, hfinite⟩
+  rw [hγ.2.1, hγ.2.2.1] at hchain
+  exact hchain.trans_eq hsum.symm
+
+/-- The C1 distance is a lower bound of every finite-piece length, hence of their all-family infimum (CC4), including an empty curve family. -/
+theorem riemannianEDist_le_piecewiseC1EDist
+    [FiniteDimensional ℝ E] [IsManifold I ∞ M]
+    (G : Bundle.ContMDiffRiemannianMetric I ∞ E (fun x : M => TangentSpace I x))
+    (x y : M) :
+    letI : Bundle.RiemannianBundle (fun x : M => TangentSpace I x) :=
+      ⟨G.toRiemannianMetric⟩
+    riemannianEDist I x y ≤ piecewiseC1EDist G x y := by
+  letI : Bundle.RiemannianBundle (fun x : M => TangentSpace I x) :=
+    ⟨G.toRiemannianMetric⟩
+  unfold piecewiseC1EDist
+  refine le_iInf fun a => le_iInf fun b => le_iInf fun n => le_iInf fun cut =>
+    le_iInf fun γ => ?_
+  have h := IsPiecewiseC1On.riemannianEDist_le_length G γ.property.1
+  simpa only [γ.property.2.1, γ.property.2.2] using h
+
+/-- The finite-piece and C1 conventions give the same extended distance (CC5), without connectedness, finiteness or existence of a minimizing curve. -/
+theorem piecewiseC1EDist_eq_riemannianEDist
+    [FiniteDimensional ℝ E] [IsManifold I ∞ M]
+    (G : Bundle.ContMDiffRiemannianMetric I ∞ E (fun x : M => TangentSpace I x))
+    (x y : M) :
+    letI : Bundle.RiemannianBundle (fun x : M => TangentSpace I x) :=
+      ⟨G.toRiemannianMetric⟩
+    piecewiseC1EDist G x y = riemannianEDist I x y := by
+  letI : Bundle.RiemannianBundle (fun x : M => TangentSpace I x) :=
+    ⟨G.toRiemannianMetric⟩
+  exact le_antisymm (piecewiseC1EDist_le_riemannianEDist G x y)
+    (riemannianEDist_le_piecewiseC1EDist G x y)
+
+/-- The finite-piece infimum is infinite exactly when every interval/subdivision endpoint family is empty (CC5); each supplied curve has a finite embedded real length. -/
+theorem piecewiseC1EDist_eq_top_iff
+    [FiniteDimensional ℝ E] [IsManifold I ∞ M]
+    (G : Bundle.ContMDiffRiemannianMetric I ∞ E (fun x : M => TangentSpace I x))
+    (x y : M) :
+    piecewiseC1EDist G x y = ⊤ ↔
+      ∀ (a b : ℝ) (n : ℕ) (cut : Fin (n+1) → ℝ),
+        IsEmpty (PiecewiseC1CurveOn I a b n cut x y) := by
+  constructor
+  · intro h a b n cut
+    refine ⟨fun γ => ?_⟩
+    have hh : piecewiseC1EDist G x y ≤ ENNReal.ofReal (piecewiseC1Length G γ.val cut) :=
+      iInf_le_of_le a (iInf_le_of_le b (iInf_le_of_le n
+        (iInf_le_of_le cut (iInf_le_of_le γ le_rfl))))
+    rw [h] at hh
+    exact ENNReal.ofReal_ne_top (top_le_iff.mp hh)
+  · intro h
+    apply top_unique
+    unfold piecewiseC1EDist
+    refine le_iInf fun a => le_iInf fun b => le_iInf fun n => le_iInf fun cut =>
+      le_iInf fun γ => ?_
+    exact ((h a b n cut).false γ).elim
+
+/-- The common extended distance is infinite exactly when there is no C1-on-the-unit-interval curve with these endpoints (CC5). Global C1 regularity is not required. -/
+theorem piecewiseC1EDist_eq_top_iff_no_c1
+    [FiniteDimensional ℝ E] [IsManifold I ∞ M]
+    (G : Bundle.ContMDiffRiemannianMetric I ∞ E (fun x : M => TangentSpace I x))
+    (x y : M) :
+    piecewiseC1EDist G x y = ⊤ ↔
+      ¬ ∃ γ : ℝ → M, γ 0 = x ∧ γ 1 = y ∧
+        ContMDiffOn 𝓘(ℝ, ℝ) I 1 γ (Icc 0 1) := by
+  constructor
+  · intro hTop
+    letI : Bundle.RiemannianBundle (fun x : M => TangentSpace I x) :=
+      ⟨G.toRiemannianMetric⟩
+    rintro ⟨γ, hx, hy, hγ⟩
+    have hle := piecewiseC1EDist_le_pathELength G zero_le_one hγ
+    rcases (conventionSinglePiece zero_le_one hγ).speed_length G with
+      ⟨hi, hii, hm, hint, hr, hs, hn, hpi, hpf, hsum, hwhole, hpath, hfinite⟩
+    rw [hx, hy, hTop] at hle
+    exact (not_lt_of_ge hle) hfinite
+  · intro hnone
+    letI : Bundle.RiemannianBundle (fun x : M => TangentSpace I x) :=
+      ⟨G.toRiemannianMetric⟩
+    rw [piecewiseC1EDist_eq_riemannianEDist G x y]
+    apply top_unique
+    rw [riemannianEDist]
+    refine le_iInf fun γ => le_iInf fun hγ => ?_
+    apply (hnone ?_).elim
+    refine ⟨γ ∘ projIcc 0 1 zero_le_one, by simp, by simp, ?_⟩
+    exact contMDiffOn_comp_projIcc_iff.mpr hγ
+
+/-- A supplied finite-piece endpoint curve bounds both distance conventions by its finite length and proves both values finite (CC6). No path witness is manufactured. -/
+theorem piecewiseC1EDist_finite_of_curve
+    [FiniteDimensional ℝ E] [IsManifold I ∞ M]
+    (G : Bundle.ContMDiffRiemannianMetric I ∞ E (fun x : M => TangentSpace I x))
+    {x y : M} {a b : ℝ} {n : ℕ} {cut : Fin (n+1) → ℝ}
+    (γ : PiecewiseC1CurveOn I a b n cut x y) :
+    letI : Bundle.RiemannianBundle (fun x : M => TangentSpace I x) :=
+      ⟨G.toRiemannianMetric⟩
+    piecewiseC1EDist G x y ≤ ENNReal.ofReal (piecewiseC1Length G γ.val cut) ∧
+    riemannianEDist I x y ≤ ENNReal.ofReal (piecewiseC1Length G γ.val cut) ∧
+    piecewiseC1EDist G x y < ⊤ ∧ riemannianEDist I x y < ⊤ := by
+  letI : Bundle.RiemannianBundle (fun x : M => TangentSpace I x) :=
+    ⟨G.toRiemannianMetric⟩
+  have hA : piecewiseC1EDist G x y ≤ ENNReal.ofReal (piecewiseC1Length G γ.val cut) :=
+    iInf_le_of_le a (iInf_le_of_le b (iInf_le_of_le n
+      (iInf_le_of_le cut (iInf_le_of_le γ le_rfl))))
+  have hB := IsPiecewiseC1On.riemannianEDist_le_length G γ.property.1
+  rw [γ.property.2.1, γ.property.2.2] at hB
+  exact ⟨hA, hB, hA.trans_lt ENNReal.ofReal_lt_top, hB.trans_lt ENNReal.ofReal_lt_top⟩
+
+end DistanceConvention
+
+
 end Manifold
