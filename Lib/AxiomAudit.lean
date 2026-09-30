@@ -8104,3 +8104,57 @@ is an evidence command rather than library content.
 
 #check Hyperbolic.contMDiff_uncenterHyperboloid
 #print axioms Hyperbolic.contMDiff_uncenterHyperboloid
+
+#check Hyperbolic.centerHyperboloidDiffeomorph
+#print axioms Hyperbolic.centerHyperboloidDiffeomorph
+
+#check Hyperbolic.mfderiv_centerHyperboloid_val
+#print axioms Hyperbolic.mfderiv_centerHyperboloid_val
+
+#check Hyperbolic.mfderiv_uncenterHyperboloid_val
+#print axioms Hyperbolic.mfderiv_uncenterHyperboloid_val
+
+#check Hyperbolic.centerHyperboloid_mfderiv_inverse
+#print axioms Hyperbolic.centerHyperboloid_mfderiv_inverse
+
+#check Hyperbolic.centerHyperboloid_kernel_transport
+#print axioms Hyperbolic.centerHyperboloid_kernel_transport
+
+#check Hyperbolic.centerHyperboloid_preserves_tangentTensor
+#print axioms Hyperbolic.centerHyperboloid_preserves_tangentTensor
+
+#check Hyperbolic.uncenterHyperboloid_preserves_tangentTensor
+#print axioms Hyperbolic.uncenterHyperboloid_preserves_tangentTensor
+
+#check Hyperbolic.centerHyperboloid_preserves_metric
+#print axioms Hyperbolic.centerHyperboloid_preserves_metric
+
+#check Hyperbolic.uncenterHyperboloid_preserves_metric
+#print axioms Hyperbolic.uncenterHyperboloid_preserves_metric
+
+#check Hyperbolic.centerHyperboloid_norm_enorm
+#print axioms Hyperbolic.centerHyperboloid_norm_enorm
+
+#check Hyperbolic.uncenterHyperboloid_norm_enorm
+#print axioms Hyperbolic.uncenterHyperboloid_norm_enorm
+
+#check Hyperbolic.centerHyperboloid_speed
+#print axioms Hyperbolic.centerHyperboloid_speed
+
+#check Hyperbolic.centerHyperboloid_speedWithin
+#print axioms Hyperbolic.centerHyperboloid_speedWithin
+
+#check Hyperbolic.uncenterHyperboloid_speed
+#print axioms Hyperbolic.uncenterHyperboloid_speed
+
+#check Hyperbolic.uncenterHyperboloid_speedWithin
+#print axioms Hyperbolic.uncenterHyperboloid_speedWithin
+
+#check Hyperbolic.centerHyperboloid_length
+#print axioms Hyperbolic.centerHyperboloid_length
+
+#check Hyperbolic.uncenterHyperboloid_length
+#print axioms Hyperbolic.uncenterHyperboloid_length
+
+#check Hyperbolic.centerHyperboloid_curveFamily_length
+#print axioms Hyperbolic.centerHyperboloid_curveFamily_length

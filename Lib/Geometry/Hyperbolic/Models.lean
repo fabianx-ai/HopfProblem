@@ -2008,4 +2008,316 @@ theorem contMDiff_uncenterHyperboloid (p : Hyperboloid) :
   exact contDiffOn_hyperboloidToUpperHalfPlaneCoords.contMDiffOn.comp_contMDiff hA
     (fun q => hyperboloid_denominator_pos (uncenterHyperboloid p q))
 
+/-! ## Intrinsic metric and finite-piece curve transport under change of center -/
+
+/-- Changing center is a smooth equivalence of the upper hyperboloid, for a fixed center. -/
+def centerHyperboloidDiffeomorph (p : Hyperboloid) : Hyperboloid ≃ₘ⟮I, I⟯ Hyperboloid :=
+  { centerHyperboloidEquiv p with
+    contMDiff_toFun := contMDiff_centerHyperboloid p
+    contMDiff_invFun := contMDiff_uncenterHyperboloid p }
+
+/-- The intrinsic differential of the center change agrees with its ambient Lorentz-linear map. -/
+theorem mfderiv_centerHyperboloid_val (p q : Hyperboloid) (v : TangentSpace I q) :
+    mfderiv I J (fun r : Hyperboloid => r.val) (centerHyperboloid p q)
+      (mfderiv I I (centerHyperboloid p) q v) =
+    lorentzCenterCoordinates p (mfderiv I J (fun r : Hyperboloid => r.val) q v) := by
+  let A : V ≃L[ℝ] V := (lorentzCenterCoordinates p).toContinuousLinearEquiv
+  have hf := (contMDiff_centerHyperboloid p).mdifferentiable (by simp)
+  have hi := contMDiff_hyperboloid_val.mdifferentiable (by simp)
+  have hA : MDifferentiable J J (A : V → V) :=
+    (A.contDiff (n := ∞)).contMDiff.mdifferentiable (by simp)
+  have hleft := mfderiv_comp_apply q (hi (centerHyperboloid p q)) (hf q) v
+  have hright := mfderiv_comp_apply q (hA q.val) (hi q) v
+  have hfun : (fun r : Hyperboloid => r.val) ∘ centerHyperboloid p =
+      (A : V → V) ∘ (fun r : Hyperboloid => r.val) := rfl
+  have hcongr :
+      mfderiv I J ((fun r : Hyperboloid => r.val) ∘ centerHyperboloid p) q =
+      mfderiv I J ((A : V → V) ∘ (fun r : Hyperboloid => r.val)) q :=
+    mfderiv_congr hfun
+  have hderiv : mfderiv J J (A : V → V) q.val = A.toContinuousLinearMap := by
+    rw [mfderiv_eq_fderiv]
+    exact A.toContinuousLinearMap.fderiv
+  have heq := hleft.symm.trans ((congrArg (fun L => L v) hcongr).trans hright)
+  rw [hderiv] at heq
+  exact heq
+
+/-- The inverse center change has the ambient inverse Lorentz-linear differential. -/
+theorem mfderiv_uncenterHyperboloid_val (p q : Hyperboloid) (v : TangentSpace I q) :
+    mfderiv I J (fun r : Hyperboloid => r.val) (uncenterHyperboloid p q)
+      (mfderiv I I (uncenterHyperboloid p) q v) =
+    (lorentzCenterCoordinates p).symm (mfderiv I J (fun r : Hyperboloid => r.val) q v) := by
+  let A : V ≃L[ℝ] V := (lorentzCenterCoordinates p).symm.toContinuousLinearEquiv
+  have hf := (contMDiff_uncenterHyperboloid p).mdifferentiable (by simp)
+  have hi := contMDiff_hyperboloid_val.mdifferentiable (by simp)
+  have hA : MDifferentiable J J (A : V → V) :=
+    (A.contDiff (n := ∞)).contMDiff.mdifferentiable (by simp)
+  have hleft := mfderiv_comp_apply q (hi (uncenterHyperboloid p q)) (hf q) v
+  have hright := mfderiv_comp_apply q (hA q.val) (hi q) v
+  have hfun : (fun r : Hyperboloid => r.val) ∘ uncenterHyperboloid p =
+      (A : V → V) ∘ (fun r : Hyperboloid => r.val) := rfl
+  have hcongr :
+      mfderiv I J ((fun r : Hyperboloid => r.val) ∘ uncenterHyperboloid p) q =
+      mfderiv I J ((A : V → V) ∘ (fun r : Hyperboloid => r.val)) q :=
+    mfderiv_congr hfun
+  have hderiv : mfderiv J J (A : V → V) q.val = A.toContinuousLinearMap := by
+    rw [mfderiv_eq_fderiv]
+    exact A.toContinuousLinearMap.fderiv
+  have heq := hleft.symm.trans ((congrArg (fun L => L v) hcongr).trans hright)
+  rw [hderiv] at heq
+  exact heq
+
+/-- The two intrinsic differentials are mutual inverses at their actual image bases. -/
+theorem centerHyperboloid_mfderiv_inverse (p q : Hyperboloid) :
+    uncenterHyperboloid p (centerHyperboloid p q) = q ∧
+    (mfderiv I I (uncenterHyperboloid p) (centerHyperboloid p q)).comp
+      (mfderiv I I (centerHyperboloid p) q) = ContinuousLinearMap.id ℝ (TangentSpace I q) ∧
+    centerHyperboloid p (uncenterHyperboloid p q) = q ∧
+    (mfderiv I I (centerHyperboloid p) (uncenterHyperboloid p q)).comp
+      (mfderiv I I (uncenterHyperboloid p) q) = ContinuousLinearMap.id ℝ (TangentSpace I q) ∧
+    Function.Bijective (mfderiv I I (centerHyperboloid p) q) ∧
+    Function.Bijective (mfderiv I I (uncenterHyperboloid p) q) := by
+  let e := centerHyperboloidDiffeomorph p
+  have hl := mfderiv_symm_comp_of_diffeomorph e q
+  have hr := mfderiv_comp_symm_of_diffeomorph e q
+  have hrf := (mfderiv_comp_symm_of_diffeomorph e (e q)).2
+  have hlg := (mfderiv_symm_comp_of_diffeomorph e (e.symm q)).2
+  rw [e.symm_apply_apply] at hrf
+  rw [e.apply_symm_apply] at hlg
+  have lf : Function.LeftInverse (mfderiv I I e.symm (e q)) (mfderiv I I e q) :=
+    fun v => congrArg (fun L => L v) hl.2
+  have rf : Function.RightInverse (mfderiv I I e.symm (e q)) (mfderiv I I e q) :=
+    fun v => congrArg (fun L => L v) hrf
+  have lg : Function.LeftInverse (mfderiv I I e (e.symm q)) (mfderiv I I e.symm q) :=
+    fun v => congrArg (fun L => L v) hr.2
+  have rg : Function.RightInverse (mfderiv I I e (e.symm q)) (mfderiv I I e.symm q) :=
+    fun v => congrArg (fun L => L v) hlg
+  exact ⟨hl.1, hl.2, hr.1, hr.2, ⟨lf.injective, rf.surjective⟩, ⟨lg.injective, rg.surjective⟩⟩
+
+/-- Center change transports the actual Lorentz-perpendicular tangent kernels bijectively. -/
+theorem centerHyperboloid_kernel_transport (p q : Hyperboloid) :
+    (∀ w : (lorentzFunctional q.val).ker,
+      (hyperboloidTangentEquivKer (centerHyperboloid p q)
+        (mfderiv I I (centerHyperboloid p) q ((hyperboloidTangentEquivKer q).symm w))).val =
+      lorentzCenterCoordinates p w.val) ∧
+    (∀ w : (lorentzFunctional q.val).ker,
+      (hyperboloidTangentEquivKer (uncenterHyperboloid p q)
+        (mfderiv I I (uncenterHyperboloid p) q ((hyperboloidTangentEquivKer q).symm w))).val =
+      (lorentzCenterCoordinates p).symm w.val) ∧
+    Function.Bijective (fun w : (lorentzFunctional q.val).ker =>
+      hyperboloidTangentEquivKer (centerHyperboloid p q)
+        (mfderiv I I (centerHyperboloid p) q ((hyperboloidTangentEquivKer q).symm w))) ∧
+    Function.Bijective (fun w : (lorentzFunctional q.val).ker =>
+      hyperboloidTangentEquivKer (uncenterHyperboloid p q)
+        (mfderiv I I (uncenterHyperboloid p) q ((hyperboloidTangentEquivKer q).symm w))) := by
+  refine ⟨?_, ?_, ?_, ?_⟩
+  · intro w
+    rw [hyperboloidTangentEquivKer_apply, mfderiv_centerHyperboloid_val]
+    rw [← hyperboloidTangentEquivKer_apply, ContinuousLinearEquiv.apply_symm_apply]
+  · intro w
+    rw [hyperboloidTangentEquivKer_apply, mfderiv_uncenterHyperboloid_val]
+    rw [← hyperboloidTangentEquivKer_apply, ContinuousLinearEquiv.apply_symm_apply]
+  · exact (hyperboloidTangentEquivKer _).bijective.comp
+      (((centerHyperboloid_mfderiv_inverse p q).2.2.2.2.1).comp
+        (hyperboloidTangentEquivKer q).symm.bijective)
+  · exact (hyperboloidTangentEquivKer _).bijective.comp
+      (((centerHyperboloid_mfderiv_inverse p q).2.2.2.2.2).comp
+        (hyperboloidTangentEquivKer q).symm.bijective)
+
+/-- Center change preserves the Lorentz restriction on every pair of intrinsic tangent vectors. -/
+theorem centerHyperboloid_preserves_tangentTensor (p q : Hyperboloid) (v w : TangentSpace I q) :
+    hyperboloidTangentTensor (centerHyperboloid p q)
+      (mfderiv I I (centerHyperboloid p) q v) (mfderiv I I (centerHyperboloid p) q w) =
+    hyperboloidTangentTensor q v w := by
+  simp only [hyperboloidTangentTensor_apply, mfderiv_centerHyperboloid_val]
+  exact lorentzCenterCoordinates_preserves p _ _
+
+/-- The inverse center change preserves the Lorentz restriction on every tangent pair. -/
+theorem uncenterHyperboloid_preserves_tangentTensor (p q : Hyperboloid) (v w : TangentSpace I q) :
+    hyperboloidTangentTensor (uncenterHyperboloid p q)
+      (mfderiv I I (uncenterHyperboloid p) q v) (mfderiv I I (uncenterHyperboloid p) q w) =
+    hyperboloidTangentTensor q v w := by
+  simp only [hyperboloidTangentTensor_apply, mfderiv_uncenterHyperboloid_val]
+  exact lorentzCenterCoordinates_symm_preserves p _ _
+
+/-- Center change preserves the genuine hyperboloid Riemannian metric. -/
+theorem centerHyperboloid_preserves_metric (p q : Hyperboloid) (v w : TangentSpace I q) :
+    hyperboloidMetric.inner (centerHyperboloid p q)
+      (mfderiv I I (centerHyperboloid p) q v) (mfderiv I I (centerHyperboloid p) q w) =
+    hyperboloidMetric.inner q v w := by
+  simp only [hyperboloidMetric_inner]
+  exact centerHyperboloid_preserves_tangentTensor p q v w
+
+/-- The inverse center change preserves the same hyperboloid Riemannian metric. -/
+theorem uncenterHyperboloid_preserves_metric (p q : Hyperboloid) (v w : TangentSpace I q) :
+    hyperboloidMetric.inner (uncenterHyperboloid p q)
+      (mfderiv I I (uncenterHyperboloid p) q v) (mfderiv I I (uncenterHyperboloid p) q w) =
+    hyperboloidMetric.inner q v w := by
+  simp only [hyperboloidMetric_inner]
+  exact uncenterHyperboloid_preserves_tangentTensor p q v w
+
+/-- Center change preserves real and extended tangent norms for the hyperboloid metric. -/
+theorem centerHyperboloid_norm_enorm (p q : Hyperboloid) :
+    letI : Bundle.RiemannianBundle (fun r : Hyperboloid => TangentSpace I r) :=
+      ⟨hyperboloidMetric.toRiemannianMetric⟩
+    (∀ v : TangentSpace I q, ‖mfderiv I I (centerHyperboloid p) q v‖ = ‖v‖) ∧
+    (∀ v : TangentSpace I q, ‖mfderiv I I (centerHyperboloid p) q v‖ₑ = ‖v‖ₑ) := by
+  letI : Bundle.RiemannianBundle (fun r : Hyperboloid => TangentSpace I r) :=
+    ⟨hyperboloidMetric.toRiemannianMetric⟩
+  let L := (mfderiv I I (centerHyperboloid p) q).toLinearMap.isometryOfInner
+    (centerHyperboloid_preserves_metric p q)
+  exact ⟨L.norm_map, L.enorm_map⟩
+
+/-- The inverse center change preserves real and extended tangent norms for the same metric. -/
+theorem uncenterHyperboloid_norm_enorm (p q : Hyperboloid) :
+    letI : Bundle.RiemannianBundle (fun r : Hyperboloid => TangentSpace I r) :=
+      ⟨hyperboloidMetric.toRiemannianMetric⟩
+    (∀ v : TangentSpace I q, ‖mfderiv I I (uncenterHyperboloid p) q v‖ = ‖v‖) ∧
+    (∀ v : TangentSpace I q, ‖mfderiv I I (uncenterHyperboloid p) q v‖ₑ = ‖v‖ₑ) := by
+  letI : Bundle.RiemannianBundle (fun r : Hyperboloid => TangentSpace I r) :=
+    ⟨hyperboloidMetric.toRiemannianMetric⟩
+  let L := (mfderiv I I (uncenterHyperboloid p) q).toLinearMap.isometryOfInner
+    (uncenterHyperboloid_preserves_metric p q)
+  exact ⟨L.norm_map, L.enorm_map⟩
+
+/-- Center change preserves the ordinary real and extended speed of a differentiable curve. -/
+theorem centerHyperboloid_speed (p : Hyperboloid) (γ : ℝ → Hyperboloid) (t : ℝ)
+    (hγ : MDifferentiableAt 𝓘(ℝ, ℝ) I γ t) :
+    letI : Bundle.RiemannianBundle (fun p : Hyperboloid => TangentSpace I p) :=
+      ⟨hyperboloidMetric.toRiemannianMetric⟩
+    ‖mfderiv 𝓘(ℝ, ℝ) I ((centerHyperboloid p) ∘ γ) t (1 : ℝ)‖ =
+      ‖mfderiv 𝓘(ℝ, ℝ) I γ t (1 : ℝ)‖ ∧
+    ‖mfderiv 𝓘(ℝ, ℝ) I ((centerHyperboloid p) ∘ γ) t (1 : ℝ)‖ₑ =
+      ‖mfderiv 𝓘(ℝ, ℝ) I γ t (1 : ℝ)‖ₑ := by
+  exact speed_comp_of_tensorPreserving
+    hyperboloidMetric hyperboloidMetric (centerHyperboloid p) (contMDiff_centerHyperboloid p)
+    (centerHyperboloid_preserves_metric p) γ t hγ
+
+/-- Center change preserves within-set speed on the same uniquely differentiable parameter set. -/
+theorem centerHyperboloid_speedWithin (p : Hyperboloid) (γ : ℝ → Hyperboloid) (s : Set ℝ) (t : ℝ)
+    (hγ : MDifferentiableWithinAt 𝓘(ℝ, ℝ) I γ s t)
+    (hs : UniqueMDiffWithinAt 𝓘(ℝ, ℝ) s t) :
+    letI : Bundle.RiemannianBundle (fun p : Hyperboloid => TangentSpace I p) :=
+      ⟨hyperboloidMetric.toRiemannianMetric⟩
+    ‖mfderivWithin 𝓘(ℝ, ℝ) I ((centerHyperboloid p) ∘ γ) s t (1 : ℝ)‖ =
+      ‖mfderivWithin 𝓘(ℝ, ℝ) I γ s t (1 : ℝ)‖ ∧
+    ‖mfderivWithin 𝓘(ℝ, ℝ) I ((centerHyperboloid p) ∘ γ) s t (1 : ℝ)‖ₑ =
+      ‖mfderivWithin 𝓘(ℝ, ℝ) I γ s t (1 : ℝ)‖ₑ := by
+  exact speedWithin_comp_of_tensorPreserving
+    hyperboloidMetric hyperboloidMetric (centerHyperboloid p) (contMDiff_centerHyperboloid p)
+    (centerHyperboloid_preserves_metric p) γ s t hγ hs
+
+/-- The inverse center change preserves ordinary real and extended curve speed. -/
+theorem uncenterHyperboloid_speed (p : Hyperboloid) (γ : ℝ → Hyperboloid) (t : ℝ)
+    (hγ : MDifferentiableAt 𝓘(ℝ, ℝ) I γ t) :
+    letI : Bundle.RiemannianBundle (fun p : Hyperboloid => TangentSpace I p) :=
+      ⟨hyperboloidMetric.toRiemannianMetric⟩
+    ‖mfderiv 𝓘(ℝ, ℝ) I ((uncenterHyperboloid p) ∘ γ) t (1 : ℝ)‖ =
+      ‖mfderiv 𝓘(ℝ, ℝ) I γ t (1 : ℝ)‖ ∧
+    ‖mfderiv 𝓘(ℝ, ℝ) I ((uncenterHyperboloid p) ∘ γ) t (1 : ℝ)‖ₑ =
+      ‖mfderiv 𝓘(ℝ, ℝ) I γ t (1 : ℝ)‖ₑ := by
+  exact speed_comp_of_tensorPreserving
+    hyperboloidMetric hyperboloidMetric (uncenterHyperboloid p) (contMDiff_uncenterHyperboloid p)
+    (uncenterHyperboloid_preserves_metric p) γ t hγ
+
+/-- The inverse center change preserves within-set speed with the same parameter hypotheses. -/
+theorem uncenterHyperboloid_speedWithin (p : Hyperboloid) (γ : ℝ → Hyperboloid) (s : Set ℝ) (t : ℝ)
+    (hγ : MDifferentiableWithinAt 𝓘(ℝ, ℝ) I γ s t)
+    (hs : UniqueMDiffWithinAt 𝓘(ℝ, ℝ) s t) :
+    letI : Bundle.RiemannianBundle (fun p : Hyperboloid => TangentSpace I p) :=
+      ⟨hyperboloidMetric.toRiemannianMetric⟩
+    ‖mfderivWithin 𝓘(ℝ, ℝ) I ((uncenterHyperboloid p) ∘ γ) s t (1 : ℝ)‖ =
+      ‖mfderivWithin 𝓘(ℝ, ℝ) I γ s t (1 : ℝ)‖ ∧
+    ‖mfderivWithin 𝓘(ℝ, ℝ) I ((uncenterHyperboloid p) ∘ γ) s t (1 : ℝ)‖ₑ =
+      ‖mfderivWithin 𝓘(ℝ, ℝ) I γ s t (1 : ℝ)‖ₑ := by
+  exact speedWithin_comp_of_tensorPreserving
+    hyperboloidMetric hyperboloidMetric (uncenterHyperboloid p) (contMDiff_uncenterHyperboloid p)
+    (uncenterHyperboloid_preserves_metric p) γ s t hγ hs
+
+/-- Center change preserves each finite curve piece, its integral, and the full real and extended
+length, retaining the original weak subdivision and exact endpoint values. -/
+theorem centerHyperboloid_length (p : Hyperboloid) {γ : ℝ → Hyperboloid} {a b : ℝ} {n : ℕ} {cut : Fin (n+1) → ℝ}
+    (hγ : IsPiecewiseC1On I γ a b n cut) :
+    letI : Bundle.RiemannianBundle (fun p : Hyperboloid => TangentSpace I p) :=
+      ⟨hyperboloidMetric.toRiemannianMetric⟩
+    let P : Fin n → Set ℝ := fun i => Icc (cut i.castSucc) (cut i.succ)
+    let q : Fin n → ℝ → ℝ := fun i t =>
+      ‖mfderivWithin 𝓘(ℝ, ℝ) I γ (P i) t (1 : ℝ)‖
+    let q' : Fin n → ℝ → ℝ := fun i t =>
+      ‖mfderivWithin 𝓘(ℝ, ℝ) I ((centerHyperboloid p) ∘ γ) (P i) t (1 : ℝ)‖
+    IsPiecewiseC1On I ((centerHyperboloid p) ∘ γ) a b n cut ∧
+    ((centerHyperboloid p) ∘ γ) a = (centerHyperboloid p) (γ a) ∧ ((centerHyperboloid p) ∘ γ) b = (centerHyperboloid p) (γ b) ∧
+    (∀ i : Fin n, (∫ t in cut i.castSucc..cut i.succ, q' i t) =
+      ∫ t in cut i.castSucc..cut i.succ, q i t) ∧
+    piecewiseC1Length hyperboloidMetric ((centerHyperboloid p) ∘ γ) cut = piecewiseC1Length hyperboloidMetric γ cut ∧
+    0 ≤ piecewiseC1Length hyperboloidMetric γ cut ∧ 0 ≤ piecewiseC1Length hyperboloidMetric ((centerHyperboloid p) ∘ γ) cut ∧
+    pathELength I ((centerHyperboloid p) ∘ γ) a b = pathELength I γ a b ∧
+    pathELength I γ a b < (⊤ : ℝ≥0∞) ∧
+    pathELength I ((centerHyperboloid p) ∘ γ) a b < (⊤ : ℝ≥0∞) ∧
+    pathELength I γ a b = ENNReal.ofReal (piecewiseC1Length hyperboloidMetric γ cut) ∧
+    pathELength I ((centerHyperboloid p) ∘ γ) a b = ENNReal.ofReal (piecewiseC1Length hyperboloidMetric ((centerHyperboloid p) ∘ γ) cut) ∧
+    (∀ i : Fin n,
+      (∫⁻ t in P i, ENNReal.ofReal (q' i t)) =
+        ∫⁻ t in P i, ENNReal.ofReal (q i t)) ∧
+    (∀ i : Fin n, (∫⁻ t in P i, ENNReal.ofReal (q i t)) < (⊤ : ℝ≥0∞)) ∧
+    (∀ i : Fin n, (∫⁻ t in P i, ENNReal.ofReal (q' i t)) < (⊤ : ℝ≥0∞)) := by
+  exact hγ.length_comp_of_tensorPreserving hyperboloidMetric hyperboloidMetric
+    (centerHyperboloid p) (contMDiff_centerHyperboloid p) (centerHyperboloid_preserves_metric p)
+
+/-- The inverse center change preserves every finite piece and both total lengths, including
+zero pieces and repeated cuts, with the same subdivision and exact endpoints. -/
+theorem uncenterHyperboloid_length (p : Hyperboloid) {γ : ℝ → Hyperboloid} {a b : ℝ} {n : ℕ} {cut : Fin (n+1) → ℝ}
+    (hγ : IsPiecewiseC1On I γ a b n cut) :
+    letI : Bundle.RiemannianBundle (fun p : Hyperboloid => TangentSpace I p) :=
+      ⟨hyperboloidMetric.toRiemannianMetric⟩
+    let P : Fin n → Set ℝ := fun i => Icc (cut i.castSucc) (cut i.succ)
+    let q : Fin n → ℝ → ℝ := fun i t =>
+      ‖mfderivWithin 𝓘(ℝ, ℝ) I γ (P i) t (1 : ℝ)‖
+    let q' : Fin n → ℝ → ℝ := fun i t =>
+      ‖mfderivWithin 𝓘(ℝ, ℝ) I ((uncenterHyperboloid p) ∘ γ) (P i) t (1 : ℝ)‖
+    IsPiecewiseC1On I ((uncenterHyperboloid p) ∘ γ) a b n cut ∧
+    ((uncenterHyperboloid p) ∘ γ) a = (uncenterHyperboloid p) (γ a) ∧ ((uncenterHyperboloid p) ∘ γ) b = (uncenterHyperboloid p) (γ b) ∧
+    (∀ i : Fin n, (∫ t in cut i.castSucc..cut i.succ, q' i t) =
+      ∫ t in cut i.castSucc..cut i.succ, q i t) ∧
+    piecewiseC1Length hyperboloidMetric ((uncenterHyperboloid p) ∘ γ) cut = piecewiseC1Length hyperboloidMetric γ cut ∧
+    0 ≤ piecewiseC1Length hyperboloidMetric γ cut ∧ 0 ≤ piecewiseC1Length hyperboloidMetric ((uncenterHyperboloid p) ∘ γ) cut ∧
+    pathELength I ((uncenterHyperboloid p) ∘ γ) a b = pathELength I γ a b ∧
+    pathELength I γ a b < (⊤ : ℝ≥0∞) ∧
+    pathELength I ((uncenterHyperboloid p) ∘ γ) a b < (⊤ : ℝ≥0∞) ∧
+    pathELength I γ a b = ENNReal.ofReal (piecewiseC1Length hyperboloidMetric γ cut) ∧
+    pathELength I ((uncenterHyperboloid p) ∘ γ) a b = ENNReal.ofReal (piecewiseC1Length hyperboloidMetric ((uncenterHyperboloid p) ∘ γ) cut) ∧
+    (∀ i : Fin n,
+      (∫⁻ t in P i, ENNReal.ofReal (q' i t)) =
+        ∫⁻ t in P i, ENNReal.ofReal (q i t)) ∧
+    (∀ i : Fin n, (∫⁻ t in P i, ENNReal.ofReal (q i t)) < (⊤ : ℝ≥0∞)) ∧
+    (∀ i : Fin n, (∫⁻ t in P i, ENNReal.ofReal (q' i t)) < (⊤ : ℝ≥0∞)) := by
+  exact hγ.length_comp_of_tensorPreserving hyperboloidMetric hyperboloidMetric
+    (uncenterHyperboloid p) (contMDiff_uncenterHyperboloid p) (uncenterHyperboloid_preserves_metric p)
+
+/-- Center change gives a length-preserving equivalence of complete endpoint-constrained
+piecewise-smooth curve families, in both directions on the same interval and subdivision. -/
+theorem centerHyperboloid_curveFamily_length (c : Hyperboloid) {a b : ℝ} {n : ℕ}
+    {cut : Fin (n+1) → ℝ} {x y : Hyperboloid} :
+    letI : Bundle.RiemannianBundle (fun x : Hyperboloid => TangentSpace I x) :=
+      ⟨hyperboloidMetric.toRiemannianMetric⟩
+    let Φ := PiecewiseC1CurveOn.mapEquiv (a := a) (b := b) (cut := cut) (p := x) (q := y) (centerHyperboloidDiffeomorph c)
+    Function.Bijective Φ ∧
+    (∀ γ : PiecewiseC1CurveOn I a b n cut x y,
+      piecewiseC1Length hyperboloidMetric (Φ γ).val cut = piecewiseC1Length hyperboloidMetric γ.val cut ∧
+      pathELength I (Φ γ).val a b = pathELength I γ.val a b ∧
+      pathELength I γ.val a b < (⊤ : ℝ≥0∞) ∧
+      pathELength I (Φ γ).val a b < (⊤ : ℝ≥0∞) ∧
+      (Φ γ).val a = (centerHyperboloidDiffeomorph c) x ∧ (Φ γ).val b = (centerHyperboloidDiffeomorph c) y) ∧
+    (∀ η : PiecewiseC1CurveOn I a b n cut ((centerHyperboloidDiffeomorph c) x) ((centerHyperboloidDiffeomorph c) y),
+      piecewiseC1Length hyperboloidMetric (Φ.symm η).val cut = piecewiseC1Length hyperboloidMetric η.val cut ∧
+      pathELength I (Φ.symm η).val a b = pathELength I η.val a b ∧
+      pathELength I η.val a b < (⊤ : ℝ≥0∞) ∧
+      pathELength I (Φ.symm η).val a b < (⊤ : ℝ≥0∞) ∧
+      (Φ.symm η).val a = x ∧ (Φ.symm η).val b = y) ∧
+    (∀ γ t, (Φ γ).val t = (centerHyperboloidDiffeomorph c) (γ.val t)) ∧
+    (∀ η t, (Φ.symm η).val t = (centerHyperboloidDiffeomorph c).symm (η.val t)) ∧
+    (∀ γ, Φ.symm (Φ γ) = γ) ∧
+    (∀ η, Φ (Φ.symm η) = η) := by
+  exact PiecewiseC1CurveOn.mapEquiv_length hyperboloidMetric hyperboloidMetric
+    (centerHyperboloidDiffeomorph c) (centerHyperboloid_preserves_metric c)
+
 end Hyperbolic
