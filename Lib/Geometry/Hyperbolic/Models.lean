@@ -46,6 +46,9 @@ public import Mathlib.MeasureTheory.Measure.Typeclasses.NullSingletonClass
 public import Mathlib.Algebra.BigOperators.Fin
 public import Mathlib.Analysis.Complex.RealDeriv
 public import Mathlib.Topology.Order.IntermediateValue
+public import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
+public import Mathlib.Analysis.Calculus.Deriv.Mul
+public import Mathlib.Analysis.Calculus.Deriv.Prod
 
 /-!
 # Upper-half-plane and hyperboloid coordinates
@@ -3921,6 +3924,446 @@ theorem hyperboloid_centered_minimizer_zero
   apply Subtype.ext
   exact ((hyperboloidRadius_properties (γ.val t)).2.2.2.1.mp hz).trans
     (hyperboloidPolar_center_direction 0 q).1.symm
+
+
+/-! ## Arbitrary-center minimizing segments and length distance -/
+
+/-- The real value of the existing infimum of finite-piece curve lengths. -/
+def hyperboloidLengthDist (p q : Hyperboloid) : ℝ :=
+  (piecewiseC1EDist hyperboloidMetric p q).toReal
+
+/-- The minimizing segment obtained by inverse-centering the radial curve. -/
+def hyperboloidSegment (p q : Hyperboloid) (s : ℝ) : Hyperboloid :=
+  uncenterHyperboloid p (hyperboloidRadialCurve (centerHyperboloid p q) s)
+
+/-- The inverse-centered initial spatial direction, with zero at coincident endpoints. -/
+def hyperboloidSegmentInitial (p q : Hyperboloid) : Fin 3 → ℝ :=
+  if p = q then 0 else
+    (lorentzCenterCoordinates p).symm
+      ![Real.cos (Complex.arg (hyperboloidSpatial (centerHyperboloid p q))),
+        Real.sin (Complex.arg (hyperboloidSpatial (centerHyperboloid p q))), 0]
+
+/-- Centering preserves both arbitrary-family length infima. The common value is finite,
+and its real interpretation is the radius of the centered endpoint. -/
+theorem hyperboloidLengthDist_center (p q : Hyperboloid) :
+  piecewiseC1EDist hyperboloidMetric p q ≤
+    piecewiseC1EDist hyperboloidMetric (hyperboloidPolar 0 0) (centerHyperboloid p q) ∧
+  piecewiseC1EDist hyperboloidMetric (hyperboloidPolar 0 0) (centerHyperboloid p q) ≤
+    piecewiseC1EDist hyperboloidMetric p q ∧
+  piecewiseC1EDist hyperboloidMetric p q =
+    ENNReal.ofReal (hyperboloidRadius (centerHyperboloid p q)) ∧
+  piecewiseC1EDist hyperboloidMetric p q < ⊤ ∧
+  hyperboloidLengthDist p q = hyperboloidRadius (centerHyperboloid p q) := by
+  letI : Bundle.RiemannianBundle (fun x : Hyperboloid => TangentSpace I x) :=
+    ⟨hyperboloidMetric.toRiemannianMetric⟩
+
+  -- M04a: exact subtype center and inverse identities, before any family cast.
+  have hc : centerHyperboloid p p = hyperboloidPolar 0 0 := by
+    apply Subtype.ext
+    exact (centerHyperboloid_properties p).2.2.2.2.1.trans
+      (hyperboloidPolar_center_direction 0 p).1.symm
+  have hu : uncenterHyperboloid p (hyperboloidPolar 0 0) = p := by
+    rw [← hc]
+    exact (centerHyperboloid_properties p).2.2.1 p
+  have huc : ∀ x, uncenterHyperboloid p (centerHyperboloid p x) = x :=
+    (centerHyperboloid_properties p).2.2.1
+  have hcu : ∀ x, centerHyperboloid p (uncenterHyperboloid p x) = x :=
+    (centerHyperboloid_properties p).2.2.2.1
+
+  -- M01/M02 forward: every original competitor, unchanged a,b,n,cut.
+  -- Rebuild only the endpoint proof, preserving the underlying mapped function.
+  have forward : ∀ (a b : ℝ) (n : ℕ) (cut : Fin (n+1) → ℝ)
+      (γ : PiecewiseC1CurveOn I a b n cut p q),
+      ∃ η : PiecewiseC1CurveOn I a b n cut
+          (hyperboloidPolar 0 0) (centerHyperboloid p q),
+        piecewiseC1Length hyperboloidMetric η.val cut =
+          piecewiseC1Length hyperboloidMetric γ.val cut ∧
+        pathELength I η.val a b = pathELength I γ.val a b ∧
+        pathELength I γ.val a b < ⊤ ∧ pathELength I η.val a b < ⊤ ∧
+        (∀ t, η.val t = centerHyperboloid p (γ.val t)) := by
+    intro a b n cut γ
+    let Φ := PiecewiseC1CurveOn.mapEquiv (a := a) (b := b) (cut := cut)
+      (p := p) (q := q) (centerHyperboloidDiffeomorph p)
+    let ζ := Φ γ
+    have hz0 : ζ.val a = hyperboloidPolar 0 0 := by
+      exact ζ.property.2.1.trans hc
+    let η : PiecewiseC1CurveOn I a b n cut
+        (hyperboloidPolar 0 0) (centerHyperboloid p q) :=
+      ⟨ζ.val, ζ.property.1, hz0, ζ.property.2.2⟩
+    have h := centerHyperboloid_curveFamily_length p
+      (a := a) (b := b) (n := n) (cut := cut) (x := p) (y := q)
+    have hγ := h.2.1 γ
+    exact ⟨η, hγ.1, hγ.2.1, hγ.2.2.1, hγ.2.2.2.1,
+      fun t => h.2.2.2.1 γ t⟩
+
+  -- M01/M02 inverse: arbitrary centered competitor, not just a known image.
+  -- η0 is the SAME function with source endpoint rewritten to e(p).
+  have backward : ∀ (a b : ℝ) (n : ℕ) (cut : Fin (n+1) → ℝ)
+      (η : PiecewiseC1CurveOn I a b n cut
+        (hyperboloidPolar 0 0) (centerHyperboloid p q)),
+      ∃ γ : PiecewiseC1CurveOn I a b n cut p q,
+        piecewiseC1Length hyperboloidMetric γ.val cut =
+          piecewiseC1Length hyperboloidMetric η.val cut ∧
+        pathELength I γ.val a b = pathELength I η.val a b ∧
+        pathELength I η.val a b < ⊤ ∧ pathELength I γ.val a b < ⊤ ∧
+        (∀ t, γ.val t = uncenterHyperboloid p (η.val t)) := by
+    intro a b n cut η
+    let Φ := PiecewiseC1CurveOn.mapEquiv (a := a) (b := b) (cut := cut)
+      (p := p) (q := q) (centerHyperboloidDiffeomorph p)
+    let η0 : PiecewiseC1CurveOn I a b n cut
+        (centerHyperboloid p p) (centerHyperboloid p q) :=
+      ⟨η.val, η.property.1, η.property.2.1.trans hc.symm, η.property.2.2⟩
+    let γ := Φ.symm η0
+    have h := centerHyperboloid_curveFamily_length p
+      (a := a) (b := b) (n := n) (cut := cut) (x := p) (y := q)
+    have hη := h.2.2.1 η0
+    exact ⟨γ, hη.1, hη.2.1, hη.2.2.1, hη.2.2.2.1,
+      fun t => h.2.2.2.2.1 η0 t⟩
+
+  -- M03a: original infimum ≤ centered infimum, via arbitrary inverse image.
+  have hle : piecewiseC1EDist hyperboloidMetric p q ≤
+      piecewiseC1EDist hyperboloidMetric (hyperboloidPolar 0 0)
+        (centerHyperboloid p q) := by
+    unfold piecewiseC1EDist
+    refine le_iInf (fun a => le_iInf (fun b => le_iInf (fun n =>
+      le_iInf (fun cut => le_iInf (fun η => ?_)))))
+    obtain ⟨γ, hlen, hpath, hfinη, hfinγ, hval⟩ := backward a b n cut η
+    exact iInf_le_of_le a (iInf_le_of_le b (iInf_le_of_le n
+      (iInf_le_of_le cut (iInf_le_of_le γ (by rw [hlen])))))
+
+  -- M03b: centered infimum ≤ original infimum, via arbitrary forward image.
+  have hge : piecewiseC1EDist hyperboloidMetric (hyperboloidPolar 0 0)
+        (centerHyperboloid p q) ≤ piecewiseC1EDist hyperboloidMetric p q := by
+    unfold piecewiseC1EDist
+    refine le_iInf (fun a => le_iInf (fun b => le_iInf (fun n =>
+      le_iInf (fun cut => le_iInf (fun γ => ?_)))))
+    obtain ⟨η, hlen, hpath, hfinγ, hfinη, hval⟩ := forward a b n cut γ
+    exact iInf_le_of_le a (iInf_le_of_le b (iInf_le_of_le n
+      (iInf_le_of_le cut (iInf_le_of_le η (by rw [hlen])))))
+
+  -- M03c: invoke the actual centered distance only after both infimum comparisons.
+  have hcentered := hyperboloid_centered_piecewiseC1EDist (centerHyperboloid p q)
+  have hext : piecewiseC1EDist hyperboloidMetric p q =
+      ENNReal.ofReal (hyperboloidRadius (centerHyperboloid p q)) :=
+    (le_antisymm hle hge).trans hcentered.2.2.1
+  have hfinite : piecewiseC1EDist hyperboloidMetric p q < ⊤ := by
+    rw [hext]
+    exact ENNReal.ofReal_lt_top
+  have hreal : hyperboloidLengthDist p q =
+      hyperboloidRadius (centerHyperboloid p q) := by
+    rw [hyperboloidLengthDist, hext,
+      ENNReal.toReal_ofReal (hyperboloidRadius_properties (centerHyperboloid p q)).1]
+  exact ⟨hle, hge, hext, hfinite, hreal⟩
+
+/-- The actual length distance is nonnegative and vanishes exactly on the diagonal. -/
+theorem hyperboloidLengthDist_nonneg_eq_zero (p q : Hyperboloid) :
+  0 ≤ hyperboloidLengthDist p q ∧
+  (hyperboloidLengthDist p q = 0 ↔ p = q) ∧
+  (0 < hyperboloidLengthDist p q ↔ p ≠ q) := by
+  have hc : centerHyperboloid p p = hyperboloidPolar 0 0 := by
+    apply Subtype.ext
+    exact (centerHyperboloid_properties p).2.2.2.2.1.trans
+      (hyperboloidPolar_center_direction 0 p).1.symm
+  have hreal := (hyperboloidLengthDist_center p q).2.2.2.2
+  have hrzero : hyperboloidRadius (centerHyperboloid p q) = 0 ↔ p = q := by
+    constructor
+    · intro hz
+      have hv := (hyperboloidRadius_properties (centerHyperboloid p q)).2.2.2.1.mp hz
+      have heq : centerHyperboloid p q = hyperboloidPolar 0 0 := by
+        apply Subtype.ext
+        exact hv.trans (hyperboloidPolar_center_direction 0 p).1.symm
+      have hqp : q = p := (centerHyperboloidEquiv p).injective (heq.trans hc.symm)
+      exact hqp.symm
+    · intro hpq
+      subst q
+      apply (hyperboloidRadius_properties (centerHyperboloid p p)).2.2.2.1.mpr
+      exact (centerHyperboloid_properties p).2.2.2.2.1
+  have hnonneg : 0 ≤ hyperboloidLengthDist p q := by
+    rw [hreal]
+    exact (hyperboloidRadius_properties (centerHyperboloid p q)).1
+  have hzero : hyperboloidLengthDist p q = 0 ↔ p = q := by
+    rw [hreal]
+    exact hrzero
+  have hpositive : 0 < hyperboloidLengthDist p q ↔ p ≠ q := by
+    constructor
+    · intro hd hpq
+      exact (ne_of_gt hd) (hzero.mpr hpq)
+    · intro hpq
+      exact lt_of_le_of_ne hnonneg (Ne.symm (fun hz => hpq (hzero.mp hz)))
+  exact ⟨hnonneg, hzero, hpositive⟩
+
+/-- The inverse-centered radial curve is smooth, has the exact endpoints, and has
+unit speed for distinct endpoints with respect to the same Lorentz tangent metric. -/
+theorem hyperboloidSegment_properties (p q : Hyperboloid) :
+  ContMDiff 𝓘(ℝ, ℝ) I ∞ (hyperboloidSegment p q) ∧
+  hyperboloidSegment p q 0 = p ∧
+  hyperboloidSegment p q (hyperboloidLengthDist p q) = q ∧
+  (p = q → ∀ s, hyperboloidSegment p q s = p) ∧
+  (p ≠ q →
+    letI : Bundle.RiemannianBundle (fun x : Hyperboloid => TangentSpace I x) :=
+      ⟨hyperboloidMetric.toRiemannianMetric⟩
+    ∀ s, ‖mfderiv 𝓘(ℝ, ℝ) I (hyperboloidSegment p q) s (1 : ℝ)‖ = 1) := by
+  have hc : centerHyperboloid p p = hyperboloidPolar 0 0 := by
+    apply Subtype.ext
+    exact (centerHyperboloid_properties p).2.2.2.2.1.trans
+      (hyperboloidPolar_center_direction 0 p).1.symm
+  have hu : uncenterHyperboloid p (hyperboloidPolar 0 0) = p := by
+    rw [← hc]
+    exact (centerHyperboloid_properties p).2.2.1 p
+  have hd := (hyperboloidLengthDist_center p q).2.2.2.2
+  have hr := hyperboloidRadialCurve_properties (centerHyperboloid p q)
+  refine ⟨(contMDiff_uncenterHyperboloid p).comp hr.1, ?_, ?_, ?_, ?_⟩
+  · change uncenterHyperboloid p (hyperboloidRadialCurve (centerHyperboloid p q) 0) = p
+    rw [hr.2.1, hu]
+  · change uncenterHyperboloid p
+      (hyperboloidRadialCurve (centerHyperboloid p q) (hyperboloidLengthDist p q)) = q
+    rw [hd, hr.2.2.1]
+    exact (centerHyperboloid_properties p).2.2.1 q
+  · intro hpq s
+    have hz : hyperboloidRadius (centerHyperboloid p q) = 0 :=
+      hd.symm.trans ((hyperboloidLengthDist_nonneg_eq_zero p q).2.1.mpr hpq)
+    change uncenterHyperboloid p (hyperboloidRadialCurve (centerHyperboloid p q) s) = p
+    rw [hr.2.2.2.1 hz s, hu]
+  · intro hpq
+    letI : Bundle.RiemannianBundle (fun x : Hyperboloid => TangentSpace I x) :=
+      ⟨hyperboloidMetric.toRiemannianMetric⟩
+    have hpos : 0 < hyperboloidRadius (centerHyperboloid p q) := by
+      rw [← hd]
+      exact (hyperboloidLengthDist_nonneg_eq_zero p q).2.2.mpr hpq
+    intro s
+    exact ((uncenterHyperboloid_speed p (hyperboloidRadialCurve (centerHyperboloid p q)) s
+      (hr.1.mdifferentiable (by simp) s)).1).trans (hr.2.2.2.2 hpos s)
+
+/-- The segment has its actual weak two-cut witness and realizes both real and
+extended length distance, including the constant coincident case. -/
+theorem hyperboloidSegment_length (p q : Hyperboloid) :
+  let d := hyperboloidLengthDist p q
+  let cut : Fin 2 → ℝ := fun i => if i = 0 then 0 else d
+  letI : Bundle.RiemannianBundle (fun x : Hyperboloid => TangentSpace I x) :=
+    ⟨hyperboloidMetric.toRiemannianMetric⟩
+  IsPiecewiseC1On I (hyperboloidSegment p q) 0 d 1 cut ∧
+  piecewiseC1Length hyperboloidMetric (hyperboloidSegment p q) cut = d ∧
+  pathELength I (hyperboloidSegment p q) 0 d =
+    piecewiseC1EDist hyperboloidMetric p q ∧
+  pathELength I (hyperboloidSegment p q) 0 d < ⊤ := by
+  letI : Bundle.RiemannianBundle (fun x : Hyperboloid => TangentSpace I x) :=
+    ⟨hyperboloidMetric.toRiemannianMetric⟩
+  dsimp only
+  rw [(hyperboloidLengthDist_center p q).2.2.2.2]
+  have h := hyperboloidRadialCurve_length (centerHyperboloid p q)
+  have hu := uncenterHyperboloid_length p h.1
+  refine ⟨hu.1, hu.2.2.2.2.1.trans h.2.1, ?_, ?_⟩
+  · exact (hu.2.2.2.2.2.2.2.1.trans h.2.2.1).trans
+      (hyperboloidLengthDist_center p q).2.2.1.symm
+  · exact hu.2.2.2.2.2.2.2.2.2.1
+
+/-- Every minimizing curve has monotone centered radius and exactly the constructed
+segment image. General parametrizations may pause; a coincident minimizer is constant. -/
+theorem hyperboloid_minimizer_image
+    {p q : Hyperboloid} {a b : ℝ} {n : ℕ} {cut : Fin (n+1) → ℝ}
+    (γ : PiecewiseC1CurveOn I a b n cut p q)
+    (hmin : piecewiseC1Length hyperboloidMetric γ.val cut = hyperboloidLengthDist p q) :
+  MonotoneOn (fun t => hyperboloidRadius (centerHyperboloid p (γ.val t))) (Icc a b) ∧
+  (∀ t ∈ Icc a b, γ.val t = hyperboloidSegment p q
+    (hyperboloidRadius (centerHyperboloid p (γ.val t)))) ∧
+  γ.val '' Icc a b = hyperboloidSegment p q '' Icc 0 (hyperboloidLengthDist p q) ∧
+  (p = q → ∀ t ∈ Icc a b, γ.val t = p) := by
+  have hc : centerHyperboloid p p = hyperboloidPolar 0 0 := by
+    apply Subtype.ext
+    exact (centerHyperboloid_properties p).2.2.2.2.1.trans
+      (hyperboloidPolar_center_direction 0 p).1.symm
+  have ht := centerHyperboloid_length p γ.property.1
+  let η : PiecewiseC1CurveOn I a b n cut
+      (hyperboloidPolar 0 0) (centerHyperboloid p q) :=
+    ⟨(centerHyperboloid p) ∘ γ.val, ht.1,
+      (congrArg (centerHyperboloid p) γ.property.2.1).trans hc,
+      congrArg (centerHyperboloid p) γ.property.2.2⟩
+  have hd := (hyperboloidLengthDist_center p q).2.2.2.2
+  have hm : piecewiseC1Length hyperboloidMetric η.val cut =
+      hyperboloidRadius (centerHyperboloid p q) := ht.2.2.2.2.1.trans (hmin.trans hd)
+  have hmono := hyperboloid_centered_minimizer_radius_monotone η hm
+  have hi := hyperboloid_centered_minimizer_image η hm
+  have hinv : ∀ t, uncenterHyperboloid p (η.val t) = γ.val t :=
+    fun t => (centerHyperboloid_properties p).2.2.1 (γ.val t)
+  have hpoint : ∀ t ∈ Icc a b, γ.val t = hyperboloidSegment p q
+      (hyperboloidRadius (centerHyperboloid p (γ.val t))) := by
+    intro t hmem
+    exact (hinv t).symm.trans (congrArg (uncenterHyperboloid p) (hi.1 t hmem))
+  refine ⟨hmono, hpoint, ?_, ?_⟩
+  · apply Set.Subset.antisymm
+    · rintro z ⟨t, hmem, rfl⟩
+      have hmemb : η.val t ∈ hyperboloidRadialCurve (centerHyperboloid p q) ''
+          Icc 0 (hyperboloidRadius (centerHyperboloid p q)) :=
+        hi.2 ▸ ⟨t, hmem, rfl⟩
+      obtain ⟨s, hs, hst⟩ := hmemb
+      refine ⟨s, by simpa only [hd] using hs, ?_⟩
+      exact (congrArg (uncenterHyperboloid p) hst).trans (hinv t)
+    · rintro z ⟨s, hs, rfl⟩
+      have hmemb : hyperboloidRadialCurve (centerHyperboloid p q) s ∈ η.val '' Icc a b := by
+        rw [hi.2]
+        exact ⟨s, by simpa only [hd] using hs, rfl⟩
+      obtain ⟨t, htmem, hts⟩ := hmemb
+      exact ⟨t, htmem, (hinv t).symm.trans (congrArg (uncenterHyperboloid p) hts)⟩
+  · intro hpq t hmem
+    have hz : hyperboloidRadius (centerHyperboloid p q) = 0 :=
+      hd.symm.trans ((hyperboloidLengthDist_nonneg_eq_zero p q).2.1.mpr hpq)
+    have he := hyperboloid_centered_minimizer_zero η hm hz t hmem
+    have hu : uncenterHyperboloid p (hyperboloidPolar 0 0) = p := by
+      rw [← hc]
+      exact (centerHyperboloid_properties p).2.2.1 p
+    exact (hinv t).symm.trans ((congrArg (uncenterHyperboloid p) he).trans hu)
+
+/-- A minimizing curve on the original distance interval with unit speed on its
+strict pieces equals the constructed arclength segment for distinct endpoints. -/
+theorem hyperboloid_unitSpeed_minimizer_unique
+    (p q : Hyperboloid) (hpq : p ≠ q) {n : ℕ} {cut : Fin (n+1) → ℝ}
+    (γ : PiecewiseC1CurveOn I 0 (hyperboloidLengthDist p q) n cut p q)
+    (hmin : piecewiseC1Length hyperboloidMetric γ.val cut = hyperboloidLengthDist p q)
+    (hunit : letI : Bundle.RiemannianBundle (fun x : Hyperboloid => TangentSpace I x) :=
+      ⟨hyperboloidMetric.toRiemannianMetric⟩
+      ∀ i : Fin n, ∀ t ∈ Ioo (cut i.castSucc) (cut i.succ),
+        ‖mfderivWithin 𝓘(ℝ, ℝ) I γ.val (Icc (cut i.castSucc) (cut i.succ)) t (1 : ℝ)‖ = 1) :
+  ∀ t ∈ Icc 0 (hyperboloidLengthDist p q), γ.val t = hyperboloidSegment p q t := by
+  letI : Bundle.RiemannianBundle (fun x : Hyperboloid => TangentSpace I x) :=
+    ⟨hyperboloidMetric.toRiemannianMetric⟩
+  have hd := (hyperboloidLengthDist_center p q).2.2.2.2
+  have hpos : 0 < hyperboloidRadius (centerHyperboloid p q) := by
+    rw [← hd]
+    exact (hyperboloidLengthDist_nonneg_eq_zero p q).2.2.mpr hpq
+  have hc : centerHyperboloid p p = hyperboloidPolar 0 0 := by
+    apply Subtype.ext
+    exact (centerHyperboloid_properties p).2.2.2.2.1.trans
+      (hyperboloidPolar_center_direction 0 p).1.symm
+  let η : PiecewiseC1CurveOn I 0 (hyperboloidLengthDist p q) n cut
+      (hyperboloidPolar 0 0) (centerHyperboloid p q) :=
+    ⟨(centerHyperboloid p) ∘ γ.val, (centerHyperboloid_length p γ.property.1).1,
+      (congrArg (centerHyperboloid p) γ.property.2.1).trans hc,
+      congrArg (centerHyperboloid p) γ.property.2.2⟩
+  have hm : piecewiseC1Length hyperboloidMetric η.val cut = hyperboloidRadius (centerHyperboloid p q) :=
+    (centerHyperboloid_length p γ.property.1).2.2.2.2.1.trans (hmin.trans hd)
+  have hηunit : ∀ i : Fin n, ∀ t ∈ Ioo (cut i.castSucc) (cut i.succ),
+      ‖mfderivWithin 𝓘(ℝ, ℝ) I η.val (Icc (cut i.castSucc) (cut i.succ)) t (1 : ℝ)‖ = 1 := by
+    intro i t ht
+    have hC1 := γ.property.1.2.2.2.2 i (lt_trans ht.1 ht.2)
+    have hdiff := (hC1.contMDiffAt (Icc_mem_nhds ht.1 ht.2)).mdifferentiableAt one_ne_zero
+    change ‖mfderivWithin 𝓘(ℝ, ℝ) I ((centerHyperboloid p) ∘ γ.val)
+      (Icc (cut i.castSucc) (cut i.succ)) t (1 : ℝ)‖ = 1
+    rw [mfderivWithin_of_mem_nhds (Icc_mem_nhds ht.1 ht.2)]
+    have hu := hunit i t ht
+    rw [mfderivWithin_of_mem_nhds (Icc_mem_nhds ht.1 ht.2)] at hu
+    exact (centerHyperboloid_speed p γ.val t hdiff).1.trans hu
+  have hcUnique : ∀ t ∈ Icc 0 (hyperboloidLengthDist p q),
+      η.val t = hyperboloidRadialCurve (centerHyperboloid p q) t := by
+    let ηR : PiecewiseC1CurveOn I 0 (hyperboloidRadius (centerHyperboloid p q)) n cut
+        (hyperboloidPolar 0 0) (centerHyperboloid p q) :=
+      ⟨η.val, by simpa only [hd] using η.property⟩
+    have h := hyperboloid_centered_unitSpeed_unique (centerHyperboloid p q)
+      hpos ηR hm hηunit
+    intro t ht
+    exact h t (by simpa only [hd] using ht)
+  intro t ht
+  exact ((centerHyperboloid_properties p).2.2.1 (γ.val t)).symm.trans
+    (congrArg (uncenterHyperboloid p) (hcUnique t ht))
+
+/-- The inverse-centered initial vector is a unit perpendicular tangent and the
+actual ambient derivative at zero; it gives the cosh/sinh formula for every real parameter. -/
+theorem hyperboloidSegment_initial_formula (p q : Hyperboloid) (hpq : p ≠ q) :
+  lorentzBilinear (hyperboloidSegmentInitial p q) p.val = 0 ∧
+  lorentzBilinear (hyperboloidSegmentInitial p q) (hyperboloidSegmentInitial p q) = 1 ∧
+  HasDerivAt (fun s => (hyperboloidSegment p q s).val)
+    (hyperboloidSegmentInitial p q) 0 ∧
+  (∀ s : ℝ, (hyperboloidSegment p q s).val =
+    Real.cosh s • p.val + Real.sinh s • hyperboloidSegmentInitial p q) := by
+  let θ := Complex.arg (hyperboloidSpatial (centerHyperboloid p q))
+  let w : Fin 3 → ℝ := ![Real.cos θ, Real.sin θ, 0]
+  have hv : hyperboloidSegmentInitial p q = (lorentzCenterCoordinates p).symm w := by
+    simp only [hyperboloidSegmentInitial, if_neg hpq, w, θ]
+  have hpos : 0 < hyperboloidRadius (centerHyperboloid p q) := by
+    rw [← (hyperboloidLengthDist_center p q).2.2.2.2]
+    exact (hyperboloidLengthDist_nonneg_eq_zero p q).2.2.mpr hpq
+  have hformula : ∀ s, (hyperboloidSegment p q s).val =
+      Real.cosh s • p.val + Real.sinh s • hyperboloidSegmentInitial p q := by
+    intro s
+    have hpolar : hyperboloidPolarCoords s θ =
+        Real.cosh s • ![0,0,1] + Real.sinh s • w := by
+      funext i
+      fin_cases i <;> simp [hyperboloidPolarCoords, w, mul_comm]
+    change (lorentzCenterCoordinates p).symm
+      (hyperboloidRadialCurve (centerHyperboloid p q) s).val = _
+    rw [hyperboloidRadialCurve, if_neg (ne_of_gt hpos)]
+    change (lorentzCenterCoordinates p).symm (hyperboloidPolarCoords s θ) = _
+    rw [hpolar, map_add, map_smul, map_smul,
+      (lorentzCenterCoordinates_properties p).2.2.2.2.1, ← hv]
+  have hperp : lorentzBilinear (hyperboloidSegmentInitial p q) p.val = 0 := by
+    rw [hv, ← (lorentzCenterCoordinates_properties p).2.2.2.2.1,
+      lorentzCenterCoordinates_symm_preserves]
+    simp [w, lorentzBilinear_apply]
+  have hnorm : lorentzBilinear (hyperboloidSegmentInitial p q)
+      (hyperboloidSegmentInitial p q) = 1 := by
+    rw [hv, lorentzCenterCoordinates_symm_preserves]
+    simpa [w, lorentzBilinear_apply, pow_two] using Real.cos_sq_add_sin_sq θ
+  have hder : HasDerivAt (fun s => Real.cosh s • p.val +
+      Real.sinh s • hyperboloidSegmentInitial p q) (hyperboloidSegmentInitial p q) 0 := by
+    apply hasDerivAt_pi.mpr
+    intro i
+    convert! ((Real.hasDerivAt_cosh 0).mul_const (p.val i)).add
+      ((Real.hasDerivAt_sinh 0).mul_const (hyperboloidSegmentInitial p q i)) using 1 <;>
+      simp
+  refine ⟨hperp, hnorm, ?_, hformula⟩
+  rw [funext hformula]
+  exact hder
+
+/-- The Lorentz pairing gives the cosh of the actual length distance, for all pairs,
+with equality and strictness detecting coincident and distinct endpoints. -/
+theorem hyperboloidLengthDist_cosh (p q : Hyperboloid) :
+  Real.cosh (hyperboloidLengthDist p q) = -lorentzBilinear p.val q.val ∧
+  1 ≤ -lorentzBilinear p.val q.val ∧
+  (-lorentzBilinear p.val q.val = 1 ↔ p = q) ∧
+  (1 < -lorentzBilinear p.val q.val ↔ p ≠ q) := by
+  have he : Real.cosh (hyperboloidLengthDist p q) = -lorentzBilinear p.val q.val := by
+    rw [(hyperboloidLengthDist_center p q).2.2.2.2,
+      (hyperboloidRadius_properties (centerHyperboloid p q)).2.2.1]
+    exact lorentzCenterCoordinates_time p q.val
+  have hzero := (hyperboloidLengthDist_nonneg_eq_zero p q).2.1
+  have hstrict : 1 < -lorentzBilinear p.val q.val ↔ p ≠ q := by
+    rw [← he, Real.one_lt_cosh]
+    exact not_congr hzero
+  have hle : 1 ≤ -lorentzBilinear p.val q.val := he ▸ Real.one_le_cosh _
+  refine ⟨he, hle, ?_, hstrict⟩
+  constructor
+  · intro h
+    by_contra hpq
+    have hs := hstrict.mpr hpq
+    rw [h] at hs
+    exact (lt_irrefl 1) hs
+  · intro hpq
+    rw [← he, hzero.mpr hpq, Real.cosh_zero]
+
+/-- For distinct endpoints, positive sinh permits recovery of the already constructed
+initial tangent from the endpoint equation, and that vector is unique. -/
+theorem hyperboloidSegmentInitial_endpoint (p q : Hyperboloid) (hpq : p ≠ q) :
+  0 < Real.sinh (hyperboloidLengthDist p q) ∧
+  hyperboloidSegmentInitial p q =
+    (Real.sinh (hyperboloidLengthDist p q))⁻¹ •
+      (q.val - Real.cosh (hyperboloidLengthDist p q) • p.val) ∧
+  (∀ v : Fin 3 → ℝ,
+    q.val = Real.cosh (hyperboloidLengthDist p q) • p.val +
+      Real.sinh (hyperboloidLengthDist p q) • v →
+    v = hyperboloidSegmentInitial p q) := by
+  have hs := Real.sinh_pos_iff.mpr ((hyperboloidLengthDist_nonneg_eq_zero p q).2.2.mpr hpq)
+  have he : q.val = Real.cosh (hyperboloidLengthDist p q) • p.val +
+      Real.sinh (hyperboloidLengthDist p q) • hyperboloidSegmentInitial p q := by
+    exact (congrArg Subtype.val (hyperboloidSegment_properties p q).2.2.1).symm.trans
+      ((hyperboloidSegment_initial_formula p q hpq).2.2.2 (hyperboloidLengthDist p q))
+  have cancel : ∀ v : Fin 3 → ℝ,
+      q.val = Real.cosh (hyperboloidLengthDist p q) • p.val +
+        Real.sinh (hyperboloidLengthDist p q) • v →
+      v = (Real.sinh (hyperboloidLengthDist p q))⁻¹ •
+        (q.val - Real.cosh (hyperboloidLengthDist p q) • p.val) := by
+    intro v hv
+    rw [hv, add_sub_cancel_left, smul_smul, inv_mul_cancel₀ (ne_of_gt hs), one_smul]
+  have hv := cancel (hyperboloidSegmentInitial p q) he
+  exact ⟨hs, hv, fun v h => (cancel v h).trans hv.symm⟩
 
 end PolarRadial
 

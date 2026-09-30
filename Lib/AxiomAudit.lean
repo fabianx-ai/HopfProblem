@@ -8284,3 +8284,39 @@ is an evidence command rather than library content.
 
 #check Hyperbolic.hyperboloid_centered_minimizer_zero
 #print axioms Hyperbolic.hyperboloid_centered_minimizer_zero
+
+#check Hyperbolic.hyperboloidLengthDist
+#print axioms Hyperbolic.hyperboloidLengthDist
+
+#check Hyperbolic.hyperboloidSegment
+#print axioms Hyperbolic.hyperboloidSegment
+
+#check Hyperbolic.hyperboloidSegmentInitial
+#print axioms Hyperbolic.hyperboloidSegmentInitial
+
+#check Hyperbolic.hyperboloidLengthDist_center
+#print axioms Hyperbolic.hyperboloidLengthDist_center
+
+#check Hyperbolic.hyperboloidLengthDist_nonneg_eq_zero
+#print axioms Hyperbolic.hyperboloidLengthDist_nonneg_eq_zero
+
+#check Hyperbolic.hyperboloidSegment_properties
+#print axioms Hyperbolic.hyperboloidSegment_properties
+
+#check Hyperbolic.hyperboloidSegment_length
+#print axioms Hyperbolic.hyperboloidSegment_length
+
+#check Hyperbolic.hyperboloid_minimizer_image
+#print axioms Hyperbolic.hyperboloid_minimizer_image
+
+#check Hyperbolic.hyperboloid_unitSpeed_minimizer_unique
+#print axioms Hyperbolic.hyperboloid_unitSpeed_minimizer_unique
+
+#check Hyperbolic.hyperboloidSegment_initial_formula
+#print axioms Hyperbolic.hyperboloidSegment_initial_formula
+
+#check Hyperbolic.hyperboloidLengthDist_cosh
+#print axioms Hyperbolic.hyperboloidLengthDist_cosh
+
+#check Hyperbolic.hyperboloidSegmentInitial_endpoint
+#print axioms Hyperbolic.hyperboloidSegmentInitial_endpoint
