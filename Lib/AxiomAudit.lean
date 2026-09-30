@@ -8023,3 +8023,48 @@ is an evidence command rather than library content.
 
 #check Hyperbolic.hyperboloid_tangent_lorentz_positive
 #print axioms Hyperbolic.hyperboloid_tangent_lorentz_positive
+
+#check Hyperbolic.lorentzPlaneCore
+#print axioms Hyperbolic.lorentzPlaneCore
+
+#check Hyperbolic.lorentzPlaneBasis
+#print axioms Hyperbolic.lorentzPlaneBasis
+
+#check Hyperbolic.lorentzPlaneBasis_gram
+#print axioms Hyperbolic.lorentzPlaneBasis_gram
+
+#check Hyperbolic.lorentzSumMap
+#print axioms Hyperbolic.lorentzSumMap
+
+#check Hyperbolic.lorentz_directSum
+#print axioms Hyperbolic.lorentz_directSum
+
+#check Hyperbolic.lorentzSumMap_bijective
+#print axioms Hyperbolic.lorentzSumMap_bijective
+
+#check Hyperbolic.lorentzSumEquiv
+#print axioms Hyperbolic.lorentzSumEquiv
+
+#check Hyperbolic.lorentzFrameBasis
+#print axioms Hyperbolic.lorentzFrameBasis
+
+#check Hyperbolic.lorentzFrameBasis_apply
+#print axioms Hyperbolic.lorentzFrameBasis_apply
+
+#check Hyperbolic.lorentzFrameBasis_gram
+#print axioms Hyperbolic.lorentzFrameBasis_gram
+
+#check Hyperbolic.lorentzCenterCoordinates
+#print axioms Hyperbolic.lorentzCenterCoordinates
+
+#check Hyperbolic.lorentzCenterCoordinates_properties
+#print axioms Hyperbolic.lorentzCenterCoordinates_properties
+
+#check Hyperbolic.lorentzCenterCoordinates_time
+#print axioms Hyperbolic.lorentzCenterCoordinates_time
+
+#check Hyperbolic.lorentzCenterCoordinates_preserves
+#print axioms Hyperbolic.lorentzCenterCoordinates_preserves
+
+#check Hyperbolic.lorentzCenterCoordinates_symm_preserves
+#print axioms Hyperbolic.lorentzCenterCoordinates_symm_preserves

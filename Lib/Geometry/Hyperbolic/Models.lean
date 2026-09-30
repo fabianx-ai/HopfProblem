@@ -26,6 +26,10 @@ public import Mathlib.Analysis.Convex.Basic
 public import Mathlib.Algebra.Order.BigOperators.Ring.Finset
 public import Mathlib.LinearAlgebra.FiniteDimensional.Lemmas
 public import Mathlib.Analysis.Normed.Operator.Bilinear
+public import Mathlib.Analysis.InnerProductSpace.PiL2
+public import Mathlib.LinearAlgebra.Basis.Prod
+public import Mathlib.LinearAlgebra.Projection
+public import Mathlib.Logic.Equiv.Fin.Basic
 
 /-!
 # Upper-half-plane and hyperboloid coordinates
@@ -1567,6 +1571,278 @@ theorem hyperboloid_tangent_lorentz_positive (p : Hyperboloid) :
     rw [hTensor]
     exact lorentzKer_quadratic_pos p _ (hyperboloidTangentEquivKer p v).property
       (fun h => hv ((hzero v).mp h))
+
+
+
+/-! ## Lorentz frames and algebraic changes of center (G02.b/c) -/
+
+/-- Positive Core of the actual independent Lorentz restriction (G02.b/F01). -/
+def lorentzPlaneCore (p : Hyperboloid) :
+    InnerProductSpace.Core ℝ (lorentzFunctional p.val).ker where
+  inner := fun v w => lorentzKerBilinear p v w
+  conj_inner_symm := fun v w => (lorentzKerBilinear_properties p).2.1 w v
+  re_inner_nonneg := (lorentzKerBilinear_properties p).2.2.1
+  add_left := fun v w z => congrArg
+    (fun f : (lorentzFunctional p.val).ker →L[ℝ] ℝ => f z)
+    (map_add (lorentzKerBilinear p) v w)
+  smul_left := fun v w r => congrArg
+    (fun f : (lorentzFunctional p.val).ker →L[ℝ] ℝ => f w)
+    (map_smul (lorentzKerBilinear p) r v)
+  definite := fun v hv => (lorentzKerBilinear_properties p).2.2.2.1 v |>.mp hv
+
+/-- Ordinary orthogonalization in the positive perpendicular plane, exported as an algebraic two-vector basis (G02.b/F02). -/
+def lorentzPlaneBasis (p : Hyperboloid) :
+    Module.Basis (Fin 2) ℝ (lorentzFunctional p.val).ker := by
+  let c := lorentzPlaneCore p
+  letI : InnerProductSpace.Core ℝ (lorentzFunctional p.val).ker := c
+  let n : NormedAddCommGroup (lorentzFunctional p.val).ker :=
+    InnerProductSpace.Core.toNormedAddCommGroup (𝕜 := ℝ)
+  letI : NormedAddCommGroup (lorentzFunctional p.val).ker := n
+  letI : SeminormedAddCommGroup (lorentzFunctional p.val).ker :=
+    n.toSeminormedAddCommGroup
+  letI : InnerProductSpace ℝ (lorentzFunctional p.val).ker :=
+    InnerProductSpace.ofCore c.toCore
+  exact (stdOrthonormalBasis ℝ (lorentzFunctional p.val).ker).toBasis.reindex
+    (finCongr (finrank_lorentzKer p))
+
+/-- The selected positive-plane basis is orthonormal for the same Lorentz form (G02.b/F03). -/
+theorem lorentzPlaneBasis_gram (p : Hyperboloid) (i j : Fin 2) :
+    lorentzBilinear (lorentzPlaneBasis p i).val (lorentzPlaneBasis p j).val =
+      if i = j then 1 else 0 := by
+  let c := lorentzPlaneCore p
+  letI : InnerProductSpace.Core ℝ (lorentzFunctional p.val).ker := c
+  let n : NormedAddCommGroup (lorentzFunctional p.val).ker :=
+    InnerProductSpace.Core.toNormedAddCommGroup (𝕜 := ℝ)
+  letI : NormedAddCommGroup (lorentzFunctional p.val).ker := n
+  letI : SeminormedAddCommGroup (lorentzFunctional p.val).ker := n.toSeminormedAddCommGroup
+  letI : InnerProductSpace ℝ (lorentzFunctional p.val).ker :=
+    InnerProductSpace.ofCore c.toCore
+  let b := stdOrthonormalBasis ℝ (lorentzFunctional p.val).ker
+  let e := finCongr (finrank_lorentzKer p)
+  have h := b.inner_eq_ite (e.symm i) (e.symm j)
+  change lorentzBilinear (b (e.symm i)).val (b (e.symm j)).val =
+    (if e.symm i = e.symm j then 1 else 0) at h
+  simpa only [lorentzPlaneBasis, Module.Basis.reindex_apply,
+    OrthonormalBasis.coe_toBasis, Equiv.apply_eq_iff_eq] using h
+
+/-- The actual sum map adjoining the timelike center to its perpendicular plane (G02.b/F04). -/
+def lorentzSumMap (p : Hyperboloid) :
+    ((lorentzFunctional p.val).ker × ℝ) →ₗ[ℝ] V :=
+  (lorentzFunctional p.val).ker.subtype.coprod (LinearMap.toSpanSingleton ℝ V p.val)
+
+/-- The perpendicular plane and center line are complementary, with unique decomposition and explicit projection and scalar components (G02.b/F05). -/
+theorem lorentz_directSum (p : Hyperboloid) :
+    IsCompl (lorentzFunctional p.val).ker (Submodule.span ℝ {p.val}) ∧
+    (∀ w : V, ∃! z : (lorentzFunctional p.val).ker × ℝ,
+      z.1.val + z.2 • p.val = w) ∧
+    (∀ (w : V) (z : (lorentzFunctional p.val).ker × ℝ),
+      z.1.val + z.2 • p.val = w →
+      z.1.val = w + lorentzBilinear p.val w • p.val ∧
+      z.2 = -lorentzBilinear p.val w) := by
+  have hself : lorentzFunctional p.val p.val = -1 := by
+    simpa only [lorentzFunctional_apply, pow_two] using p.property.1
+  have hmem (w : V) :
+      w + lorentzBilinear p.val w • p.val ∈ (lorentzFunctional p.val).ker := by
+    change lorentzFunctional p.val (w + lorentzBilinear p.val w • p.val) = 0
+    rw [map_add, map_smul, hself, lorentzBilinear_eq_functional]
+    simp
+  have hcomponents (w : V) (z : (lorentzFunctional p.val).ker × ℝ)
+      (hz : z.1.val + z.2 • p.val = w) :
+      z.1.val = w + lorentzBilinear p.val w • p.val ∧
+      z.2 = -lorentzBilinear p.val w := by
+    have hzker : lorentzFunctional p.val z.1.val = 0 := z.1.property
+    have ht := congrArg (lorentzFunctional p.val) hz
+    rw [map_add, map_smul, hzker, hself] at ht
+    have hc : z.2 = -lorentzBilinear p.val w := by
+      rw [lorentzBilinear_eq_functional]
+      simpa using congrArg Neg.neg ht
+    refine ⟨?_, hc⟩
+    calc
+      z.1.val = (z.1.val + z.2 • p.val) + lorentzBilinear p.val w • p.val := by
+        rw [hc]
+        simp
+      _ = w + lorentzBilinear p.val w • p.val := by rw [hz]
+  have hex (w : V) : ∃! z : (lorentzFunctional p.val).ker × ℝ,
+      z.1.val + z.2 • p.val = w := by
+    let z : (lorentzFunctional p.val).ker × ℝ :=
+      (⟨w + lorentzBilinear p.val w • p.val, hmem w⟩, -lorentzBilinear p.val w)
+    have hz : z.1.val + z.2 • p.val = w := by
+      dsimp [z]
+      simp
+    refine ⟨z, hz, ?_⟩
+    intro z' hz'
+    obtain ⟨hv, ht⟩ := hcomponents w z' hz'
+    exact Prod.ext (Subtype.ext hv) ht
+  have hd : Disjoint (lorentzFunctional p.val).ker (Submodule.span ℝ {p.val}) := by
+    rw [Submodule.disjoint_def]
+    intro w hw hs
+    obtain ⟨r, rfl⟩ := Submodule.mem_span_singleton.mp hs
+    change lorentzFunctional p.val (r • p.val) = 0 at hw
+    rw [map_smul, hself] at hw
+    have hr : r = 0 := by simpa using hw
+    simp [hr]
+  have hs : (lorentzFunctional p.val).ker ⊔ Submodule.span ℝ {p.val} = ⊤ := by
+    apply top_unique
+    intro w _
+    obtain ⟨z, hz, _⟩ := hex w
+    exact Submodule.mem_sup.mpr ⟨z.1.val, z.1.property, z.2 • p.val,
+      Submodule.smul_mem _ _ (Submodule.subset_span (Set.mem_singleton _)), hz⟩
+  exact ⟨⟨hd, codisjoint_iff.mpr hs⟩, hex, hcomponents⟩
+
+/-- Unique decomposition makes the actual sum map bijective (G02.b/F06). -/
+theorem lorentzSumMap_bijective (p : Hyperboloid) :
+    Function.Bijective (lorentzSumMap p) := by
+  apply (Function.bijective_iff_existsUnique _).mpr
+  exact (lorentz_directSum p).2.1
+
+/-- The linear equivalence of the actual perpendicular-plane and scalar direct sum (G02.b/F07). -/
+def lorentzSumEquiv (p : Hyperboloid) :
+    ((lorentzFunctional p.val).ker × ℝ) ≃ₗ[ℝ] V :=
+  LinearEquiv.ofBijective (lorentzSumMap p) (lorentzSumMap_bijective p)
+
+/-- The same orthonormal plane basis, with the center adjoined in the third position (G02.b/F08). -/
+def lorentzFrameBasis (p : Hyperboloid) : Module.Basis (Fin 3) ℝ V :=
+  (((lorentzPlaneBasis p).prod (Module.Basis.singleton (Fin 1) ℝ)).map
+    (lorentzSumEquiv p)).reindex finSumFinEquiv
+
+/-- The adjoined ambient basis has exactly the two selected plane vectors followed by the center (G02.b/F09). -/
+theorem lorentzFrameBasis_apply (p : Hyperboloid) :
+    (∀ i : Fin 2, lorentzFrameBasis p i.castSucc = (lorentzPlaneBasis p i).val) ∧
+    lorentzFrameBasis p 2 = p.val := by
+  constructor
+  · intro i
+    simp [lorentzFrameBasis, Module.Basis.reindex_apply,
+      Module.Basis.map_apply, lorentzSumEquiv, lorentzSumMap,
+      Module.Basis.prod_apply_inl_fst, Module.Basis.prod_apply_inl_snd]
+  · have he : finSumFinEquiv.symm (2 : Fin 3) = Sum.inr (0 : Fin 1) := by decide
+    simp only [lorentzFrameBasis, Module.Basis.reindex_apply, he]
+    simp [Module.Basis.map_apply, lorentzSumEquiv, lorentzSumMap]
+
+/-- The ambient frame has Lorentz Gram matrix diag(1,1,-1), without an orientation condition (G02.b/F10). -/
+theorem lorentzFrameBasis_gram (p : Hyperboloid) (i j : Fin 3) :
+    lorentzBilinear (lorentzFrameBasis p i) (lorentzFrameBasis p j) =
+      if i = j then (if i = 2 then -1 else 1) else 0 := by
+  have h0 : lorentzFrameBasis p 0 = (lorentzPlaneBasis p 0).val := by
+    simpa using (lorentzFrameBasis_apply p).1 0
+  have h1 : lorentzFrameBasis p 1 = (lorentzPlaneBasis p 1).val := by
+    simpa using (lorentzFrameBasis_apply p).1 1
+  have h2 := (lorentzFrameBasis_apply p).2
+  have hcross (i : Fin 2) : lorentzBilinear p.val (lorentzPlaneBasis p i).val = 0 := by
+    rw [lorentzBilinear_eq_functional]
+    exact (lorentzPlaneBasis p i).property
+  have hcross' (i : Fin 2) : lorentzBilinear (lorentzPlaneBasis p i).val p.val = 0 := by
+    rw [lorentzBilinear_symm]
+    exact hcross i
+  have hself : lorentzBilinear p.val p.val = -1 := by
+    simpa only [lorentzBilinear_apply, pow_two] using p.property.1
+  fin_cases i <;> fin_cases j <;>
+    simp [h0, h1, h2, lorentzPlaneBasis_gram, hcross, hcross', hself]
+
+/-- Linear coordinates in the same actual Lorentz frame (G02.c/F11). -/
+def lorentzCenterCoordinates (p : Hyperboloid) : V ≃ₗ[ℝ] V :=
+  (lorentzFrameBasis p).equivFun
+
+/-- Same-frame coordinates have the explicit inverse sum, all basis images, exact center and both inverse laws (G02.c/F12). -/
+theorem lorentzCenterCoordinates_properties (p : Hyperboloid) :
+    (∀ w : V, (lorentzCenterCoordinates p).symm w =
+      w 0 • (lorentzPlaneBasis p 0).val +
+      w 1 • (lorentzPlaneBasis p 1).val + w 2 • p.val) ∧
+    (∀ i : Fin 3, lorentzCenterCoordinates p (lorentzFrameBasis p i) =
+      Pi.single i 1) ∧
+    (∀ i : Fin 3, (lorentzCenterCoordinates p).symm (Pi.single i 1) =
+      lorentzFrameBasis p i) ∧
+    lorentzCenterCoordinates p p.val = ![0, 0, 1] ∧
+    (lorentzCenterCoordinates p).symm ![0, 0, 1] = p.val ∧
+    (∀ w : V, (lorentzCenterCoordinates p).symm (lorentzCenterCoordinates p w) = w) ∧
+    (∀ w : V, lorentzCenterCoordinates p ((lorentzCenterCoordinates p).symm w) = w) := by
+  have material_inverse (p : Hyperboloid) (w : V) :
+      (lorentzCenterCoordinates p).symm w =
+        w 0 • (lorentzPlaneBasis p 0).val +
+        w 1 • (lorentzPlaneBasis p 1).val + w 2 • p.val := by
+    unfold lorentzCenterCoordinates
+    rw [(lorentzFrameBasis p).equivFun_symm_apply]
+    simp only [Fin.sum_univ_three]
+    have h0 : lorentzFrameBasis p 0 = (lorentzPlaneBasis p 0).val := by
+      simpa using (lorentzFrameBasis_apply p).1 0
+    have h1 : lorentzFrameBasis p 1 = (lorentzPlaneBasis p 1).val := by
+      simpa using (lorentzFrameBasis_apply p).1 1
+    rw [h0, h1, (lorentzFrameBasis_apply p).2]
+
+  have material_basis (p : Hyperboloid) (i : Fin 3) :
+      lorentzCenterCoordinates p (lorentzFrameBasis p i) = Pi.single i 1 := by
+    ext j
+    simp [lorentzCenterCoordinates, Module.Basis.equivFun_self, Pi.single_apply, eq_comm]
+
+  have material_basisInverse (p : Hyperboloid) (i : Fin 3) :
+      (lorentzCenterCoordinates p).symm (Pi.single i 1) = lorentzFrameBasis p i := by
+    apply (lorentzCenterCoordinates p).injective
+    ext j
+    simp [lorentzCenterCoordinates, Module.Basis.equivFun_self, Pi.single_apply, eq_comm]
+  have hsingle : (Pi.single (2 : Fin 3) (1 : ℝ)) = ![0,0,1] := by
+    ext i
+    fin_cases i <;> simp [Pi.single_apply]
+  have hCenter : lorentzCenterCoordinates p p.val = ![0,0,1] := by
+    rw [← (lorentzFrameBasis_apply p).2, material_basis, hsingle]
+  have hCenterInv : (lorentzCenterCoordinates p).symm ![0,0,1] = p.val := by
+    rw [← hsingle, material_basisInverse, (lorentzFrameBasis_apply p).2]
+  exact ⟨material_inverse p, material_basis p, material_basisInverse p, hCenter, hCenterInv,
+    (lorentzCenterCoordinates p).symm_apply_apply,
+    (lorentzCenterCoordinates p).apply_symm_apply⟩
+
+/-- The time coordinate of the centering map is minus pairing with the original center (G02.c/F13). -/
+theorem lorentzCenterCoordinates_time (p : Hyperboloid) (w : V) :
+    lorentzCenterCoordinates p w 2 = -lorentzBilinear p.val w := by
+  have hcross (i : Fin 2) : lorentzBilinear p.val (lorentzPlaneBasis p i).val = 0 := by
+    rw [lorentzBilinear_eq_functional]
+    exact (lorentzPlaneBasis p i).property
+  have hself : lorentzBilinear p.val p.val = -1 := by
+    simpa only [lorentzBilinear_apply, pow_two] using p.property.1
+  have hw := (lorentzCenterCoordinates_properties p).1 (lorentzCenterCoordinates p w)
+  rw [(lorentzCenterCoordinates p).symm_apply_apply] at hw
+  have h := congrArg (lorentzBilinear p.val) hw
+  simp only [map_add, map_smul, smul_eq_mul, hcross, hself, mul_zero,
+    zero_add, mul_neg, mul_one] at h
+  linarith
+
+/-- The same-frame centering coordinates preserve the full Lorentz bilinear form (G02.c/F14). -/
+theorem lorentzCenterCoordinates_preserves (p : Hyperboloid) (u v : V) :
+    lorentzBilinear (lorentzCenterCoordinates p u) (lorentzCenterCoordinates p v) =
+      lorentzBilinear u v := by
+  have hexpand (r s : V) :
+      lorentzBilinear (∑ i : Fin 3, r i • lorentzFrameBasis p i)
+        (∑ j : Fin 3, s j • lorentzFrameBasis p j) =
+      ∑ i : Fin 3, ∑ j : Fin 3,
+        r i * s j * lorentzBilinear (lorentzFrameBasis p i) (lorentzFrameBasis p j) := by
+    simp only [map_sum, map_smul, ContinuousLinearMap.sum_apply,
+      ContinuousLinearMap.smul_apply, smul_eq_mul, Finset.mul_sum]
+    rw [Finset.sum_comm]
+    congr 1
+    funext i
+    congr 1
+    funext j
+    ring
+  have hgram (r s : V) :
+      (∑ i : Fin 3, ∑ j : Fin 3,
+        r i * s j * lorentzBilinear (lorentzFrameBasis p i) (lorentzFrameBasis p j)) =
+      lorentzBilinear r s := by
+    simp_rw [lorentzFrameBasis_gram]
+    simp [Fin.sum_univ_three, lorentzBilinear_apply]
+    ring
+  have h := (hexpand (lorentzCenterCoordinates p u) (lorentzCenterCoordinates p v)).trans
+    (hgram (lorentzCenterCoordinates p u) (lorentzCenterCoordinates p v))
+  have hu : ∑ i, lorentzCenterCoordinates p u i • lorentzFrameBasis p i = u :=
+    (lorentzFrameBasis p).sum_equivFun u
+  have hv : ∑ i, lorentzCenterCoordinates p v i • lorentzFrameBasis p i = v :=
+    (lorentzFrameBasis p).sum_equivFun v
+  rw [hu, hv] at h
+  exact h.symm
+
+/-- The inverse centering coordinates preserve the full Lorentz bilinear form (G02.c/F15). -/
+theorem lorentzCenterCoordinates_symm_preserves (p : Hyperboloid) (u v : V) :
+    lorentzBilinear ((lorentzCenterCoordinates p).symm u)
+      ((lorentzCenterCoordinates p).symm v) = lorentzBilinear u v := by
+  simpa using (lorentzCenterCoordinates_preserves p
+    ((lorentzCenterCoordinates p).symm u) ((lorentzCenterCoordinates p).symm v)).symm
 
 
 end Hyperbolic
