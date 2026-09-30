@@ -3,6 +3,8 @@ module
 public import Mathlib.MeasureTheory.Function.AbsolutelyContinuous
 public import Mathlib.MeasureTheory.Integral.IntervalIntegral.AbsolutelyContinuousFun
 public import Mathlib.Data.ENNReal.BigOperators
+public import Mathlib.Order.Interval.Set.Union
+public import Mathlib.MeasureTheory.Measure.Typeclasses.NullSingletonClass
 
 /-!
 # Absolute continuity across finite weak subdivisions
@@ -291,5 +293,94 @@ theorem monotoneOn_of_integral_abs_deriv_eq_sub {f : ℝ → ℝ} {a b : ℝ}
       (ae_restrict_of_ae_restrict_of_subset hs hclosed)
   rw [hrestricted.integral_deriv_eq_sub] at hnonneg
   exact sub_nonneg.mp hnonneg
+
+/-- A continuous function into any real normed space is constant when it is
+relatively C1 on the strict pieces of a finite weak subdivision and has an
+actual zero derivative almost everywhere on each open piece. Compact-piece
+absolute continuity glues across the same endpoint values; removing the finite
+cut set transfers the derivative witnesses to the whole interval. The standard
+AC zero-derivative criterion then includes both endpoints. Repeated cuts and
+zero pieces require no completeness, finite dimension or exterior regularity. -/
+theorem const_of_monotone_subdivision_of_ae_hasDerivAt_zero
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {f : ℝ → E} {a b : ℝ} {n : ℕ}
+    (cut : Fin (n + 1) → ℝ) (hcut : Monotone cut)
+    (hfirst : cut 0 = a) (hlast : cut (Fin.last n) = b)
+    (hcont : ContinuousOn f (Set.Icc a b))
+    (hC1 : ∀ i : Fin n, cut i.castSucc < cut i.succ →
+      ContDiffOn ℝ 1 f (Set.Icc (cut i.castSucc) (cut i.succ)))
+    (hzero : ∀ i : Fin n,
+      ∀ᵐ t ∂volume.restrict (Set.Ioo (cut i.castSucc) (cut i.succ)),
+        HasDerivAt f (0 : E) t) :
+    ∀ t ∈ Set.Icc a b, f t = f a := by
+  have hab : a ≤ b := by
+    simpa only [hfirst, hlast] using
+      hcut (show (0 : Fin (n + 1)) ≤ Fin.last n by change 0 ≤ n; omega)
+  have hac : AbsolutelyContinuousOnInterval f a b := by
+    apply AbsolutelyContinuousOnInterval.of_monotone_subdivision cut hcut hfirst hlast
+    intro i hi
+    apply ContDiffOn.absolutelyContinuousOnInterval
+    simpa only [uIcc_of_le hi.le] using hC1 i hi
+  have hcover : ∀ t ∈ Icc a b, t ∉ range cut →
+      ∃ i : Fin n, t ∈ Ioo (cut i.castSucc) (cut i.succ) := by
+    let cN : ℕ → ℝ := fun k =>
+      if hk : k < n + 1 then cut ⟨k, hk⟩ else cut (Fin.last n)
+    have hN0 : cN 0 = cut 0 := by simp [cN]
+    have hNlast : cN n = cut (Fin.last n) := by simp [cN, Fin.last]
+    have hNleft : ∀ i : Fin n, cN i.val = cut i.castSucc := by
+      intro i
+      simp only [cN, dif_pos (show i.val < n + 1 by omega)]
+      rfl
+    have hNright : ∀ i : Fin n, cN (i.val + 1) = cut i.succ := by
+      intro i
+      simp only [cN, dif_pos (show i.val + 1 < n + 1 by omega)]
+      rfl
+    have hNcover : Ico (cN 0) (cN n) ⊆
+        ⋃ k ∈ Finset.range n, Ico (cN k) (cN (k + 1)) :=
+      Ico_subset_biUnion_Ico n cN
+    have hindex : (⋃ k ∈ Finset.range n, Ico (cN k) (cN (k + 1))) =
+        ⋃ i : Fin n, Ico (cut i.castSucc) (cut i.succ) := by
+      ext t
+      constructor
+      · intro ht
+        rcases mem_iUnion.1 ht with ⟨k, hk⟩
+        rcases mem_iUnion.1 hk with ⟨hk, ht⟩
+        let i : Fin n := ⟨k, Finset.mem_range.1 hk⟩
+        exact mem_iUnion.2 ⟨i, by simpa only [← hNleft i, ← hNright i] using ht⟩
+      · intro ht
+        rcases mem_iUnion.1 ht with ⟨i, ht⟩
+        exact mem_iUnion.2 ⟨i.val, mem_iUnion.2 ⟨Finset.mem_range.2 i.isLt,
+          by simpa only [hNleft i, hNright i] using ht⟩⟩
+    intro t ht hnot
+    have htb : t < b := lt_of_le_of_ne ht.2 (by
+      intro h
+      exact hnot ⟨Fin.last n, hlast.trans h.symm⟩)
+    have hmem : t ∈ Ico (cN 0) (cN n) := by
+      simpa only [hN0, hNlast, hfirst, hlast] using ⟨ht.1, htb⟩
+    have hm := hNcover hmem
+    rw [hindex] at hm
+    rcases mem_iUnion.1 hm with ⟨i, hi⟩
+    exact ⟨i, lt_of_le_of_ne hi.1 (by
+      intro heq
+      exact hnot ⟨i.castSucc, heq⟩), hi.2⟩
+  have hall : ∀ᵐ t ∂volume, ∀ i : Fin n,
+      t ∈ Ioo (cut i.castSucc) (cut i.succ) → HasDerivAt f (0 : E) t :=
+    ae_all_iff.mpr (fun i => (ae_restrict_iff' measurableSet_Ioo).mp (hzero i))
+  have hnot : ∀ᵐ t ∂volume, t ∉ range cut :=
+    measure_eq_zero_iff_ae_notMem.mp ((Set.finite_range cut).measure_zero volume)
+  have hwhole : ∀ᵐ t ∂volume, t ∈ uIcc a b → HasDerivAt f (0 : E) t := by
+    filter_upwards [hall, hnot] with t ht hn
+    intro hmem
+    have hmem' : t ∈ Icc a b := by simpa only [uIcc_of_le hab] using hmem
+    obtain ⟨i, hi⟩ := hcover t hmem' hn
+    exact ht i hi
+  obtain ⟨C, hC⟩ := hac.const_of_ae_hasDerivAt_zero hwhole
+  have ha : a ∈ uIcc a b := by
+    rw [uIcc_of_le hab]
+    exact ⟨le_rfl, hab⟩
+  intro t ht
+  have ht' : t ∈ uIcc a b := by simpa only [uIcc_of_le hab] using ht
+  exact (hC t ht').trans (hC a ha).symm
+
 
 end AbsolutelyContinuousOnInterval

@@ -8248,3 +8248,6 @@ is an evidence command rather than library content.
 
 #check AbsolutelyContinuousOnInterval.monotoneOn_of_integral_abs_deriv_eq_sub
 #print axioms AbsolutelyContinuousOnInterval.monotoneOn_of_integral_abs_deriv_eq_sub
+
+#check AbsolutelyContinuousOnInterval.const_of_monotone_subdivision_of_ae_hasDerivAt_zero
+#print axioms AbsolutelyContinuousOnInterval.const_of_monotone_subdivision_of_ae_hasDerivAt_zero
