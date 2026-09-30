@@ -51,6 +51,11 @@ public import Mathlib.Analysis.Calculus.Deriv.Mul
 public import Mathlib.Analysis.Calculus.Deriv.Prod
 public import Mathlib.Analysis.SpecialFunctions.Arcosh
 public import Mathlib.Analysis.Calculus.DSlope
+public import Mathlib.LinearAlgebra.Span.Defs
+public import Mathlib.LinearAlgebra.LinearIndependent.Lemmas
+public import Mathlib.LinearAlgebra.Dimension.Constructions
+public import Mathlib.Topology.Connected.Clopen
+public import Mathlib.LinearAlgebra.FiniteDimensional.Basic
 
 /-!
 # Upper-half-plane and hyperboloid coordinates
@@ -4564,5 +4569,739 @@ theorem continuous_hyperboloidNormalizedSegment :
   exact hval.subtype_mk (fun z => (hyperboloidNormalizedSegment z.1.1 z.1.2 z.2.val).property)
 
 end PolarRadial
+
+/-- The ambient hyperbolic parametrization determined by a point and a tangent direction. -/
+def hyperboloidGeodesicCoords (p : Hyperboloid) (v : Fin 3 → ℝ) (s : ℝ) : Fin 3 → ℝ :=
+  Real.cosh s • p.val + Real.sinh s • v
+
+/-- The hyperbolic parametrization has Lorentz square minus one and lies on the upper sheet. -/
+theorem hyperboloidGeodesicCoords_mem (p : Hyperboloid) (v : Fin 3 → ℝ)
+    (hvp : lorentzBilinear v p.val = 0) (hvv : lorentzBilinear v v = 1) (s : ℝ) :
+  (hyperboloidGeodesicCoords p v s 0)^2 +
+    (hyperboloidGeodesicCoords p v s 1)^2 -
+    (hyperboloidGeodesicCoords p v s 2)^2 = -1 ∧
+  0 < hyperboloidGeodesicCoords p v s 2 := by
+  have hpp : lorentzBilinear p.val p.val = -1 := by
+    simpa only [lorentzBilinear_apply, pow_two] using p.property.1
+  have hPair : ∀ a b c d : ℝ,
+      lorentzBilinear (a • p.val+b • v) (c • p.val+d • v) = -a*c+b*d := by
+    intro a b c d
+    have he : lorentzBilinear (a • p.val+b • v) (c • p.val+d • v) =
+        a*c*lorentzBilinear p.val p.val +
+        (a*d+b*c)*lorentzBilinear v p.val + b*d*lorentzBilinear v v := by
+      simp only [lorentzBilinear_apply, Pi.add_apply, Pi.smul_apply, smul_eq_mul]
+      ring
+    rw [he, hpp, hvp, hvv]
+    ring
+  have hQ : lorentzBilinear (hyperboloidGeodesicCoords p v s)
+      (hyperboloidGeodesicCoords p v s) = -1 := by
+    unfold hyperboloidGeodesicCoords
+    rw [hPair]
+    nlinarith [Real.cosh_sq_sub_sinh_sq s]
+  have htimePair : -lorentzBilinear p.val (hyperboloidGeodesicCoords p v s) = Real.cosh s := by
+    have he := hPair 1 0 (Real.cosh s) (Real.sinh s)
+    simp only [one_smul, zero_smul, add_zero, neg_mul, one_mul, zero_mul, add_zero] at he
+    change -lorentzBilinear p.val (Real.cosh s • p.val+Real.sinh s • v) = Real.cosh s
+    linarith
+  refine ⟨?_, (lorentzUnit_time_sign p _ hQ).2.2.mpr ?_⟩
+  · simpa only [lorentzBilinear_apply, pow_two] using hQ
+  · rw [htimePair]
+    exact Real.cosh_pos s
+
+/-- The all-real hyperboloid curve determined by a unit Lorentz tangent. -/
+def hyperboloidGeodesic (p : Hyperboloid) (v : Fin 3 → ℝ)
+    (hvp : lorentzBilinear v p.val = 0) (hvv : lorentzBilinear v v = 1)
+    (s : ℝ) : Hyperboloid :=
+  ⟨hyperboloidGeodesicCoords p v s, hyperboloidGeodesicCoords_mem p v hvp hvv s⟩
+
+set_option backward.isDefEq.respectTransparency false in
+/-- The explicit curve is smooth, starts at its prescribed point, and has unit speed for the hyperboloid metric. -/
+theorem hyperboloidGeodesic_properties (p : Hyperboloid) (v : Fin 3 → ℝ)
+    (hvp : lorentzBilinear v p.val = 0) (hvv : lorentzBilinear v v = 1) :
+  let γ := hyperboloidGeodesic p v hvp hvv
+  ContMDiff 𝓘(ℝ, ℝ) 𝓘(ℝ, ℂ) ∞ γ ∧ γ 0 = p ∧
+  (∀ s, HasDerivAt (fun t => (γ t).val) (Real.sinh s • p.val + Real.cosh s • v) s) ∧
+  (letI : Bundle.RiemannianBundle (fun x : Hyperboloid => TangentSpace 𝓘(ℝ, ℂ) x) :=
+    ⟨hyperboloidMetric.toRiemannianMetric⟩
+   ∀ s, ‖mfderiv 𝓘(ℝ, ℝ) 𝓘(ℝ, ℂ) γ s (1 : ℝ)‖ = 1) := by
+  let γ := hyperboloidGeodesic p v hvp hvv
+  have hpp : lorentzBilinear p.val p.val = -1 := by
+    simpa only [lorentzBilinear_apply, pow_two] using p.property.1
+  have hPair : ∀ a b c d : ℝ,
+      lorentzBilinear (a • p.val+b • v) (c • p.val+d • v) = -a*c+b*d := by
+    intro a b c d
+    have he : lorentzBilinear (a • p.val+b • v) (c • p.val+d • v) =
+        a*c*lorentzBilinear p.val p.val +
+        (a*d+b*c)*lorentzBilinear v p.val + b*d*lorentzBilinear v v := by
+      simp only [lorentzBilinear_apply, Pi.add_apply, Pi.smul_apply, smul_eq_mul]
+      ring
+    rw [he, hpp, hvp, hvv]
+    ring
+  have hc : ContDiff ℝ ∞ (hyperboloidGeodesicCoords p v) := by
+    unfold hyperboloidGeodesicCoords
+    fun_prop
+  have hs : ContMDiff 𝓘(ℝ, ℝ) 𝓘(ℝ, ℂ) ∞ γ := by
+    apply ContMDiff.of_comp_isOpenEmbedding isOpenEmbedding_hyperboloidCoords
+    exact contDiffOn_hyperboloidToUpperHalfPlaneCoords.contMDiffOn.comp_contMDiff
+      hc.contMDiff (fun s => hyperboloid_denominator_pos (γ s))
+  have hd : ∀ s, HasDerivAt (hyperboloidGeodesicCoords p v)
+      (Real.sinh s • p.val+Real.cosh s • v) s := by
+    intro s
+    exact ((Real.hasDerivAt_cosh s).smul_const p.val).add
+      ((Real.hasDerivAt_sinh s).smul_const v)
+  have hzero : γ 0 = p := by
+    apply Subtype.ext
+    simp [γ, hyperboloidGeodesic, hyperboloidGeodesicCoords]
+  refine ⟨hs, hzero, hd, ?_⟩
+  letI : Bundle.RiemannianBundle (fun q : Hyperboloid => TangentSpace 𝓘(ℝ, ℂ) q) :=
+    ⟨hyperboloidMetric.toRiemannianMetric⟩
+  intro s
+  let D := Real.sinh s • p.val+Real.cosh s • v
+  let w := mfderiv 𝓘(ℝ, ℝ) 𝓘(ℝ, ℂ) γ s (1 : ℝ)
+  have hD : lorentzBilinear D D = 1 := by
+    dsimp [D]
+    rw [hPair]
+    nlinarith [Real.cosh_sq_sub_sinh_sq s]
+  have hmixed : lorentzBilinear D (γ s).val = 0 := by
+    change lorentzBilinear (Real.sinh s • p.val+Real.cosh s • v)
+      (Real.cosh s • p.val+Real.sinh s • v) = 0
+    rw [hPair]
+    ring
+  have hi : mfderiv 𝓘(ℝ, ℂ) 𝓘(ℝ, Fin 3 → ℝ) (fun q : Hyperboloid => q.val) (γ s) w = D := by
+    have he : mfderiv 𝓘(ℝ, ℝ) 𝓘(ℝ, Fin 3 → ℝ)
+        (hyperboloidGeodesicCoords p v) s = fderiv ℝ (hyperboloidGeodesicCoords p v) s :=
+      mfderiv_eq_fderiv
+    have hchain := mfderiv_comp_apply s
+      (contMDiff_hyperboloid_val.mdifferentiable (by simp) _)
+      (hs.mdifferentiable (by simp) _) (1 : ℝ)
+    have heval := congrArg (fun L : ℝ →L[ℝ] (Fin 3 → ℝ) => L 1)
+      (he.trans (hd s).hasFDerivAt.fderiv)
+    exact hchain.symm.trans (heval.trans (by simp [D]))
+  have hnorm : ‖w‖^2 = hyperboloidMetric.inner (γ s) w w :=
+    (real_inner_self_eq_norm_sq w).symm
+  rw [hyperboloidMetric_inner, hyperboloidTangentTensor_apply, hi, hD] at hnorm
+  have hn := norm_nonneg w
+  change ‖w‖ = 1
+  nlinarith
+
+/-- The point and unit tangent span a timelike plane whose entire upper-sheet section is the explicit curve. -/
+theorem hyperboloidGeodesic_plane (p : Hyperboloid) (v : Fin 3 → ℝ)
+    (hvp : lorentzBilinear v p.val = 0) (hvv : lorentzBilinear v v = 1) :
+  let P := Submodule.span ℝ ({p.val, v} : Set (Fin 3 → ℝ))
+  LinearIndependent ℝ ![p.val, v] ∧ Module.finrank ℝ P = 2 ∧
+  (∀ a b : ℝ, lorentzBilinear (a • p.val + b • v) (a • p.val + b • v) = -a^2+b^2) ∧
+  Set.range (hyperboloidGeodesic p v hvp hvv) = {q : Hyperboloid | q.val ∈ P} := by
+  let P := Submodule.span ℝ ({p.val, v} : Set (Fin 3 → ℝ))
+  have hpp : lorentzBilinear p.val p.val = -1 := by
+    simpa only [lorentzBilinear_apply, pow_two] using p.property.1
+  have hpv : lorentzBilinear p.val v = 0 := (lorentzBilinear_symm p.val v).trans hvp
+  have hscale : ∀ (a : ℝ) (x y : Fin 3 → ℝ),
+      lorentzBilinear (a • x) y = a * lorentzBilinear x y := by
+    intro a x y
+    simp only [lorentzBilinear_apply, Pi.smul_apply, smul_eq_mul]
+    ring
+  have hvne : v ≠ 0 := by
+    intro hz
+    have h := hvv
+    simp [hz, lorentzBilinear_apply] at h
+  have hlin : LinearIndependent ℝ ![p.val, v] := by
+    apply linearIndependent_fin2.mpr
+    constructor
+    · exact hvne
+    · intro a ha
+      change a • v = p.val at ha
+      have h := congrArg (fun x => lorentzBilinear x p.val) ha
+      rw [hscale, hvp, mul_zero, hpp] at h
+      norm_num at h
+  have hr : Set.range ![p.val, v] = ({p.val, v} : Set (Fin 3 → ℝ)) := by
+    ext x
+    simp only [Set.mem_range, Set.mem_insert_iff, Set.mem_singleton_iff]
+    constructor
+    · rintro ⟨i, rfl⟩
+      fin_cases i <;> simp
+    · rintro (rfl | rfl)
+      · exact ⟨0, rfl⟩
+      · exact ⟨1, rfl⟩
+  have hdim : Module.finrank ℝ P = 2 := by
+    have hd := finrank_span_eq_card hlin
+    rw [hr] at hd
+    exact hd
+  have hGram : ∀ a b : ℝ,
+      lorentzBilinear (a • p.val + b • v) (a • p.val + b • v) = -a^2+b^2 := by
+    intro a b
+    have he : lorentzBilinear (a • p.val + b • v) (a • p.val + b • v) =
+        a^2 * lorentzBilinear p.val p.val +
+        2*a*b * lorentzBilinear v p.val + b^2 * lorentzBilinear v v := by
+      simp only [lorentzBilinear_apply, Pi.add_apply, Pi.smul_apply, smul_eq_mul]
+      ring
+    rw [he, hpp, hvp, hvv]
+    ring
+  have hpP : p.val ∈ P := Submodule.subset_span (by simp)
+  have hvP : v ∈ P := Submodule.subset_span (by simp)
+  refine ⟨hlin, hdim, hGram, ?_⟩
+  ext q
+  constructor
+  · rintro ⟨s, rfl⟩
+    exact P.add_mem (P.smul_mem (Real.cosh s) hpP) (P.smul_mem (Real.sinh s) hvP)
+  · intro hq
+    rcases Submodule.mem_span_pair.mp hq with ⟨a, b, he⟩
+    have hqq : lorentzBilinear q.val q.val = -1 := by
+      simpa only [lorentzBilinear_apply, pow_two] using q.property.1
+    have hcoeff : a^2-b^2=1 := by
+      have hg := hGram a b
+      rw [he, hqq] at hg
+      linarith
+    have hpair : -lorentzBilinear p.val q.val = a := by
+      rw [← he]
+      have hx : lorentzBilinear p.val (a • p.val+b • v) =
+          a * lorentzBilinear p.val p.val + b * lorentzBilinear p.val v := by
+        simp only [lorentzBilinear_apply, Pi.add_apply, Pi.smul_apply, smul_eq_mul]
+        ring
+      rw [hx, hpp, hpv]
+      ring
+    have ha : 0 < a := hpair ▸ hyperboloid_neg_lorentz_pos p q
+    have hcosh : Real.cosh (Real.arsinh b) = a := by
+      rw [Real.cosh_arsinh]
+      have hs : 1+b^2=a^2 := by linarith
+      rw [hs, Real.sqrt_sq ha.le]
+    refine ⟨Real.arsinh b, ?_⟩
+    apply Subtype.ext
+    change Real.cosh (Real.arsinh b) • p.val + Real.sinh (Real.arsinh b) • v = q.val
+    rw [hcosh, Real.sinh_arsinh]
+    exact he
+
+/-- Distance along the explicit unit-speed curve is the absolute difference of parameters. -/
+theorem hyperboloidGeodesic_lengthDist (p : Hyperboloid) (v : Fin 3 → ℝ)
+    (hvp : lorentzBilinear v p.val = 0) (hvv : lorentzBilinear v v = 1) (s t : ℝ) :
+  hyperboloidLengthDist (hyperboloidGeodesic p v hvp hvv s)
+    (hyperboloidGeodesic p v hvp hvv t) = |t-s| := by
+  have hpp : lorentzBilinear p.val p.val = -1 := by
+    simpa only [lorentzBilinear_apply, pow_two] using p.property.1
+  have hPair : ∀ a b c d : ℝ,
+      lorentzBilinear (a • p.val+b • v) (c • p.val+d • v) = -a*c+b*d := by
+    intro a b c d
+    have he : lorentzBilinear (a • p.val+b • v) (c • p.val+d • v) =
+        a*c*lorentzBilinear p.val p.val +
+        (a*d+b*c)*lorentzBilinear v p.val + b*d*lorentzBilinear v v := by
+      simp only [lorentzBilinear_apply, Pi.add_apply, Pi.smul_apply, smul_eq_mul]
+      ring
+    rw [he, hpp, hvp, hvv]
+    ring
+  have hinner : -lorentzBilinear (hyperboloidGeodesic p v hvp hvv s).val
+      (hyperboloidGeodesic p v hvp hvv t).val = Real.cosh (t-s) := by
+    change -lorentzBilinear (Real.cosh s • p.val+Real.sinh s • v)
+      (Real.cosh t • p.val+Real.sinh t • v) = Real.cosh (t-s)
+    rw [hPair, Real.cosh_sub]
+    ring
+  apply Real.cosh_injOn
+    (hyperboloidLengthDist_nonneg_eq_zero
+      (hyperboloidGeodesic p v hvp hvv s) (hyperboloidGeodesic p v hvp hvv t)).1
+    (show |t-s| ∈ Ici (0 : ℝ) from abs_nonneg (t-s))
+  rw [(hyperboloidLengthDist_cosh
+    (hyperboloidGeodesic p v hvp hvv s) (hyperboloidGeodesic p v hvp hvv t)).1, Real.cosh_abs]
+  exact hinner
+
+/-- Every finite subsegment has its parameter length and agrees with the canonical minimizing segment, including coincident endpoints. -/
+theorem hyperboloidGeodesic_subsegment (p : Hyperboloid) (v : Fin 3 → ℝ)
+    (hvp : lorentzBilinear v p.val = 0) (hvv : lorentzBilinear v v = 1)
+    (a b : ℝ) (hab : a ≤ b) :
+  let γ := hyperboloidGeodesic p v hvp hvv
+  let cut : Fin 2 → ℝ := fun i => if i = 0 then a else b
+  letI : Bundle.RiemannianBundle (fun x : Hyperboloid => TangentSpace 𝓘(ℝ, ℂ) x) :=
+    ⟨hyperboloidMetric.toRiemannianMetric⟩
+  IsPiecewiseC1On 𝓘(ℝ, ℂ) γ a b 1 cut ∧
+  piecewiseC1Length hyperboloidMetric γ cut = b-a ∧
+  pathELength 𝓘(ℝ, ℂ) γ a b = ENNReal.ofReal (b-a) ∧
+  (∀ r ∈ Set.Icc 0 (b-a), γ (a+r) = hyperboloidSegment (γ a) (γ b) r) ∧
+  γ '' Set.Icc a b = hyperboloidSegment (γ a) (γ b) '' Set.Icc 0 (b-a) := by
+  let γ := hyperboloidGeodesic p v hvp hvv
+  let cut : Fin 2 → ℝ := fun i => if i = 0 then a else b
+  letI : Bundle.RiemannianBundle (fun q : Hyperboloid => TangentSpace 𝓘(ℝ, ℂ) q) :=
+    ⟨hyperboloidMetric.toRiemannianMetric⟩
+  have hs := (hyperboloidGeodesic_properties p v hvp hvv).1
+  have hw : IsPiecewiseC1On 𝓘(ℝ, ℂ) γ a b 1 cut := by
+    refine ⟨?_, by simp [cut], by simp [cut], hs.continuous.continuousOn, ?_⟩
+    · intro i j hij
+      fin_cases i <;> fin_cases j <;> simp_all [cut]
+    · intro i hi
+      exact (hs.of_le (by simp)).contMDiffOn
+  rcases hw.speed_length hyperboloidMetric with
+    ⟨hpiece, hinterval, hmeas, hint, hreal, hset, hnonneg, hconvert,
+      hfinite, hsum, hwhole, hpath, hpathfinite⟩
+  have hnorm : (fun t : ℝ => ‖mfderiv 𝓘(ℝ, ℝ) 𝓘(ℝ, ℂ) γ t (1 : ℝ)‖) =
+      (fun _ : ℝ => (1 : ℝ)) :=
+    funext (hyperboloidGeodesic_properties p v hvp hvv).2.2.2
+  rw [hnorm] at hreal
+  have hlength : piecewiseC1Length hyperboloidMetric γ cut = b-a := by
+    simpa using hreal.symm
+
+  have hpp : lorentzBilinear p.val p.val = -1 := by
+    simpa only [lorentzBilinear_apply, pow_two] using p.property.1
+  have hPair : ∀ a b c d : ℝ,
+      lorentzBilinear (a • p.val+b • v) (c • p.val+d • v) = -a*c+b*d := by
+    intro a b c d
+    have he : lorentzBilinear (a • p.val+b • v) (c • p.val+d • v) =
+        a*c*lorentzBilinear p.val p.val +
+        (a*d+b*c)*lorentzBilinear v p.val + b*d*lorentzBilinear v v := by
+      simp only [lorentzBilinear_apply, Pi.add_apply, Pi.smul_apply, smul_eq_mul]
+      ring
+    rw [he, hpp, hvp, hvv]
+    ring
+  have hpathLen : pathELength 𝓘(ℝ, ℂ) γ a b = ENNReal.ofReal (b-a) :=
+    hpath.trans (congrArg ENNReal.ofReal hlength)
+  have hparam : ∀ r ∈ Icc 0 (b-a), γ (a+r) = hyperboloidSegment (γ a) (γ b) r := by
+    by_cases heq : a = b
+    · subst b
+      intro r hr
+      have hr0 : r = 0 := by
+        have hleft := hr.1
+        have hright := hr.2
+        linarith
+      subst r
+      simpa only [add_zero] using (hyperboloidSegment_properties (γ a) (γ a)).2.1.symm
+    · have hablt : a < b := lt_of_le_of_ne hab heq
+      have hdist : hyperboloidLengthDist (γ a) (γ b) = b-a := by
+        rw [hyperboloidGeodesic_lengthDist]
+        exact abs_of_nonneg (sub_nonneg.mpr hab)
+      have hpq : γ a ≠ γ b :=
+        (hyperboloidLengthDist_nonneg_eq_zero (γ a) (γ b)).2.2.mp
+          (by rw [hdist]; exact sub_pos.mpr hablt)
+      let va := Real.sinh a • p.val+Real.cosh a • v
+      have hvaPerp : lorentzBilinear va (γ a).val = 0 := by
+        change lorentzBilinear (Real.sinh a • p.val+Real.cosh a • v)
+          (Real.cosh a • p.val+Real.sinh a • v) = 0
+        rw [hPair]
+        ring
+      have hvaUnit : lorentzBilinear va va = 1 := by
+        dsimp [va]
+        rw [hPair]
+        nlinarith [Real.cosh_sq_sub_sinh_sq a]
+      have hshift : ∀ r : ℝ, (γ (a+r)).val =
+          Real.cosh r • (γ a).val+Real.sinh r • va := by
+        intro r
+        funext i
+        simp only [γ, hyperboloidGeodesic, hyperboloidGeodesicCoords, va,
+          Pi.add_apply, Pi.smul_apply, smul_eq_mul, Real.cosh_add, Real.sinh_add]
+        ring
+      have hend : (γ b).val =
+          Real.cosh (hyperboloidLengthDist (γ a) (γ b)) • (γ a).val+
+          Real.sinh (hyperboloidLengthDist (γ a) (γ b)) • va := by
+        rw [hdist]
+        have he : a+(b-a)=b := by ring
+        simpa only [he] using hshift (b-a)
+      have hva := (hyperboloidSegmentInitial_endpoint (γ a) (γ b) hpq).2.2 va hend
+      intro r hr
+      apply Subtype.ext
+      rw [hshift, hva, (hyperboloidSegment_initial_formula (γ a) (γ b) hpq).2.2.2 r]
+  refine ⟨hw, hlength, hpathLen, hparam, ?_⟩
+  apply Set.Subset.antisymm
+  · rintro q ⟨t, ht, rfl⟩
+    refine ⟨t-a, ⟨sub_nonneg.mpr ht.1, by linarith [ht.2]⟩, ?_⟩
+    have he : a+(t-a)=t := by ring
+    exact (by simpa only [he] using (hparam (t-a) ⟨sub_nonneg.mpr ht.1, by linarith [ht.2]⟩).symm)
+  · rintro q ⟨r, hr, rfl⟩
+    refine ⟨a+r, ⟨by linarith [hr.1], by linarith [hr.2]⟩, hparam r hr⟩
+
+/-- A Lorentz timelike plane is a two-dimensional subspace containing a negative vector. -/
+def IsLorentzTimelikePlane (P : Submodule ℝ (Fin 3 → ℝ)) : Prop :=
+  Module.finrank ℝ P = 2 ∧ ∃ w : Fin 3 → ℝ, w ∈ P ∧ lorentzBilinear w w < 0
+
+/-- Every timelike plane admits an upper-sheet point and unit tangent parametrizing its entire hyperboloid section. -/
+theorem IsLorentzTimelikePlane.exists_hyperboloidGeodesic
+    {P : Submodule ℝ (Fin 3 → ℝ)} (hP : IsLorentzTimelikePlane P) :
+  ∃ p : Hyperboloid, ∃ v : Fin 3 → ℝ,
+    ∃ hvp : lorentzBilinear v p.val = 0, ∃ hvv : lorentzBilinear v v = 1,
+      p.val ∈ P ∧ v ∈ P ∧
+      P = Submodule.span ℝ ({p.val, v} : Set (Fin 3 → ℝ)) ∧
+      Set.range (hyperboloidGeodesic p v hvp hvv) = {q : Hyperboloid | q.val ∈ P} := by
+  rcases hP with ⟨hdim, w, hwP, hwneg⟩
+  have hscale : ∀ (a b : ℝ) (x y : Fin 3 → ℝ),
+      lorentzBilinear (a • x) (b • y) = a*b*lorentzBilinear x y := by
+    intro a b x y
+    simp only [lorentzBilinear_apply, Pi.smul_apply, smul_eq_mul]
+    ring
+  have hwt : w 2 ≠ 0 := by
+    intro hz
+    have hn := hwneg
+    simp only [lorentzBilinear_apply] at hn
+    rw [hz] at hn
+    nlinarith [sq_nonneg (w 0), sq_nonneg (w 1)]
+  let wplus : Fin 3 → ℝ := if 0 < w 2 then w else -w
+  have hwplusP : wplus ∈ P := by
+    dsimp [wplus]
+    split_ifs
+    · exact hwP
+    · exact P.neg_mem hwP
+  have hwplusT : 0 < wplus 2 := by
+    dsimp [wplus]
+    split_ifs with h
+    · exact h
+    · change 0 < -(w 2)
+      exact neg_pos.mpr (lt_of_le_of_ne (le_of_not_gt h) hwt)
+  have hwplusQ : lorentzBilinear wplus wplus = lorentzBilinear w w := by
+    dsimp [wplus]
+    split_ifs
+    · rfl
+    · simp only [lorentzBilinear_apply, Pi.neg_apply, neg_mul_neg]
+  let radius := Real.sqrt (-lorentzBilinear w w)
+  have hrpos : 0 < radius := Real.sqrt_pos.mpr (neg_pos.mpr hwneg)
+  have hrne : radius ≠ 0 := ne_of_gt hrpos
+  have hrsq : radius^2 = -lorentzBilinear w w := Real.sq_sqrt (neg_nonneg.mpr hwneg.le)
+  let pvec : Fin 3 → ℝ := radius⁻¹ • wplus
+  have hpQ : lorentzBilinear pvec pvec = -1 := by
+    rw [show pvec = radius⁻¹ • wplus from rfl, hscale, hwplusQ]
+    have hww : lorentzBilinear w w = -(radius^2) := by linarith
+    rw [hww]
+    field_simp [hrne]
+    <;> ring
+  have hpT : 0 < pvec 2 := mul_pos (inv_pos.mpr hrpos) hwplusT
+  let p : Hyperboloid := ⟨pvec, by
+    simpa only [lorentzBilinear_apply, pow_two] using hpQ, hpT⟩
+  have hpP : p.val ∈ P := P.smul_mem _ hwplusP
+  have hpne : p.val ≠ 0 := by
+    intro hz
+    have h := hpT
+    change 0 < p.val 2 at h
+    rw [hz] at h
+    simp at h
+  have hpSpan : Submodule.span ℝ ({p.val} : Set (Fin 3 → ℝ)) ≤ P := by
+    apply Submodule.span_le.mpr
+    intro x hx
+    have he : x = p.val := by simpa using hx
+    subst x
+    exact hpP
+  have hz : ∃ z : Fin 3 → ℝ, z ∈ P ∧
+      z ∉ Submodule.span ℝ ({p.val} : Set (Fin 3 → ℝ)) := by
+    by_contra hnone
+    push_neg at hnone
+    have heq : P = Submodule.span ℝ ({p.val} : Set (Fin 3 → ℝ)) :=
+      le_antisymm (fun z hz => hnone z hz) hpSpan
+    have hdOne := finrank_span_singleton («K» := ℝ) hpne
+    rw [← heq, hdim] at hdOne
+    norm_num at hdOne
+  rcases hz with ⟨z, hzP, hznot⟩
+  let u := z + lorentzBilinear z p.val • p.val
+  have huP : u ∈ P := P.add_mem hzP (P.smul_mem _ hpP)
+  have hpp : lorentzBilinear p.val p.val = -1 := hpQ
+  have hup : lorentzBilinear u p.val = 0 := by
+    have he : lorentzBilinear u p.val =
+        lorentzBilinear z p.val + lorentzBilinear z p.val * lorentzBilinear p.val p.val := by
+      simp only [u, lorentzBilinear_apply, Pi.add_apply, Pi.smul_apply, smul_eq_mul]
+      ring
+    rw [he, hpp]
+    ring
+  have hune : u ≠ 0 := by
+    intro hu0
+    apply hznot
+    have he : z = -(lorentzBilinear z p.val) • p.val := by
+      have he' : z + lorentzBilinear z p.val • p.val = 0 := hu0
+      have he'' := eq_neg_of_add_eq_zero_left he'
+      simpa only [neg_smul] using he''
+    rw [he]
+    exact Submodule.smul_mem _ _ (Submodule.subset_span (by simp))
+  have huq : 0 < lorentzBilinear u u :=
+    lorentzKer_quadratic_pos p u ((lorentzBilinear_symm p.val u).trans hup) hune
+  let normU := Real.sqrt (lorentzBilinear u u)
+  have hnpos : 0 < normU := Real.sqrt_pos.mpr huq
+  have hnne : normU ≠ 0 := ne_of_gt hnpos
+  have hnsq : normU^2 = lorentzBilinear u u := Real.sq_sqrt huq.le
+  let v : Fin 3 → ℝ := normU⁻¹ • u
+  have hvP : v ∈ P := P.smul_mem _ huP
+  have hvp : lorentzBilinear v p.val = 0 := by
+    have he := hscale normU⁻¹ 1 u p.val
+    simpa only [one_smul, mul_one, hup, mul_zero] using he
+  have hvv : lorentzBilinear v v = 1 := by
+    change lorentzBilinear (normU⁻¹ • u) (normU⁻¹ • u) = 1
+    rw [hscale, ← hnsq]
+    field_simp [hnne]
+    <;> ring
+  have hplane := hyperboloidGeodesic_plane p v hvp hvv
+  have hle : Submodule.span ℝ ({p.val, v} : Set (Fin 3 → ℝ)) ≤ P := by
+    apply Submodule.span_le.mpr
+    intro x hx
+    rcases (show x = p.val ∨ x = v from by simpa using hx) with rfl | rfl
+    · exact hpP
+    · exact hvP
+  have heq : Submodule.span ℝ ({p.val, v} : Set (Fin 3 → ℝ)) = P :=
+    Submodule.eq_of_le_of_finrank_eq hle (hplane.2.1.trans hdim.symm)
+  refine ⟨p, v, hvp, hvv, hpP, hvP, heq.symm, ?_⟩
+  simpa only [heq] using hplane.2.2.2
+
+/-- A curve is locally arclength minimizing when every sufficiently short subinterval has a finite piecewise-C1 length witness realizing its parameter distance. -/
+def IsLocallyArclengthMinimizingHyperboloid (γ : ℝ → Hyperboloid) : Prop :=
+  ∀ t : ℝ, ∃ ε : ℝ, 0 < ε ∧
+    ∀ a ∈ Set.Ioo (t-ε) (t+ε), ∀ b ∈ Set.Ioo (t-ε) (t+ε), a ≤ b →
+      ∃ n : ℕ, ∃ cut : Fin (n+1) → ℝ,
+        IsPiecewiseC1On 𝓘(ℝ, ℂ) γ a b n cut ∧
+        piecewiseC1Length hyperboloidMetric γ cut = b-a ∧
+        hyperboloidLengthDist (γ a) (γ b) = b-a
+
+/-- An all-real locally arclength-minimizing curve is exactly a hyperbolic point-and-unit-tangent parametrization. -/
+theorem locallyArclengthMinimizingHyperboloid_iff (γ : ℝ → Hyperboloid) :
+  IsLocallyArclengthMinimizingHyperboloid γ ↔
+    ∃ p : Hyperboloid, ∃ v : Fin 3 → ℝ,
+      ∃ hvp : lorentzBilinear v p.val = 0, ∃ hvv : lorentzBilinear v v = 1,
+        ∀ s : ℝ, γ s = hyperboloidGeodesic p v hvp hvv s := by
+  constructor
+  · intro hlocal
+    have localParameter (t : ℝ) :
+        ∃ a b : ℝ, a < t ∧ t < b ∧ γ a ≠ γ b ∧
+          ∀ u ∈ Icc a b, γ u = hyperboloidSegment (γ a) (γ b) (u-a) := by
+      rcases hlocal t with ⟨ε, hε, hpiece⟩
+      let a := t-ε/2
+      let b := t+ε/2
+      have hat : a < t := by dsimp [a]; linarith
+      have htb : t < b := by dsimp [b]; linarith
+      have ha : a ∈ Ioo (t-ε) (t+ε) := by dsimp [a]; constructor <;> linarith
+      have hb : b ∈ Ioo (t-ε) (t+ε) := by dsimp [b]; constructor <;> linarith
+      have hab : a < b := lt_trans hat htb
+      rcases hpiece a ha b hb hab.le with ⟨n, cut, hC1, hLen, hDist⟩
+      let η : PiecewiseC1CurveOn 𝓘(ℝ, ℂ) a b n cut (γ a) (γ b) :=
+        ⟨γ, hC1, rfl, rfl⟩
+      have hmin : piecewiseC1Length hyperboloidMetric η.val cut =
+          hyperboloidLengthDist (γ a) (γ b) := hLen.trans hDist.symm
+      have hrec := (hyperboloid_minimizer_image η hmin).2.1
+      have hpq : γ a ≠ γ b :=
+        (hyperboloidLengthDist_nonneg_eq_zero (γ a) (γ b)).2.2.mp
+          (by rw [hDist]; exact sub_pos.mpr hab)
+      refine ⟨a, b, hat, htb, hpq, ?_⟩
+      intro u hu
+      have huJ : u ∈ Ioo (t-ε) (t+ε) :=
+        ⟨lt_of_lt_of_le ha.1 hu.1, lt_of_le_of_lt hu.2 hb.2⟩
+      rcases hpiece a ha u huJ hu.1 with ⟨nu, cutu, hC1u, hLenu, hDistu⟩
+      have hr : hyperboloidRadius (centerHyperboloid (γ a) (γ u)) = u-a :=
+        (hyperboloidLengthDist_center (γ a) (γ u)).2.2.2.2.symm.trans hDistu
+      have hpoint := hrec u hu
+      change γ u = hyperboloidSegment (γ a) (γ b)
+        (hyperboloidRadius (centerHyperboloid (γ a) (γ u))) at hpoint
+      simpa only [hr] using hpoint
+    have signedPair (p : Hyperboloid) (v : Fin 3 → ℝ)
+        (hvp : lorentzBilinear v p.val = 0) (hvv : lorentzBilinear v v = 1)
+        (a : ℝ) :
+        let Avec := Real.cosh a • p.val - Real.sinh a • v
+        let Bvec := (-Real.sinh a) • p.val + Real.cosh a • v
+        ∃ p₀ : Hyperboloid, p₀.val = Avec ∧
+          lorentzBilinear Bvec p₀.val = 0 ∧ lorentzBilinear Bvec Bvec = 1 ∧
+          ∀ u : ℝ, (hyperboloidGeodesic p v hvp hvv (u-a)).val =
+            Real.cosh u • p₀.val + Real.sinh u • Bvec := by
+      let Avec := Real.cosh a • p.val - Real.sinh a • v
+      let Bvec := (-Real.sinh a) • p.val + Real.cosh a • v
+      let p₀ := hyperboloidGeodesic p v hvp hvv (-a)
+      have hp₀ : p₀.val = Avec := by
+        simp [p₀, hyperboloidGeodesic, hyperboloidGeodesicCoords, Avec,
+          Real.cosh_neg, Real.sinh_neg, sub_eq_add_neg]
+      have hGram := (hyperboloidGeodesic_plane p v hvp hvv).2.2.1
+      have hAA : lorentzBilinear Avec Avec = -1 := by
+        have h := hGram (Real.cosh a) (-Real.sinh a)
+        have hc := Real.cosh_sq_sub_sinh_sq a
+        simp only [neg_sq] at h
+        change lorentzBilinear Avec Avec = -1
+        have he : Real.cosh a • p.val + (-Real.sinh a) • v = Avec := by
+          simp [Avec, sub_eq_add_neg]
+        rw [he] at h
+        nlinarith
+      have hBB : lorentzBilinear Bvec Bvec = 1 := by
+        have h := hGram (-Real.sinh a) (Real.cosh a)
+        have hc := Real.cosh_sq_sub_sinh_sq a
+        change lorentzBilinear Bvec Bvec = _ at h
+        nlinarith
+      have hsum : Avec + Bvec =
+          (Real.cosh a - Real.sinh a) • p.val +
+            (Real.cosh a - Real.sinh a) • v := by
+        funext i
+        simp only [Avec, Bvec, Pi.add_apply, Pi.sub_apply, Pi.smul_apply, smul_eq_mul]
+        <;> ring
+      have hSS : lorentzBilinear (Avec+Bvec) (Avec+Bvec) = 0 := by
+        rw [hsum, hGram]
+        ring
+      have hpolar : lorentzBilinear (Avec+Bvec) (Avec+Bvec) =
+          lorentzBilinear Avec Avec + 2 * lorentzBilinear Bvec Avec +
+            lorentzBilinear Bvec Bvec := by
+        simp only [lorentzBilinear_apply, Pi.add_apply]
+        ring
+      have hBA : lorentzBilinear Bvec Avec = 0 := by linarith
+      refine ⟨p₀, hp₀, ?_, hBB, ?_⟩
+      · simpa only [hp₀] using hBA
+      · intro u
+        rw [hp₀]
+        funext i
+        simp only [hyperboloidGeodesic, hyperboloidGeodesicCoords, Avec, Bvec,
+          Pi.add_apply, Pi.sub_apply, Pi.smul_apply, smul_eq_mul,
+          Real.cosh_sub, Real.sinh_sub]
+        ring
+    have globalAmbient (A₀ B₀ : Fin 3 → ℝ)
+        (hcover : ∀ x : ℝ, ∃ intervalJ : Set ℝ, IsOpen intervalJ ∧ x ∈ intervalJ ∧
+          ∃ Avec Bvec : Fin 3 → ℝ,
+            ∀ s ∈ intervalJ, (γ s).val = Real.cosh s • Avec + Real.sinh s • Bvec)
+        (hzero : ∃ intervalJ : Set ℝ, IsOpen intervalJ ∧ (0 : ℝ) ∈ intervalJ ∧
+          ∀ s ∈ intervalJ, (γ s).val = Real.cosh s • A₀ + Real.sinh s • B₀) :
+        ∀ s : ℝ, (γ s).val = Real.cosh s • A₀ + Real.sinh s • B₀ := by
+      have rigid : ∀ u v : ℝ, u < v → ∀ A₁ B₁ A₂ B₂ : Fin 3 → ℝ,
+          Real.cosh u • A₁ + Real.sinh u • B₁ = Real.cosh u • A₂ + Real.sinh u • B₂ →
+          Real.cosh v • A₁ + Real.sinh v • B₁ = Real.cosh v • A₂ + Real.sinh v • B₂ →
+          A₁ = A₂ ∧ B₁ = B₂ := by
+        intro u v huv A₁ B₁ A₂ B₂ hu hv
+        let det := Real.cosh u * Real.sinh v - Real.sinh u * Real.cosh v
+        have hdet : det ≠ 0 := by
+          have he : det = Real.sinh (v-u) := by dsimp [det]; rw [Real.sinh_sub]; ring
+          rw [he]
+          exact ne_of_gt (Real.sinh_pos_iff.mpr (sub_pos.mpr huv))
+        have hcoord : ∀ i, A₁ i = A₂ i ∧ B₁ i = B₂ i := by
+          intro i
+          have heu := congrArg (fun f : Fin 3 → ℝ => f i) hu
+          have hev := congrArg (fun f : Fin 3 → ℝ => f i) hv
+          simp only [Pi.add_apply, Pi.smul_apply, smul_eq_mul] at heu hev
+          have hA : det * (A₁ i-A₂ i) = 0 := by
+            dsimp [det]
+            linear_combination Real.sinh v * heu - Real.sinh u * hev
+          have hB : det * (B₁ i-B₂ i) = 0 := by
+            dsimp [det]
+            linear_combination Real.cosh u * hev - Real.cosh v * heu
+          exact ⟨sub_eq_zero.mp ((mul_eq_zero.mp hA).resolve_left hdet),
+            sub_eq_zero.mp ((mul_eq_zero.mp hB).resolve_left hdet)⟩
+        exact ⟨funext (fun i => (hcoord i).1), funext (fun i => (hcoord i).2)⟩
+      let U : Set ℝ := {x | ∃ intervalJ : Set ℝ, IsOpen intervalJ ∧ x ∈ intervalJ ∧
+        ∀ s ∈ intervalJ, (γ s).val = Real.cosh s • A₀ + Real.sinh s • B₀}
+      have hUopen : IsOpen U := by
+        apply isOpen_iff_forall_mem_open.mpr
+        rintro x ⟨intervalJ, hJ, hx, hform⟩
+        exact ⟨intervalJ, fun y hy => ⟨intervalJ, hJ, hy, hform⟩, hJ, hx⟩
+      have hUzero : (0 : ℝ) ∈ U := hzero
+      have hUcompl : IsOpen Uᶜ := by
+        apply isOpen_iff_forall_mem_open.mpr
+        intro x hx
+        rcases hcover x with ⟨intervalJ, hJ, hxJ, Avec, Bvec, hformJ⟩
+        refine ⟨intervalJ, ?_, hJ, hxJ⟩
+        intro y hyJ hyU
+        rcases hyU with ⟨intervalK, hK, hyK, hformK⟩
+        rcases (hJ.inter hK).exists_Ioo_subset ⟨y, hyJ, hyK⟩ with ⟨l, r, hlr, hsub⟩
+        let u := (2*l+r)/3
+        let v := (l+2*r)/3
+        have hu : u ∈ intervalJ ∩ intervalK := hsub (by dsimp [u]; constructor <;> linarith)
+        have hv : v ∈ intervalJ ∩ intervalK := hsub (by dsimp [v]; constructor <;> linarith)
+        have huv : u < v := by dsimp [u, v]; linarith
+        have heq := rigid u v huv Avec Bvec A₀ B₀
+          ((hformJ u hu.1).symm.trans (hformK u hu.2))
+          ((hformJ v hv.1).symm.trans (hformK v hv.2))
+        apply hx
+        refine ⟨intervalJ, hJ, hxJ, ?_⟩
+        intro s hs
+        simpa only [heq.1, heq.2] using hformJ s hs
+      have hUclosed : IsClosed U := isOpen_compl_iff.mp hUcompl
+      have hUall : U = Set.univ := (show IsClopen U from ⟨hUclosed, hUopen⟩).eq_univ ⟨0, hUzero⟩
+      intro s
+      have hs : s ∈ U := by rw [hUall]; exact Set.mem_univ s
+      rcases hs with ⟨intervalJ, hJ, hsJ, hform⟩
+      exact hform s hsJ
+    -- G03b: actual cover is DERIVED from hlocal; no new public cover premise.
+    have fullCover : ∀ x : ℝ, ∃ intervalJ : Set ℝ, IsOpen intervalJ ∧ x ∈ intervalJ ∧
+        ∃ p₀ : Hyperboloid, ∃ Bvec : Fin 3 → ℝ,
+          lorentzBilinear Bvec p₀.val = 0 ∧ lorentzBilinear Bvec Bvec = 1 ∧
+          ∀ s ∈ intervalJ, (γ s).val = Real.cosh s • p₀.val + Real.sinh s • Bvec := by
+      intro x
+      rcases localParameter x with ⟨a, b, hax, hxb, hpq, hparam⟩
+      let initVec := hyperboloidSegmentInitial (γ a) (γ b)
+      have hinit := hyperboloidSegment_initial_formula (γ a) (γ b) hpq
+      have hperp : lorentzBilinear initVec (γ a).val = 0 := hinit.1
+      have hunit : lorentzBilinear initVec initVec = 1 := hinit.2.1
+      let Bvec := (-Real.sinh a) • (γ a).val + Real.cosh a • initVec
+      rcases signedPair (γ a) initVec hperp hunit a with
+        ⟨p₀, hp₀, hBperp, hBunit, hshift⟩
+      change lorentzBilinear Bvec p₀.val = 0 at hBperp
+      change lorentzBilinear Bvec Bvec = 1 at hBunit
+      change ∀ u : ℝ, (hyperboloidGeodesic (γ a) initVec hperp hunit (u-a)).val =
+        Real.cosh u • p₀.val + Real.sinh u • Bvec at hshift
+      refine ⟨Ioo a b, isOpen_Ioo, ⟨hax, hxb⟩, p₀, Bvec, hBperp, hBunit, ?_⟩
+      intro s hs
+      calc
+        (γ s).val = (hyperboloidSegment (γ a) (γ b) (s-a)).val :=
+          congrArg Subtype.val (hparam s ⟨hs.1.le, hs.2.le⟩)
+        _ = Real.cosh (s-a) • (γ a).val + Real.sinh (s-a) • initVec :=
+          hinit.2.2.2 (s-a)
+        _ = (hyperboloidGeodesic (γ a) initVec hperp hunit (s-a)).val := rfl
+        _ = Real.cosh s • p₀.val + Real.sinh s • Bvec := hshift s
+    -- Retain the ACTUAL upper origin and both Gram proofs before forgetting fields.
+    rcases fullCover 0 with ⟨intervalJ₀, hJ₀, hzero, p₀, B₀, hperp₀, hunit₀, hform₀⟩
+    have ambientCover : ∀ x : ℝ, ∃ intervalJ : Set ℝ, IsOpen intervalJ ∧ x ∈ intervalJ ∧
+        ∃ Avec Bvec : Fin 3 → ℝ,
+          ∀ s ∈ intervalJ, (γ s).val = Real.cosh s • Avec + Real.sinh s • Bvec := by
+      intro x
+      rcases fullCover x with ⟨intervalJ, hJ, hx, p, v, hpv, hvv, hform⟩
+      exact ⟨intervalJ, hJ, hx, p.val, v, hform⟩
+    have globalEq := globalAmbient p₀.val B₀ ambientCover ⟨intervalJ₀, hJ₀, hzero, hform₀⟩
+    refine ⟨p₀, B₀, hperp₀, hunit₀, ?_⟩
+    intro s
+    apply Subtype.ext
+    change (γ s).val = Real.cosh s • p₀.val + Real.sinh s • B₀
+    exact globalEq s
+  · rintro ⟨p, v, hvp, hvv, hglobal⟩
+    have explicitLocal :
+        IsLocallyArclengthMinimizingHyperboloid (hyperboloidGeodesic p v hvp hvv) := by
+      intro t
+      refine ⟨1, zero_lt_one, ?_⟩
+      intro a ha b hb hab
+      let cut : Fin 2 → ℝ := fun i => if i = 0 then a else b
+      have hseg := hyperboloidGeodesic_subsegment p v hvp hvv a b hab
+      refine ⟨1, cut, hseg.1, hseg.2.1, ?_⟩
+      rw [hyperboloidGeodesic_lengthDist]
+      exact abs_of_nonneg (sub_nonneg.mpr hab)
+    have hfun : γ = hyperboloidGeodesic p v hvp hvv := funext hglobal
+    simpa only [hfun] using explicitLocal
+
+/-- Distinct hyperboloid endpoints span the timelike plane of their minimizing segment. -/
+theorem hyperboloid_distinct_span_plane (p q : Hyperboloid) (hpq : p ≠ q) :
+  let v := hyperboloidSegmentInitial p q
+  Submodule.span ℝ ({p.val, q.val} : Set (Fin 3 → ℝ)) =
+    Submodule.span ℝ ({p.val, v} : Set (Fin 3 → ℝ)) ∧
+  IsLorentzTimelikePlane (Submodule.span ℝ ({p.val, q.val} : Set (Fin 3 → ℝ))) ∧
+  (∀ hvp : lorentzBilinear v p.val = 0, ∀ hvv : lorentzBilinear v v = 1,
+    Set.range (hyperboloidGeodesic p v hvp hvv) =
+      {r : Hyperboloid | r.val ∈ Submodule.span ℝ ({p.val, q.val} : Set (Fin 3 → ℝ))}) := by
+  let v := hyperboloidSegmentInitial p q
+  let S := Submodule.span ℝ ({p.val, q.val} : Set (Fin 3 → ℝ))
+  let T := Submodule.span ℝ ({p.val, v} : Set (Fin 3 → ℝ))
+  have hinit := hyperboloidSegment_initial_formula p q hpq
+  have hend := hyperboloidSegmentInitial_endpoint p q hpq
+  have hpS : p.val ∈ S := Submodule.subset_span (by simp)
+  have hqS : q.val ∈ S := Submodule.subset_span (by simp)
+  have hpT : p.val ∈ T := Submodule.subset_span (by simp)
+  have hvT : v ∈ T := Submodule.subset_span (by simp)
+  have hqeq : q.val = Real.cosh (hyperboloidLengthDist p q) • p.val +
+      Real.sinh (hyperboloidLengthDist p q) • v :=
+    (congrArg Subtype.val (hyperboloidSegment_properties p q).2.2.1).symm.trans
+      (hinit.2.2.2 (hyperboloidLengthDist p q))
+  have hqT : q.val ∈ T := by
+    rw [hqeq]
+    exact T.add_mem (T.smul_mem _ hpT) (T.smul_mem _ hvT)
+  have hvS : v ∈ S := by
+    rw [show v = (Real.sinh (hyperboloidLengthDist p q))⁻¹ •
+      (q.val-Real.cosh (hyperboloidLengthDist p q) • p.val) from hend.2.1]
+    exact S.smul_mem _ (S.sub_mem hqS (S.smul_mem _ hpS))
+  have hST : S = T := by
+    apply le_antisymm
+    · apply Submodule.span_le.mpr
+      intro x hx
+      rcases (show x=p.val ∨ x=q.val from by simpa using hx) with rfl | rfl
+      · exact hpT
+      · exact hqT
+    · apply Submodule.span_le.mpr
+      intro x hx
+      rcases (show x=p.val ∨ x=v from by simpa using hx) with rfl | rfl
+      · exact hpS
+      · exact hvS
+  have hplane := hyperboloidGeodesic_plane p v hinit.1 hinit.2.1
+  refine ⟨hST, ?_, ?_⟩
+  · refine ⟨?_, p.val, hpS, ?_⟩
+    · exact (congrArg (fun Q : Submodule ℝ (Fin 3 → ℝ) => Module.finrank ℝ Q) hST).trans hplane.2.1
+    · have hpp : lorentzBilinear p.val p.val = -1 := by
+        simpa only [lorentzBilinear_apply, pow_two] using p.property.1
+      rw [hpp]
+      norm_num
+  · intro hvp hvv
+    have hr := (hyperboloidGeodesic_plane p v hvp hvv).2.2.2
+    change Set.range (hyperboloidGeodesic p v hvp hvv) = {r : Hyperboloid | r.val ∈ T} at hr
+    change Set.range (hyperboloidGeodesic p v hvp hvv) = {r : Hyperboloid | r.val ∈ S}
+    rw [hST]
+    exact hr
 
 end Hyperbolic

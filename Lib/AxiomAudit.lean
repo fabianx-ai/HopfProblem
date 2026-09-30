@@ -8344,3 +8344,39 @@ is an evidence command rather than library content.
 
 #check Hyperbolic.continuous_hyperboloidNormalizedSegment
 #print axioms Hyperbolic.continuous_hyperboloidNormalizedSegment
+
+#check Hyperbolic.hyperboloidGeodesicCoords
+#print axioms Hyperbolic.hyperboloidGeodesicCoords
+
+#check Hyperbolic.hyperboloidGeodesicCoords_mem
+#print axioms Hyperbolic.hyperboloidGeodesicCoords_mem
+
+#check Hyperbolic.hyperboloidGeodesic
+#print axioms Hyperbolic.hyperboloidGeodesic
+
+#check Hyperbolic.hyperboloidGeodesic_properties
+#print axioms Hyperbolic.hyperboloidGeodesic_properties
+
+#check Hyperbolic.hyperboloidGeodesic_plane
+#print axioms Hyperbolic.hyperboloidGeodesic_plane
+
+#check Hyperbolic.hyperboloidGeodesic_lengthDist
+#print axioms Hyperbolic.hyperboloidGeodesic_lengthDist
+
+#check Hyperbolic.hyperboloidGeodesic_subsegment
+#print axioms Hyperbolic.hyperboloidGeodesic_subsegment
+
+#check Hyperbolic.IsLorentzTimelikePlane
+#print axioms Hyperbolic.IsLorentzTimelikePlane
+
+#check Hyperbolic.IsLorentzTimelikePlane.exists_hyperboloidGeodesic
+#print axioms Hyperbolic.IsLorentzTimelikePlane.exists_hyperboloidGeodesic
+
+#check Hyperbolic.IsLocallyArclengthMinimizingHyperboloid
+#print axioms Hyperbolic.IsLocallyArclengthMinimizingHyperboloid
+
+#check Hyperbolic.locallyArclengthMinimizingHyperboloid_iff
+#print axioms Hyperbolic.locallyArclengthMinimizingHyperboloid_iff
+
+#check Hyperbolic.hyperboloid_distinct_span_plane
+#print axioms Hyperbolic.hyperboloid_distinct_span_plane
