@@ -1614,4 +1614,108 @@ theorem IsPiecewiseC1On.length_comp_of_tensorPreserving
     hpath'.trans ((congrArg ENNReal.ofReal hReal).trans hpath.symm),
     hfinite, hfinite', hpath, hpath', hExt, hFin, hFin'⟩
 
+/-! ## Two-way finite-piece length transport (textbook j.8) -/
+
+/-- j.8: every target finite-piece curve has an inverse image with the same
+subdivision and equal finite real and extended lengths. Inverse tensor
+preservation is derived from the forward hypothesis, not assumed. -/
+theorem IsPiecewiseC1On.length_symm_of_tensorPreserving
+    [FiniteDimensional ℝ E] [IsManifold I ∞ M]
+    [FiniteDimensional ℝ F] [IsManifold J ∞ N]
+    (G : Bundle.ContMDiffRiemannianMetric I ∞ E (fun x : M => TangentSpace I x))
+    (G' : Bundle.ContMDiffRiemannianMetric J ∞ F (fun y : N => TangentSpace J y))
+    (e : M ≃ₘ⟮I, J⟯ N)
+    (hTensor : ∀ (x : M) (v w : TangentSpace I x),
+      G'.inner (e x) (mfderiv I J e x v) (mfderiv I J e x w) = G.inner x v w)
+    {η : ℝ → N} {a b : ℝ} {n : ℕ} {cut : Fin (n+1) → ℝ}
+    (hη : IsPiecewiseC1On J η a b n cut) :
+    letI : Bundle.RiemannianBundle (fun x : M => TangentSpace I x) :=
+      ⟨G.toRiemannianMetric⟩
+    letI : Bundle.RiemannianBundle (fun y : N => TangentSpace J y) :=
+      ⟨G'.toRiemannianMetric⟩
+    let P : Fin n → Set ℝ := fun i => Icc (cut i.castSucc) (cut i.succ)
+    let q : Fin n → ℝ → ℝ := fun i t =>
+      ‖mfderivWithin 𝓘(ℝ, ℝ) J η (P i) t (1 : ℝ)‖
+    let q' : Fin n → ℝ → ℝ := fun i t =>
+      ‖mfderivWithin 𝓘(ℝ, ℝ) I (e.symm ∘ η) (P i) t (1 : ℝ)‖
+    IsPiecewiseC1On I (e.symm ∘ η) a b n cut ∧
+    (e.symm ∘ η) a = e.symm (η a) ∧ (e.symm ∘ η) b = e.symm (η b) ∧
+    (∀ i : Fin n, (∫ t in cut i.castSucc..cut i.succ, q' i t) =
+      ∫ t in cut i.castSucc..cut i.succ, q i t) ∧
+    piecewiseC1Length G (e.symm ∘ η) cut = piecewiseC1Length G' η cut ∧
+    0 ≤ piecewiseC1Length G' η cut ∧ 0 ≤ piecewiseC1Length G (e.symm ∘ η) cut ∧
+    pathELength I (e.symm ∘ η) a b = pathELength J η a b ∧
+    pathELength J η a b < (⊤ : ℝ≥0∞) ∧
+    pathELength I (e.symm ∘ η) a b < (⊤ : ℝ≥0∞) ∧
+    pathELength J η a b = ENNReal.ofReal (piecewiseC1Length G' η cut) ∧
+    pathELength I (e.symm ∘ η) a b = ENNReal.ofReal (piecewiseC1Length G (e.symm ∘ η) cut) ∧
+    (∀ i : Fin n, (∫⁻ t in P i, ENNReal.ofReal (q' i t)) =
+      ∫⁻ t in P i, ENNReal.ofReal (q i t)) ∧
+    (∀ i : Fin n, (∫⁻ t in P i, ENNReal.ofReal (q i t)) < (⊤ : ℝ≥0∞)) ∧
+    (∀ i : Fin n, (∫⁻ t in P i, ENNReal.ofReal (q' i t)) < (⊤ : ℝ≥0∞)) := by
+  letI : Bundle.RiemannianBundle (fun x : M => TangentSpace I x) :=
+    ⟨G.toRiemannianMetric⟩
+  letI : Bundle.RiemannianBundle (fun y : N => TangentSpace J y) :=
+    ⟨G'.toRiemannianMetric⟩
+  have hInv : ∀ (y : N) (u v : TangentSpace J y),
+      G.inner (e.symm y) (mfderiv J I e.symm y u) (mfderiv J I e.symm y v) = G'.inner y u v :=
+    fun y u v => symm_tensorPreserving_of_diffeomorph G G' e hTensor y u v
+  exact hη.length_comp_of_tensorPreserving G' G e.symm e.symm.contMDiff hInv
+
+/-- j.8: the existing equivalence of fixed-endpoint finite-piece curve families
+preserves real and extended lengths in both directions. The target curve is
+arbitrary; both literal endpoint and inverse-transport laws are retained. -/
+theorem PiecewiseC1CurveOn.mapEquiv_length
+    [FiniteDimensional ℝ E] [IsManifold I ∞ M]
+    [FiniteDimensional ℝ F] [IsManifold J ∞ N]
+    (G : Bundle.ContMDiffRiemannianMetric I ∞ E (fun x : M => TangentSpace I x))
+    (G' : Bundle.ContMDiffRiemannianMetric J ∞ F (fun y : N => TangentSpace J y))
+    (e : M ≃ₘ⟮I, J⟯ N)
+    (hTensor : ∀ (x : M) (v w : TangentSpace I x),
+      G'.inner (e x) (mfderiv I J e x v) (mfderiv I J e x w) = G.inner x v w)
+    {a b : ℝ} {n : ℕ} {cut : Fin (n+1) → ℝ} {p q : M} :
+    letI : Bundle.RiemannianBundle (fun x : M => TangentSpace I x) :=
+      ⟨G.toRiemannianMetric⟩
+    letI : Bundle.RiemannianBundle (fun y : N => TangentSpace J y) :=
+      ⟨G'.toRiemannianMetric⟩
+    let Φ := PiecewiseC1CurveOn.mapEquiv (a := a) (b := b) (cut := cut) (p := p) (q := q) e
+    Function.Bijective Φ ∧
+    (∀ γ : PiecewiseC1CurveOn I a b n cut p q,
+      piecewiseC1Length G' (Φ γ).val cut = piecewiseC1Length G γ.val cut ∧
+      pathELength J (Φ γ).val a b = pathELength I γ.val a b ∧
+      pathELength I γ.val a b < (⊤ : ℝ≥0∞) ∧
+      pathELength J (Φ γ).val a b < (⊤ : ℝ≥0∞) ∧
+      (Φ γ).val a = e p ∧ (Φ γ).val b = e q) ∧
+    (∀ η : PiecewiseC1CurveOn J a b n cut (e p) (e q),
+      piecewiseC1Length G (Φ.symm η).val cut = piecewiseC1Length G' η.val cut ∧
+      pathELength I (Φ.symm η).val a b = pathELength J η.val a b ∧
+      pathELength J η.val a b < (⊤ : ℝ≥0∞) ∧
+      pathELength I (Φ.symm η).val a b < (⊤ : ℝ≥0∞) ∧
+      (Φ.symm η).val a = p ∧ (Φ.symm η).val b = q) ∧
+    (∀ γ t, (Φ γ).val t = e (γ.val t)) ∧
+    (∀ η t, (Φ.symm η).val t = e.symm (η.val t)) ∧
+    (∀ γ, Φ.symm (Φ γ) = γ) ∧
+    (∀ η, Φ (Φ.symm η) = η) := by
+  letI : Bundle.RiemannianBundle (fun x : M => TangentSpace I x) :=
+    ⟨G.toRiemannianMetric⟩
+  letI : Bundle.RiemannianBundle (fun y : N => TangentSpace J y) :=
+    ⟨G'.toRiemannianMetric⟩
+  have hInv : ∀ (y : N) (u v : TangentSpace J y),
+      G.inner (e.symm y) (mfderiv J I e.symm y u) (mfderiv J I e.symm y v) = G'.inner y u v :=
+    fun y u v => symm_tensorPreserving_of_diffeomorph G G' e hTensor y u v
+  let Φ := PiecewiseC1CurveOn.mapEquiv (a := a) (b := b) (cut := cut) (p := p) (q := q) e
+  refine ⟨Φ.bijective, ?_, ?_, ?_, ?_, Φ.symm_apply_apply, Φ.apply_symm_apply⟩
+  · intro γ
+    rcases γ.property.1.length_comp_of_tensorPreserving G G' e e.contMDiff hTensor with
+      ⟨hc, ha, hb, hp, hr, hn, hn', he, hf, hf', hbridge, hbridge', hpe, hpf, hpf'⟩
+    exact ⟨hr, he, hf, hf', (Φ γ).property.2.1, (Φ γ).property.2.2⟩
+  · intro η
+    rcases η.property.1.length_comp_of_tensorPreserving G' G e.symm e.symm.contMDiff hInv with
+      ⟨hc, ha, hb, hp, hr, hn, hn', he, hf, hf', hbridge, hbridge', hpe, hpf, hpf'⟩
+    exact ⟨hr, he, hf, hf', (Φ.symm η).property.2.1, (Φ.symm η).property.2.2⟩
+  · intro γ t
+    exact PiecewiseC1CurveOn.map_apply e e.contMDiff γ t
+  · intro η t
+    exact PiecewiseC1CurveOn.mapEquiv_symm_apply e η t
+
 end Manifold
