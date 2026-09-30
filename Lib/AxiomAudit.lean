@@ -8068,3 +8068,39 @@ is an evidence command rather than library content.
 
 #check Hyperbolic.lorentzCenterCoordinates_symm_preserves
 #print axioms Hyperbolic.lorentzCenterCoordinates_symm_preserves
+
+#check Hyperbolic.lorentzUnit_time_ne_zero
+#print axioms Hyperbolic.lorentzUnit_time_ne_zero
+
+#check Hyperbolic.hyperboloid_spatial_dot_lt_time_mul
+#print axioms Hyperbolic.hyperboloid_spatial_dot_lt_time_mul
+
+#check Hyperbolic.hyperboloid_neg_lorentz_pos
+#print axioms Hyperbolic.hyperboloid_neg_lorentz_pos
+
+#check Hyperbolic.lorentzUnit_time_sign
+#print axioms Hyperbolic.lorentzUnit_time_sign
+
+#check Hyperbolic.lorentzCenterCoordinates_mem
+#print axioms Hyperbolic.lorentzCenterCoordinates_mem
+
+#check Hyperbolic.lorentzCenterCoordinates_symm_mem
+#print axioms Hyperbolic.lorentzCenterCoordinates_symm_mem
+
+#check Hyperbolic.centerHyperboloid
+#print axioms Hyperbolic.centerHyperboloid
+
+#check Hyperbolic.uncenterHyperboloid
+#print axioms Hyperbolic.uncenterHyperboloid
+
+#check Hyperbolic.centerHyperboloid_properties
+#print axioms Hyperbolic.centerHyperboloid_properties
+
+#check Hyperbolic.centerHyperboloidEquiv
+#print axioms Hyperbolic.centerHyperboloidEquiv
+
+#check Hyperbolic.contMDiff_centerHyperboloid
+#print axioms Hyperbolic.contMDiff_centerHyperboloid
+
+#check Hyperbolic.contMDiff_uncenterHyperboloid
+#print axioms Hyperbolic.contMDiff_uncenterHyperboloid

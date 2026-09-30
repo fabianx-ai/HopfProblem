@@ -1845,4 +1845,167 @@ theorem lorentzCenterCoordinates_symm_preserves (p : Hyperboloid) (u v : V) :
     ((lorentzCenterCoordinates p).symm u) ((lorentzCenterCoordinates p).symm v)).symm
 
 
+
+/-! ## Upper-sheet changes of center (G02.d/e) -/
+
+/-- The time coordinate of a unit timelike vector on either sheet is nonzero (G02.d/D01). -/
+theorem lorentzUnit_time_ne_zero (q : V)
+    (hq : lorentzBilinear q q = -1) : q 2 ≠ 0 := by
+  intro ht
+  have he : q 0^2 + q 1^2 - q 2^2 = -1 := by
+    simpa only [lorentzBilinear_apply, pow_two] using hq
+  rw [ht] at he
+  nlinarith [sq_nonneg (q 0), sq_nonneg (q 1)]
+
+/-- Independent spatial Cauchy–Schwarz gives the strict time-product bound on the upper sheet (G02.d/D02). -/
+theorem hyperboloid_spatial_dot_lt_time_mul (p q : Hyperboloid) :
+    p.val 0 * q.val 0 + p.val 1 * q.val 1 < p.val 2 * q.val 2 := by
+  have hcs :
+      (p.val 0*q.val 0+p.val 1*q.val 1)^2 ≤
+        (p.val 0^2+p.val 1^2)*(q.val 0^2+q.val 1^2) := by
+    simpa [Fin.sum_univ_two] using
+      (Finset.sum_mul_sq_le_sq_mul_sq Finset.univ
+        (fun i : Fin 2 => p.val i.castSucc)
+        (fun i : Fin 2 => q.val i.castSucc))
+  have hp : p.val 2^2 = p.val 0^2+p.val 1^2+1 := by
+    linarith [p.property.1]
+  have hq : q.val 2^2 = q.val 0^2+q.val 1^2+1 := by
+    linarith [q.property.1]
+  have hgap :
+      (p.val 2*q.val 2)^2 -
+        (p.val 0^2+p.val 1^2)*(q.val 0^2+q.val 1^2) =
+      p.val 0^2+p.val 1^2+q.val 0^2+q.val 1^2+1 := by
+    rw [mul_pow, hp, hq]
+    ring
+  have hstrict :
+      (p.val 0*q.val 0+p.val 1*q.val 1)^2 < (p.val 2*q.val 2)^2 := by
+    nlinarith [sq_nonneg (p.val 0), sq_nonneg (p.val 1),
+      sq_nonneg (q.val 0), sq_nonneg (q.val 1)]
+  exact (abs_lt_of_sq_lt_sq' hstrict (mul_pos p.property.2 q.property.2).le).2
+
+/-- Two upper-sheet points have strictly negative Lorentz pairing (G02.d/D03). -/
+theorem hyperboloid_neg_lorentz_pos (p q : Hyperboloid) :
+    0 < -lorentzBilinear p.val q.val := by
+  have h := hyperboloid_spatial_dot_lt_time_mul p q
+  rw [lorentzBilinear_apply]
+  linarith
+
+/-- A fixed upper-sheet point detects the time sign on either unit sheet, with both nonzeros (G02.d/D04). -/
+theorem lorentzUnit_time_sign (p : Hyperboloid) (q : V)
+    (hq : lorentzBilinear q q = -1) :
+    q 2 ≠ 0 ∧ -lorentzBilinear p.val q ≠ 0 ∧
+      (0 < q 2 ↔ 0 < -lorentzBilinear p.val q) := by
+  have hn := lorentzUnit_time_ne_zero q hq
+  by_cases ht : 0 < q 2
+  · let r : Hyperboloid :=
+      ⟨q, by simpa only [lorentzBilinear_apply, pow_two] using hq, ht⟩
+    have hl : 0 < -lorentzBilinear p.val q := hyperboloid_neg_lorentz_pos p r
+    exact ⟨hn, ne_of_gt hl, iff_of_true ht hl⟩
+  · have hlt : q 2 < 0 := lt_of_le_of_ne (le_of_not_gt ht) hn
+    let r : Hyperboloid :=
+      ⟨-q, by
+        simpa only [Pi.neg_apply, neg_sq, lorentzBilinear_apply, pow_two,
+          neg_mul_neg] using hq, neg_pos.mpr hlt⟩
+    have hneg : 0 < -lorentzBilinear p.val (-q) := hyperboloid_neg_lorentz_pos p r
+    rw [map_neg] at hneg
+    have hl : -lorentzBilinear p.val q < 0 := by linarith
+    exact ⟨hn, ne_of_lt hl, iff_of_false ht (not_lt_of_ge hl.le)⟩
+
+/-- The actual frame coordinates carry the upper unit sheet into itself (G02.e/E01). -/
+theorem lorentzCenterCoordinates_mem (p q : Hyperboloid) :
+    (lorentzCenterCoordinates p q.val) 0 ^ 2 +
+      (lorentzCenterCoordinates p q.val) 1 ^ 2 -
+      (lorentzCenterCoordinates p q.val) 2 ^ 2 = -1 ∧
+    0 < (lorentzCenterCoordinates p q.val) 2 := by
+  constructor
+  · have hu : lorentzBilinear (lorentzCenterCoordinates p q.val)
+        (lorentzCenterCoordinates p q.val) = -1 := by
+      rw [lorentzCenterCoordinates_preserves]
+      simpa only [lorentzBilinear_apply, pow_two] using q.property.1
+    simpa only [lorentzBilinear_apply, pow_two] using hu
+  · rw [lorentzCenterCoordinates_time]
+    exact (lorentzUnit_time_sign p q.val
+      (by simpa only [lorentzBilinear_apply, pow_two] using q.property.1)).2.2.mp
+        q.property.2
+
+/-- The same inverse frame coordinates carry the upper unit sheet into itself (G02.e/E02). -/
+theorem lorentzCenterCoordinates_symm_mem (p q : Hyperboloid) :
+    ((lorentzCenterCoordinates p).symm q.val) 0 ^ 2 +
+      ((lorentzCenterCoordinates p).symm q.val) 1 ^ 2 -
+      ((lorentzCenterCoordinates p).symm q.val) 2 ^ 2 = -1 ∧
+    0 < ((lorentzCenterCoordinates p).symm q.val) 2 := by
+  have hu : lorentzBilinear ((lorentzCenterCoordinates p).symm q.val)
+      ((lorentzCenterCoordinates p).symm q.val) = -1 := by
+    rw [lorentzCenterCoordinates_symm_preserves]
+    simpa only [lorentzBilinear_apply, pow_two] using q.property.1
+  constructor
+  · simpa only [lorentzBilinear_apply, pow_two] using hu
+  · apply (lorentzUnit_time_sign p _ hu).2.2.mpr
+    rw [← lorentzCenterCoordinates_time, LinearEquiv.apply_symm_apply]
+    exact q.property.2
+
+/-- Change of center on the actual upper sheet, by restriction of the selected frame coordinates (G02.e/E03). -/
+def centerHyperboloid (p q : Hyperboloid) : Hyperboloid :=
+  ⟨lorentzCenterCoordinates p q.val, lorentzCenterCoordinates_mem p q⟩
+
+/-- Inverse change of center on the actual upper sheet, using the same ambient inverse (G02.e/E04). -/
+def uncenterHyperboloid (p q : Hyperboloid) : Hyperboloid :=
+  ⟨(lorentzCenterCoordinates p).symm q.val, lorentzCenterCoordinates_symm_mem p q⟩
+
+/-- The two sheet restrictions retain their literal ambient values, inverse and center laws, and are onto (G02.e/E05). -/
+theorem centerHyperboloid_properties (p : Hyperboloid) :
+    (∀ q, (centerHyperboloid p q).val = lorentzCenterCoordinates p q.val) ∧
+    (∀ q, (uncenterHyperboloid p q).val = (lorentzCenterCoordinates p).symm q.val) ∧
+    (∀ q, uncenterHyperboloid p (centerHyperboloid p q) = q) ∧
+    (∀ q, centerHyperboloid p (uncenterHyperboloid p q) = q) ∧
+    (centerHyperboloid p p).val = ![0,0,1] ∧
+    uncenterHyperboloid p ⟨![0,0,1], by change (0:ℝ)^2+0^2-1^2=-1; norm_num, by change (0:ℝ)<1; norm_num⟩ = p ∧
+    Function.Surjective (centerHyperboloid p) ∧
+    Function.Surjective (uncenterHyperboloid p) := by
+  refine ⟨fun _ => rfl, fun _ => rfl, ?_, ?_, ?_, ?_, ?_, ?_⟩
+  · intro q
+    apply Subtype.ext
+    exact (lorentzCenterCoordinates p).symm_apply_apply q.val
+  · intro q
+    apply Subtype.ext
+    exact (lorentzCenterCoordinates p).apply_symm_apply q.val
+  · exact (lorentzCenterCoordinates_properties p).2.2.2.1
+  · apply Subtype.ext
+    exact (lorentzCenterCoordinates_properties p).2.2.2.2.1
+  · intro q
+    refine ⟨uncenterHyperboloid p q, ?_⟩
+    apply Subtype.ext
+    exact (lorentzCenterCoordinates p).apply_symm_apply q.val
+  · intro q
+    refine ⟨centerHyperboloid p q, ?_⟩
+    apply Subtype.ext
+    exact (lorentzCenterCoordinates p).symm_apply_apply q.val
+
+/-- The same two sheet restrictions form an equivalence (G02.e/E06). -/
+def centerHyperboloidEquiv (p : Hyperboloid) : Hyperboloid ≃ Hyperboloid where
+  toFun := centerHyperboloid p
+  invFun := uncenterHyperboloid p
+  left_inv := (centerHyperboloid_properties p).2.2.1
+  right_inv := (centerHyperboloid_properties p).2.2.2.1
+
+/-- For a fixed center, its actual sheet change is smooth in the existing singleton atlas (G02.e/E07). -/
+theorem contMDiff_centerHyperboloid (p : Hyperboloid) :
+    ContMDiff I I ∞ (centerHyperboloid p) := by
+  apply ContMDiff.of_comp_isOpenEmbedding isOpenEmbedding_hyperboloidCoords
+  have hA : ContMDiff I J ∞ (fun q : Hyperboloid => lorentzCenterCoordinates p q.val) :=
+    (lorentzCenterCoordinates p).toContinuousLinearEquiv.contDiff.comp_contMDiff
+      contMDiff_hyperboloid_val
+  exact contDiffOn_hyperboloidToUpperHalfPlaneCoords.contMDiffOn.comp_contMDiff hA
+    (fun q => hyperboloid_denominator_pos (centerHyperboloid p q))
+
+/-- For a fixed center, the same inverse sheet change is smooth in the existing singleton atlas (G02.e/E08). -/
+theorem contMDiff_uncenterHyperboloid (p : Hyperboloid) :
+    ContMDiff I I ∞ (uncenterHyperboloid p) := by
+  apply ContMDiff.of_comp_isOpenEmbedding isOpenEmbedding_hyperboloidCoords
+  have hA : ContMDiff I J ∞ (fun q : Hyperboloid => (lorentzCenterCoordinates p).symm q.val) :=
+    (lorentzCenterCoordinates p).symm.toContinuousLinearEquiv.contDiff.comp_contMDiff
+      contMDiff_hyperboloid_val
+  exact contDiffOn_hyperboloidToUpperHalfPlaneCoords.contMDiffOn.comp_contMDiff hA
+    (fun q => hyperboloid_denominator_pos (uncenterHyperboloid p q))
+
 end Hyperbolic
