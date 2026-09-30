@@ -49,6 +49,8 @@ public import Mathlib.Topology.Order.IntermediateValue
 public import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
 public import Mathlib.Analysis.Calculus.Deriv.Mul
 public import Mathlib.Analysis.Calculus.Deriv.Prod
+public import Mathlib.Analysis.SpecialFunctions.Arcosh
+public import Mathlib.Analysis.Calculus.DSlope
 
 /-!
 # Upper-half-plane and hyperboloid coordinates
@@ -4364,6 +4366,202 @@ theorem hyperboloidSegmentInitial_endpoint (p q : Hyperboloid) (hpq : p ≠ q) :
     rw [hv, add_sub_cancel_left, smul_smul, inv_mul_cancel₀ (ne_of_gt hs), one_smul]
   have hv := cancel (hyperboloidSegmentInitial p q) he
   exact ⟨hs, hv, fun v h => (cancel v h).trans hv.symm⟩
+
+/-- The length-infimum distance is recovered from its Lorentz cosh identity by the nonnegative inverse arcosh. -/
+theorem hyperboloidLengthDist_arcosh (p q : Hyperboloid) :
+  hyperboloidLengthDist p q = Real.arcosh (-lorentzBilinear p.val q.val) := by
+  rw [← (hyperboloidLengthDist_cosh p q).1]
+  exact (Real.arcosh_cosh (hyperboloidLengthDist_nonneg_eq_zero p q).1).symm
+
+/-- Symmetry of the Lorentz pairing gives symmetry of the actual length distance. -/
+theorem hyperboloidLengthDist_symm (p q : Hyperboloid) :
+  hyperboloidLengthDist p q = hyperboloidLengthDist q p := by
+  rw [hyperboloidLengthDist_arcosh, hyperboloidLengthDist_arcosh, lorentzBilinear_symm]
+
+/-- The length distance is jointly continuous in the inherited hyperboloid topology, including coincident endpoints. -/
+theorem continuous_hyperboloidLengthDist :
+  Continuous (fun z : Hyperboloid × Hyperboloid => hyperboloidLengthDist z.1 z.2) := by
+  have hpoly : Continuous (fun z : Hyperboloid × Hyperboloid =>
+      -lorentzBilinear z.1.val z.2.val) := by
+    simp only [lorentzBilinear_apply]
+    have hp : Continuous (fun z : Hyperboloid × Hyperboloid => z.1.val) :=
+      continuous_subtype_val.comp continuous_fst
+    have hq : Continuous (fun z : Hyperboloid × Hyperboloid => z.2.val) :=
+      continuous_subtype_val.comp continuous_snd
+    exact ((((continuous_apply 0).comp hp).mul ((continuous_apply 0).comp hq)).add
+      (((continuous_apply 1).comp hp).mul ((continuous_apply 1).comp hq))).sub
+      (((continuous_apply 2).comp hp).mul ((continuous_apply 2).comp hq)) |>.neg
+  have h := Real.continuousOn_arcosh.comp_continuous hpoly
+    (fun z => (hyperboloidLengthDist_cosh z.1 z.2).2.1)
+  simpa only [Function.comp_def, ← hyperboloidLengthDist_arcosh] using h
+
+/-- For distinct endpoints, the same arclength segment has the symmetric hyperbolic-sine endpoint formula. -/
+theorem hyperboloidSegment_endpoint (p q : Hyperboloid) (hpq : p ≠ q)
+    (s : ℝ) (hs : s ∈ Set.Icc 0 (hyperboloidLengthDist p q)) :
+  (hyperboloidSegment p q s).val =
+    (Real.sinh (hyperboloidLengthDist p q - s) /
+      Real.sinh (hyperboloidLengthDist p q)) • p.val +
+    (Real.sinh s / Real.sinh (hyperboloidLengthDist p q)) • q.val := by
+  have h := hyperboloidSegmentInitial_endpoint p q hpq
+  rw [(hyperboloidSegment_initial_formula p q hpq).2.2.2 s, h.2.1]
+  funext i
+  simp only [Pi.add_apply, Pi.sub_apply, Pi.smul_apply, smul_eq_mul, Real.sinh_sub]
+  field_simp [ne_of_gt h.1]
+  <;> ring
+
+/-- Reversing the endpoints reverses arclength along the same segment; coincident endpoints give a constant segment. -/
+theorem hyperboloidSegment_reverse (p q : Hyperboloid)
+    (s : ℝ) (hs : s ∈ Set.Icc 0 (hyperboloidLengthDist p q)) :
+  hyperboloidSegment q p (hyperboloidLengthDist p q - s) =
+    hyperboloidSegment p q s := by
+  by_cases hpq : p = q
+  · subst q
+    rw [(hyperboloidSegment_properties p p).2.2.2.1 rfl,
+      (hyperboloidSegment_properties p p).2.2.2.1 rfl]
+  · have hrev : hyperboloidLengthDist p q - s ∈ Icc 0 (hyperboloidLengthDist q p) := by
+      rw [← hyperboloidLengthDist_symm p q]
+      constructor <;> linarith [hs.1, hs.2]
+    apply Subtype.ext
+    rw [hyperboloidSegment_endpoint q p (Ne.symm hpq) _ hrev,
+      hyperboloidSegment_endpoint p q hpq s hs, ← hyperboloidLengthDist_symm p q]
+    have hsub : hyperboloidLengthDist p q - (hyperboloidLengthDist p q - s) = s := by ring
+    rw [hsub, add_comm]
+
+/-- The normalized segment traverses the existing arclength segment on the fixed unit parameter interval. -/
+def hyperboloidNormalizedSegment (p q : Hyperboloid) (t : ℝ) : Hyperboloid :=
+  hyperboloidSegment p q (t * hyperboloidLengthDist p q)
+
+/-- The normalized segment has its prescribed endpoints, reverses naturally, and admits removable coefficients on the diagonal. -/
+theorem hyperboloidNormalizedSegment_properties (p q : Hyperboloid) :
+  hyperboloidNormalizedSegment p q 0 = p ∧
+  hyperboloidNormalizedSegment p q 1 = q ∧
+  (p = q → ∀ t : ℝ, hyperboloidNormalizedSegment p q t = p) ∧
+  (∀ t ∈ Set.Icc (0 : ℝ) 1,
+    hyperboloidNormalizedSegment q p (1-t) = hyperboloidNormalizedSegment p q t) ∧
+  (let S : ℝ → ℝ := dslope Real.sinh 0
+   let W : ℝ → ℝ → ℝ := fun a t => t * S (t*a) / S a
+   ∀ t ∈ Set.Icc (0 : ℝ) 1,
+    (hyperboloidNormalizedSegment p q t).val =
+      W (hyperboloidLengthDist p q) (1-t) • p.val +
+      W (hyperboloidLengthDist p q) t • q.val) := by
+  let S : ℝ → ℝ := dslope Real.sinh 0
+  let W : ℝ → ℝ → ℝ := fun a t => t * S (t*a) / S a
+  have h0 : S 0 = 1 := by simp [S, dslope_same, Real.deriv_sinh]
+  have hmul : ∀ a, a * S a = Real.sinh a := by
+    intro a
+    simpa only [sub_zero, smul_eq_mul, Real.sinh_zero] using sub_smul_dslope Real.sinh 0 a
+  have hn : ∀ a, S a ≠ 0 := by
+    intro a ha
+    by_cases hz : a = 0
+    · subst a
+      rw [h0] at ha
+      exact one_ne_zero ha
+    · have h := hmul a
+      rw [ha, mul_zero] at h
+      exact (Real.sinh_ne_zero.mpr hz) h.symm
+  have hquot : ∀ a t, a ≠ 0 → W a t = Real.sinh (t*a) / Real.sinh a := by
+    intro a t ha
+    rw [← hmul (t*a), ← hmul a]
+    dsimp only [W]
+    field_simp [ha, hn a] <;> ring
+  have hw0 : ∀ t, W 0 t = t := by
+    intro t
+    simp [W, h0]
+  have hparam : ∀ t ∈ Icc (0 : ℝ) 1,
+      t * hyperboloidLengthDist p q ∈ Icc 0 (hyperboloidLengthDist p q) := by
+    intro t ht
+    have hd := (hyperboloidLengthDist_nonneg_eq_zero p q).1
+    constructor
+    · exact mul_nonneg ht.1 hd
+    · nlinarith [ht.2]
+  refine ⟨?_, ?_, ?_, ?_, ?_⟩
+  · simpa [hyperboloidNormalizedSegment] using (hyperboloidSegment_properties p q).2.1
+  · simpa [hyperboloidNormalizedSegment] using (hyperboloidSegment_properties p q).2.2.1
+  · intro hpq t
+    exact (hyperboloidSegment_properties p q).2.2.2.1 hpq _
+  · intro t ht
+    have h := hyperboloidSegment_reverse p q (t * hyperboloidLengthDist p q) (hparam t ht)
+    simpa only [hyperboloidNormalizedSegment, ← hyperboloidLengthDist_symm p q,
+      sub_mul, one_mul] using h
+  · change ∀ t ∈ Icc (0 : ℝ) 1,
+      (hyperboloidNormalizedSegment p q t).val =
+        W (hyperboloidLengthDist p q) (1-t) • p.val +
+        W (hyperboloidLengthDist p q) t • q.val
+    intro t ht
+    by_cases hpq : p = q
+    · subst q
+      have hd : hyperboloidLengthDist p p = 0 :=
+        (hyperboloidLengthDist_nonneg_eq_zero p p).2.1.mpr rfl
+      have hconst : hyperboloidNormalizedSegment p p t = p :=
+        (hyperboloidSegment_properties p p).2.2.2.1 rfl _
+      rw [hconst, hd, hw0, hw0, ← add_smul]
+      have hcoeff : (1-t)+t = 1 := by ring
+      rw [hcoeff, one_smul]
+    · have hd : hyperboloidLengthDist p q ≠ 0 :=
+        ne_of_gt ((hyperboloidLengthDist_nonneg_eq_zero p q).2.2.mpr hpq)
+      rw [hquot _ (1-t) hd, hquot _ t hd]
+      have hleft : (1-t) * hyperboloidLengthDist p q =
+          hyperboloidLengthDist p q - t * hyperboloidLengthDist p q := by ring
+      rw [hleft]
+      exact hyperboloidSegment_endpoint p q hpq _ (hparam t ht)
+
+/-- The normalized segment depends jointly continuously on both endpoints and the closed unit parameter, including coincidence. -/
+theorem continuous_hyperboloidNormalizedSegment :
+  Continuous (fun z : (Hyperboloid × Hyperboloid) × Set.Icc (0 : ℝ) 1 =>
+    hyperboloidNormalizedSegment z.1.1 z.1.2 z.2.val) := by
+  let S : ℝ → ℝ := dslope Real.sinh 0
+  let W : ℝ → ℝ → ℝ := fun a t => t * S (t*a) / S a
+  have h0 : S 0 = 1 := by simp [S, dslope_same, Real.deriv_sinh]
+  have hmul : ∀ a, a * S a = Real.sinh a := by
+    intro a
+    simpa only [sub_zero, smul_eq_mul, Real.sinh_zero] using sub_smul_dslope Real.sinh 0 a
+  have hn : ∀ a, S a ≠ 0 := by
+    intro a ha
+    by_cases hz : a = 0
+    · subst a
+      rw [h0] at ha
+      exact one_ne_zero ha
+    · have h := hmul a
+      rw [ha, mul_zero] at h
+      exact (Real.sinh_ne_zero.mpr hz) h.symm
+  have hc : Continuous S := by
+    rw [continuous_iff_continuousAt]
+    intro a
+    by_cases hz : a = 0
+    · subst a
+      exact continuousAt_dslope_same.mpr (Real.hasDerivAt_sinh 0).differentiableAt
+    · exact (continuousAt_dslope_of_ne hz).mpr Real.continuous_sinh.continuousAt
+  have hw : Continuous (fun z : ℝ × ℝ => W z.1 z.2) :=
+    (continuous_snd.mul (hc.comp (continuous_snd.mul continuous_fst))).div
+      (hc.comp continuous_fst) (fun z => hn z.1)
+
+  let Z := (Hyperboloid × Hyperboloid) × Icc (0 : ℝ) 1
+  have hd : Continuous (fun z : Z => hyperboloidLengthDist z.1.1 z.1.2) :=
+    continuous_hyperboloidLengthDist.comp continuous_fst
+  have ht : Continuous (fun z : Z => z.2.val) :=
+    continuous_subtype_val.comp continuous_snd
+  have hp : Continuous (fun z : Z => z.1.1.val) :=
+    continuous_subtype_val.comp (continuous_fst.comp continuous_fst)
+  have hq : Continuous (fun z : Z => z.1.2.val) :=
+    continuous_subtype_val.comp (continuous_snd.comp continuous_fst)
+  have hleft : Continuous (fun z : Z => W (hyperboloidLengthDist z.1.1 z.1.2) (1-z.2.val)) :=
+    hw.comp (hd.prodMk (continuous_const.sub ht))
+  have hright : Continuous (fun z : Z => W (hyperboloidLengthDist z.1.1 z.1.2) z.2.val) :=
+    hw.comp (hd.prodMk ht)
+  have hambient : Continuous (fun z : Z =>
+      W (hyperboloidLengthDist z.1.1 z.1.2) (1-z.2.val) • z.1.1.val +
+      W (hyperboloidLengthDist z.1.1 z.1.2) z.2.val • z.1.2.val) :=
+    (hleft.smul hp).add (hright.smul hq)
+  have heq : (fun z : Z => (hyperboloidNormalizedSegment z.1.1 z.1.2 z.2.val).val) =
+      (fun z : Z => W (hyperboloidLengthDist z.1.1 z.1.2) (1-z.2.val) • z.1.1.val +
+        W (hyperboloidLengthDist z.1.1 z.1.2) z.2.val • z.1.2.val) := by
+    funext z
+    exact (hyperboloidNormalizedSegment_properties z.1.1 z.1.2).2.2.2.2 z.2.val z.2.property
+  have hval : Continuous (fun z : Z => (hyperboloidNormalizedSegment z.1.1 z.1.2 z.2.val).val) := by
+    rw [heq]
+    exact hambient
+  -- This uses the ORIGINAL point's known membership, not a new vector premise.
+  exact hval.subtype_mk (fun z => (hyperboloidNormalizedSegment z.1.1 z.1.2 z.2.val).property)
 
 end PolarRadial
 

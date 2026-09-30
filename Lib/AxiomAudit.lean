@@ -8320,3 +8320,27 @@ is an evidence command rather than library content.
 
 #check Hyperbolic.hyperboloidSegmentInitial_endpoint
 #print axioms Hyperbolic.hyperboloidSegmentInitial_endpoint
+
+#check Hyperbolic.hyperboloidLengthDist_arcosh
+#print axioms Hyperbolic.hyperboloidLengthDist_arcosh
+
+#check Hyperbolic.hyperboloidLengthDist_symm
+#print axioms Hyperbolic.hyperboloidLengthDist_symm
+
+#check Hyperbolic.continuous_hyperboloidLengthDist
+#print axioms Hyperbolic.continuous_hyperboloidLengthDist
+
+#check Hyperbolic.hyperboloidSegment_endpoint
+#print axioms Hyperbolic.hyperboloidSegment_endpoint
+
+#check Hyperbolic.hyperboloidSegment_reverse
+#print axioms Hyperbolic.hyperboloidSegment_reverse
+
+#check Hyperbolic.hyperboloidNormalizedSegment
+#print axioms Hyperbolic.hyperboloidNormalizedSegment
+
+#check Hyperbolic.hyperboloidNormalizedSegment_properties
+#print axioms Hyperbolic.hyperboloidNormalizedSegment_properties
+
+#check Hyperbolic.continuous_hyperboloidNormalizedSegment
+#print axioms Hyperbolic.continuous_hyperboloidNormalizedSegment
