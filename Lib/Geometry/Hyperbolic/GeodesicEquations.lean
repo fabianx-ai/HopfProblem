@@ -237,4 +237,308 @@ theorem planeCoefficient_toHyperboloid_iff (a b c : ℝ) (z : UpperHalfPlane) :
         (b + c) * (z.re ^ 2 + z.im ^ 2) + 2 * a * z.re + (c - b) := by ring
   rw [← mul_eq_zero_iff_left hd, planeCoefficient_toHyperboloid_mul, hcollect]
 
+/-- Positive discriminant gives the positive square roots and their exact squares,
+and excludes the zero coefficient triple. Textbook source: G05.C, lines 74–75. -/
+theorem planeCoefficient_positiveScalars (a b c : ℝ) (hD : 0 < a^2+b^2-c^2) :
+    0 < Real.sqrt (a^2+b^2) ∧
+    (Real.sqrt (a^2+b^2))^2 = a^2+b^2 ∧
+    c^2 < (Real.sqrt (a^2+b^2))^2 ∧
+    0 < Real.sqrt (a^2+b^2-c^2) ∧
+    (Real.sqrt (a^2+b^2-c^2))^2 = a^2+b^2-c^2 ∧
+    ![a,b,c] ≠ (0 : Fin 3 → ℝ) := by
+  have hab : 0 < a^2+b^2 := by nlinarith [sq_nonneg c]
+  have hs := Real.sqrt_pos.mpr hab
+  have hs2 := Real.sq_sqrt hab.le
+  have hd := Real.sqrt_pos.mpr hD
+  have hd2 := Real.sq_sqrt hD.le
+  refine ⟨hs,hs2,?_,hd,hd2,?_⟩
+  · nlinarith
+  · intro hz
+    have ha : a = 0 := by simpa using congrFun hz 0
+    have hb : b = 0 := by simpa using congrFun hz 1
+    have hc : c = 0 := by simpa using congrFun hz 2
+    simp [ha,hb,hc] at hD
+
+/-- The explicit unit-direction coordinates of the coefficient plane.
+Textbook source: G05.C, lines 76–78. -/
+def planeCoefficientUnitDirection (a b : ℝ) : Fin 3 → ℝ :=
+  ![-b / Real.sqrt (a^2+b^2), a / Real.sqrt (a^2+b^2), 0]
+
+/-- The explicit negative-vector coordinates of the coefficient plane.
+Textbook source: G05.C, lines 76–78. -/
+def planeCoefficientNegativeVector (a b c : ℝ) : Fin 3 → ℝ :=
+  ![-c*a / (Real.sqrt (a^2+b^2))^2,
+    -c*b / (Real.sqrt (a^2+b^2))^2, 1]
+
+/-- The displayed coefficient frame lies in the actual kernel and has the stated
+Lorentz Gram entries and time coordinates. Textbook source: G05.C, lines 78–81. -/
+theorem planeCoefficientFrame_spec (a b c : ℝ) (hD : 0 < a^2+b^2-c^2) :
+    let e := planeCoefficientUnitDirection a b
+    let w := planeCoefficientNegativeVector a b c
+    e ∈ (planeCoefficientFunctional a b c).ker ∧
+    w ∈ (planeCoefficientFunctional a b c).ker ∧
+    lorentzBilinear e e = 1 ∧
+    lorentzBilinear w w = -(a^2+b^2-c^2) / (Real.sqrt (a^2+b^2))^2 ∧
+    lorentzBilinear e w = 0 ∧ e 2 = 0 ∧ w 2 = 1 ∧
+    lorentzBilinear w w < 0 := by
+  rcases planeCoefficient_positiveScalars a b c hD with ⟨hs,hs2,_,_,_,_⟩
+  have hsn : Real.sqrt (a^2+b^2) ≠ 0 := ne_of_gt hs
+  have hab : a^2+b^2 ≠ 0 := by rw [← hs2]; exact pow_ne_zero 2 hsn
+  have he : planeCoefficientUnitDirection a b ∈ (planeCoefficientFunctional a b c).ker := by
+    change a * (-b / Real.sqrt (a^2+b^2)) + b * (a / Real.sqrt (a^2+b^2)) + c * 0 = 0
+    field_simp
+    <;> ring
+  have hw : planeCoefficientNegativeVector a b c ∈ (planeCoefficientFunctional a b c).ker := by
+    change a * (-c*a / (Real.sqrt (a^2+b^2))^2) +
+      b * (-c*b / (Real.sqrt (a^2+b^2))^2) + c * 1 = 0
+    rw [hs2]
+    field_simp
+    <;> ring
+  have hee : lorentzBilinear (planeCoefficientUnitDirection a b)
+      (planeCoefficientUnitDirection a b) = 1 := by
+    change (-b / Real.sqrt (a^2+b^2)) * (-b / Real.sqrt (a^2+b^2)) +
+      (a / Real.sqrt (a^2+b^2)) * (a / Real.sqrt (a^2+b^2)) - 0 * 0 = 1
+    field_simp
+    nlinarith [hs2]
+  have hww : lorentzBilinear (planeCoefficientNegativeVector a b c)
+      (planeCoefficientNegativeVector a b c) = -(a^2+b^2-c^2) / (Real.sqrt (a^2+b^2))^2 := by
+    change (-c*a / (Real.sqrt (a^2+b^2))^2) * (-c*a / (Real.sqrt (a^2+b^2))^2) +
+      (-c*b / (Real.sqrt (a^2+b^2))^2) * (-c*b / (Real.sqrt (a^2+b^2))^2) - 1 * 1 =
+        -(a^2+b^2-c^2) / (Real.sqrt (a^2+b^2))^2
+    rw [hs2]
+    field_simp
+    <;> ring
+  have hew : lorentzBilinear (planeCoefficientUnitDirection a b)
+      (planeCoefficientNegativeVector a b c) = 0 := by
+    change (-b / Real.sqrt (a^2+b^2)) * (-c*a / (Real.sqrt (a^2+b^2))^2) +
+      (a / Real.sqrt (a^2+b^2)) * (-c*b / (Real.sqrt (a^2+b^2))^2) - 0 * 1 = 0
+    field_simp
+    <;> ring
+  refine ⟨he,hw,hee,hww,hew,rfl,rfl,?_⟩
+  rw [hww]
+  exact div_neg_of_neg_of_pos (neg_neg_of_pos hD) (sq_pos_of_pos hs)
+
+/-- The explicit frame is independent and spans the two-dimensional actual
+coefficient kernel. Textbook source: G05.C, lines 80–82. -/
+theorem planeCoefficientFrame_basis (a b c : ℝ) (hD : 0 < a^2+b^2-c^2) :
+    let e := planeCoefficientUnitDirection a b
+    let w := planeCoefficientNegativeVector a b c
+    LinearIndependent ℝ ![e,w] ∧
+    Module.finrank ℝ (planeCoefficientFunctional a b c).ker = 2 ∧
+    Submodule.span ℝ ({e,w} : Set (Fin 3 → ℝ)) = (planeCoefficientFunctional a b c).ker := by
+  rcases planeCoefficientFrame_spec a b c hD with ⟨he,hw,hee,_,_,het,hwt,_⟩
+  let e := planeCoefficientUnitDirection a b
+  let w := planeCoefficientNegativeVector a b c
+  have hene : e ≠ 0 := by
+    intro hz
+    have h := hee
+    change lorentzBilinear e e = 1 at h
+    simp [hz,lorentzBilinear_apply] at h
+  have hwne : w ≠ 0 := by
+    intro hz
+    have h := congrFun hz 2
+    change w 2 = 0 at h
+    change w 2 = 1 at hwt
+    linarith
+  have hli : LinearIndependent ℝ ![e,w] := by
+    apply linearIndependent_fin2.mpr
+    refine ⟨hwne,?_⟩
+    intro α h
+    change α • w = e at h
+    have ht := congrFun h 2
+    change α * w 2 = e 2 at ht
+    change e 2 = 0 at het
+    change w 2 = 1 at hwt
+    rw [het,hwt,mul_one] at ht
+    apply hene
+    rw [← h,ht,zero_smul]
+  have hf : planeCoefficientFunctional a b c ≠ 0 := by
+    intro hz
+    have ha : a = 0 := by
+      simpa [planeCoefficientFunctional_apply] using
+        congrArg (fun f : (Fin 3 → ℝ) →ₗ[ℝ] ℝ => f ![1,0,0]) hz
+    have hb : b = 0 := by
+      simpa [planeCoefficientFunctional_apply] using
+        congrArg (fun f : (Fin 3 → ℝ) →ₗ[ℝ] ℝ => f ![0,1,0]) hz
+    have hc : c = 0 := by
+      simpa [planeCoefficientFunctional_apply] using
+        congrArg (fun f : (Fin 3 → ℝ) →ₗ[ℝ] ℝ => f ![0,0,1]) hz
+    simp [ha,hb,hc] at hD
+  have hdim : Module.finrank ℝ (planeCoefficientFunctional a b c).ker = 2 := by
+    have hr : Module.finrank ℝ (planeCoefficientFunctional a b c).ker + 1 = 3 := by
+      simpa using Module.Dual.finrank_ker_add_one_of_ne_zero hf
+    omega
+  have hr : Set.range ![e,w] = ({e,w} : Set (Fin 3 → ℝ)) := by
+    ext x
+    simp only [Set.mem_range, Set.mem_insert_iff, Set.mem_singleton_iff]
+    constructor
+    · rintro ⟨i,rfl⟩
+      fin_cases i <;> simp
+    · rintro (rfl | rfl)
+      · exact ⟨0,rfl⟩
+      · exact ⟨1,rfl⟩
+  have hspanDim : Module.finrank ℝ (Submodule.span ℝ ({e,w} : Set (Fin 3 → ℝ))) = 2 := by
+    have h := finrank_span_eq_card hli
+    rw [hr] at h
+    exact h
+  have hle : Submodule.span ℝ ({e,w} : Set (Fin 3 → ℝ)) ≤
+      (planeCoefficientFunctional a b c).ker := by
+    apply Submodule.span_le.mpr
+    intro x hx
+    rcases hx with rfl | hx
+    · exact he
+    · have : x = w := Set.mem_singleton_iff.mp hx
+      subst x
+      exact hw
+  exact ⟨hli,hdim,Submodule.eq_of_le_of_finrank_eq hle (hspanDim.trans hdim.symm)⟩
+
+/-- The restricted Lorentz quadratic form has one positive and one negative
+square in the explicit frame. Textbook source: G05.C, lines 78–82. -/
+theorem planeCoefficientFrame_gram (a b c : ℝ) (hD : 0 < a^2+b^2-c^2)
+    (α β : ℝ) :
+    lorentzBilinear
+      (α • planeCoefficientUnitDirection a b + β • planeCoefficientNegativeVector a b c)
+      (α • planeCoefficientUnitDirection a b + β • planeCoefficientNegativeVector a b c) =
+      α^2 - ((a^2+b^2-c^2) / (Real.sqrt (a^2+b^2))^2) * β^2 := by
+  rcases planeCoefficientFrame_spec a b c hD with ⟨_,_,hee,hww,hew,_,_,_⟩
+  have hcalc :
+      lorentzBilinear
+        (α • planeCoefficientUnitDirection a b + β • planeCoefficientNegativeVector a b c)
+        (α • planeCoefficientUnitDirection a b + β • planeCoefficientNegativeVector a b c) =
+      α^2 * lorentzBilinear (planeCoefficientUnitDirection a b) (planeCoefficientUnitDirection a b) +
+      2*α*β * lorentzBilinear (planeCoefficientUnitDirection a b) (planeCoefficientNegativeVector a b c) +
+      β^2 * lorentzBilinear (planeCoefficientNegativeVector a b c) (planeCoefficientNegativeVector a b c) := by
+    simp only [lorentzBilinear_apply,Pi.add_apply,Pi.smul_apply,smul_eq_mul]
+    ring
+  rw [hcalc,hee,hww,hew]
+  ring
+
+/-- The literal positive normalization of the displayed negative vector.
+Textbook source: G05.C, line 83. -/
+def planeCoefficientBaseCoords (a b c : ℝ) : Fin 3 → ℝ :=
+  (Real.sqrt (a^2+b^2) / Real.sqrt (a^2+b^2-c^2)) • planeCoefficientNegativeVector a b c
+
+/-- The normalized coordinates have square minus one and positive time.
+Textbook source: G05.C, line 83. -/
+theorem planeCoefficientBaseCoords_mem (a b c : ℝ) (hD : 0 < a^2+b^2-c^2) :
+    (planeCoefficientBaseCoords a b c 0)^2 + (planeCoefficientBaseCoords a b c 1)^2 -
+      (planeCoefficientBaseCoords a b c 2)^2 = -1 ∧
+    0 < planeCoefficientBaseCoords a b c 2 := by
+  rcases planeCoefficient_positiveScalars a b c hD with ⟨hs,hs2,_,hd,hd2,_⟩
+  rcases planeCoefficientFrame_spec a b c hD with ⟨_,_,_,hww,_,_,hwt,_⟩
+  let k := Real.sqrt (a^2+b^2) / Real.sqrt (a^2+b^2-c^2)
+  let w := planeCoefficientNegativeVector a b c
+  have hk : 0 < k := div_pos hs hd
+  have hscale : lorentzBilinear (k • w) (k • w) = k^2 * lorentzBilinear w w := by
+    simp only [lorentzBilinear_apply,Pi.smul_apply,smul_eq_mul]
+    ring
+  have hnorm : lorentzBilinear (k • w) (k • w) = -1 := by
+    rw [hscale]
+    change k^2 * lorentzBilinear (planeCoefficientNegativeVector a b c)
+      (planeCoefficientNegativeVector a b c) = -1
+    rw [hww]
+    dsimp [k]
+    rw [div_pow,hs2,hd2]
+    have hab : a^2+b^2 ≠ 0 := by rw [← hs2]; exact pow_ne_zero 2 (ne_of_gt hs)
+    field_simp
+    <;> ring
+  constructor
+  · change (k • w) 0 ^ 2 + (k • w) 1 ^ 2 - (k • w) 2 ^ 2 = -1
+    simpa only [lorentzBilinear_apply,pow_two] using hnorm
+  · change 0 < k * w 2
+    change w 2 = 1 at hwt
+    rw [hwt,mul_one]
+    exact hk
+
+/-- The actual hyperboloid point with the explicitly normalized coordinates.
+Textbook source: G05.C, line 83. -/
+def planeCoefficientBasePoint (a b c : ℝ) (hD : 0 < a^2+b^2-c^2) : Hyperboloid :=
+  ⟨planeCoefficientBaseCoords a b c, planeCoefficientBaseCoords_mem a b c hD⟩
+
+/-- The same normalized point and explicit unit direction lie in and span the
+coefficient kernel, with the required orthogonality. Textbook source: G05.C, lines 83–85. -/
+theorem planeCoefficientBasePoint_spec (a b c : ℝ) (hD : 0 < a^2+b^2-c^2) :
+    let p := planeCoefficientBasePoint a b c hD
+    let e := planeCoefficientUnitDirection a b
+    p.val ∈ (planeCoefficientFunctional a b c).ker ∧
+    lorentzBilinear e p.val = 0 ∧ lorentzBilinear e e = 1 ∧
+    Submodule.span ℝ ({p.val,e} : Set (Fin 3 → ℝ)) = (planeCoefficientFunctional a b c).ker := by
+  rcases planeCoefficient_positiveScalars a b c hD with ⟨hs,_,_,hd,_,_⟩
+  rcases planeCoefficientFrame_spec a b c hD with ⟨he,hw,hee,_,hew,_,_,_⟩
+  have hspan := (planeCoefficientFrame_basis a b c hD).2.2
+  let p := planeCoefficientBasePoint a b c hD
+  let e := planeCoefficientUnitDirection a b
+  let w := planeCoefficientNegativeVector a b c
+  let k := Real.sqrt (a^2+b^2) / Real.sqrt (a^2+b^2-c^2)
+  have hk : k ≠ 0 := ne_of_gt (div_pos hs hd)
+  have hpval : p.val = k • w := rfl
+  have hp : p.val ∈ (planeCoefficientFunctional a b c).ker := by
+    rw [hpval]
+    exact Submodule.smul_mem _ k hw
+  have hep : lorentzBilinear e p.val = 0 := by
+    have hscale : lorentzBilinear e p.val = k * lorentzBilinear e w := by
+      rw [hpval]
+      simp only [lorentzBilinear_apply,Pi.smul_apply,smul_eq_mul]
+      ring
+    rw [hscale,hew,mul_zero]
+  have hle : Submodule.span ℝ ({p.val,e} : Set (Fin 3 → ℝ)) ≤
+      (planeCoefficientFunctional a b c).ker := by
+    apply Submodule.span_le.mpr
+    intro x hx
+    rcases hx with rfl | hx
+    · exact hp
+    · have : x = e := Set.mem_singleton_iff.mp hx
+      subst x
+      exact he
+  have hge : (planeCoefficientFunctional a b c).ker ≤
+      Submodule.span ℝ ({p.val,e} : Set (Fin 3 → ℝ)) := by
+    rw [← hspan]
+    apply Submodule.span_le.mpr
+    intro x hx
+    rcases hx with rfl | hx
+    · exact Submodule.subset_span (by simp [e])
+    · have : x = w := Set.mem_singleton_iff.mp hx
+      subst x
+      have hwp : k⁻¹ • p.val = w := by
+        rw [hpval,smul_smul,inv_mul_cancel₀ hk,one_smul]
+      change w ∈ Submodule.span ℝ ({p.val,e} : Set (Fin 3 → ℝ))
+      rw [← hwp]
+      exact Submodule.smul_mem _ _ (Submodule.subset_span (by simp))
+  exact ⟨hp,hep,hee,le_antisymm hle hge⟩
+
+/-- Positive discriminant makes the actual coefficient kernel timelike, using
+the displayed negative vector and derived dimension. Textbook source: G05.C, lines 80–83. -/
+theorem planeCoefficient_timelike_of_discriminant_pos
+    (a b c : ℝ) (hD : 0 < a^2+b^2-c^2) :
+    IsLorentzTimelikePlane (planeCoefficientFunctional a b c).ker := by
+  rcases planeCoefficientFrame_spec a b c hD with ⟨_,hw,_,_,_,_,_,hneg⟩
+  have hdim := (planeCoefficientFrame_basis a b c hD).2.1
+  exact ⟨hdim,planeCoefficientNegativeVector a b c,hw,hneg⟩
+
+/-- The geodesic of the explicit point and direction parametrizes the entire
+upper-sheet coefficient section for all real times; that section is nonempty.
+Textbook source: G05.C, lines 83–88. -/
+theorem planeCoefficient_whole_section (a b c : ℝ) (hD : 0 < a^2+b^2-c^2) :
+    let p := planeCoefficientBasePoint a b c hD
+    let e := planeCoefficientUnitDirection a b
+    let hs := planeCoefficientBasePoint_spec a b c hD
+    Set.range (hyperboloidGeodesic p e hs.2.1 hs.2.2.1) =
+      {q : Hyperboloid | q.val ∈ (planeCoefficientFunctional a b c).ker} ∧
+    ({q : Hyperboloid | q.val ∈ (planeCoefficientFunctional a b c).ker} : Set Hyperboloid).Nonempty := by
+  let p := planeCoefficientBasePoint a b c hD
+  let e := planeCoefficientUnitDirection a b
+  have hs := planeCoefficientBasePoint_spec a b c hD
+  have hr := (hyperboloidGeodesic_plane p e hs.2.1 hs.2.2.1).2.2.2
+  have hr := hr.trans (congrArg
+    (fun P : Submodule ℝ (Fin 3 → ℝ) => {q : Hyperboloid | q.val ∈ P}) hs.2.2.2)
+  exact ⟨hr,p,hs.1⟩
+
+/-- For every nonzero coefficient triple, the actual plane is timelike exactly
+when its discriminant is positive. Textbook source: G05, lines 54 and 82. -/
+theorem planeCoefficient_timelike_iff
+    (a b c : ℝ) (hcoeff : ![a,b,c] ≠ (0 : Fin 3 → ℝ)) :
+    IsLorentzTimelikePlane (planeCoefficientFunctional a b c).ker ↔ 0 < a^2+b^2-c^2 := by
+  exact ⟨planeCoefficient_discriminant_pos_of_timelike a b c hcoeff,
+    planeCoefficient_timelike_of_discriminant_pos a b c⟩
+
 end Hyperbolic

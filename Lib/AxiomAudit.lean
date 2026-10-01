@@ -8485,6 +8485,33 @@ is an evidence command rather than library content.
 #check Hyperbolic.planeCoefficient_toHyperboloid_iff
 #print axioms Hyperbolic.planeCoefficient_toHyperboloid_iff
 
+#check Hyperbolic.planeCoefficient_positiveScalars
+#print axioms Hyperbolic.planeCoefficient_positiveScalars
+#check Hyperbolic.planeCoefficientUnitDirection
+#print axioms Hyperbolic.planeCoefficientUnitDirection
+#check Hyperbolic.planeCoefficientNegativeVector
+#print axioms Hyperbolic.planeCoefficientNegativeVector
+#check Hyperbolic.planeCoefficientFrame_spec
+#print axioms Hyperbolic.planeCoefficientFrame_spec
+#check Hyperbolic.planeCoefficientFrame_basis
+#print axioms Hyperbolic.planeCoefficientFrame_basis
+#check Hyperbolic.planeCoefficientFrame_gram
+#print axioms Hyperbolic.planeCoefficientFrame_gram
+#check Hyperbolic.planeCoefficientBaseCoords
+#print axioms Hyperbolic.planeCoefficientBaseCoords
+#check Hyperbolic.planeCoefficientBaseCoords_mem
+#print axioms Hyperbolic.planeCoefficientBaseCoords_mem
+#check Hyperbolic.planeCoefficientBasePoint
+#print axioms Hyperbolic.planeCoefficientBasePoint
+#check Hyperbolic.planeCoefficientBasePoint_spec
+#print axioms Hyperbolic.planeCoefficientBasePoint_spec
+#check Hyperbolic.planeCoefficient_timelike_of_discriminant_pos
+#print axioms Hyperbolic.planeCoefficient_timelike_of_discriminant_pos
+#check Hyperbolic.planeCoefficient_whole_section
+#print axioms Hyperbolic.planeCoefficient_whole_section
+#check Hyperbolic.planeCoefficient_timelike_iff
+#print axioms Hyperbolic.planeCoefficient_timelike_iff
+
 #check LinearMap.BilinForm.unitNormalReflection
 #print axioms LinearMap.BilinForm.unitNormalReflection
 
