@@ -21,6 +21,7 @@ public import Mathlib.Analysis.Calculus.FDeriv.Pow
 public import Mathlib.Analysis.Calculus.Deriv.Inv
 
 public import Mathlib.LinearAlgebra.BilinearForm.Properties
+public import Mathlib.LinearAlgebra.Dual.Lemmas
 public import Lib.LinearAlgebra.BilinearForm.Reflection
 public import Mathlib.LinearAlgebra.BilinearForm.Hom
 public import Mathlib.Geometry.Manifold.VectorBundle.Tangent
@@ -6515,5 +6516,238 @@ theorem lorentzReflection_self (n : Fin 3 → ℝ)
     (hn : Hyperbolic.lorentzBilinear n n = 1) :
     lorentzReflection n hn n = -n :=
   LinearMap.BilinForm.unitNormalReflection_self lorentzBilinForm n hn
+
+/-- Project the vertical timelike vector onto the perpendicular of the prescribed normal. -/
+def lorentzAxisProjection (n : Fin 3 → ℝ) : Fin 3 → ℝ :=
+  ![0, 0, 1] - lorentzBilinear ![0, 0, 1] n • n
+
+/-- For a unit spacelike normal, the vertical projection is perpendicular with negative square and nonzero time coordinate. -/
+theorem lorentzAxisProjection_spec (n : Fin 3 → ℝ)
+    (hn : lorentzBilinear n n = 1) :
+  n ≠ 0 ∧ (lorentzFunctional n).toLinearMap ≠ 0 ∧
+  lorentzBilinear (lorentzAxisProjection n) n = 0 ∧
+  lorentzBilinear (lorentzAxisProjection n) (lorentzAxisProjection n) =
+    -1 - (lorentzBilinear ![0, 0, 1] n)^2 ∧
+  lorentzAxisProjection n 2 ≠ 0 := by
+  have hne : n ≠ 0 := by
+    intro h
+    subst n
+    simpa using hn
+  have hfn : (lorentzFunctional n).toLinearMap ≠ 0 := by
+    intro h
+    have he := congrArg (fun f : (Fin 3 → ℝ) →ₗ[ℝ] ℝ => f n) h
+    have hval : lorentzFunctional n n = 1 := by
+      rw [← lorentzBilinear_eq_functional]
+      exact hn
+    change lorentzFunctional n n = 0 at he
+    linarith
+  have horth : lorentzBilinear (lorentzAxisProjection n) n = 0 := by
+    simp only [lorentzAxisProjection, map_sub, map_smul,
+      ContinuousLinearMap.sub_apply, ContinuousLinearMap.smul_apply, smul_eq_mul]
+    rw [hn]
+    ring
+  have hsq : lorentzBilinear (lorentzAxisProjection n) (lorentzAxisProjection n) =
+      -1 - (lorentzBilinear ![0, 0, 1] n)^2 := by
+    simp only [lorentzAxisProjection, map_sub, map_smul,
+      ContinuousLinearMap.sub_apply, ContinuousLinearMap.smul_apply, smul_eq_mul]
+    rw [lorentzBilinear_symm n ![0, 0, 1], hn]
+    have hvertical : lorentzBilinear ![0, 0, 1] ![0, 0, 1] = -1 := by
+      change (0 : ℝ) * 0 + 0 * 0 - 1 * 1 = -1
+      norm_num
+    rw [hvertical]
+    ring
+  refine ⟨hne, hfn, horth, hsq, ?_⟩
+  intro ht
+  have hh := hsq
+  simp only [lorentzBilinear_apply] at hh
+  rw [ht] at hh
+  nlinarith [sq_nonneg (lorentzAxisProjection n 0),
+    sq_nonneg (lorentzAxisProjection n 1), sq_nonneg (lorentzBilinear ![0, 0, 1] n)]
+
+/-- Choose the positive-time sign of the projected vector and normalize its negative square. -/
+def lorentzAxisPointCoords (n : Fin 3 → ℝ) : Fin 3 → ℝ :=
+  (Real.sqrt (1 + (lorentzBilinear ![0, 0, 1] n)^2))⁻¹ •
+    (if 0 < lorentzAxisProjection n 2 then lorentzAxisProjection n
+      else -lorentzAxisProjection n)
+
+/-- The normalized signed projection is an upper-sheet point perpendicular to the prescribed normal. -/
+theorem lorentzAxisPointCoords_spec (n : Fin 3 → ℝ)
+    (hn : lorentzBilinear n n = 1) :
+  ((lorentzAxisPointCoords n 0)^2 + (lorentzAxisPointCoords n 1)^2 -
+    (lorentzAxisPointCoords n 2)^2 = -1 ∧ 0 < lorentzAxisPointCoords n 2) ∧
+  lorentzBilinear (lorentzAxisPointCoords n) n = 0 := by
+  obtain ⟨_, _, horth, hsq, ht⟩ := lorentzAxisProjection_spec n hn
+  let w := lorentzAxisProjection n
+  let v : Fin 3 → ℝ := if 0 < w 2 then w else -w
+  let r := Real.sqrt (1 + (lorentzBilinear ![0, 0, 1] n)^2)
+  have hrpos : 0 < r := Real.sqrt_pos.mpr (by positivity)
+  have hrne : r ≠ 0 := ne_of_gt hrpos
+  have hrsq : r^2 = 1 + (lorentzBilinear ![0, 0, 1] n)^2 :=
+    Real.sq_sqrt (by positivity)
+  have hvT : 0 < v 2 := by
+    dsimp [v]
+    split_ifs with h
+    · exact h
+    · change 0 < -(w 2)
+      exact neg_pos.mpr (lt_of_le_of_ne (le_of_not_gt h) ht)
+  have hvQ : lorentzBilinear v v = lorentzBilinear w w := by
+    dsimp [v]
+    split_ifs
+    · rfl
+    · simp only [lorentzBilinear_apply, Pi.neg_apply, neg_mul_neg]
+  have hvn : lorentzBilinear v n = 0 := by
+    dsimp [v]
+    split_ifs
+    · exact horth
+    · simpa using congrArg Neg.neg horth
+  have hpQ : lorentzBilinear (r⁻¹ • v) (r⁻¹ • v) = -1 := by
+    have he : lorentzBilinear (r⁻¹ • v) (r⁻¹ • v) =
+        r⁻¹ * r⁻¹ * lorentzBilinear v v := by
+      simp only [lorentzBilinear_apply, Pi.smul_apply, smul_eq_mul]
+      ring
+    rw [he, hvQ]
+    have hww : lorentzBilinear w w = -(r^2) := by
+      dsimp [w]
+      rw [hsq, hrsq]
+      ring
+    rw [hww]
+    field_simp [hrne]
+    <;> ring
+  have hpT : 0 < (r⁻¹ • v) 2 := mul_pos (inv_pos.mpr hrpos) hvT
+  refine ⟨?_, ?_⟩
+  · change (((r⁻¹ • v) 0)^2 + ((r⁻¹ • v) 1)^2 -
+        ((r⁻¹ • v) 2)^2 = -1 ∧ 0 < (r⁻¹ • v) 2)
+    simpa only [lorentzBilinear_apply, pow_two] using And.intro hpQ hpT
+  · change lorentzBilinear (r⁻¹ • v) n = 0
+    simp only [map_smul, ContinuousLinearMap.smul_apply, smul_eq_mul, hvn, mul_zero]
+
+/-- The explicit upper-sheet point on the axis of a prescribed unit normal. -/
+def lorentzAxisPoint (n : Fin 3 → ℝ)
+    (hn : lorentzBilinear n n = 1) : Hyperboloid :=
+  ⟨lorentzAxisPointCoords n, (lorentzAxisPointCoords_spec n hn).1⟩
+
+/-- Remove the normal component of a vector and normalize the remainder. -/
+def lorentzAxisDirectionCoords (n z : Fin 3 → ℝ) : Fin 3 → ℝ :=
+  let u := z - lorentzBilinear z n • n
+  (Real.sqrt (lorentzBilinear u u))⁻¹ • u
+
+/-- An independent tangent vector has a nonzero positive-square remainder perpendicular to both the point and normal. -/
+theorem lorentzAxisDirectionRemainder_spec (n : Fin 3 → ℝ)
+    (hn : lorentzBilinear n n = 1) (p : Hyperboloid)
+    (hpn : lorentzBilinear p.val n = 0) (z : Fin 3 → ℝ)
+    (hz : z ∈ (lorentzFunctional p.val).ker)
+    (hznot : z ∉ Submodule.span ℝ ({n} : Set (Fin 3 → ℝ))) :
+  let u := z - lorentzBilinear z n • n
+  u ≠ 0 ∧ lorentzBilinear u p.val = 0 ∧
+    lorentzBilinear u n = 0 ∧ 0 < lorentzBilinear u u := by
+  let u := z - lorentzBilinear z n • n
+  have hune : u ≠ 0 := by
+    intro hu
+    apply hznot
+    have he : z = lorentzBilinear z n • n := sub_eq_zero.mp hu
+    rw [he]
+    exact Submodule.smul_mem _ _ (Submodule.subset_span (by simp))
+  have hzp : lorentzBilinear z p.val = 0 := by
+    rw [lorentzBilinear_symm, lorentzBilinear_eq_functional]
+    exact hz
+  have hnp : lorentzBilinear n p.val = 0 :=
+    (lorentzBilinear_symm n p.val).trans hpn
+  have hup : lorentzBilinear u p.val = 0 := by
+    simp only [u, map_sub, map_smul, ContinuousLinearMap.sub_apply,
+      ContinuousLinearMap.smul_apply, smul_eq_mul, hzp, hnp, mul_zero, sub_zero]
+  have hun : lorentzBilinear u n = 0 := by
+    simp only [u, map_sub, map_smul, ContinuousLinearMap.sub_apply,
+      ContinuousLinearMap.smul_apply, smul_eq_mul, hn, mul_one, sub_self]
+  exact ⟨hune, hup, hun,
+    lorentzKer_quadratic_pos p u ((lorentzBilinear_symm p.val u).trans hup) hune⟩
+
+/-- The normalized tangent remainder is unit and perpendicular to the point and prescribed normal. -/
+theorem lorentzAxisDirectionCoords_spec (n : Fin 3 → ℝ)
+    (hn : lorentzBilinear n n = 1) (p : Hyperboloid)
+    (hpn : lorentzBilinear p.val n = 0) (z : Fin 3 → ℝ)
+    (hz : z ∈ (lorentzFunctional p.val).ker)
+    (hznot : z ∉ Submodule.span ℝ ({n} : Set (Fin 3 → ℝ))) :
+  lorentzBilinear (lorentzAxisDirectionCoords n z) p.val = 0 ∧
+  lorentzBilinear (lorentzAxisDirectionCoords n z) n = 0 ∧
+  lorentzBilinear (lorentzAxisDirectionCoords n z)
+    (lorentzAxisDirectionCoords n z) = 1 := by
+  obtain ⟨_, hup, hun, huq⟩ :=
+    lorentzAxisDirectionRemainder_spec n hn p hpn z hz hznot
+  let u := z - lorentzBilinear z n • n
+  let r := Real.sqrt (lorentzBilinear u u)
+  change lorentzBilinear u p.val = 0 at hup
+  change lorentzBilinear u n = 0 at hun
+  have hrpos : 0 < r := Real.sqrt_pos.mpr huq
+  have hrne : r ≠ 0 := ne_of_gt hrpos
+  have hrsq : r^2 = lorentzBilinear u u := Real.sq_sqrt huq.le
+  change lorentzBilinear (r⁻¹ • u) p.val = 0 ∧
+    lorentzBilinear (r⁻¹ • u) n = 0 ∧
+    lorentzBilinear (r⁻¹ • u) (r⁻¹ • u) = 1
+  refine ⟨?_, ?_, ?_⟩
+  · simp only [map_smul, ContinuousLinearMap.smul_apply, smul_eq_mul, hup, mul_zero]
+  · simp only [map_smul, ContinuousLinearMap.smul_apply, smul_eq_mul, hun, mul_zero]
+  · have he : lorentzBilinear (r⁻¹ • u) (r⁻¹ • u) =
+        r⁻¹ * r⁻¹ * lorentzBilinear u u := by
+      simp only [lorentzBilinear_apply, Pi.smul_apply, smul_eq_mul]
+      ring
+    rw [he, ← hrsq]
+    field_simp [hrne]
+
+/-- At any point perpendicular to a unit normal, choose an independent tangent vector and normalize its remainder. -/
+theorem exists_lorentzAxisDirection (n : Fin 3 → ℝ)
+    (hn : lorentzBilinear n n = 1) (p : Hyperboloid)
+    (hpn : lorentzBilinear p.val n = 0) :
+  ∃ z : Fin 3 → ℝ,
+    z ∈ (lorentzFunctional p.val).ker ∧
+    z ∉ Submodule.span ℝ ({n} : Set (Fin 3 → ℝ)) ∧
+    lorentzBilinear (lorentzAxisDirectionCoords n z) p.val = 0 ∧
+    lorentzBilinear (lorentzAxisDirectionCoords n z) n = 0 ∧
+    lorentzBilinear (lorentzAxisDirectionCoords n z)
+      (lorentzAxisDirectionCoords n z) = 1 := by
+  have hne := (lorentzAxisProjection_spec n hn).1
+  have hle : Submodule.span ℝ ({n} : Set (Fin 3 → ℝ)) ≤
+      (lorentzFunctional p.val).ker := by
+    apply Submodule.span_le.mpr
+    intro x hx
+    have he : x = n := by simpa using hx
+    subst x
+    change lorentzFunctional p.val n = 0
+    rw [← lorentzBilinear_eq_functional]
+    exact hpn
+  have hlt : Submodule.span ℝ ({n} : Set (Fin 3 → ℝ)) <
+      (lorentzFunctional p.val).ker := by
+    apply Submodule.lt_of_le_of_finrank_lt_finrank hle
+    rw [finrank_span_singleton hne, finrank_lorentzKer p]
+    decide
+  obtain ⟨z, hz, hznot⟩ := SetLike.exists_of_lt hlt
+  exact ⟨z, hz, hznot, lorentzAxisDirectionCoords_spec n hn p hpn z hz hznot⟩
+
+/-- The constructed point and a perpendicular unit tangent span exactly the normal kernel. -/
+theorem lorentzAxis_span_ker (n : Fin 3 → ℝ)
+    (hn : lorentzBilinear n n = 1) (p : Hyperboloid)
+    (hpn : lorentzBilinear p.val n = 0) (e : Fin 3 → ℝ)
+    (hep : lorentzBilinear e p.val = 0)
+    (hen : lorentzBilinear e n = 0) (hee : lorentzBilinear e e = 1) :
+  Submodule.span ℝ ({p.val, e} : Set (Fin 3 → ℝ)) =
+    (lorentzFunctional n).ker := by
+  have hdim : Module.finrank ℝ (lorentzFunctional n).ker = 2 := by
+    have h : Module.finrank ℝ (lorentzFunctional n).ker + 1 = 3 := by
+      simpa using Module.Dual.finrank_ker_add_one_of_ne_zero
+        (lorentzAxisProjection_spec n hn).2.1
+    omega
+  have hle : Submodule.span ℝ ({p.val, e} : Set (Fin 3 → ℝ)) ≤
+      (lorentzFunctional n).ker := by
+    apply Submodule.span_le.mpr
+    intro x hx
+    change lorentzFunctional n x = 0
+    rw [← lorentzBilinear_eq_functional, lorentzBilinear_symm]
+    rcases Set.mem_insert_iff.mp hx with hx | hx
+    · subst x
+      exact hpn
+    · have he : x = e := by simpa using hx
+      subst x
+      exact hen
+  exact Submodule.eq_of_le_of_finrank_eq hle
+    ((hyperboloidGeodesic_plane p e hep hee).2.1.trans hdim.symm)
 
 end Hyperbolic

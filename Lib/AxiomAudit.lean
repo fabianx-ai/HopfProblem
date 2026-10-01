@@ -8533,3 +8533,24 @@ is an evidence command rather than library content.
 
 #check Hyperbolic.lorentzReflection_self
 #print axioms Hyperbolic.lorentzReflection_self
+
+#check Hyperbolic.lorentzAxisProjection
+#print axioms Hyperbolic.lorentzAxisProjection
+#check Hyperbolic.lorentzAxisProjection_spec
+#print axioms Hyperbolic.lorentzAxisProjection_spec
+#check Hyperbolic.lorentzAxisPointCoords
+#print axioms Hyperbolic.lorentzAxisPointCoords
+#check Hyperbolic.lorentzAxisPointCoords_spec
+#print axioms Hyperbolic.lorentzAxisPointCoords_spec
+#check Hyperbolic.lorentzAxisPoint
+#print axioms Hyperbolic.lorentzAxisPoint
+#check Hyperbolic.lorentzAxisDirectionCoords
+#print axioms Hyperbolic.lorentzAxisDirectionCoords
+#check Hyperbolic.lorentzAxisDirectionRemainder_spec
+#print axioms Hyperbolic.lorentzAxisDirectionRemainder_spec
+#check Hyperbolic.lorentzAxisDirectionCoords_spec
+#print axioms Hyperbolic.lorentzAxisDirectionCoords_spec
+#check Hyperbolic.exists_lorentzAxisDirection
+#print axioms Hyperbolic.exists_lorentzAxisDirection
+#check Hyperbolic.lorentzAxis_span_ker
+#print axioms Hyperbolic.lorentzAxis_span_ker
