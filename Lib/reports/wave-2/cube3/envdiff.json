@@ -1,0 +1,112 @@
+{
+ "before": "/home/goblin/.claude/jobs/06995e68/tmp/wave2/dump_head.jsonl",
+ "after": "/home/goblin/.claude/jobs/06995e68/tmp/wave2/cube3/dump_after.jsonl",
+ "prefix": "",
+ "constants": [
+  38301,
+  38302
+ ],
+ "lost": [
+  [
+   "TopologicalSpace.CubeBoundaryThree.ambientOfThreeCoordinates.eq_1",
+   4173308049,
+   {
+    "Lib.Topology.Dimension.CubeBoundaryThreeCells": 1
+   }
+  ],
+  [
+   "TopologicalSpace.CubeBoundaryThree.lattice.eq_1",
+   1629270424,
+   {
+    "Lib.Topology.Dimension.CubeBoundaryThreeCells": 1
+   }
+  ],
+  [
+   "TopologicalSpace.CubeBoundaryThree.latticeLowerEndpoint_data._proof_1_1",
+   4140871671,
+   {
+    "Lib.Topology.Dimension.CubeBoundaryThreeCells": 1
+   }
+  ]
+ ],
+ "added": [
+  [
+   "TopologicalSpace.CubeBoundaryThree.ambientOfThreeCoordinates._proof_1",
+   2547959801,
+   {
+    "Lib.Topology.Dimension.CubeBoundaryThreeCells.Coverage": 1
+   }
+  ],
+  [
+   "TopologicalSpace.CubeBoundaryThree.ambientOfThreeCoordinates.eq_1",
+   1868059755,
+   {
+    "Lib.Topology.Dimension.CubeBoundaryThreeCells.Coverage": 1
+   }
+  ],
+  [
+   "TopologicalSpace.CubeBoundaryThree.lattice.eq_1",
+   1282897994,
+   {
+    "Lib.Topology.Dimension.CubeBoundaryThreeCells.Lattice": 1
+   }
+  ],
+  [
+   "TopologicalSpace.CubeBoundaryThree.latticeLowerEndpoint_data._proof_1_1",
+   3764749913,
+   {
+    "Lib.Topology.Dimension.CubeBoundaryThreeCells.Lattice": 1
+   }
+  ]
+ ],
+ "changed_type_source": [],
+ "changed_type_proof_naming": [],
+ "changed_type_accepted": [],
+ "added_accepted": [],
+ "accept_without_effect": [],
+ "changed_type_all": [
+  "TopologicalSpace.CubeBoundaryThree.ambientOfThreeCoordinates.eq_1",
+  "TopologicalSpace.CubeBoundaryThree.lattice.eq_1",
+  "TopologicalSpace.CubeBoundaryThree.latticeLowerEndpoint_data._proof_1_1"
+ ],
+ "moves": [
+  [
+   "Lib.Topology.Dimension.CubeBoundaryThreeCells",
+   "Lib.Topology.Dimension.CubeBoundaryThreeCells.Cells",
+   73
+  ],
+  [
+   "Lib.Topology.Dimension.CubeBoundaryThreeCells",
+   "Lib.Topology.Dimension.CubeBoundaryThreeCells.Coverage",
+   20
+  ],
+  [
+   "Lib.Topology.Dimension.CubeBoundaryThreeCells",
+   "Lib.Topology.Dimension.CubeBoundaryThreeCells.Faces",
+   32
+  ],
+  [
+   "Lib.Topology.Dimension.CubeBoundaryThreeCells",
+   "Lib.Topology.Dimension.CubeBoundaryThreeCells.Lattice",
+   30
+  ],
+  [
+   "Lib.Topology.Dimension.CubeBoundaryThreeCells",
+   "Lib.Topology.Dimension.CubeBoundaryThreeCells.RelInterior",
+   6
+  ],
+  [
+   "Lib.Topology.Dimension.CubeBoundaryThreeCells",
+   "Lib.Topology.Dimension.CubeBoundaryThreeCells.Separation",
+   26
+  ],
+  [
+   "Lib.Topology.Dimension.CubeBoundaryThreeCells",
+   "Lib.Topology.Dimension.CubeBoundaryThreeCells.SquareBoundary",
+   26
+  ]
+ ],
+ "ambiguous": [],
+ "auxiliary_moved": 190,
+ "verdict": "PASS"
+}

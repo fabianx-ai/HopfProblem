@@ -1,0 +1,2352 @@
+{
+"module": "Lib.Topology.Dimension.CubeBoundaryThreeCells",
+"source": "/home/goblin/.claude/jobs/06995e68/tmp/wave2/cube3/split/source_vis.lean",
+"source_sha256": "da4a97a5607d0982babb04e6f96ccc4b95e80fe7fd8f3bdf66ca37a8c6ebe742",
+"units_kept": 187,
+"units_moved": 26,
+"units": [
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.lattice"
+],
+"class": "keep",
+"lines": [
+31,
+33
+],
+"sha256": "d3e39e35ea0a0994d85d351e4c9aaeaa09d70fc1da07cac05b7d5246fdfb38d0"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.latticeBelowTop"
+],
+"class": "keep",
+"lines": [
+34,
+35
+],
+"sha256": "92fe290c3eab797e40b9aed50caf7d0b06276e3ef1cb380262f73671cec1eb68"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.mesh_identities"
+],
+"class": "keep",
+"lines": [
+36,
+46
+],
+"sha256": "b83eb0bac7b20a6f105e381272921af15c619640b968dcc528890ff9817b39a9"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.mesh_pos"
+],
+"class": "keep",
+"lines": [
+47,
+49
+],
+"sha256": "f2d2e2daf7854ac2947e23ffa57bc8a70f00f2b2f809b5dc109f3fbda9086dc3"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.lattice_subset_interval"
+],
+"class": "keep",
+"lines": [
+50,
+59
+],
+"sha256": "2489ddb3bc914ffc5484825f10227a2d21a5786c0d8c1c57ea1f112b06561647"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.finite_lattice"
+],
+"class": "keep",
+"lines": [
+60,
+65
+],
+"sha256": "e0a11d1d31e490e5568388244a80901a35063804e4312c93a92917054f2acf3f"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.card_lattice"
+],
+"class": "keep",
+"lines": [
+66,
+85
+],
+"sha256": "4739019611448fb32ebfd29d66b74c3d6fc5759d0ced2938c00acb47c6b4fcbc"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.lattice_endpoints"
+],
+"class": "keep",
+"lines": [
+86,
+94
+],
+"sha256": "53cb121ea4520d89a0f586c25ee25858a6afc2531b1726f746ae921403bbc388"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.lattice_separation"
+],
+"class": "keep",
+"lines": [
+95,
+112
+],
+"sha256": "61ae729bcd543691af121fdcfffbdccc193cacb3c2e8ffb4ec08e6a0c4626908"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.lattice_successor"
+],
+"class": "keep",
+"lines": [
+113,
+127
+],
+"sha256": "ae1dcec8758ce429ef57a5ad136a0cf67a25b0d01e37d78b5b8a29adf7273d65"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.mesh_two_of_one"
+],
+"class": "keep",
+"lines": [
+128,
+129
+],
+"sha256": "73181786de2eb8dfd3e49b52c5098d06596a96f5a8c4e202a67389918f8aa7cd"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.VertexParam"
+],
+"class": "keep",
+"lines": [
+130,
+132
+],
+"sha256": "e526102bd3b03241e7687ecd1299dcee3dcfdb618f451c6a7502949230e1ad4e"
+},
+{
+"names": [
+"TopologicalSpace.CubeBoundaryThree.vertices"
+],
+"class": "keep",
+"lines": [
+133,
+134
+],
+"sha256": "1b10bc86115f00c1825a7d6992a23860abc8567361895c52172d1b77bfa6345d"
+},
+{
+"names": [
+"TopologicalSpace.CubeBoundaryThree.vertex_mem_boundary"
+],
+"class": "keep",
+"lines": [
+135,
+137
+],
+"sha256": "ff52c21ea8999a6050a0b56d51ba8e9a9352b2b7eb5f66ce182f84fb1b08a9e7"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.edgeGeom"
+],
+"class": "keep",
+"lines": [
+138,
+140
+],
+"sha256": "f1a14ffbd88a1d4bfecd211fa651bbd7800199690d043805adfd13ee8254fb81"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.EdgeParam"
+],
+"class": "keep",
+"lines": [
+141,
+143
+],
+"sha256": "73ea81ae33788ebfe04d1d176f6a31d8c7060808dbdd6085bb28ec60b754d769"
+},
+{
+"names": [
+"TopologicalSpace.CubeBoundaryThree.edges"
+],
+"class": "keep",
+"lines": [
+144,
+146
+],
+"sha256": "48e2cef119bebc571178b58548fccd8f891ef805efab1737a4a7a63db2584cee"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.edge_mem_iff"
+],
+"class": "keep",
+"lines": [
+147,
+149
+],
+"sha256": "30d88561b5353720cfc65e00729542126fcdd2f814b7eabc9c5a1a6533cc9ea5"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.squareGeom"
+],
+"class": "keep",
+"lines": [
+150,
+153
+],
+"sha256": "9ed6c87272446497fd471e8b7c1622f9d786ee259beaf679d6b673a5d8c18651"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.squareOpenGeom"
+],
+"class": "keep",
+"lines": [
+154,
+157
+],
+"sha256": "0fe389b9c0289cd502454f85d0e6f8eedc4950f654bb43e11905e7c829123e17"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.SquareParam"
+],
+"class": "keep",
+"lines": [
+158,
+160
+],
+"sha256": "f3542d72cb06e2179c3bd08e4dac48271fc6b302a0ee31f1734c516950f33226"
+},
+{
+"names": [
+"TopologicalSpace.CubeBoundaryThree.squares"
+],
+"class": "keep",
+"lines": [
+161,
+163
+],
+"sha256": "16222febbd2daf68fbebec239feac243cd91a11f685e37748ad1445e13cdb7fa"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.coordinateLowerCorner"
+],
+"class": "keep",
+"lines": [
+164,
+166
+],
+"sha256": "3b3df8156a8d8278d1708e7db619f1dbb68009ab3252d5e10d3072cb89a6f854"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.coordinateNonconstant"
+],
+"class": "keep",
+"lines": [
+167,
+169
+],
+"sha256": "38fd2efac8eac31c318154b0ae17acc7d2ad48b1f6d29f5bb7543d33b55d4913"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.coordinateLowerCorner_unique"
+],
+"class": "keep",
+"lines": [
+170,
+174
+],
+"sha256": "bad5da7d56344f525e09e192e9d0c93b26ce9de43d60ef7b735f537e8e426909"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.edge_coordinate_formula"
+],
+"class": "keep",
+"lines": [
+175,
+181
+],
+"sha256": "b219849afddbb9cc29141f8bdbaae0e4c86d8573facb16fef9a060b20b14430b"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.edge_zero_mem"
+],
+"class": "keep",
+"lines": [
+182,
+185
+],
+"sha256": "6eff62b7564e30d9e9035b32ecb78fc160a88966cf2d9261c77c50d68d7cff4e"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.edge_parameter_extract"
+],
+"class": "keep",
+"lines": [
+186,
+192
+],
+"sha256": "6a3922a33641939ac5cd8d7ed6cb3eaa8e52c3be063f1be122e964e936aeab03"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.edge_initial_lowerCorner"
+],
+"class": "keep",
+"lines": [
+193,
+203
+],
+"sha256": "0f5efec49e5bda3e94ae8c59678a9cd766dab0561ec92ff2d0cec906b2455d69"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.square_coordinate_formula"
+],
+"class": "keep",
+"lines": [
+204,
+214
+],
+"sha256": "5a1d936964a789949a44a85dd8d8f0796e3c00f9cb48c4c4a362a2617900f816"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.square_zero_mem"
+],
+"class": "keep",
+"lines": [
+215,
+217
+],
+"sha256": "dfdd16e2db76e7f9d9c47bca3d85e94c3fa9234876eaee67efafd96b5f199c14"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.square_first_corner_mem"
+],
+"class": "keep",
+"lines": [
+218,
+222
+],
+"sha256": "130fb03c6600cf1538b84bb9e91369a5c1b8a87141c08783d6dad85aa66c1d88"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.square_second_corner_mem"
+],
+"class": "keep",
+"lines": [
+223,
+227
+],
+"sha256": "94c7ce1738856279a288df916e9e0451fa4bf553e095d00b40fb07aff1c4f77f"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.square_parameter_extract"
+],
+"class": "keep",
+"lines": [
+228,
+231
+],
+"sha256": "abb9047d5d2e2461bfd676771bc76a17115c0ac2530ba81b7709d9c05efdda26"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.square_initial_lowerCorner"
+],
+"class": "keep",
+"lines": [
+232,
+244
+],
+"sha256": "908ebf704fae62f622857a43df28e17b263cfb959502299a0518f4883a61229b"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.edge_coordinate_minima_attained"
+],
+"class": "keep",
+"lines": [
+245,
+248
+],
+"sha256": "52ff58bfd0a8ff48ca1b1aafb161b546bd30b124dcb2b1ffd6c3fd1632ff69be"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.square_coordinate_minima_attained"
+],
+"class": "keep",
+"lines": [
+249,
+252
+],
+"sha256": "02168d228723e848bdd532ebef8d03eeaf94a35d4f329e4ba678dd19dc94ab9a"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.edge_initial_eq_of_set_eq"
+],
+"class": "keep",
+"lines": [
+253,
+259
+],
+"sha256": "b053e45df80cfd966c32b5270767d08f439d6d92f32dc93ea8c6f8bdf6addb71"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.square_initial_eq_of_set_eq"
+],
+"class": "keep",
+"lines": [
+260,
+266
+],
+"sha256": "d0f1f13fca397bf73007f04a024468cd3a67a827a0ffb6dc98d5e7ab9993070c"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.edge_terminal_mem"
+],
+"class": "keep",
+"lines": [
+267,
+271
+],
+"sha256": "c8b29346888a576fbf58f71178034de29fe5f3c80f88fb695b536503c0ed23e4"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.edge_direction_eq_of_set_eq"
+],
+"class": "keep",
+"lines": [
+272,
+284
+],
+"sha256": "027727588de60764bc436d6634afabeadc539d47a14dfcbb8bed2baecbdf17fc"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.edge_presentation_unique"
+],
+"class": "keep",
+"lines": [
+285,
+292
+],
+"sha256": "c306c38c9ed8fd68e30de20d4297b8696a1c5ab96e5119dfa12b4ba8c0f346b8"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.edge_nonconstant_coordinates"
+],
+"class": "keep",
+"lines": [
+293,
+306
+],
+"sha256": "176421dd7755ebc45c6817d20323a45e0e6fcd70b1395d7735ea21ab2033df34"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.square_directions_mem_of_set_eq"
+],
+"class": "keep",
+"lines": [
+307,
+331
+],
+"sha256": "54cb7dfb3973eced7b12457c6dc1bd5b959b7c89b7f28f21e0b2161529c3c049"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.square_ordered_directions_eq"
+],
+"class": "keep",
+"lines": [
+332,
+335
+],
+"sha256": "260878a0586c505b3af96e2a2be40c61d5cf21e4f42edfec2f0be07f94f0bda1"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.square_presentation_unique"
+],
+"class": "keep",
+"lines": [
+336,
+343
+],
+"sha256": "0b318cd5dea366007941b7f85a7229fb10dcb47741085ef45fa6cc2745be9f85"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.square_nonconstant_coordinates"
+],
+"class": "keep",
+"lines": [
+344,
+364
+],
+"sha256": "7a975f3de0421bb0a94e470efdc3b1b325f846b55434ee3258dba75a3cda8818"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.coordinate_variation_of_set_eq"
+],
+"class": "keep",
+"lines": [
+365,
+367
+],
+"sha256": "b0f97a0aa180b8364e2ffb355eb58933c06ba454f525c9ab81f1c5207d87d2d7"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.coordinate_constant_value_transport"
+],
+"class": "keep",
+"lines": [
+368,
+370
+],
+"sha256": "65b6cb5593a8deeb8a20e5482be1cc7a0fa112abdc71391bb2740fe9c2e64513"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.increasing_pair_eq_of_direction_set_eq"
+],
+"class": "keep",
+"lines": [
+371,
+378
+],
+"sha256": "8c2d67b1ec2f348a5522cd288af4f6ccac1a7bf16e094e6a32ad4b93c7f21346"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.edge_endpoints_coherent"
+],
+"class": "keep",
+"lines": [
+379,
+383
+],
+"sha256": "20197d3430989345db311ff517c949f42ecd1fa04c55c136198e8e7a1e8ea0a8"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.edge_endpoints_distinct"
+],
+"class": "keep",
+"lines": [
+384,
+394
+],
+"sha256": "af5a82f17f482b65d0051536d79e5be59f5d9fa3b3bb5782bfcfbde36dd04b5b"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.square_relInterior_coherent_raw"
+],
+"class": "keep",
+"lines": [
+395,
+403
+],
+"sha256": "a5f58595e7c4090438f099b3fcebeba6b0ae08f15b22179690841ef38367d9d4"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.square_remaining_index"
+],
+"class": "keep",
+"lines": [
+404,
+417
+],
+"sha256": "03fcd8e4d6acc629207609c0e6221547ce4dc0cbc5435bb6da799ca28363d529"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.square_remaining_index_cases"
+],
+"class": "keep",
+"lines": [
+418,
+436
+],
+"sha256": "dbca2ee2ac5815ebe250c10bc597bff25b2f47d1605c3c334435d91677158a69"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.square_remaining_coordinate"
+],
+"class": "keep",
+"lines": [
+437,
+441
+],
+"sha256": "ad1928f5e76f6b5cac1bdf2457cfb4717e41b25d793c4765585788401efa44fb"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.square_remaining_intrinsic"
+],
+"class": "keep",
+"lines": [
+442,
+454
+],
+"sha256": "ce9a63deeb68ba8c3a763ad64039cabb3ec4332dc854bdc760acd1d1dc52553d"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.squareMidpoint"
+],
+"class": "keep",
+"lines": [
+455,
+457
+],
+"sha256": "76b6375b2ca27523fb57224e931b2c348d73dcfa7e3698d4c883009b5f2cbb10"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.square_midpoint_bounds"
+],
+"class": "keep",
+"lines": [
+458,
+492
+],
+"sha256": "ae69ee70db37909e204fc83e317b51afde2eebec7fa0127016693dae37014aa4"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.boundary_maxAbs_eq"
+],
+"class": "keep",
+"lines": [
+493,
+494
+],
+"sha256": "8e09d38afe41336ecfa2b126baed9ec1c78a4b0d1319015738db2d2b0fc3ab8a"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.remaining_abs_of_maxAbs"
+],
+"class": "keep",
+"lines": [
+495,
+511
+],
+"sha256": "006d34d3e6a7b82b7dd56a0a78dbe77f096a8a56dc532225ed5dcaa1827fb418"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.square_midpoint_remaining_abs"
+],
+"class": "keep",
+"lines": [
+512,
+526
+],
+"sha256": "772353cda75a47983000325ee9a6b463e4286ddebaffc03bd6eabe72a2766a44"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.face_membership_from_sign"
+],
+"class": "keep",
+"lines": [
+527,
+529
+],
+"sha256": "ddbafbb5208ebf45674312fb247931462072b3c14f2c5c2c7af15c383ac74f38"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.square_face_sign_and_containment"
+],
+"class": "keep",
+"lines": [
+530,
+542
+],
+"sha256": "afc4980d9d949b480f013220b93a7fa2b574a4c82b0d4012165d0bd11e38da3a"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.face_sign_eq_of_mem"
+],
+"class": "keep",
+"lines": [
+543,
+547
+],
+"sha256": "6a51cbed79572d6652dc8ef2a0b38e44912f99ea6a946b613ceb83012810ecf3"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.square_intrinsic_face"
+],
+"class": "keep",
+"lines": [
+548,
+573
+],
+"sha256": "652da378de2609c26ff6adc249e4b782e91aaf80438511e59f9a1db0965fa967"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.zero_mesh_images"
+],
+"class": "keep",
+"lines": [
+574,
+592
+],
+"sha256": "80e4f107ba393b960ef5e96dd8d369b1b70d1a5c3aaa2876a613f3e6566408c2"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.zero_mesh_edge_nonunique"
+],
+"class": "keep",
+"lines": [
+593,
+595
+],
+"sha256": "fa52a0554f0d0f9c3cd1b97f4888ab2b4482876aed01fbf3dd6abb6e0bdd68cf"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.zero_mesh_square_nonunique"
+],
+"class": "keep",
+"lines": [
+596,
+600
+],
+"sha256": "fa41998976583b5dd22895d1ecf821be5fbd48c6c5dcf5ed95d0971ab273bf9b"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.square_parameter_swap"
+],
+"class": "keep",
+"lines": [
+601,
+612
+],
+"sha256": "868bc31ecf44e58251ea7d1e078013a1102d67901f66f2b6a30c8e6e9818388e"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.swapped_ordered_pair_ne"
+],
+"class": "keep",
+"lines": [
+613,
+616
+],
+"sha256": "e0d646fcc17da6796543d98618f8c5bc4e96600124ceee47c354c9bc9e281102"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.square_order_suffices"
+],
+"class": "keep",
+"lines": [
+617,
+621
+],
+"sha256": "fac7b069b1a27e43745edc92e614e130bedcb13a34be605654a005dcbe106206"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.square_unit_mesh_endpoint_case"
+],
+"class": "keep",
+"lines": [
+622,
+643
+],
+"sha256": "bed8fe5b566b4666b29026530277cb8621d982b590e9646b2a002a0b1efe4872"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.shared_edge_presentation_identity"
+],
+"class": "keep",
+"lines": [
+644,
+649
+],
+"sha256": "468d6d9e1f1ca56748f330b6e8b6520b4e7697bf5ec68bce7173bf9bc108c0cf"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.squareRelInteriorRaw"
+],
+"class": "keep",
+"lines": [
+650,
+653
+],
+"sha256": "83eb1f8f0337283891be3c8f3875e7ba7a74d5b39afd2edbeaea18a0157e8360"
+},
+{
+"names": [
+"TopologicalSpace.CubeBoundaryThree.squareRelInterior"
+],
+"class": "keep",
+"lines": [
+654,
+655
+],
+"sha256": "4ce1ad77c64ea99f19e0bfd7a5741bc01dab1345273330560ea619117b0d6fda"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.square_relInterior_coherent"
+],
+"class": "keep",
+"lines": [
+656,
+666
+],
+"sha256": "1cf9af4953a1ec5819335977afa2be04b4b07ab113c2bf4a00e161d19fe16d9a"
+},
+{
+"names": [
+"TopologicalSpace.CubeBoundaryThree.square_presentation"
+],
+"class": "keep",
+"lines": [
+667,
+680
+],
+"sha256": "d13e392b382649a8de6a2a92137128faf6ae75053995880672ff60d795b89a18"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.edgeEndpointsRaw"
+],
+"class": "keep",
+"lines": [
+681,
+683
+],
+"sha256": "4304c65731d4754283539a4aeb3498bdfaf272f3a68f6e15070f9078217caf9a"
+},
+{
+"names": [
+"TopologicalSpace.CubeBoundaryThree.edgeEndpoints"
+],
+"class": "keep",
+"lines": [
+684,
+685
+],
+"sha256": "c02b75428c13c9dbee5a45531af1f35e48468c63746286316b435ce8ab2b5019"
+},
+{
+"names": [
+"TopologicalSpace.CubeBoundaryThree.edge_presentation"
+],
+"class": "keep",
+"lines": [
+686,
+698
+],
+"sha256": "34325e882b16d373ff00a32616bf3f0d4f13d669a0d03c45ade79d79f8011f89"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.finite_Ambient_coordinate_bridge"
+],
+"class": "keep",
+"lines": [
+701,
+712
+],
+"sha256": "8b2bb980685a27abc09c06d04422c0d999ce2b2086372cb24063e728c5da1638"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.finite_vertex_product"
+],
+"class": "keep",
+"lines": [
+713,
+716
+],
+"sha256": "86e94b0f52476c7ef1273323ca86a86c7f8fda81be34ffe005f56d349abe384f"
+},
+{
+"names": [
+"TopologicalSpace.CubeBoundaryThree.finite_vertices"
+],
+"class": "keep",
+"lines": [
+717,
+721
+],
+"sha256": "2f42acb57fdc6e82eed4fd04af35b189b91ff51cc11d22f3578ee4411a020b80"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.edgeParamSet"
+],
+"class": "keep",
+"lines": [
+722,
+723
+],
+"sha256": "e14ced1f66140736a73c588edfddb37ca55599b71447264a571c513fdee4bc33"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.finite_edge_parameters"
+],
+"class": "keep",
+"lines": [
+724,
+728
+],
+"sha256": "b9f6268834e18f31d7f334e960a60905fa18232a721dba43b7712f42d3b70820"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.edges_eq_image"
+],
+"class": "keep",
+"lines": [
+729,
+735
+],
+"sha256": "77f4f5342bda6e23dc8af2a8d97aba095cbf812c052562ea1a46a40bff0fb22c"
+},
+{
+"names": [
+"TopologicalSpace.CubeBoundaryThree.finite_edges"
+],
+"class": "keep",
+"lines": [
+736,
+739
+],
+"sha256": "053c1b6f077653f1dda3324b7855b8dd94a8d9d2bc87ff03d9254064569927ad"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.squareParamSet"
+],
+"class": "keep",
+"lines": [
+740,
+741
+],
+"sha256": "346eab2e906a7b99e39931120286b40fbc8612401120ab629ad773db6dc03fda"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.finite_square_parameters"
+],
+"class": "keep",
+"lines": [
+742,
+746
+],
+"sha256": "50cb661e7a9c7c5425f54fe75645d4fb821ec875394bf85d6b187956ed0b5f39"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.squares_eq_image"
+],
+"class": "keep",
+"lines": [
+747,
+753
+],
+"sha256": "90f6ec813ea536faf703b1fea9430cd54e95d33ee4517a2a7168b69028ebf632"
+},
+{
+"names": [
+"TopologicalSpace.CubeBoundaryThree.finite_squares"
+],
+"class": "keep",
+"lines": [
+754,
+757
+],
+"sha256": "99dac4255bf95f761658ea257e233578f69fccc3cd916990ca165ddf67ae97a9"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.edge_terminal_is_vertex"
+],
+"class": "keep",
+"lines": [
+758,
+768
+],
+"sha256": "8d979d2f90c3e57e2e8614541d55ab098d9441b7bbe13ae6328e6982672c74c1"
+},
+{
+"names": [
+"TopologicalSpace.CubeBoundaryThree.edge_endpoints_vertices"
+],
+"class": "keep",
+"lines": [
+769,
+778
+],
+"sha256": "17eb52d1618664773d2ef2ec367acd545175c8edf2dbcc6d9c1bd0fb395a2b73"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.edge_saturated_coordinate_suffices"
+],
+"class": "keep",
+"lines": [
+784,
+806
+],
+"sha256": "7c43eefc62b2106363ef6b4f486b5c1eb5ccd112b5be46e0bbc5bee6a126c803"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.edge_no_other_saturated_forces_moving_neg_one"
+],
+"class": "keep",
+"lines": [
+808,
+830
+],
+"sha256": "e413b42a5fcf83f0cfbf0ff8089097784b99722c18c8aa1d343e365645762ba4"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.edgeMidpoint"
+],
+"class": "keep",
+"lines": [
+832,
+834
+],
+"sha256": "8a89bd070b073a9e28236ff71b9293bab0c0f2662a5410852a0e03776e6ca75d"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.edgeMidpoint_mem"
+],
+"class": "keep",
+"lines": [
+836,
+842
+],
+"sha256": "1fd28168c3eb4e0500c01e16d0551811458c5e05aee0c8493290cb8f80fafda6"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.edge_midpoint_all_abs_lt"
+],
+"class": "keep",
+"lines": [
+844,
+857
+],
+"sha256": "a0870492970dca912e62a0ba25e4d88e0129d414119bb7ee5d9b388999bd9099"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.all_abs_lt_not_boundary"
+],
+"class": "keep",
+"lines": [
+859,
+865
+],
+"sha256": "2f2f8060f6c2a8266abf3aed17070c17afd0d3ceadf49b1c381965d50bcf0850"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.edge_subset_boundary_iff"
+],
+"class": "keep",
+"lines": [
+867,
+885
+],
+"sha256": "d933bf9bd26336795bc48d8b42b1365b803cf5f2b3cdb2afcd52d2a3f12c9813"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.square_saturated_remaining_suffices"
+],
+"class": "keep",
+"lines": [
+887,
+916
+],
+"sha256": "7a57489c05465dbd1ac01fddda16e4dbdda6fbd27715746841bf6a762a48066a"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.squareParamOfContainment"
+],
+"class": "keep",
+"lines": [
+918,
+922
+],
+"sha256": "3f44540695b920c5a5231e8a1e9364829cf7d33fe900358009abb3cf3fda7b6e"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.square_containment_forces_remaining_abs"
+],
+"class": "keep",
+"lines": [
+924,
+931
+],
+"sha256": "20776f4c19dac691f53844512f07309ecfe24764995f395ad0d9c7ddc6c64f33"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.square_subset_boundary_iff"
+],
+"class": "keep",
+"lines": [
+933,
+940
+],
+"sha256": "43943f738969666b905071c77c51e48243909e03c8f9119f91dd14f0c221557f"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.closedParameter"
+],
+"class": "keep",
+"lines": [
+942,
+944
+],
+"sha256": "ebc43fa7a192bfa84197f6d77ab6c95083ccdba74b8ce47610255975a94464f0"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.closedParameter_mem_Icc"
+],
+"class": "keep",
+"lines": [
+946,
+952
+],
+"sha256": "3ab8130afaf6bdfd9cf30c60681ad30e184a17afcc7b713644390ceac1e66e83"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.closedParameter_reconstruct"
+],
+"class": "keep",
+"lines": [
+954,
+958
+],
+"sha256": "89ae5dc0f77047ef82039179fa11ef09fc7eb1eff9e2460d9334e8a41a6485cc"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.Ambient_ext_of_three"
+],
+"class": "keep",
+"lines": [
+960,
+968
+],
+"sha256": "a50020b683f9510558d06be5762d98f5fe38ec65e2f968a2b5d9ecbbd41f8180"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.square_indices_exhaust"
+],
+"class": "keep",
+"lines": [
+970,
+975
+],
+"sha256": "8fac68dbf0901f49896498b3ab3720b80d8ce5de947122483d4d3d0d3f140945"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.square_closed_coordinate_rectangle"
+],
+"class": "keep",
+"lines": [
+977,
+1004
+],
+"sha256": "ce6cbe30f48c138f516af56522ee332633997e3ee379416ca376de763017f783"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.openParameter"
+],
+"class": "keep",
+"lines": [
+1006,
+1008
+],
+"sha256": "ff4e4ac7ebffc43da9347c0d7119271cd2e8073836f23e4208f74f1e7fc46c77"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.openParameter_mem_Ioo"
+],
+"class": "keep",
+"lines": [
+1010,
+1016
+],
+"sha256": "b7ac439ad472143c3573797631982bc29afb8fc9944ca1c7fbe43939430204be"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.openParameter_reconstruct"
+],
+"class": "keep",
+"lines": [
+1018,
+1022
+],
+"sha256": "6a55d1ec78f62ce42d0eccd5808ce0921837ded5761d34cea5154ccccb86bc7f"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.square_open_coordinate_rectangle"
+],
+"class": "keep",
+"lines": [
+1024,
+1050
+],
+"sha256": "e49634f4d79084c0eaa35c20fb1582a3c33b384c1282e77511d025651f764dee"
+},
+{
+"names": [
+"TopologicalSpace.CubeBoundaryThree.square_coordinate_description"
+],
+"class": "keep",
+"lines": [
+1052,
+1074
+],
+"sha256": "0fe0de1b57af8ad3cb6625efeee05b2f06b0836766d88da07111834df1765756"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.normalizedFloorInput"
+],
+"class": "keep",
+"lines": [
+1076,
+1077
+],
+"sha256": "5a649e5e758bea4d349d9f6566f97e22e82d361d832766f9c8f8ee14a27c9841"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.unclippedFloorIndex"
+],
+"class": "keep",
+"lines": [
+1078,
+1079
+],
+"sha256": "bde2c3ff63cafd34eb4ff328be4b278c14154e3d0b81d000d88f8f28ac6309a8"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.clippedFloorIndex"
+],
+"class": "keep",
+"lines": [
+1080,
+1082
+],
+"sha256": "01e8d66fcb7c8c9f2337eae082c9c1d43a509047b4be5706119fb1b194886ce5"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.latticeLowerEndpoint"
+],
+"class": "keep",
+"lines": [
+1083,
+1085
+],
+"sha256": "622ad43967bd3c88c22769e9cffbb759fe80d7d17efdb0e1de2de3722a44d957"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.floor_real_bounds"
+],
+"class": "keep",
+"lines": [
+1087,
+1090
+],
+"sha256": "0a1e753375c4512679131032c173d32581c785127af22d972409ee295453552c"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.cast_int_nat_sub_one"
+],
+"class": "keep",
+"lines": [
+1092,
+1096
+],
+"sha256": "de570a718a642f229d0961ad33b70319e5564e69cbe52b0e1b25ab37b7f268f1"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.int_nat_sub_one_nonneg"
+],
+"class": "keep",
+"lines": [
+1098,
+1100
+],
+"sha256": "6a54bf27e9da6d2a59cabfbcb2a4aa0120ba8dfdab8ac13d92b06eef22418921"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.int_floor_top_split"
+],
+"class": "keep",
+"lines": [
+1102,
+1104
+],
+"sha256": "99a4f54560227fc20d12b4c23720c4606cafbe51ddc4d6e2fae88083050574de"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.scale_floor_inequalities"
+],
+"class": "keep",
+"lines": [
+1106,
+1114
+],
+"sha256": "9b501278b0b324892a9494d84b86355cad558b3295ae3f3ce685fd260a9193eb"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.top_endpoint_cast_algebra"
+],
+"class": "keep",
+"lines": [
+1116,
+1121
+],
+"sha256": "cb5447b6af44fc08eaea97b7d10e231436cb9a06c6aa149f42e26f61232e3843"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.normalizedFloorInput_bounds"
+],
+"class": "keep",
+"lines": [
+1123,
+1131
+],
+"sha256": "39272b29c3a7dc290b3b1d0c97e2cf6157b6575f36476087488b80ea403c9a33"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.unclippedFloorIndex_bounds"
+],
+"class": "keep",
+"lines": [
+1133,
+1142
+],
+"sha256": "2c396868430aa70c1ce5e55109c5e0ac4c38e6904b0960ba61d68beaf3ab57e6"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.clippedFloorIndex_eq_floor"
+],
+"class": "keep",
+"lines": [
+1144,
+1148
+],
+"sha256": "91ee630519e017e9c97cafb346a2a1e240d7d786a16704c28739068ccc3c9ec4"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.clippedFloorIndex_eq_top"
+],
+"class": "keep",
+"lines": [
+1150,
+1154
+],
+"sha256": "8d084c4b6c21ba1178bb95ab2eae8d2ace696491de11ad50647a0955c215c713"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.clippedFloorIndex_bounds"
+],
+"class": "keep",
+"lines": [
+1156,
+1161
+],
+"sha256": "c95fd150a4db3788ef6a8c2a279f2b5aa9dcf0301308c2de42f26a331c1db829"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.latticeLowerEndpoint_data"
+],
+"class": "keep",
+"lines": [
+1163,
+1179
+],
+"sha256": "f061938964264981fefb6d9a7992cd10c83b975889ea53b88e924eeac335d58a"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.ordinary_floor_enclosure"
+],
+"class": "keep",
+"lines": [
+1181,
+1191
+],
+"sha256": "6046261f0d7645217254b40ead1a6bc599f144116298dbd7e1acaf63148e5884"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.top_floor_case"
+],
+"class": "keep",
+"lines": [
+1193,
+1212
+],
+"sha256": "9e0579397b5a408a1e6c0107887e0b3123670fcb1f93d3ca81af168205f6c2c4"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.clipped_floor_enclosure"
+],
+"class": "keep",
+"lines": [
+1214,
+1224
+],
+"sha256": "ac5f5ae8600497157bd73f02f2cab565662362cebadd2d65414491dd53a1ec06"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.other_two_ordered"
+],
+"class": "keep",
+"lines": [
+1226,
+1233
+],
+"sha256": "32da96493b048480f383c6371e0da30fcbde1c1e15fd1865fbe3f2c787eabb2e"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.complementary_directions_ne"
+],
+"class": "keep",
+"lines": [
+1235,
+1243
+],
+"sha256": "f3a749c13e12c81740319defdde3fab04acd89f1430c3f5ee66f359484a6c90f"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.ambientOfThreeCoordinates"
+],
+"class": "keep",
+"lines": [
+1245,
+1248
+],
+"sha256": "9845247c9a24bb39f497ea0d3b603e6fc08fcf54669a63fe40d91fe1c64ce3be"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.ambientOfThreeCoordinates_apply_i"
+],
+"class": "keep",
+"lines": [
+1250,
+1252
+],
+"sha256": "efce1aaa9c21fc374951e1a95180cdaef94580768741158e4d6ef208ff5a13d7"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.ambientOfThreeCoordinates_apply_j"
+],
+"class": "keep",
+"lines": [
+1253,
+1255
+],
+"sha256": "8a61c8ebf0367eddc71838dea07d84ddd97280ade92041ce97b84336f94a3d42"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.ambientOfThreeCoordinates_apply_k"
+],
+"class": "keep",
+"lines": [
+1256,
+1259
+],
+"sha256": "978d5a105b18f46ed6dd7d979f95c533e3149ea6bd90ff08f5937a5e5ebe5413"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.coverageVertex"
+],
+"class": "keep",
+"lines": [
+1261,
+1264
+],
+"sha256": "bed136f1555a1a84bb6051bdab4cfe92171be11a982be6451e344778d78779dd"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.coverageVertex_apply_i"
+],
+"class": "keep",
+"lines": [
+1266,
+1269
+],
+"sha256": "95987792dd6f017354c8836eda9f6c20a9a69f829fd870dc7be193849d1b40ea"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.coverageVertex_apply_j"
+],
+"class": "keep",
+"lines": [
+1271,
+1275
+],
+"sha256": "c82b455eb8f5e500d56aca18d72c9ad50985bd040f051307408355eb43667873"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.coverageVertex_apply_k"
+],
+"class": "keep",
+"lines": [
+1277,
+1281
+],
+"sha256": "7c76c6ad7ae73262b788d85c21db54ca4f4256a0da2c43f9a72706691fa2c8ad"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.boundary_face_coordinate_data"
+],
+"class": "keep",
+"lines": [
+1283,
+1292
+],
+"sha256": "806497b4f82ae8230084a28b55201198e9cecb9843973ef97cba35b4544e4cd4"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.face_coordinate_mem_lattice"
+],
+"class": "keep",
+"lines": [
+1294,
+1301
+],
+"sha256": "f8b58268618b854cd1b033ee2f8b074019d8c5032abd30ff10dd30b8bd61596c"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.coverageVertex_all_lattice"
+],
+"class": "keep",
+"lines": [
+1303,
+1319
+],
+"sha256": "9e5467dcc9ba3a5d7169a738a3ee6f82f4f22cf19cea654b9baadb2cc026ede6"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.coverageVertex_boundary"
+],
+"class": "keep",
+"lines": [
+1321,
+1336
+],
+"sha256": "0140ccd7c1b2d70f5a76fe395f3056e3ba0198b4029fe2a14c826b11a324df41"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.coverageVertex_mem_vertices"
+],
+"class": "keep",
+"lines": [
+1338,
+1342
+],
+"sha256": "da8b8d6a37f80f0c70a3e75fc84d098356c1dd0c0e05e8b403e03e5fd87614e3"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.coverageVertex_direction_bounds"
+],
+"class": "keep",
+"lines": [
+1344,
+1351
+],
+"sha256": "48bb885f6449f3d22f3c3fdc742facdf52be0377a5cdaaa01f8e0412a5d015a9"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.coverageSquareParam"
+],
+"class": "keep",
+"lines": [
+1353,
+1364
+],
+"sha256": "60bbf59956687f1a52dec91abfb5aca8cba3e54fb364ede414be600beba906f5"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.coverageSquare_mem_squares"
+],
+"class": "keep",
+"lines": [
+1366,
+1370
+],
+"sha256": "8ba959af33854786220b7215b66d622cc8d3aafe691faf9c7d74c9a5cc45c651"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.point_mem_coverageSquare"
+],
+"class": "keep",
+"lines": [
+1372,
+1385
+],
+"sha256": "86b963b2f09b382f80cd24e00a936a443564fe935eef6c5b2ed54bb8b2d9423d"
+},
+{
+"names": [
+"TopologicalSpace.CubeBoundaryThree.exists_square_mem"
+],
+"class": "keep",
+"lines": [
+1387,
+1406
+],
+"sha256": "b33f672dc12ced5cec5ff74789c2170f841fc4aafe1729e5171bec9073badb81"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.open_mesh_coordinate_abs_lt"
+],
+"class": "keep",
+"lines": [
+1414,
+1423
+],
+"sha256": "4c555f3c4801fb62e5305bfd72d6163fe9a75f7f9411873dde803e25bfd2bc17"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.ordered_pair_eq_of_same_remaining"
+],
+"class": "keep",
+"lines": [
+1425,
+1429
+],
+"sha256": "df772b2495871123dabe0333b083d67b91e96bf5d255a5741f4f9d00de6dcfb0"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.common_open_point_fixed_index_eq"
+],
+"class": "keep",
+"lines": [
+1431,
+1441
+],
+"sha256": "049e7e8ec43e187475d117509bcd4a03a320e3226b301567e813ceb33c581685"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.lattice_open_intervals_overlap_eq"
+],
+"class": "keep",
+"lines": [
+1443,
+1454
+],
+"sha256": "c044b657bb73f8cd6bb6a35ba6ad6d02038bdfa65c1ec18088fc229879d51898"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.square_lower_vertices_eq_of_common_open"
+],
+"class": "keep",
+"lines": [
+1456,
+1470
+],
+"sha256": "b672c0f424972904dd2ce062a2757fd97acabdf87cfbaa0f239e70e52217a894"
+},
+{
+"names": [
+"TopologicalSpace.CubeBoundaryThree.square_eq_of_relInterior_inter_nonempty"
+],
+"class": "keep",
+"lines": [
+1472,
+1498
+],
+"sha256": "44dc1c15f5d246f2d578625f00332a7078204d61fc8210d821b5099b53757a79"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.closed_not_open_endpoint"
+],
+"class": "keep",
+"lines": [
+1500,
+1507
+],
+"sha256": "15e3a1a1e5571fd30598e9f766131f02a7e02abbc37815dc9b2d0534d1022d71"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.square_boundary_parameter_case"
+],
+"class": "keep",
+"lines": [
+1509,
+1533
+],
+"sha256": "fe12ed5f2a9b4c1cdb1e6346458b5825ac0d0ecd2e26905f70da2fef8e856070"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.shiftedVertexJ"
+],
+"class": "keep",
+"lines": [
+1535,
+1537
+],
+"sha256": "4aefb533e4227fd4a96841c5a260612b3f455d4ad4f4467f551a3756195f84cd"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.shiftedVertexK"
+],
+"class": "keep",
+"lines": [
+1538,
+1540
+],
+"sha256": "89868971c44bf3b4b2c24b6335d90fa299184d88a766bf32846da98219293e14"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.shiftedVertexJ_apply_same"
+],
+"class": "keep",
+"lines": [
+1542,
+1544
+],
+"sha256": "3f18c54218d762fc77dc568664d02a0ba53d1f05aeaa93646231d27da228b581"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.shiftedVertexJ_apply_ne"
+],
+"class": "keep",
+"lines": [
+1545,
+1547
+],
+"sha256": "e80aa7153edc3c6f8f00e4aff46aea19dab0f2e7cdd06e7cea43b43420b429be"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.shiftedVertexK_apply_same"
+],
+"class": "keep",
+"lines": [
+1548,
+1550
+],
+"sha256": "f851373ea10e41fcf04c89caf52b98a956f3cddfae250de22ba7633271f3750f"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.shiftedVertexK_apply_ne"
+],
+"class": "keep",
+"lines": [
+1551,
+1553
+],
+"sha256": "c298ae9038ff515110dfafb3cf1deab90276184cce53fbecdc86583b49a55924"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.shifted_corner_commutes"
+],
+"class": "keep",
+"lines": [
+1555,
+1560
+],
+"sha256": "0be36c2b2480e03666cd173f774dc50207c8368b7ae44e75b2b58ca81ec6e3bb"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.bottomJ_lineMap_embedding"
+],
+"class": "keep",
+"lines": [
+1562,
+1573
+],
+"sha256": "7696b8055ef55b2696276ea0cc13c6c44f3071ed1c911122d58963006f6ff3c8"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.bottomK_lineMap_embedding"
+],
+"class": "keep",
+"lines": [
+1575,
+1586
+],
+"sha256": "46dec99c6dd8812c08f9fea48b78358c4f735184d8b56d7794afdbc1c86cf0cc"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.topJ_lineMap_embedding"
+],
+"class": "keep",
+"lines": [
+1588,
+1602
+],
+"sha256": "2e6fff93fd6dcb34d8640509b3a7720ef247ef5961a1d51634c8c8e3bef297c3"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.topK_lineMap_embedding"
+],
+"class": "keep",
+"lines": [
+1604,
+1618
+],
+"sha256": "7740bf8337a5cd17c93b2971fe13d0a55858d8409478374281adab0b59fae2de"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.bottomJ_segment_extract"
+],
+"class": "keep",
+"lines": [
+1620,
+1628
+],
+"sha256": "4de634fea341c06d212ffda6eea60d8406197198fa528a45e23ce91625adb2b1"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.bottomK_segment_extract"
+],
+"class": "keep",
+"lines": [
+1630,
+1638
+],
+"sha256": "34bdb37e8d00ec6673f10e217cb64368eba96a0a8fec2775e5438169383b2437"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.topJ_segment_extract"
+],
+"class": "keep",
+"lines": [
+1640,
+1649
+],
+"sha256": "21cc212095919210fd073b655ddd249c338c3c4ead0c21d0e0dad0f73d0eecad"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.topK_segment_extract"
+],
+"class": "keep",
+"lines": [
+1651,
+1660
+],
+"sha256": "2a65cc3eeb13fff02ed50239227342196efc6f88b5d27c2591ec3eef14892641"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.bottomJ_edge_constructor"
+],
+"class": "keep",
+"lines": [
+1662,
+1667
+],
+"sha256": "4e80e7a40b9c09d2d28ebda658d0f4b3ab05a54eb867a317ef94da26145af62f"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.bottomK_edge_constructor"
+],
+"class": "keep",
+"lines": [
+1669,
+1674
+],
+"sha256": "a0bce52968dbf18184cff1d969d515d87d9b3d132d627d682c40ff0a6ab9289b"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.topJ_edge_constructor"
+],
+"class": "keep",
+"lines": [
+1676,
+1684
+],
+"sha256": "ef8e557d497dfa894bfa763c75af6498824d53f99e5e743b80cad475138c5811"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.topK_edge_constructor"
+],
+"class": "keep",
+"lines": [
+1686,
+1694
+],
+"sha256": "57ee2d4a1e42a7e89730f780cd48aa64a69d6e54463fdb3c0650b0e4e538446b"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.bottom_square_edges_valid"
+],
+"class": "keep",
+"lines": [
+1696,
+1711
+],
+"sha256": "54fbbd2f766ed9b2d7b383c37f1945c8417069b85339cb40249fb8346493fb21"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.shifted_square_vertices_valid"
+],
+"class": "keep",
+"lines": [
+1713,
+1746
+],
+"sha256": "95d682ec758a5415c158d8f7cb104823b6642287b861d89b20476c9313f2eb3b"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.top_square_edges_valid"
+],
+"class": "keep",
+"lines": [
+1748,
+1767
+],
+"sha256": "d65d8cc67b0d5cf88ec7db1ad3bafc43ebd848d3573e3c747d9226fa817ee56e"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.square_boundary_mem_four_segments"
+],
+"class": "keep",
+"lines": [
+1769,
+1798
+],
+"sha256": "6bbfe79fea45523c2546196dc1d2767487e36f07f0dbdb18ed105c5de840f348"
+},
+{
+"names": [
+"TopologicalSpace.CubeBoundaryThree.square_boundary_edges"
+],
+"class": "keep",
+"lines": [
+1800,
+1827
+],
+"sha256": "1236b4c125e80a6984a9565e768ecd8f1651acdb5dc137ff21b95f0d9f83eb93"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.vertex_coordinate_mem_lattice"
+],
+"class": "move",
+"lines": [
+1829,
+1833
+],
+"sha256": "2a954746a4f82c8ca2bf601553e17c35c04202cc7d5bcb7e5bd06fef73c548d7"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.exists_ne_coordinate"
+],
+"class": "move",
+"lines": [
+1835,
+1841
+],
+"sha256": "8c2f86bda037e9ee0913e0e5347bf43db220dcfb8d5f7d34e2ab5241d3a5442d"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.vertex_coordinate_separation"
+],
+"class": "move",
+"lines": [
+1843,
+1849
+],
+"sha256": "912804cca928750a4380a7d5a1b63b66f40721326f87453f98bf2b934fd0759c"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.abs_apply_le_maxAbs"
+],
+"class": "move",
+"lines": [
+1851,
+1854
+],
+"sha256": "fcc9a7feb535137a078014861353114d76196c3c7b2e15728eca36125e9291b2"
+},
+{
+"names": [
+"TopologicalSpace.CubeBoundaryThree.vertex_separation"
+],
+"class": "move",
+"lines": [
+1856,
+1866
+],
+"sha256": "7cd75539f4ab6a797c74f353074c8cea4e6e53d8335e2e69b4394e3c9cb9011e"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.SignedCoordinateUnit"
+],
+"class": "move",
+"lines": [
+1868,
+1871
+],
+"sha256": "9ed2ccc6e148db3eb7a14508eeac04d6ccb58969ee84ea31ae01171c8d52f79e"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.edge_orientation_from_endpoint"
+],
+"class": "move",
+"lines": [
+1873,
+1918
+],
+"sha256": "f101940d203f0313a03c8fb88398e8d5b85de501d2e606bfbe332c9c2151d4b5"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.distinct_edge_orientations"
+],
+"class": "move",
+"lines": [
+1920,
+1928
+],
+"sha256": "a5dcdaa562e3337ee804d3a7f818a1c5c52159053764fcdb5e3c81967e16eb9c"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.signedCoordinateUnit_norm"
+],
+"class": "move",
+"lines": [
+1930,
+1933
+],
+"sha256": "165e63580531842166ebb24c91d0a8d37ab71a3f604894582448efd572ff7836"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.signedCoordinateUnit_inner_nonpos"
+],
+"class": "move",
+"lines": [
+1935,
+1948
+],
+"sha256": "e99fe310e7b33361c7b00b609487cc3c118b25eebba13cd17d1c310a32069fb5"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.oriented_distance_le"
+],
+"class": "move",
+"lines": [
+1950,
+1972
+],
+"sha256": "41b13d949cd792ace306a455ab720b95ce07f9047f7368fdab745cf2d37f63c6"
+},
+{
+"names": [
+"TopologicalSpace.CubeBoundaryThree.edge_common_endpoint_geometry"
+],
+"class": "move",
+"lines": [
+1974,
+2043
+],
+"sha256": "d1ef15a2937b0791e29e23cd33e7c7690c96555e666cc08aa606d13865afe70b"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.fixed_coordinate_dichotomy"
+],
+"class": "move",
+"lines": [
+2046,
+2055
+],
+"sha256": "1f1ebb41064deba524e9c380bbe5462557bdb5aa1432c74fe66aa931ca90a5c3"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.edge_fixed_coordinate"
+],
+"class": "move",
+"lines": [
+2057,
+2062
+],
+"sha256": "16339945cd2139ccf7c5a64aafde026675ee2f15767b93ebf11514070cda63e0"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.parallel_fixed_coordinate_separation"
+],
+"class": "move",
+"lines": [
+2064,
+2077
+],
+"sha256": "cc5fc7d80b9d4aedd74d506c32d45e850e4a20d0706993654b8d1f4618c1a846"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.same_line_moving_coordinate_ne"
+],
+"class": "move",
+"lines": [
+2079,
+2093
+],
+"sha256": "224aaa99a2a39a28c26d3d3d70e5b9803217f930c7fa10be7d9b416e42e983a3"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.moving_coordinate_order"
+],
+"class": "move",
+"lines": [
+2095,
+2099
+],
+"sha256": "dd7b3555edb386cb3eb5e69058a871cd9568ef7d4882ef2d91f5de4b9a51c416"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.same_line_coordinate_nonadjacent"
+],
+"class": "move",
+"lines": [
+2101,
+2117
+],
+"sha256": "12b9b9a45215202c199b2594568990b6c91675a01b02b3413ad302991b78e131"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.ordered_lattice_two_step"
+],
+"class": "move",
+"lines": [
+2119,
+2131
+],
+"sha256": "1baa9d4b9bdcec570c00175f65b9a23bfb061716e57007bfb5301cd3e250719a"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.ordered_parallel_segment_separation"
+],
+"class": "move",
+"lines": [
+2133,
+2162
+],
+"sha256": "56a5c603587ec696f346e9f7ae1cb7212ecc6d95fedc25d48c82b024c4bdd474"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.third_coordinate_exhaust"
+],
+"class": "move",
+"lines": [
+2164,
+2177
+],
+"sha256": "703b96bf5543224f7031a711600b1af4a09c9b7cd44031b7c256287b91333f5b"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.third_coordinate_separation"
+],
+"class": "move",
+"lines": [
+2179,
+2193
+],
+"sha256": "c9ddd129e0f771227c26c061b169227a02db239115588350b618ae8c1fa2bb0b"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.lattice_endpoint_or_gap"
+],
+"class": "move",
+"lines": [
+2195,
+2223
+],
+"sha256": "25e475c7f416cca52b4073efa1d49ec585b2e27c8d73f92a2f9e926e79d1567a"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.edge_coordinate_gap_separation"
+],
+"class": "move",
+"lines": [
+2225,
+2239
+],
+"sha256": "54fc9829d0bd4b3bb16e65d645294c41d0049952c7d00189fa3617332853b845"
+},
+{
+"names": [
+"_private.Lib.Topology.Dimension.CubeBoundaryThreeCells.0.TopologicalSpace.CubeBoundaryThree.transverse_common_endpoint"
+],
+"class": "move",
+"lines": [
+2241,
+2276
+],
+"sha256": "9d1663f561cb93f0be40f210e45cce60d3f2a322a44f102a21375a19694f5d82"
+},
+{
+"names": [
+"TopologicalSpace.CubeBoundaryThree.edge_dist_ge_mesh_of_no_common_endpoint"
+],
+"class": "move",
+"lines": [
+2278,
+2336
+],
+"sha256": "8022a50fe9f7775f54dedb9d643a7940bf8b657644c203775f8e66aa7b63c54f"
+}
+]
+}
