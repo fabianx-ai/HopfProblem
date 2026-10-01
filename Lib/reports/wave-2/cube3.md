@@ -193,9 +193,15 @@ changed type, was lost or added.
    `edge_saturated_coordinate_suffices`, `edge_subset_boundary_iff`, `face_sign_eq_of_mem`,
    `square_intrinsic_face`, `square_unit_mesh_endpoint_case`; `Coverage`:
    `ambientOfThreeCoordinates_apply_{i,j,k}`; `SquareBoundary`: `shifted_corner_commutes`.
-   Three of them (`mesh_two_of_one`, `coordinateNonconstant`, `square_nonconstant_coordinates`) are
-   now public only because dead lemmas in a later piece use them; deleting the dead lemmas would let
-   them go private again.
+   Four declarations, with five modifiers (`mesh_two_of_one`, `coordinateNonconstant`, which got
+   both `public` and `@[expose]`, `square_nonconstant_coordinates`, `square_zero_mem`), are now
+   public only because dead lemmas in a later piece use them (`mesh_two_of_one` through
+   `square_unit_mesh_endpoint_case`, the other three through `square_intrinsic_face`); deleting the dead lemmas would let them go private again
+   (corrected 2026-10-02: this said "Three of them (`mesh_two_of_one`, `coordinateNonconstant`,
+   `square_nonconstant_coordinates`) are now public only because dead lemmas in a later piece use
+   them"; the review `Lib/reports/wave-reviews/W2.md` finding 2 found the fourth, `square_zero_mem`,
+   whose only uses outside `Cells` are `Faces.lean:129` and `:144`, inside the dead
+   `square_intrinsic_face`).
 2. **Floor lemmas** (auditors: belong in `Algebra/Order/Floor`): `floor_real_bounds` is
    `⟨Int.floor_le u, Int.lt_floor_add_one u⟩` (twins `Int.floor_le`, `Int.lt_floor_add_one`);
    `cast_int_nat_sub_one`, `int_nat_sub_one_nonneg`, `int_floor_top_split` are `push_cast`/`omega`
