@@ -77,13 +77,6 @@ private theorem shiftedVertexK_apply_same (h : ℝ) (v : Ambient) (k : Fin 3) :
 private theorem shiftedVertexK_apply_ne (h : ℝ) (v : Ambient) {k r : Fin 3} (hr : r ≠ k) :
     shiftedVertexK h v k r = v r := by simp [shiftedVertexK, hr]
 
-/-- The two descriptions of the opposite square corner coincide. -/
-private theorem shifted_corner_commutes (h : ℝ) (v : Ambient) (j k : Fin 3) :
-    shiftedVertexK h (shiftedVertexJ h v j) k =
-      shiftedVertexJ h (shiftedVertexK h v k) j := by
-  simp only [shiftedVertexJ, shiftedVertexK]
-  module
-
 /-- The lower j-edge line map is square parameter (t,0). -/
 private theorem bottomJ_lineMap_embedding (h t : ℝ) (v : Ambient) (j k : Fin 3)
     (ht : t ∈ Set.Icc (0 : ℝ) 1) :

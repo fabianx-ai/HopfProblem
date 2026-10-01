@@ -1,0 +1,6 @@
+visibility only: mesh_two_of_one | public theorem mesh_two_of_one {h : ℝ} (hh : h = 2 / ((1 : ℕ -> theorem mesh_two_of_one {h : ℝ} (hh : h = 2 / ((1 : ℕ) : ℝ))
+visibility only: coordinateNonconstant | @[expose] public def coordinateNonconstant (C : Set Ambient) -> def coordinateNonconstant (C : Set Ambient) (r : Fin 3) : Pr
+visibility only: square_nonconstant_coordinates | public theorem square_nonconstant_coordinates {h : ℝ} (hh :  -> theorem square_nonconstant_coordinates {h : ℝ} (hh : 0 < h) 
+(1) blocks: 36 names, identical 33, visibility-only 3, other differences 0 []; dead names still in Lib pieces at tip: []
+(2) complement: removed lines inside moved blocks 360 (block lines total 360), listed blank context lines 9, listed edits 1 ['public theorem square_zero_mem (h : ℝ) ('], unexplained 0 []
+(3) raw blocks with docstrings found verbatim in the Unused file: 33, after removing visibility modifiers: 3 more

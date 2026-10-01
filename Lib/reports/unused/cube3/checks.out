@@ -1,0 +1,9 @@
+lake build Lib -> exit 0: Build completed successfully (9428 jobs).
+lake build Unused -> exit 0: Build completed successfully (2385 jobs).
+lake build Solution S6Shortcuts S6 Challenge -> exit 0: Build completed successfully (9489 jobs).
+lake build Lib.AxiomAudit Hopf.Proof.AxiomAudit -> exit 0: Build completed successfully (9431 jobs).
+AxiomAudit: depends-on-axioms lists 3741 axioms ['Classical.choice', 'Quot.sound', 'propext'] no-axiom lines 13 sorryAx 0
+ratchet PASS: 123 <= baseline 1648
+grep Lib imports Hopf/Unused: []
+grep imports Unused: []
+stock declarations under Hopf/: 123  (prefixes: 222, prefixes now absent from Hopf/: 194)

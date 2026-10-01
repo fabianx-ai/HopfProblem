@@ -46,17 +46,6 @@ def ambientOfThreeCoordinates (i j k : Fin 3) (xi xj xk : ℝ) : Ambient :=
   WithLp.toLp 2 (fun r : Fin 3 =>
     if r = i then xi else if r = j then xj else if r = k then xk else 0)
 
-/-- The assembled point takes its first prescribed coordinate value. -/
-theorem ambientOfThreeCoordinates_apply_i (i j k : Fin 3) (xi xj xk : ℝ) :
-    ambientOfThreeCoordinates i j k xi xj xk i = xi := by simp [ambientOfThreeCoordinates]
-/-- Distinctness from the first index recovers the second prescribed value. -/
-theorem ambientOfThreeCoordinates_apply_j {i j k : Fin 3} (hji : j ≠ i) (xi xj xk : ℝ) :
-    ambientOfThreeCoordinates i j k xi xj xk j = xj := by simp [ambientOfThreeCoordinates, hji]
-/-- Distinctness from the preceding indices recovers the third prescribed value. -/
-theorem ambientOfThreeCoordinates_apply_k {i j k : Fin 3} (hki : k ≠ i) (hkj : k ≠ j)
-    (xi xj xk : ℝ) : ambientOfThreeCoordinates i j k xi xj xk k = xk := by
-  simp [ambientOfThreeCoordinates, hki, hkj]
-
 /-- Retain the saturated coordinate and replace the other two by their lower mesh endpoints. -/
 noncomputable def coverageVertex (N : ℕ) (h : ℝ) (x : Ambient) (i j k : Fin 3) : Ambient :=
   ambientOfThreeCoordinates i j k (x i) (latticeLowerEndpoint N h (x j))

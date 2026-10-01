@@ -65,26 +65,6 @@ public theorem finite_lattice (N : ℕ) (h : ℝ) : (lattice N h).Finite := by
   refine hf.subset ?_
   rintro t ⟨k, hk, rfl⟩
   exact ⟨k, hk, rfl⟩
-/-- The affine index map is injective, so the lattice has exactly `N+1` points. -/
-theorem card_lattice {N : ℕ} {h : ℝ} (hN : 0 < N) (hh : h = 2 / (N : ℝ)) :
-  (lattice N h).ncard = N + 1 := by
-  let f : ℤ → ℝ := fun k => -1 + (k : ℝ) * h
-  have hset : lattice N h = f '' Set.Icc 0 (N : ℤ) := by
-    ext t
-    simp only [lattice, Set.mem_ofPred_eq, Set.mem_image, Set.mem_Icc, f]
-    aesop
-  rw [hset, Set.ncard_image_of_injective]
-  · rw [show Set.Icc (0 : ℤ) N = (↑(Finset.Icc (0 : ℤ) N) : Set ℤ) by
-        ext z; simp,
-      Set.ncard_coe_finset, Int.card_Icc]
-    simp
-  · intro a b hab
-    have hh0 : h ≠ 0 := ne_of_gt (mesh_pos hN hh)
-    dsimp [f] at hab
-    have : (a : ℝ) = (b : ℝ) := by
-      apply mul_right_cancel₀ hh0
-      linarith
-    exact_mod_cast this
 /-- For `N > 0` and `h = 2 / N`, both `-1` (index `0`) and `1` (index `N`) are lattice points. -/
 public theorem lattice_endpoints {N : ℕ} {h : ℝ} (hN : 0 < N)
   (hh : h = 2 / (N : ℝ)) : (-1 : ℝ) ∈ lattice N h ∧ (1 : ℝ) ∈ lattice N h := by
@@ -127,8 +107,6 @@ public theorem lattice_successor {N : ℕ} {h : ℝ} (hN : 0 < N)
       exact_mod_cast hkN
   · push_cast
     ring
-/-- When `N=1`, the identity `h=2/N` reduces the mesh to two. -/
-public theorem mesh_two_of_one {h : ℝ} (hh : h = 2 / ((1 : ℕ) : ℝ)) : h = 2 := by norm_num at hh ⊢; exact hh
 
 /-- Normalize a coordinate by shifting its lower endpoint to zero and dividing by the mesh. -/
 noncomputable def normalizedFloorInput (h t : ℝ) : ℝ := (t + 1) / h
