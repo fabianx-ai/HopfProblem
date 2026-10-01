@@ -1,0 +1,247 @@
+{
+ "before": "/home/goblin/.claude/jobs/06995e68/tmp/wave2/dump_head.jsonl",
+ "after": "/home/goblin/.claude/jobs/06995e68/tmp/wave2/collar/dump_after.jsonl",
+ "prefix": "",
+ "constants": [
+  38301,
+  38303
+ ],
+ "lost": [
+  [
+   "DiskFraming.SmoothRangeTransportOn.trans._proof_8",
+   2266599200,
+   {
+    "Lib.Geometry.Manifold.Collar": 1
+   }
+  ],
+  [
+   "DiskFraming.exists_smooth_frame_near_starConvex",
+   3226562774,
+   {
+    "Lib.Geometry.Manifold.Collar": 1
+   }
+  ],
+  [
+   "DiskFraming.exists_smooth_frame_on_neighborhood_closedBall",
+   995586449,
+   {
+    "Lib.Geometry.Manifold.Collar": 1
+   }
+  ],
+  [
+   "SphereCoordinates.ofLinearIsometry._proof_10",
+   1567077593,
+   {
+    "Lib.Geometry.Manifold.Collar": 1
+   }
+  ],
+  [
+   "SphereCoordinates.ofLinearIsometry._proof_3",
+   910909965,
+   {
+    "Lib.Geometry.Manifold.Collar": 1
+   }
+  ],
+  [
+   "SphereCoordinates.ofLinearIsometry._proof_4",
+   537623864,
+   {
+    "Lib.Geometry.Manifold.Collar": 1
+   }
+  ],
+  [
+   "SphereCoordinates.ofLinearIsometry._proof_5",
+   387003400,
+   {
+    "Lib.Geometry.Manifold.Collar": 1
+   }
+  ],
+  [
+   "SphereCoordinates.ofLinearIsometry._proof_6",
+   440177238,
+   {
+    "Lib.Geometry.Manifold.Collar": 1
+   }
+  ],
+  [
+   "SphereCoordinates.ofLinearIsometry._proof_7",
+   646572065,
+   {
+    "Lib.Geometry.Manifold.Collar": 1
+   }
+  ],
+  [
+   "SphereCoordinates.ofLinearIsometry._proof_8",
+   87692586,
+   {
+    "Lib.Geometry.Manifold.Collar": 1
+   }
+  ],
+  [
+   "SphereCoordinates.ofLinearIsometry._proof_9",
+   2502038955,
+   {
+    "Lib.Geometry.Manifold.Collar": 1
+   }
+  ]
+ ],
+ "added": [
+  [
+   "DiskFraming.SmoothRangeTransportOn.trans._proof_8",
+   1158307750,
+   {
+    "Lib.Geometry.Manifold.Collar.RangeTransport": 1
+   }
+  ],
+  [
+   "DiskFraming.SmoothRangeTransportOn.trans._proof_9",
+   1530418363,
+   {
+    "Lib.Geometry.Manifold.Collar.RangeTransport": 1
+   }
+  ],
+  [
+   "DiskFraming.exists_smooth_frame_near_starConvex",
+   3622023359,
+   {
+    "Lib.Geometry.Manifold.Collar.RangeTransport": 1
+   }
+  ],
+  [
+   "DiskFraming.exists_smooth_frame_on_neighborhood_closedBall",
+   3798691450,
+   {
+    "Lib.Geometry.Manifold.Collar.RangeTransport": 1
+   }
+  ],
+  [
+   "SphereCoordinates.ofLinearIsometry._proof_10",
+   2502038955,
+   {
+    "Lib.Geometry.Manifold.Collar.SphereCoordinates": 1
+   }
+  ],
+  [
+   "SphereCoordinates.ofLinearIsometry._proof_11",
+   1567077593,
+   {
+    "Lib.Geometry.Manifold.Collar.SphereCoordinates": 1
+   }
+  ],
+  [
+   "SphereCoordinates.ofLinearIsometry._proof_3",
+   1422682179,
+   {
+    "Lib.Geometry.Manifold.Collar.SphereCoordinates": 1
+   }
+  ],
+  [
+   "SphereCoordinates.ofLinearIsometry._proof_4",
+   1044466753,
+   {
+    "Lib.Geometry.Manifold.Collar.SphereCoordinates": 1
+   }
+  ],
+  [
+   "SphereCoordinates.ofLinearIsometry._proof_5",
+   1959714088,
+   {
+    "Lib.Geometry.Manifold.Collar.SphereCoordinates": 1
+   }
+  ],
+  [
+   "SphereCoordinates.ofLinearIsometry._proof_6",
+   387003400,
+   {
+    "Lib.Geometry.Manifold.Collar.SphereCoordinates": 1
+   }
+  ],
+  [
+   "SphereCoordinates.ofLinearIsometry._proof_7",
+   3831098457,
+   {
+    "Lib.Geometry.Manifold.Collar.SphereCoordinates": 1
+   }
+  ],
+  [
+   "SphereCoordinates.ofLinearIsometry._proof_8",
+   646572065,
+   {
+    "Lib.Geometry.Manifold.Collar.SphereCoordinates": 1
+   }
+  ],
+  [
+   "SphereCoordinates.ofLinearIsometry._proof_9",
+   2416372695,
+   {
+    "Lib.Geometry.Manifold.Collar.SphereCoordinates": 1
+   }
+  ]
+ ],
+ "changed_type_source": [],
+ "changed_type_proof_naming": [
+  "DiskFraming.exists_smooth_frame_near_starConvex",
+  "DiskFraming.exists_smooth_frame_on_neighborhood_closedBall"
+ ],
+ "changed_type_accepted": [],
+ "added_accepted": [],
+ "accept_without_effect": [],
+ "changed_type_all": [
+  "DiskFraming.SmoothRangeTransportOn.trans._proof_8",
+  "DiskFraming.exists_smooth_frame_near_starConvex",
+  "DiskFraming.exists_smooth_frame_on_neighborhood_closedBall",
+  "SphereCoordinates.ofLinearIsometry._proof_10",
+  "SphereCoordinates.ofLinearIsometry._proof_3",
+  "SphereCoordinates.ofLinearIsometry._proof_4",
+  "SphereCoordinates.ofLinearIsometry._proof_5",
+  "SphereCoordinates.ofLinearIsometry._proof_6",
+  "SphereCoordinates.ofLinearIsometry._proof_7",
+  "SphereCoordinates.ofLinearIsometry._proof_8",
+  "SphereCoordinates.ofLinearIsometry._proof_9"
+ ],
+ "moves": [
+  [
+   "Lib.Geometry.Manifold.Collar",
+   "Lib.Geometry.Manifold.Collar.DiskTubular",
+   29
+  ],
+  [
+   "Lib.Geometry.Manifold.Collar",
+   "Lib.Geometry.Manifold.Collar.HeightCollar",
+   17
+  ],
+  [
+   "Lib.Geometry.Manifold.Collar",
+   "Lib.Geometry.Manifold.Collar.LevelTransport",
+   10
+  ],
+  [
+   "Lib.Geometry.Manifold.Collar",
+   "Lib.Geometry.Manifold.Collar.RangeTransport",
+   22
+  ],
+  [
+   "Lib.Geometry.Manifold.Collar",
+   "Lib.Geometry.Manifold.Collar.SmallPerturbation",
+   10
+  ],
+  [
+   "Lib.Geometry.Manifold.Collar",
+   "Lib.Geometry.Manifold.Collar.SphereCoordinates",
+   1
+  ],
+  [
+   "Lib.Geometry.Manifold.Collar",
+   "Lib.Geometry.Manifold.Collar.SupportedDiffeomorph",
+   16
+  ],
+  [
+   "Lib.Geometry.Manifold.Collar",
+   "Lib.Geometry.Manifold.Collar.Tubular",
+   55
+  ]
+ ],
+ "ambiguous": [],
+ "auxiliary_moved": 123,
+ "verdict": "PASS"
+}

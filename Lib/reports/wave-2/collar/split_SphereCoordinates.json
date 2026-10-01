@@ -1,0 +1,1641 @@
+{
+"module": "Lib.Geometry.Manifold.Collar",
+"source": "Lib/Geometry/Manifold/Collar.lean",
+"source_sha256": "76f83aeb7ee5d595acfc062be599000fb17737ba31581028e1e1100945fdb2e3",
+"units_kept": 1,
+"units_moved": 146,
+"units": [
+{
+"names": [
+"NativeEuclideanEmbedding.NormalSpace"
+],
+"class": "move",
+"lines": [
+69,
+73
+],
+"sha256": "1ea223bbf0709626ebbd23462ddb48343f794844c86405ae8628dc839ca68cf2"
+},
+{
+"names": [
+"NativeEuclideanEmbedding.NormalModel"
+],
+"class": "move",
+"lines": [
+75,
+79
+],
+"sha256": "1eef42f08d28022415ef7a7dd6e504795e891b730f9be7efc4ce2440dcfd8575"
+},
+{
+"names": [
+"NativeEuclideanEmbedding.normalSpaceEquiv"
+],
+"class": "move",
+"lines": [
+81,
+85
+],
+"sha256": "43e6047303cbbc1d81f48ea0f97b9df370874457acccbf80856517ebb9cb069f"
+},
+{
+"names": [
+"NativeEuclideanEmbedding.finrank_normalSpace"
+],
+"class": "move",
+"lines": [
+87,
+94
+],
+"sha256": "b43e065f10665f01ac6c649a07cb657d5dd80613e40a986c20ded55fcb2e46fb"
+},
+{
+"names": [
+"NativeEuclideanEmbedding.normalModelEquiv"
+],
+"class": "move",
+"lines": [
+96,
+103
+],
+"sha256": "2881f48a368db2de27b8b30ad9aa15b6c16aaf8fbbfec84588a22415ecf26767"
+},
+{
+"names": [
+"NativeEuclideanEmbedding.normalPrebundle"
+],
+"class": "move",
+"lines": [
+105,
+111
+],
+"sha256": "e9d5648c174100f2468cffc5a323472eaa57a00de24ecd772a4a879fb960eedb"
+},
+{
+"names": [
+"NativeEuclideanEmbedding.normalPrebundle_isContMDiff"
+],
+"class": "move",
+"lines": [
+113,
+119
+],
+"sha256": "6ecdaa44b8d1a14ebd72fca7e09d5e67eefa49396f2bc630af7f0259f7bc3097"
+},
+{
+"names": [
+"NativeEuclideanEmbedding.NormalBundle"
+],
+"class": "move",
+"lines": [
+121,
+125
+],
+"sha256": "ee92470d6645f8bbdbb83d145efe4014f873b6545928dcc14df4d1adc99bce8c"
+},
+{
+"names": [
+"NativeEuclideanEmbedding.normalBundleTopology"
+],
+"class": "move",
+"lines": [
+127,
+132
+],
+"sha256": "19b43376720247d96658428161846b584e022e0bc840651949cd59f3a9da8006"
+},
+{
+"names": [
+"NativeEuclideanEmbedding.normalFiberBundle"
+],
+"class": "move",
+"lines": [
+134,
+139
+],
+"sha256": "4513acc33f83872e9aff8d82a7d929711f89de8103777b48ca6009711bd989cb"
+},
+{
+"names": [
+"NativeEuclideanEmbedding.normalVectorBundle"
+],
+"class": "move",
+"lines": [
+141,
+146
+],
+"sha256": "7a02f9de39af281d9efe65ddabb60c1cdc6f38ffa16bd9a707106018d510952c"
+},
+{
+"names": [
+"NativeEuclideanEmbedding.normalContMDiffVectorBundle"
+],
+"class": "move",
+"lines": [
+148,
+153
+],
+"sha256": "e39428803d52f9c8e549a77c96ff80240ab4b39e60d4b096c49cabc7ceb43baa"
+},
+{
+"names": [
+"NativeEuclideanEmbedding.normalVector"
+],
+"class": "move",
+"lines": [
+157,
+162
+],
+"sha256": "bd89e2ae91fb0bf87548ecc186b8ddbf351595c12700994cdc5bb66fec4b73a9"
+},
+{
+"names": [
+"NativeEuclideanEmbedding.contMDiff_normalVector"
+],
+"class": "move",
+"lines": [
+164,
+209
+],
+"sha256": "44bfd95c8d2dffb70e175c500f88272fa3f22c46ef01a2d8f0f5c5cee8fb0fc1"
+},
+{
+"names": [
+"NativeEuclideanEmbedding.normalDisplacement"
+],
+"class": "move",
+"lines": [
+211,
+216
+],
+"sha256": "fc4a09c3d121f831dc46ec85af807404da3f4cce13257266640bfad0577de11e"
+},
+{
+"names": [
+"NativeEuclideanEmbedding.contMDiff_normalDisplacement"
+],
+"class": "move",
+"lines": [
+218,
+224
+],
+"sha256": "ce08cebdeb79bde27c61f904841dadb48c66d79869774aa3099d4685309b8e90"
+},
+{
+"names": [
+"NativeEuclideanEmbedding.normalDisplacement_zero"
+],
+"class": "move",
+"lines": [
+226,
+231
+],
+"sha256": "bab2eb8b9a1b7802b7df062d1443a42222ac6ca6dbf37a64e4f372263eef69cd"
+},
+{
+"names": [
+"NativeEuclideanEmbedding.localNormalDisplacement"
+],
+"class": "move",
+"lines": [
+233,
+240
+],
+"sha256": "7707500bde229865e4d2f65cd2633fb7e5529621f70a69adf90573e1d40a6626"
+},
+{
+"names": [
+"NativeEuclideanEmbedding.contMDiff_localNormalDisplacement"
+],
+"class": "move",
+"lines": [
+242,
+253
+],
+"sha256": "0f654d9b68a3498ac98a8010ac9aab347215574977ba2c3755321fbe659664f7"
+},
+{
+"names": [
+"NativeEuclideanEmbedding.localNormalDisplacement_zero"
+],
+"class": "move",
+"lines": [
+255,
+259
+],
+"sha256": "453daf79542e4e2d142b6acdcda9a21268794a356cbfe6ac3e9fb5dd256da079"
+},
+{
+"names": [
+"NativeEuclideanEmbedding.ambientNormalCoordinates_self"
+],
+"class": "move",
+"lines": [
+261,
+273
+],
+"sha256": "acdb8eb642e71a1f6c7d851b0f80d25397208cbb94b6608019648b6ea650f594"
+},
+{
+"names": [
+"NativeEuclideanEmbedding.normalLinearSplitting"
+],
+"class": "move",
+"lines": [
+275,
+282
+],
+"sha256": "bbb8b95b3dc70b750756c46c045a4b1f6061624ac5819ad5dfed899c57b58a87"
+},
+{
+"names": [
+"NativeEuclideanEmbedding.mvfderiv_localNormalDisplacement_zero"
+],
+"class": "move",
+"lines": [
+284,
+314
+],
+"sha256": "9f155d96393ab3026347564bcc86944e6e401fe1cf7c39c81662ccababf4dbdf"
+},
+{
+"names": [
+"NativeEuclideanEmbedding.localNormalDisplacement_derivative_isInvertible"
+],
+"class": "move",
+"lines": [
+316,
+323
+],
+"sha256": "9834b8b95403992158ca9b663533d774a08043ac3260e0b4e987c0f8a4fa8a1c"
+},
+{
+"names": [
+"NativeEuclideanEmbedding.localNormalDisplacement_eq"
+],
+"class": "move",
+"lines": [
+325,
+334
+],
+"sha256": "aea002661dc9176dea4b11318255a1b3e20f0a8cf24f27683483ea3babadbaec"
+},
+{
+"names": [
+"NativeEuclideanEmbedding.isLocalDiffeomorphAt_localNormalDisplacement"
+],
+"class": "move",
+"lines": [
+336,
+344
+],
+"sha256": "d6899cb590d217f49ca5c5d31788fc5df222be27da233c2f1ecdb8f75955230a"
+},
+{
+"names": [
+"NativeEuclideanEmbedding.normalChartPartialDiffeomorph"
+],
+"class": "move",
+"lines": [
+346,
+360
+],
+"sha256": "1be205665b9e7f69ba924656dc65218b9ad069aecdfe4bfc3fe579eb3878a2f7"
+},
+{
+"names": [
+"NativeEuclideanEmbedding.normalChartPartialDiffeomorph_zero"
+],
+"class": "move",
+"lines": [
+362,
+371
+],
+"sha256": "37032a56cfadfe62e733e55c59629d9c97a2a45f418a58a036e1855b358f5e5b"
+},
+{
+"names": [
+"NativeEuclideanEmbedding.normalChart_source_zero"
+],
+"class": "move",
+"lines": [
+373,
+380
+],
+"sha256": "20877baf66370bd19c1bfc9b8defe73166b74ce2fb83033524264eaa550e539e"
+},
+{
+"names": [
+"NativeEuclideanEmbedding.localNormalDisplacement_chart_apply"
+],
+"class": "move",
+"lines": [
+382,
+400
+],
+"sha256": "f552acd28edf9aebc6afeb7bf852c0110ee44d334e8b5c664a5b7a05f84a7a97"
+},
+{
+"names": [
+"NativeEuclideanEmbedding.isLocalDiffeomorphAt_normalDisplacement_zero"
+],
+"class": "move",
+"lines": [
+402,
+417
+],
+"sha256": "c191788beb16a9eb8468088f6bf2f93db18d7e9a50646ecb6051e7ff80bf888a"
+},
+{
+"names": [
+"NativeEuclideanEmbedding.regularNormalLocus"
+],
+"class": "move",
+"lines": [
+421,
+427
+],
+"sha256": "b5fb42b0bb952356532cb0f768c10fdc6eeccd428279678ef914e75ba0f67d9f"
+},
+{
+"names": [
+"NativeEuclideanEmbedding.isOpen_regularNormalLocus"
+],
+"class": "move",
+"lines": [
+429,
+438
+],
+"sha256": "be722916fac0a9f29636e8a0c1e45107868355150a1c7322d78b2870b9928b12"
+},
+{
+"names": [
+"NativeEuclideanEmbedding.normalDisplacement_injOn_zeroSection"
+],
+"class": "move",
+"lines": [
+440,
+449
+],
+"sha256": "39ed8e277c79af80b054be48c43e08df3bfc58c8efc6fdda477b070f40e26a6e"
+},
+{
+"names": [
+"NativeEuclideanEmbedding.normalDisplacement_locally_injective_zero"
+],
+"class": "move",
+"lines": [
+451,
+458
+],
+"sha256": "54cd66644c4bff3470a76441e8c463f9ca6af3ed5be8e6c220f00f64be8374cb"
+},
+{
+"names": [
+"NativeEuclideanEmbedding.exists_injective_normalNeighborhood"
+],
+"class": "move",
+"lines": [
+460,
+485
+],
+"sha256": "70225268303cc358dbc9793d64c940634f3ae1f87857fd869b4eeb61adce15cd"
+},
+{
+"names": [
+"NativeEuclideanEmbedding.isOpen_normalNeighborhood_image"
+],
+"class": "move",
+"lines": [
+487,
+499
+],
+"sha256": "5f3dbe1dff5be8a7200c6ea065f113361c5d083c7bb01920051e479d99071695"
+},
+{
+"names": [
+"NativeEuclideanEmbedding.normalBundle_nonempty"
+],
+"class": "move",
+"lines": [
+501,
+505
+],
+"sha256": "2563c2f8ebf8e469b88148c276e8b5b6f467df1d9a985211ac70a185468addb2"
+},
+{
+"names": [
+"NativeEuclideanEmbedding.normalNeighborhoodEquiv"
+],
+"class": "move",
+"lines": [
+507,
+514
+],
+"sha256": "7ed6310efb8251f4c4932354a240626c21b431146a9f3394eef900af7398379c"
+},
+{
+"names": [
+"NativeEuclideanEmbedding.contMDiffAt_normalNeighborhood_inverse"
+],
+"class": "move",
+"lines": [
+516,
+549
+],
+"sha256": "d8a0bb6499f2035e87827b080db1fd5428e5e5f64751c4ab041b8e53a4521835"
+},
+{
+"names": [
+"NativeEuclideanEmbedding.normalNeighborhoodPartialDiffeomorph"
+],
+"class": "move",
+"lines": [
+551,
+569
+],
+"sha256": "6f99c60788b6dc49317e660ed2dd9f6826f268f93f51a43396768fba8aee371b"
+},
+{
+"names": [
+"NativeEuclideanEmbedding.exists_tubularNeighborhood"
+],
+"class": "move",
+"lines": [
+571,
+590
+],
+"sha256": "402903e573ff27ac98505ec98349f6c411abaa779d5c6df6e31631c7d11baeba"
+},
+{
+"names": [
+"NativeEuclideanEmbedding.SmoothRetraction",
+"NativeEuclideanEmbedding.SmoothRetraction.mk",
+"NativeEuclideanEmbedding.SmoothRetraction.domain",
+"NativeEuclideanEmbedding.SmoothRetraction.open_domain",
+"NativeEuclideanEmbedding.SmoothRetraction.contains",
+"NativeEuclideanEmbedding.SmoothRetraction.toFun",
+"NativeEuclideanEmbedding.SmoothRetraction.smooth",
+"NativeEuclideanEmbedding.SmoothRetraction.retract"
+],
+"class": "move",
+"lines": [
+592,
+601
+],
+"sha256": "24d5653756baa984392b0dad34175a2b9621d411fc53ba799d0421712fc79487"
+},
+{
+"names": [
+"NativeEuclideanEmbedding.nonempty_smoothRetraction"
+],
+"class": "move",
+"lines": [
+603,
+618
+],
+"sha256": "3823b9ea04ab7641aa82dadbe5c20f832d34265d8144c856911de949ad9cc16b"
+},
+{
+"names": [
+"NativeEuclideanEmbedding.SmoothRetraction.mfderiv_retract_comp"
+],
+"class": "move",
+"lines": [
+620,
+634
+],
+"sha256": "c3c1a25bf4b9f3c4d398eccb84b26792d01bdebef7502ec331e4dc1bdc4155c1"
+},
+{
+"names": [
+"NativeEuclideanEmbedding.SmoothRetraction.embedding_derivative_retract"
+],
+"class": "move",
+"lines": [
+636,
+646
+],
+"sha256": "caf66693f026a0a460b58d53444e8ff6c6c8129ad3f45cf88e00f6cb0554a987"
+},
+{
+"names": [
+"NativeEuclideanEmbedding.contMDiff_embeddedField"
+],
+"class": "move",
+"lines": [
+648,
+659
+],
+"sha256": "b2f0f5f2c57f9b11f7a601f633894f8985e81016e7b50d0e97aba2e4543a028b"
+},
+{
+"names": [
+"RegularLevel.levelDisplacement"
+],
+"class": "move",
+"lines": [
+663,
+668
+],
+"sha256": "34464879bf849f57a550e28c5ec374b46dfaddb92b8650c818010ef677a637b5"
+},
+{
+"names": [
+"RegularLevel.transverseCoordinateDomain"
+],
+"class": "move",
+"lines": [
+670,
+675
+],
+"sha256": "be57d472a6dd834e04e24d8580da524be5d20c51ff94867473b0a923f8495ded"
+},
+{
+"names": [
+"RegularLevel.transverseCoordinates"
+],
+"class": "move",
+"lines": [
+677,
+682
+],
+"sha256": "7a36a26d97491d373ef453cb621b81f67f87779c98095416bf8d00730a5cdf8b"
+},
+{
+"names": [
+"RegularLevel.transverseCoordinates_zero"
+],
+"class": "move",
+"lines": [
+684,
+691
+],
+"sha256": "66cf55bbeba9ae5273ffb793e013179e95f2343f8727f1cb32c5d11f30ff8768"
+},
+{
+"names": [
+"RegularLevel.zero_mem_transverseCoordinateDomain"
+],
+"class": "move",
+"lines": [
+693,
+701
+],
+"sha256": "27ca5734d074d3d275a0594a6a70cb07e3c6b94dc267ffe66e9b3b93672b206d"
+},
+{
+"names": [
+"RegularLevel.contMDiff_levelDisplacement"
+],
+"class": "move",
+"lines": [
+703,
+723
+],
+"sha256": "981309dd02f339152ea39e46d24da9c436e4b88548eb069c0d4f79b1d99b90d9"
+},
+{
+"names": [
+"RegularLevel.isOpen_transverseCoordinateDomain"
+],
+"class": "move",
+"lines": [
+725,
+735
+],
+"sha256": "d997a713191717f4df7b7ca94739a9e2c6a27877714e4e39f0a51a16957ea0f3"
+},
+{
+"names": [
+"RegularLevel.contMDiffOn_transverseCoordinates"
+],
+"class": "move",
+"lines": [
+737,
+750
+],
+"sha256": "3929c22c53d586edde56df396c86038b5f7cc3ace55b8c0fca757189be9b2574"
+},
+{
+"names": [
+"RegularLevel.mfderiv_transverseCoordinates_time_zero"
+],
+"class": "move",
+"lines": [
+752,
+780
+],
+"sha256": "240e459d7cd90b4b20175c7f5325d955704e966006943880056a39e3095b3f33"
+},
+{
+"names": [
+"RegularLevel.mfderiv_transverseCoordinates_zero"
+],
+"class": "move",
+"lines": [
+782,
+805
+],
+"sha256": "3b36965912d4148bf1305813a4dda19e944a17b328e9b7af703403db8ea416df"
+},
+{
+"names": [
+"RegularLevel.isLocalDiffeomorphAt_transverseCoordinates_zero"
+],
+"class": "move",
+"lines": [
+807,
+834
+],
+"sha256": "006199579cfd3ffa85ec5cb529f892f58813fa9bac286b609bfe9cfcd200b65b"
+},
+{
+"names": [
+"RegularLevel.hasDerivAt_height_transverseCoordinates_zero"
+],
+"class": "move",
+"lines": [
+836,
+874
+],
+"sha256": "05fd3382b7703901e2200ed04794ee02dd1a9f51992561b9c0a6b83e33667336"
+},
+{
+"names": [
+"DiskFraming.starProjection_orthogonal_inf_eq_sub"
+],
+"class": "move",
+"lines": [
+876,
+896
+],
+"sha256": "f2d7cb37465c01fb36525815f6558cad3b7a2169b202a8ef59b6b21a2a27fec6"
+},
+{
+"names": [
+"NativeEuclideanEmbedding.diskTangentImage"
+],
+"class": "move",
+"lines": [
+900,
+905
+],
+"sha256": "552ddfc58a4df1f11aa6c8f656154fdc8e5c0463d2cc78cd3739d386af8f5071"
+},
+{
+"names": [
+"NativeEuclideanEmbedding.diskNormalSpace"
+],
+"class": "move",
+"lines": [
+907,
+912
+],
+"sha256": "73ba64a3c030f106395a712231a79615a52eaea4b947b93f47c0789711579a3a"
+},
+{
+"names": [
+"NativeEuclideanEmbedding.fderiv_comp_eq"
+],
+"class": "move",
+"lines": [
+914,
+923
+],
+"sha256": "721617f9897f35ba50106055bd4ba8eb1650bb2889d7e13e7a6c2a1e52e71c03"
+},
+{
+"names": [
+"NativeEuclideanEmbedding.diskTangentImage_le"
+],
+"class": "move",
+"lines": [
+925,
+932
+],
+"sha256": "cd8d9d65114d003b6af261bb8a5da1d04b18e250fa30f503e104ac6c1446e388"
+},
+{
+"names": [
+"NativeEuclideanEmbedding.injective_fderiv_comp"
+],
+"class": "move",
+"lines": [
+934,
+942
+],
+"sha256": "65c7a50c221d145e19b9a34b62646f9d4360456f4bf2b90d29e94e653dcd9f76"
+},
+{
+"names": [
+"NativeEuclideanEmbedding.finrank_diskTangent_add_normal"
+],
+"class": "move",
+"lines": [
+944,
+959
+],
+"sha256": "69d6b51b678b977bd88d64806f2fb109165f68cb8832ef5a556bae8d10cdb563"
+},
+{
+"names": [
+"NativeEuclideanEmbedding.diskNormalProjection"
+],
+"class": "move",
+"lines": [
+961,
+967
+],
+"sha256": "1fdcc606f7746ecdcd1eb933937eb201cc93ef42f8082534cfe43c7343b07803"
+},
+{
+"names": [
+"NativeEuclideanEmbedding.diskNormalProjection_eq"
+],
+"class": "move",
+"lines": [
+969,
+977
+],
+"sha256": "50e77e62393d9adbeffd920b242829f9c0d8534dcedd790a31e3c52acf3aae6f"
+},
+{
+"names": [
+"NativeEuclideanEmbedding.contDiffOn_diskNormalProjection"
+],
+"class": "move",
+"lines": [
+979,
+994
+],
+"sha256": "4cb01082cba8e22874d2d428f412316bf27a353cb833317538a0cf52510de3f6"
+},
+{
+"names": [
+"NativeEuclideanEmbedding.exists_open_diskNormalProjection"
+],
+"class": "move",
+"lines": [
+996,
+1014
+],
+"sha256": "57f3ca0871ed3158b395724839c40ca9a15ed21a2118eb16eee16b7e60dbbd81"
+},
+{
+"names": [
+"DiskFraming.SmoothRangeTransportOn",
+"DiskFraming.SmoothRangeTransportOn.mk",
+"DiskFraming.SmoothRangeTransportOn.toFun",
+"DiskFraming.SmoothRangeTransportOn.neighborhood",
+"DiskFraming.SmoothRangeTransportOn.open_neighborhood",
+"DiskFraming.SmoothRangeTransportOn.contains",
+"DiskFraming.SmoothRangeTransportOn.smooth",
+"DiskFraming.SmoothRangeTransportOn.invertible",
+"DiskFraming.SmoothRangeTransportOn.intertwines"
+],
+"class": "move",
+"lines": [
+1018,
+1028
+],
+"sha256": "99b3cb06d21efd68e90a08c1bc957badee8e214d1683b75d08008a5ceafe7e45"
+},
+{
+"names": [
+"DiskFraming.SmoothRangeTransportOn.refl"
+],
+"class": "move",
+"lines": [
+1030,
+1041
+],
+"sha256": "9a007b1902a571a90ddb08e6cfd8e28018b849214fe6a3aa8cc73a6756b44ccc"
+},
+{
+"names": [
+"DiskFraming.SmoothRangeTransportOn.trans"
+],
+"class": "move",
+"lines": [
+1043,
+1063
+],
+"sha256": "e6fb55fc0a80002bdc85ea6f3162b3394cac53b10182d58d0401117ebb770c5a"
+},
+{
+"names": [
+"DiskFraming.SmoothRangeTransportOn.symm"
+],
+"class": "move",
+"lines": [
+1065,
+1092
+],
+"sha256": "587c50e91e3bc5ee94fce10fdc3307eede0628b776d5542078d94bacd09cfb8d"
+},
+{
+"names": [
+"DiskFraming.SmoothRangeTransportOn.map_range"
+],
+"class": "move",
+"lines": [
+1094,
+1107
+],
+"sha256": "51b998dd12be31033dd593ee18bfd9a6707beecbd2e664cabdc993083ead2b8c"
+},
+{
+"names": [
+"DiskFraming.SmoothRangeTransportOn.ofProjections"
+],
+"class": "move",
+"lines": [
+1109,
+1127
+],
+"sha256": "c8e288b4cb053a7d673aa5aefc036473f38a02897a2e0f4f797ed64a2c10f1d5"
+},
+{
+"names": [
+"isOpen_forall_compact"
+],
+"class": "move",
+"lines": [
+1129,
+1145
+],
+"sha256": "27aa8aaf6adc9c6b1fb249a662f31f0177d5e6811cb5a252349f0c73160ae457"
+},
+{
+"names": [
+"homotopyTransportDomain"
+],
+"class": "move",
+"lines": [
+1147,
+1150
+],
+"sha256": "990d810888bca4b0b3bc057eeade5f12e92cb7a390e23ffa324d1a605243d82a"
+},
+{
+"names": [
+"mem_homotopyTransportDomain"
+],
+"class": "move",
+"lines": [
+1152,
+1158
+],
+"sha256": "04ff64d8a3bd122206e2f325b452a234c48cadb6252f4988e7900cf5c2fceef5"
+},
+{
+"names": [
+"isOpen_continuousHomotopyTransportDomain"
+],
+"class": "move",
+"lines": [
+1160,
+1170
+],
+"sha256": "0ebd6a5f725c0a74b68cff6467c9f99dab28128dc7db6a0c1c2837062f105427"
+},
+{
+"names": [
+"DiskFraming.isOpen_transportOnClass"
+],
+"class": "move",
+"lines": [
+1172,
+1194
+],
+"sha256": "4bbe287b700d53969347df4085e6fb2ca9397db82ad6815608b3b26616968bcd"
+},
+{
+"names": [
+"DiskFraming.isOpen_compl_transportOnClass"
+],
+"class": "move",
+"lines": [
+1196,
+1219
+],
+"sha256": "9c5075a305b907814b078c807917d96768066f64124a79da40e972928ec6cc10"
+},
+{
+"names": [
+"DiskFraming.nonempty_smoothRangeTransportOn_of_homotopy"
+],
+"class": "move",
+"lines": [
+1221,
+1236
+],
+"sha256": "d138879e1fd3cf046eb19c54025c8f8c5976c4572c57bae8424bdbf82e9b11cc"
+},
+{
+"names": [
+"DiskFraming.nonempty_transportOn_starConvex"
+],
+"class": "move",
+"lines": [
+1238,
+1267
+],
+"sha256": "ae91377b2050161bee9c95313520e2797a9b2b0e1bf9963ccafa573f536ac2a2"
+},
+{
+"names": [
+"DiskFraming.exists_smooth_frame_near_starConvex"
+],
+"class": "move",
+"lines": [
+1269,
+1287
+],
+"sha256": "f446f4c0623eb825ac2b5267297fd7a4363e69a74047453fc9ff0946610c6205"
+},
+{
+"names": [
+"DiskFraming.exists_smooth_frame_on_neighborhood_closedBall"
+],
+"class": "move",
+"lines": [
+1289,
+1318
+],
+"sha256": "e7145ecdbf59e038647c9e6cacc529db127edd71b8bd2df63848d352a6a18b11"
+},
+{
+"names": [
+"NativeEuclideanEmbedding.exists_smooth_normalFrame_near_closedBall"
+],
+"class": "move",
+"lines": [
+1320,
+1363
+],
+"sha256": "a236d6d3f063b0a29cb33bd24429bef378d3b7966534a9bd08abd54cf0e3cf0b"
+},
+{
+"names": [
+"DiskFraming.normalSplitEquiv"
+],
+"class": "move",
+"lines": [
+1367,
+1390
+],
+"sha256": "14212a9e340ce08e1545f0df9b762cb179c97ebaaba036fd21f1cafb5e89e272"
+},
+{
+"names": [
+"NativeEuclideanEmbedding.diskTangentNormalEquiv"
+],
+"class": "move",
+"lines": [
+1392,
+1402
+],
+"sha256": "095b4d6c5ee1501266485986ce9c6e4da732e2a164c3f2a971d0044ea335324b"
+},
+{
+"names": [
+"DiskFraming.displacement"
+],
+"class": "move",
+"lines": [
+1404,
+1407
+],
+"sha256": "d88d0512496db7410cff78418f895f9bacf79265e5e1955d50250a1182355749"
+},
+{
+"names": [
+"DiskFraming.displacement_zero"
+],
+"class": "move",
+"lines": [
+1409,
+1412
+],
+"sha256": "ba154d503b99caf1e62ed2be998fb7adc80a922ef22cf586f6194a3fd4c184bb"
+},
+{
+"names": [
+"DiskFraming.contDiffOn_displacement"
+],
+"class": "move",
+"lines": [
+1414,
+1420
+],
+"sha256": "b63c5af9d81aa2b4c190b4a4f4625be96aa2d80bbde636b871ceb8732ca23926"
+},
+{
+"names": [
+"DiskFraming.hasFDerivAt_displacement_zero"
+],
+"class": "move",
+"lines": [
+1422,
+1445
+],
+"sha256": "d0c01e17a45927be094d90c29783039f05d4794598338e088cd6d3335f559e59"
+},
+{
+"names": [
+"NativeEuclideanEmbedding.SmoothRetraction.diskCoordinates"
+],
+"class": "move",
+"lines": [
+1449,
+1455
+],
+"sha256": "a10501540a5270f0a368f75709367af560ca727dff99a5be543ff91977e129a1"
+},
+{
+"names": [
+"NativeEuclideanEmbedding.SmoothRetraction.diskCoordinateDomain"
+],
+"class": "move",
+"lines": [
+1457,
+1463
+],
+"sha256": "c333adf36dc53450a8429b67e657c6e2a77487d6610f8e9590ca1d55b10236a4"
+},
+{
+"names": [
+"NativeEuclideanEmbedding.SmoothRetraction.diskCoordinates_zero"
+],
+"class": "move",
+"lines": [
+1465,
+1472
+],
+"sha256": "e874e0ef3858a1f2974c2b61ae1ad819ddc4603349d33944f1bf367c6fa83579"
+},
+{
+"names": [
+"NativeEuclideanEmbedding.SmoothRetraction.isOpen_diskCoordinateDomain"
+],
+"class": "move",
+"lines": [
+1474,
+1484
+],
+"sha256": "21fb7f14db461a2902f3ad917247b4e6d88078c3c0109826ee1273618c4b1af2"
+},
+{
+"names": [
+"NativeEuclideanEmbedding.SmoothRetraction.zero_mem_diskCoordinateDomain"
+],
+"class": "move",
+"lines": [
+1486,
+1495
+],
+"sha256": "c0f3a521c3939f25093a713a5203a25aad50d16a9951ac0ed194bf6e297c7bfd"
+},
+{
+"names": [
+"NativeEuclideanEmbedding.SmoothRetraction.contMDiffOn_diskCoordinates"
+],
+"class": "move",
+"lines": [
+1497,
+1510
+],
+"sha256": "8bdf7cc9a4b2cf4acfe4cef66dc2ce2573e0d6bb15b87cbe2573ff946ee10d2e"
+},
+{
+"names": [
+"NativeEuclideanEmbedding.SmoothRetraction.mfderiv_diskCoordinates_zero"
+],
+"class": "move",
+"lines": [
+1512,
+1534
+],
+"sha256": "e6174881a2eca2c03eee3b563e1a3cc6e16ec6ab6f0ddd4e11af2cc11cb46e15"
+},
+{
+"names": [
+"NativeEuclideanEmbedding.SmoothRetraction.isInvertible_mfderiv_diskCoordinates_zero"
+],
+"class": "move",
+"lines": [
+1536,
+1555
+],
+"sha256": "f7bc5687fc3bb44268f9804da76075108285b723941a8ed00ba8470247880120"
+},
+{
+"names": [
+"NativeEuclideanEmbedding.SmoothRetraction.isLocalDiffeomorphAt_diskCoordinates_zero"
+],
+"class": "move",
+"lines": [
+1557,
+1571
+],
+"sha256": "a8fae5ec54c085284cc9c05fe6c8d259a951c95b046e1a7e4a39946c299a5a55"
+},
+{
+"names": [
+"DiskFraming.exists_pos_prod_closedBall_subset"
+],
+"class": "move",
+"lines": [
+1573,
+1583
+],
+"sha256": "a293be651f86fd2d0664f6b73e5e8663cce4cfc652b3a5d0ce355788f9145a97"
+},
+{
+"names": [
+"NativeEuclideanEmbedding.SmoothRetraction.exists_diskTubularNeighborhood"
+],
+"class": "move",
+"lines": [
+1585,
+1627
+],
+"sha256": "517753e58ddd38f1774645fb4748ad09ff4d230ae1eaca9545b96fe9a9349ddc"
+},
+{
+"names": [
+"exists_tubularNeighborhood_in_open_of_embedded_closedBall"
+],
+"class": "move",
+"lines": [
+1629,
+1676
+],
+"sha256": "201d025a873bc5bb406a6e76b5e418773e41656b2f5cdadf5f03ea7ae1df210e"
+},
+{
+"names": [
+"RegularLevel.exists_unitHeightField"
+],
+"class": "move",
+"lines": [
+1680,
+1695
+],
+"sha256": "2e794ab2a4524b7ac361aad50c8e6e874b8f9a5bccc5fed38813ba5d099475fb"
+},
+{
+"names": [
+"RegularLevel.exists_transverseCollar"
+],
+"class": "move",
+"lines": [
+1697,
+1755
+],
+"sha256": "cfe7b1a693f43b38c725e2703ac6291b78c18966566ad93fe44b9f525012d3fe"
+},
+{
+"names": [
+"RegularLevel.exists_heightBand_subset_open"
+],
+"class": "move",
+"lines": [
+1757,
+1769
+],
+"sha256": "9cfbb48391d4e621b3fafc1cbe64cf5b1839b72e530b30204515252c7d71cf8d"
+},
+{
+"names": [
+"RegularLevel.exists_heightCollar"
+],
+"class": "move",
+"lines": [
+1771,
+1832
+],
+"sha256": "5494d28b61a6d252cc0d7da4d3ced5dbbe63e6b3e69ae65d5a2dfb3b60bbd503"
+},
+{
+"names": [
+"RegularLevel.exists_heightCollar_with_band"
+],
+"class": "move",
+"lines": [
+1834,
+1861
+],
+"sha256": "929275055f0b0a7e8ca700faa33855d31e6dd6f50b4a9ea83b5c99da8606b6bd"
+},
+{
+"names": [
+"SmallPerturbation.injective_id_add"
+],
+"class": "move",
+"lines": [
+1865,
+1868
+],
+"sha256": "401d71fbdf38a680b21acf86790eb7555d6e515967f2869bc2f67004fc094661"
+},
+{
+"names": [
+"SmallPerturbation.surjective_id_add"
+],
+"class": "move",
+"lines": [
+1870,
+1881
+],
+"sha256": "c4903acb49de149bf6911544b1d3efd7061678ca223f214bba88b2ac15735eb6"
+},
+{
+"names": [
+"SmallPerturbation.bijective_id_add"
+],
+"class": "move",
+"lines": [
+1883,
+1887
+],
+"sha256": "404c95630e978a48d6c1d82a0ea1b7dd7e2c20f7c79566cabd0fde73f6b75f73"
+},
+{
+"names": [
+"SmallPerturbation.isInvertible_fderiv_id_add"
+],
+"class": "move",
+"lines": [
+1889,
+1905
+],
+"sha256": "bada5e954608ffa48400758a1321075168cd4226061bba70b313b1a06d6f3c28"
+},
+{
+"names": [
+"SmallPerturbation.diffeomorphIdAdd"
+],
+"class": "move",
+"lines": [
+1907,
+1918
+],
+"sha256": "94d335c76c83fb4ea38182c011a032008e418499c031e6056677069c8609fa36"
+},
+{
+"names": [
+"SmallPerturbation.lipschitzWith_smul_const"
+],
+"class": "move",
+"lines": [
+1920,
+1933
+],
+"sha256": "053f8ce4c5dcb5b079f2f7b7c64ae7d321318ce29a385c5d0ed1c1306729016d"
+},
+{
+"names": [
+"SmallPerturbation.bumpTranslation"
+],
+"class": "move",
+"lines": [
+1935,
+1939
+],
+"sha256": "4d21e0272499e2c76cf747a5a83a1d2ec261e0c3c1dabd536e4d0c0584756fa4"
+},
+{
+"names": [
+"SmallPerturbation.bumpTranslation_apply"
+],
+"class": "move",
+"lines": [
+1941,
+1947
+],
+"sha256": "a3afd533e6d714037e822ebbc8417a6f62cb8dc58a02e6c704c3cde66aa68686"
+},
+{
+"names": [
+"SmallPerturbation.bumpTranslation_eq_of_zero"
+],
+"class": "move",
+"lines": [
+1949,
+1953
+],
+"sha256": "b9188590bf0458d5c37028040b9b39bd9df6444d91ca521414aafca5e97d7979"
+},
+{
+"names": [
+"SmallPerturbation.exists_radius_bumpTranslation"
+],
+"class": "move",
+"lines": [
+1955,
+1980
+],
+"sha256": "8fca72dcafca08561e0823d62713553345af728ac988a74bdb18680231473d59"
+},
+{
+"names": [
+"SupportedDiffeomorph.mapsTo_of_fixed_outside"
+],
+"class": "move",
+"lines": [
+1984,
+1990
+],
+"sha256": "c72acbdda2fbb18c84456a0e0160f588f3fc90e75f7edc5ebbc0c91a57076e79"
+},
+{
+"names": [
+"SupportedDiffeomorph.inverse_fixed_outside"
+],
+"class": "move",
+"lines": [
+1992,
+1997
+],
+"sha256": "f8062b1bd611ce1e87ab135f8b826a6443379066ca59787d5b47b8ed263a8b62"
+},
+{
+"names": [
+"SupportedDiffeomorph.extendMap"
+],
+"class": "move",
+"lines": [
+1999,
+2004
+],
+"sha256": "27b43c4008993cd02265ad4089e3cf489dcfbb79f1fad54706ae73aa420a38b3"
+},
+{
+"names": [
+"SupportedDiffeomorph.extendMap_of_mem"
+],
+"class": "move",
+"lines": [
+2006,
+2012
+],
+"sha256": "eef5a8685ec4eefa23003b30b28e5b86697f3c63fcaa019f1b13a3fc4c8bf725"
+},
+{
+"names": [
+"SupportedDiffeomorph.extendMap_of_notMem"
+],
+"class": "move",
+"lines": [
+2014,
+2020
+],
+"sha256": "0cdd5339f4be03a8a3aa40f2ea9bafc35d0904e06075899658e3b01828df81f1"
+},
+{
+"names": [
+"SupportedDiffeomorph.extendMap_id"
+],
+"class": "move",
+"lines": [
+2022,
+2031
+],
+"sha256": "035a0b40d1ecfe37b7c4dc38ca76e5bf7c7aeebca187b913b8b02c10eb3163ec"
+},
+{
+"names": [
+"SupportedDiffeomorph.extendMap_chart"
+],
+"class": "move",
+"lines": [
+2033,
+2040
+],
+"sha256": "c12670d70e566b07b4d039372ac026671cd6e76dea63eb2eb180ba7a1c8902de"
+},
+{
+"names": [
+"SupportedDiffeomorph.extendMap_mem_target"
+],
+"class": "move",
+"lines": [
+2042,
+2050
+],
+"sha256": "8062bed94491f1a44581064781e25f9ef4cd593a4ac963a987b69f81927eda64"
+},
+{
+"names": [
+"SupportedDiffeomorph.extendMap_leftInverse"
+],
+"class": "move",
+"lines": [
+2052,
+2065
+],
+"sha256": "4acefc35870568252d13773e0651144d8b00cdca958be133342c0a7014a70f0e"
+},
+{
+"names": [
+"SupportedDiffeomorph.extendMap_eq_of_notMem_image"
+],
+"class": "move",
+"lines": [
+2067,
+2078
+],
+"sha256": "fbf424aa35a2d651b2ba045f954555935f8b9916168ec5b7e30711dc0f9925a1"
+},
+{
+"names": [
+"SupportedDiffeomorph.mapsTo_source"
+],
+"class": "move",
+"lines": [
+2080,
+2087
+],
+"sha256": "f9572bd5c134b5527551e9fa9518e94790966d52f6502789ed46d55343c765ce"
+},
+{
+"names": [
+"SupportedDiffeomorph.contMDiff_extendMap"
+],
+"class": "move",
+"lines": [
+2089,
+2113
+],
+"sha256": "d97689c22e3995895a19b5039561a2f40211375a1107e79c9d3a582c7a0f4344"
+},
+{
+"names": [
+"SupportedDiffeomorph.extension"
+],
+"class": "move",
+"lines": [
+2115,
+2131
+],
+"sha256": "625797d0d81fedc2293214c5af9b7252c21b1e3f8d5df87f227adb57b22bf2c4"
+},
+{
+"names": [
+"SupportedDiffeomorph.extension_chart"
+],
+"class": "move",
+"lines": [
+2133,
+2141
+],
+"sha256": "3c44e8827eb21575cdccc13c20fd5c55f401875322406813de5741a78cdd34e0"
+},
+{
+"names": [
+"SupportedDiffeomorph.extension_eq_of_notMem_image"
+],
+"class": "move",
+"lines": [
+2143,
+2151
+],
+"sha256": "0681da0bd8b4510cf1f28fb17016e567ec84d3107c93e5a5b72e4d490e2829a9"
+},
+{
+"names": [
+"SupportedDiffeomorph.extension_eq_of_notMem_target"
+],
+"class": "move",
+"lines": [
+2153,
+2161
+],
+"sha256": "515516defbd185e37c1e1c5b7df547f73e901cfd2fd708b145ecedcd3b44d46d"
+},
+{
+"names": [
+"RegularLevel.le_shift_iff_of_abs_sub_ge"
+],
+"class": "move",
+"lines": [
+2165,
+2173
+],
+"sha256": "097ba95f851239d690b4b4dcdf06b60f52ec0def115c80161ab5c08b77cd33c3"
+},
+{
+"names": [
+"RegularLevel.exists_ambientTransport_of_heightCollar"
+],
+"class": "move",
+"lines": [
+2175,
+2332
+],
+"sha256": "3dbfbbdce44746ea5789881229494b0754f726286fb451a47f357e651dd3a38c"
+},
+{
+"names": [
+"RegularLevel.exists_nearby_ambient_level_diffeomorphs_of_nonempty"
+],
+"class": "move",
+"lines": [
+2334,
+2358
+],
+"sha256": "44f0662c71100ef55624db35dcb66d002b02cb48c201dbfa3822021d62573f71"
+},
+{
+"names": [
+"RegularLevel.exists_nearby_ambient_level_diffeomorphs"
+],
+"class": "move",
+"lines": [
+2360,
+2405
+],
+"sha256": "bfb3a6a470e2467289ce7cfa8843cc230459c22100e8200417bbc057ed4778fd"
+},
+{
+"names": [
+"RegularLevel.AmbientEquivalent"
+],
+"class": "move",
+"lines": [
+2409,
+2413
+],
+"sha256": "d5d332bf3a74a3daf56197a6ffb221b598370f69a1f5bbe9c7473bd3be2b4da9"
+},
+{
+"names": [
+"RegularLevel.ambientEquivalent_refl"
+],
+"class": "move",
+"lines": [
+2415,
+2419
+],
+"sha256": "f4b3a0a297c4d8b71b80f79bc7674d6a3e965ad83d563d4e94baa02860c04c0d"
+},
+{
+"names": [
+"RegularLevel.ambientEquivalent_symm"
+],
+"class": "move",
+"lines": [
+2421,
+2430
+],
+"sha256": "f7d9f6fa1d8fa225ea352ff751233d9ddebc1f17f21f7ac63f60c4e28857b953"
+},
+{
+"names": [
+"RegularLevel.ambientEquivalent_trans"
+],
+"class": "move",
+"lines": [
+2432,
+2443
+],
+"sha256": "9e518131e443dd305598f3e8657bc6468bd6afd372b82d2630374bc12433aff4"
+},
+{
+"names": [
+"RegularLevel.exists_ambient_regularBand_transport"
+],
+"class": "move",
+"lines": [
+2445,
+2484
+],
+"sha256": "9007194a700aed02bb213c4d18499a42d6c551097fb7c9c8b0121c2c1d73ce75"
+},
+{
+"names": [
+"RegularLevel.exists_levelDiffeomorph_of_ambient"
+],
+"class": "move",
+"lines": [
+2486,
+2520
+],
+"sha256": "b14f7523f924a4e359d05fd4bf54c16eadea342d79ad5e666d01d3d5e176d0ce"
+},
+{
+"names": [
+"SphereCoordinates.ofLinearIsometry"
+],
+"class": "keep",
+"lines": [
+2522,
+2541
+],
+"sha256": "c93fa222b7ad01b67a5f315de9083f48e0ab6454df79c2ff870eb27c2a37002b"
+}
+]
+}
