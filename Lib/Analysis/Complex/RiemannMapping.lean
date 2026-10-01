@@ -12,8 +12,6 @@ import Lib.Analysis.Complex.RiemannMapping.BoundaryDerivative
 import Lib.Analysis.Complex.RiemannMapping.ConformalExtension
 import Lib.Analysis.Complex.RiemannMapping.PrincipalRoot
 import Lib.Analysis.Complex.RiemannMapping.DiscCompactification
-import Lib.Analysis.Complex.RiemannMapping.TriangleNormalization
-import Lib.Analysis.Complex.RiemannMapping.SectorRoots
 
 /-!
 # The Riemann mapping theorem and boundary behaviour of conformal maps (facade)
@@ -39,6 +37,6 @@ This module only imports its pieces:
 * `RiemannMapping/DiscCompactification` — extension of a homeomorphism onto the disc to the
   closure (topological Carathéodory theorem).
 
-* `RiemannMapping/TriangleNormalization`, `RiemannMapping/SectorRoots` — the triangle
-  normalization and the exponent-specific sector roots used by the project.
+The triangle normalization and the exponent-specific sector roots used by the project live in
+`Hopf/Proof/Analysis/Complex/RiemannMapping/`.
 -/

@@ -144,6 +144,8 @@ import Lib.Geometry.Manifold.Instances.RiemannSphere
 import Lib.Analysis.Complex.Mobius
 import Lib.Analysis.Complex.SchwarzReflection
 import Lib.Analysis.Complex.RiemannMapping
+import Hopf.Proof.Analysis.Complex.RiemannMapping.TriangleNormalization
+import Hopf.Proof.Analysis.Complex.RiemannMapping.SectorRoots
 import Lib.Analysis.Complex.RiemannMapping.Steps
 import Lib.Geometry.Manifold.Complex.Biholomorph
 import Lib.Topology.Covering.DiagonalQuotient
