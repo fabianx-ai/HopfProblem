@@ -1,0 +1,169 @@
+constants before 38301 after 38373 (keys 38199 38271 )
+lost 123 added 195 of which source declarations: 0 0 ; names with changed type 106 of which source: 37
+  PROOF-NAMING DiskFraming.exists_smooth_frame_near_starConvex
+  PROOF-NAMING DiskFraming.exists_smooth_frame_on_neighborhood_closedBall
+  PROOF-NAMING SmoothMorseLemma.SymmetricForm
+  PROOF-NAMING SmoothMorseLemma.congruenceDoubleEquiv
+  PROOF-NAMING SmoothMorseLemma.congruenceDoubleEquiv_toContinuousLinearMap
+  PROOF-NAMING SmoothMorseLemma.congruencePolynomial
+  PROOF-NAMING SmoothMorseLemma.congruencePolynomial_add_reference
+  PROOF-NAMING SmoothMorseLemma.congruencePolynomial_zero
+  PROOF-NAMING SmoothMorseLemma.congruence_apply
+  PROOF-NAMING SmoothMorseLemma.congruence_zero
+  PROOF-NAMING SmoothMorseLemma.contDiff_congruencePolynomial
+  PROOF-NAMING SmoothMorseLemma.contDiff_symmetricTaylorFactor
+  PROOF-NAMING SmoothMorseLemma.exists_congruencePolynomial_partialDiffeomorph
+  PROOF-NAMING SmoothMorseLemma.exists_quadratic_chart_of_smooth_congruence
+  PROOF-NAMING SmoothMorseLemma.exists_signed_coordinates
+  PROOF-NAMING SmoothMorseLemma.exists_signed_diffeomorph
+  PROOF-NAMING SmoothMorseLemma.exists_smooth_congruence_factor
+  PROOF-NAMING SmoothMorseLemma.flipBilinear
+  PROOF-NAMING SmoothMorseLemma.halfHessianQuadratic_apply
+  PROOF-NAMING SmoothMorseLemma.halfHessianQuadratic_associated
+auxiliary lost/added/changed (not judged): 123 195 69
+module moves (source declarations, 1-to-1):
+       8  Lib.Analysis.Calculus.MorseLemma -> Lib.Analysis.Calculus.MorseLemma.AdaptedDescentField
+      15  Lib.Analysis.Calculus.MorseLemma -> Lib.Analysis.Calculus.MorseLemma.CriticalPoints
+       6  Lib.Analysis.Calculus.MorseLemma -> Lib.Analysis.Calculus.MorseLemma.Cutoff
+      10  Lib.Analysis.Calculus.MorseLemma -> Lib.Analysis.Calculus.MorseLemma.DescentField
+      10  Lib.Analysis.Calculus.MorseLemma -> Lib.Analysis.Calculus.MorseLemma.Existence
+      18  Lib.Analysis.Calculus.MorseLemma -> Lib.Analysis.Calculus.MorseLemma.LinearPerturbation
+       7  Lib.Analysis.Calculus.MorseLemma -> Lib.Analysis.Calculus.MorseLemma.MorseChart
+       2  Lib.Analysis.Calculus.MorseLemma -> Lib.Analysis.Calculus.MorseLemma.ParametricIntegral
+      10  Lib.Analysis.Calculus.MorseLemma -> Lib.Analysis.Calculus.MorseLemma.PartialDiffeomorph
+       2  Lib.Analysis.Calculus.MorseLemma -> Lib.Analysis.Calculus.MorseLemma.PartitionOfUnity
+       1  Lib.Analysis.Calculus.MorseLemma -> Lib.Analysis.Calculus.MorseLemma.SignedCoordinates
+      10  Lib.Analysis.Calculus.MorseLemma -> Lib.Analysis.Calculus.MorseLemma.SignedMorseChart
+      22  Lib.Analysis.Calculus.MorseLemma -> Lib.Analysis.Calculus.MorseLemma.SplitChart
+       3  Lib.Analysis.Calculus.MorseLemma -> Lib.Analysis.Calculus.MorseLemma.SymmetricForm
+       8  Lib.Analysis.Calculus.MorseLemma -> Lib.Analysis.Calculus.MorseLemma.TaylorFactor
+      26  Lib.Analysis.Complex.RiemannMapping -> Hopf.Proof.Analysis.Complex.RiemannMapping.SectorRoots
+      17  Lib.Analysis.Complex.RiemannMapping -> Hopf.Proof.Analysis.Complex.RiemannMapping.TriangleNormalization
+      16  Lib.Analysis.Complex.RiemannMapping -> Lib.Analysis.Complex.RiemannMapping.BoundaryDerivative
+       5  Lib.Analysis.Complex.RiemannMapping -> Lib.Analysis.Complex.RiemannMapping.ConformalExtension
+       7  Lib.Analysis.Complex.RiemannMapping -> Lib.Analysis.Complex.RiemannMapping.DiscBoundaryEscape
+      15  Lib.Analysis.Complex.RiemannMapping -> Lib.Analysis.Complex.RiemannMapping.DiscCompactification
+      22  Lib.Analysis.Complex.RiemannMapping -> Lib.Analysis.Complex.RiemannMapping.Existence
+      31  Lib.Analysis.Complex.RiemannMapping -> Lib.Analysis.Complex.RiemannMapping.HalfStripChart
+      12  Lib.Analysis.Complex.RiemannMapping -> Lib.Analysis.Complex.RiemannMapping.ModulusOneReflection
+      17  Lib.Analysis.Complex.RiemannMapping -> Lib.Analysis.Complex.RiemannMapping.PrincipalRoot
+      13  Lib.Analysis.Complex.RiemannMapping -> Lib.Analysis.Complex.RiemannMapping.RectanglePrimitive
+      29  Lib.Geometry.Manifold.Collar -> Lib.Geometry.Manifold.Collar.DiskTubular
+      17  Lib.Geometry.Manifold.Collar -> Lib.Geometry.Manifold.Collar.HeightCollar
+      10  Lib.Geometry.Manifold.Collar -> Lib.Geometry.Manifold.Collar.LevelTransport
+      22  Lib.Geometry.Manifold.Collar -> Lib.Geometry.Manifold.Collar.RangeTransport
+      10  Lib.Geometry.Manifold.Collar -> Lib.Geometry.Manifold.Collar.SmallPerturbation
+       1  Lib.Geometry.Manifold.Collar -> Lib.Geometry.Manifold.Collar.SphereCoordinates
+      16  Lib.Geometry.Manifold.Collar -> Lib.Geometry.Manifold.Collar.SupportedDiffeomorph
+      55  Lib.Geometry.Manifold.Collar -> Lib.Geometry.Manifold.Collar.Tubular
+       6  Lib.Geometry.Manifold.Flow.HeightTranslating -> Lib.Geometry.Manifold.Flow.HeightTranslating.AbsorbingSublevel
+       4  Lib.Geometry.Manifold.Flow.HeightTranslating -> Lib.Geometry.Manifold.Flow.HeightTranslating.AttachingUnion
+       9  Lib.Geometry.Manifold.Flow.HeightTranslating -> Lib.Geometry.Manifold.Flow.HeightTranslating.DescentFlow
+       7  Lib.Geometry.Manifold.Flow.HeightTranslating -> Lib.Geometry.Manifold.Flow.HeightTranslating.DescentModel
+      20  Lib.Geometry.Manifold.Flow.HeightTranslating -> Lib.Geometry.Manifold.Flow.HeightTranslating.EntryTime
+      62  Lib.Geometry.Manifold.Flow.HeightTranslating -> Lib.Geometry.Manifold.Flow.HeightTranslating.FlowCollar
+       9  Lib.Geometry.Manifold.Flow.HeightTranslating -> Lib.Geometry.Manifold.Flow.HeightTranslating.HandleCoordinates
+      14  Lib.Geometry.Manifold.Morse.Cubic -> Lib.Geometry.Manifold.Morse.Cubic.AlignedRays
+      17  Lib.Geometry.Manifold.Morse.Cubic -> Lib.Geometry.Manifold.Morse.Cubic.AxisParameter
+      15  Lib.Geometry.Manifold.Morse.Cubic -> Lib.Geometry.Manifold.Morse.Cubic.BasinBlock
+       4  Lib.Geometry.Manifold.Morse.Cubic -> Lib.Geometry.Manifold.Morse.Cubic.CoreBasins
+      20  Lib.Geometry.Manifold.Morse.Cubic -> Lib.Geometry.Manifold.Morse.Cubic.DescentField
+      11  Lib.Geometry.Manifold.Morse.Cubic -> Lib.Geometry.Manifold.Morse.Cubic.EndpointChart
+       2  Lib.Geometry.Manifold.Morse.Cubic -> Lib.Geometry.Manifold.Morse.Cubic.LevelOrbit
+      10  Lib.Geometry.Manifold.Morse.Cubic -> Lib.Geometry.Manifold.Morse.Cubic.LocalReplacement
+      13  Lib.Geometry.Manifold.Morse.Cubic -> Lib.Geometry.Manifold.Morse.Cubic.Model
+      24  Lib.Geometry.Manifold.Morse.Cubic -> Lib.Geometry.Manifold.Morse.Cubic.SplitCoordinates
+       6  Lib.Geometry.Manifold.Morse.Cubic -> Lib.Geometry.Manifold.Morse.Cubic.SublevelFlow
+       1  Lib.Geometry.Manifold.Morse.Cubic -> Lib.Geometry.Manifold.Morse.Cubic.SurgeryWindowsExistence
+       5  Lib.Geometry.Manifold.Morse.Cubic -> Lib.Geometry.Manifold.Morse.Cubic.Tanh
+       8  Lib.Geometry.Manifold.Morse.Existence -> Lib.Geometry.Manifold.Morse.Existence.AttachingUnion
+      14  Lib.Geometry.Manifold.Morse.Existence -> Lib.Geometry.Manifold.Morse.Existence.BeltCore
+      40  Lib.Geometry.Manifold.Morse.Existence -> Lib.Geometry.Manifold.Morse.Existence.ChartPerturbation
+       7  Lib.Geometry.Manifold.Morse.Existence -> Lib.Geometry.Manifold.Morse.Existence.DistinctCriticalValues
+       6  Lib.Geometry.Manifold.Morse.Existence -> Lib.Geometry.Manifold.Morse.Existence.HomotopicRelWithin
+      13  Lib.Geometry.Manifold.Morse.Existence -> Lib.Geometry.Manifold.Morse.Existence.HomotopyCollars
+       6  Lib.Geometry.Manifold.Morse.Existence -> Lib.Geometry.Manifold.Morse.Existence.LevelSurgery
+       4  Lib.Geometry.Manifold.Morse.Existence -> Lib.Geometry.Manifold.Morse.Existence.PartialChart
+       4  Lib.Geometry.Manifold.Morse.Existence -> Lib.Geometry.Manifold.Morse.Existence.RegularLocus
+      24  Lib.Geometry.Manifold.Morse.Existence -> Lib.Geometry.Manifold.Morse.Existence.SmoothApproximation
+      16  Lib.Geometry.Manifold.Morse.SurgeryWindows -> Lib.Geometry.Manifold.Morse.SurgeryWindows.Avoidance
+       9  Lib.Geometry.Manifold.Morse.SurgeryWindows -> Lib.Geometry.Manifold.Morse.SurgeryWindows.BeltComplement
+       8  Lib.Geometry.Manifold.Morse.SurgeryWindows -> Lib.Geometry.Manifold.Morse.SurgeryWindows.DiskDouble
+       8  Lib.Geometry.Manifold.Morse.SurgeryWindows -> Lib.Geometry.Manifold.Morse.SurgeryWindows.HausdorffDimension
+      18  Lib.Geometry.Manifold.Morse.SurgeryWindows -> Lib.Geometry.Manifold.Morse.SurgeryWindows.Hemisphere
+       6  Lib.Geometry.Manifold.Morse.SurgeryWindows -> Lib.Geometry.Manifold.Morse.SurgeryWindows.ImageComplement
+      10  Lib.Geometry.Manifold.Morse.SurgeryWindows -> Lib.Geometry.Manifold.Morse.SurgeryWindows.NewInterior
+       5  Lib.Geometry.Manifold.Morse.SurgeryWindows -> Lib.Geometry.Manifold.Morse.SurgeryWindows.OpenHomotopyExtension
+      35  Lib.Geometry.Manifold.Morse.SurgeryWindows -> Lib.Geometry.Manifold.Morse.SurgeryWindows.SurgeryData
+      25  Lib.Geometry.Manifold.Morse.SurgeryWindows -> Lib.Geometry.Manifold.Morse.SurgeryWindows.Windows
+      17  Lib.Geometry.Manifold.Morse.SurgeryWindows -> Lib.Geometry.Manifold.Morse.SurgeryWindows.ZeroAvoidanceCutoff
+       5  Lib.Geometry.Manifold.Transversality.Basic -> Lib.Geometry.Manifold.Transversality.CenteredChart
+       2  Lib.Geometry.Manifold.Transversality.Basic -> Lib.Geometry.Manifold.Transversality.Diffeomorph
+       5  Lib.Geometry.Manifold.Transversality.Basic -> Lib.Geometry.Manifold.Transversality.DiscTheorem
+      29  Lib.Geometry.Manifold.Transversality.Basic -> Lib.Geometry.Manifold.Transversality.DiskShrinking
+       8  Lib.Geometry.Manifold.Transversality.Basic -> Lib.Geometry.Manifold.Transversality.GermLinearization
+      13  Lib.Geometry.Manifold.Transversality.Basic -> Lib.Geometry.Manifold.Transversality.GermRealization
+       2  Lib.Geometry.Manifold.Transversality.Basic -> Lib.Geometry.Manifold.Transversality.Homogeneity
+      13  Lib.Geometry.Manifold.Transversality.Basic -> Lib.Geometry.Manifold.Transversality.LinearFramePaths
+      28  Lib.Geometry.Manifold.Transversality.Basic -> Lib.Geometry.Manifold.Transversality.MorseBelt
+       2  Lib.Geometry.Manifold.Transversality.Basic -> Lib.Geometry.Manifold.Transversality.Parametric
+       5  Lib.Geometry.Manifold.Transversality.Basic -> Lib.Geometry.Manifold.Transversality.RegularValues
+      13  Lib.Geometry.Manifold.Transversality.Basic -> Lib.Geometry.Manifold.Transversality.SupportedIsotopy
+      11  Lib.Geometry.Manifold.Transversality.Basic -> Lib.Geometry.Manifold.Transversality.Transverse
+       9  Lib.Geometry.Manifold.Whitney.CleanStrips -> Lib.Geometry.Manifold.Whitney.CleanStrips.BeltIntersection
+      30  Lib.Geometry.Manifold.Whitney.CleanStrips -> Lib.Geometry.Manifold.Whitney.CleanStrips.BigonBoundary
+      11  Lib.Geometry.Manifold.Whitney.CleanStrips -> Lib.Geometry.Manifold.Whitney.CleanStrips.BigonStripCoordinates
+      21  Lib.Geometry.Manifold.Whitney.CleanStrips -> Lib.Geometry.Manifold.Whitney.CleanStrips.CornerPatch
+      21  Lib.Geometry.Manifold.Whitney.CleanStrips -> Lib.Geometry.Manifold.Whitney.CleanStrips.CrossingChart
+       8  Lib.Geometry.Manifold.Whitney.CleanStrips -> Lib.Geometry.Manifold.Whitney.CleanStrips.NormalCoordinate
+      16  Lib.Geometry.Manifold.Whitney.CleanStrips -> Lib.Geometry.Manifold.Whitney.CleanStrips.SphereNormal
+      29  Lib.Geometry.Manifold.Whitney.CleanStrips -> Lib.Geometry.Manifold.Whitney.CleanStrips.StripModel
+      27  Lib.Geometry.Manifold.Whitney.CleanStrips -> Lib.Geometry.Manifold.Whitney.CleanStrips.StripNormalData
+      21  Lib.Geometry.Manifold.Whitney.CleanStrips -> Lib.Geometry.Manifold.Whitney.CleanStrips.StripPatch
+       3  Lib.Geometry.Manifold.Whitney.EmbeddedArcs -> Lib.Geometry.Manifold.Whitney.EmbeddedArcs.Arcs
+       3  Lib.Geometry.Manifold.Whitney.EmbeddedArcs -> Lib.Geometry.Manifold.Whitney.EmbeddedArcs.BeltBigon
+       3  Lib.Geometry.Manifold.Whitney.EmbeddedArcs -> Lib.Geometry.Manifold.Whitney.EmbeddedArcs.CornerCharts
+       5  Lib.Geometry.Manifold.Whitney.EmbeddedArcs -> Lib.Geometry.Manifold.Whitney.EmbeddedArcs.FiberRestriction
+      13  Lib.Geometry.Manifold.Whitney.EmbeddedArcs -> Lib.Geometry.Manifold.Whitney.EmbeddedArcs.ImmersionRepair
+      14  Lib.Geometry.Manifold.Whitney.EmbeddedArcs -> Lib.Geometry.Manifold.Whitney.EmbeddedArcs.InnerBigon
+       8  Lib.Geometry.Manifold.Whitney.EmbeddedArcs -> Lib.Geometry.Manifold.Whitney.EmbeddedArcs.SmallPerturbation
+      11  Lib.Geometry.Manifold.Whitney.EmbeddedArcs -> Lib.Geometry.Manifold.Whitney.EmbeddedArcs.SphereNormalCoordinates
+       3  Lib.Geometry.Manifold.Whitney.EmbeddedArcs -> Lib.Geometry.Manifold.Whitney.EmbeddedArcs.StripAlongArc
+       6  Lib.Geometry.Manifold.Whitney.EmbeddedArcs -> Lib.Geometry.Manifold.Whitney.EmbeddedArcs.StripInterpolation
+       5  Lib.Geometry.Manifold.Whitney.EmbeddedArcs -> Lib.Geometry.Manifold.Whitney.EmbeddedArcs.StripPair
+       7  Lib.Geometry.Manifold.Whitney.EmbeddedArcs -> Lib.Geometry.Manifold.Whitney.EmbeddedArcs.TransverseCoordinates
+       7  Lib.Geometry.Manifold.Whitney.EmbeddedArcs -> Lib.Geometry.Manifold.Whitney.EmbeddedArcs.WhitneyDisc
+      13  Lib.Geometry.Manifold.Whitney.FrameField -> Lib.Geometry.Manifold.Whitney.FrameField.BlockDeterminant
+      17  Lib.Geometry.Manifold.Whitney.FrameField -> Lib.Geometry.Manifold.Whitney.FrameField.BoundaryArcs
+       2  Lib.Geometry.Manifold.Whitney.FrameField -> Lib.Geometry.Manifold.Whitney.FrameField.BoundaryField
+       3  Lib.Geometry.Manifold.Whitney.FrameField -> Lib.Geometry.Manifold.Whitney.FrameField.Complement
+       8  Lib.Geometry.Manifold.Whitney.FrameField -> Lib.Geometry.Manifold.Whitney.FrameField.FrameExtension
+      12  Lib.Geometry.Manifold.Whitney.FrameField -> Lib.Geometry.Manifold.Whitney.FrameField.IntersectionCoordinates
+       4  Lib.Geometry.Manifold.Whitney.FrameField -> Lib.Geometry.Manifold.Whitney.FrameField.InvertibleJoin
+      23  Lib.Geometry.Manifold.Whitney.FrameField -> Lib.Geometry.Manifold.Whitney.FrameField.PlanarFrame
+       3  Lib.Geometry.Manifold.Whitney.FrameField -> Lib.Geometry.Manifold.Whitney.FrameField.RankThreeCorners
+      12  Lib.Geometry.Manifold.Whitney.FrameField -> Lib.Geometry.Manifold.Whitney.FrameField.RankThreeFrame
+       5  Lib.Geometry.Manifold.Whitney.FrameField -> Lib.Geometry.Manifold.Whitney.FrameField.SheetCoordinates
+      19  Lib.Geometry.Manifold.Whitney.FrameField -> Lib.Geometry.Manifold.Whitney.FrameField.SheetNormal
+       3  Lib.Geometry.Manifold.Whitney.RankThreeModel -> Lib.Geometry.Manifold.Whitney.RankThreeModel.Cancellation
+      15  Lib.Geometry.Manifold.Whitney.RankThreeModel -> Lib.Geometry.Manifold.Whitney.RankThreeModel.CompatibleChart
+      27  Lib.Geometry.Manifold.Whitney.RankThreeModel -> Lib.Geometry.Manifold.Whitney.RankThreeModel.CorrectedCoordinates
+      50  Lib.Geometry.Manifold.Whitney.RankThreeModel -> Lib.Geometry.Manifold.Whitney.RankThreeModel.GraphMotion
+       3  Lib.Geometry.Manifold.Whitney.RankThreeModel -> Lib.Geometry.Manifold.Whitney.RankThreeModel.IntersectionRemoval
+      34  Lib.Geometry.Manifold.Whitney.RankThreeModel -> Lib.Geometry.Manifold.Whitney.RankThreeModel.Model
+      20  Lib.Geometry.Manifold.Whitney.RankThreeModel -> Lib.Geometry.Manifold.Whitney.RankThreeModel.ModelGraphMotion
+      17  Lib.Geometry.Manifold.Whitney.RankThreeModel -> Lib.Geometry.Manifold.Whitney.RankThreeModel.SheetCorrection
+      31  Lib.Geometry.Manifold.Whitney.RankThreeModel -> Lib.Geometry.Manifold.Whitney.RankThreeModel.SheetParametrizedChart
+       6  Lib.Geometry.Manifold.Whitney.RankThreeModel -> Lib.Geometry.Manifold.Whitney.RankThreeModel.SheetRecognition
+      20  Lib.Geometry.Manifold.Whitney.RankThreeModel -> Lib.Geometry.Manifold.Whitney.RankThreeModel.SheetRetiming
+      43  Lib.Geometry.Manifold.Whitney.RankThreeModel -> Lib.Geometry.Manifold.Whitney.RankThreeModel.TangentAdaptedChart
+      73  Lib.Topology.Dimension.CubeBoundaryThreeCells -> Lib.Topology.Dimension.CubeBoundaryThreeCells.Cells
+      20  Lib.Topology.Dimension.CubeBoundaryThreeCells -> Lib.Topology.Dimension.CubeBoundaryThreeCells.Coverage
+      32  Lib.Topology.Dimension.CubeBoundaryThreeCells -> Lib.Topology.Dimension.CubeBoundaryThreeCells.Faces
+      30  Lib.Topology.Dimension.CubeBoundaryThreeCells -> Lib.Topology.Dimension.CubeBoundaryThreeCells.Lattice
+       6  Lib.Topology.Dimension.CubeBoundaryThreeCells -> Lib.Topology.Dimension.CubeBoundaryThreeCells.RelInterior
+      26  Lib.Topology.Dimension.CubeBoundaryThreeCells -> Lib.Topology.Dimension.CubeBoundaryThreeCells.Separation
+      26  Lib.Topology.Dimension.CubeBoundaryThreeCells -> Lib.Topology.Dimension.CubeBoundaryThreeCells.SquareBoundary
+ambiguous module changes: 0
+auxiliary constants that changed module: 1124
+VERDICT PASS
