@@ -53,13 +53,22 @@ structure ManifoldSmoothing.MapSmoothingPatch {E G H K X N : Type*} [NormedAddCo
     [NormedSpace ℝ E] [NormedAddCommGroup G] [NormedSpace ℝ G] [TopologicalSpace H]
     [TopologicalSpace K] (I : ModelWithCorners ℝ E H) (J : ModelWithCorners ℝ G K)
     [TopologicalSpace X] [ChartedSpace H X] [TopologicalSpace N] [ChartedSpace K N] where
+  /-- A smooth partial diffeomorphism from an open subset of `N` onto an open subset of the
+  model space `G`, in whose coordinates the map is modified. -/
   chart : PartialDiffeomorph J 𝓘(ℝ, G) N G ∞
+  /-- The inner bump function; its `plateau` is the interior of `{cutoff = 1}`. -/
   cutoff : X → ℝ
+  /-- The outer bump function, equal to `1` on the topological support of `cutoff`. -/
   outer : X → ℝ
+  /-- The inner bump function `cutoff` is smooth. -/
   smooth : ContMDiff I 𝓘(ℝ, ℝ) ∞ cutoff
+  /-- The outer bump function `outer` is smooth. -/
   outer_smooth : ContMDiff I 𝓘(ℝ, ℝ) ∞ outer
+  /-- The inner bump function `cutoff` has compact support. -/
   compact : HasCompactSupport cutoff
+  /-- The outer bump function `outer` has compact support. -/
   outer_compact : HasCompactSupport outer
+  /-- `outer x = 1` for every `x` in the topological support of `cutoff`. -/
   nested : ∀ x ∈ tsupport cutoff, outer x = 1
 
 /-- Two smoothing patches are compatible on their overlap. -/
