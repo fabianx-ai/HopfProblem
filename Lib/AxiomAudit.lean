@@ -8607,3 +8607,48 @@ is an evidence command rather than library content.
 #print axioms Hyperbolic.contMDiff_hyperboloidReflection
 #check Hyperbolic.hyperboloidReflectionDiffeomorph
 #print axioms Hyperbolic.hyperboloidReflectionDiffeomorph
+
+#check Hyperbolic.hyperboloidAdaptedTime
+#print axioms Hyperbolic.hyperboloidAdaptedTime
+#check Hyperbolic.hyperboloidAdaptedProjection
+#print axioms Hyperbolic.hyperboloidAdaptedProjection
+#check Hyperbolic.lorentzAdapted_decomposition
+#print axioms Hyperbolic.lorentzAdapted_decomposition
+#check Hyperbolic.hyperboloidAdaptedTime_square
+#print axioms Hyperbolic.hyperboloidAdaptedTime_square
+#check Hyperbolic.hyperboloidAdaptedTime_ne_zero
+#print axioms Hyperbolic.hyperboloidAdaptedTime_ne_zero
+#check Hyperbolic.hyperboloidAdaptedTime_self
+#print axioms Hyperbolic.hyperboloidAdaptedTime_self
+#check Hyperbolic.hyperboloidAdaptedTime_pos
+#print axioms Hyperbolic.hyperboloidAdaptedTime_pos
+#check Hyperbolic.hyperboloidAdaptedTime_sqrt
+#print axioms Hyperbolic.hyperboloidAdaptedTime_sqrt
+#check Hyperbolic.hyperboloidAdaptedGraphCoords
+#print axioms Hyperbolic.hyperboloidAdaptedGraphCoords
+#check Hyperbolic.hyperboloidAdaptedGraphCoords_spec
+#print axioms Hyperbolic.hyperboloidAdaptedGraphCoords_spec
+#check Hyperbolic.hyperboloidAdaptedGraphCoords_zero
+#print axioms Hyperbolic.hyperboloidAdaptedGraphCoords_zero
+#check Hyperbolic.hyperboloidAdaptedGraphCoords_time_pos
+#print axioms Hyperbolic.hyperboloidAdaptedGraphCoords_time_pos
+#check Hyperbolic.hyperboloidAdaptedGraphCoords_mem
+#print axioms Hyperbolic.hyperboloidAdaptedGraphCoords_mem
+#check Hyperbolic.hyperboloidAdaptedGraph
+#print axioms Hyperbolic.hyperboloidAdaptedGraph
+#check Hyperbolic.hyperboloidAdaptedGraph_inverse
+#print axioms Hyperbolic.hyperboloidAdaptedGraph_inverse
+#check Hyperbolic.continuous_hyperboloidAdaptedGraph
+#print axioms Hyperbolic.continuous_hyperboloidAdaptedGraph
+#check Hyperbolic.hyperboloidAdaptedHomeomorph
+#print axioms Hyperbolic.hyperboloidAdaptedHomeomorph
+#check Hyperbolic.hyperboloidAdaptedGraph_normal
+#print axioms Hyperbolic.hyperboloidAdaptedGraph_normal
+#check Hyperbolic.hyperboloidAdaptedGraph_sides
+#print axioms Hyperbolic.hyperboloidAdaptedGraph_sides
+#check Hyperbolic.hyperboloid_normal_sides_pathConnected
+#print axioms Hyperbolic.hyperboloid_normal_sides_pathConnected
+#check Hyperbolic.hyperboloid_normal_sign_on_preconnected
+#print axioms Hyperbolic.hyperboloid_normal_sign_on_preconnected
+#check Hyperbolic.hyperboloid_normal_components
+#print axioms Hyperbolic.hyperboloid_normal_components

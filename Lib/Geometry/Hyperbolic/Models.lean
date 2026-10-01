@@ -1,5 +1,8 @@
 module
 
+public import Mathlib.Analysis.Convex.PathConnected
+public import Mathlib.Topology.Connected.Basic
+
 public import Mathlib.Topology.Algebra.Module.FiniteDimension
 public import Mathlib.Geometry.Manifold.ContMDiff.Basic
 public import Mathlib.Geometry.Manifold.Diffeomorph
@@ -7170,5 +7173,448 @@ def hyperboloidReflectionDiffeomorph (n : Fin 3 → ℝ)
   { hyperboloidReflectionEquiv n hn with
     contMDiff_toFun := contMDiff_hyperboloidReflection n hn
     contMDiff_invFun := contMDiff_hyperboloidReflection n hn }
+
+/-- The timelike coefficient of a vector in an adapted Lorentz frame.
+
+Textbook source: reviewed Lorentz reflection proof, S03, lines 105–107. -/
+def hyperboloidAdaptedTime (p : Hyperboloid) (u : Fin 3 → ℝ) : ℝ :=
+  -lorentzFunctional p.val u
+
+/-- The two spacelike coefficient projections on the upper hyperboloid.
+
+Textbook source: reviewed Lorentz reflection proof, S03, lines 105,114. -/
+def hyperboloidAdaptedProjection (e n : Fin 3 → ℝ) (q : Hyperboloid) : ℝ × ℝ :=
+  (lorentzFunctional e q.val, lorentzFunctional n q.val)
+
+/-- Every vector decomposes in the prescribed adapted Lorentz frame, with its actual pairing coefficients.
+
+Textbook source: reviewed Lorentz reflection proof, S03, lines 104–105. -/
+theorem lorentzAdapted_decomposition (p : Hyperboloid) (e n : Fin 3 → ℝ)
+    (hn : lorentzBilinear n n = 1) (hpn : lorentzBilinear p.val n = 0)
+    (hep : lorentzBilinear e p.val = 0) (hen : lorentzBilinear e n = 0)
+    (hee : lorentzBilinear e e = 1) (u : Fin 3 → ℝ) :
+  u = hyperboloidAdaptedTime p u • p.val +
+    lorentzFunctional e u • e + lorentzFunctional n u • n := by
+  have hpp : lorentzBilinear p.val p.val = -1 := by
+    simpa only [lorentzBilinear_apply, pow_two] using p.property.1
+  have hpe : lorentzBilinear p.val e = 0 := (lorentzBilinear_symm _ _).trans hep
+  have hu : u - lorentzFunctional n u • n ∈ (lorentzFunctional n).ker := by
+    change lorentzFunctional n (u - lorentzFunctional n u • n) = 0
+    simp only [map_sub, map_smul, smul_eq_mul]
+    rw [← lorentzBilinear_eq_functional, hn]
+    ring
+  have hspan : u - lorentzFunctional n u • n ∈
+      Submodule.span ℝ ({p.val, e} : Set (Fin 3 → ℝ)) := by
+    rw [lorentzAxis_span_ker n hn p hpn e hep hen hee]
+    exact hu
+  obtain ⟨a, b, hab⟩ := Submodule.mem_span_pair.mp hspan
+  have ha : a = hyperboloidAdaptedTime p u := by
+    have h := congrArg (fun v => lorentzFunctional p.val v) hab
+    simp only [map_add, map_smul, map_sub, smul_eq_mul] at h
+    rw [← lorentzBilinear_eq_functional, hpp, hpe, hpn] at h
+    dsimp [hyperboloidAdaptedTime]
+    rw [← lorentzBilinear_eq_functional]
+    linarith
+  have hb : b = lorentzFunctional e u := by
+    have h := congrArg (fun v => lorentzFunctional e v) hab
+    simp only [map_add, map_smul, map_sub, smul_eq_mul] at h
+    rw [← lorentzBilinear_eq_functional, hep, hee, hen] at h
+    rw [← lorentzBilinear_eq_functional]
+    linarith
+  rw [ha, hb] at hab
+  exact (eq_sub_iff_add_eq.mp hab).symm
+
+/-- The hyperboloid equation in adapted Lorentz coordinates.
+
+Textbook source: reviewed Lorentz reflection proof, S03, lines 105–106. -/
+theorem hyperboloidAdaptedTime_square (p : Hyperboloid) (e n : Fin 3 → ℝ)
+    (hn : lorentzBilinear n n = 1) (hpn : lorentzBilinear p.val n = 0)
+    (hep : lorentzBilinear e p.val = 0) (hen : lorentzBilinear e n = 0)
+    (hee : lorentzBilinear e e = 1) (q : Hyperboloid) :
+  -(hyperboloidAdaptedTime p q.val)^2 + (lorentzFunctional e q.val)^2 +
+    (lorentzFunctional n q.val)^2 = -1 := by
+  have hpp : lorentzBilinear p.val p.val = -1 := by
+    simpa only [lorentzBilinear_apply, pow_two] using p.property.1
+  have hqq : lorentzBilinear q.val q.val = -1 := by
+    simpa only [lorentzBilinear_apply, pow_two] using q.property.1
+  have hpe : lorentzBilinear p.val e = 0 := (lorentzBilinear_symm _ _).trans hep
+  have hnp : lorentzBilinear n p.val = 0 := (lorentzBilinear_symm _ _).trans hpn
+  have hne : lorentzBilinear n e = 0 := (lorentzBilinear_symm _ _).trans hen
+  have h := congrArg (fun u => lorentzBilinear u u)
+    (lorentzAdapted_decomposition p e n hn hpn hep hen hee q.val)
+  simp only [map_add, map_smul, ContinuousLinearMap.add_apply,
+    ContinuousLinearMap.smul_apply, smul_eq_mul] at h
+  rw [hpp, hqq, hpe, hnp, hne, hep, hpn, hen, hee, hn] at h
+  nlinarith [h]
+
+/-- The timelike coefficient never vanishes on the upper hyperboloid.
+
+Textbook source: reviewed Lorentz reflection proof, S03, lines 106. -/
+theorem hyperboloidAdaptedTime_ne_zero (p : Hyperboloid) (e n : Fin 3 → ℝ)
+    (hn : lorentzBilinear n n = 1) (hpn : lorentzBilinear p.val n = 0)
+    (hep : lorentzBilinear e p.val = 0) (hen : lorentzBilinear e n = 0)
+    (hee : lorentzBilinear e e = 1) (q : Hyperboloid) :
+  hyperboloidAdaptedTime p q.val ≠ 0 := by
+  intro hz
+  have h := hyperboloidAdaptedTime_square p e n hn hpn hep hen hee q
+  rw [hz] at h
+  nlinarith [sq_nonneg (lorentzFunctional e q.val), sq_nonneg (lorentzFunctional n q.val)]
+
+/-- The timelike coefficient of the frame base point is one.
+
+Textbook source: reviewed Lorentz reflection proof, S03, lines 106–107. -/
+theorem hyperboloidAdaptedTime_self (p : Hyperboloid) :
+  hyperboloidAdaptedTime p p.val = 1 := by
+  have h : lorentzFunctional p.val p.val = -1 := by
+    simpa only [lorentzFunctional_apply, pow_two] using p.property.1
+  simp only [hyperboloidAdaptedTime, h, neg_neg]
+
+/-- Connectedness and the value at the base point make the adapted timelike coefficient positive.
+
+Textbook source: reviewed Lorentz reflection proof, S03, lines 106–107. -/
+theorem hyperboloidAdaptedTime_pos (p : Hyperboloid) (e n : Fin 3 → ℝ)
+    (hn : lorentzBilinear n n = 1) (hpn : lorentzBilinear p.val n = 0)
+    (hep : lorentzBilinear e p.val = 0) (hen : lorentzBilinear e n = 0)
+    (hee : lorentzBilinear e e = 1) (q : Hyperboloid) :
+  0 < hyperboloidAdaptedTime p q.val := by
+  let : ConnectedSpace Hyperboloid := connectedSpace_hyperboloidGraph
+  by_contra hpos
+  have hbad : hyperboloidAdaptedTime p q.val ≤ 0 := le_of_not_gt hpos
+  have hc : Continuous (fun r : Hyperboloid => hyperboloidAdaptedTime p r.val) :=
+    ((lorentzFunctional p.val).continuous.comp continuous_subtype_val).neg
+  have hp : 0 ≤ hyperboloidAdaptedTime p p.val := by
+    rw [hyperboloidAdaptedTime_self]
+    norm_num
+  obtain ⟨r, hr⟩ := intermediate_value_univ q p hc ⟨hbad, hp⟩
+  exact hyperboloidAdaptedTime_ne_zero p e n hn hpn hep hen hee r hr
+
+/-- The positive timelike coefficient is the square root determined by the hyperboloid equation.
+
+Textbook source: reviewed Lorentz reflection proof, S03, lines 107. -/
+theorem hyperboloidAdaptedTime_sqrt (p : Hyperboloid) (e n : Fin 3 → ℝ)
+    (hn : lorentzBilinear n n = 1) (hpn : lorentzBilinear p.val n = 0)
+    (hep : lorentzBilinear e p.val = 0) (hen : lorentzBilinear e n = 0)
+    (hee : lorentzBilinear e e = 1) (q : Hyperboloid) :
+  hyperboloidAdaptedTime p q.val =
+    Real.sqrt (1 + (lorentzFunctional e q.val)^2 + (lorentzFunctional n q.val)^2) := by
+  have hs := hyperboloidAdaptedTime_square p e n hn hpn hep hen hee q
+  have hp := hyperboloidAdaptedTime_pos p e n hn hpn hep hen hee q
+  have heq : 1 + (lorentzFunctional e q.val)^2 + (lorentzFunctional n q.val)^2 =
+      (hyperboloidAdaptedTime p q.val)^2 := by linarith
+  rw [heq, Real.sqrt_sq hp.le]
+
+/-- The explicit adapted graph in the ambient Lorentz space.
+
+Textbook source: reviewed Lorentz reflection proof, S03, lines 108. -/
+def hyperboloidAdaptedGraphCoords (p : Hyperboloid) (e n : Fin 3 → ℝ)
+    (ba : ℝ × ℝ) : Fin 3 → ℝ :=
+  Real.sqrt (1 + ba.1^2 + ba.2^2) • p.val + ba.1 • e + ba.2 • n
+
+/-- The adapted graph has Lorentz square minus one and the prescribed spacelike coefficients.
+
+Textbook source: reviewed Lorentz reflection proof, S03, lines 108–110. -/
+theorem hyperboloidAdaptedGraphCoords_spec (p : Hyperboloid) (e n : Fin 3 → ℝ)
+    (hn : lorentzBilinear n n = 1) (hpn : lorentzBilinear p.val n = 0)
+    (hep : lorentzBilinear e p.val = 0) (hen : lorentzBilinear e n = 0)
+    (hee : lorentzBilinear e e = 1) (ba : ℝ × ℝ) :
+  lorentzBilinear (hyperboloidAdaptedGraphCoords p e n ba)
+    (hyperboloidAdaptedGraphCoords p e n ba) = -1 ∧
+  lorentzFunctional e (hyperboloidAdaptedGraphCoords p e n ba) = ba.1 ∧
+  lorentzFunctional n (hyperboloidAdaptedGraphCoords p e n ba) = ba.2 := by
+  have hpp : lorentzBilinear p.val p.val = -1 := by
+    simpa only [lorentzBilinear_apply, pow_two] using p.property.1
+  have hpe : lorentzBilinear p.val e = 0 := (lorentzBilinear_symm _ _).trans hep
+  have hnp : lorentzBilinear n p.val = 0 := (lorentzBilinear_symm _ _).trans hpn
+  have hne : lorentzBilinear n e = 0 := (lorentzBilinear_symm _ _).trans hen
+  have hs : (Real.sqrt (1 + ba.1^2 + ba.2^2))^2 = 1 + ba.1^2 + ba.2^2 :=
+    Real.sq_sqrt (by positivity)
+  constructor
+  · simp only [hyperboloidAdaptedGraphCoords, map_add, map_smul,
+      ContinuousLinearMap.add_apply, ContinuousLinearMap.smul_apply, smul_eq_mul,
+      hpp, hpe, hnp, hne, hep, hpn, hen, hee, hn]
+    nlinarith [hs]
+  · constructor
+    · rw [← lorentzBilinear_eq_functional]
+      simp only [hyperboloidAdaptedGraphCoords, map_add, map_smul, smul_eq_mul,
+        hep, hee, hen]
+      ring
+    · rw [← lorentzBilinear_eq_functional]
+      simp only [hyperboloidAdaptedGraphCoords, map_add, map_smul, smul_eq_mul,
+        hnp, hne, hn]
+      ring
+
+/-- The adapted graph takes the parameter origin to the frame base point.
+
+Textbook source: reviewed Lorentz reflection proof, S03, lines 110–111. -/
+theorem hyperboloidAdaptedGraphCoords_zero (p : Hyperboloid) (e n : Fin 3 → ℝ)
+    (hn : lorentzBilinear n n = 1) (hpn : lorentzBilinear p.val n = 0)
+    (hep : lorentzBilinear e p.val = 0) (hen : lorentzBilinear e n = 0)
+    (hee : lorentzBilinear e e = 1) :
+  hyperboloidAdaptedGraphCoords p e n (0, 0) = p.val := by
+  simp [hyperboloidAdaptedGraphCoords]
+
+/-- The adapted graph has positive time, by connectedness of the parameter plane and its value at the origin.
+
+Textbook source: reviewed Lorentz reflection proof, S03, lines 109–111. -/
+theorem hyperboloidAdaptedGraphCoords_time_pos (p : Hyperboloid) (e n : Fin 3 → ℝ)
+    (hn : lorentzBilinear n n = 1) (hpn : lorentzBilinear p.val n = 0)
+    (hep : lorentzBilinear e p.val = 0) (hen : lorentzBilinear e n = 0)
+    (hee : lorentzBilinear e e = 1) (ba : ℝ × ℝ) :
+  0 < hyperboloidAdaptedGraphCoords p e n ba 2 := by
+  let : PathConnectedSpace ℝ := Real.instPathConnectedSpace
+  let : PathConnectedSpace (ℝ × ℝ) := Prod.instPathConnectedSpace
+  by_contra hpos
+  have hbad : hyperboloidAdaptedGraphCoords p e n ba 2 ≤ 0 := le_of_not_gt hpos
+  have hc : Continuous (hyperboloidAdaptedGraphCoords p e n) :=
+    ((((continuous_const.add (continuous_fst.pow 2)).add
+        (continuous_snd.pow 2)).sqrt.smul continuous_const).add
+        (continuous_fst.smul continuous_const)).add
+      (continuous_snd.smul continuous_const)
+  have hzero : 0 ≤ hyperboloidAdaptedGraphCoords p e n (0, 0) 2 := by
+    rw [hyperboloidAdaptedGraphCoords_zero p e n hn hpn hep hen hee]
+    exact p.property.2.le
+  obtain ⟨xy, hxy⟩ := intermediate_value_univ ba (0, 0)
+    ((continuous_apply 2).comp hc) ⟨hbad, hzero⟩
+  exact lorentzUnit_time_ne_zero _
+    (hyperboloidAdaptedGraphCoords_spec p e n hn hpn hep hen hee xy).1 hxy
+
+/-- The displayed adapted graph satisfies the actual upper-sheet subtype predicate.
+
+Textbook source: reviewed Lorentz reflection proof, S03, lines 109–111. -/
+theorem hyperboloidAdaptedGraphCoords_mem (p : Hyperboloid) (e n : Fin 3 → ℝ)
+    (hn : lorentzBilinear n n = 1) (hpn : lorentzBilinear p.val n = 0)
+    (hep : lorentzBilinear e p.val = 0) (hen : lorentzBilinear e n = 0)
+    (hee : lorentzBilinear e e = 1) (ba : ℝ × ℝ) :
+  (hyperboloidAdaptedGraphCoords p e n ba 0)^2 +
+    (hyperboloidAdaptedGraphCoords p e n ba 1)^2 -
+    (hyperboloidAdaptedGraphCoords p e n ba 2)^2 = -1 ∧
+  0 < hyperboloidAdaptedGraphCoords p e n ba 2 := by
+  refine ⟨?_, hyperboloidAdaptedGraphCoords_time_pos p e n hn hpn hep hen hee ba⟩
+  simpa only [lorentzBilinear_apply, pow_two] using
+    (hyperboloidAdaptedGraphCoords_spec p e n hn hpn hep hen hee ba).1
+
+/-- The adapted graph as a map into the upper hyperboloid.
+
+Textbook source: reviewed Lorentz reflection proof, S03, lines 108–111. -/
+def hyperboloidAdaptedGraph (p : Hyperboloid) (e n : Fin 3 → ℝ)
+    (hn : lorentzBilinear n n = 1) (hpn : lorentzBilinear p.val n = 0)
+    (hep : lorentzBilinear e p.val = 0) (hen : lorentzBilinear e n = 0)
+    (hee : lorentzBilinear e e = 1) (ba : ℝ × ℝ) : Hyperboloid :=
+  ⟨hyperboloidAdaptedGraphCoords p e n ba,
+    hyperboloidAdaptedGraphCoords_mem p e n hn hpn hep hen hee ba⟩
+
+/-- The adapted graph and its coefficient projection are inverse in both directions.
+
+Textbook source: reviewed Lorentz reflection proof, S03, lines 111–112. -/
+theorem hyperboloidAdaptedGraph_inverse (p : Hyperboloid) (e n : Fin 3 → ℝ)
+    (hn : lorentzBilinear n n = 1) (hpn : lorentzBilinear p.val n = 0)
+    (hep : lorentzBilinear e p.val = 0) (hen : lorentzBilinear e n = 0)
+    (hee : lorentzBilinear e e = 1) :
+  (∀ ba : ℝ × ℝ,
+    hyperboloidAdaptedProjection e n (hyperboloidAdaptedGraph p e n hn hpn hep hen hee ba) = ba) ∧
+  (∀ q : Hyperboloid,
+    hyperboloidAdaptedGraph p e n hn hpn hep hen hee (hyperboloidAdaptedProjection e n q) = q) := by
+  constructor
+  · intro ba
+    exact Prod.ext
+      (hyperboloidAdaptedGraphCoords_spec p e n hn hpn hep hen hee ba).2.1
+      (hyperboloidAdaptedGraphCoords_spec p e n hn hpn hep hen hee ba).2.2
+  · intro q
+    apply Subtype.ext
+    change Real.sqrt (1 + (lorentzFunctional e q.val)^2 +
+      (lorentzFunctional n q.val)^2) • p.val +
+      lorentzFunctional e q.val • e + lorentzFunctional n q.val • n = q.val
+    rw [← hyperboloidAdaptedTime_sqrt p e n hn hpn hep hen hee q]
+    exact (lorentzAdapted_decomposition p e n hn hpn hep hen hee q.val).symm
+
+/-- The adapted graph into the upper hyperboloid is continuous.
+
+Textbook source: reviewed Lorentz reflection proof, S03, lines 111–112. -/
+theorem continuous_hyperboloidAdaptedGraph (p : Hyperboloid) (e n : Fin 3 → ℝ)
+    (hn : lorentzBilinear n n = 1) (hpn : lorentzBilinear p.val n = 0)
+    (hep : lorentzBilinear e p.val = 0) (hen : lorentzBilinear e n = 0)
+    (hee : lorentzBilinear e e = 1) :
+  Continuous (hyperboloidAdaptedGraph p e n hn hpn hep hen hee) := by
+  have hc : Continuous (hyperboloidAdaptedGraphCoords p e n) :=
+    ((((continuous_const.add (continuous_fst.pow 2)).add
+        (continuous_snd.pow 2)).sqrt.smul continuous_const).add
+        (continuous_fst.smul continuous_const)).add
+      (continuous_snd.smul continuous_const)
+  exact hc.subtype_mk (hyperboloidAdaptedGraphCoords_mem p e n hn hpn hep hen hee)
+
+/-- The explicit adapted graph homeomorphism, with inverse given by its two coefficient functionals.
+
+Textbook source: reviewed Lorentz reflection proof, S03, lines 111–112. -/
+def hyperboloidAdaptedHomeomorph (p : Hyperboloid) (e n : Fin 3 → ℝ)
+    (hn : lorentzBilinear n n = 1) (hpn : lorentzBilinear p.val n = 0)
+    (hep : lorentzBilinear e p.val = 0) (hen : lorentzBilinear e n = 0)
+    (hee : lorentzBilinear e e = 1) : (ℝ × ℝ) ≃ₜ Hyperboloid where
+  toFun := hyperboloidAdaptedGraph p e n hn hpn hep hen hee
+  invFun := hyperboloidAdaptedProjection e n
+  left_inv := (hyperboloidAdaptedGraph_inverse p e n hn hpn hep hen hee).1
+  right_inv := (hyperboloidAdaptedGraph_inverse p e n hn hpn hep hen hee).2
+  continuous_toFun := continuous_hyperboloidAdaptedGraph p e n hn hpn hep hen hee
+  continuous_invFun :=
+    ((lorentzFunctional e).continuous.comp continuous_subtype_val).prodMk
+      ((lorentzFunctional n).continuous.comp continuous_subtype_val)
+
+/-- The normal pairing on the adapted graph is exactly the second parameter.
+
+Textbook source: reviewed Lorentz reflection proof, S03, lines 112. -/
+theorem hyperboloidAdaptedGraph_normal (p : Hyperboloid) (e n : Fin 3 → ℝ)
+    (hn : lorentzBilinear n n = 1) (hpn : lorentzBilinear p.val n = 0)
+    (hep : lorentzBilinear e p.val = 0) (hen : lorentzBilinear e n = 0)
+    (hee : lorentzBilinear e e = 1) (ba : ℝ × ℝ) :
+  lorentzBilinear (hyperboloidAdaptedGraph p e n hn hpn hep hen hee ba).val n = ba.2 := by
+  rw [lorentzBilinear_symm, lorentzBilinear_eq_functional]
+  exact (hyperboloidAdaptedGraphCoords_spec p e n hn hpn hep hen hee ba).2.2
+
+/-- The two open half-planes map exactly onto the positive and negative normal sides.
+
+Textbook source: reviewed Lorentz reflection proof, S03, lines 112–113. -/
+theorem hyperboloidAdaptedGraph_sides (p : Hyperboloid) (e n : Fin 3 → ℝ)
+    (hn : lorentzBilinear n n = 1) (hpn : lorentzBilinear p.val n = 0)
+    (hep : lorentzBilinear e p.val = 0) (hen : lorentzBilinear e n = 0)
+    (hee : lorentzBilinear e e = 1) :
+  hyperboloidAdaptedGraph p e n hn hpn hep hen hee '' ((Set.univ : Set ℝ) ×ˢ Set.Ioi 0) =
+    {q : Hyperboloid | 0 < lorentzBilinear q.val n} ∧
+  hyperboloidAdaptedGraph p e n hn hpn hep hen hee '' ((Set.univ : Set ℝ) ×ˢ Set.Iio 0) =
+    {q : Hyperboloid | lorentzBilinear q.val n < 0} := by
+  constructor
+  · ext q
+    constructor
+    · rintro ⟨ba, hba, rfl⟩
+      change 0 < lorentzBilinear (hyperboloidAdaptedGraph p e n hn hpn hep hen hee ba).val n
+      rw [hyperboloidAdaptedGraph_normal]
+      exact hba.2
+    · intro hq
+      refine ⟨hyperboloidAdaptedProjection e n q, ?_,
+        (hyperboloidAdaptedGraph_inverse p e n hn hpn hep hen hee).2 q⟩
+      refine ⟨Set.mem_univ _, ?_⟩
+      change 0 < lorentzFunctional n q.val
+      rw [← lorentzBilinear_eq_functional, lorentzBilinear_symm]
+      exact hq
+  · ext q
+    constructor
+    · rintro ⟨ba, hba, rfl⟩
+      change lorentzBilinear (hyperboloidAdaptedGraph p e n hn hpn hep hen hee ba).val n < 0
+      rw [hyperboloidAdaptedGraph_normal]
+      exact hba.2
+    · intro hq
+      refine ⟨hyperboloidAdaptedProjection e n q, ?_,
+        (hyperboloidAdaptedGraph_inverse p e n hn hpn hep hen hee).2 q⟩
+      refine ⟨Set.mem_univ _, ?_⟩
+      change lorentzFunctional n q.val < 0
+      rw [← lorentzBilinear_eq_functional, lorentzBilinear_symm]
+      exact hq
+
+/-- Both normal sides are nonempty and path connected, as images of open half-planes.
+
+Textbook source: reviewed Lorentz reflection proof, S03, lines 113–114. -/
+theorem hyperboloid_normal_sides_pathConnected (p : Hyperboloid) (e n : Fin 3 → ℝ)
+    (hn : lorentzBilinear n n = 1) (hpn : lorentzBilinear p.val n = 0)
+    (hep : lorentzBilinear e p.val = 0) (hen : lorentzBilinear e n = 0)
+    (hee : lorentzBilinear e e = 1) :
+  IsPathConnected {q : Hyperboloid | 0 < lorentzBilinear q.val n} ∧ IsPathConnected {q : Hyperboloid | lorentzBilinear q.val n < 0} := by
+  have hp : IsPathConnected ((Set.univ : Set ℝ) ×ˢ Set.Ioi (0 : ℝ)) :=
+    ((convex_univ : Convex ℝ (Set.univ : Set ℝ)).prod
+      (convex_Ioi (0 : ℝ))).isPathConnected ⟨(0, 1), by simp⟩
+  have hm : IsPathConnected ((Set.univ : Set ℝ) ×ˢ Set.Iio (0 : ℝ)) :=
+    ((convex_univ : Convex ℝ (Set.univ : Set ℝ)).prod
+      (convex_Iio (0 : ℝ))).isPathConnected ⟨(0, -1), by simp⟩
+  exact ⟨(hyperboloidAdaptedGraph_sides p e n hn hpn hep hen hee).1 ▸
+      hp.image (continuous_hyperboloidAdaptedGraph p e n hn hpn hep hen hee),
+    (hyperboloidAdaptedGraph_sides p e n hn hpn hep hen hee).2 ▸
+      hm.image (continuous_hyperboloidAdaptedGraph p e n hn hpn hep hen hee)⟩
+
+/-- A preconnected subset avoiding the zero axis has a constant normal sign, including the empty subset.
+
+Textbook source: reviewed Lorentz reflection proof, S03, lines 114–115. -/
+theorem hyperboloid_normal_sign_on_preconnected (p : Hyperboloid) (e n : Fin 3 → ℝ)
+    (hn : lorentzBilinear n n = 1) (hpn : lorentzBilinear p.val n = 0)
+    (hep : lorentzBilinear e p.val = 0) (hen : lorentzBilinear e n = 0)
+    (hee : lorentzBilinear e e = 1)
+    (s : Set Hyperboloid) (hs : IsPreconnected s)
+    (haxis : s ⊆ {q : Hyperboloid | lorentzBilinear q.val n ≠ 0}) :
+  s ⊆ {q : Hyperboloid | 0 < lorentzBilinear q.val n} ∨ s ⊆ {q : Hyperboloid | lorentzBilinear q.val n < 0} := by
+  by_cases hpos : s ⊆ {q : Hyperboloid | 0 < lorentzBilinear q.val n}
+  · exact Or.inl hpos
+  · right
+    obtain ⟨q, hq, hqnot⟩ := Set.not_subset.mp hpos
+    intro r hr
+    change lorentzBilinear r.val n < 0
+    by_contra hrnot
+    have hc : Continuous (fun z : Hyperboloid => lorentzBilinear z.val n) := by
+      have he : (fun z : Hyperboloid => lorentzBilinear z.val n) =
+          (fun z : Hyperboloid => lorentzFunctional n z.val) := by
+        funext z
+        rw [lorentzBilinear_symm, lorentzBilinear_eq_functional]
+      rw [he]
+      exact (lorentzFunctional n).continuous.comp continuous_subtype_val
+    obtain ⟨z, hz, hzero⟩ := hs.intermediate_value hq hr hc.continuousOn
+      ⟨le_of_not_gt hqnot, le_of_not_gt hrnot⟩
+    exact haxis hz hzero
+
+/-- The zero-axis complement has exactly the two normal sides as its distinct, disjoint connected components.
+
+Textbook source: reviewed Lorentz reflection proof, S03, lines 115–116. -/
+theorem hyperboloid_normal_components (p : Hyperboloid) (e n : Fin 3 → ℝ)
+    (hn : lorentzBilinear n n = 1) (hpn : lorentzBilinear p.val n = 0)
+    (hep : lorentzBilinear e p.val = 0) (hen : lorentzBilinear e n = 0)
+    (hee : lorentzBilinear e e = 1) :
+  (∀ q : Hyperboloid, 0 < lorentzBilinear q.val n →
+    connectedComponentIn {q : Hyperboloid | lorentzBilinear q.val n ≠ 0} q = {q : Hyperboloid | 0 < lorentzBilinear q.val n}) ∧
+  (∀ q : Hyperboloid, lorentzBilinear q.val n < 0 →
+    connectedComponentIn {q : Hyperboloid | lorentzBilinear q.val n ≠ 0} q = {q : Hyperboloid | lorentzBilinear q.val n < 0}) ∧
+  {C : Set Hyperboloid | ∃ q : Hyperboloid, lorentzBilinear q.val n ≠ 0 ∧
+    C = connectedComponentIn {q : Hyperboloid | lorentzBilinear q.val n ≠ 0} q} =
+    {{q : Hyperboloid | 0 < lorentzBilinear q.val n}, {q : Hyperboloid | lorentzBilinear q.val n < 0}} ∧
+  Disjoint {q : Hyperboloid | 0 < lorentzBilinear q.val n} {q : Hyperboloid | lorentzBilinear q.val n < 0} ∧
+  {q : Hyperboloid | 0 < lorentzBilinear q.val n} ≠ {q : Hyperboloid | lorentzBilinear q.val n < 0} := by
+  have hpaths := hyperboloid_normal_sides_pathConnected p e n hn hpn hep hen hee
+  have hpEq : ∀ q : Hyperboloid, 0 < lorentzBilinear q.val n →
+      connectedComponentIn {q : Hyperboloid | lorentzBilinear q.val n ≠ 0} q =
+        {q : Hyperboloid | 0 < lorentzBilinear q.val n} := by
+    intro q hq
+    apply Set.Subset.antisymm
+    · rcases hyperboloid_normal_sign_on_preconnected p e n hn hpn hep hen hee _
+        isPreconnected_connectedComponentIn (connectedComponentIn_subset _ _) with hp | hm
+      · exact hp
+      · exact False.elim ((not_lt_of_gt hq) (hm (mem_connectedComponentIn (ne_of_gt hq))))
+    · exact hpaths.1.isConnected.isPreconnected.subset_connectedComponentIn hq
+        (fun _ hz => ne_of_gt hz)
+  have hmEq : ∀ q : Hyperboloid, lorentzBilinear q.val n < 0 →
+      connectedComponentIn {q : Hyperboloid | lorentzBilinear q.val n ≠ 0} q =
+        {q : Hyperboloid | lorentzBilinear q.val n < 0} := by
+    intro q hq
+    apply Set.Subset.antisymm
+    · rcases hyperboloid_normal_sign_on_preconnected p e n hn hpn hep hen hee _
+        isPreconnected_connectedComponentIn (connectedComponentIn_subset _ _) with hp | hm
+      · exact False.elim ((not_lt_of_gt hq) (hp (mem_connectedComponentIn (ne_of_lt hq))))
+      · exact hm
+    · exact hpaths.2.isConnected.isPreconnected.subset_connectedComponentIn hq
+        (fun _ hz => ne_of_lt hz)
+  refine ⟨hpEq, hmEq, ?_, ?_, ?_⟩
+  · ext C
+    simp only [Set.mem_setOf_eq, Set.mem_insert_iff, Set.mem_singleton_iff]
+    constructor
+    · rintro ⟨q, hq, rfl⟩
+      rcases lt_or_gt_of_ne hq with hm | hp
+      · exact Or.inr (hmEq q hm)
+      · exact Or.inl (hpEq q hp)
+    · intro hC
+      rcases hC with hC | hC
+      · subst C
+        obtain ⟨q, hq⟩ := hpaths.1.nonempty
+        exact ⟨q, ne_of_gt hq, (hpEq q hq).symm⟩
+      · subst C
+        obtain ⟨q, hq⟩ := hpaths.2.nonempty
+        exact ⟨q, ne_of_lt hq, (hmEq q hq).symm⟩
+  · exact Set.disjoint_left.mpr (fun q hp hm =>
+      (not_lt_of_gt (show 0 < lorentzBilinear q.val n from hp)) hm)
+  · intro hsets
+    obtain ⟨q, hq⟩ := hpaths.1.nonempty
+    have hm : q ∈ {q : Hyperboloid | lorentzBilinear q.val n < 0} := hsets ▸ hq
+    exact (not_lt_of_gt (show 0 < lorentzBilinear q.val n from hq)) hm
 
 end Hyperbolic
