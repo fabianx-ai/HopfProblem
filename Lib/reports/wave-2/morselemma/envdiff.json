@@ -1,0 +1,1736 @@
+{
+ "before": "/home/goblin/.claude/jobs/06995e68/tmp/wave2/dump_head.jsonl",
+ "after": "/home/goblin/.claude/jobs/06995e68/tmp/wave2/morselemma/dump_after.jsonl",
+ "prefix": "",
+ "constants": [
+  38301,
+  38356
+ ],
+ "lost": [
+  [
+   "ManifoldMorse.IsMorseAt.eq_1",
+   702648935,
+   {
+    "Lib.Analysis.Calculus.MorseLemma": 1
+   }
+  ],
+  [
+   "ManifoldPerturbation.perturb.eq_1",
+   2396302134,
+   {
+    "Lib.Analysis.Calculus.MorseLemma": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.SymmetricForm",
+   1294036959,
+   {
+    "Lib.Analysis.Calculus.MorseLemma": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.congruence.eq_1",
+   1873400634,
+   {
+    "Lib.Analysis.Calculus.MorseLemma": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.congruenceDoubleEquiv",
+   1101405037,
+   {
+    "Lib.Analysis.Calculus.MorseLemma": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.congruenceDoubleEquiv._proof_2",
+   3520663485,
+   {
+    "Lib.Analysis.Calculus.MorseLemma": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.congruenceDoubleEquiv._proof_3",
+   3758778720,
+   {
+    "Lib.Analysis.Calculus.MorseLemma": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.congruenceDoubleEquiv_toContinuousLinearMap",
+   1008394106,
+   {
+    "Lib.Analysis.Calculus.MorseLemma": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.congruencePolynomial",
+   2711620459,
+   {
+    "Lib.Analysis.Calculus.MorseLemma": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.congruencePolynomial._proof_1",
+   1696040442,
+   {
+    "Lib.Analysis.Calculus.MorseLemma": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.congruencePolynomial.eq_1",
+   179888422,
+   {
+    "Lib.Analysis.Calculus.MorseLemma": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.congruencePolynomial_add_reference",
+   708538365,
+   {
+    "Lib.Analysis.Calculus.MorseLemma": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.congruencePolynomial_zero",
+   3834421333,
+   {
+    "Lib.Analysis.Calculus.MorseLemma": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.congruence_apply",
+   3278069169,
+   {
+    "Lib.Analysis.Calculus.MorseLemma": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.congruence_zero",
+   1549640716,
+   {
+    "Lib.Analysis.Calculus.MorseLemma": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.contDiff_congruencePolynomial",
+   2464097398,
+   {
+    "Lib.Analysis.Calculus.MorseLemma": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.contDiff_symmetricTaylorFactor",
+   678384522,
+   {
+    "Lib.Analysis.Calculus.MorseLemma": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.exists_congruencePolynomial_partialDiffeomorph",
+   3473068448,
+   {
+    "Lib.Analysis.Calculus.MorseLemma": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.exists_quadratic_chart_of_smooth_congruence",
+   2217399273,
+   {
+    "Lib.Analysis.Calculus.MorseLemma": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.exists_signed_coordinates",
+   609237233,
+   {
+    "Lib.Analysis.Calculus.MorseLemma": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.exists_signed_diffeomorph",
+   436851623,
+   {
+    "Lib.Analysis.Calculus.MorseLemma": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.exists_smooth_congruence_factor",
+   3194926761,
+   {
+    "Lib.Analysis.Calculus.MorseLemma": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.flipBilinear",
+   1715926755,
+   {
+    "Lib.Analysis.Calculus.MorseLemma": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.flipBilinear._proof_1",
+   4236414984,
+   {
+    "Lib.Analysis.Calculus.MorseLemma": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.flipBilinear._proof_2",
+   2101168777,
+   {
+    "Lib.Analysis.Calculus.MorseLemma": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.flipBilinear._proof_3",
+   1059516802,
+   {
+    "Lib.Analysis.Calculus.MorseLemma": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.flipBilinear._proof_4",
+   2413823998,
+   {
+    "Lib.Analysis.Calculus.MorseLemma": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.flipBilinear._proof_5",
+   3499019406,
+   {
+    "Lib.Analysis.Calculus.MorseLemma": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.flipBilinear._proof_6",
+   1379311634,
+   {
+    "Lib.Analysis.Calculus.MorseLemma": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.flipBilinear._proof_7",
+   2776806585,
+   {
+    "Lib.Analysis.Calculus.MorseLemma": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.halfHessianQuadratic._proof_2",
+   3807875912,
+   {
+    "Lib.Analysis.Calculus.MorseLemma": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.halfHessianQuadratic._proof_3",
+   557556747,
+   {
+    "Lib.Analysis.Calculus.MorseLemma": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.halfHessianQuadratic._proof_4",
+   1558834489,
+   {
+    "Lib.Analysis.Calculus.MorseLemma": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.halfHessianQuadratic._proof_5",
+   3766812505,
+   {
+    "Lib.Analysis.Calculus.MorseLemma": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.halfHessianQuadratic._proof_6",
+   1580437344,
+   {
+    "Lib.Analysis.Calculus.MorseLemma": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.halfHessianQuadratic_apply",
+   390217062,
+   {
+    "Lib.Analysis.Calculus.MorseLemma": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.halfHessianQuadratic_associated",
+   3178751974,
+   {
+    "Lib.Analysis.Calculus.MorseLemma": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.halfHessianQuadratic_separatingLeft",
+   359259771,
+   {
+    "Lib.Analysis.Calculus.MorseLemma": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.hasFDerivAt_congruencePolynomial_zero",
+   1010033189,
+   {
+    "Lib.Analysis.Calculus.MorseLemma": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.hasFDerivAt_congruence_zero",
+   4120981427,
+   {
+    "Lib.Analysis.Calculus.MorseLemma": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.map_eq_add_symmetricTaylorFactor",
+   1455922940,
+   {
+    "Lib.Analysis.Calculus.MorseLemma": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.raiseIndex",
+   3333187854,
+   {
+    "Lib.Analysis.Calculus.MorseLemma": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.raiseIndex._proof_1",
+   899023225,
+   {
+    "Lib.Analysis.Calculus.MorseLemma": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.raiseIndex._proof_10",
+   1010213044,
+   {
+    "Lib.Analysis.Calculus.MorseLemma": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.raiseIndex._proof_11",
+   2533738620,
+   {
+    "Lib.Analysis.Calculus.MorseLemma": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.raiseIndex._proof_2",
+   788648072,
+   {
+    "Lib.Analysis.Calculus.MorseLemma": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.raiseIndex._proof_3",
+   3933425632,
+   {
+    "Lib.Analysis.Calculus.MorseLemma": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.raiseIndex._proof_4",
+   1068138619,
+   {
+    "Lib.Analysis.Calculus.MorseLemma": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.raiseIndex._proof_5",
+   1171360372,
+   {
+    "Lib.Analysis.Calculus.MorseLemma": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.raiseIndex._proof_6",
+   2651963384,
+   {
+    "Lib.Analysis.Calculus.MorseLemma": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.raiseIndex._proof_7",
+   2355278728,
+   {
+    "Lib.Analysis.Calculus.MorseLemma": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.raiseIndex._proof_8",
+   200800018,
+   {
+    "Lib.Analysis.Calculus.MorseLemma": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.raiseIndex._proof_9",
+   2191015654,
+   {
+    "Lib.Analysis.Calculus.MorseLemma": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.raiseSymmetricIndex",
+   1488556561,
+   {
+    "Lib.Analysis.Calculus.MorseLemma": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.raiseSymmetricIndex_apply",
+   732174004,
+   {
+    "Lib.Analysis.Calculus.MorseLemma": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.referenceSymmetricForm",
+   637512750,
+   {
+    "Lib.Analysis.Calculus.MorseLemma": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.referenceSymmetricForm.congr_simp",
+   3335641989,
+   {
+    "Lib.Analysis.Calculus.MorseLemma": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.referenceSymmetricForm_apply",
+   3961451164,
+   {
+    "Lib.Analysis.Calculus.MorseLemma": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.secondTaylorFactor._proof_1",
+   1089998234,
+   {
+    "Lib.Analysis.Calculus.MorseLemma": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.secondTaylorFactor._proof_2",
+   1535642861,
+   {
+    "Lib.Analysis.Calculus.MorseLemma": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.secondTaylorFactor._proof_7",
+   1187905517,
+   {
+    "Lib.Analysis.Calculus.MorseLemma": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.secondTaylorFactor.eq_1",
+   3163255992,
+   {
+    "Lib.Analysis.Calculus.MorseLemma": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.symmetricForm_ext",
+   3669813335,
+   {
+    "Lib.Analysis.Calculus.MorseLemma": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.symmetricForm_ext_iff",
+   4065420817,
+   {
+    "Lib.Analysis.Calculus.MorseLemma": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.symmetricForms",
+   1294036959,
+   {
+    "Lib.Analysis.Calculus.MorseLemma": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.symmetricForms._proof_1",
+   4131679491,
+   {
+    "Lib.Analysis.Calculus.MorseLemma": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.symmetricForms._proof_2",
+   3947823585,
+   {
+    "Lib.Analysis.Calculus.MorseLemma": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.symmetricForms._proof_4",
+   1413915117,
+   {
+    "Lib.Analysis.Calculus.MorseLemma": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.symmetricForms._proof_5",
+   3481408965,
+   {
+    "Lib.Analysis.Calculus.MorseLemma": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.symmetricTaylorFactor",
+   2590356432,
+   {
+    "Lib.Analysis.Calculus.MorseLemma": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.symmetricTaylorFactor_coe",
+   603357558,
+   {
+    "Lib.Analysis.Calculus.MorseLemma": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.symmetricTaylorFactor_zero",
+   2527319353,
+   {
+    "Lib.Analysis.Calculus.MorseLemma": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.symmetrize",
+   2094699467,
+   {
+    "Lib.Analysis.Calculus.MorseLemma": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.symmetrize._proof_1",
+   1389946312,
+   {
+    "Lib.Analysis.Calculus.MorseLemma": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.symmetrize._proof_3",
+   497398951,
+   {
+    "Lib.Analysis.Calculus.MorseLemma": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.symmetrize._proof_4",
+   2468623576,
+   {
+    "Lib.Analysis.Calculus.MorseLemma": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.symmetrize._proof_5",
+   3524771514,
+   {
+    "Lib.Analysis.Calculus.MorseLemma": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.symmetrize_apply",
+   366432793,
+   {
+    "Lib.Analysis.Calculus.MorseLemma": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.taylorHessianIntegrand._proof_1",
+   1618089226,
+   {
+    "Lib.Analysis.Calculus.MorseLemma": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.taylorHessianIntegrand._proof_2",
+   2001901328,
+   {
+    "Lib.Analysis.Calculus.MorseLemma": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.taylorHessianIntegrand.eq_1",
+   4027204866,
+   {
+    "Lib.Analysis.Calculus.MorseLemma": 1
+   }
+  ]
+ ],
+ "added": [
+  [
+   "FlowConstruction.chartDirection._proof_1",
+   1422682179,
+   {
+    "Lib.Analysis.Calculus.MorseLemma.DescentField": 1
+   }
+  ],
+  [
+   "ManifoldMorse.IsMorseAt._proof_1",
+   1751206130,
+   {
+    "Lib.Analysis.Calculus.MorseLemma.CriticalPoints": 1
+   }
+  ],
+  [
+   "ManifoldMorse.IsMorseAt._proof_2",
+   1289510895,
+   {
+    "Lib.Analysis.Calculus.MorseLemma.CriticalPoints": 1
+   }
+  ],
+  [
+   "ManifoldMorse.IsMorseAt._proof_3",
+   1081445628,
+   {
+    "Lib.Analysis.Calculus.MorseLemma.CriticalPoints": 1
+   }
+  ],
+  [
+   "ManifoldMorse.IsMorseAt.eq_1",
+   774169737,
+   {
+    "Lib.Analysis.Calculus.MorseLemma.CriticalPoints": 1
+   }
+  ],
+  [
+   "ManifoldPerturbation.perturb._proof_1",
+   213455248,
+   {
+    "Lib.Analysis.Calculus.MorseLemma.Existence": 1
+   }
+  ],
+  [
+   "ManifoldPerturbation.perturb._proof_2",
+   1751206130,
+   {
+    "Lib.Analysis.Calculus.MorseLemma.Existence": 1
+   }
+  ],
+  [
+   "ManifoldPerturbation.perturb._proof_3",
+   1289510895,
+   {
+    "Lib.Analysis.Calculus.MorseLemma.Existence": 1
+   }
+  ],
+  [
+   "ManifoldPerturbation.perturb.eq_1",
+   2082717120,
+   {
+    "Lib.Analysis.Calculus.MorseLemma.Existence": 1
+   }
+  ],
+  [
+   "MorseHandle.splitLinearEquiv._proof_5",
+   1158307750,
+   {
+    "Lib.Analysis.Calculus.MorseLemma.SplitChart": 1
+   }
+  ],
+  [
+   "MorseHandle.splitLinearEquiv._proof_6",
+   2547959801,
+   {
+    "Lib.Analysis.Calculus.MorseLemma.SplitChart": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.Bilinear._proof_1",
+   213455248,
+   {
+    "Lib.Analysis.Calculus.MorseLemma.SymmetricForm": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.Bilinear._proof_2",
+   1751206130,
+   {
+    "Lib.Analysis.Calculus.MorseLemma.SymmetricForm": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.Bilinear._proof_3",
+   1289510895,
+   {
+    "Lib.Analysis.Calculus.MorseLemma.SymmetricForm": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.SymmetricForm",
+   3923170590,
+   {
+    "Lib.Analysis.Calculus.MorseLemma.SymmetricForm": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.congruence._proof_2",
+   1398103295,
+   {
+    "Lib.Analysis.Calculus.MorseLemma.SymmetricForm": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.congruence.eq_1",
+   1713705331,
+   {
+    "Lib.Analysis.Calculus.MorseLemma.SymmetricForm": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.congruenceDoubleEquiv",
+   1979383124,
+   {
+    "Lib.Analysis.Calculus.MorseLemma.Congruence": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.congruenceDoubleEquiv._proof_2",
+   2906230649,
+   {
+    "Lib.Analysis.Calculus.MorseLemma.Congruence": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.congruenceDoubleEquiv._proof_3",
+   2203687649,
+   {
+    "Lib.Analysis.Calculus.MorseLemma.Congruence": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.congruenceDoubleEquiv_toContinuousLinearMap",
+   3045713956,
+   {
+    "Lib.Analysis.Calculus.MorseLemma.Congruence": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.congruencePolynomial",
+   1977789430,
+   {
+    "Lib.Analysis.Calculus.MorseLemma.Congruence": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.congruencePolynomial._proof_1",
+   213455248,
+   {
+    "Lib.Analysis.Calculus.MorseLemma.Congruence": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.congruencePolynomial._proof_10",
+   1305310399,
+   {
+    "Lib.Analysis.Calculus.MorseLemma.Congruence": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.congruencePolynomial._proof_11",
+   458547056,
+   {
+    "Lib.Analysis.Calculus.MorseLemma.Congruence": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.congruencePolynomial._proof_12",
+   2159798104,
+   {
+    "Lib.Analysis.Calculus.MorseLemma.Congruence": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.congruencePolynomial._proof_13",
+   1818881883,
+   {
+    "Lib.Analysis.Calculus.MorseLemma.Congruence": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.congruencePolynomial._proof_14",
+   2944731299,
+   {
+    "Lib.Analysis.Calculus.MorseLemma.Congruence": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.congruencePolynomial._proof_2",
+   1751206130,
+   {
+    "Lib.Analysis.Calculus.MorseLemma.Congruence": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.congruencePolynomial._proof_3",
+   1289510895,
+   {
+    "Lib.Analysis.Calculus.MorseLemma.Congruence": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.congruencePolynomial._proof_4",
+   2719099141,
+   {
+    "Lib.Analysis.Calculus.MorseLemma.Congruence": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.congruencePolynomial._proof_5",
+   2800467814,
+   {
+    "Lib.Analysis.Calculus.MorseLemma.Congruence": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.congruencePolynomial._proof_6",
+   1622288011,
+   {
+    "Lib.Analysis.Calculus.MorseLemma.Congruence": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.congruencePolynomial._proof_7",
+   2766970534,
+   {
+    "Lib.Analysis.Calculus.MorseLemma.Congruence": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.congruencePolynomial._proof_8",
+   3125765899,
+   {
+    "Lib.Analysis.Calculus.MorseLemma.Congruence": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.congruencePolynomial._proof_9",
+   2547959801,
+   {
+    "Lib.Analysis.Calculus.MorseLemma.Congruence": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.congruencePolynomial.eq_1",
+   2889277524,
+   {
+    "Lib.Analysis.Calculus.MorseLemma.Congruence": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.congruencePolynomial_add_reference",
+   326771652,
+   {
+    "Lib.Analysis.Calculus.MorseLemma.Congruence": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.congruencePolynomial_zero",
+   3195633756,
+   {
+    "Lib.Analysis.Calculus.MorseLemma.Congruence": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.congruence_apply",
+   142773893,
+   {
+    "Lib.Analysis.Calculus.MorseLemma.SymmetricForm": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.congruence_zero",
+   2500392788,
+   {
+    "Lib.Analysis.Calculus.MorseLemma.SymmetricForm": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.contDiff_congruencePolynomial",
+   2965798044,
+   {
+    "Lib.Analysis.Calculus.MorseLemma.Congruence": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.contDiff_symmetricTaylorFactor",
+   451569559,
+   {
+    "Lib.Analysis.Calculus.MorseLemma.TaylorFactor": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.exists_congruencePolynomial_partialDiffeomorph",
+   481864820,
+   {
+    "Lib.Analysis.Calculus.MorseLemma.Congruence": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.exists_quadratic_chart_of_smooth_congruence",
+   2149720681,
+   {
+    "Lib.Analysis.Calculus.MorseLemma.Congruence": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.exists_signed_coordinates",
+   591714682,
+   {
+    "Lib.Analysis.Calculus.MorseLemma.SignedCoordinates": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.exists_signed_diffeomorph",
+   2911935757,
+   {
+    "Lib.Analysis.Calculus.MorseLemma.SignedCoordinates": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.exists_smooth_congruence_factor",
+   151487152,
+   {
+    "Lib.Analysis.Calculus.MorseLemma.Congruence": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.flipBilinear",
+   677177134,
+   {
+    "Lib.Analysis.Calculus.MorseLemma.SymmetricForm": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.flipBilinear._proof_1",
+   1422682179,
+   {
+    "Lib.Analysis.Calculus.MorseLemma.SymmetricForm": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.flipBilinear._proof_2",
+   4236414984,
+   {
+    "Lib.Analysis.Calculus.MorseLemma.SymmetricForm": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.flipBilinear._proof_3",
+   2101168777,
+   {
+    "Lib.Analysis.Calculus.MorseLemma.SymmetricForm": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.flipBilinear._proof_4",
+   1059516802,
+   {
+    "Lib.Analysis.Calculus.MorseLemma.SymmetricForm": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.flipBilinear._proof_5",
+   3593702283,
+   {
+    "Lib.Analysis.Calculus.MorseLemma.SymmetricForm": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.flipBilinear._proof_6",
+   2413823998,
+   {
+    "Lib.Analysis.Calculus.MorseLemma.SymmetricForm": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.flipBilinear._proof_7",
+   4075210337,
+   {
+    "Lib.Analysis.Calculus.MorseLemma.SymmetricForm": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.flipBilinear._proof_8",
+   23836317,
+   {
+    "Lib.Analysis.Calculus.MorseLemma.SymmetricForm": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.flipBilinear._proof_9",
+   3298006189,
+   {
+    "Lib.Analysis.Calculus.MorseLemma.SymmetricForm": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.halfHessianQuadratic._proof_2",
+   1751206130,
+   {
+    "Lib.Analysis.Calculus.MorseLemma.SignedCoordinates": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.halfHessianQuadratic._proof_3",
+   2339860526,
+   {
+    "Lib.Analysis.Calculus.MorseLemma.SignedCoordinates": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.halfHessianQuadratic._proof_4",
+   2547959801,
+   {
+    "Lib.Analysis.Calculus.MorseLemma.SignedCoordinates": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.halfHessianQuadratic._proof_5",
+   1081445628,
+   {
+    "Lib.Analysis.Calculus.MorseLemma.SignedCoordinates": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.halfHessianQuadratic._proof_6",
+   557556747,
+   {
+    "Lib.Analysis.Calculus.MorseLemma.SignedCoordinates": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.halfHessianQuadratic._proof_7",
+   2195423737,
+   {
+    "Lib.Analysis.Calculus.MorseLemma.SignedCoordinates": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.halfHessianQuadratic._proof_8",
+   131101221,
+   {
+    "Lib.Analysis.Calculus.MorseLemma.SignedCoordinates": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.halfHessianQuadratic._proof_9",
+   1580437344,
+   {
+    "Lib.Analysis.Calculus.MorseLemma.SignedCoordinates": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.halfHessianQuadratic_apply",
+   3889363653,
+   {
+    "Lib.Analysis.Calculus.MorseLemma.SignedCoordinates": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.halfHessianQuadratic_associated",
+   615311908,
+   {
+    "Lib.Analysis.Calculus.MorseLemma.SignedCoordinates": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.halfHessianQuadratic_separatingLeft",
+   2704111131,
+   {
+    "Lib.Analysis.Calculus.MorseLemma.SignedCoordinates": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.hasFDerivAt_congruencePolynomial_zero",
+   1194830838,
+   {
+    "Lib.Analysis.Calculus.MorseLemma.Congruence": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.hasFDerivAt_congruence_zero",
+   4028481334,
+   {
+    "Lib.Analysis.Calculus.MorseLemma.SymmetricForm": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.hessianEquiv._proof_1",
+   1751206130,
+   {
+    "Lib.Analysis.Calculus.MorseLemma.MorseChart": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.hessianEquiv._proof_10",
+   2044759301,
+   {
+    "Lib.Analysis.Calculus.MorseLemma.MorseChart": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.hessianEquiv._proof_11",
+   3757486796,
+   {
+    "Lib.Analysis.Calculus.MorseLemma.MorseChart": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.hessianEquiv._proof_12",
+   1422682179,
+   {
+    "Lib.Analysis.Calculus.MorseLemma.MorseChart": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.hessianEquiv._proof_2",
+   1289510895,
+   {
+    "Lib.Analysis.Calculus.MorseLemma.MorseChart": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.hessianEquiv._proof_3",
+   1081445628,
+   {
+    "Lib.Analysis.Calculus.MorseLemma.MorseChart": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.hessianEquiv._proof_4",
+   458547056,
+   {
+    "Lib.Analysis.Calculus.MorseLemma.MorseChart": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.hessianEquiv._proof_5",
+   318672172,
+   {
+    "Lib.Analysis.Calculus.MorseLemma.MorseChart": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.hessianEquiv._proof_6",
+   101588321,
+   {
+    "Lib.Analysis.Calculus.MorseLemma.MorseChart": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.hessianEquiv._proof_7",
+   3237420638,
+   {
+    "Lib.Analysis.Calculus.MorseLemma.MorseChart": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.hessianEquiv._proof_8",
+   3378540809,
+   {
+    "Lib.Analysis.Calculus.MorseLemma.MorseChart": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.hessianEquiv._proof_9",
+   2870757782,
+   {
+    "Lib.Analysis.Calculus.MorseLemma.MorseChart": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.map_eq_add_symmetricTaylorFactor",
+   2474451620,
+   {
+    "Lib.Analysis.Calculus.MorseLemma.TaylorFactor": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.raiseIndex",
+   26943482,
+   {
+    "Lib.Analysis.Calculus.MorseLemma.SymmetricForm": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.raiseIndex._proof_1",
+   458547056,
+   {
+    "Lib.Analysis.Calculus.MorseLemma.SymmetricForm": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.raiseIndex._proof_10",
+   701806906,
+   {
+    "Lib.Analysis.Calculus.MorseLemma.SymmetricForm": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.raiseIndex._proof_11",
+   2244949368,
+   {
+    "Lib.Analysis.Calculus.MorseLemma.SymmetricForm": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.raiseIndex._proof_12",
+   1259389141,
+   {
+    "Lib.Analysis.Calculus.MorseLemma.SymmetricForm": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.raiseIndex._proof_2",
+   899023225,
+   {
+    "Lib.Analysis.Calculus.MorseLemma.SymmetricForm": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.raiseIndex._proof_3",
+   1663162124,
+   {
+    "Lib.Analysis.Calculus.MorseLemma.SymmetricForm": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.raiseIndex._proof_4",
+   2422894043,
+   {
+    "Lib.Analysis.Calculus.MorseLemma.SymmetricForm": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.raiseIndex._proof_5",
+   543269034,
+   {
+    "Lib.Analysis.Calculus.MorseLemma.SymmetricForm": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.raiseIndex._proof_6",
+   1307290005,
+   {
+    "Lib.Analysis.Calculus.MorseLemma.SymmetricForm": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.raiseIndex._proof_7",
+   2651963384,
+   {
+    "Lib.Analysis.Calculus.MorseLemma.SymmetricForm": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.raiseIndex._proof_8",
+   2355278728,
+   {
+    "Lib.Analysis.Calculus.MorseLemma.SymmetricForm": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.raiseIndex._proof_9",
+   1613535289,
+   {
+    "Lib.Analysis.Calculus.MorseLemma.SymmetricForm": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.raiseSymmetricIndex",
+   1215704842,
+   {
+    "Lib.Analysis.Calculus.MorseLemma.SymmetricForm": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.raiseSymmetricIndex_apply",
+   3660453264,
+   {
+    "Lib.Analysis.Calculus.MorseLemma.SymmetricForm": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.referenceSymmetricForm",
+   3462044251,
+   {
+    "Lib.Analysis.Calculus.MorseLemma.Congruence": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.referenceSymmetricForm.congr_simp",
+   1561263901,
+   {
+    "Lib.Analysis.Calculus.MorseLemma.Congruence": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.referenceSymmetricForm_apply",
+   3992207562,
+   {
+    "Lib.Analysis.Calculus.MorseLemma.Congruence": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.secondTaylorFactor._proof_1",
+   3054569208,
+   {
+    "Lib.Analysis.Calculus.MorseLemma.TaylorFactor": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.secondTaylorFactor._proof_2",
+   525458728,
+   {
+    "Lib.Analysis.Calculus.MorseLemma.TaylorFactor": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.secondTaylorFactor._proof_7",
+   1846469565,
+   {
+    "Lib.Analysis.Calculus.MorseLemma.TaylorFactor": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.secondTaylorFactor.eq_1",
+   267827405,
+   {
+    "Lib.Analysis.Calculus.MorseLemma.TaylorFactor": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.symmetricForm_ext",
+   4234123233,
+   {
+    "Lib.Analysis.Calculus.MorseLemma.SymmetricForm": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.symmetricForm_ext_iff",
+   2376056,
+   {
+    "Lib.Analysis.Calculus.MorseLemma.SymmetricForm": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.symmetricForms",
+   3923170590,
+   {
+    "Lib.Analysis.Calculus.MorseLemma.SymmetricForm": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.symmetricForms._proof_1",
+   401025130,
+   {
+    "Lib.Analysis.Calculus.MorseLemma.SymmetricForm": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.symmetricForms._proof_2",
+   964994285,
+   {
+    "Lib.Analysis.Calculus.MorseLemma.SymmetricForm": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.symmetricForms._proof_4",
+   2006744066,
+   {
+    "Lib.Analysis.Calculus.MorseLemma.SymmetricForm": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.symmetricForms._proof_5",
+   255211398,
+   {
+    "Lib.Analysis.Calculus.MorseLemma.SymmetricForm": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.symmetricForms._proof_6",
+   2678702453,
+   {
+    "Lib.Analysis.Calculus.MorseLemma.SymmetricForm": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.symmetricTaylorFactor",
+   2894114628,
+   {
+    "Lib.Analysis.Calculus.MorseLemma.TaylorFactor": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.symmetricTaylorFactor._proof_1",
+   1305310399,
+   {
+    "Lib.Analysis.Calculus.MorseLemma.TaylorFactor": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.symmetricTaylorFactor._proof_2",
+   2719099141,
+   {
+    "Lib.Analysis.Calculus.MorseLemma.TaylorFactor": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.symmetricTaylorFactor._proof_3",
+   3951250662,
+   {
+    "Lib.Analysis.Calculus.MorseLemma.TaylorFactor": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.symmetricTaylorFactor_coe",
+   3161135368,
+   {
+    "Lib.Analysis.Calculus.MorseLemma.TaylorFactor": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.symmetricTaylorFactor_zero",
+   1451653955,
+   {
+    "Lib.Analysis.Calculus.MorseLemma.TaylorFactor": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.symmetrize",
+   720427139,
+   {
+    "Lib.Analysis.Calculus.MorseLemma.SymmetricForm": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.symmetrize._proof_1",
+   3684265165,
+   {
+    "Lib.Analysis.Calculus.MorseLemma.SymmetricForm": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.symmetrize._proof_3",
+   3072266487,
+   {
+    "Lib.Analysis.Calculus.MorseLemma.SymmetricForm": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.symmetrize._proof_4",
+   3591313446,
+   {
+    "Lib.Analysis.Calculus.MorseLemma.SymmetricForm": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.symmetrize._proof_5",
+   1081445628,
+   {
+    "Lib.Analysis.Calculus.MorseLemma.SymmetricForm": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.symmetrize._proof_6",
+   2621584706,
+   {
+    "Lib.Analysis.Calculus.MorseLemma.SymmetricForm": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.symmetrize._proof_7",
+   2547959801,
+   {
+    "Lib.Analysis.Calculus.MorseLemma.SymmetricForm": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.symmetrize._proof_8",
+   4107126598,
+   {
+    "Lib.Analysis.Calculus.MorseLemma.SymmetricForm": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.symmetrize_apply",
+   2631566090,
+   {
+    "Lib.Analysis.Calculus.MorseLemma.SymmetricForm": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.taylorHessianIntegrand._proof_1",
+   1751206130,
+   {
+    "Lib.Analysis.Calculus.MorseLemma.TaylorFactor": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.taylorHessianIntegrand._proof_2",
+   1289510895,
+   {
+    "Lib.Analysis.Calculus.MorseLemma.TaylorFactor": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.taylorHessianIntegrand._proof_3",
+   1081445628,
+   {
+    "Lib.Analysis.Calculus.MorseLemma.TaylorFactor": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.taylorHessianIntegrand._proof_4",
+   213455248,
+   {
+    "Lib.Analysis.Calculus.MorseLemma.TaylorFactor": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.taylorHessianIntegrand._proof_5",
+   112386435,
+   {
+    "Lib.Analysis.Calculus.MorseLemma.TaylorFactor": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.taylorHessianIntegrand._proof_6",
+   831815354,
+   {
+    "Lib.Analysis.Calculus.MorseLemma.TaylorFactor": 1
+   }
+  ],
+  [
+   "SmoothMorseLemma.taylorHessianIntegrand.eq_1",
+   565542504,
+   {
+    "Lib.Analysis.Calculus.MorseLemma.TaylorFactor": 1
+   }
+  ]
+ ],
+ "changed_type_source": [],
+ "changed_type_proof_naming": [
+  "SmoothMorseLemma.SymmetricForm",
+  "SmoothMorseLemma.congruenceDoubleEquiv",
+  "SmoothMorseLemma.congruenceDoubleEquiv_toContinuousLinearMap",
+  "SmoothMorseLemma.congruencePolynomial",
+  "SmoothMorseLemma.congruencePolynomial_add_reference",
+  "SmoothMorseLemma.congruencePolynomial_zero",
+  "SmoothMorseLemma.congruence_apply",
+  "SmoothMorseLemma.congruence_zero",
+  "SmoothMorseLemma.contDiff_congruencePolynomial",
+  "SmoothMorseLemma.contDiff_symmetricTaylorFactor",
+  "SmoothMorseLemma.exists_congruencePolynomial_partialDiffeomorph",
+  "SmoothMorseLemma.exists_quadratic_chart_of_smooth_congruence",
+  "SmoothMorseLemma.exists_signed_coordinates",
+  "SmoothMorseLemma.exists_signed_diffeomorph",
+  "SmoothMorseLemma.exists_smooth_congruence_factor",
+  "SmoothMorseLemma.flipBilinear",
+  "SmoothMorseLemma.halfHessianQuadratic_apply",
+  "SmoothMorseLemma.halfHessianQuadratic_associated",
+  "SmoothMorseLemma.halfHessianQuadratic_separatingLeft",
+  "SmoothMorseLemma.hasFDerivAt_congruencePolynomial_zero",
+  "SmoothMorseLemma.hasFDerivAt_congruence_zero",
+  "SmoothMorseLemma.map_eq_add_symmetricTaylorFactor",
+  "SmoothMorseLemma.raiseIndex",
+  "SmoothMorseLemma.raiseSymmetricIndex",
+  "SmoothMorseLemma.raiseSymmetricIndex_apply",
+  "SmoothMorseLemma.referenceSymmetricForm",
+  "SmoothMorseLemma.referenceSymmetricForm_apply",
+  "SmoothMorseLemma.symmetricForm_ext",
+  "SmoothMorseLemma.symmetricForm_ext_iff",
+  "SmoothMorseLemma.symmetricForms",
+  "SmoothMorseLemma.symmetricTaylorFactor",
+  "SmoothMorseLemma.symmetricTaylorFactor_coe",
+  "SmoothMorseLemma.symmetricTaylorFactor_zero",
+  "SmoothMorseLemma.symmetrize",
+  "SmoothMorseLemma.symmetrize_apply"
+ ],
+ "changed_type_accepted": [],
+ "added_accepted": [],
+ "accept_without_effect": [],
+ "changed_type_all": [
+  "ManifoldMorse.IsMorseAt.eq_1",
+  "ManifoldPerturbation.perturb.eq_1",
+  "SmoothMorseLemma.SymmetricForm",
+  "SmoothMorseLemma.congruence.eq_1",
+  "SmoothMorseLemma.congruenceDoubleEquiv",
+  "SmoothMorseLemma.congruenceDoubleEquiv._proof_2",
+  "SmoothMorseLemma.congruenceDoubleEquiv._proof_3",
+  "SmoothMorseLemma.congruenceDoubleEquiv_toContinuousLinearMap",
+  "SmoothMorseLemma.congruencePolynomial",
+  "SmoothMorseLemma.congruencePolynomial._proof_1",
+  "SmoothMorseLemma.congruencePolynomial.eq_1",
+  "SmoothMorseLemma.congruencePolynomial_add_reference",
+  "SmoothMorseLemma.congruencePolynomial_zero",
+  "SmoothMorseLemma.congruence_apply",
+  "SmoothMorseLemma.congruence_zero",
+  "SmoothMorseLemma.contDiff_congruencePolynomial",
+  "SmoothMorseLemma.contDiff_symmetricTaylorFactor",
+  "SmoothMorseLemma.exists_congruencePolynomial_partialDiffeomorph",
+  "SmoothMorseLemma.exists_quadratic_chart_of_smooth_congruence",
+  "SmoothMorseLemma.exists_signed_coordinates",
+  "SmoothMorseLemma.exists_signed_diffeomorph",
+  "SmoothMorseLemma.exists_smooth_congruence_factor",
+  "SmoothMorseLemma.flipBilinear",
+  "SmoothMorseLemma.flipBilinear._proof_1",
+  "SmoothMorseLemma.flipBilinear._proof_2",
+  "SmoothMorseLemma.flipBilinear._proof_3",
+  "SmoothMorseLemma.flipBilinear._proof_4",
+  "SmoothMorseLemma.flipBilinear._proof_5",
+  "SmoothMorseLemma.flipBilinear._proof_6",
+  "SmoothMorseLemma.flipBilinear._proof_7",
+  "SmoothMorseLemma.halfHessianQuadratic._proof_2",
+  "SmoothMorseLemma.halfHessianQuadratic._proof_3",
+  "SmoothMorseLemma.halfHessianQuadratic._proof_4",
+  "SmoothMorseLemma.halfHessianQuadratic._proof_5",
+  "SmoothMorseLemma.halfHessianQuadratic._proof_6",
+  "SmoothMorseLemma.halfHessianQuadratic_apply",
+  "SmoothMorseLemma.halfHessianQuadratic_associated",
+  "SmoothMorseLemma.halfHessianQuadratic_separatingLeft",
+  "SmoothMorseLemma.hasFDerivAt_congruencePolynomial_zero",
+  "SmoothMorseLemma.hasFDerivAt_congruence_zero",
+  "SmoothMorseLemma.map_eq_add_symmetricTaylorFactor",
+  "SmoothMorseLemma.raiseIndex",
+  "SmoothMorseLemma.raiseIndex._proof_1",
+  "SmoothMorseLemma.raiseIndex._proof_10",
+  "SmoothMorseLemma.raiseIndex._proof_11",
+  "SmoothMorseLemma.raiseIndex._proof_2",
+  "SmoothMorseLemma.raiseIndex._proof_3",
+  "SmoothMorseLemma.raiseIndex._proof_4",
+  "SmoothMorseLemma.raiseIndex._proof_5",
+  "SmoothMorseLemma.raiseIndex._proof_6",
+  "SmoothMorseLemma.raiseIndex._proof_7",
+  "SmoothMorseLemma.raiseIndex._proof_8",
+  "SmoothMorseLemma.raiseIndex._proof_9",
+  "SmoothMorseLemma.raiseSymmetricIndex",
+  "SmoothMorseLemma.raiseSymmetricIndex_apply",
+  "SmoothMorseLemma.referenceSymmetricForm",
+  "SmoothMorseLemma.referenceSymmetricForm.congr_simp",
+  "SmoothMorseLemma.referenceSymmetricForm_apply",
+  "SmoothMorseLemma.secondTaylorFactor._proof_1",
+  "SmoothMorseLemma.secondTaylorFactor._proof_2",
+  "SmoothMorseLemma.secondTaylorFactor._proof_7",
+  "SmoothMorseLemma.secondTaylorFactor.eq_1",
+  "SmoothMorseLemma.symmetricForm_ext",
+  "SmoothMorseLemma.symmetricForm_ext_iff",
+  "SmoothMorseLemma.symmetricForms",
+  "SmoothMorseLemma.symmetricForms._proof_1",
+  "SmoothMorseLemma.symmetricForms._proof_2",
+  "SmoothMorseLemma.symmetricForms._proof_4",
+  "SmoothMorseLemma.symmetricForms._proof_5",
+  "SmoothMorseLemma.symmetricTaylorFactor",
+  "SmoothMorseLemma.symmetricTaylorFactor_coe",
+  "SmoothMorseLemma.symmetricTaylorFactor_zero",
+  "SmoothMorseLemma.symmetrize",
+  "SmoothMorseLemma.symmetrize._proof_1",
+  "SmoothMorseLemma.symmetrize._proof_3",
+  "SmoothMorseLemma.symmetrize._proof_4",
+  "SmoothMorseLemma.symmetrize._proof_5",
+  "SmoothMorseLemma.symmetrize_apply",
+  "SmoothMorseLemma.taylorHessianIntegrand._proof_1",
+  "SmoothMorseLemma.taylorHessianIntegrand._proof_2",
+  "SmoothMorseLemma.taylorHessianIntegrand.eq_1"
+ ],
+ "moves": [
+  [
+   "Lib.Analysis.Calculus.MorseLemma",
+   "Lib.Analysis.Calculus.MorseLemma.AdaptedDescentField",
+   8
+  ],
+  [
+   "Lib.Analysis.Calculus.MorseLemma",
+   "Lib.Analysis.Calculus.MorseLemma.CriticalPoints",
+   15
+  ],
+  [
+   "Lib.Analysis.Calculus.MorseLemma",
+   "Lib.Analysis.Calculus.MorseLemma.Cutoff",
+   6
+  ],
+  [
+   "Lib.Analysis.Calculus.MorseLemma",
+   "Lib.Analysis.Calculus.MorseLemma.DescentField",
+   10
+  ],
+  [
+   "Lib.Analysis.Calculus.MorseLemma",
+   "Lib.Analysis.Calculus.MorseLemma.Existence",
+   10
+  ],
+  [
+   "Lib.Analysis.Calculus.MorseLemma",
+   "Lib.Analysis.Calculus.MorseLemma.LinearPerturbation",
+   18
+  ],
+  [
+   "Lib.Analysis.Calculus.MorseLemma",
+   "Lib.Analysis.Calculus.MorseLemma.MorseChart",
+   7
+  ],
+  [
+   "Lib.Analysis.Calculus.MorseLemma",
+   "Lib.Analysis.Calculus.MorseLemma.ParametricIntegral",
+   2
+  ],
+  [
+   "Lib.Analysis.Calculus.MorseLemma",
+   "Lib.Analysis.Calculus.MorseLemma.PartialDiffeomorph",
+   10
+  ],
+  [
+   "Lib.Analysis.Calculus.MorseLemma",
+   "Lib.Analysis.Calculus.MorseLemma.PartitionOfUnity",
+   2
+  ],
+  [
+   "Lib.Analysis.Calculus.MorseLemma",
+   "Lib.Analysis.Calculus.MorseLemma.SignedCoordinates",
+   1
+  ],
+  [
+   "Lib.Analysis.Calculus.MorseLemma",
+   "Lib.Analysis.Calculus.MorseLemma.SignedMorseChart",
+   10
+  ],
+  [
+   "Lib.Analysis.Calculus.MorseLemma",
+   "Lib.Analysis.Calculus.MorseLemma.SplitChart",
+   22
+  ],
+  [
+   "Lib.Analysis.Calculus.MorseLemma",
+   "Lib.Analysis.Calculus.MorseLemma.SymmetricForm",
+   3
+  ],
+  [
+   "Lib.Analysis.Calculus.MorseLemma",
+   "Lib.Analysis.Calculus.MorseLemma.TaylorFactor",
+   8
+  ]
+ ],
+ "ambiguous": [],
+ "auxiliary_moved": 104,
+ "verdict": "PASS"
+}
