@@ -417,8 +417,8 @@ noncomputable def squareRelInteriorRaw (N : ℕ) (h : ℝ) (s : {s : Set Ambient
   squareOpenGeom h (Classical.choose s.property) (Classical.choose (Classical.choose_spec s.property))
     (Classical.choose (Classical.choose_spec (Classical.choose_spec s.property)))
 /-- The relative interior of a mesh square `s`: the open square `squareOpenGeom h v j k` of a chosen
-admissible presentation `(v, j, k)` of `s`; by `square_presentation` it is the open square of every
-admissible presentation. -/
+admissible presentation `(v, j, k)` of `s`; for `N > 0` and `h = 2 / N` it is the open square of
+every admissible presentation (`square_relInterior_coherent`). -/
 public noncomputable def squareRelInterior (N : ℕ) (h : ℝ) (s : {s : Set Ambient // s ∈ squares N h}) : Set Ambient := squareRelInteriorRaw N h s
 /-- For `N > 0` and `h = 2 / N`, if `(v, j, k)` is an admissible presentation of the mesh square `s`,
 then `squareRelInterior N h s = squareOpenGeom h v j k`. -/
@@ -453,7 +453,8 @@ public theorem square_presentation {N : ℕ} {h : ℝ} (hN : 0 < N) (hh : h = 2 
 noncomputable def edgeEndpointsRaw (N : ℕ) (h : ℝ) (e : {e : Set Ambient // e ∈ edges N h}) : Set Ambient :=
   let v := Classical.choose e.property; let j := Classical.choose (Classical.choose_spec e.property); {v, v + h • EuclideanSpace.single j 1}
 /-- The endpoint set `{v, v + h e_j}` of a mesh edge, for a chosen admissible presentation `(v, j)`;
-by `edge_presentation` it is the endpoint set of every admissible presentation. -/
+for `0 < h` it is the endpoint set of every admissible presentation (the private lemma
+`edge_endpoints_coherent`). -/
 public noncomputable def edgeEndpoints (N : ℕ) (h : ℝ) (e : {e : Set Ambient // e ∈ edges N h}) : Set Ambient := edgeEndpointsRaw N h e
 /-- For `N > 0` and `h = 2 / N`, every mesh edge `e` has a presentation: a vertex `v` and a
 direction `j` with `v j ≤ 1 - h` such that `e` is the segment `[v, v + h e_j]`, this segment lies in
