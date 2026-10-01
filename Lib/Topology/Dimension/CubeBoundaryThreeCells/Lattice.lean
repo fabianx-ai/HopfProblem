@@ -1,8 +1,8 @@
 module
 
-public import Lib.Topology.Dimension.CubeBoundaryThree
-public import Mathlib.Analysis.Convex.Segment
 public import Mathlib.Data.Int.Interval
+public import Mathlib.Algebra.Order.Archimedean.Real.Basic
+public import Mathlib.Data.Set.Card
 
 /-!
 # The uniform mesh of `[-1, 1]`

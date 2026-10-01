@@ -1,5 +1,6 @@
 module
 
+public import Lib.Topology.Dimension.CubeBoundaryThree
 public import Lib.Topology.Dimension.CubeBoundaryThreeCells.Lattice
 
 /-!
