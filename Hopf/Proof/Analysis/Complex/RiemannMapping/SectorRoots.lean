@@ -15,9 +15,7 @@ triangle corners of opening `π / 3` and `π / 4`, i.e. `principalRoot 3` (onto 
 `-π/4 < arg w < 0`), with the images of the upper half-plane and of the real axis.
 -/
 
-open Set Function Filter Manifold Topology
-
-open scoped ComplexConjugate ContDiff Interval NNReal UniformConvergence Uniformity
+open Set Function Filter Topology
 
 noncomputable section
 

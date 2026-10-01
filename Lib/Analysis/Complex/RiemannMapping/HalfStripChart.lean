@@ -22,9 +22,7 @@ This is the standard chart at the end of a strip used for boundary behaviour of 
 an infinite vertex (Ahlfors, *Complex Analysis*, Ch. 6 §2, the Schwarz–Christoffel discussion).
 -/
 
-open Set Function Filter Manifold Topology
-
-open scoped ComplexConjugate ContDiff Interval NNReal UniformConvergence Uniformity
+open Set Function Filter Topology
 
 noncomputable section
 

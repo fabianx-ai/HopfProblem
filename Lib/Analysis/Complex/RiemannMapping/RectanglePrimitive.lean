@@ -15,9 +15,9 @@ extends to a continuous (Lipschitz) function on `ℂ` with the same derivative o
 extension to the closed rectangle is what the reflection argument across an edge uses.
 -/
 
-open Set Function Filter Manifold Topology
+open Set Function Filter Topology
 
-open scoped ComplexConjugate ContDiff Interval NNReal UniformConvergence Uniformity
+open scoped Interval NNReal
 
 noncomputable section
 

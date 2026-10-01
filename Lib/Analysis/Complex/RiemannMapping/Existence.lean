@@ -26,9 +26,9 @@ specification, and proves that a holomorphic map with nonvanishing derivative is
 analytic diffeomorphism (`RiemannMapping.isLocalDiffeomorphAt_of_deriv_ne_zero`).
 -/
 
-open Set Function Filter Manifold Topology
+open Set Function Filter Topology
 
-open scoped ComplexConjugate ContDiff Interval NNReal UniformConvergence Uniformity
+open scoped ContDiff UniformConvergence Uniformity
 
 noncomputable section
 

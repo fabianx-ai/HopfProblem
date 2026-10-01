@@ -25,9 +25,9 @@ boundary arcs (Ahlfors, *Complex Analysis*, Ch. 6 §1.4; Pommerenke, *Boundary B
 Conformal Maps*, §3.3).
 -/
 
-open Set Function Filter Manifold Topology
+open Set Function Filter Topology
 
-open scoped ComplexConjugate ContDiff Interval NNReal UniformConvergence Uniformity
+open scoped ComplexConjugate
 
 noncomputable section
 

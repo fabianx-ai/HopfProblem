@@ -25,9 +25,7 @@ This is the elementary half of the boundary behaviour of a conformal map onto th
 * `RiemannBoundary.tendsto_norm_discHomeomorph_in_boundary_chart`
 -/
 
-open Set Function Filter Manifold Topology
-
-open scoped ComplexConjugate ContDiff Interval NNReal UniformConvergence Uniformity
+open Set Function Filter Topology
 
 noncomputable section
 

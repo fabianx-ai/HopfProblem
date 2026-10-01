@@ -16,9 +16,7 @@ punctured at `pinf`, is identified with a closed half-plane by the cross ratio s
 `RiemannMapping.triangleSideParameter` parametrizes a triangle side through a chart.
 -/
 
-open Set Function Filter Manifold Topology
-
-open scoped ComplexConjugate ContDiff Interval NNReal UniformConvergence Uniformity
+open Set Function Filter Topology
 
 noncomputable section
 

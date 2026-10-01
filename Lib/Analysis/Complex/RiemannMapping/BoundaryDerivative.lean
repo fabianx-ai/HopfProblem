@@ -18,9 +18,7 @@ This is the local form of conformality at the boundary for maps that extend by r
 Ahlfors, *Complex Analysis*, Ch. 6 §1.4; Pommerenke, *Boundary Behaviour of Conformal Maps*, §3.1).
 -/
 
-open Set Function Filter Manifold Topology
-
-open scoped ComplexConjugate ContDiff Interval NNReal UniformConvergence Uniformity
+open Set Function Filter Topology
 
 noncomputable section
 

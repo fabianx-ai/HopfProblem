@@ -18,9 +18,7 @@ These are the corner-straightening maps `z ↦ z ^ (α / π)` at a boundary corn
 (Ahlfors, *Complex Analysis*, Ch. 6 §2.2; Pommerenke, *Boundary Behaviour of Conformal Maps*, §3.4).
 -/
 
-open Set Function Filter Manifold Topology
-
-open scoped ComplexConjugate ContDiff Interval NNReal UniformConvergence Uniformity
+open Set Function Filter Topology
 
 noncomputable section
 

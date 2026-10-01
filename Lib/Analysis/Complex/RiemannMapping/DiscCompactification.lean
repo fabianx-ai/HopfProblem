@@ -20,9 +20,7 @@ This is the topological part of Carathéodory's extension theorem (Pommerenke, *
 of Conformal Maps*, Thm 2.6; cf. Ahlfors, *Complex Analysis*, Ch. 6 §1.3).
 -/
 
-open Set Function Filter Manifold Topology
-
-open scoped ComplexConjugate ContDiff Interval NNReal UniformConvergence Uniformity
+open Set Function Filter Topology
 
 noncomputable section
 
