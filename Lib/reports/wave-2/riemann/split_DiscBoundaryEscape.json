@@ -1,0 +1,2000 @@
+{
+"module": "Lib.Analysis.Complex.RiemannMapping",
+"source": "/home/goblin/.claude/jobs/06995e68/tmp/wave2/riemann/base_RiemannMapping.lean",
+"source_sha256": "5323abecdff8697fc9af0a6c665efb06f2e6b41672fc160bac01b0f3727b8433",
+"units_kept": 174,
+"units_moved": 7,
+"units": [
+{
+"names": [
+"TriangleRiemannNormalization.discCoordinate"
+],
+"class": "keep",
+"lines": [
+68,
+71
+],
+"sha256": "477dc792759f8c10fb1216920e8bd7eeff068176d5c107a6c678d318d513e1d8"
+},
+{
+"names": [
+"TriangleRiemannNormalization.discCoordinate_injective"
+],
+"class": "keep",
+"lines": [
+75,
+79
+],
+"sha256": "525b61a9d1d4861bfe8b212d56e313f5002f59c7464363f0664d14171cc00d03"
+},
+{
+"names": [
+"TriangleRiemannNormalization.discCoordinate_ne"
+],
+"class": "keep",
+"lines": [
+81,
+84
+],
+"sha256": "9fc40528518743243580a24e492d8d3c13d6fdf5ea7b5d1bae3834f51c3ea6f5"
+},
+{
+"names": [
+"TriangleRiemannNormalization.discCoordinate_norm_le"
+],
+"class": "keep",
+"lines": [
+86,
+89
+],
+"sha256": "75db05dfca02fb61c53be03c14368424baf995df94d29d064ab5fb15cbf386d7"
+},
+{
+"names": [
+"TriangleRiemannNormalization.punctureMap"
+],
+"class": "keep",
+"lines": [
+91,
+95
+],
+"sha256": "d44691a26245010b15654f95d3254699ec7a83b7808eea42cc94c459c24329d0"
+},
+{
+"names": [
+"TriangleRiemannNormalization.punctureMap_isEmbedding"
+],
+"class": "keep",
+"lines": [
+97,
+110
+],
+"sha256": "7038029843396c3e441d305413c6d075218f750014876940956938270783d60c"
+},
+{
+"names": [
+"TriangleRiemannNormalization.punctureMap_surjective"
+],
+"class": "keep",
+"lines": [
+112,
+126
+],
+"sha256": "c2aabfcd06563b71b316c055c8fd01ccf86669546436b4342cef5094a7d6088f"
+},
+{
+"names": [
+"TriangleRiemannNormalization.punctureHomeomorph"
+],
+"class": "keep",
+"lines": [
+128,
+132
+],
+"sha256": "881f6e7c5ec09e44242550e7d98ba1cdeeafd13b5ae313a428ab4b2fa33b5840"
+},
+{
+"names": [
+"TriangleRiemannNormalization.normalizationHomeomorph"
+],
+"class": "keep",
+"lines": [
+134,
+145
+],
+"sha256": "abfbbcb6219aa46e92ec7c2d03770fa304e1090252b2d294e4f838e65da6e157"
+},
+{
+"names": [
+"TriangleRiemannNormalization.normalizationHomeomorph_apply"
+],
+"class": "keep",
+"lines": [
+147,
+160
+],
+"sha256": "454aa1a489424b597324d3cf9bf88bfbb6f236d5d5c4293ddbb16e5390f823e5"
+},
+{
+"names": [
+"TriangleRiemannNormalization.normalizationHomeomorph_first"
+],
+"class": "keep",
+"lines": [
+162,
+170
+],
+"sha256": "684a6a4b4e6748c1cf313193b37800e53c3d9e220fa0834c64673f94925afa51"
+},
+{
+"names": [
+"TriangleRiemannNormalization.normalizationHomeomorph_second"
+],
+"class": "keep",
+"lines": [
+172,
+182
+],
+"sha256": "6005dd0369ad0486e81e0da739fc65b73f7498631f76d8a90938158ddeef0cf6"
+},
+{
+"names": [
+"TriangleRiemannNormalization.normalizationHomeomorph_strict_iff"
+],
+"class": "keep",
+"lines": [
+184,
+198
+],
+"sha256": "51f2680f9887f274fe3b620db5bc8a28b71e0f61b200df5447bcf0e54ddd5c39"
+},
+{
+"names": [
+"TriangleRiemannNormalization.normalization_orientation_ne_zero"
+],
+"class": "keep",
+"lines": [
+200,
+209
+],
+"sha256": "33788809a4b704600a2efa6c14b024a0c0850d4f78fa0df00aad7f0c6f9a2dd7"
+},
+{
+"names": [
+"RiemannMapping.isCompact_discHomeomorph_preimage_closedBall"
+],
+"class": "move",
+"lines": [
+211,
+221
+],
+"sha256": "dc731aec3f0c65236741f75b70ca84c0a79242c4bf03469fe761d3d5f49ab657"
+},
+{
+"names": [
+"RiemannMapping.tendsto_norm_discHomeomorph_of_notMem"
+],
+"class": "move",
+"lines": [
+223,
+251
+],
+"sha256": "eabf064f89d17677e65e5d6db8d623977344a077cbbe85453b9747e71a4932c7"
+},
+{
+"names": [
+"RiemannBoundary.tendsto_norm_discHomeomorph_of_cocompact"
+],
+"class": "move",
+"lines": [
+255,
+280
+],
+"sha256": "d0112de186ce4c984744c036f4bef96c5f0910f18b30e02e80fa62ae19c6f8eb"
+},
+{
+"names": [
+"RiemannBoundary.tendsto_norm_discHomeomorph_of_norm_atTop"
+],
+"class": "move",
+"lines": [
+282,
+288
+],
+"sha256": "a536c266ceabefccc41b30225c50951505457f30bd8df1e67be190616202f5d2"
+},
+{
+"names": [
+"RiemannBoundary.tendsto_norm_discHomeomorph_of_im_atTop"
+],
+"class": "move",
+"lines": [
+290,
+296
+],
+"sha256": "9edcc34614fb42b03513db2c3aba5880ed687343264c306329ce838297cb251a"
+},
+{
+"names": [
+"RiemannBoundary.logHalfStrip"
+],
+"class": "keep",
+"lines": [
+298,
+300
+],
+"sha256": "864599d7e61bb02d8244a75195e65304ef17e317912ae21b0b6e65b4b142411a"
+},
+{
+"names": [
+"RiemannBoundary.logHalfStrip_re"
+],
+"class": "keep",
+"lines": [
+302,
+306
+],
+"sha256": "81aad9edb0b04a502544d22dcecff14a158e4fe7915538fe3f36050ee89f0a0e"
+},
+{
+"names": [
+"RiemannBoundary.logHalfStrip_im"
+],
+"class": "keep",
+"lines": [
+308,
+312
+],
+"sha256": "a0e4d159a03d7279e873fee6cba29a9e99429201585424c37463cf1d8acf316c"
+},
+{
+"names": [
+"RiemannBoundary.tendsto_logHalfStrip_im_atTop"
+],
+"class": "keep",
+"lines": [
+314,
+320
+],
+"sha256": "771f0d0c55382ac491ee385b9bbbbc849b5c3f30531a969f6bf0f0cd3713397f"
+},
+{
+"names": [
+"RiemannBoundary.tendsto_norm_discHomeomorph_logHalfStrip"
+],
+"class": "keep",
+"lines": [
+322,
+335
+],
+"sha256": "be4d03a1e366bb41e7df1e9ec725f88bb509f119bd3a28658fb00884dc631986"
+},
+{
+"names": [
+"RiemannBoundary.onePointLogHalfStrip"
+],
+"class": "keep",
+"lines": [
+337,
+339
+],
+"sha256": "42817b83b48536733e85d17b0019b0cee4f9a828b285b5171c6a5dd2d10fa7a1"
+},
+{
+"names": [
+"RiemannBoundary.onePointLogHalfStrip_zero"
+],
+"class": "keep",
+"lines": [
+341,
+344
+],
+"sha256": "b519311da9e2b86f99180ba720113c808054a290a3ca6b45147fdc89c96b0a73"
+},
+{
+"names": [
+"RiemannBoundary.onePointLogHalfStrip_of_ne_zero"
+],
+"class": "keep",
+"lines": [
+346,
+349
+],
+"sha256": "6cdd2aca46808a7bbf322ddf6422d5e7d9242b78112f706c721fc63b80885203"
+},
+{
+"names": [
+"RiemannBoundary.tendsto_logHalfStrip_cocompact"
+],
+"class": "keep",
+"lines": [
+351,
+357
+],
+"sha256": "c9ad50abe5e7f38677b3c61b669c53fea1f4aa8ba2c4d1b9794cac2526c05eed"
+},
+{
+"names": [
+"RiemannBoundary.tendsto_coe_logHalfStrip_infty"
+],
+"class": "keep",
+"lines": [
+359,
+365
+],
+"sha256": "29601187a8cfc4345ac2e83808e2e01428f24b4ba649d0ae3485316a69da499e"
+},
+{
+"names": [
+"RiemannBoundary.continuousAt_onePointLogHalfStrip_zero"
+],
+"class": "keep",
+"lines": [
+367,
+373
+],
+"sha256": "73be4517373098de8f1b56ac22cf9c7b43e28e48bcdb4a5042c7b7ecae11a13e"
+},
+{
+"names": [
+"RiemannBoundary.onePointDomain"
+],
+"class": "keep",
+"lines": [
+375,
+377
+],
+"sha256": "7fd4077868a9516acd0dec11d3a829771cb08e2725d670f7032f9a982a4fb1aa"
+},
+{
+"names": [
+"RiemannBoundary.coe_mem_onePointDomain"
+],
+"class": "keep",
+"lines": [
+379,
+382
+],
+"sha256": "b6f8fd83eeff2df764c56b676c1c3976f21fa567735542819b3556583b386030"
+},
+{
+"names": [
+"RiemannBoundary.infty_notMem_onePointDomain"
+],
+"class": "keep",
+"lines": [
+384,
+388
+],
+"sha256": "56ffd957ac93cebc2acfd79da2966ddff1ca45594bd273b5782e99a22cf2fda2"
+},
+{
+"names": [
+"RiemannBoundary.isOpen_onePointDomain"
+],
+"class": "keep",
+"lines": [
+390,
+393
+],
+"sha256": "07dc826599ae57655170fec6918589e68112114d077597cd333bd8a77e476dc6"
+},
+{
+"names": [
+"RiemannBoundary.onePointDomainHomeomorph"
+],
+"class": "keep",
+"lines": [
+395,
+397
+],
+"sha256": "df79a354446f5a80477e619cda88fca8fc4e55078471b1e5f43a782ebf5ba258"
+},
+{
+"names": [
+"RiemannBoundary.onePointDomainHomeomorph_apply_coe"
+],
+"class": "keep",
+"lines": [
+399,
+403
+],
+"sha256": "9b55f52b92083dd9b9cb4568887830c9eeafb143a1fe967437027296bc857e45"
+},
+{
+"names": [
+"RiemannBoundary.onePointDomainDiscHomeomorph"
+],
+"class": "keep",
+"lines": [
+405,
+408
+],
+"sha256": "94a381cfdc63094b5f27bf77a9c245d726792afab99e46d84c6fecac94b3b8b4"
+},
+{
+"names": [
+"RiemannBoundary.onePointDomainDiscHomeomorph_apply"
+],
+"class": "keep",
+"lines": [
+410,
+415
+],
+"sha256": "489e75f0a10cd389594ea45ca6421276be772dced6fee22bbf1b9cfde3afa396"
+},
+{
+"names": [
+"RiemannBoundary.onePointDomainDiscHomeomorph_representative"
+],
+"class": "keep",
+"lines": [
+417,
+424
+],
+"sha256": "f46a464633738dab3b649e71f4430bd3e166d58ce375dcc5b1cfda9aa7a095be"
+},
+{
+"names": [
+"RiemannBoundary.infty_mem_frontier_onePointDomain_of_cocompact"
+],
+"class": "keep",
+"lines": [
+426,
+437
+],
+"sha256": "af3e6ee6c7c6172d00d1e747adbfa5a50d3bd87d85249fca48b4a7c154f4f87b"
+},
+{
+"names": [
+"RiemannMapping.uniformEquicontinuousOn_of_thickening_subset_of_forall_norm_le"
+],
+"class": "keep",
+"lines": [
+441,
+472
+],
+"sha256": "f498d1017540d2daa85cd41f876db16ce9bca40a179268ce5724cc34a898e98a"
+},
+{
+"names": [
+"RiemannMapping.equicontinuousAt_of_forall_norm_le"
+],
+"class": "keep",
+"lines": [
+474,
+488
+],
+"sha256": "15e3996725bd94021522410fd5c933b5f1f74053bf3a63d3d54d5b865e7fb2d1"
+},
+{
+"names": [
+"RiemannMapping.compactSubsets"
+],
+"class": "keep",
+"lines": [
+490,
+492
+],
+"sha256": "ac3d7f4238f4df8e002eb655866d1cd88037615518624a11454e78fb70b1f6fc"
+},
+{
+"names": [
+"RiemannMapping.FunctionSpace"
+],
+"class": "keep",
+"lines": [
+494,
+496
+],
+"sha256": "cfe5912afc0714bb2ea6d250f28f444c16f63101314585d51eb838ba31432e72"
+},
+{
+"names": [
+"RiemannMapping.evaluation"
+],
+"class": "keep",
+"lines": [
+498,
+500
+],
+"sha256": "fb7db65a2d949d0f0d0d8125165f10207d7722790915d16e9ee66203c453cc50"
+},
+{
+"names": [
+"RiemannMapping.uniformity_isCountablyGenerated"
+],
+"class": "keep",
+"lines": [
+502,
+515
+],
+"sha256": "9c01e672789096bd15be9a4d4f718f0ccc3ef474a999275c7df8580919480b8f"
+},
+{
+"names": [
+"RiemannMapping.evaluation_tendstoLocallyUniformlyOn"
+],
+"class": "keep",
+"lines": [
+517,
+524
+],
+"sha256": "05e90f13e2e7b6c42d6d9d34a61aae9e87ed563e36fbdb96db80f3aabe69688c"
+},
+{
+"names": [
+"RiemannMapping.isCompact_closure_of_bounded_holomorphic"
+],
+"class": "keep",
+"lines": [
+526,
+543
+],
+"sha256": "187424f40d1bf59de050b67c83b0774823d39ea650dce071f7929bf0a5db2a12"
+},
+{
+"names": [
+"RiemannMapping.normalizedClass"
+],
+"class": "keep",
+"lines": [
+545,
+551
+],
+"sha256": "c3d09d749efcde2dfe15e7ae3915c5fa6c3a6e183f950fdfd9d1d11c490f4b18"
+},
+{
+"names": [
+"RiemannMapping.normalizedClass_compact_closure"
+],
+"class": "keep",
+"lines": [
+553,
+557
+],
+"sha256": "fc8f7dd8afb372f48ed17d47e8e18131c1b0844db2cd0567620f7602e7f49c9e"
+},
+{
+"names": [
+"RiemannMapping.closure_normalizedClass"
+],
+"class": "keep",
+"lines": [
+559,
+603
+],
+"sha256": "45c1f66b5cdb175edc8f9df2e2f8c2582b746f7743b808feaacafbc1fd714f81"
+},
+{
+"names": [
+"RiemannMapping.norm_deriv_continuousOn_closure"
+],
+"class": "keep",
+"lines": [
+605,
+615
+],
+"sha256": "370e6abd547f1b78d3e33b0fecbb9080b479d9394d805264f7c3623a5fcaf6b8"
+},
+{
+"names": [
+"RiemannMapping.exists_maximal_normalizedMap"
+],
+"class": "keep",
+"lines": [
+617,
+641
+],
+"sha256": "c50b321e2fd045e9b2d315b45456afd0dcc45650ed4507e716e8017989061813"
+},
+{
+"names": [
+"RiemannMapping.discExtension"
+],
+"class": "keep",
+"lines": [
+643,
+648
+],
+"sha256": "a6d221d488052e73a5ddb89afcc9ec17c7cf057d7eba571e53dfcf1860d4a1d2"
+},
+{
+"names": [
+"RiemannMapping.discExtension_coe"
+],
+"class": "keep",
+"lines": [
+650,
+655
+],
+"sha256": "2c89238faeaa5ab7e7a4186e2c63bedfea010a396ecf43214d9a2150f11e1ba9"
+},
+{
+"names": [
+"RiemannMapping.discExtension_eqOn"
+],
+"class": "keep",
+"lines": [
+657,
+661
+],
+"sha256": "aada33efd8a869ed7201ab5c1abc68bae8a6c43736102b272cee6797235fd40a"
+},
+{
+"names": [
+"RiemannMapping.normalizedClass_nonempty"
+],
+"class": "keep",
+"lines": [
+663,
+676
+],
+"sha256": "1b00df6ba3a434aa3172f831a554340db0dc556905b41875db256ebebf3469a1"
+},
+{
+"names": [
+"RiemannMapping.exists_bijOn_unitBall_deriv_ne_zero_map_eq_zero"
+],
+"class": "keep",
+"lines": [
+678,
+729
+],
+"sha256": "c567375d1ed414e9f3125e0a2f801844470d08417e304ea8b34991f130c0b058"
+},
+{
+"names": [
+"RiemannMapping.isLocalDiffeomorphAt_of_deriv_ne_zero"
+],
+"class": "keep",
+"lines": [
+733,
+771
+],
+"sha256": "1f4580bde8f0aae7e36736cb3c294a6d15ff8d804fb1cd7e9782755e6c85d367"
+},
+{
+"names": [
+"RiemannMapping.unitDisc"
+],
+"class": "keep",
+"lines": [
+773,
+775
+],
+"sha256": "af6114e37725e8ecd962dd0b02cb4f62bba5ec7e910d632f795c06d4a6b06c96"
+},
+{
+"names": [
+"RiemannMapping.riemannMap"
+],
+"class": "keep",
+"lines": [
+777,
+780
+],
+"sha256": "4d56437e903afaaebeeb2f146ef97bbb38c5a5554e0105255a27173f24086dba"
+},
+{
+"names": [
+"RiemannMapping.riemannMap_spec"
+],
+"class": "keep",
+"lines": [
+782,
+788
+],
+"sha256": "a18981e06269c999f4c16768b3bef953f3f54974e919af62e0ffdacda58a5c80"
+},
+{
+"names": [
+"RiemannBoundary.openRectangle"
+],
+"class": "keep",
+"lines": [
+792,
+794
+],
+"sha256": "6cdfd0f876b9d583d981feae6cb55af27cdeab6428ab3ce93a0a890ed9fb92e1"
+},
+{
+"names": [
+"RiemannBoundary.isOpen_openRectangle"
+],
+"class": "keep",
+"lines": [
+796,
+798
+],
+"sha256": "2d6fdd755e2079f8bfcdcdc90faf0c40c20e7f8451e196498e5961d63172ddaa"
+},
+{
+"names": [
+"RiemannBoundary.convex_openRectangle"
+],
+"class": "keep",
+"lines": [
+800,
+803
+],
+"sha256": "b53594e44d6cca3ccc940179b3c108c388d7ecdf6808756159ece856b024e503"
+},
+{
+"names": [
+"RiemannBoundary.mixed_mem_openRectangle"
+],
+"class": "keep",
+"lines": [
+805,
+812
+],
+"sha256": "713426ffd5203e66e4a8a66b658560cd817dcac33a19a39b06c2b8dc7e18e52d"
+},
+{
+"names": [
+"RiemannBoundary.rectangle_subset_openRectangle"
+],
+"class": "keep",
+"lines": [
+814,
+819
+],
+"sha256": "0a3e80fa13e4e3ae3e659eef7296f91ec0e7ac907e904cb408e11e98e8b46833"
+},
+{
+"names": [
+"RiemannBoundary.horizontal_segment_subset"
+],
+"class": "keep",
+"lines": [
+821,
+827
+],
+"sha256": "4f129f7864f96beb2037a31881a2b01269568b352b15fd5cf62abeedc622a236"
+},
+{
+"names": [
+"RiemannBoundary.vertical_segment_subset"
+],
+"class": "keep",
+"lines": [
+829,
+835
+],
+"sha256": "fd11de7e99df20fb0d71b18bd66dd352842533c382509ff21410ced5835fee8c"
+},
+{
+"names": [
+"RiemannBoundary.wedgeIntegral_sub_wedgeIntegral_openRectangle"
+],
+"class": "keep",
+"lines": [
+837,
+891
+],
+"sha256": "fe0b588ef3a937ac657376e6d364ab7e09ea33535eaf60e409f38ea2e07b034f"
+},
+{
+"names": [
+"RiemannBoundary.hasDerivAt_wedgeIntegral_openRectangle"
+],
+"class": "keep",
+"lines": [
+893,
+906
+],
+"sha256": "3ecbd500645360047a10ed27415003e7dbc9aeec42ac4868540e7d342178be41"
+},
+{
+"names": [
+"RiemannBoundary.isExactOn_openRectangle"
+],
+"class": "keep",
+"lines": [
+908,
+918
+],
+"sha256": "0a659547f34b17a93ca40be28b4aa3a087e83685ffe6fd905da0a59209399393"
+},
+{
+"names": [
+"RiemannBoundary.exists_lipschitz_extension_primitive_openRectangle"
+],
+"class": "keep",
+"lines": [
+920,
+935
+],
+"sha256": "7cadc3ec20853fa0d6a6aeac27454182a89036f6009ad06de182098ecb640933"
+},
+{
+"names": [
+"RiemannBoundary.exists_continuous_primitive_openRectangle"
+],
+"class": "keep",
+"lines": [
+937,
+944
+],
+"sha256": "3e709bd6c7d95c3bc5abef83fbd355aece4c0d0857148bf3929368e7c94eee6f"
+},
+{
+"names": [
+"RiemannBoundary.exists_continuous_primitive_openRectangle_of_norm_le"
+],
+"class": "keep",
+"lines": [
+946,
+953
+],
+"sha256": "5bbb04e0fc2247192e9ccc617488e787f1dc96ae0cf7347b189a6eb93e9c8be7"
+},
+{
+"names": [
+"RiemannBoundary.hasDerivAt_horizontal"
+],
+"class": "keep",
+"lines": [
+955,
+960
+],
+"sha256": "dc20bf1387d1126366aae91e03d490a293da7da2283d5e236c6d17bb9a9d8acf"
+},
+{
+"names": [
+"RiemannBoundary.upper_limit_tendstoUniformlyOnFilter"
+],
+"class": "keep",
+"lines": [
+962,
+985
+],
+"sha256": "d3630ce4f0b5b34756a1fe035565cca2710245cf0ebce47e01926e150c64ffc2"
+},
+{
+"names": [
+"RiemannBoundary.hasDerivAt_boundary_trace_sub"
+],
+"class": "keep",
+"lines": [
+987,
+1022
+],
+"sha256": "3381083775eae84c3de171dde1438545647c100f4ab41799b2713dac4057b207"
+},
+{
+"names": [
+"RiemannBoundary.boundary_trace_sub_eq"
+],
+"class": "keep",
+"lines": [
+1024,
+1042
+],
+"sha256": "21943cb432db211553cf3ec7d37a8d344ee7d29e9ce65604a03e776393975734"
+},
+{
+"names": [
+"RiemannBoundary.exists_analytic_extension_of_vanishing_jump"
+],
+"class": "keep",
+"lines": [
+1044,
+1105
+],
+"sha256": "6cebe3e88928b48c53b7a36cb44ffecbe82463ff662f100c4f5415aaee9e1380"
+},
+{
+"names": [
+"RiemannBoundary.norm_sub_inv_conj"
+],
+"class": "keep",
+"lines": [
+1107,
+1116
+],
+"sha256": "27bed6863835567f3aed86d6714ae8e04f0aa07b435067550c2a5210e0d2b020"
+},
+{
+"names": [
+"RiemannBoundary.tendsto_sub_inv_conj_of_norm"
+],
+"class": "keep",
+"lines": [
+1118,
+1130
+],
+"sha256": "9d57d08cd4bd4881846e8eb51529d29f66d033f0e62c0e4a0ab6d711a842815f"
+},
+{
+"names": [
+"RiemannBoundary.norm_axis_eq_one_of_extension"
+],
+"class": "keep",
+"lines": [
+1132,
+1159
+],
+"sha256": "7bacbf2ea3df6e413748eb3a5a5c3eb088bbb201b215ca6cc0296bddf34f2fde"
+},
+{
+"names": [
+"RiemannBoundary.exists_analytic_extension_of_modulus_one_bounded"
+],
+"class": "keep",
+"lines": [
+1161,
+1203
+],
+"sha256": "a770118da949b752af69c4ad0c861e33b40a76562efa90107148a4bade7865be"
+},
+{
+"names": [
+"RiemannBoundary.dist_lt_two_mul_of_mem_centeredRectangle"
+],
+"class": "keep",
+"lines": [
+1205,
+1214
+],
+"sha256": "2496ad2edac2b26dbade34f5bd1ea5ae8724021d7c8e5969468bafdc06e9495c"
+},
+{
+"names": [
+"RiemannBoundary.ball_subset_centeredRectangle"
+],
+"class": "keep",
+"lines": [
+1216,
+1225
+],
+"sha256": "0081c633ccf4a917930d81296858eee22a83f1c9868b885822c8e4127c7aefad"
+},
+{
+"names": [
+"RiemannBoundary.exists_analytic_extension_of_modulus_one"
+],
+"class": "keep",
+"lines": [
+1227,
+1286
+],
+"sha256": "80d50e9ee94e7133660fbc6e3334f12dc24c84cc8426698b9c0bdd9c63853a9b"
+},
+{
+"names": [
+"RiemannBoundary.tendsto_norm_discHomeomorph_nhdsWithin_of_notMem"
+],
+"class": "move",
+"lines": [
+1288,
+1298
+],
+"sha256": "46d8ea9cf65320e03e77c8972c077acc074a4a93c9bad73814950c748d8df497"
+},
+{
+"names": [
+"RiemannBoundary.tendsto_norm_discHomeomorph_in_boundary_chart"
+],
+"class": "move",
+"lines": [
+1300,
+1321
+],
+"sha256": "ccf341ce38cf6403afadf976b58c7692df854d112908d1c3731d2366c1c01537"
+},
+{
+"names": [
+"RiemannMapping.im_mul_exp_real"
+],
+"class": "keep",
+"lines": [
+1325,
+1338
+],
+"sha256": "b521e90de3940074d3251dd307912211590635d9a344ceec9b98aa2656db136f"
+},
+{
+"names": [
+"RiemannMapping.im_mul_exp_real_pow"
+],
+"class": "keep",
+"lines": [
+1340,
+1348
+],
+"sha256": "4e02eee41cf6cefbae74fd1492a39812351c59dc864788993c4e3718d709a600"
+},
+{
+"names": [
+"RiemannMapping.exists_unit_upperHalf_power_direction"
+],
+"class": "keep",
+"lines": [
+1350,
+1392
+],
+"sha256": "fa8b0a4bf82fca4a853f238e6ed748b2048704e25e9b2f6d143eb685720f396c"
+},
+{
+"names": [
+"RiemannMapping.exists_upperHalf_power_direction"
+],
+"class": "keep",
+"lines": [
+1394,
+1398
+],
+"sha256": "69178a7f8518303c85763d64454a539997ae31bec3d0d57d87b97e67d8602b2d"
+},
+{
+"names": [
+"RiemannMapping.tendsto_boundaryRay"
+],
+"class": "keep",
+"lines": [
+1400,
+1404
+],
+"sha256": "165744019236fc8f50067d136952fde8bac0c72146bf3379ea8d7c53eaecc093"
+},
+{
+"names": [
+"RiemannMapping.boundaryRay_im_pos"
+],
+"class": "keep",
+"lines": [
+1406,
+1410
+],
+"sha256": "57e16275382105611e25809af0bb3c16f4b58e4c5de3685524d5e8094d07778c"
+},
+{
+"names": [
+"RiemannMapping.analyticOrderAt_ne_top_of_upper_halfPlane"
+],
+"class": "keep",
+"lines": [
+1412,
+1423
+],
+"sha256": "2402cc0130fc4600e79b98a403917fcf5460ac8ad0fc2aad43ebcc18b5d4b89a"
+},
+{
+"names": [
+"RiemannMapping.nonneg_im_leading_of_upper_halfPlane"
+],
+"class": "keep",
+"lines": [
+1425,
+1448
+],
+"sha256": "1773da89cdb0274eddfb73b0416999cd3d34eccc507b1cd25642e3e5d4eba7b3"
+},
+{
+"names": [
+"RiemannMapping.analyticOrderAt_eq_one_of_upper_halfPlane"
+],
+"class": "keep",
+"lines": [
+1450,
+1472
+],
+"sha256": "37f4795684822470ad63ebcc6d967b2bfb451cd10cf1578b61c16220892b6ca4"
+},
+{
+"names": [
+"RiemannMapping.deriv_ne_zero_of_upper_halfPlane"
+],
+"class": "keep",
+"lines": [
+1474,
+1480
+],
+"sha256": "3ce423c1be82247a7c9cbe5fbe1ea60c9a68c3c3c40a1f8fd60df8397eb32fca"
+},
+{
+"names": [
+"RiemannMapping.boundaryLog"
+],
+"class": "keep",
+"lines": [
+1482,
+1484
+],
+"sha256": "4f6e465ed329ba1cf1a972785d65bc5235bffc3e51dabe7655604164df0f1b09"
+},
+{
+"names": [
+"RiemannMapping.boundaryLog_self"
+],
+"class": "keep",
+"lines": [
+1486,
+1489
+],
+"sha256": "efa03ca628b20ad17dfc0202e5b6b62f245996927a18c13cca31c7493eac980d"
+},
+{
+"names": [
+"RiemannMapping.analyticAt_boundaryLog"
+],
+"class": "keep",
+"lines": [
+1491,
+1496
+],
+"sha256": "80d2e4aa106415703f12a69141ea7bd77a3394ea298fe685c0cdacc21b03f755"
+},
+{
+"names": [
+"RiemannMapping.hasDerivAt_boundaryLog"
+],
+"class": "keep",
+"lines": [
+1498,
+1504
+],
+"sha256": "393f162a535e38ecac6146ee2d5bac05ddb598e3672664e327cd29ef93c319f0"
+},
+{
+"names": [
+"RiemannMapping.im_boundaryLog_pos"
+],
+"class": "keep",
+"lines": [
+1506,
+1515
+],
+"sha256": "303d1729e4876e8c8fad6fcf1bc770908994b421424f1fb2e4a7689b678e126d"
+},
+{
+"names": [
+"RiemannMapping.deriv_ne_zero_of_upper_halfPlane_to_unitDisc"
+],
+"class": "keep",
+"lines": [
+1517,
+1533
+],
+"sha256": "43b3b227def38cd5a9e7d293cde014613c615cdf8b5801569d51eba11cf0c6bc"
+},
+{
+"names": [
+"RiemannMapping.exists_boundary_chart_target_ball"
+],
+"class": "keep",
+"lines": [
+1535,
+1547
+],
+"sha256": "5203215f17650593ebf21242aee3aa01e0d0d812630aa72601ec803e0f33c83a"
+},
+{
+"names": [
+"RiemannBoundary.principalRoot"
+],
+"class": "keep",
+"lines": [
+1551,
+1553
+],
+"sha256": "2abeddff5ea2e986ccda77c081b41010d1bca7e4fd9258b33e8dcb373f0ff90f"
+},
+{
+"names": [
+"RiemannBoundary.principalRoot_pow"
+],
+"class": "keep",
+"lines": [
+1555,
+1559
+],
+"sha256": "ac6b51db0addf2861d95e3357c25284c7ffe2a07f9220233a3a66d38458f92d5"
+},
+{
+"names": [
+"RiemannBoundary.principalRoot_zero"
+],
+"class": "keep",
+"lines": [
+1561,
+1564
+],
+"sha256": "495f9528a80bff5397dc1ca71cbb279301ade110e5c9b15e9e90fced4092fb9d"
+},
+{
+"names": [
+"RiemannBoundary.principalRoot_injective"
+],
+"class": "keep",
+"lines": [
+1566,
+1570
+],
+"sha256": "90876ad057b1ba6dfb21d8344f407231fc1131b39a099ad572ee3839c8b075f0"
+},
+{
+"names": [
+"RiemannBoundary.principalRoot_eq_zero_iff"
+],
+"class": "keep",
+"lines": [
+1572,
+1577
+],
+"sha256": "3e0c2e1d97b08559a33bd67fcdd8340154c761032d6eed611d227a72f9cdc9bf"
+},
+{
+"names": [
+"RiemannBoundary.norm_principalRoot"
+],
+"class": "keep",
+"lines": [
+1579,
+1583
+],
+"sha256": "a8d1290b532a9bdad4b4dc075e4ad32a039cd8a7e239b50ad9d5034696997133"
+},
+{
+"names": [
+"RiemannBoundary.principalRoot_exponent_re_pos"
+],
+"class": "keep",
+"lines": [
+1585,
+1589
+],
+"sha256": "103ea360952bd15f82ef7a5baff127ccd5a4c864e094beb5a84f465272517ab4"
+},
+{
+"names": [
+"RiemannBoundary.continuousAt_principalRoot_zero"
+],
+"class": "keep",
+"lines": [
+1591,
+1595
+],
+"sha256": "cebef965716704209b1efbd3b686df8909d8a6b4b72dae0af11b700cfc45db11"
+},
+{
+"names": [
+"RiemannBoundary.continuousOn_principalRoot_closedUpper"
+],
+"class": "keep",
+"lines": [
+1597,
+1615
+],
+"sha256": "617e97cdf3126c9bba66fbaf5c57ae8686c82e8a9fb2711b5228719f14a22cd3"
+},
+{
+"names": [
+"RiemannBoundary.differentiableOn_principalRoot_upper"
+],
+"class": "keep",
+"lines": [
+1617,
+1623
+],
+"sha256": "8d0478a53d07f1ed048a0510b6c16d6dd74db638ff51e07ca0fe635a4176335c"
+},
+{
+"names": [
+"RiemannBoundary.analyticOnNhd_principalRoot_upper"
+],
+"class": "keep",
+"lines": [
+1625,
+1629
+],
+"sha256": "a22a7ac13f392b8a58a067341106732048491871c728d92f0604371a14099770"
+},
+{
+"names": [
+"RiemannBoundary.principalRoot_ofReal_nonneg"
+],
+"class": "keep",
+"lines": [
+1631,
+1635
+],
+"sha256": "76cd8bad2dcdfd23c420abe64601f9c03ccfc6043fc6632c58f985cd1459f9b1"
+},
+{
+"names": [
+"RiemannBoundary.principalRoot_ofReal_nonpos"
+],
+"class": "keep",
+"lines": [
+1637,
+1648
+],
+"sha256": "b7202ae83dee4506276ca939c50b599de5a93d930b8432c0d542c599182b6330"
+},
+{
+"names": [
+"RiemannBoundary.arg_div_nat_mem_Ioc"
+],
+"class": "keep",
+"lines": [
+1650,
+1661
+],
+"sha256": "90e8ae1ed22c0a84ca3d5e0433f89fb0bd557876e7bea7adb31e0ca0ffdd1cfd"
+},
+{
+"names": [
+"RiemannBoundary.arg_principalRoot"
+],
+"class": "keep",
+"lines": [
+1663,
+1677
+],
+"sha256": "8441902f8558645f519143e1769a8754b37a2ec11e5a98e40344dcb54b6f9418"
+},
+{
+"names": [
+"RiemannBoundary.principalRoot_arg_mem_Ioo"
+],
+"class": "keep",
+"lines": [
+1679,
+1688
+],
+"sha256": "b9a434ba24b282b9f9b829946ae463aebc0da780d1a755862103aba8f15b5ba3"
+},
+{
+"names": [
+"RiemannBoundary.principalRoot_pow_of_sector"
+],
+"class": "keep",
+"lines": [
+1690,
+1694
+],
+"sha256": "847c977cc64aea9664d57e5d87f48bb22bee3c8773f4e125cb591d68a77db01e"
+},
+{
+"names": [
+"RiemannBoundary.cubic_sector_slack"
+],
+"class": "keep",
+"lines": [
+1696,
+1706
+],
+"sha256": "a6e219bad857aa1df80609392a12e3dd2db5d347816444d1b05f34d6cddbbddc"
+},
+{
+"names": [
+"RiemannBoundary.quartic_sector_slack"
+],
+"class": "keep",
+"lines": [
+1708,
+1720
+],
+"sha256": "e5d81fa900c31e72eb9eacd01c8f28080cd1e072a7ecb2c21dae4ece94450b29"
+},
+{
+"names": [
+"RiemannBoundary.principalRoot_three_upper"
+],
+"class": "keep",
+"lines": [
+1722,
+1741
+],
+"sha256": "8bb954026f88bebfa05b8551683f1b57796174070dc482d146020cf52ef3dfb8"
+},
+{
+"names": [
+"RiemannBoundary.principalRoot_three_ofReal_nonneg_im"
+],
+"class": "keep",
+"lines": [
+1743,
+1747
+],
+"sha256": "e6dbca3f79332d7f12bb897333bc2281644d5f587b296a60b695ec109bc30e61"
+},
+{
+"names": [
+"RiemannBoundary.principalRoot_three_ofReal_nonpos_boundary"
+],
+"class": "keep",
+"lines": [
+1749,
+1760
+],
+"sha256": "e78adfae912ea49569b4c85046882f7cf2e2f366cda75cb96107facacb90afe0"
+},
+{
+"names": [
+"RiemannBoundary.principalRoot_three_real_boundary"
+],
+"class": "keep",
+"lines": [
+1762,
+1770
+],
+"sha256": "d597e46a84e81e43a7c09a25185c7f8a36a0eb42df1701161a5c9831bd722a07"
+},
+{
+"names": [
+"RiemannBoundary.quarticRootRotation"
+],
+"class": "keep",
+"lines": [
+1774,
+1776
+],
+"sha256": "662307dbdf448a8b2a83b32cb12d61ac4e6ed67c06c70e55fea0ffe73a2f3dd4"
+},
+{
+"names": [
+"RiemannBoundary.quarticRootRotation_re"
+],
+"class": "keep",
+"lines": [
+1778,
+1782
+],
+"sha256": "36fdf80d21cd93f02f63d88386090358739ec201cd94e8b3bbc528d72a090e5b"
+},
+{
+"names": [
+"RiemannBoundary.quarticRootRotation_im"
+],
+"class": "keep",
+"lines": [
+1784,
+1788
+],
+"sha256": "0b714ad21aff7a06b4113cfbc8d1aa7523436de835401546df0233d0fcddfae4"
+},
+{
+"names": [
+"RiemannBoundary.norm_quarticRootRotation"
+],
+"class": "keep",
+"lines": [
+1790,
+1793
+],
+"sha256": "46d3a4cd76b9d1393d048352ee7d6f9c250a53a5828b817f92ce5c9ecbca064f"
+},
+{
+"names": [
+"RiemannBoundary.quarticRootRotation_ne_zero"
+],
+"class": "keep",
+"lines": [
+1795,
+1797
+],
+"sha256": "1645d8dbf9a0410cbc2387fc2c13caf38ba2f1b0faba23cf95919bafa1660fd5"
+},
+{
+"names": [
+"RiemannBoundary.quarticRootRotation_pow_four"
+],
+"class": "keep",
+"lines": [
+1799,
+1808
+],
+"sha256": "40ebc3e20fce1133e8e1a64f72e5e873b927a8dad2838c42a84970445dee77a8"
+},
+{
+"names": [
+"RiemannBoundary.rotatedPrincipalRootFour"
+],
+"class": "keep",
+"lines": [
+1810,
+1812
+],
+"sha256": "bfc5d3437ef43feccde546e5859910bf503fc5bd4607add3b4dcf0dfec98ce5b"
+},
+{
+"names": [
+"RiemannBoundary.rotatedPrincipalRootFour_pow"
+],
+"class": "keep",
+"lines": [
+1814,
+1820
+],
+"sha256": "3078b8af8b0de2c7489359312f2ec051e45a2bdd8c8410996622d1bc247b16d5"
+},
+{
+"names": [
+"RiemannBoundary.rotatedPrincipalRootFour_zero"
+],
+"class": "keep",
+"lines": [
+1822,
+1825
+],
+"sha256": "450f641927d9c98949afc3f64d9e68e6e5b308580fce87a342e419208bd63ce5"
+},
+{
+"names": [
+"RiemannBoundary.norm_rotatedPrincipalRootFour"
+],
+"class": "keep",
+"lines": [
+1827,
+1832
+],
+"sha256": "130ff2e034fbd85e00ce921af8b5ee006805864574d1972eceec6f67a647fed3"
+},
+{
+"names": [
+"RiemannBoundary.rotatedPrincipalRootFour_re"
+],
+"class": "keep",
+"lines": [
+1834,
+1840
+],
+"sha256": "4dbf1908f3898754a17e5be8acd5d9bdbcc665c1e8501a1f4f41d939286eb9c5"
+},
+{
+"names": [
+"RiemannBoundary.rotatedPrincipalRootFour_im"
+],
+"class": "keep",
+"lines": [
+1842,
+1848
+],
+"sha256": "3fc7683d2b82c3515ac2bd23518b0f1f6b9879463610d2cdb44b29df917cbee3"
+},
+{
+"names": [
+"RiemannBoundary.rotatedPrincipalRootFour_re_add_im"
+],
+"class": "keep",
+"lines": [
+1850,
+1855
+],
+"sha256": "8df96cd979bfcb1a9c9b00581010ddeaed7389b7f1a9c55dcb31d08ba6d01103"
+},
+{
+"names": [
+"RiemannBoundary.rotatedPrincipalRootFour_upper"
+],
+"class": "keep",
+"lines": [
+1857,
+1881
+],
+"sha256": "d908a7616fb2a4d72d5a8afcea790f2a56827e0e0ef1ce3c7616149c4e483caa"
+},
+{
+"names": [
+"RiemannBoundary.rotatedPrincipalRootFour_ofReal_nonneg_boundary"
+],
+"class": "keep",
+"lines": [
+1883,
+1887
+],
+"sha256": "8014fdd9d93240dcd5e8460e27dfdabb518ac041e199afcf1a5c6fea1af30b33"
+},
+{
+"names": [
+"RiemannBoundary.rotatedPrincipalRootFour_ofReal_nonpos_im"
+],
+"class": "keep",
+"lines": [
+1889,
+1896
+],
+"sha256": "2f2e635791dfd7163f9e68e628056005701aa4d550fc90b7b9f6c21ef414062a"
+},
+{
+"names": [
+"RiemannBoundary.rotatedPrincipalRootFour_real_boundary"
+],
+"class": "keep",
+"lines": [
+1898,
+1906
+],
+"sha256": "31ade25b13f40fb5a849376262cfe265a61fa2117ec610f102d7649544af9f8c"
+},
+{
+"names": [
+"RiemannBoundary.continuousOn_rotatedPrincipalRootFour_closedUpper"
+],
+"class": "keep",
+"lines": [
+1908,
+1911
+],
+"sha256": "61a5e82536b5de58e43e4ba058ca41e1325d3a9275ad195e43c534f210f324ee"
+},
+{
+"names": [
+"RiemannBoundary.continuousAt_rotatedPrincipalRootFour_zero"
+],
+"class": "keep",
+"lines": [
+1913,
+1916
+],
+"sha256": "82385f533fb9c67b692f69b423b526adc109c026fac8e0ed0bd3291c854c8cb8"
+},
+{
+"names": [
+"RiemannBoundary.analyticOnNhd_rotatedPrincipalRootFour_upper"
+],
+"class": "keep",
+"lines": [
+1918,
+1922
+],
+"sha256": "7e5e441103f8e38b9829305b9544aed691cda825c69a8837610cbaeb11e3ba16"
+},
+{
+"names": [
+"RiemannBoundary.norm_lt_one_iff_im_pos_eventually"
+],
+"class": "keep",
+"lines": [
+1926,
+1954
+],
+"sha256": "132bec0659b51a84f4535bf0fa27c38077f7c6faf35d29acc0973a12077cbc17"
+},
+{
+"names": [
+"RiemannBoundary.exists_conformal_extension_of_modulus_one"
+],
+"class": "keep",
+"lines": [
+1956,
+1996
+],
+"sha256": "5f94b389a4fd768d0e8f166f62c45490fdd32351982446bb7fa5a083cbd20a83"
+},
+{
+"names": [
+"RiemannBoundary.exists_conformal_extension_discHomeomorph_in_half_chart"
+],
+"class": "keep",
+"lines": [
+1998,
+2021
+],
+"sha256": "ca102021bd95b08b4300a2d6a4011a6a2dc3202f1c149a7c2ada72f49515fd77"
+},
+{
+"names": [
+"RiemannBoundary.discHomeomorphInverse"
+],
+"class": "keep",
+"lines": [
+2023,
+2028
+],
+"sha256": "e1c1cd2d65f6d261ae26bff703248827d087b97b78ce66ff5f69ad82300f117b"
+},
+{
+"names": [
+"RiemannBoundary.discHomeomorphInverse_of_mem"
+],
+"class": "keep",
+"lines": [
+2030,
+2034
+],
+"sha256": "f8280e7597a9d4fb883f0bfa957c2c8ed5d6ab5af2b4622b7519fe35e682aa66"
+},
+{
+"names": [
+"RiemannBoundary.tendsto_discHomeomorphInverse_of_boundary_chart"
+],
+"class": "keep",
+"lines": [
+2036,
+2068
+],
+"sha256": "94fdf9e3e426900e6c97b256cdf114a30bc48ce3f486d2a80cdec0786aa229f1"
+},
+{
+"names": [
+"RiemannBoundary.unitCircle_mem_closure_unitBall"
+],
+"class": "keep",
+"lines": [
+2070,
+2074
+],
+"sha256": "34e453ba71d655986dd3b2ddd529e36ce60e3e71d364e62e44cae142f9c08f12"
+},
+{
+"names": [
+"RiemannBoundary.boundary_points_eq_of_equal_disc_values"
+],
+"class": "keep",
+"lines": [
+2076,
+2090
+],
+"sha256": "bbd43cde40cea6314f85115f5a734cc833b37aa60e74d516894b021f1cc98205"
+},
+{
+"names": [
+"RiemannBoundary.continuousWithinAt_log_closedUpper"
+],
+"class": "keep",
+"lines": [
+2092,
+2105
+],
+"sha256": "efff8640bdb97a9c3231ec7ca2293c65ea0d77aa0905d019e01ffa9fa507807a"
+},
+{
+"names": [
+"RiemannBoundary.continuousWithinAt_logHalfStrip_closedUpper"
+],
+"class": "keep",
+"lines": [
+2107,
+2112
+],
+"sha256": "3f83937f1e4fe43e4c9819011f4432401e1f7d000aebd3b2dbc501bd319b3137"
+},
+{
+"names": [
+"RiemannBoundary.analyticOnNhd_logHalfStrip_upper"
+],
+"class": "keep",
+"lines": [
+2114,
+2118
+],
+"sha256": "a800cca4d11292adb5d556865baed849d23372c4d1822ea0eb45364c040e79c5"
+},
+{
+"names": [
+"RiemannBoundary.logHalfStrip_re_mem_Ioo"
+],
+"class": "keep",
+"lines": [
+2120,
+2127
+],
+"sha256": "6a99bb2d7ae0be62bad272386e66e9c1479855df93c12aaf6e4b5c20e311002f"
+},
+{
+"names": [
+"RiemannBoundary.logHalfStrip_real_re"
+],
+"class": "keep",
+"lines": [
+2129,
+2136
+],
+"sha256": "f7e9d456c6aa2d33ee06719059b51a158aabcced86a0cf153526b8ad174f4f8d"
+},
+{
+"names": [
+"RiemannBoundary.exists_logHalfStrip_height_radius"
+],
+"class": "keep",
+"lines": [
+2138,
+2144
+],
+"sha256": "1ac84764b5a60fa69bfeb7049658181de35fd797543db8511292fbea79571c4f"
+},
+{
+"names": [
+"RiemannBoundary.exists_conformal_extension_discHomeomorph_at_ideal_vertex"
+],
+"class": "keep",
+"lines": [
+2146,
+2209
+],
+"sha256": "7a838dff09026de0fb15a320c60c701bdb07344c9849a0295acafddd4507b390"
+},
+{
+"names": [
+"RiemannBoundary.discCompactificationMap"
+],
+"class": "keep",
+"lines": [
+2213,
+2216
+],
+"sha256": "cf164661a33ae3cd4b548c3fac8cbd343a76438e1ccce6b08b90ce5556409cc8"
+},
+{
+"names": [
+"RiemannBoundary.discCompactificationMap_coe"
+],
+"class": "keep",
+"lines": [
+2218,
+2222
+],
+"sha256": "c12c27015783b1c8936021165f39fad56f5cd396ee59eeb71554b5ce95f50223"
+},
+{
+"names": [
+"RiemannBoundary.DiscBoundaryLimits"
+],
+"class": "keep",
+"lines": [
+2224,
+2231
+],
+"sha256": "26c6892a0714f9b5ed626965b8f2bae8880c59270d75e8f95d7d8ff9fc062fd1"
+},
+{
+"names": [
+"RiemannBoundary.discCompactificationMap_continuous"
+],
+"class": "keep",
+"lines": [
+2233,
+2244
+],
+"sha256": "3fbea9cbf2ec80657fa6b6c85a7349c769cf93513af6c010ecf1ffa507991f2f"
+},
+{
+"names": [
+"RiemannBoundary.discCompactificationMap_boundary"
+],
+"class": "keep",
+"lines": [
+2246,
+2256
+],
+"sha256": "60b9b0e428af290d4d45a4e982b0f4d4888bc7bbd0ca7a017c241006fac0f6c4"
+},
+{
+"names": [
+"RiemannBoundary.discCompactificationMap_norm_le"
+],
+"class": "keep",
+"lines": [
+2258,
+2267
+],
+"sha256": "371bbe6bbc6386737d760f49cc38a4d21f4898497d1f49a3dc7fef0cf5dc0fc5"
+},
+{
+"names": [
+"RiemannBoundary.discCompactificationMap_injective"
+],
+"class": "keep",
+"lines": [
+2269,
+2296
+],
+"sha256": "0843902bcc3fee2581d34a2fbcc010ee678904a1fa130e5c46b9369342247b86"
+},
+{
+"names": [
+"RiemannBoundary.discCompactificationMap_range"
+],
+"class": "keep",
+"lines": [
+2298,
+2312
+],
+"sha256": "e7bd52fd6eabad991c55e52a3387b2b8b1300a300df602dca3deebe3d27f491a"
+},
+{
+"names": [
+"RiemannBoundary.closedDiscHomeomorph"
+],
+"class": "keep",
+"lines": [
+2314,
+2332
+],
+"sha256": "6635e57b2a4fa5ad79ba228f7bef4d1decaec79d47018f7ea43ec76a61116598"
+},
+{
+"names": [
+"RiemannBoundary.closedDiscHomeomorph_coe"
+],
+"class": "keep",
+"lines": [
+2334,
+2338
+],
+"sha256": "4d6cebac58d39dc45704022ec609ca6ec9cdd842a818a9d912c782e521a14624"
+},
+{
+"names": [
+"RiemannMapping.triangleSideParameter"
+],
+"class": "keep",
+"lines": [
+2342,
+2344
+],
+"sha256": "e8bd89efcf1bbca93fe17c7bd958b84eab3eaa24b42428a57037b422d2e6ea19"
+},
+{
+"names": [
+"RiemannMapping.triangleSideParameter_zero"
+],
+"class": "keep",
+"lines": [
+2346,
+2349
+],
+"sha256": "85455afbc09bbc6c5b209a808fb311579649b45475bf12ab8f3669ed4ecb873d"
+},
+{
+"names": [
+"RiemannMapping.continuousAt_triangleSideParameter_zero"
+],
+"class": "keep",
+"lines": [
+2351,
+2357
+],
+"sha256": "8f5368b12d546b2b71554ce938c752c10a4d5da6f93f83399984252dc754f49d"
+},
+{
+"names": [
+"RiemannBoundary.halfStripExp"
+],
+"class": "keep",
+"lines": [
+2361,
+2363
+],
+"sha256": "99212f61751e0e929777b373c041b796fcc005fb978433d9af43465e6287f6f9"
+},
+{
+"names": [
+"RiemannBoundary.logHalfStrip_halfStripExp"
+],
+"class": "keep",
+"lines": [
+2365,
+2379
+],
+"sha256": "7fb78b95fca5f60963924a12852db0d5946a52de1260fe410376b0a190e6b903"
+},
+{
+"names": [
+"RiemannBoundary.norm_halfStripExp"
+],
+"class": "keep",
+"lines": [
+2381,
+2384
+],
+"sha256": "6f5d9c54dcdfe72375ceddc41a2fed530565e18db46c76af6f83ce47ee09580f"
+},
+{
+"names": [
+"RiemannBoundary.halfStripExp_im_pos"
+],
+"class": "keep",
+"lines": [
+2386,
+2400
+],
+"sha256": "8beb27021bf922f71992aa3290ef5f169234774b2e98f85815d2ef2ceca36da8"
+}
+]
+}

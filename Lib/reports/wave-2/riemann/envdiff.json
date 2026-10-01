@@ -1,0 +1,77 @@
+{
+ "before": "/home/goblin/.claude/jobs/06995e68/tmp/wave2/riemann/../dump_head.jsonl",
+ "after": "/home/goblin/.claude/jobs/06995e68/tmp/wave2/riemann/dump_after.jsonl",
+ "prefix": "",
+ "constants": [
+  38301,
+  38301
+ ],
+ "lost": [],
+ "added": [],
+ "changed_type_source": [],
+ "changed_type_proof_naming": [],
+ "changed_type_accepted": [],
+ "added_accepted": [],
+ "accept_without_effect": [],
+ "changed_type_all": [],
+ "moves": [
+  [
+   "Lib.Analysis.Complex.RiemannMapping",
+   "Hopf.Proof.Analysis.Complex.RiemannMapping.SectorRoots",
+   26
+  ],
+  [
+   "Lib.Analysis.Complex.RiemannMapping",
+   "Hopf.Proof.Analysis.Complex.RiemannMapping.TriangleNormalization",
+   17
+  ],
+  [
+   "Lib.Analysis.Complex.RiemannMapping",
+   "Lib.Analysis.Complex.RiemannMapping.BoundaryDerivative",
+   16
+  ],
+  [
+   "Lib.Analysis.Complex.RiemannMapping",
+   "Lib.Analysis.Complex.RiemannMapping.ConformalExtension",
+   5
+  ],
+  [
+   "Lib.Analysis.Complex.RiemannMapping",
+   "Lib.Analysis.Complex.RiemannMapping.DiscBoundaryEscape",
+   7
+  ],
+  [
+   "Lib.Analysis.Complex.RiemannMapping",
+   "Lib.Analysis.Complex.RiemannMapping.DiscCompactification",
+   15
+  ],
+  [
+   "Lib.Analysis.Complex.RiemannMapping",
+   "Lib.Analysis.Complex.RiemannMapping.Existence",
+   22
+  ],
+  [
+   "Lib.Analysis.Complex.RiemannMapping",
+   "Lib.Analysis.Complex.RiemannMapping.HalfStripChart",
+   31
+  ],
+  [
+   "Lib.Analysis.Complex.RiemannMapping",
+   "Lib.Analysis.Complex.RiemannMapping.ModulusOneReflection",
+   12
+  ],
+  [
+   "Lib.Analysis.Complex.RiemannMapping",
+   "Lib.Analysis.Complex.RiemannMapping.PrincipalRoot",
+   17
+  ],
+  [
+   "Lib.Analysis.Complex.RiemannMapping",
+   "Lib.Analysis.Complex.RiemannMapping.RectanglePrimitive",
+   13
+  ]
+ ],
+ "ambiguous": [],
+ "auxiliary_moved": 58,
+ "verdict": "PASS"
+}
