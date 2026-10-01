@@ -29,12 +29,12 @@ cells of a fine subdivision.
 -/
 
 /-- The lattice consists of the mesh points `-1 + k h` for integer indices `0 ≤ k ≤ N`. -/
-def lattice (N : ℕ) (h : ℝ) : Set ℝ :=
+@[expose] public def lattice (N : ℕ) (h : ℝ) : Set ℝ :=
   {t | ∃ k : ℤ, k ∈ Set.Icc 0 (N : ℤ) ∧ t = -1 + (k : ℝ) * h}
 /-- The lower lattice deletes the top endpoint, leaving precisely the indices `k < N`. -/
-def latticeBelowTop (N : ℕ) (h : ℝ) : Set ℝ := lattice N h \ {1}
+@[expose] public def latticeBelowTop (N : ℕ) (h : ℝ) : Set ℝ := lattice N h \ {1}
 /-- From `N > 0` and `h = 2/N`, the mesh is positive, satisfies `N h = 2`, and is at most two. -/
-theorem mesh_identities (N : ℕ) (h : ℝ) (hN : 0 < N) (hh : h = 2 / (N : ℝ)) :
+public theorem mesh_identities (N : ℕ) (h : ℝ) (hN : 0 < N) (hh : h = 2 / (N : ℝ)) :
   0 < h ∧ (N : ℝ) * h = 2 ∧ h ≤ 2 := by
   have hNr : (0 : ℝ) < N := by exact_mod_cast hN
   subst h
@@ -45,10 +45,10 @@ theorem mesh_identities (N : ℕ) (h : ℝ) (hN : 0 < N) (hh : h = 2 / (N : ℝ)
   · have hN1 : (1 : ℝ) ≤ N := by exact_mod_cast (Nat.one_le_iff_ne_zero.mpr (ne_of_gt hN))
     exact (div_le_iff₀ hNr).2 (by nlinarith)
 /-- The mesh identities immediately supply the positivity of `h`. -/
-theorem mesh_pos {N : ℕ} {h : ℝ} (hN : 0 < N) (hh : h = 2 / (N : ℝ)) : 0 < h :=
+public theorem mesh_pos {N : ℕ} {h : ℝ} (hN : 0 < N) (hh : h = 2 / (N : ℝ)) : 0 < h :=
   (mesh_identities N h hN hh).1
 /-- Every indexed mesh point lies between `-1` and `1`. -/
-theorem lattice_subset_interval {N : ℕ} {h : ℝ} (hN : 0 < N)
+public theorem lattice_subset_interval {N : ℕ} {h : ℝ} (hN : 0 < N)
   (hh : h = 2 / (N : ℝ)) : lattice N h ⊆ Set.Icc (-1) 1 := by
   rintro t ⟨k, hk, rfl⟩
   have hh' := (mesh_identities N h hN hh).2.1
@@ -58,7 +58,7 @@ theorem lattice_subset_interval {N : ℕ} {h : ℝ} (hN : 0 < N)
   · have hkN : (k : ℝ) ≤ N := by exact_mod_cast hk.2
     nlinarith [mul_le_mul_of_nonneg_right hkN (le_of_lt (mesh_pos hN hh))]
 /-- The lattice is the image of a finite integer interval and is therefore finite. -/
-theorem finite_lattice (N : ℕ) (h : ℝ) : (lattice N h).Finite := by
+public theorem finite_lattice (N : ℕ) (h : ℝ) : (lattice N h).Finite := by
   have hf := Set.Finite.image (fun k : ℤ => -1 + (k : ℝ) * h) (Set.finite_Icc 0 (N : ℤ))
   refine hf.subset ?_
   rintro t ⟨k, hk, rfl⟩
@@ -84,7 +84,7 @@ theorem card_lattice {N : ℕ} {h : ℝ} (hN : 0 < N) (hh : h = 2 / (N : ℝ)) :
       linarith
     exact_mod_cast this
 /-- The indices zero and `N` give the two endpoints `-1` and `1`. -/
-theorem lattice_endpoints {N : ℕ} {h : ℝ} (hN : 0 < N)
+public theorem lattice_endpoints {N : ℕ} {h : ℝ} (hN : 0 < N)
   (hh : h = 2 / (N : ℝ)) : (-1 : ℝ) ∈ lattice N h ∧ (1 : ℝ) ∈ lattice N h := by
   constructor
   · exact ⟨0, by simp, by simp⟩
@@ -93,7 +93,7 @@ theorem lattice_endpoints {N : ℕ} {h : ℝ} (hN : 0 < N)
     norm_num at hm ⊢
     linarith
 /-- Distinct integer indices differ by at least one, hence their mesh points are separated by at least `h`. -/
-theorem lattice_separation {N : ℕ} {h : ℝ} (hN : 0 < N)
+public theorem lattice_separation {N : ℕ} {h : ℝ} (hN : 0 < N)
   (hh : h = 2 / (N : ℝ)) {a b : ℝ} (ha : a ∈ lattice N h)
   (hb : b ∈ lattice N h) (hab : a ≠ b) : h ≤ |a - b| := by
   obtain ⟨ka, hka, rfl⟩ := ha
@@ -111,7 +111,7 @@ theorem lattice_separation {N : ℕ} {h : ℝ} (hN : 0 < N)
     abs_mul, abs_of_pos hhpos]
   exact le_mul_of_one_le_left (le_of_lt hhpos) habsi
 /-- A lattice point below `1-h` has index below `N`, so adding `h` gives its successor in the lattice. -/
-theorem lattice_successor {N : ℕ} {h : ℝ} (hN : 0 < N)
+public theorem lattice_successor {N : ℕ} {h : ℝ} (hN : 0 < N)
   (hh : h = 2 / (N : ℝ)) {t : ℝ} (ht : t ∈ lattice N h) (hle : t ≤ 1 - h) :
   t + h ∈ lattice N h := by
   obtain ⟨k, hk, rfl⟩ := ht
@@ -126,46 +126,46 @@ theorem lattice_successor {N : ℕ} {h : ℝ} (hN : 0 < N)
   · push_cast
     ring
 /-- When `N=1`, the identity `h=2/N` reduces the mesh to two. -/
-theorem mesh_two_of_one {h : ℝ} (hh : h = 2 / ((1 : ℕ) : ℝ)) : h = 2 := by norm_num at hh ⊢; exact hh
+public theorem mesh_two_of_one {h : ℝ} (hh : h = 2 / ((1 : ℕ) : ℝ)) : h = 2 := by norm_num at hh ⊢; exact hh
 /-- A vertex parameter has three lattice coordinates and lies on the cube boundary. -/
-def VertexParam (N : ℕ) (h : ℝ) (v : Ambient) : Prop :=
+@[expose] public def VertexParam (N : ℕ) (h : ℝ) (v : Ambient) : Prop :=
   (∀ i, v i ∈ lattice N h) ∧ v ∈ boundary
 /-- The vertex set collects all ambient points satisfying the vertex parameter. -/
-public def vertices (N : ℕ) (h : ℝ) : Set Ambient := {v | VertexParam N h v}
+@[expose] public def vertices (N : ℕ) (h : ℝ) : Set Ambient := {v | VertexParam N h v}
 /-- The boundary clause of a vertex parameter places every vertex on the cube boundary. -/
 public theorem vertex_mem_boundary {N : ℕ} {h : ℝ} {v : Ambient}
     (hv : v ∈ vertices N h) : v ∈ boundary := hv.2
 /-- An edge is the segment from `v` to `v+h e_j`. -/
-def edgeGeom (h : ℝ) (v : Ambient) (j : Fin 3) : Set Ambient :=
+@[expose] public def edgeGeom (h : ℝ) (v : Ambient) (j : Fin 3) : Set Ambient :=
   segment ℝ v (v + h • EuclideanSpace.single j 1)
 /-- An admissible edge starts at a vertex, has room for one mesh step in direction `j`, and stays in the boundary. -/
-def EdgeParam (N : ℕ) (h : ℝ) (v : Ambient) (j : Fin 3) : Prop :=
+@[expose] public def EdgeParam (N : ℕ) (h : ℝ) (v : Ambient) (j : Fin 3) : Prop :=
   v ∈ vertices N h ∧ v j ≤ 1 - h ∧ edgeGeom h v j ⊆ boundary
 /-- The edge family is the collection of geometric segments arising from admissible edge parameters. -/
 public def edges (N : ℕ) (h : ℝ) : Set (Set Ambient) :=
   {e | ∃ v j, EdgeParam N h v j ∧ e = edgeGeom h v j}
 /-- Membership in the edge family is exactly presentation by an admissible initial vertex and direction. -/
-theorem edge_mem_iff {N : ℕ} {h : ℝ} {e : Set Ambient} :
+public theorem edge_mem_iff {N : ℕ} {h : ℝ} {e : Set Ambient} :
     e ∈ edges N h ↔ ∃ v j, EdgeParam N h v j ∧ e = edgeGeom h v j := Iff.rfl
 /-- A closed square independently moves from `v` through one mesh step in directions `j` and `k`. -/
-def squareGeom (h : ℝ) (v : Ambient) (j k : Fin 3) : Set Ambient :=
+@[expose] public def squareGeom (h : ℝ) (v : Ambient) (j k : Fin 3) : Set Ambient :=
   {x | ∃ a ∈ Set.Icc (0 : ℝ) 1, ∃ b ∈ Set.Icc (0 : ℝ) 1,
     x = v + (a * h) • EuclideanSpace.single j 1 + (b * h) • EuclideanSpace.single k 1}
 /-- The relative-open square uses the same parametrization with both parameters strictly between zero and one. -/
-def squareOpenGeom (h : ℝ) (v : Ambient) (j k : Fin 3) : Set Ambient :=
+@[expose] public def squareOpenGeom (h : ℝ) (v : Ambient) (j k : Fin 3) : Set Ambient :=
   {x | ∃ a ∈ Set.Ioo (0 : ℝ) 1, ∃ b ∈ Set.Ioo (0 : ℝ) 1,
     x = v + (a * h) • EuclideanSpace.single j 1 + (b * h) • EuclideanSpace.single k 1}
 /-- An admissible square has ordered distinct directions, a vertex start, upper bounds in both directions, and boundary containment. -/
-def SquareParam (N : ℕ) (h : ℝ) (v : Ambient) (j k : Fin 3) : Prop :=
+@[expose] public def SquareParam (N : ℕ) (h : ℝ) (v : Ambient) (j k : Fin 3) : Prop :=
   v ∈ vertices N h ∧ j < k ∧ v j ≤ 1 - h ∧ v k ≤ 1 - h ∧ squareGeom h v j k ⊆ boundary
 /-- The square family collects the closed images of all admissible square parameters. -/
-public def squares (N : ℕ) (h : ℝ) : Set (Set Ambient) :=
+@[expose] public def squares (N : ℕ) (h : ℝ) : Set (Set Ambient) :=
   {s | ∃ v j k, SquareParam N h v j k ∧ s = squareGeom h v j k}
 /-- A lower corner belongs to the set and is coordinatewise below every point of it. -/
 def coordinateLowerCorner (C : Set Ambient) (v : Ambient) : Prop :=
   v ∈ C ∧ ∀ r x, x ∈ C → v r ≤ x r
 /-- A coordinate is nonconstant exactly when two points of the set have different values there. -/
-def coordinateNonconstant (C : Set Ambient) (r : Fin 3) : Prop :=
+@[expose] public def coordinateNonconstant (C : Set Ambient) (r : Fin 3) : Prop :=
   ∃ x ∈ C, ∃ y ∈ C, x r ≠ y r
 /-- Two coordinatewise lower corners bound one another, hence agree in every coordinate and are equal. -/
 theorem coordinateLowerCorner_unique {C : Set Ambient} {v w : Ambient}
@@ -173,7 +173,7 @@ theorem coordinateLowerCorner_unique {C : Set Ambient} {v w : Ambient}
   ext r
   exact le_antisymm (hv.2 r w hw.1) (hw.2 r v hv.1)
 /-- Along an edge only coordinate `j` changes, by the amount `t h`. -/
-theorem edge_coordinate_formula (h t : ℝ) (v : Ambient) (j r : Fin 3) :
+public theorem edge_coordinate_formula (h t : ℝ) (v : Ambient) (j r : Fin 3) :
   (v + (t * h) • EuclideanSpace.single j 1 : Ambient) r =
     if r = j then v j + t * h else v r := by
   split_ifs with hr
@@ -184,7 +184,7 @@ theorem edge_zero_mem (h : ℝ) (v : Ambient) (j : Fin 3) : v ∈ edgeGeom h v j
   rw [edgeGeom]
   exact left_mem_segment ℝ v _
 /-- Every point of the segment has the affine form `v+(t h)e_j` with `0≤t≤1`. -/
-theorem edge_parameter_extract {h : ℝ} {v : Ambient} {j : Fin 3} {x : Ambient}
+public theorem edge_parameter_extract {h : ℝ} {v : Ambient} {j : Fin 3} {x : Ambient}
   (hx : x ∈ edgeGeom h v j) : ∃ t ∈ Set.Icc (0 : ℝ) 1,
     x = v + (t * h) • EuclideanSpace.single j 1 := by
   rw [edgeGeom, segment_eq_image] at hx
@@ -202,7 +202,7 @@ theorem edge_initial_lowerCorner {h : ℝ} (hh : 0 ≤ h) (v : Ambient) (j : Fin
     exact le_add_of_nonneg_right (mul_nonneg ht.1 hh)
   · exact le_rfl
 /-- On a square, coordinates `j` and `k` change independently by `a h` and `b h`. -/
-theorem square_coordinate_formula (h a b : ℝ) (v : Ambient) (j k r : Fin 3) (hjk : j ≠ k) :
+public theorem square_coordinate_formula (h a b : ℝ) (v : Ambient) (j k r : Fin 3) (hjk : j ≠ k) :
   (v + (a * h) • EuclideanSpace.single j 1 + (b * h) • EuclideanSpace.single k 1 : Ambient) r =
     if r = j then v j + a * h else if r = k then v k + b * h else v r := by
   by_cases hrj : r = j
@@ -213,7 +213,7 @@ theorem square_coordinate_formula (h a b : ℝ) (v : Ambient) (j k r : Fin 3) (h
       simp [hrj]
     · simp [hrj, hrk]
 /-- Parameters `(0,0)` place the initial point `v` in the square. -/
-theorem square_zero_mem (h : ℝ) (v : Ambient) (j k : Fin 3) : v ∈ squareGeom h v j k := by
+public theorem square_zero_mem (h : ℝ) (v : Ambient) (j k : Fin 3) : v ∈ squareGeom h v j k := by
   exact ⟨0, by simp, 0, by simp, by simp⟩
 /-- Parameters `(1,0)` place the first adjacent corner `v+h e_j` in the square. -/
 theorem square_first_corner_mem (h : ℝ) (v : Ambient) (j k : Fin 3) :
@@ -226,7 +226,7 @@ theorem square_second_corner_mem (h : ℝ) (v : Ambient) (j k : Fin 3) :
   refine ⟨0, by simp, 1, by simp, ?_⟩
   module
 /-- Every square point has parameters `a,b∈[0,1]` in the defining affine formula. -/
-theorem square_parameter_extract {h : ℝ} {v : Ambient} {j k : Fin 3} {x : Ambient}
+public theorem square_parameter_extract {h : ℝ} {v : Ambient} {j k : Fin 3} {x : Ambient}
   (hx : x ∈ squareGeom h v j k) : ∃ a ∈ Set.Icc (0 : ℝ) 1, ∃ b ∈ Set.Icc (0 : ℝ) 1,
     x = v + (a * h) • EuclideanSpace.single j 1 + (b * h) • EuclideanSpace.single k 1 := hx
 /-- Nonnegative mesh and square parameters make `v` a coordinatewise lower corner. -/
@@ -342,7 +342,7 @@ theorem square_presentation_unique {N : ℕ} {h : ℝ} (hh : 0 < h) {s : Set Amb
   have hd := square_directions_mem_of_set_eq hh hp.2.1 hp'.2.1 heq
   exact ⟨hvw, square_ordered_directions_eq hp.2.1 hp'.2.1 hd.1 hd.2⟩
 /-- For positive mesh, a square varies in exactly its two defining coordinates `j` and `k`. -/
-theorem square_nonconstant_coordinates {h : ℝ} (hh : 0 < h) {v : Ambient} {j k : Fin 3}
+public theorem square_nonconstant_coordinates {h : ℝ} (hh : 0 < h) {v : Ambient} {j k : Fin 3}
   (hjk : j < k) (r : Fin 3) : coordinateNonconstant (squareGeom h v j k) r ↔ r = j ∨ r = k := by
   have _ := hjk
   constructor
@@ -402,7 +402,7 @@ theorem square_relInterior_coherent_raw {h : ℝ} (hh : 0 < h) {v w : Ambient} {
   subst w
   rw [hord.1, hord.2]
 /-- Two distinct coordinates of `Fin 3` leave a unique third coordinate. -/
-theorem square_remaining_index {j k : Fin 3} (hjk : j < k) :
+public theorem square_remaining_index {j k : Fin 3} (hjk : j < k) :
   ∃! i : Fin 3, i ≠ j ∧ i ≠ k := by
   have hc : (j = 0 ∧ k = 1) ∨ (j = 0 ∧ k = 2) ∨ (j = 1 ∧ k = 2) := by omega
   rcases hc with ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩
@@ -435,7 +435,7 @@ theorem square_remaining_index_cases {j k : Fin 3} (hjk : j < k) :
     exact ((square_remaining_index (j := 1) (k := 2) (by decide)).unique (by decide)
       (Classical.choose_spec (square_remaining_index (j := 1) (k := 2) (by decide))).1).symm
 /-- The coordinate outside `j,k` is unchanged at every point of the square. -/
-theorem square_remaining_coordinate {h : ℝ} {v : Ambient} {j k i : Fin 3}
+public theorem square_remaining_coordinate {h : ℝ} {v : Ambient} {j k i : Fin 3}
   (hij : i ≠ j) (hik : i ≠ k) {x : Ambient} (hx : x ∈ squareGeom h v j k) : x i = v i := by
   obtain ⟨a, ha, b, hb, rfl⟩ := square_parameter_extract hx
   simp [hij, hik]
@@ -654,7 +654,7 @@ noncomputable def squareRelInteriorRaw (N : ℕ) (h : ℝ) (s : {s : Set Ambient
 /-- The public relative interior packages the raw chosen-presentation construction. -/
 public noncomputable def squareRelInterior (N : ℕ) (h : ℝ) (s : {s : Set Ambient // s ∈ squares N h}) : Set Ambient := squareRelInteriorRaw N h s
 /-- Presentation uniqueness identifies the public relative interior with the open image of every admissible presentation. -/
-theorem square_relInterior_coherent {N : ℕ} {h : ℝ} (_hN : 0 < N) (_hh : h = 2 / (N : ℝ))
+public theorem square_relInterior_coherent {N : ℕ} {h : ℝ} (_hN : 0 < N) (_hh : h = 2 / (N : ℝ))
   (s : {s : Set Ambient // s ∈ squares N h}) {v : Ambient} {j k : Fin 3} (hp : SquareParam N h v j k)
   (hs : (s : Set Ambient) = squareGeom h v j k) : squareRelInterior N h s = squareOpenGeom h v j k := by
   let v' := Classical.choose s.property
@@ -931,7 +931,7 @@ theorem square_containment_forces_remaining_abs {N : ℕ} {h : ℝ} (hN : 0 < N)
     (squareParamOfContainment hv hjk hvj hvk hsub) hij hik).2.2
 
 /-- Square containment is equivalent to saturation of the remaining coordinate. -/
-theorem square_subset_boundary_iff {N : ℕ} {h : ℝ} (hN : 0 < N)
+public theorem square_subset_boundary_iff {N : ℕ} {h : ℝ} (hN : 0 < N)
     (hh : h = 2 / (N : ℝ)) {v : Ambient} {j k i : Fin 3}
     (hv : v ∈ vertices N h) (hjk : j < k) (hvj : v j ≤ 1 - h)
     (hvk : v k ≤ 1 - h) (hij : i ≠ j) (hik : i ≠ k) :
@@ -958,7 +958,7 @@ theorem closedParameter_reconstruct {h : ℝ} (hh : 0 < h) {v x : Ambient} {j : 
   ring
 
 /-- Equality at three exhaustive coordinates gives equality of ambient points. -/
-theorem Ambient_ext_of_three {x y : Ambient} {i j k : Fin 3}
+public theorem Ambient_ext_of_three {x y : Ambient} {i j k : Fin 3}
     (hexhaust : ∀ r : Fin 3, r = i ∨ r = j ∨ r = k)
     (hi : x i = y i) (hj : x j = y j) (hk : x k = y k) : x = y := by
   ext r
@@ -968,14 +968,14 @@ theorem Ambient_ext_of_three {x y : Ambient} {i j k : Fin 3}
   · exact hk
 
 /-- The two ordered directions and their remaining index exhaust the three coordinates. -/
-theorem square_indices_exhaust {i j k : Fin 3} (hjk : j < k)
+public theorem square_indices_exhaust {i j k : Fin 3} (hjk : j < k)
     (hij : i ≠ j) (hik : i ≠ k) :
     ∀ r : Fin 3, r = i ∨ r = j ∨ r = k := by
   intro r
   fin_cases i <;> fin_cases j <;> fin_cases k <;> fin_cases r <;> omega
 
 /-- The closed square is exactly the rectangle with one fixed and two interval coordinates. -/
-theorem square_closed_coordinate_rectangle {h : ℝ} (hh : 0 < h)
+public theorem square_closed_coordinate_rectangle {h : ℝ} (hh : 0 < h)
     {v : Ambient} {j k i : Fin 3} (hjk : j < k) (hij : i ≠ j) (hik : i ≠ k) :
     squareGeom h v j k =
       {x : Ambient | x i = v i ∧ x j ∈ Set.Icc (v j) (v j + h) ∧
@@ -1081,7 +1081,7 @@ noncomputable def unclippedFloorIndex (h t : ℝ) : ℤ := ⌊normalizedFloorInp
 noncomputable def clippedFloorIndex (N : ℕ) (h t : ℝ) : ℤ :=
   min (unclippedFloorIndex h t) ((N : ℤ) - 1)
 /-- The clipped index determines the lower endpoint of a mesh interval. -/
-noncomputable def latticeLowerEndpoint (N : ℕ) (h t : ℝ) : ℝ :=
+public noncomputable def latticeLowerEndpoint (N : ℕ) (h t : ℝ) : ℝ :=
   -1 + (clippedFloorIndex N h t : ℝ) * h
 
 /-- The defining floor inequalities enclose a real number between consecutive integers. -/
@@ -1161,7 +1161,7 @@ theorem clippedFloorIndex_bounds {N : ℕ} {h t : ℝ} (hN : 0 < N)
   exact ⟨le_min hb.1 (int_nat_sub_one_nonneg hN), min_le_right _ _⟩
 
 /-- The selected endpoint is a lattice point below the top and leaves room for one mesh step. -/
-theorem latticeLowerEndpoint_data {N : ℕ} {h t : ℝ} (hN : 0 < N)
+public theorem latticeLowerEndpoint_data {N : ℕ} {h t : ℝ} (hN : 0 < N)
     (hh : h = 2 / (N : ℝ)) (ht : t ∈ Set.Icc (-1 : ℝ) 1) :
     latticeLowerEndpoint N h t ∈ latticeBelowTop N h ∧
     latticeLowerEndpoint N h t ≤ 1 - h := by
@@ -1212,7 +1212,7 @@ theorem top_floor_case {N : ℕ} {h t : ℝ} (hN : 0 < N)
   simpa only [latticeLowerEndpoint, hc] using top_endpoint_cast_algebra hm.2.1
 
 /-- Either the ordinary floor interval or the final interval contains the original coordinate. -/
-theorem clipped_floor_enclosure {N : ℕ} {h t : ℝ} (hN : 0 < N)
+public theorem clipped_floor_enclosure {N : ℕ} {h t : ℝ} (hN : 0 < N)
     (hh : h = 2 / (N : ℝ)) (ht : t ∈ Set.Icc (-1 : ℝ) 1) :
     t ∈ Set.Icc (latticeLowerEndpoint N h t) (latticeLowerEndpoint N h t + h) := by
   rcases int_floor_top_split (unclippedFloorIndex_bounds hN hh ht).2 with hlow | htop
