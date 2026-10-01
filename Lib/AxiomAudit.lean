@@ -8554,3 +8554,20 @@ is an evidence command rather than library content.
 #print axioms Hyperbolic.exists_lorentzAxisDirection
 #check Hyperbolic.lorentzAxis_span_ker
 #print axioms Hyperbolic.lorentzAxis_span_ker
+
+#check Hyperbolic.hyperboloidGraphCoords
+#print axioms Hyperbolic.hyperboloidGraphCoords
+#check Hyperbolic.hyperboloidGraphCoords_mem
+#print axioms Hyperbolic.hyperboloidGraphCoords_mem
+#check Hyperbolic.hyperboloidGraph
+#print axioms Hyperbolic.hyperboloidGraph
+#check Hyperbolic.hyperboloidGraphProjection
+#print axioms Hyperbolic.hyperboloidGraphProjection
+#check Hyperbolic.hyperboloidGraph_right_inv
+#print axioms Hyperbolic.hyperboloidGraph_right_inv
+#check Hyperbolic.continuous_hyperboloidGraph
+#print axioms Hyperbolic.continuous_hyperboloidGraph
+#check Hyperbolic.hyperboloidGraphHomeomorph
+#print axioms Hyperbolic.hyperboloidGraphHomeomorph
+#check Hyperbolic.connectedSpace_hyperboloidGraph
+#print axioms Hyperbolic.connectedSpace_hyperboloidGraph

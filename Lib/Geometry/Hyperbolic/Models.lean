@@ -83,6 +83,8 @@ public import Mathlib.MeasureTheory.Measure.Restrict
 public import Mathlib.Topology.Order.DenselyOrdered
 public import Mathlib.Topology.Order.Basic
 public import Mathlib.Topology.Instances.ENNReal.Lemmas
+public import Mathlib.Analysis.Real.Sqrt
+public import Mathlib.Topology.Connected.PathConnected
 
 /-!
 # Upper-half-plane and hyperboloid coordinates
@@ -6749,5 +6751,83 @@ theorem lorentzAxis_span_ker (n : Fin 3 → ℝ)
       exact hen
   exact Submodule.eq_of_le_of_finrank_eq hle
     ((hyperboloidGeodesic_plane p e hep hee).2.1.trans hdim.symm)
+
+/-- The graph coordinates of the positive Lorentz sheet over the real plane.
+Textbook G06 S01.connected (lines 80–84): the explicit square-root graph. -/
+def hyperboloidGraphCoords (xy : ℝ × ℝ) : Fin 3 → ℝ :=
+  ![xy.1, xy.2, Real.sqrt (1 + xy.1^2 + xy.2^2)]
+
+/-- The square-root graph satisfies the hyperboloid equation and has positive time.
+Textbook G06 S01.connected: positivity of the radicand and its square-root square. -/
+theorem hyperboloidGraphCoords_mem (xy : ℝ × ℝ) :
+  (hyperboloidGraphCoords xy 0)^2 + (hyperboloidGraphCoords xy 1)^2 -
+    (hyperboloidGraphCoords xy 2)^2 = -1 ∧
+  0 < hyperboloidGraphCoords xy 2 := by
+  have hpos : 0 < 1 + xy.1^2 + xy.2^2 := by positivity
+  change xy.1^2 + xy.2^2 - (Real.sqrt (1 + xy.1^2 + xy.2^2))^2 = -1 ∧
+    0 < Real.sqrt (1 + xy.1^2 + xy.2^2)
+  constructor
+  · rw [Real.sq_sqrt hpos.le]
+    ring
+  · exact Real.sqrt_pos.mpr hpos
+
+/-- The explicit graph parametrization into the actual positive-sheet subtype.
+Textbook G06 S01.connected: the continuous graph map from the real plane. -/
+def hyperboloidGraph (xy : ℝ × ℝ) : Hyperboloid :=
+  ⟨hyperboloidGraphCoords xy, hyperboloidGraphCoords_mem xy⟩
+
+/-- The inverse graph coordinates are the first two ambient coordinates.
+Textbook G06 S01.connected: the ordinary coordinate-projection inverse. -/
+def hyperboloidGraphProjection (p : Hyperboloid) : ℝ × ℝ :=
+  (p.val 0, p.val 1)
+
+/-- Every positive-sheet point is recovered from its first two coordinates.
+Textbook G06 S01.connected: the sheet equation and positive time determine the square root. -/
+theorem hyperboloidGraph_right_inv (p : Hyperboloid) :
+  hyperboloidGraph (hyperboloidGraphProjection p) = p := by
+  apply Subtype.ext
+  funext i
+  fin_cases i
+  · rfl
+  · rfl
+  · change Real.sqrt (1 + (p.val 0)^2 + (p.val 1)^2) = p.val 2
+    have heq : 1 + (p.val 0)^2 + (p.val 1)^2 = (p.val 2)^2 := by
+      nlinarith [p.property.1]
+    rw [heq, Real.sqrt_sq p.property.2.le]
+
+/-- The square-root graph is continuous for the ordinary product and subtype topologies.
+Textbook G06 S01.connected: coordinatewise continuity followed by subtype continuity. -/
+theorem continuous_hyperboloidGraph : Continuous hyperboloidGraph := by
+  have hc : Continuous hyperboloidGraphCoords := by
+    apply continuous_pi
+    intro i
+    fin_cases i
+    · exact continuous_fst
+    · exact continuous_snd
+    · exact ((continuous_const.add (continuous_fst.pow 2)).add
+        (continuous_snd.pow 2)).sqrt
+  exact hc.subtype_mk hyperboloidGraphCoords_mem
+
+/-- The explicit graph and coordinate projections identify the plane with the positive sheet.
+Textbook G06 S01.connected: both inverse maps are continuous in ordinary topology. -/
+def hyperboloidGraphHomeomorph : (ℝ × ℝ) ≃ₜ Hyperboloid where
+  toFun := hyperboloidGraph
+  invFun := hyperboloidGraphProjection
+  left_inv := fun xy => by cases xy; rfl
+  right_inv := hyperboloidGraph_right_inv
+  continuous_toFun := continuous_hyperboloidGraph
+  continuous_invFun :=
+    ((continuous_apply 0).comp continuous_subtype_val).prodMk
+      ((continuous_apply 1).comp continuous_subtype_val)
+
+/-- The positive sheet is connected as the continuous graph image of the real plane.
+Textbook G06 S01.connected: real straight-segment paths, product paths, and connected image.
+This theorem does not install a global connectedness instance. -/
+theorem connectedSpace_hyperboloidGraph : ConnectedSpace Hyperboloid := by
+  letI : PathConnectedSpace ℝ := Real.instPathConnectedSpace
+  letI : PathConnectedSpace (ℝ × ℝ) := Prod.instPathConnectedSpace
+  letI : ConnectedSpace (ℝ × ℝ) := PathConnectedSpace.connectedSpace
+  exact hyperboloidGraphHomeomorph.surjective.connectedSpace
+    continuous_hyperboloidGraph
 
 end Hyperbolic
