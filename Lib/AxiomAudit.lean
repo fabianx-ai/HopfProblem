@@ -7445,9 +7445,6 @@ is an evidence command rather than library content.
 #check Complex.fractionalLinear_reverse_local
 #print axioms Complex.fractionalLinear_reverse_local
 
-#check RiemannBoundary.principalRoot_three_reverse_of_wedge
-#print axioms RiemannBoundary.principalRoot_three_reverse_of_wedge
-
 #check Compactification.exists_homeomorph_of_paired_limits
 #print axioms Compactification.exists_homeomorph_of_paired_limits
 

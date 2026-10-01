@@ -37,5 +37,7 @@ nothing about them.
 
 /-! ## `Hopf.Proof.Analysis.Complex.RiemannMapping.SectorRoots` -/
 
+#check RiemannBoundary.principalRoot_three_reverse_of_wedge
+#print axioms RiemannBoundary.principalRoot_three_reverse_of_wedge
 #check RiemannBoundary.rotatedPrincipalRootFour_reverse_of_wedge
 #print axioms RiemannBoundary.rotatedPrincipalRootFour_reverse_of_wedge
