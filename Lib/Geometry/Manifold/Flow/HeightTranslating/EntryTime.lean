@@ -73,8 +73,8 @@ theorem FlowConstruction.forwardInvariant_of_local {X : Type*} [TopologicalSpace
   rw [add_comm s δ, F.map_add]
   exact hstay δ ⟨hδ.le, hδε⟩
 
-/-- If `A` is forward invariant under the flow `F`, then so is `interior A`: for `x ∈ interior A` and
-`0 ≤ t`, `F t x ∈ interior A`. -/
+/-- If `A` is forward invariant under the flow `F`, then so is `interior A`: for `x ∈ interior A`
+and `0 ≤ t`, `F t x ∈ interior A`. -/
 theorem FlowConstruction.forwardInvariant_interior {X : Type*} [TopologicalSpace X]
     (F : Flow ℝ X) {A : Set X} (hforward : ∀ x ∈ A, ∀ t : ℝ, 0 ≤ t → F t x ∈ A) {x : X}
     (hx : x ∈ interior A) {t : ℝ} (ht : 0 ≤ t) : F t x ∈ interior A := by
@@ -201,8 +201,8 @@ theorem FlowConstruction.continuousOn_entryTime {X : Type*} [TopologicalSpace X]
 
 /-! ### The entry retraction -/
 
-/-- The entry map `B → A`, `x ↦ F (entryTime F A x) x`, for `A` closed, forward invariant and strictly
-absorbing and `B` a set each of whose points has a forward orbit meeting `A`. -/
+/-- The entry map `B → A`, `x ↦ F (entryTime F A x) x`, for `A` closed, forward invariant and
+strictly absorbing and `B` a set each of whose points has a forward orbit meeting `A`. -/
 def FlowConstruction.entryRetraction {X : Type*} [TopologicalSpace X] (F : Flow ℝ X)
     {A B : Set X} (hA : IsClosed A) (hforward : ∀ x ∈ A, ∀ t : ℝ, 0 ≤ t → F t x ∈ A)
     (hentry : ∀ x ∈ A, ∀ t : ℝ, 0 < t → F t x ∈ interior A)
@@ -227,8 +227,8 @@ theorem FlowConstruction.entryRetraction_inclusion {X : Type*} [TopologicalSpace
   change F (entryTime F A x.1) x.1 = x.1
   rw [entryTime_eq_zero F x.2, F.map_zero_apply]
 
-/-- For `A ⊆ B` with `B` forward invariant, the homotopy `(s, x) ↦ F (s * entryTime F A x) x` of `B`,
-from the identity to the entry map followed by the inclusion `A → B`, stationary on `A`. -/
+/-- For `A ⊆ B` with `B` forward invariant, the homotopy `(s, x) ↦ F (s * entryTime F A x) x` of
+`B`, from the identity to the entry map followed by the inclusion `A → B`, stationary on `A`. -/
 def FlowConstruction.entryDeformation {X : Type*} [TopologicalSpace X] (F : Flow ℝ X)
     {A B : Set X} (hA : IsClosed A) (hforward : ∀ x ∈ A, ∀ t : ℝ, 0 ≤ t → F t x ∈ A)
     (hentry : ∀ x ∈ A, ∀ t : ℝ, 0 < t → F t x ∈ interior A)
@@ -267,8 +267,8 @@ def FlowConstruction.entryDeformation {X : Type*} [TopologicalSpace X] (F : Flow
     rw [entryTime_eq_zero F (A := A) (show x.1 ∈ A from hx), MulZeroClass.mul_zero,
       F.map_zero_apply]
 
-/-- Let `A ⊆ B` with `A` closed, forward invariant and strictly absorbing, `B` forward invariant, and
-every forward orbit from `B` meeting `A`. Then the inclusion `A → B` is a homotopy equivalence,
+/-- Let `A ⊆ B` with `A` closed, forward invariant and strictly absorbing, `B` forward invariant,
+and every forward orbit from `B` meeting `A`. Then the inclusion `A → B` is a homotopy equivalence,
 with homotopy inverse the entry map `entryRetraction`. -/
 def FlowConstruction.entryHomotopyEquiv {X : Type*} [TopologicalSpace X] (F : Flow ℝ X)
     {A B : Set X} (hA : IsClosed A) (hforward : ∀ x ∈ A, ∀ t : ℝ, 0 ≤ t → F t x ∈ A)
@@ -316,8 +316,8 @@ theorem FlowConstruction.entryTime_lt_of_flow_mem_interior {X : Type*} [Topologi
   obtain ⟨s, hst, hs⟩ := he.exists_lt
   exact (entryTime_le_of_mem F hs.1.le (interior_subset hs.2)).trans_lt hst
 
-/-- Let `A` be closed and forward invariant and let the forward orbit of `x` meet `A`. If `0 ≤ t` and
-`F t x` has positive entry time, then `entryTime F A x = t + entryTime F A (F t x)`. -/
+/-- Let `A` be closed and forward invariant and let the forward orbit of `x` meet `A`. If `0 ≤ t`
+and `F t x` has positive entry time, then `entryTime F A x = t + entryTime F A (F t x)`. -/
 theorem FlowConstruction.entryTime_eq_add_of_flow_pos {X : Type*} [TopologicalSpace X]
     (F : Flow ℝ X) {A : Set X} (hA : IsClosed A) (hforward : ∀ x ∈ A, ∀ t : ℝ, 0 ≤ t → F t x ∈ A)
     {x : X} (hx : ∃ t : ℝ, 0 ≤ t ∧ F t x ∈ A) {t : ℝ} (ht : 0 ≤ t)

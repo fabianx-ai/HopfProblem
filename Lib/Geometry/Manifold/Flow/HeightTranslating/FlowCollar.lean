@@ -404,7 +404,8 @@ theorem FlowConstruction.FlowCollarData.innerMap_bijective {X : Type*} [Topologi
     obtain ⟨x, hx⟩ := d.exists_rescale_eq ⟨y.1, d.inner_subset y.2⟩ y.2
     exact ⟨x, Subtype.ext (congrArg (fun z : B => (z : X)) hx)⟩
 
-/-- The collar homeomorphism `B ≃ₜ A` given by the rescaling map, for `X` Hausdorff and `B` compact. -/
+/-- The collar homeomorphism `B ≃ₜ A` given by the rescaling map, for `X` Hausdorff and `B` compact.
+-/
 def FlowConstruction.FlowCollarData.homeomorph {X : Type*} [TopologicalSpace X]
     {F : Flow ℝ X} {A B : Set X} (d : FlowConstruction.FlowCollarData F A B) [T2Space X]
     [CompactSpace B] : B ≃ₜ A :=
