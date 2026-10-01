@@ -250,9 +250,10 @@ theorem MorseCancellation.exists_excellent_morse_reduction_of_multiple_minima {E
       cancel_realized_higher_minimum S.toSurgeryWindows hf₀ hm₀ hV G hG hzero hdesc hmodels p r q
         hpzero hqone hgt hp u v hback hu hv hnoconnection
 
-/-- Milnor, h-cobordism Theorem 8.1: a Morse function with an `AdaptedWindows` package on a compact
-path-connected manifold with the least number of critical points among Morse functions with
-distinct critical values has exactly one critical point of index `0`. -/
+/-- A smooth Morse function with an `AdaptedWindows` package on a compact path-connected manifold
+with the least number of critical points among smooth Morse functions with distinct critical
+values has exactly one critical point of index `0` (cf. Milnor, *Lectures on the h-cobordism
+theorem*, Theorem 8.1 (index 0)). -/
 theorem MorseCancellation.minimal_excellent_morse_minimum_count_one {E M : Type} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] [PathConnectedSpace M] {f : M → ℝ}
