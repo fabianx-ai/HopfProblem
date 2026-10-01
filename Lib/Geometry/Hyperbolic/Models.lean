@@ -7424,6 +7424,126 @@ theorem hyperboloidReflection_preserves_metric
   simp only [hyperboloidMetric_inner]
   exact hyperboloidReflection_preserves_tangentTensor n hn p v w
 
+/-- The restricted reflection preserves both real and extended speeds in the existing tangent metric.
+
+Textbook source: reviewed Lorentz reflection proof, M02, lines 124–126. -/
+theorem hyperboloidReflection_speed
+    (n : Fin 3 → ℝ) (hn : lorentzBilinear n n = 1)
+    (γ : ℝ → Hyperboloid) (t : ℝ)
+    (hγ : MDifferentiableAt 𝓘(ℝ, ℝ) I γ t) :
+    letI : Bundle.RiemannianBundle (fun p : Hyperboloid => TangentSpace I p) :=
+      ⟨hyperboloidMetric.toRiemannianMetric⟩
+    ‖mfderiv 𝓘(ℝ, ℝ) I (hyperboloidReflection n hn ∘ γ) t (1 : ℝ)‖ =
+      ‖mfderiv 𝓘(ℝ, ℝ) I γ t (1 : ℝ)‖ ∧
+    ‖mfderiv 𝓘(ℝ, ℝ) I (hyperboloidReflection n hn ∘ γ) t (1 : ℝ)‖ₑ =
+      ‖mfderiv 𝓘(ℝ, ℝ) I γ t (1 : ℝ)‖ₑ := by
+  exact Manifold.speed_comp_of_tensorPreserving hyperboloidMetric hyperboloidMetric
+    (hyperboloidReflection n hn) (contMDiff_hyperboloidReflection n hn)
+    (hyperboloidReflection_preserves_metric n hn) γ t hγ
+
+/-- The same reflection preserves within speeds on the same parameter set, including one-sided velocities.
+
+Textbook source: reviewed Lorentz reflection proof, M02, lines 124–126. -/
+theorem hyperboloidReflection_speedWithin
+    (n : Fin 3 → ℝ) (hn : lorentzBilinear n n = 1)
+    (γ : ℝ → Hyperboloid) (s : Set ℝ) (t : ℝ)
+    (hγ : MDifferentiableWithinAt 𝓘(ℝ, ℝ) I γ s t)
+    (hs : UniqueMDiffWithinAt 𝓘(ℝ, ℝ) s t) :
+    letI : Bundle.RiemannianBundle (fun p : Hyperboloid => TangentSpace I p) :=
+      ⟨hyperboloidMetric.toRiemannianMetric⟩
+    ‖mfderivWithin 𝓘(ℝ, ℝ) I (hyperboloidReflection n hn ∘ γ) s t (1 : ℝ)‖ =
+      ‖mfderivWithin 𝓘(ℝ, ℝ) I γ s t (1 : ℝ)‖ ∧
+    ‖mfderivWithin 𝓘(ℝ, ℝ) I (hyperboloidReflection n hn ∘ γ) s t (1 : ℝ)‖ₑ =
+      ‖mfderivWithin 𝓘(ℝ, ℝ) I γ s t (1 : ℝ)‖ₑ := by
+  exact Manifold.speedWithin_comp_of_tensorPreserving hyperboloidMetric hyperboloidMetric
+    (hyperboloidReflection n hn) (contMDiff_hyperboloidReflection n hn)
+    (hyperboloidReflection_preserves_metric n hn) γ s t hγ hs
+
+/-- The restricted reflection preserves the entire finite-piece length receipt: subdivisions, endpoints,
+piece integrals, real and extended lengths, bridges and finiteness, including repeated pieces.
+
+Textbook source: reviewed Lorentz reflection proof, M02, lines 126–127. -/
+theorem hyperboloidReflection_length
+    (n : Fin 3 → ℝ) (hn : lorentzBilinear n n = 1)
+    {γ : ℝ → Hyperboloid} {a b : ℝ} {k : ℕ} {cut : Fin (k+1) → ℝ}
+    (hγ : IsPiecewiseC1On I γ a b k cut) :
+    letI : Bundle.RiemannianBundle (fun p : Hyperboloid => TangentSpace I p) :=
+      ⟨hyperboloidMetric.toRiemannianMetric⟩
+    let P : Fin k → Set ℝ := fun i => Icc (cut i.castSucc) (cut i.succ)
+    let q : Fin k → ℝ → ℝ := fun i t =>
+      ‖mfderivWithin 𝓘(ℝ, ℝ) I γ (P i) t (1 : ℝ)‖
+    let q' : Fin k → ℝ → ℝ := fun i t =>
+      ‖mfderivWithin 𝓘(ℝ, ℝ) I (hyperboloidReflection n hn ∘ γ) (P i) t (1 : ℝ)‖
+    IsPiecewiseC1On I (hyperboloidReflection n hn ∘ γ) a b k cut ∧
+    (hyperboloidReflection n hn ∘ γ) a = hyperboloidReflection n hn (γ a) ∧
+    (hyperboloidReflection n hn ∘ γ) b = hyperboloidReflection n hn (γ b) ∧
+    (∀ i : Fin k, (∫ t in cut i.castSucc..cut i.succ, q' i t) =
+      ∫ t in cut i.castSucc..cut i.succ, q i t) ∧
+    piecewiseC1Length hyperboloidMetric (hyperboloidReflection n hn ∘ γ) cut =
+      piecewiseC1Length hyperboloidMetric γ cut ∧
+    0 ≤ piecewiseC1Length hyperboloidMetric γ cut ∧
+    0 ≤ piecewiseC1Length hyperboloidMetric (hyperboloidReflection n hn ∘ γ) cut ∧
+    pathELength I (hyperboloidReflection n hn ∘ γ) a b = pathELength I γ a b ∧
+    pathELength I γ a b < (⊤ : ℝ≥0∞) ∧
+    pathELength I (hyperboloidReflection n hn ∘ γ) a b < (⊤ : ℝ≥0∞) ∧
+    pathELength I γ a b = ENNReal.ofReal (piecewiseC1Length hyperboloidMetric γ cut) ∧
+    pathELength I (hyperboloidReflection n hn ∘ γ) a b =
+      ENNReal.ofReal (piecewiseC1Length hyperboloidMetric (hyperboloidReflection n hn ∘ γ) cut) ∧
+    (∀ i : Fin k, (∫⁻ t in P i, ENNReal.ofReal (q' i t)) =
+      ∫⁻ t in P i, ENNReal.ofReal (q i t)) ∧
+    (∀ i : Fin k, (∫⁻ t in P i, ENNReal.ofReal (q i t)) < (⊤ : ℝ≥0∞)) ∧
+    (∀ i : Fin k, (∫⁻ t in P i, ENNReal.ofReal (q' i t)) < (⊤ : ℝ≥0∞)) := by
+  exact hγ.length_comp_of_tensorPreserving hyperboloidMetric hyperboloidMetric
+    (hyperboloidReflection n hn) (contMDiff_hyperboloidReflection n hn)
+    (hyperboloidReflection_preserves_metric n hn)
+
+/-- Transporting every competitor gives the first inequality for the original five-index length infimum.
+
+Textbook source: reviewed Lorentz reflection proof, M02, lines 127–129. -/
+theorem hyperboloidReflection_piecewiseC1EDist_le
+    (n : Fin 3 → ℝ) (hn : lorentzBilinear n n = 1) (p q : Hyperboloid) :
+    piecewiseC1EDist hyperboloidMetric (hyperboloidReflection n hn p)
+      (hyperboloidReflection n hn q) ≤ piecewiseC1EDist hyperboloidMetric p q := by
+  letI : Bundle.RiemannianBundle (fun p : Hyperboloid => TangentSpace I p) :=
+    ⟨hyperboloidMetric.toRiemannianMetric⟩
+  unfold piecewiseC1EDist
+  refine le_iInf fun a => le_iInf fun b => le_iInf fun k => le_iInf fun cut =>
+    le_iInf fun γ => ?_
+  rcases hyperboloidReflection_length n hn γ.property.1 with
+    ⟨hc, ha, hb, hp, hr, hn0, hn1, he, hf0, hf1, hbr0, hbr1, hpe, hpf0, hpf1⟩
+  let η : PiecewiseC1CurveOn I a b k cut
+      (hyperboloidReflection n hn p) (hyperboloidReflection n hn q) :=
+    ⟨hyperboloidReflection n hn ∘ γ.val, hc,
+      congrArg (hyperboloidReflection n hn) γ.property.2.1,
+      congrArg (hyperboloidReflection n hn) γ.property.2.2⟩
+  exact iInf_le_of_le a (iInf_le_of_le b (iInf_le_of_le k
+    (iInf_le_of_le cut (iInf_le_of_le η (le_of_eq (congrArg ENNReal.ofReal hr))))))
+
+/-- The actual involution gives the reverse inequality for the same extended length distance.
+
+Textbook source: reviewed Lorentz reflection proof, M02, lines 129–130. -/
+theorem hyperboloidReflection_piecewiseC1EDist
+    (n : Fin 3 → ℝ) (hn : lorentzBilinear n n = 1) (p q : Hyperboloid) :
+    piecewiseC1EDist hyperboloidMetric (hyperboloidReflection n hn p)
+      (hyperboloidReflection n hn q) = piecewiseC1EDist hyperboloidMetric p q := by
+  have hforward := hyperboloidReflection_piecewiseC1EDist_le n hn p q
+  have hbackward := hyperboloidReflection_piecewiseC1EDist_le n hn
+    (hyperboloidReflection n hn p) (hyperboloidReflection n hn q)
+  rw [Hyperbolic.hyperboloidReflection_involutive n hn p,
+    Hyperbolic.hyperboloidReflection_involutive n hn q] at hbackward
+  exact le_antisymm hforward hbackward
+
+/-- The restricted reflection preserves the original named hyperbolic length distance.
+The established radial joining family supplies finite competitors for every pair of endpoints.
+
+Textbook source: reviewed Lorentz reflection proof, M02, lines 130–133. -/
+theorem hyperboloidReflection_lengthDist
+    (n : Fin 3 → ℝ) (hn : lorentzBilinear n n = 1) (p q : Hyperboloid) :
+    hyperboloidLengthDist (hyperboloidReflection n hn p) (hyperboloidReflection n hn q) =
+      hyperboloidLengthDist p q := by
+  exact congrArg ENNReal.toReal
+    (hyperboloidReflection_piecewiseC1EDist n hn p q)
+
 /-- The timelike coefficient of a vector in an adapted Lorentz frame.
 
 Textbook source: reviewed Lorentz reflection proof, S03, lines 105–107. -/

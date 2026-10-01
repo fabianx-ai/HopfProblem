@@ -8682,6 +8682,19 @@ is an evidence command rather than library content.
 #check Hyperbolic.hyperboloidReflection_preserves_metric
 #print axioms Hyperbolic.hyperboloidReflection_preserves_metric
 
+#check Hyperbolic.hyperboloidReflection_speed
+#print axioms Hyperbolic.hyperboloidReflection_speed
+#check Hyperbolic.hyperboloidReflection_speedWithin
+#print axioms Hyperbolic.hyperboloidReflection_speedWithin
+#check Hyperbolic.hyperboloidReflection_length
+#print axioms Hyperbolic.hyperboloidReflection_length
+#check Hyperbolic.hyperboloidReflection_piecewiseC1EDist_le
+#print axioms Hyperbolic.hyperboloidReflection_piecewiseC1EDist_le
+#check Hyperbolic.hyperboloidReflection_piecewiseC1EDist
+#print axioms Hyperbolic.hyperboloidReflection_piecewiseC1EDist
+#check Hyperbolic.hyperboloidReflection_lengthDist
+#print axioms Hyperbolic.hyperboloidReflection_lengthDist
+
 #check Hyperbolic.hyperboloidAdaptedTime
 #print axioms Hyperbolic.hyperboloidAdaptedTime
 #check Hyperbolic.hyperboloidAdaptedProjection
