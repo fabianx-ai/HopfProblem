@@ -211,4 +211,30 @@ theorem planeCoefficient_discriminant_pos_of_timelike
     IsLorentzTimelikePlane.exists_hyperboloidGeodesic hP
   exact planeCoefficient_discriminant_pos_of_mem a b c hcoeff p hpP
 
+/-- Substituting the actual upper-half-plane coordinates into any coefficient
+functional and clearing the positive height denominator gives its expanded
+quadratic numerator. Textbook source: G05.D, lines 90–94. -/
+theorem planeCoefficient_toHyperboloid_mul (a b c : ℝ) (z : UpperHalfPlane) :
+    (2 * z.im) * planeCoefficientFunctional a b c (toHyperboloid z).val =
+      2 * a * z.re + b * (z.re ^ 2 + z.im ^ 2 - 1) +
+        c * (z.re ^ 2 + z.im ^ 2 + 1) := by
+  change (2 * z.im) * (a * (z.re / z.im) +
+    b * ((z.re ^ 2 + z.im ^ 2 - 1) / (2 * z.im)) +
+    c * ((z.re ^ 2 + z.im ^ 2 + 1) / (2 * z.im))) = _
+  field_simp [z.im_ne_zero]
+  <;> ring
+
+/-- The exact pullback of every real coefficient equation under the actual
+model map is its collected quadratic equation. The equivalence includes the
+zero coefficient triple. Textbook source: G05.D, lines 90–96 and 98. -/
+theorem planeCoefficient_toHyperboloid_iff (a b c : ℝ) (z : UpperHalfPlane) :
+    planeCoefficientFunctional a b c (toHyperboloid z).val = 0 ↔
+      (b + c) * (z.re ^ 2 + z.im ^ 2) + 2 * a * z.re + (c - b) = 0 := by
+  have hd : 2 * z.im ≠ 0 := mul_ne_zero (by norm_num) z.im_ne_zero
+  have hcollect :
+      2 * a * z.re + b * (z.re ^ 2 + z.im ^ 2 - 1) +
+          c * (z.re ^ 2 + z.im ^ 2 + 1) =
+        (b + c) * (z.re ^ 2 + z.im ^ 2) + 2 * a * z.re + (c - b) := by ring
+  rw [← mul_eq_zero_iff_left hd, planeCoefficient_toHyperboloid_mul, hcollect]
+
 end Hyperbolic

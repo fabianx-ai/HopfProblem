@@ -8480,6 +8480,11 @@ is an evidence command rather than library content.
 #check Hyperbolic.planeCoefficient_discriminant_pos_of_timelike
 #print axioms Hyperbolic.planeCoefficient_discriminant_pos_of_timelike
 
+#check Hyperbolic.planeCoefficient_toHyperboloid_mul
+#print axioms Hyperbolic.planeCoefficient_toHyperboloid_mul
+#check Hyperbolic.planeCoefficient_toHyperboloid_iff
+#print axioms Hyperbolic.planeCoefficient_toHyperboloid_iff
+
 #check LinearMap.BilinForm.unitNormalReflection
 #print axioms LinearMap.BilinForm.unitNormalReflection
 
