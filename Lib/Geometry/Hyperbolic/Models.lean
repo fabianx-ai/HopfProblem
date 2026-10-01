@@ -7174,6 +7174,174 @@ def hyperboloidReflectionDiffeomorph (n : Fin 3 → ℝ)
     contMDiff_toFun := contMDiff_hyperboloidReflection n hn
     contMDiff_invFun := contMDiff_hyperboloidReflection n hn }
 
+/-- The fixed points of the restricted reflection are exactly the zero-normal-coordinate points.
+
+Textbook source: reviewed Lorentz reflection proof, S02, lines 96–102. -/
+theorem hyperboloidReflection_fixed_iff (n : V) (hn : lorentzBilinear n n = 1) (p : Hyperboloid) :
+    hyperboloidReflection n hn p = p ↔ lorentzBilinear p.val n = 0 := by
+  rw [Subtype.ext_iff]
+  exact lorentzReflection_fixed_iff n hn p.val
+
+/-- The restricted reflection negates the normal coordinate.
+
+Textbook source: reviewed Lorentz reflection proof, S02, lines 96–102. -/
+theorem hyperboloidReflection_normal (n : V) (hn : lorentzBilinear n n = 1) (p : Hyperboloid) :
+    lorentzBilinear (hyperboloidReflection n hn p).val n = -lorentzBilinear p.val n := by
+  rw [hyperboloidReflection_val]
+  exact lorentzReflection_normal n hn p.val
+
+/-- The full fixed set is the all-real geodesic through the explicit axis point, with its
+unit tangent, independent frame, dimension, Gram identity and normal-kernel span.
+
+Textbook source: reviewed Lorentz reflection proof, S02, lines 96–102. -/
+theorem hyperboloidReflection_fixed_geodesic (n : V) (hn : lorentzBilinear n n = 1) :
+    ∃ (p : Hyperboloid) (e : V)
+      (hep : lorentzBilinear e p.val = 0) (hee : lorentzBilinear e e = 1),
+      p = lorentzAxisPoint n hn ∧ lorentzBilinear p.val n = 0 ∧
+      lorentzBilinear e n = 0 ∧
+      LinearIndependent ℝ ![p.val,e] ∧
+      Module.finrank ℝ (lorentzFunctional n).ker = 2 ∧
+      (∀ a b : ℝ, lorentzBilinear (a • p.val+b • e) (a • p.val+b • e)
+        = -a^2+b^2) ∧
+      Submodule.span ℝ ({p.val,e} : Set V) = (lorentzFunctional n).ker ∧
+      Set.range (hyperboloidGeodesic p e hep hee) =
+        {q : Hyperboloid | lorentzBilinear q.val n = 0} ∧
+      {q : Hyperboloid | hyperboloidReflection n hn q = q} =
+        Set.range (hyperboloidGeodesic p e hep hee) := by
+  let p := lorentzAxisPoint n hn
+  have hpn : lorentzBilinear p.val n = 0 := (lorentzAxisPointCoords_spec n hn).2
+  obtain ⟨z,hz,hznot,hep,hen,hee⟩ := exists_lorentzAxisDirection n hn p hpn
+  let e := lorentzAxisDirectionCoords n z
+  have hspan := lorentzAxis_span_ker n hn p hpn e hep hen hee
+  obtain ⟨hli,hdim,hgram,hrange⟩ := hyperboloidGeodesic_plane p e hep hee
+  have hk : Module.finrank ℝ (lorentzFunctional n).ker = 2 := by
+    rw [← hspan]
+    exact hdim
+  have hr : Set.range (hyperboloidGeodesic p e hep hee) =
+      {q : Hyperboloid | lorentzBilinear q.val n = 0} := by
+    rw [hrange, hspan]
+    ext q
+    change lorentzFunctional n q.val = 0 ↔ lorentzBilinear q.val n = 0
+    rw [← lorentzBilinear_eq_functional, lorentzBilinear_symm n q.val]
+  refine ⟨p,e,hep,hee,rfl,hpn,hen,hli,hk,hgram,hspan,hr,?_⟩
+  rw [hr]
+  ext q
+  exact hyperboloidReflection_fixed_iff n hn q
+
+/-- The all-real normal radial geodesic has normal coordinate equal to the hyperbolic sine.
+
+Textbook source: reviewed Lorentz reflection proof, S02, lines 96–102. -/
+theorem hyperboloidGeodesic_normal_coordinate (n : V) (hn : lorentzBilinear n n = 1)
+    (p : Hyperboloid) (hpn : lorentzBilinear p.val n = 0) (s : ℝ) :
+    lorentzBilinear
+      (hyperboloidGeodesic p n ((lorentzBilinear_symm n p.val).trans hpn) hn s).val n =
+      Real.sinh s := by
+  change lorentzBilinear (Real.cosh s • p.val + Real.sinh s • n) n = Real.sinh s
+  simp only [map_add, ContinuousLinearMap.add_apply, map_smul,
+    ContinuousLinearMap.smul_apply, smul_eq_mul, hpn, hn, mul_zero, mul_one, zero_add]
+
+/-- Both strict normal-coordinate sides are open and nonempty.
+
+Textbook source: reviewed Lorentz reflection proof, S02, lines 96–102. -/
+theorem hyperboloidReflection_sides_open_nonempty (n : V) (hn : lorentzBilinear n n = 1) :
+    IsOpen {p : Hyperboloid | 0 < lorentzBilinear p.val n} ∧ IsOpen {p : Hyperboloid | lorentzBilinear p.val n < 0} ∧
+    ({p : Hyperboloid | 0 < lorentzBilinear p.val n}).Nonempty ∧ ({p : Hyperboloid | lorentzBilinear p.val n < 0}).Nonempty := by
+  have hc : Continuous (fun p : Hyperboloid => lorentzBilinear p.val n) := by
+    have h : Continuous (fun p : Hyperboloid => lorentzFunctional n p.val) :=
+      (lorentzFunctional n).continuous.comp continuous_subtype_val
+    simpa only [← lorentzBilinear_eq_functional, lorentzBilinear_symm] using h
+  refine ⟨isOpen_lt continuous_const hc, isOpen_lt hc continuous_const, ?_⟩
+  let p := lorentzAxisPoint n hn
+  have hpn : lorentzBilinear p.val n = 0 := (lorentzAxisPointCoords_spec n hn).2
+  let γ := hyperboloidGeodesic p n ((lorentzBilinear_symm n p.val).trans hpn) hn
+  constructor
+  · refine ⟨γ 1, ?_⟩
+    change 0 < lorentzBilinear (γ 1).val n
+    rw [hyperboloidGeodesic_normal_coordinate n hn p hpn 1]
+    exact Real.sinh_pos_iff.mpr (by norm_num)
+  · refine ⟨γ (-1), ?_⟩
+    change lorentzBilinear (γ (-1)).val n < 0
+    rw [hyperboloidGeodesic_normal_coordinate n hn p hpn (-1)]
+    exact Real.sinh_neg_iff.mpr (by norm_num)
+
+/-- The reflection exchanges both strict normal-coordinate sides by exact image equalities.
+
+Textbook source: reviewed Lorentz reflection proof, S02, lines 96–102. -/
+theorem hyperboloidReflection_open_side_images (n : V) (hn : lorentzBilinear n n = 1) :
+    (hyperboloidReflection n hn) '' {p : Hyperboloid | 0 < lorentzBilinear p.val n} = {p : Hyperboloid | lorentzBilinear p.val n < 0} ∧
+    (hyperboloidReflection n hn) '' {p : Hyperboloid | lorentzBilinear p.val n < 0} = {p : Hyperboloid | 0 < lorentzBilinear p.val n} := by
+  constructor
+  · ext q
+    constructor
+    · rintro ⟨p, hp, rfl⟩
+      change 0 < lorentzBilinear p.val n at hp
+      change lorentzBilinear (hyperboloidReflection n hn p).val n < 0
+      rw [hyperboloidReflection_normal]
+      linarith
+    · intro hq
+      change lorentzBilinear q.val n < 0 at hq
+      refine ⟨hyperboloidReflection n hn q, ?_, hyperboloidReflection_involutive n hn q⟩
+      change 0 < lorentzBilinear (hyperboloidReflection n hn q).val n
+      rw [hyperboloidReflection_normal]
+      linarith
+  · ext q
+    constructor
+    · rintro ⟨p, hp, rfl⟩
+      change lorentzBilinear p.val n < 0 at hp
+      change 0 < lorentzBilinear (hyperboloidReflection n hn p).val n
+      rw [hyperboloidReflection_normal]
+      linarith
+    · intro hq
+      change 0 < lorentzBilinear q.val n at hq
+      refine ⟨hyperboloidReflection n hn q, ?_, hyperboloidReflection_involutive n hn q⟩
+      change lorentzBilinear (hyperboloidReflection n hn q).val n < 0
+      rw [hyperboloidReflection_normal]
+      linarith
+
+/-- The reflection is a bijection from either strict normal-coordinate side onto the other.
+
+Textbook source: reviewed Lorentz reflection proof, S02, lines 96–102. -/
+theorem hyperboloidReflection_open_side_bijOn (n : V) (hn : lorentzBilinear n n = 1) :
+    Set.BijOn (hyperboloidReflection n hn) {p : Hyperboloid | 0 < lorentzBilinear p.val n} {p : Hyperboloid | lorentzBilinear p.val n < 0} ∧
+    Set.BijOn (hyperboloidReflection n hn) {p : Hyperboloid | lorentzBilinear p.val n < 0} {p : Hyperboloid | 0 < lorentzBilinear p.val n} := by
+  have h := hyperboloidReflection_open_side_images n hn
+  exact ⟨(hyperboloidReflectionEquiv n hn).image_eq_iff_bijOn.mp h.1,
+    (hyperboloidReflectionEquiv n hn).image_eq_iff_bijOn.mp h.2⟩
+
+/-- The reflection exchanges both weak normal-coordinate half-spaces by exact image equalities.
+
+Textbook source: reviewed Lorentz reflection proof, S02, lines 96–102. -/
+theorem hyperboloidReflection_closed_side_images (n : V) (hn : lorentzBilinear n n = 1) :
+    (hyperboloidReflection n hn) '' {p : Hyperboloid | 0 ≤ lorentzBilinear p.val n} = {p : Hyperboloid | lorentzBilinear p.val n ≤ 0} ∧
+    (hyperboloidReflection n hn) '' {p : Hyperboloid | lorentzBilinear p.val n ≤ 0} = {p : Hyperboloid | 0 ≤ lorentzBilinear p.val n} := by
+  constructor
+  · ext q
+    constructor
+    · rintro ⟨p, hp, rfl⟩
+      change 0 ≤ lorentzBilinear p.val n at hp
+      change lorentzBilinear (hyperboloidReflection n hn p).val n ≤ 0
+      rw [hyperboloidReflection_normal]
+      linarith
+    · intro hq
+      change lorentzBilinear q.val n ≤ 0 at hq
+      refine ⟨hyperboloidReflection n hn q, ?_, hyperboloidReflection_involutive n hn q⟩
+      change 0 ≤ lorentzBilinear (hyperboloidReflection n hn q).val n
+      rw [hyperboloidReflection_normal]
+      linarith
+  · ext q
+    constructor
+    · rintro ⟨p, hp, rfl⟩
+      change lorentzBilinear p.val n ≤ 0 at hp
+      change 0 ≤ lorentzBilinear (hyperboloidReflection n hn p).val n
+      rw [hyperboloidReflection_normal]
+      linarith
+    · intro hq
+      change 0 ≤ lorentzBilinear q.val n at hq
+      refine ⟨hyperboloidReflection n hn q, ?_, hyperboloidReflection_involutive n hn q⟩
+      change lorentzBilinear (hyperboloidReflection n hn q).val n ≤ 0
+      rw [hyperboloidReflection_normal]
+      linarith
+
 /-- Lorentz reflection carries each tangent kernel into the kernel at the reflected point.
 
 Textbook source: reviewed Lorentz reflection proof, M01, lines 118–120. -/

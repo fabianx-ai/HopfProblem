@@ -8614,6 +8614,23 @@ is an evidence command rather than library content.
 #check Hyperbolic.hyperboloidReflectionDiffeomorph
 #print axioms Hyperbolic.hyperboloidReflectionDiffeomorph
 
+#check Hyperbolic.hyperboloidReflection_fixed_iff
+#print axioms Hyperbolic.hyperboloidReflection_fixed_iff
+#check Hyperbolic.hyperboloidReflection_normal
+#print axioms Hyperbolic.hyperboloidReflection_normal
+#check Hyperbolic.hyperboloidReflection_fixed_geodesic
+#print axioms Hyperbolic.hyperboloidReflection_fixed_geodesic
+#check Hyperbolic.hyperboloidGeodesic_normal_coordinate
+#print axioms Hyperbolic.hyperboloidGeodesic_normal_coordinate
+#check Hyperbolic.hyperboloidReflection_sides_open_nonempty
+#print axioms Hyperbolic.hyperboloidReflection_sides_open_nonempty
+#check Hyperbolic.hyperboloidReflection_open_side_images
+#print axioms Hyperbolic.hyperboloidReflection_open_side_images
+#check Hyperbolic.hyperboloidReflection_open_side_bijOn
+#print axioms Hyperbolic.hyperboloidReflection_open_side_bijOn
+#check Hyperbolic.hyperboloidReflection_closed_side_images
+#print axioms Hyperbolic.hyperboloidReflection_closed_side_images
+
 #check Hyperbolic.lorentzReflection_mem_tangentKer
 #print axioms Hyperbolic.lorentzReflection_mem_tangentKer
 #check Hyperbolic.mfderiv_hyperboloidReflection_val
