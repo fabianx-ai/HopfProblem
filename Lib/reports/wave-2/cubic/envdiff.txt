@@ -1,0 +1,20 @@
+constants before 38301 after 38304 (keys 38199 38202 )
+lost 11 added 14 of which source declarations: 0 0 ; names with changed type 4 of which source: 0
+auxiliary lost/added/changed (not judged): 11 14 4
+module moves (source declarations, 1-to-1):
+      14  Lib.Geometry.Manifold.Morse.Cubic -> Lib.Geometry.Manifold.Morse.Cubic.AlignedRays
+      17  Lib.Geometry.Manifold.Morse.Cubic -> Lib.Geometry.Manifold.Morse.Cubic.AxisParameter
+      15  Lib.Geometry.Manifold.Morse.Cubic -> Lib.Geometry.Manifold.Morse.Cubic.BasinBlock
+       4  Lib.Geometry.Manifold.Morse.Cubic -> Lib.Geometry.Manifold.Morse.Cubic.CoreBasins
+      20  Lib.Geometry.Manifold.Morse.Cubic -> Lib.Geometry.Manifold.Morse.Cubic.DescentField
+      11  Lib.Geometry.Manifold.Morse.Cubic -> Lib.Geometry.Manifold.Morse.Cubic.EndpointChart
+       2  Lib.Geometry.Manifold.Morse.Cubic -> Lib.Geometry.Manifold.Morse.Cubic.LevelOrbit
+      10  Lib.Geometry.Manifold.Morse.Cubic -> Lib.Geometry.Manifold.Morse.Cubic.LocalReplacement
+      13  Lib.Geometry.Manifold.Morse.Cubic -> Lib.Geometry.Manifold.Morse.Cubic.Model
+      24  Lib.Geometry.Manifold.Morse.Cubic -> Lib.Geometry.Manifold.Morse.Cubic.SplitCoordinates
+       6  Lib.Geometry.Manifold.Morse.Cubic -> Lib.Geometry.Manifold.Morse.Cubic.SublevelFlow
+       1  Lib.Geometry.Manifold.Morse.Cubic -> Lib.Geometry.Manifold.Morse.Cubic.SurgeryWindowsExistence
+       5  Lib.Geometry.Manifold.Morse.Cubic -> Lib.Geometry.Manifold.Morse.Cubic.Tanh
+ambiguous module changes: 0
+auxiliary constants that changed module: 42
+VERDICT PASS

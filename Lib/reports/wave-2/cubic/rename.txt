@@ -1,0 +1,6 @@
+# <new name> <old name>
+Real.hasDerivAt_tanh MorseCancellation.hasDerivAt_tanh
+Real.strictMono_tanh MorseCancellation.strictMono_tanh
+Real.tendsto_tanh_atTop MorseCancellation.tendsto_tanh_atTop
+Real.tendsto_tanh_atBot MorseCancellation.tendsto_tanh_atBot
+Real.contDiffAt_artanh MorseCancellation.contDiffAt_artanh
