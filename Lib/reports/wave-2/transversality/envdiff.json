@@ -1,0 +1,87 @@
+{
+ "before": "/home/goblin/.claude/jobs/06995e68/tmp/wave2/dump_head.jsonl",
+ "after": "/home/goblin/.claude/jobs/06995e68/tmp/wave2/transversality/dump_after.jsonl",
+ "prefix": "",
+ "constants": [
+  38301,
+  38301
+ ],
+ "lost": [],
+ "added": [],
+ "changed_type_source": [],
+ "changed_type_proof_naming": [],
+ "changed_type_accepted": [],
+ "added_accepted": [],
+ "accept_without_effect": [],
+ "changed_type_all": [],
+ "moves": [
+  [
+   "Lib.Geometry.Manifold.Transversality.Basic",
+   "Lib.Geometry.Manifold.Transversality.CenteredChart",
+   5
+  ],
+  [
+   "Lib.Geometry.Manifold.Transversality.Basic",
+   "Lib.Geometry.Manifold.Transversality.Diffeomorph",
+   2
+  ],
+  [
+   "Lib.Geometry.Manifold.Transversality.Basic",
+   "Lib.Geometry.Manifold.Transversality.DiscTheorem",
+   5
+  ],
+  [
+   "Lib.Geometry.Manifold.Transversality.Basic",
+   "Lib.Geometry.Manifold.Transversality.DiskShrinking",
+   29
+  ],
+  [
+   "Lib.Geometry.Manifold.Transversality.Basic",
+   "Lib.Geometry.Manifold.Transversality.GermLinearization",
+   8
+  ],
+  [
+   "Lib.Geometry.Manifold.Transversality.Basic",
+   "Lib.Geometry.Manifold.Transversality.GermRealization",
+   13
+  ],
+  [
+   "Lib.Geometry.Manifold.Transversality.Basic",
+   "Lib.Geometry.Manifold.Transversality.Homogeneity",
+   2
+  ],
+  [
+   "Lib.Geometry.Manifold.Transversality.Basic",
+   "Lib.Geometry.Manifold.Transversality.LinearFramePaths",
+   13
+  ],
+  [
+   "Lib.Geometry.Manifold.Transversality.Basic",
+   "Lib.Geometry.Manifold.Transversality.MorseBelt",
+   28
+  ],
+  [
+   "Lib.Geometry.Manifold.Transversality.Basic",
+   "Lib.Geometry.Manifold.Transversality.Parametric",
+   2
+  ],
+  [
+   "Lib.Geometry.Manifold.Transversality.Basic",
+   "Lib.Geometry.Manifold.Transversality.RegularValues",
+   5
+  ],
+  [
+   "Lib.Geometry.Manifold.Transversality.Basic",
+   "Lib.Geometry.Manifold.Transversality.SupportedIsotopy",
+   13
+  ],
+  [
+   "Lib.Geometry.Manifold.Transversality.Basic",
+   "Lib.Geometry.Manifold.Transversality.Transverse",
+   11
+  ]
+ ],
+ "ambiguous": [],
+ "auxiliary_moved": 64,
+ "verdict": "PASS"
+}
