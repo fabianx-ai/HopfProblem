@@ -8582,3 +8582,28 @@ is an evidence command rather than library content.
 #print axioms Hyperbolic.lorentzReflection_neg_normal
 #check Hyperbolic.IsLorentzTimelikePlane.exists_unitNormal
 #print axioms Hyperbolic.IsLorentzTimelikePlane.exists_unitNormal
+
+#check Hyperbolic.continuous_lorentzReflection_time
+#print axioms Hyperbolic.continuous_lorentzReflection_time
+#check Hyperbolic.lorentzReflection_hyperboloid_square
+#print axioms Hyperbolic.lorentzReflection_hyperboloid_square
+#check Hyperbolic.lorentzReflection_time_ne_zero
+#print axioms Hyperbolic.lorentzReflection_time_ne_zero
+#check Hyperbolic.lorentzReflection_axisPoint
+#print axioms Hyperbolic.lorentzReflection_axisPoint
+#check Hyperbolic.lorentzReflection_time_pos
+#print axioms Hyperbolic.lorentzReflection_time_pos
+#check Hyperbolic.lorentzReflection_hyperboloid_mem
+#print axioms Hyperbolic.lorentzReflection_hyperboloid_mem
+#check Hyperbolic.hyperboloidReflection
+#print axioms Hyperbolic.hyperboloidReflection
+#check Hyperbolic.hyperboloidReflection_val
+#print axioms Hyperbolic.hyperboloidReflection_val
+#check Hyperbolic.hyperboloidReflection_involutive
+#print axioms Hyperbolic.hyperboloidReflection_involutive
+#check Hyperbolic.hyperboloidReflectionEquiv
+#print axioms Hyperbolic.hyperboloidReflectionEquiv
+#check Hyperbolic.contMDiff_hyperboloidReflection
+#print axioms Hyperbolic.contMDiff_hyperboloidReflection
+#check Hyperbolic.hyperboloidReflectionDiffeomorph
+#print axioms Hyperbolic.hyperboloidReflectionDiffeomorph

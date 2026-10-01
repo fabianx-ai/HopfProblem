@@ -1,5 +1,9 @@
 module
 
+public import Mathlib.Topology.Algebra.Module.FiniteDimension
+public import Mathlib.Geometry.Manifold.ContMDiff.Basic
+public import Mathlib.Geometry.Manifold.Diffeomorph
+
 public import Mathlib.Topology.MetricSpace.Bounded
 public import Mathlib.Analysis.Normed.Group.Bounded
 public import Mathlib.Analysis.Normed.Group.Constructions
@@ -7042,5 +7046,129 @@ theorem IsLorentzTimelikePlane.exists_unitNormal
     rfl
   · subst m
     exact lorentzReflection_neg_normal n hnn hm
+
+/-- The time coordinate of a Lorentz reflection is continuous on the upper hyperboloid.
+
+Textbook source: reviewed Lorentz reflection proof, S01.reflection, lines 84–85. -/
+theorem continuous_lorentzReflection_time (n : Fin 3 → ℝ)
+    (hn : lorentzBilinear n n = 1) :
+  Continuous (fun p : Hyperboloid => lorentzReflection n hn p.val 2) :=
+  (continuous_apply 2).comp
+    ((lorentzReflection n hn).toContinuousLinearEquiv.continuous.comp
+      continuous_subtype_val)
+
+/-- Lorentz reflection preserves the square minus one of every upper-sheet point.
+
+Textbook source: reviewed Lorentz reflection proof, S01.reflection, lines 85–86. -/
+theorem lorentzReflection_hyperboloid_square (n : Fin 3 → ℝ)
+    (hn : lorentzBilinear n n = 1) (p : Hyperboloid) :
+  lorentzBilinear (lorentzReflection n hn p.val)
+    (lorentzReflection n hn p.val) = -1 := by
+  have hp : lorentzBilinear p.val p.val = -1 := by
+    simpa only [lorentzBilinear_apply, pow_two] using p.property.1
+  exact (lorentzReflection_preserves n hn p.val p.val).trans hp
+
+/-- The reflected time coordinate never vanishes on the upper hyperboloid.
+
+Textbook source: reviewed Lorentz reflection proof, S01.reflection, lines 86–87. -/
+theorem lorentzReflection_time_ne_zero (n : Fin 3 → ℝ)
+    (hn : lorentzBilinear n n = 1) (p : Hyperboloid) :
+  lorentzReflection n hn p.val 2 ≠ 0 :=
+  lorentzUnit_time_ne_zero _ (lorentzReflection_hyperboloid_square n hn p)
+
+/-- The constructed upper-sheet axis point is fixed by its Lorentz reflection.
+
+Textbook source: reviewed Lorentz reflection proof, S01.reflection, lines 90–91. -/
+theorem lorentzReflection_axisPoint (n : Fin 3 → ℝ)
+    (hn : lorentzBilinear n n = 1) :
+  lorentzReflection n hn (lorentzAxisPoint n hn).val =
+    (lorentzAxisPoint n hn).val :=
+  (lorentzReflection_fixed_iff n hn _).mpr
+    (lorentzAxisPointCoords_spec n hn).2
+
+/-- Lorentz reflection has positive time on the entire upper sheet. Connectedness and
+the fixed positive-time axis point determine the sign of its nonvanishing time coordinate.
+
+Textbook source: reviewed Lorentz reflection proof, S01.reflection, lines 87–92. -/
+theorem lorentzReflection_time_pos (n : Fin 3 → ℝ)
+    (hn : lorentzBilinear n n = 1) (p : Hyperboloid) :
+  0 < lorentzReflection n hn p.val 2 := by
+  let : ConnectedSpace Hyperboloid := connectedSpace_hyperboloidGraph
+  by_contra hpos
+  have hbad : lorentzReflection n hn p.val 2 ≤ 0 := le_of_not_gt hpos
+  have haxis : 0 < lorentzReflection n hn (lorentzAxisPoint n hn).val 2 := by
+    rw [lorentzReflection_axisPoint]
+    exact (lorentzAxisPoint n hn).property.2
+  obtain ⟨q, hq⟩ := intermediate_value_univ p (lorentzAxisPoint n hn)
+    (continuous_lorentzReflection_time n hn) ⟨hbad, haxis.le⟩
+  exact lorentzReflection_time_ne_zero n hn q hq
+
+/-- The ambient reflection satisfies the defining equations of the upper hyperboloid.
+
+Textbook source: reviewed Lorentz reflection proof, S01.reflection, lines 92–93. -/
+theorem lorentzReflection_hyperboloid_mem (n : Fin 3 → ℝ)
+    (hn : lorentzBilinear n n = 1) (p : Hyperboloid) :
+  (lorentzReflection n hn p.val 0)^2 +
+    (lorentzReflection n hn p.val 1)^2 -
+    (lorentzReflection n hn p.val 2)^2 = -1 ∧
+  0 < lorentzReflection n hn p.val 2 := by
+  refine ⟨?_, lorentzReflection_time_pos n hn p⟩
+  simpa only [lorentzBilinear_apply, pow_two] using
+    lorentzReflection_hyperboloid_square n hn p
+
+/-- The restriction of the ambient Lorentz reflection to the upper hyperboloid.
+
+Textbook source: reviewed Lorentz reflection proof, S01.reflection, lines 92–93. -/
+def hyperboloidReflection (n : Fin 3 → ℝ)
+    (hn : lorentzBilinear n n = 1) (p : Hyperboloid) : Hyperboloid :=
+  ⟨lorentzReflection n hn p.val, lorentzReflection_hyperboloid_mem n hn p⟩
+
+/-- The restricted reflection has exactly the original ambient value.
+
+Textbook source: reviewed Lorentz reflection proof, S01.reflection, lines 92–93. -/
+theorem hyperboloidReflection_val (n : Fin 3 → ℝ)
+    (hn : lorentzBilinear n n = 1) (p : Hyperboloid) :
+  (hyperboloidReflection n hn p).val = lorentzReflection n hn p.val := rfl
+
+/-- The upper-sheet reflection is an involution.
+
+Textbook source: reviewed Lorentz reflection proof, S01.reflection, lines 92–93. -/
+theorem hyperboloidReflection_involutive (n : Fin 3 → ℝ)
+    (hn : lorentzBilinear n n = 1) :
+  Function.Involutive (hyperboloidReflection n hn) := fun p =>
+  Subtype.ext (lorentzReflection_involutive n hn p.val)
+
+/-- The upper-sheet reflection as an equivalence, with the same map as inverse.
+
+Textbook source: reviewed Lorentz reflection proof, S01.reflection, lines 93. -/
+def hyperboloidReflectionEquiv (n : Fin 3 → ℝ)
+    (hn : lorentzBilinear n n = 1) : Hyperboloid ≃ Hyperboloid where
+  toFun := hyperboloidReflection n hn
+  invFun := hyperboloidReflection n hn
+  left_inv := hyperboloidReflection_involutive n hn
+  right_inv := hyperboloidReflection_involutive n hn
+
+/-- The restricted Lorentz reflection is smooth in the existing real hyperboloid atlas.
+
+Textbook source: reviewed Lorentz reflection proof, S01.reflection, lines 93–94. -/
+theorem contMDiff_hyperboloidReflection (n : Fin 3 → ℝ)
+    (hn : lorentzBilinear n n = 1) :
+  ContMDiff I I ∞ (hyperboloidReflection n hn) := by
+  apply ContMDiff.of_comp_isOpenEmbedding isOpenEmbedding_hyperboloidCoords
+  have hA : ContMDiff I J ∞
+      (fun p : Hyperboloid => lorentzReflection n hn p.val) :=
+    (lorentzReflection n hn).toContinuousLinearEquiv.contDiff.comp_contMDiff
+      contMDiff_hyperboloid_val
+  exact contDiffOn_hyperboloidToUpperHalfPlaneCoords.contMDiffOn.comp_contMDiff hA
+    (fun p => hyperboloid_denominator_pos (hyperboloidReflection n hn p))
+
+/-- The upper-sheet reflection as a diffeomorphism, with the same smooth inverse.
+
+Textbook source: reviewed Lorentz reflection proof, S01.reflection, lines 94. -/
+def hyperboloidReflectionDiffeomorph (n : Fin 3 → ℝ)
+    (hn : lorentzBilinear n n = 1) : Hyperboloid ≃ₘ⟮I, I⟯ Hyperboloid :=
+  { hyperboloidReflectionEquiv n hn with
+    contMDiff_toFun := contMDiff_hyperboloidReflection n hn
+    contMDiff_invFun := contMDiff_hyperboloidReflection n hn }
 
 end Hyperbolic
