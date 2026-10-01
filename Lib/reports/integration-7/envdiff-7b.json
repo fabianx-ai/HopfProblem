@@ -1,0 +1,206 @@
+{
+ "before": "/home/goblin/.claude/jobs/06995e68/tmp/head3/dump_head.jsonl",
+ "after": "/home/goblin/.claude/jobs/06995e68/tmp/int7b/dump_after.jsonl",
+ "prefix": "",
+ "constants": [
+  39175,
+  39199
+ ],
+ "lost": [],
+ "added": [
+  [
+   "Hyperbolic._aux_<M>___macroRules__private_<M>_0_Hyperbolic_termI_1",
+   407006920,
+   {
+    "Lib.Geometry.Hyperbolic.ConformalCoordinates": 1,
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.planeCoefficientBaseCoords",
+   794510750,
+   {
+    "Lib.Geometry.Hyperbolic.GeodesicEquations": 1
+   }
+  ],
+  [
+   "Hyperbolic.planeCoefficientBaseCoords_mem",
+   1268485002,
+   {
+    "Lib.Geometry.Hyperbolic.GeodesicEquations": 1
+   }
+  ],
+  [
+   "Hyperbolic.planeCoefficientBasePoint",
+   1573283654,
+   {
+    "Lib.Geometry.Hyperbolic.GeodesicEquations": 1
+   }
+  ],
+  [
+   "Hyperbolic.planeCoefficientBasePoint_spec",
+   987136421,
+   {
+    "Lib.Geometry.Hyperbolic.GeodesicEquations": 1
+   }
+  ],
+  [
+   "Hyperbolic.planeCoefficientFrame_basis",
+   206748837,
+   {
+    "Lib.Geometry.Hyperbolic.GeodesicEquations": 1
+   }
+  ],
+  [
+   "Hyperbolic.planeCoefficientFrame_basis._proof_1_1",
+   3478072313,
+   {
+    "Lib.Geometry.Hyperbolic.GeodesicEquations": 1
+   }
+  ],
+  [
+   "Hyperbolic.planeCoefficientFrame_basis._simp_1_2",
+   1010447953,
+   {
+    "Lib.Geometry.Hyperbolic.GeodesicEquations": 1
+   }
+  ],
+  [
+   "Hyperbolic.planeCoefficientFrame_basis._simp_1_3",
+   4173162993,
+   {
+    "Lib.Geometry.Hyperbolic.GeodesicEquations": 1
+   }
+  ],
+  [
+   "Hyperbolic.planeCoefficientFrame_basis._simp_1_4",
+   2525783790,
+   {
+    "Lib.Geometry.Hyperbolic.GeodesicEquations": 1
+   }
+  ],
+  [
+   "Hyperbolic.planeCoefficientFrame_gram",
+   2900412769,
+   {
+    "Lib.Geometry.Hyperbolic.GeodesicEquations": 1
+   }
+  ],
+  [
+   "Hyperbolic.planeCoefficientFrame_spec",
+   4056134127,
+   {
+    "Lib.Geometry.Hyperbolic.GeodesicEquations": 1
+   }
+  ],
+  [
+   "Hyperbolic.planeCoefficientNegativeVector",
+   794510750,
+   {
+    "Lib.Geometry.Hyperbolic.GeodesicEquations": 1
+   }
+  ],
+  [
+   "Hyperbolic.planeCoefficientUnitDirection",
+   953044781,
+   {
+    "Lib.Geometry.Hyperbolic.GeodesicEquations": 1
+   }
+  ],
+  [
+   "Hyperbolic.planeCoefficient_positiveScalars",
+   2450545227,
+   {
+    "Lib.Geometry.Hyperbolic.GeodesicEquations": 1
+   }
+  ],
+  [
+   "Hyperbolic.planeCoefficient_timelike_iff",
+   3880415666,
+   {
+    "Lib.Geometry.Hyperbolic.GeodesicEquations": 1
+   }
+  ],
+  [
+   "Hyperbolic.planeCoefficient_timelike_of_discriminant_pos",
+   1629904795,
+   {
+    "Lib.Geometry.Hyperbolic.GeodesicEquations": 1
+   }
+  ],
+  [
+   "Hyperbolic.planeCoefficient_whole_section",
+   788674982,
+   {
+    "Lib.Geometry.Hyperbolic.GeodesicEquations": 1
+   }
+  ],
+  [
+   "Hyperbolic.termI",
+   1560175301,
+   {
+    "Lib.Geometry.Hyperbolic.ConformalCoordinates": 1,
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.toHyperboloid_angle_coordinates",
+   3674120186,
+   {
+    "Lib.Geometry.Hyperbolic.ConformalCoordinates": 1
+   }
+  ],
+  [
+   "Hyperbolic.upperHalfPlaneMetric_angle_coordinates",
+   1730479258,
+   {
+    "Lib.Geometry.Hyperbolic.ConformalCoordinates": 1
+   }
+  ],
+  [
+   "Hyperbolic.upperHalfPlaneMetric_inner_coordinates",
+   1244750094,
+   {
+    "Lib.Geometry.Hyperbolic.ConformalCoordinates": 1
+   }
+  ],
+  [
+   "Hyperbolic.upperHalfPlaneMetric_norm_coordinates",
+   7815659,
+   {
+    "Lib.Geometry.Hyperbolic.ConformalCoordinates": 1
+   }
+  ],
+  [
+   "Hyperbolic.upperHalfPlaneMetric_normalized_coordinates",
+   646629069,
+   {
+    "Lib.Geometry.Hyperbolic.ConformalCoordinates": 1
+   }
+  ]
+ ],
+ "changed_type_source": [],
+ "changed_type_proof_naming": [],
+ "changed_type_accepted": [],
+ "added_accepted": [],
+ "accept_without_effect": [],
+ "changed_type_all": [],
+ "moves": [
+  [
+   "Lib.Analysis.Complex.RiemannMapping.PrincipalRoot",
+   "Hopf.Proof.Analysis.Complex.RiemannMapping.SectorRoots",
+   1
+  ]
+ ],
+ "ambiguous": [
+  [
+   "Hyperbolic.termI",
+   {},
+   {
+    "Lib.Geometry.Hyperbolic.ConformalCoordinates": 1
+   }
+  ]
+ ],
+ "auxiliary_moved": 1,
+ "verdict": "FAIL"
+}
