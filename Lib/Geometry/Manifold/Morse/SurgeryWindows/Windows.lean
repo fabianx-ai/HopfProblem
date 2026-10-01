@@ -33,7 +33,8 @@ open scoped ContDiff ENNReal
 @[expose] public noncomputable section
 
 attribute [local instance 100] Classical.propDecidable in
-/-- A pair of surgery windows around a critical point, with lower and upper levels. -/
+/-- Surgery windows of `f`: finitely many critical points with distinct values, surgery data at
+  each, and pairwise separated level windows isolating each critical point. -/
 structure ManifoldMorse.SurgeryWindows (E : Type*) [NormedAddCommGroup E] [NormedSpace ℝ E]
     {M : Type*} [TopologicalSpace M] [ChartedSpace E M] (f : M → ℝ) where
   /-- `f` has finitely many critical points. -/
@@ -51,14 +52,14 @@ structure ManifoldMorse.SurgeryWindows (E : Type*) [NormedAddCommGroup E] [Norme
   separated :
     ∀ p q : criticalPoints E f, f p < f q → f p + (data p).radius ^ 2 < f q - (data q).radius ^ 2
 
-/-- The lower level of the surgery windows. -/
+/-- The lower level `f p - ρ ^ 2` of the window at `p`. -/
 def ManifoldMorse.SurgeryWindows.lower {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ}
     (S : ManifoldMorse.SurgeryWindows E f) (p : ManifoldMorse.criticalPoints E f) :
     ℝ :=
   f p - (S.data p).radius ^ 2
 
-/-- The upper level of the surgery windows. -/
+/-- The upper level `f p + ρ ^ 2` of the window at `p`. -/
 def ManifoldMorse.SurgeryWindows.upper {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ}
     (S : ManifoldMorse.SurgeryWindows E f) (p : ManifoldMorse.criticalPoints E f) :
@@ -81,14 +82,15 @@ theorem ManifoldMorse.SurgeryWindows.value_lt_upper {E M : Type*} [NormedAddComm
   dsimp [ManifoldMorse.SurgeryWindows.upper]
   nlinarith [(S.data p).radius_pos]
 
-/-- The upper window lies below the lower bound. -/
+/-- If `f p < f q`, the upper level at `p` lies below the lower level at `q`. -/
 theorem ManifoldMorse.SurgeryWindows.upper_lt_lower {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ}
     (S : ManifoldMorse.SurgeryWindows E f) (p q : ManifoldMorse.criticalPoints E f)
     (hpq : f p < f q) : S.upper p < S.lower q :=
   S.separated p q hpq
 
-/-- The band between the levels is regular. -/
+/-- If no critical value lies strictly between `f p` and `f q`, no critical point has value between
+  the upper level at `p` and the lower level at `q`. -/
 theorem ManifoldMorse.SurgeryWindows.regular_between {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ}
     (S : ManifoldMorse.SurgeryWindows E f) (p q : ManifoldMorse.criticalPoints E f)
@@ -100,7 +102,9 @@ theorem ManifoldMorse.SurgeryWindows.regular_between {E M : Type*} [NormedAddCom
       ⟨(S.value_lt_upper p).trans_le hx.1, hx.2.trans_lt (S.lower_lt_value q)⟩
 
 attribute [local instance 100] Classical.propDecidable in
-/-- A band bridge between the windows exists. -/
+/-- If `f p < f q` with no critical value strictly between, an ambient diffeomorphism maps `{f ≤
+  S.upper p}` onto `{f ≤ S.lower q}` and restricts to a diffeomorphism of the upper level at `p`
+  onto the lower level at `q`. -/
 theorem ManifoldMorse.SurgeryWindows.exists_bandBridge {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ}
     (S : ManifoldMorse.SurgeryWindows E f) [FiniteDimensional ℝ E] [IsManifold 𝓘(ℝ, E) ∞ M]
@@ -119,7 +123,8 @@ theorem ManifoldMorse.SurgeryWindows.exists_bandBridge {E M : Type*} [NormedAddC
     (S.regular_between p q hconsecutive)
 
 attribute [local instance 100] Classical.propDecidable in
-/-- Surgery windows exist around a Morse critical point. -/
+/-- A smooth Morse function with distinct critical values on a compact manifold has surgery
+  windows. -/
 theorem ManifoldMorse.nonempty_surgeryWindows {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ} [FiniteDimensional ℝ E]
     [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)

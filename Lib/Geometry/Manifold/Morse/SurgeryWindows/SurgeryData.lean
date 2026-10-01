@@ -117,7 +117,7 @@ abbrev ManifoldMorse.MorseSurgeryData.UpperLevel {E M : Type*} [NormedAddCommGro
   { x : M // f x = f p + d.radius ^ 2 }
 
 attribute [local instance 100] Classical.propDecidable in
-/-- The attaching map computes the sphere inclusion. -/
+/-- The attaching sphere of the surgery is the chart's attaching core map. -/
 theorem ManifoldMorse.MorseSurgeryData.attaching_eq {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ} {p : M}
     (d : ManifoldMorse.MorseSurgeryData E f p) :
@@ -201,7 +201,8 @@ theorem ManifoldMorse.MorseSurgeryData.belt_derivative_injective {E M : Type*}
   exact d.chart.injective_mfderiv_beltCoreMap n hf d.radius d.radius_pos d.block d.upper_regular v
 
 attribute [local instance 100] Classical.propDecidable in
-/-- Loops in the upper level are nullhomotopic. -/
+/-- If the index is `n + 1` with `0 < n`, `3 + n < dim E`, and every loop in the lower level is
+  nullhomotopic, every loop in the upper level is nullhomotopic. -/
 theorem ManifoldMorse.MorseSurgeryData.upper_circle_nullhomotopies {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ}
     {p : M} (d : ManifoldMorse.MorseSurgeryData E f p) [FiniteDimensional ℝ E]
@@ -217,7 +218,9 @@ theorem ManifoldMorse.MorseSurgeryData.upper_circle_nullhomotopies {E M : Type*}
     d.lower_regular d.surgery d.oldPiece_eq hdim hnull
 
 attribute [local instance 100] Classical.propDecidable in
-/-- Morse surgery data exists below a level. -/
+/-- At a critical point `p` of a smooth Morse function on a compact manifold whose value no other
+  critical point attains, there is surgery data of radius `< ε` whose window contains the value of
+  no other critical point. -/
 theorem ManifoldMorse.exists_morseSurgeryData_lt {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [FiniteDimensional ℝ E]
     [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {f : M → ℝ}
@@ -257,7 +260,8 @@ def SphereCoordinates.standardParametrization (N : Type*) [NormedAddCommGroup N]
   exact SphereCoordinates.ofLinearIsometry b.repr.symm
 
 attribute [local instance 100] Classical.propDecidable in
-/-- The attaching sphere transported by the flow. -/
+/-- The attaching sphere of `d'`, in standard sphere coordinates, pulled back to the upper level of
+  `d` by `e`. -/
 def ManifoldMorse.MorseSurgeryData.transportedAttachingSphere {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ}
     {p q : M} (d : ManifoldMorse.MorseSurgeryData E f p)
@@ -274,7 +278,7 @@ def ManifoldMorse.MorseSurgeryData.transportedAttachingSphere {E M : Type*}
             n).continuous)⟩
 
 attribute [local instance 100] Classical.propDecidable in
-/-- The transported attaching sphere computes the flow. -/
+/-- `e` maps the transported attaching sphere to the attaching sphere of `d'`. -/
 theorem ManifoldMorse.MorseSurgeryData.transportedAttachingSphere_apply {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ}
     {p q : M} (d : ManifoldMorse.MorseSurgeryData E f p)
@@ -331,7 +335,9 @@ theorem ManifoldMorse.MorseSurgeryData.transportedAttachingSphere_smooth {E M : 
         (SphereCoordinates.standardParametrization d'.chart.NegativeCoordinates
             n).contMDiff)
 
-/-- A smooth band bridge of the surgery data exists. -/
+/-- If `f p + ρ ^ 2 ≤ f q - ρ' ^ 2` and no critical point has value in between, an ambient
+  diffeomorphism maps `{f ≤ f p + ρ ^ 2}` onto `{f ≤ f q - ρ' ^ 2}` and restricts to a
+  diffeomorphism of the upper level of `d` onto the lower level of `d'`. -/
 theorem ManifoldMorse.MorseSurgeryData.exists_smoothBandBridge {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ}
     {p q : M} (d : ManifoldMorse.MorseSurgeryData E f p)

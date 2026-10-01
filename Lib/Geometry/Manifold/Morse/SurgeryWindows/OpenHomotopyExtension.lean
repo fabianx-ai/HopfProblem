@@ -24,25 +24,26 @@ open scoped ContDiff ENNReal
 @[expose] public noncomputable section
 
 attribute [local instance 100] Classical.propDecidable in
-/-- A function extended by another on an open set. -/
+/-- The function equal to `g` on the open set `U` and to `f` off `U`. -/
 def OpenHomotopyExtension.extendFunction {X Y : Type*} [TopologicalSpace X]
     (U : TopologicalSpace.Opens X) (f : X → Y) (g : U → Y) : X → Y := fun x =>
   if hx : x ∈ U then g ⟨x, hx⟩ else f x
 
 attribute [local instance 100] Classical.propDecidable in
-/-- The homotopy extension computes inside the open set. -/
+/-- `extendFunction U f g` agrees with `g` on `U`. -/
 theorem OpenHomotopyExtension.extendFunction_of_mem {X Y : Type*} [TopologicalSpace X]
     (U : TopologicalSpace.Opens X) (f : X → Y) (g : U → Y) (x : U) :
     extendFunction U f g x = g x := by simp only [extendFunction, dif_pos x.property]
 
 attribute [local instance 100] Classical.propDecidable in
-/-- The homotopy extension is the original off the open set. -/
+/-- `extendFunction U f g` agrees with `f` off `U`. -/
 theorem OpenHomotopyExtension.extendFunction_of_not_mem {X Y : Type*} [TopologicalSpace X]
     (U : TopologicalSpace.Opens X) (f : X → Y) (g : U → Y) {x : X} (hx : x ∉ U) :
     extendFunction U f g x = f x := by simp only [extendFunction, dif_neg hx]
 
 attribute [local instance 100] Classical.propDecidable in
-/-- The homotopy extension is continuous. -/
+/-- If `f` and `g` are continuous and `g = f` on `U` off a closed set `K ⊆ U`, then `extendFunction
+  U f g` is continuous. -/
 theorem OpenHomotopyExtension.continuous_extendFunction {X Y : Type*} [TopologicalSpace X]
     [TopologicalSpace Y] (U : TopologicalSpace.Opens X) (f : X → Y) (g : U → Y)
     (hf : Continuous f) (hg : Continuous g) {K : Set X} (hK : IsClosed K) (hKU : K ⊆ U)

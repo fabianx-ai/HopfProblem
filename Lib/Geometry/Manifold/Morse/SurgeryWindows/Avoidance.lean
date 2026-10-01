@@ -115,7 +115,8 @@ theorem ChartMapPerturbation.exists_small_avoiding_parameter {E E' G F H H' K X 
   change (β x)⁻¹ • (c (g y) - c (f x)) = a
   rw [← heq, add_sub_cancel_left, smul_smul, inv_mul_cancel₀ hx, one_smul]
 
-/-- A chart patch in which a map can be perturbed to avoid a set on a compact core. -/
+/-- A chart of `N` with a smooth compactly supported cutoff on `X` vanishing on `C`: the data of one
+  local perturbation of maps `X → N` relative to `C`. -/
 structure GeneralPosition.MapAvoidancePatch {E G H K X N : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [NormedAddCommGroup G] [NormedSpace ℝ G] [TopologicalSpace H]
     [TopologicalSpace K] (I : ModelWithCorners ℝ E H) (J : ModelWithCorners ℝ G K)
@@ -132,7 +133,8 @@ structure GeneralPosition.MapAvoidancePatch {E G H K X N : Type*} [NormedAddComm
   /-- The cutoff vanishes on `C`, so the perturbation is relative to `C`. -/
   fixed : ∀ x ∈ C, cutoff x = 0
 
-/-- A patch is compatible with a map when the chart covers the image of the core. -/
+/-- A patch is compatible with `f` when `f` maps the support of the cutoff into the chart's
+  source. -/
 def GeneralPosition.MapAvoidancePatch.Compatible {E G H K X N : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [NormedAddCommGroup G] [NormedSpace ℝ G]
     [TopologicalSpace H] [TopologicalSpace K] {I : ModelWithCorners ℝ E H}
@@ -141,7 +143,9 @@ def GeneralPosition.MapAvoidancePatch.Compatible {E G H K X N : Type*}
     (f : X → N) : Prop :=
   Set.MapsTo f (tsupport p.cutoff) p.chart.source
 
-/-- One avoidance step inside a patch. -/
+/-- One patch step: a smooth `f` compatible with all patches is homotopic rel `C` to a smooth map,
+  still compatible, that misses the range of `g` wherever `f` did or the cutoff of patch `i` is
+  nonzero. -/
 theorem GeneralPosition.exists_patch_step {E G H K X N : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [NormedAddCommGroup G] [NormedSpace ℝ G] [TopologicalSpace H]
     [TopologicalSpace K] {I : ModelWithCorners ℝ E H} {J : ModelWithCorners ℝ G K}
@@ -253,7 +257,8 @@ theorem GeneralPosition.exists_avoidance_of_finite_patches {E E' G H H' K X Y N 
     exact Or.inr ⟨i, Finset.mem_univ i, hi⟩
   · exact Or.inl hx
 
-/-- Every point admits an avoidance patch around it. -/
+/-- Every point outside the closed set `C` has a patch compatible with `f` whose cutoff is nonzero
+  there. -/
 theorem GeneralPosition.exists_avoidance_patch_at {E G H K X N : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [NormedAddCommGroup G]
     [NormedSpace ℝ G] [TopologicalSpace H] [TopologicalSpace K] {I : ModelWithCorners ℝ E H}

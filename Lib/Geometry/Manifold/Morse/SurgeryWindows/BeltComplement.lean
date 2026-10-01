@@ -38,7 +38,8 @@ open scoped ContDiff ENNReal
 
 @[expose] public noncomputable section
 
-/-- Belt-complement loops are nullhomotopic in sphere dimension. -/
+/-- If every loop in the old level `X` is nullhomotopic, the attaching sphere is a smooth `n`-sphere
+  and `2 + n < dim X`, every loop in the new complement is nullhomotopic. -/
 theorem SurgeryBoundaryPair.beltComplement_circle_nullhomotopies_of_sphere_dimension
     {F R X Y G H : Type*} [NormedAddCommGroup F] [NormedSpace ℝ F] [NormedAddCommGroup G]
     [NormedSpace ℝ G] [FiniteDimensional ℝ G] [TopologicalSpace H] {J : ModelWithCorners ℝ G H}
@@ -69,7 +70,8 @@ theorem SurgeryBoundaryPair.beltComplement_circle_nullhomotopies_of_sphere_dimen
     (ContinuousMap.Homotopic.refl forward).comp hc
   exact ⟨e c, heq ▸ hout⟩
 
-/-- Belt-complement loops are nullhomotopic in rank two. -/
+/-- The case `n = 1` (`finrank N = 2`, `3 < dim X`) of
+  `beltComplement_circle_nullhomotopies_of_sphere_dimension`. -/
 theorem SurgeryBoundaryPair.beltComplement_circle_nullhomotopies_of_finrank_two
     {F R X Y G H : Type*} [NormedAddCommGroup F] [NormedSpace ℝ F] [NormedAddCommGroup G]
     [NormedSpace ℝ G] [FiniteDimensional ℝ G] [TopologicalSpace H] {J : ModelWithCorners ℝ G H}
@@ -84,7 +86,8 @@ theorem SurgeryBoundaryPair.beltComplement_circle_nullhomotopies_of_finrank_two
   d.beltComplement_circle_nullhomotopies_of_sphere_dimension 1 hattach hdim hnull
 
 attribute [local instance 100] Classical.propDecidable in
-/-- The attaching sphere is the attaching core map's image. -/
+/-- If the old piece of `d` is the chart's norm handle map, the attaching sphere of `d` is the
+  chart's attaching core map. -/
 theorem ManifoldMorse.SignedMorseChart.attachingSphere_eq_attachingCoreMap {E M R Y : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [TopologicalSpace R] [TopologicalSpace Y] {f : M → ℝ} {p : M}
@@ -135,7 +138,8 @@ theorem ManifoldMorse.SignedMorseChart.contMDiff_surgeryAttachingSphere {E M R Y
   exact c.contMDiff_attachingCoreMap n hf ρ hρ hblock hreg
 
 attribute [local instance 100] Classical.propDecidable in
-/-- Loops in the surgery belt complement are nullhomotopic. -/
+/-- For a surgery of index 2 (`finrank c.NegativeCoordinates = 2`, `4 < dim E`) on a regular level
+  in which every loop is nullhomotopic, every loop in the new complement is nullhomotopic. -/
 theorem ManifoldMorse.SignedMorseChart.surgery_beltComplement_circle_nullhomotopies
     {E M R Y : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] [TopologicalSpace R] [TopologicalSpace Y] {f : M → ℝ} {p : M}
@@ -167,7 +171,7 @@ theorem ManifoldMorse.SignedMorseChart.surgery_beltComplement_circle_nullhomotop
   rw [finrank_euclideanSpace_fin]
   omega
 
-/-- A circle in the new interior can be homotoped off the belt. -/
+/-- If `1 < finrank N`, every loop in `Y` is homotopic to a loop that misses the belt sphere. -/
 theorem SurgeryBoundaryPair.exists_belt_avoiding_circle {N P R X Y : Type*}
     [NormedAddCommGroup N] [NormedSpace ℝ N] [FiniteDimensional ℝ N] [NormedAddCommGroup P]
     [TopologicalSpace R] [TopologicalSpace X] [TopologicalSpace Y]
@@ -253,7 +257,8 @@ theorem SurgeryBoundaryPair.exists_belt_avoiding_circle {N P R X Y : Type*}
     rw [← hv]
     exact d.beltSphere_mem_newInterior v
 
-/-- Loops avoiding the belt are nullhomotopic. -/
+/-- If `1 < finrank N` and every loop in the new complement is nullhomotopic, every loop in `Y` is
+  nullhomotopic. -/
 theorem SurgeryBoundaryPair.circle_nullhomotopies_of_beltComplement {N P R X Y : Type*}
     [NormedAddCommGroup N] [NormedSpace ℝ N] [FiniteDimensional ℝ N] [NormedAddCommGroup P]
     [TopologicalSpace R] [TopologicalSpace X] [TopologicalSpace Y]
@@ -272,7 +277,8 @@ theorem SurgeryBoundaryPair.circle_nullhomotopies_of_beltComplement {N P R X Y :
     (ContinuousMap.Homotopic.refl inc).comp hq
   exact ⟨q, hgg'.trans hh⟩
 
-/-- Loops in the new boundary are nullhomotopic. -/
+/-- If every loop in the old level `X` is nullhomotopic, the attaching sphere is a smooth
+  `n`-sphere, `0 < n` and `2 + n < dim X`, every loop in the new level `Y` is nullhomotopic. -/
 theorem SurgeryBoundaryPair.newBoundary_circle_nullhomotopies {N F R X Y G H : Type*}
     [NormedAddCommGroup N] [InnerProductSpace ℝ N] [FiniteDimensional ℝ N] [NormedAddCommGroup F]
     [NormedSpace ℝ F] [NormedAddCommGroup G] [NormedSpace ℝ G] [FiniteDimensional ℝ G]
@@ -291,7 +297,8 @@ theorem SurgeryBoundaryPair.newBoundary_circle_nullhomotopies {N F R X Y G H : T
       (d.beltComplement_circle_nullhomotopies_of_sphere_dimension n hattach hdim hnull)
 
 attribute [local instance 100] Classical.propDecidable in
-/-- Loops in the surgery new boundary are nullhomotopic. -/
+/-- For a surgery of index `n + 1` with `0 < n` and `3 + n < dim E` on a regular level in which
+  every loop is nullhomotopic, every loop in the new level `Y` is nullhomotopic. -/
 theorem ManifoldMorse.SignedMorseChart.surgery_newBoundary_circle_nullhomotopies
     {E M R Y : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E]
     [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M]

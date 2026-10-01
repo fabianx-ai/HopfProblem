@@ -27,7 +27,8 @@ open scoped ContDiff ENNReal
 
 @[expose] public noncomputable section
 
-/-- A continuous map into a higher-dimensional space has a smooth nonvanishing approximation. -/
+/-- If `dim M < dim F`, every continuous `f : M → F` has a smooth nowhere-vanishing
+  `ε`-approximation. -/
 theorem exists_smooth_nonzero_approx {B H M F : Type*} [NormedAddCommGroup B]
     [NormedSpace ℝ B] [FiniteDimensional ℝ B] [TopologicalSpace H] {I : ModelWithCorners ℝ B H}
     [I.Boundaryless] [TopologicalSpace M] [ChartedSpace H M] [IsManifold I ∞ M]
@@ -59,7 +60,7 @@ theorem exists_smooth_nonzero_approx {B H M F : Type*} [NormedAddCommGroup B]
     have hhx : ‖h x - f x‖ < ε / 2 := by simpa only [dist_eq_norm] using hh x
     linarith
 
-/-- The cutoff progress between levels `l` and `u`. -/
+/-- The ramp `(t - l) / (u - l)` clamped to `[0, 1]`. -/
 noncomputable def RealIntervalProgress.progress (l u t : ℝ) : ℝ :=
   Set.projIcc (0 : ℝ) 1 zero_le_one ((t - l) / (u - l))
 
@@ -121,7 +122,7 @@ noncomputable def ZeroAvoidanceCutoff.blend {X F : Type*} [TopologicalSpace X]
   ⟨fun x ↦ f x + weight f ε x • (g x - f x),
     f.continuous.add ((weight f ε).continuous.smul (g.continuous.sub f.continuous))⟩
 
-/-- Where the original is small the blend is the original. -/
+/-- Where `‖f x‖ ≤ ε` the blend is the perturbation `g`. -/
 theorem ZeroAvoidanceCutoff.blend_small {X F : Type*} [TopologicalSpace X]
     [NormedAddCommGroup F] [NormedSpace ℝ F] (f g : C(X, F)) (ε : ℝ) (hε : 0 < ε) {x : X}
     (hx : ‖f x‖ ≤ ε) : blend f g ε x = g x := by
@@ -129,7 +130,7 @@ theorem ZeroAvoidanceCutoff.blend_small {X F : Type*} [TopologicalSpace X]
   rw [weight_small f ε hε hx, one_smul]
   abel
 
-/-- Where the original is large the blend is the perturbation. -/
+/-- Where `2 * ε ≤ ‖f x‖` the blend is the original `f`. -/
 theorem ZeroAvoidanceCutoff.blend_large {X F : Type*} [TopologicalSpace X]
     [NormedAddCommGroup F] [NormedSpace ℝ F] (f g : C(X, F)) (ε : ℝ) (hε : 0 < ε) {x : X}
     (hx : 2 * ε ≤ ‖f x‖) : blend f g ε x = f x := by
@@ -145,7 +146,7 @@ theorem ZeroAvoidanceCutoff.dist_blend_le {X F : Type*} [TopologicalSpace X]
   rw [add_sub_cancel_left, norm_smul, Real.norm_eq_abs, abs_of_nonneg (weight_bounds f ε x).1]
   exact mul_le_of_le_one_left (norm_nonneg _) (weight_bounds f ε x).2
 
-/-- The blend is nonzero. -/
+/-- If `g` vanishes nowhere and is `ε`-close to `f`, the blend vanishes nowhere. -/
 theorem ZeroAvoidanceCutoff.blend_ne_zero {X F : Type*} [TopologicalSpace X]
     [NormedAddCommGroup F] [NormedSpace ℝ F] (f g : C(X, F)) (ε : ℝ) (hε : 0 < ε)
     (hg : ∀ x, g x ≠ 0) (hclose : ∀ x, Dist.dist (g x) (f x) < ε) (x : X) : blend f g ε x ≠ 0 := by
@@ -157,7 +158,7 @@ theorem ZeroAvoidanceCutoff.blend_ne_zero {X F : Type*} [TopologicalSpace X]
     rw [hz, dist_zero_left] at hh
     exact hx hh.le
 
-/-- The blend as a homotopy between the two maps. -/
+/-- The straight-line homotopy from `f` to the blend, fixed where `2 * ε ≤ ‖f x‖`. -/
 noncomputable def ZeroAvoidanceCutoff.homotopy {X F : Type*} [TopologicalSpace X]
     [NormedAddCommGroup F] [NormedSpace ℝ F] (f g : C(X, F)) (ε : ℝ) (hε : 0 < ε) :
     ContinuousMap.HomotopyRel f (blend f g ε) {x | 2 * ε ≤ ‖f x‖}
@@ -178,7 +179,7 @@ noncomputable def ZeroAvoidanceCutoff.homotopy {X F : Type*} [TopologicalSpace X
     change f x + (t : ℝ) • (blend f g ε x - f x) = f x
     rw [blend_large f g ε hε hx, sub_self, smul_zero, add_zero]
 
-/-- The homotopy stays within the perturbation distance. -/
+/-- If `g` is `ε`-close to `f`, the homotopy stays `ε`-close to `f`. -/
 theorem ZeroAvoidanceCutoff.homotopy_dist_lt {X F : Type*} [TopologicalSpace X]
     [NormedAddCommGroup F] [NormedSpace ℝ F] (f g : C(X, F)) (ε : ℝ) (hε : 0 < ε)
     (hclose : ∀ x, Dist.dist (g x) (f x) < ε) (t : (unitInterval)) (x : X) :
@@ -192,7 +193,8 @@ theorem ZeroAvoidanceCutoff.homotopy_dist_lt {X F : Type*} [TopologicalSpace X]
     _ ≤ Dist.dist (g x) (f x) := by simpa only [dist_eq_norm] using dist_blend_le f g ε x
     _ < ε := hclose x
 
-/-- A map into higher dimensions is homotopic to a nearby nonvanishing map. -/
+/-- If `dim M < dim F`, a continuous `f : M → F` is homotopic, by an `ε`-small homotopy fixed where
+  `2 * ε ≤ ‖f x‖`, to a nowhere-vanishing map. -/
 theorem exists_nonzero_homotopy_small {B H M F : Type*} [NormedAddCommGroup B]
     [NormedSpace ℝ B] [FiniteDimensional ℝ B] [TopologicalSpace H] {I : ModelWithCorners ℝ B H}
     [I.Boundaryless] [TopologicalSpace M] [ChartedSpace H M] [IsManifold I ∞ M]

@@ -152,7 +152,8 @@ theorem ImageComplement.nullhomotopic_of_ambient_nullhomotopic {E E' G H H' K X 
     ⟨f x₀, homotopic_of_ambient_homotopic (I := I) g hg hdim f (ContinuousMap.const X (f x₀)) ?_⟩
   exact hc.trans hconst.symm
 
-/-- Loops in the image complement are nullhomotopic in the target. -/
+/-- If every loop in `N` is nullhomotopic and `2 + dim Y < dim N`, every loop in the complement of
+  the range of `g` is nullhomotopic. -/
 theorem ImageComplement.circle_nullhomotopies {E' G H' K Y N : Type*}
     [NormedAddCommGroup E'] [NormedSpace ℝ E'] [FiniteDimensional ℝ E'] [NormedAddCommGroup G]
     [NormedSpace ℝ G] [FiniteDimensional ℝ G] [TopologicalSpace H'] [TopologicalSpace K]

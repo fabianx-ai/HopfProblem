@@ -31,7 +31,8 @@ open scoped ContDiff ENNReal
 
 @[expose] public noncomputable section
 
-/-- A chart image has Hausdorff dimension at most the domain's. -/
+/-- The image under `f`, smooth on the open set `s`, of `s` within the source of the extended chart
+  at `x` has Hausdorff dimension at most `dim E`. -/
 theorem GeneralPosition.dimH_image_chart_le {E F H X : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [NormedAddCommGroup F] [NormedSpace ℝ F]
     [TopologicalSpace H] {I : ModelWithCorners ℝ E H} [TopologicalSpace X] [ChartedSpace H X]
@@ -110,7 +111,8 @@ theorem dimH_image_le_of_contDiffOn_isOpen {E F : Type*} [NormedAddCommGroup E]
   obtain ⟨C, U, hU, hL⟩ := (hf.contDiffAt (hs.mem_nhds hx)).exists_lipschitzOnWith
   exact ⟨C, U, mem_nhdsWithin_of_mem_nhds hU, hL⟩
 
-/-- A chart image has Hausdorff dimension at most the domain's. -/
+/-- The image under `f`, smooth on the open set `s`, of `s` within the source of the model chart at
+  `x` has Hausdorff dimension at most `dim E`. -/
 theorem dimH_image_chart_le {E F : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [FiniteDimensional ℝ E] [NormedAddCommGroup F] [NormedSpace ℝ F] {H M : Type*}
     [TopologicalSpace H] {I : ModelWithCorners ℝ E H} [I.Boundaryless] [TopologicalSpace M]

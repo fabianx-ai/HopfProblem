@@ -30,7 +30,7 @@ open scoped ContDiff ENNReal
 abbrev PuncturedHandle.OpenUnitBall (N : Type*) [NormedAddCommGroup N] :=
   { x : N // ‖x‖ < 1 }
 
-/-- The new level's interior: the complement plus the open new piece. -/
+/-- The new interior: the complement of the range of the new exterior. -/
 abbrev SurgeryBoundaryPair.NewInterior {N P R X Y : Type*} [NormedAddCommGroup N]
     [NormedAddCommGroup P] [TopologicalSpace R] [TopologicalSpace X] [TopologicalSpace Y]
     (d : SurgeryBoundaryPair N P R X Y) : Set Y :=
@@ -42,7 +42,8 @@ theorem SurgeryBoundaryPair.isOpen_newInterior {N P R X Y : Type*} [NormedAddCom
     (d : SurgeryBoundaryPair N P R X Y) : IsOpen d.NewInterior :=
   d.newExterior_closed.isClosed_range.isOpen_compl
 
-/-- A new piece lies in the exterior exactly off the belt. -/
+/-- A point of the new piece lies in the range of the new exterior iff its disk coordinate has norm
+  `1`. -/
 theorem SurgeryBoundaryPair.newPiece_mem_exterior_iff {N P R X Y : Type*}
     [NormedAddCommGroup N] [NormedAddCommGroup P] [TopologicalSpace R] [TopologicalSpace X]
     [TopologicalSpace Y] (d : SurgeryBoundaryPair N P R X Y)
@@ -57,7 +58,7 @@ theorem SurgeryBoundaryPair.newPiece_mem_exterior_iff {N P R X Y : Type*}
       (⟨p.1, mem_sphere_zero_iff_norm.mpr hp⟩, p.2)
     exact ⟨d.boundary q, (d.new_overlap _ _).mpr ⟨q, rfl, rfl⟩⟩
 
-/-- Every new piece lies in the new interior. -/
+/-- A point of the new piece lies in the new interior iff its disk coordinate has norm `< 1`. -/
 theorem SurgeryBoundaryPair.newPiece_mem_newInterior_iff {N P R X Y : Type*}
     [NormedAddCommGroup N] [NormedAddCommGroup P] [TopologicalSpace R] [TopologicalSpace X]
     [TopologicalSpace Y] (d : SurgeryBoundaryPair N P R X Y)
@@ -72,7 +73,7 @@ theorem SurgeryBoundaryPair.newPiece_mem_newInterior_iff {N P R X Y : Type*}
     · exact (hp h).elim
   · exact fun h => h.ne
 
-/-- The new interior lies in the union of the exterior and new piece. -/
+/-- The new interior lies in the range of the new piece. -/
 theorem SurgeryBoundaryPair.newInterior_subset_range {N P R X Y : Type*}
     [NormedAddCommGroup N] [NormedAddCommGroup P] [TopologicalSpace R] [TopologicalSpace X]
     [TopologicalSpace Y] (d : SurgeryBoundaryPair N P R X Y) :
