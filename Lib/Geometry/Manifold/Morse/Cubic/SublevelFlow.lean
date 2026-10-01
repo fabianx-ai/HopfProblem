@@ -31,7 +31,9 @@ open scoped ContDiff
 
 @[expose] public noncomputable section
 
-/-- A locally strict descent flow exists. -/
+/-- Let `f`, `D : X → ℝ` be continuous such that `s ↦ f (F s x)` has derivative `D (F t x)` at `t`,
+for all `x` and `t`. If `D x < 0`, then `t ↦ f (F t x)` is strictly decreasing on `[-ε, ε]` for some
+`ε > 0`. -/
 theorem FlowCancellation.exists_local_strict_flow_descent {X : Type*} [TopologicalSpace X]
     (F : Flow ℝ X) {f D : X → ℝ} (hf : Continuous f) (hD : Continuous D)
     (hder : ∀ x t, HasDerivAt (fun s : ℝ => f (F s x)) (D (F t x)) t) {x : X} (hx : D x < 0) :
@@ -53,7 +55,9 @@ theorem FlowCancellation.exists_local_strict_flow_descent {X : Type*} [Topologic
   have ht' := interior_subset ht
   constructor <;> linarith [ht'.1, ht'.2]
 
-/-- The flow strictly enters a sublevel locally. -/
+/-- Let `f`, `D : X → ℝ` be continuous such that `s ↦ f (F s x)` has derivative `D (F t x)` at `t`,
+for all `x` and `t`. If `D < 0` on the level `f = c` and `f x ≤ c`, then there is `ε > 0` with `f (F
+t x) < c` for all `t ∈ (0, ε]`. -/
 theorem FlowCancellation.exists_local_strict_sublevel_entry {X : Type*}
     [TopologicalSpace X] (F : Flow ℝ X) {f D : X → ℝ} (hf : Continuous f) (hD : Continuous D)
     (hder : ∀ x t, HasDerivAt (fun s : ℝ => f (F s x)) (D (F t x)) t) {c : ℝ}
@@ -79,7 +83,9 @@ theorem FlowCancellation.exists_local_strict_sublevel_entry {X : Type*}
         (show t ∈ Set.Icc (-ε) ε from ⟨by linarith [ht.1], ht.2⟩) ht.1
     simpa only [F.map_zero_apply, hx] using hh
 
-/-- A sublevel with forward-invariant boundary is forward invariant. -/
+/-- Let `f`, `D : X → ℝ` be continuous such that `s ↦ f (F s x)` has derivative `D (F t x)` at `t`,
+for all `x` and `t`. If `D < 0` on the level `f = c`, then the sublevel set `{f ≤ c}` is forward
+invariant: `f x ≤ c` and `0 ≤ t` imply `f (F t x) ≤ c`. -/
 theorem FlowCancellation.forwardInvariant_sublevel_of_boundary {X : Type*}
     [TopologicalSpace X] (F : Flow ℝ X) {f D : X → ℝ} (hf : Continuous f) (hD : Continuous D)
     (hder : ∀ x t, HasDerivAt (fun s : ℝ => f (F s x)) (D (F t x)) t) {c : ℝ}
@@ -93,7 +99,8 @@ theorem FlowCancellation.forwardInvariant_sublevel_of_boundary {X : Type*}
   · simpa only [← ht0, F.map_zero_apply] using hx
   · exact (hentry t ⟨htpos, ht.2⟩).le
 
-/-- The sublevel interior is determined by the boundary. -/
+/-- Let `f : X → ℝ` be continuous such that `s ↦ f (F s x)` has derivative `D (F t x)` at `t`, for
+all `x` and `t`. If `D < 0` on the level `f = c`, then the interior of `{f ≤ c}` is `{f < c}`. -/
 theorem FlowCancellation.interior_sublevel_eq_of_boundary {X : Type*} [TopologicalSpace X]
     (F : Flow ℝ X) {f D : X → ℝ} (hf : Continuous f)
     (hder : ∀ x t, HasDerivAt (fun s : ℝ => f (F s x)) (D (F t x)) t) {c : ℝ}
@@ -117,7 +124,9 @@ theorem FlowCancellation.interior_sublevel_eq_of_boundary {X : Type*} [Topologic
     exact (hboundary x heq).ne hz
   · exact interior_maximal (fun _ (hx : f _ < c) => hx.le) (isOpen_lt hf continuous_const)
 
-/-- The flow strictly enters the sublevel across the boundary. -/
+/-- Let `f`, `D : X → ℝ` be continuous such that `s ↦ f (F s x)` has derivative `D (F t x)` at `t`,
+for all `x` and `t`. If `D < 0` on the level `f = c`, then every positive time maps `{f ≤ c}` into
+`{f < c}`: `f x ≤ c` and `0 < t` imply `f (F t x) < c`. -/
 theorem FlowCancellation.strict_sublevel_entry_of_boundary {X : Type*} [TopologicalSpace X]
     (F : Flow ℝ X) {f D : X → ℝ} (hf : Continuous f) (hD : Continuous D)
     (hder : ∀ x t, HasDerivAt (fun s : ℝ => f (F s x)) (D (F t x)) t) {c : ℝ}
@@ -140,7 +149,9 @@ theorem FlowCancellation.strict_sublevel_entry_of_boundary {X : Type*} [Topologi
         (interior_sublevel_eq_of_boundary F hf hder hboundary))
       hi'
 
-/-- The level hitting time is unique. -/
+/-- Let `f`, `D : X → ℝ` be continuous such that `s ↦ f (F s x)` has derivative `D (F t x)` at `t`,
+for all `x` and `t`. If `D < 0` on the level `f = c`, then an orbit meets that level at most once:
+`f (F s x) = c` and `f (F t x) = c` imply `s = t`. -/
 theorem FlowCancellation.flow_level_time_unique {X : Type*} [TopologicalSpace X]
     (F : Flow ℝ X) {f D : X → ℝ} (hf : Continuous f) (hD : Continuous D)
     (hder : ∀ x t, HasDerivAt (fun s : ℝ => f (F s x)) (D (F t x)) t) {c : ℝ}

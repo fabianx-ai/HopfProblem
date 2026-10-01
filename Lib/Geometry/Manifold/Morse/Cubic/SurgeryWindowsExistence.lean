@@ -31,7 +31,9 @@ open scoped ContDiff
 @[expose] public noncomputable section
 
 attribute [local instance 100] Classical.propDecidable in
-/-- Adapted surgery windows exist around a critical point. -/
+/-- A smooth Morse function `f` on a compact Hausdorff manifold modelled on a finite-dimensional
+space which is injective on its critical points admits adapted surgery windows: `Nonempty
+(AdaptedWindows E f)`. -/
 theorem MorseCancellation.nonempty_adaptedSurgeryWindows {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {f : M → ℝ}

@@ -31,11 +31,13 @@ open scoped ContDiff
 
 @[expose] public noncomputable section
 
-/-- The time parameter along the cubic axis. -/
+/-- `cubicAxisParameter a t = a * tanh (a * t)`: the solution of `s' = a ^ 2 - s ^ 2` with `s 0 = 0`
+(see `hasDerivAt_cubicAxisParameter`), i.e. the axis coordinate of the orbit of the cubic descent
+field through the origin. -/
 def MorseCancellation.cubicAxisParameter (a t : ℝ) : ℝ :=
   a * Real.tanh (a * t)
 
-/-- The cubic axis parameter is differentiable. -/
+/-- `cubicAxisParameter a` has derivative `a ^ 2 - cubicAxisParameter a t ^ 2` at `t`. -/
 theorem MorseCancellation.hasDerivAt_cubicAxisParameter (a t : ℝ) :
     HasDerivAt (cubicAxisParameter a) (a ^ 2 - cubicAxisParameter a t ^ 2) t := by
   have h := ((Real.hasDerivAt_tanh (a * t)).comp t ((hasDerivAt_id t).const_mul a)).const_mul a
@@ -44,7 +46,7 @@ theorem MorseCancellation.hasDerivAt_cubicAxisParameter (a t : ℝ) :
   dsimp [cubicAxisParameter]
   ring
 
-/-- The cubic axis parameter lies in the axis. -/
+/-- For `0 < a`, `cubicAxisParameter a t ∈ (-a, a)`. -/
 theorem MorseCancellation.cubicAxisParameter_mem {a : ℝ} (ha : 0 < a) (t : ℝ) :
     cubicAxisParameter a t ∈ Set.Ioo (-a) a := by
   have hlo := mul_lt_mul_of_pos_left (Real.neg_one_lt_tanh (a * t)) ha
@@ -53,7 +55,7 @@ theorem MorseCancellation.cubicAxisParameter_mem {a : ℝ} (ha : 0 < a) (t : ℝ
   · simpa only [cubicAxisParameter, mul_neg, mul_one] using hlo
   · simpa only [cubicAxisParameter, mul_one] using hhi
 
-/-- The cubic axis parameter's range. -/
+/-- For `0 < a` the range of `cubicAxisParameter a` is `(-a, a)`. -/
 theorem MorseCancellation.range_cubicAxisParameter {a : ℝ} (ha : 0 < a) :
     Set.range (cubicAxisParameter a) = Set.Ioo (-a) a := by
   ext s
@@ -70,29 +72,30 @@ theorem MorseCancellation.range_cubicAxisParameter {a : ℝ} (ha : 0 < a) :
     refine ⟨Real.artanh (s / a) / a, ?_⟩
     simp only [cubicAxisParameter, mul_div_cancel₀ _ ha.ne', Real.tanh_artanh hs']
 
-/-- The axis parameter tends to the positive endpoint. -/
+/-- For `0 < a`, `cubicAxisParameter a t → a` as `t → +∞`. -/
 theorem MorseCancellation.tendsto_cubicAxisParameter_atTop {a : ℝ} (ha : 0 < a) :
     Filter.Tendsto (cubicAxisParameter a) Filter.atTop (𝓝 a) := by
   have h := (Real.tendsto_tanh_atTop.comp (Filter.tendsto_id.const_mul_atTop ha)).const_mul a
   change Filter.Tendsto (cubicAxisParameter a) Filter.atTop (𝓝 (a * 1)) at h
   simpa only [mul_one] using h
 
-/-- The axis parameter tends to the negative endpoint. -/
+/-- For `0 < a`, `cubicAxisParameter a t → -a` as `t → -∞`. -/
 theorem MorseCancellation.tendsto_cubicAxisParameter_atBot {a : ℝ} (ha : 0 < a) :
     Filter.Tendsto (cubicAxisParameter a) Filter.atBot (𝓝 (-a)) := by
   have h := (Real.tendsto_tanh_atBot.comp (Filter.tendsto_id.const_mul_atBot ha)).const_mul a
   change Filter.Tendsto (cubicAxisParameter a) Filter.atBot (𝓝 (a * -1)) at h
   simpa only [mul_neg, mul_one] using h
 
-/-- The orbit of the cubic model. -/
+/-- The curve `t ↦ (cubicAxisParameter a t, 0)` in `Model m`. -/
 def MorseCancellation.cubicModelOrbit {m : ℕ} (a t : ℝ) : Model m :=
   (cubicAxisParameter a t, 0)
 
-/-- The cubic model orbit at time zero. -/
+/-- `cubicModelOrbit a 0 = 0`. -/
 theorem MorseCancellation.cubicModelOrbit_zero {m : ℕ} (a : ℝ) : cubicModelOrbit (m := m) a 0 = 0 := by
   simp [cubicModelOrbit, cubicAxisParameter, Real.tanh_zero]
 
-/-- The cubic model orbit solves the field. -/
+/-- `cubicModelOrbit a` is an integral curve of `cubicDescent σ (-a ^ 2)`: its derivative at `t` is
+the value of the field at `cubicModelOrbit a t`. -/
 theorem MorseCancellation.hasDerivAt_cubicModelOrbit {m : ℕ} (σ : Fin m → ℝ) (a t : ℝ) :
     HasDerivAt (cubicModelOrbit a) (cubicDescent σ (-(a ^ 2)) (cubicModelOrbit a t)) t := by
   have h := (hasDerivAt_cubicAxisParameter a t).prodMk (hasDerivAt_const t (0 : Fin m → ℝ))
@@ -104,7 +107,7 @@ theorem MorseCancellation.hasDerivAt_cubicModelOrbit {m : ℕ} (σ : Fin m → �
   · funext i
     simp only [cubicDescent, cubicModelOrbit, Pi.zero_apply, MulZeroClass.mul_zero]
 
-/-- The cubic model orbit's range. -/
+/-- For `0 < a` the range of `cubicModelOrbit a` is the open axis segment `(-a, a) ×ˢ {0}`. -/
 theorem MorseCancellation.range_cubicModelOrbit {m : ℕ} {a : ℝ} (ha : 0 < a) :
     Set.range (cubicModelOrbit (m := m) a) = Set.Ioo (-a) a ×ˢ {(0 : Fin m → ℝ)} := by
   ext p
@@ -116,17 +119,17 @@ theorem MorseCancellation.range_cubicModelOrbit {m : ℕ} {a : ℝ} (ha : 0 < a)
     refine ⟨t, ?_⟩
     exact Prod.ext ht (show (0 : Fin m → ℝ) = p.2 from hz.symm)
 
-/-- The model orbit tends to the positive end. -/
+/-- For `0 < a`, `cubicModelOrbit a t → (a, 0)` as `t → +∞`. -/
 theorem MorseCancellation.tendsto_cubicModelOrbit_atTop {m : ℕ} {a : ℝ} (ha : 0 < a) :
     Filter.Tendsto (cubicModelOrbit (m := m) a) Filter.atTop (𝓝 (a, 0)) :=
   (tendsto_cubicAxisParameter_atTop ha).prodMk_nhds tendsto_const_nhds
 
-/-- The model orbit tends to the negative end. -/
+/-- For `0 < a`, `cubicModelOrbit a t → (-a, 0)` as `t → -∞`. -/
 theorem MorseCancellation.tendsto_cubicModelOrbit_atBot {m : ℕ} {a : ℝ} (ha : 0 < a) :
     Filter.Tendsto (cubicModelOrbit (m := m) a) Filter.atBot (𝓝 (-a, 0)) :=
   (tendsto_cubicAxisParameter_atBot ha).prodMk_nhds tendsto_const_nhds
 
-/-- The cubic axis parameter is smooth. -/
+/-- `cubicAxisParameter a` is `C^∞`. -/
 theorem MorseCancellation.contDiff_cubicAxisParameter (a : ℝ) : ContDiff ℝ ∞ (cubicAxisParameter a) := by
   have ht : ContDiff ℝ ∞ Real.tanh := by
     have hh : ContDiff ℝ ∞ (fun t => Real.sinh t / Real.cosh t) :=
@@ -138,16 +141,17 @@ theorem MorseCancellation.contDiff_cubicAxisParameter (a : ℝ) : ContDiff ℝ �
   change ContDiff ℝ ∞ (fun t => a * Real.tanh (a * t))
   exact contDiff_const.mul (ht.comp (contDiff_const.mul contDiff_id))
 
-/-- The clock function inverse to the axis parameter. -/
+/-- `cubicAxisClock a s = artanh (s / a) / a`: the time at which `cubicAxisParameter a` takes the
+value `s`. -/
 def MorseCancellation.cubicAxisClock (a s : ℝ) : ℝ :=
   Real.artanh (s / a) / a
 
-/-- The clock inverts the axis parameter. -/
+/-- For `0 < a`, `cubicAxisClock a (cubicAxisParameter a t) = t`. -/
 theorem MorseCancellation.cubicAxisClock_parameter {a : ℝ} (ha : 0 < a) (t : ℝ) :
     cubicAxisClock a (cubicAxisParameter a t) = t := by
   simp only [cubicAxisClock, cubicAxisParameter, mul_div_cancel_left₀ _ ha.ne', Real.artanh_tanh]
 
-/-- The axis parameter inverts the clock. -/
+/-- For `0 < a` and `s ∈ (-a, a)`, `cubicAxisParameter a (cubicAxisClock a s) = s`. -/
 theorem MorseCancellation.cubicAxisParameter_clock {a s : ℝ} (ha : 0 < a) (hs : s ∈ Set.Ioo (-a) a) :
     cubicAxisParameter a (cubicAxisClock a s) = s := by
   have hs' : s / a ∈ Set.Ioo (-1 : ℝ) 1 := by
@@ -156,7 +160,7 @@ theorem MorseCancellation.cubicAxisParameter_clock {a s : ℝ} (ha : 0 < a) (hs 
     · exact (div_lt_iff₀ ha).mpr (by simpa only [one_mul] using hs.2)
   simp only [cubicAxisClock, cubicAxisParameter, mul_div_cancel₀ _ ha.ne', Real.tanh_artanh hs']
 
-/-- The cubic axis clock is smooth. -/
+/-- For `0 < a`, `cubicAxisClock a` is `C^∞` on `(-a, a)`. -/
 theorem MorseCancellation.contDiffOn_cubicAxisClock {a : ℝ} (ha : 0 < a) :
     ContDiffOn ℝ ∞ (cubicAxisClock a) (Set.Ioo (-a) a) := by
   intro s hs

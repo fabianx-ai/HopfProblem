@@ -29,7 +29,8 @@ open scoped ContDiff
 
 @[expose] public noncomputable section
 
-/-- The directional derivative of a smooth function is smooth. -/
+/-- For a smooth function `f` and a smooth vector field `V` on a manifold `M`, the directional
+derivative `x ↦ mvfderiv 𝓘(ℝ, E) f x (V x)` is smooth. -/
 theorem MorseCancellation.contMDiff_directionalDerivative {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] {f : M → ℝ}
     {V : (x : M) → TangentSpace 𝓘(ℝ, E) x} (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)
@@ -38,7 +39,9 @@ theorem MorseCancellation.contMDiff_directionalDerivative {E M : Type*} [NormedA
   have ht := (hf.contMDiff_tangentMap (m := ∞) (by simp)).comp hV
   exact (contMDiff_snd_tangentBundle_modelSpace ℝ 𝓘(ℝ, ℝ)).comp ht
 
-/-- Two points on the same orbit at the same level are equal. -/
+/-- Let `f` and the vector field `V` be smooth, `F` a flow whose orbits are integral curves of `V`,
+and suppose the derivative of `f` along `V` is negative on the level `f = c`. Then two points `x`,
+`y` of that level on a common orbit (`F s x = F t y`) are equal. -/
 theorem MorseCancellation.native_same_level_orbit_points {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] {f : M → ℝ}
     {V : (x : M) → TangentSpace 𝓘(ℝ, E) x} (hf : ContMDiff 𝓘(ℝ, E) 𝓘(ℝ, ℝ) ∞ f)

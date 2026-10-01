@@ -22,7 +22,7 @@ open scoped ContDiff
 
 @[expose] public noncomputable section
 
-/-- `tanh` differentiates to `sech²`. -/
+/-- `Real.tanh` has derivative `1 - tanh t ^ 2` at `t`. -/
 theorem Real.hasDerivAt_tanh (t : ℝ) : HasDerivAt Real.tanh (1 - Real.tanh t ^ 2) t := by
   have h := (Real.hasDerivAt_sinh t).div (Real.hasDerivAt_cosh t) (Real.cosh_pos t).ne'
   have hf : (fun x => Real.sinh x / Real.cosh x) = Real.tanh :=
@@ -33,23 +33,23 @@ theorem Real.hasDerivAt_tanh (t : ℝ) : HasDerivAt Real.tanh (1 - Real.tanh t ^
   rw [Real.tanh_eq_sinh_div_cosh]
   field_simp
 
-/-- `tanh` is strictly monotone. -/
+/-- `Real.tanh` is strictly monotone. -/
 theorem Real.strictMono_tanh : StrictMono Real.tanh :=
   strictMono_of_hasDerivAt_pos hasDerivAt_tanh (fun t => sub_pos.mpr (Real.tanh_sq_lt_one t))
 
-/-- `tanh` tends to `1` at infinity. -/
+/-- `Real.tanh` tends to `1` at `+∞`. -/
 theorem Real.tendsto_tanh_atTop : Filter.Tendsto Real.tanh Filter.atTop (𝓝 (1 : ℝ)) := by
   apply tendsto_atTop_isLUB strictMono_tanh.monotone
   rw [← Set.image_univ, Real.tanh_bijOn.image_eq]
   exact isLUB_Ioo (by norm_num)
 
-/-- `tanh` tends to `−1` at negative infinity. -/
+/-- `Real.tanh` tends to `-1` at `-∞`. -/
 theorem Real.tendsto_tanh_atBot : Filter.Tendsto Real.tanh Filter.atBot (𝓝 (-1 : ℝ)) := by
   apply tendsto_atBot_isGLB strictMono_tanh.monotone
   rw [← Set.image_univ, Real.tanh_bijOn.image_eq]
   exact isGLB_Ioo (by norm_num)
 
-/-- `artanh` is smooth on `(−1,1)`. -/
+/-- `Real.artanh` is `C^∞` at every point of `(-1, 1)`. -/
 theorem Real.contDiffAt_artanh {x : ℝ} (hx : x ∈ Set.Ioo (-1 : ℝ) 1) :
     ContDiffAt ℝ ∞ Real.artanh x := by
   have hp : 0 < (1 + x) / (1 - x) := div_pos (by linarith [hx.1]) (by linarith [hx.2])

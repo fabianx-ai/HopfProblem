@@ -29,28 +29,29 @@ open scoped ContDiff
 
 @[expose] public noncomputable section
 
-/-- The endpoint coordinate of a cubic chart. -/
+/-- The Morse coordinate `u = (s - e * a) * √(a + e * (s - e * a) / 3)` of the cubic `s ^ 3 / 3 - a
+^ 2 * s` at its critical point `e * a`, `e = ±1` (see `cubic_endpoint_square`). -/
 def MorseCancellation.endpointCoordinate (a e s : ℝ) : ℝ :=
   (s - e * a) * Real.sqrt (a + e * (s - e * a) / 3)
 
-/-- The domain of the endpoint coordinate. -/
+/-- The set `{s | 0 < a + e * (s - e * a) / 3}`, on which `endpointCoordinate a e` is smooth. -/
 def MorseCancellation.endpointDomain (a e : ℝ) : Set ℝ :=
   {s | 0 < a + e * (s - e * a) / 3}
 
-/-- The endpoint domain is open. -/
+/-- `endpointDomain a e` is open. -/
 theorem MorseCancellation.endpointDomain_open (a e : ℝ) : IsOpen (endpointDomain a e) := by
   apply isOpen_lt continuous_const
   fun_prop
 
-/-- The endpoint lies in the domain. -/
+/-- For `0 < a` the point `e * a` lies in `endpointDomain a e`. -/
 theorem MorseCancellation.endpoint_mem_domain {a : ℝ} (ha : 0 < a) (e : ℝ) :
     e * a ∈ endpointDomain a e := by simpa [endpointDomain] using ha
 
-/-- The endpoint coordinate at the center. -/
+/-- `endpointCoordinate a e (e * a) = 0`. -/
 theorem MorseCancellation.endpointCoordinate_center (a e : ℝ) : endpointCoordinate a e (e * a) = 0 := by
   simp [endpointCoordinate]
 
-/-- The endpoint coordinate is smooth. -/
+/-- `endpointCoordinate a e` is `C^∞` on `endpointDomain a e`. -/
 theorem MorseCancellation.contDiffOn_endpointCoordinate (a e : ℝ) :
     ContDiffOn ℝ ∞ (endpointCoordinate a e) (endpointDomain a e) := by
   intro s hs
@@ -60,7 +61,7 @@ theorem MorseCancellation.contDiffOn_endpointCoordinate (a e : ℝ) :
         ((contDiffAt_const.add ((contDiffAt_const.mul hlin).div_const 3)).sqrt
           (ne_of_gt hs))).contDiffWithinAt
 
-/-- The endpoint coordinate is differentiable. -/
+/-- For `0 < a`, `endpointCoordinate a e` has derivative `√a` at `e * a`. -/
 theorem MorseCancellation.hasDerivAt_endpointCoordinate {a : ℝ} (ha : 0 < a) (e : ℝ) :
     HasDerivAt (endpointCoordinate a e) (Real.sqrt a) (e * a) := by
   have hd :=
@@ -70,7 +71,9 @@ theorem MorseCancellation.hasDerivAt_endpointCoordinate {a : ℝ} (ha : 0 < a) (
         (by simpa using ha.ne'))
   convert! hd using 1; simp []
 
-/-- The cubic on the endpoint square. -/
+/-- Morse normal form of the cubic model: if `e ^ 2 = 1` and `p.1 ∈ endpointDomain a e`, then `cubic
+σ (-a ^ 2) p = cubic σ (-a ^ 2) (e * a, 0) + e * u ^ 2 + ∑ i, σ i * p.2 i ^ 2` with `u =
+endpointCoordinate a e p.1`. -/
 theorem MorseCancellation.cubic_endpoint_square {m : ℕ} (σ : Fin m → ℝ) (a e : ℝ) (he : e ^ 2 = 1)
     {p : Model m} (hp : p.1 ∈ endpointDomain a e) :
     cubic σ (-(a ^ 2)) p =
@@ -80,7 +83,9 @@ theorem MorseCancellation.cubic_endpoint_square {m : ℕ} (σ : Fin m → ℝ) (
     MulZeroClass.mul_zero, Finset.sum_const_zero, add_zero, mul_pow, Real.sq_sqrt (le_of_lt hp)]
   rcases sq_eq_one_iff.mp he with h | h <;> rw [h] <;> ring
 
-/-- An endpoint scalar chart exists. -/
+/-- For `0 < a` there is a smooth partial diffeomorphism `Φ` of `ℝ` whose source contains `e * a`
+and is contained in `endpointDomain a e`, whose underlying function is `endpointCoordinate a e`, and
+with `Φ (e * a) = 0`. -/
 theorem MorseCancellation.exists_endpoint_scalar_chart {a : ℝ} (ha : 0 < a) (e : ℝ) :
     ∃ Φ : PartialDiffeomorph 𝓘(ℝ, ℝ) 𝓘(ℝ, ℝ) ℝ ℝ ∞,
       e * a ∈ Φ.source ∧
@@ -99,7 +104,8 @@ theorem MorseCancellation.exists_endpoint_scalar_chart {a : ℝ} (ha : 0 < a) (e
       (endpoint_mem_domain ha e) (contDiffOn_endpointCoordinate a e) ⟨A, rfl⟩
   exact ⟨Φ, hp, hsub, hΦ, by rw [hΦ, endpointCoordinate_center]⟩
 
-/-- The scalar product chart at an endpoint. -/
+/-- The product of a smooth partial diffeomorphism `Φ` of `ℝ` with the identity of `V`: the partial
+diffeomorphism `(s, y) ↦ (Φ s, y)` of `ℝ × V` with source `Φ.source ×ˢ univ`. -/
 def MorseCancellation.scalarProductChart {V : Type*} [NormedAddCommGroup V] [NormedSpace ℝ V]
     (Φ : PartialDiffeomorph 𝓘(ℝ, ℝ) 𝓘(ℝ, ℝ) ℝ ℝ ∞) :
     PartialDiffeomorph 𝓘(ℝ, ℝ × V) 𝓘(ℝ, ℝ × V) (ℝ × V) (ℝ × V) ∞
@@ -118,7 +124,10 @@ def MorseCancellation.scalarProductChart {V : Type*} [NormedAddCommGroup V] [Nor
         contDiff_snd.contDiffOn
     exact h.contMDiffOn
 
-/-- An endpoint product chart exists. -/
+/-- For `0 < a` and `e ^ 2 = 1` there is a smooth partial diffeomorphism `P` of `Model m` with `(e *
+a, 0) ∈ P.source`, `P (e * a, 0) = 0`, preserving the transverse coordinates, such that for `p ∈
+P.source`: `cubic σ (-a ^ 2) p = cubic σ (-a ^ 2) (e * a, 0) + e * (P p).1 ^ 2 + ∑ i, σ i * (P p).2
+i ^ 2`. -/
 theorem MorseCancellation.exists_endpoint_product_chart {m : ℕ} (σ : Fin m → ℝ) {a : ℝ} (ha : 0 < a)
     (e : ℝ) (he : e ^ 2 = 1) :
     ∃ P : PartialDiffeomorph 𝓘(ℝ, Model m) 𝓘(ℝ, Model m) (Model m) (Model m) ∞,

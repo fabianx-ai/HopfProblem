@@ -41,11 +41,12 @@ open scoped ContDiff
 
 @[expose] public noncomputable section
 
-/-- The cubic descent field. -/
+/-- The descent field of the cubic model: `cubicDescent σ t (x, y) = (-(x ^ 2 + t), fun i => -σ i *
+y i)`. -/
 def MorseCancellation.cubicDescent {m : ℕ} (σ : Fin m → ℝ) (t : ℝ) (p : Model m) : Model m :=
   (-(p.1 ^ 2 + t), fun i => -σ i * p.2 i)
 
-/-- The differential of the cubic descent. -/
+/-- `differential σ t p (cubicDescent σ t p) = -(p.1 ^ 2 + t) ^ 2 - 2 * ∑ i, (σ i * p.2 i) ^ 2`. -/
 theorem MorseCancellation.differential_cubicDescent {m : ℕ} (σ : Fin m → ℝ) (t : ℝ) (p : Model m) :
     differential σ t p (cubicDescent σ t p) = -(p.1 ^ 2 + t) ^ 2 - 2 * ∑ i, (σ i * p.2 i) ^ 2 := by
   rw [differential_apply]
@@ -58,7 +59,8 @@ theorem MorseCancellation.differential_cubicDescent {m : ℕ} (σ : Fin m → �
   rw [hs]
   ring
 
-/-- The cubic descent is strict off the critical point. -/
+/-- At a point `p` which is not critical for `cubic σ t`, the derivative of `cubic σ t` in the
+direction `cubicDescent σ t p` is negative. -/
 theorem MorseCancellation.cubicDescent_strict {m : ℕ} (σ : Fin m → ℝ) {t : ℝ} {p : Model m}
     (hp : fderiv ℝ (cubic σ t) p ≠ 0) : fderiv ℝ (cubic σ t) p (cubicDescent σ t p) < 0 := by
   rw [fderiv_cubic, differential_cubicDescent]
@@ -86,7 +88,7 @@ theorem MorseCancellation.cubicDescent_strict {m : ℕ} (σ : Fin m → ℝ) {t 
     2 * σ i * p.2 i * v.2 i = 2 * (σ i * p.2 i) * v.2 i := by ring
     _ = 0 := by rw [hy, MulZeroClass.mul_zero, MulZeroClass.zero_mul]
 
-/-- The cubic descent vanishes at the critical point. -/
+/-- `cubicDescent σ t` vanishes at every critical point of `cubic σ t`. -/
 theorem MorseCancellation.cubicDescent_zero_of_critical {m : ℕ} (σ : Fin m → ℝ) {t : ℝ} {p : Model m}
     (hp : fderiv ℝ (cubic σ t) p = 0) : cubicDescent σ t p = 0 := by
   rw [fderiv_cubic] at hp
@@ -100,27 +102,29 @@ theorem MorseCancellation.cubicDescent_zero_of_critical {m : ℕ} (σ : Fin m �
     change -σ i * p.2 i = 0
     nlinarith
 
-/-- The native cubic descent field. -/
+/-- The cubic descent field `cubicDescent σ t` transported to `M` by a chart `Φ : Model m → M`,
+namely `FlowConstruction.partialChartField Φ.symm (cubicDescent σ t)`. -/
 def MorseCancellation.nativeCubicDescent {m : ℕ} (σ : Fin m → ℝ) {B M : Type*} [NormedAddCommGroup B]
     [NormedSpace ℝ B] [TopologicalSpace M] [ChartedSpace B M]
     (Φ : PartialDiffeomorph 𝓘(ℝ, Model m) 𝓘(ℝ, B) (Model m) M ∞) (t : ℝ) :
     (x : M) → TangentSpace 𝓘(ℝ, B) x :=
   FlowConstruction.partialChartField Φ.symm (cubicDescent σ t)
 
-/-- The field coordinate at a cubic endpoint. -/
+/-- The coordinate `u = (s - e * a) / (a + e * s)`, which linearises the field `a ^ 2 - s ^ 2` at
+its zero `e * a`, `e = ±1` (see `endpointFieldCoordinate_pushforward`). -/
 def MorseCancellation.endpointFieldCoordinate (a e s : ℝ) : ℝ :=
   (s - e * a) / (a + e * s)
 
-/-- The domain of the endpoint field coordinate. -/
+/-- The set `{s | 0 < a + e * s}`, on which `endpointFieldCoordinate a e` is smooth. -/
 def MorseCancellation.endpointFieldDomain (a e : ℝ) : Set ℝ :=
   {s | 0 < a + e * s}
 
-/-- The endpoint field domain is open. -/
+/-- `endpointFieldDomain a e` is open. -/
 theorem MorseCancellation.endpointFieldDomain_open (a e : ℝ) : IsOpen (endpointFieldDomain a e) := by
   apply isOpen_lt continuous_const
   fun_prop
 
-/-- The endpoint lies in the field domain. -/
+/-- For `0 < a` and `e ^ 2 = 1` the point `e * a` lies in `endpointFieldDomain a e`. -/
 theorem MorseCancellation.endpointField_mem_domain {a : ℝ} (ha : 0 < a) {e : ℝ} (he : e ^ 2 = 1) :
     e * a ∈ endpointFieldDomain a e := by
   change 0 < a + e * (e * a)
@@ -128,11 +132,11 @@ theorem MorseCancellation.endpointField_mem_domain {a : ℝ} (ha : 0 < a) {e : �
   rw [h]
   linarith
 
-/-- The endpoint field coordinate at the center. -/
+/-- `endpointFieldCoordinate a e (e * a) = 0`. -/
 theorem MorseCancellation.endpointFieldCoordinate_center (a e : ℝ) :
     endpointFieldCoordinate a e (e * a) = 0 := by simp [endpointFieldCoordinate]
 
-/-- The endpoint field coordinate is smooth. -/
+/-- `endpointFieldCoordinate a e` is `C^∞` on `endpointFieldDomain a e`. -/
 theorem MorseCancellation.contDiffOn_endpointFieldCoordinate (a e : ℝ) :
     ContDiffOn ℝ ∞ (endpointFieldCoordinate a e) (endpointFieldDomain a e) := by
   intro s hs
@@ -141,7 +145,8 @@ theorem MorseCancellation.contDiffOn_endpointFieldCoordinate (a e : ℝ) :
         (contDiffAt_const.add (contDiffAt_const.mul contDiffAt_id))
         (ne_of_gt hs)).contDiffWithinAt
 
-/-- The endpoint field coordinate is differentiable. -/
+/-- For `e ^ 2 = 1` and `s ∈ endpointFieldDomain a e`, `endpointFieldCoordinate a e` has derivative
+`2 * a / (a + e * s) ^ 2` at `s`. -/
 theorem MorseCancellation.hasDerivAt_endpointFieldCoordinate (a : ℝ) {e : ℝ} (he : e ^ 2 = 1) {s : ℝ}
     (hs : s ∈ endpointFieldDomain a e) :
     HasDerivAt (endpointFieldCoordinate a e) (2 * a / (a + e * s) ^ 2) s := by
@@ -152,7 +157,9 @@ theorem MorseCancellation.hasDerivAt_endpointFieldCoordinate (a : ℝ) {e : ℝ}
   congr 1
   rcases sq_eq_one_iff.mp he with h | h <;> rw [h] <;> ring
 
-/-- The endpoint field coordinate computes the pushforward. -/
+/-- For `e ^ 2 = 1` and `s ∈ endpointFieldDomain a e`, the coordinate `u = endpointFieldCoordinate a
+e` pushes the field `a ^ 2 - s ^ 2` forward to the linear field `-2 * e * a * u`: `deriv u s * (a ^
+2 - s ^ 2) = (-2 * e * a) * u s`. -/
 theorem MorseCancellation.endpointFieldCoordinate_pushforward (a : ℝ) {e : ℝ} (he : e ^ 2 = 1) {s : ℝ}
     (hs : s ∈ endpointFieldDomain a e) :
     deriv (endpointFieldCoordinate a e) s * (a ^ 2 - s ^ 2) =
@@ -163,7 +170,9 @@ theorem MorseCancellation.endpointFieldCoordinate_pushforward (a : ℝ) {e : ℝ
   field_simp
   rcases sq_eq_one_iff.mp he with h | h <;> rw [h] <;> ring
 
-/-- An endpoint field scalar chart exists. -/
+/-- For `0 < a` and `e ^ 2 = 1` there is a smooth partial diffeomorphism `P` of `ℝ` whose source
+contains `e * a` and is contained in `endpointFieldDomain a e`, whose underlying function is
+`endpointFieldCoordinate a e`, and with `P (e * a) = 0`. -/
 theorem MorseCancellation.exists_endpoint_field_scalar_chart {a : ℝ} (ha : 0 < a) {e : ℝ}
     (he : e ^ 2 = 1) :
     ∃ P : PartialDiffeomorph 𝓘(ℝ, ℝ) 𝓘(ℝ, ℝ) ℝ ℝ ∞,
@@ -187,15 +196,19 @@ theorem MorseCancellation.exists_endpoint_field_scalar_chart {a : ℝ} (ha : 0 <
       (contDiffOn_endpointFieldCoordinate a e) ⟨A, rfl⟩
   exact ⟨P, hp, hsub, hP, by rw [hP, endpointFieldCoordinate_center]⟩
 
-/-- The linear field at a cubic endpoint. -/
+/-- The linear field `(u, y) ↦ (-2 * e * a * u, fun i => -σ i * y i)` on `Model m`: the form of the
+cubic descent field at the critical point `(e * a, 0)` in the coordinates `endpointFieldProduct a
+e`. -/
 def MorseCancellation.endpointLinearField {m : ℕ} (σ : Fin m → ℝ) (a e : ℝ) (p : Model m) : Model m :=
   ((-2 * e * a) * p.1, fun i => -σ i * p.2 i)
 
-/-- The product field at a cubic endpoint. -/
+/-- The map `(s, y) ↦ (endpointFieldCoordinate a e s, y)` of `Model m`. -/
 def MorseCancellation.endpointFieldProduct {m : ℕ} (a e : ℝ) (p : Model m) : Model m :=
   (endpointFieldCoordinate a e p.1, p.2)
 
-/-- The endpoint product field's derivative on the cubic. -/
+/-- For `e ^ 2 = 1` and `p.1 ∈ endpointFieldDomain a e`, the derivative of `endpointFieldProduct a
+e` at `p` maps `cubicDescent σ (-a ^ 2) p` to `endpointLinearField σ a e (endpointFieldProduct a e
+p)`. -/
 theorem MorseCancellation.fderiv_endpointFieldProduct_cubic {m : ℕ} (σ : Fin m → ℝ) (a : ℝ) {e : ℝ}
     (he : e ^ 2 = 1) {p : Model m} (hp : p.1 ∈ endpointFieldDomain a e) :
     fderiv ℝ (endpointFieldProduct a e) p (cubicDescent σ (-(a ^ 2)) p) =
@@ -215,7 +228,10 @@ theorem MorseCancellation.fderiv_endpointFieldProduct_cubic {m : ℕ} (σ : Fin 
     convert! hh using 1; ring
   · rfl
 
-/-- An endpoint field product chart exists. -/
+/-- For `0 < a` and `e ^ 2 = 1` there is a smooth partial diffeomorphism `P` of `Model m` with `(e *
+a, 0) ∈ P.source`, `P (e * a, 0) = 0` and underlying function `endpointFieldProduct a e`, whose
+derivative maps `cubicDescent σ (-a ^ 2) p` to `endpointLinearField σ a e (P p)` for every `p ∈
+P.source`. -/
 theorem MorseCancellation.exists_endpoint_field_product_chart {m : ℕ} (σ : Fin m → ℝ) {a : ℝ}
     (ha : 0 < a) {e : ℝ} (he : e ^ 2 = 1) :
     ∃ P : PartialDiffeomorph 𝓘(ℝ, Model m) 𝓘(ℝ, Model m) (Model m) (Model m) ∞,
@@ -236,7 +252,9 @@ theorem MorseCancellation.exists_endpoint_field_product_chart {m : ℕ} (σ : Fi
     rw [hP]
     exact fderiv_endpointFieldProduct_cubic σ a he (hsub hp.1)
 
-/-- A model-conjugate partial chart field. -/
+/-- If the derivative of the partial diffeomorphism `P` maps the field `W` to the field `U` at every
+point of `P.source`, then `W` transported by the chart `P.trans Q` and `U` transported by the chart
+`Q` agree on `(P.trans Q).target`. -/
 theorem MorseCancellation.partialChartField_of_model_conjugacy {D F E M : Type*} [NormedAddCommGroup D]
     [NormedSpace ℝ D] [NormedAddCommGroup F] [NormedSpace ℝ F] [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
@@ -277,7 +295,11 @@ theorem MorseCancellation.partialChartField_of_model_conjugacy {D F E M : Type*}
   rw [hh, VectorField.mpullback_apply, hv]
   rfl
 
-/-- A native cubic field endpoint chart exists. -/
+/-- Let `0 < a`, `e ^ 2 = 1`, and let `Q : Model m → M` be a chart with `0 ∈ Q.source` such that on
+`Q.target` the field `V` is `endpointLinearField σ a e` transported by `Q`. Then there is a chart
+`Φ` with `(e * a, 0) ∈ Φ.source`, `Φ (e * a, 0) = Q 0`, `Φ.target ⊆ Q.target` and underlying
+function `Q ∘ endpointFieldProduct a e`, such that `V = nativeCubicDescent σ Φ (-a ^ 2)` on
+`Φ.target`. -/
 theorem MorseCancellation.exists_native_cubic_field_endpoint {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {m : ℕ} (σ : Fin m → ℝ) {a : ℝ}
     (ha : 0 < a) {e : ℝ} (he : e ^ 2 = 1)

@@ -26,28 +26,29 @@ open scoped ContDiff
 
 @[expose] public noncomputable section
 
-/-- A function replaced by a model on a chart. -/
+/-- `replace Φ f b y` is `b (Φ.symm y)` for `y ∈ Φ.target` and `f y` otherwise: the function `f`
+with `b`, read in the chart `Φ`, substituted on the image of `Φ`. -/
 def LocalFunctionReplacement.replace {E B H M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [NormedAddCommGroup B] [NormedSpace ℝ B] [TopologicalSpace H]
     {I : ModelWithCorners ℝ B H} [TopologicalSpace M] [ChartedSpace H M]
     (Φ : PartialDiffeomorph 𝓘(ℝ, E) I E M ∞) (f : M → ℝ) (b : E → ℝ) (y : M) : ℝ := by
   classical exact if y ∈ Φ.target then b (Φ.symm y) else f y
 
-/-- The replacement computes the model inside the chart. -/
+/-- For `y ∈ Φ.target`, `replace Φ f b y = b (Φ.symm y)`. -/
 theorem LocalFunctionReplacement.replace_of_mem {E B H M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [NormedAddCommGroup B] [NormedSpace ℝ B] [TopologicalSpace H]
     {I : ModelWithCorners ℝ B H} [TopologicalSpace M] [ChartedSpace H M]
     (Φ : PartialDiffeomorph 𝓘(ℝ, E) I E M ∞) (f : M → ℝ) (b : E → ℝ) {y : M} (hy : y ∈ Φ.target) :
     replace Φ f b y = b (Φ.symm y) := by simp [replace, hy]
 
-/-- The replacement is the original off the chart. -/
+/-- For `y ∉ Φ.target`, `replace Φ f b y = f y`. -/
 theorem LocalFunctionReplacement.replace_of_notMem {E B H M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [NormedAddCommGroup B] [NormedSpace ℝ B] [TopologicalSpace H]
     {I : ModelWithCorners ℝ B H} [TopologicalSpace M] [ChartedSpace H M]
     (Φ : PartialDiffeomorph 𝓘(ℝ, E) I E M ∞) (f : M → ℝ) (b : E → ℝ) {y : M} (hy : y ∉ Φ.target) :
     replace Φ f b y = f y := by simp [replace, hy]
 
-/-- The replacement computes in the chart. -/
+/-- For `x ∈ Φ.source`, `replace Φ f b (Φ x) = b x`. -/
 theorem LocalFunctionReplacement.replace_chart {E B H M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [NormedAddCommGroup B] [NormedSpace ℝ B] [TopologicalSpace H]
     {I : ModelWithCorners ℝ B H} [TopologicalSpace M] [ChartedSpace H M]
@@ -56,7 +57,7 @@ theorem LocalFunctionReplacement.replace_chart {E B H M : Type*} [NormedAddCommG
   rw [replace_of_mem Φ f b (Φ.map_source' hx)]
   exact congrArg b (Φ.left_inv' hx)
 
-/-- The replacement's germ inside the chart. -/
+/-- Near a point `y ∈ Φ.target` the function `replace Φ f b` coincides with `b ∘ Φ.symm`. -/
 theorem LocalFunctionReplacement.replace_germ_chart {E B H M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [NormedAddCommGroup B] [NormedSpace ℝ B]
     [TopologicalSpace H] {I : ModelWithCorners ℝ B H} [TopologicalSpace M] [ChartedSpace H M]
@@ -65,7 +66,7 @@ theorem LocalFunctionReplacement.replace_germ_chart {E B H M : Type*}
   filter_upwards [Φ.open_target.mem_nhds hy] with z hz
   exact replace_of_mem Φ f b hz
 
-/-- Replacing by the original is the identity. -/
+/-- If `f (Φ x) = b x` for all `x ∈ Φ.source`, then `replace Φ f b = f`. -/
 theorem LocalFunctionReplacement.replace_self {E B H M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [NormedAddCommGroup B] [NormedSpace ℝ B] [TopologicalSpace H]
     {I : ModelWithCorners ℝ B H} [TopologicalSpace M] [ChartedSpace H M]
@@ -77,7 +78,8 @@ theorem LocalFunctionReplacement.replace_self {E B H M : Type*} [NormedAddCommGr
     exact (hmodel (Φ.symm y) (Φ.map_target' hy)).symm.trans (congrArg f (Φ.right_inv' hy))
   · exact replace_of_notMem Φ f b hy
 
-/-- The replacement agrees with the original off the support. -/
+/-- If `f (Φ x) = b₀ x` on `Φ.source` and `b₁ = b₀` outside `K`, then `replace Φ f b₁ y = f y` for
+every `y ∉ Φ '' K`. -/
 theorem LocalFunctionReplacement.replace_eq_off_support {E B H M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [NormedAddCommGroup B] [NormedSpace ℝ B]
     [TopologicalSpace H] {I : ModelWithCorners ℝ B H} [TopologicalSpace M] [ChartedSpace H M]
@@ -90,7 +92,8 @@ theorem LocalFunctionReplacement.replace_eq_off_support {E B H M : Type*}
     exact (hmodel (Φ.symm y) (Φ.map_target' hyt)).symm.trans (congrArg f (Φ.right_inv' hyt))
   · exact replace_of_notMem Φ f b₁ hyt
 
-/-- The replacement's germ off the support is the original's. -/
+/-- Let `M` be Hausdorff, `K ⊆ Φ.source` compact, `f (Φ x) = b₀ x` on `Φ.source` and `b₁ = b₀`
+outside `K`. Then `replace Φ f b₁` coincides with `f` near every `y ∉ Φ '' K`. -/
 theorem LocalFunctionReplacement.replace_germ_off_support {E B H M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [NormedAddCommGroup B] [NormedSpace ℝ B]
     [TopologicalSpace H] {I : ModelWithCorners ℝ B H} [TopologicalSpace M] [ChartedSpace H M]
@@ -102,7 +105,8 @@ theorem LocalFunctionReplacement.replace_germ_off_support {E B H M : Type*}
   filter_upwards [hc.isOpen_compl.mem_nhds hy] with z hz
   exact replace_eq_off_support Φ hmodel hfix hz
 
-/-- The replacement is smooth. -/
+/-- Let `M` be Hausdorff, `f : M → ℝ` and `b₁ : E → ℝ` smooth, `K ⊆ Φ.source` compact, `f (Φ x) = b₀
+x` on `Φ.source` and `b₁ = b₀` outside `K`. Then `replace Φ f b₁` is smooth. -/
 theorem LocalFunctionReplacement.contMDiff_replace {E B H M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [NormedAddCommGroup B] [NormedSpace ℝ B] [TopologicalSpace H]
     {I : ModelWithCorners ℝ B H} [TopologicalSpace M] [ChartedSpace H M]
@@ -122,7 +126,8 @@ theorem LocalFunctionReplacement.contMDiff_replace {E B H M : Type*} [NormedAddC
     exact
       hf.contMDiffAt.congr_of_eventuallyEq (replace_germ_off_support Φ hK hKΦ hmodel hfix hnot)
 
-/-- The critical points of the replacement on the chart. -/
+/-- For smooth `b` and `y ∈ Φ.target`, the derivative of `replace Φ f b` vanishes at `y` iff the
+derivative of `b` vanishes at `Φ.symm y`. -/
 theorem LocalFunctionReplacement.replace_critical_iff {E B H M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [NormedAddCommGroup B] [NormedSpace ℝ B]
     [TopologicalSpace H] {I : ModelWithCorners ℝ B H} [TopologicalSpace M] [ChartedSpace H M]
