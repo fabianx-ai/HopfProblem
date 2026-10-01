@@ -243,7 +243,7 @@ theorem exists_strip_along_arc_matching_parametrized_corners {E M D Z Z₀ Z₁ 
     congr 2
     ring
   obtain ⟨a, ha, V, hV, hrectV, k, hk, hinjk, hmap, _, hik, hcF, hkc, hkk₀, hkk₁, hnormal⟩ :=
-    exists_native_clean_strip_matching_germs Φ hline hclean hk₀ hk₁' hU₀ hU₁' h0U₀ h1U₁' hmatch₀
+    exists_clean_strip_matching_germs_in_chart Φ hline hclean hk₀ hk₁' hU₀ hU₁' h0U₀ h1U₁' hmatch₀
       hmatch₁ hn₀ hn₁' (by simpa only [finrank_euclideanSpace_fin] using hdimZ)
   have hkc' : ∀ t ∈ Set.Icc (0 : ℝ) 1, k (t, 0) = F (f t) := by
     intro t ht

@@ -17,7 +17,7 @@ In a manifold of dimension at least two:
 * every point of an open set starts a nonconstant embedded arc inside it
   (`exists_short_embedded_arc`);
 * two distinct points joined by a path are joined by an embedded smooth arc whose interior avoids a
-  prescribed finite set (`exists_embedded_connecting_arc_avoiding_finite_dim_two`);
+  prescribed finite set (`exists_embedded_connecting_arc_avoiding_finite_of_two_le_finrank`);
 * such an arc carries a tubular neighbourhood of prescribed codimension whose image meets the
   finite set only at the two endpoints
   (`exists_tubular_connecting_arc_avoiding_finite_with_global_zero`).
@@ -101,7 +101,7 @@ theorem exists_short_embedded_arc {G H N : Type*} [NormedAddCommGroup G] [Normed
 
 /-- Two distinct points joined by a path in a manifold of dimension at least two are joined by an
 embedded smooth arc whose interior avoids a prescribed finite set (general position for arcs). -/
-theorem exists_embedded_connecting_arc_avoiding_finite_dim_two {G H N : Type*}
+theorem exists_embedded_connecting_arc_avoiding_finite_of_two_le_finrank {G H N : Type*}
     [NormedAddCommGroup G] [NormedSpace ℝ G] [FiniteDimensional ℝ G] [TopologicalSpace H]
     {J : ModelWithCorners ℝ G H} [J.Boundaryless] [TopologicalSpace N] [ChartedSpace H N]
     [IsManifold J ∞ N] [T2Space N] {x y : N} (γ : Path x y) (hxy : x ≠ y)
@@ -189,7 +189,7 @@ theorem exists_tubular_connecting_arc_avoiding_finite_with_global_zero {G N : Ty
                         Set.Icc (0 : ℝ) 1 ×ˢ Metric.closedBall 0 ε ⊆ Φ.source ∧
                           (∀ t, Φ (t, 0) = f t) ∧ Φ.target ⊆ (S \ { x, y })ᶜ := by
   obtain ⟨f, hf, hf0, hf1, hemb, hi, havoid⟩ :=
-    exists_embedded_connecting_arc_avoiding_finite_dim_two (J := 𝓘(ℝ, G)) γ hxy hdim hS
+    exists_embedded_connecting_arc_avoiding_finite_of_two_le_finrank (J := 𝓘(ℝ, G)) γ hxy hdim hS
   have hinj : Set.InjOn f (Set.Icc (0 : ℝ) 1) := by
     intro t ht s hs hts
     exact congrArg Subtype.val (hemb.injective (a₁ := ⟨t, ht⟩) (a₂ := ⟨s, hs⟩) hts)

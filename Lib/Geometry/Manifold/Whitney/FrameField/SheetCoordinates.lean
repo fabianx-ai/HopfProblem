@@ -12,10 +12,10 @@ import Lib.Geometry.Manifold.WhitneyEmbedding
 
 For a chart `Φ` of the ambient manifold in which the image of an injective immersion `F` is the zero
 set of the second coordinate (a clean chart), the sheet projection
-`NativeSheetCoordinates.projection` (the first component of `Φ⁻¹ ∘ F`) is smooth with injective
+`SliceChart.projection` (the first component of `Φ⁻¹ ∘ F`) is smooth with injective
 differential where `dF` is injective, is a local diffeomorphism when the source and the sheet
 directions have the same dimension, and induces a chart of the source
-(`NativeSheetCoordinates.exists_induced_sheet_chart`): a partial diffeomorphism onto the slice
+(`SliceChart.exists_induced_sheet_chart`): a partial diffeomorphism onto the slice
 `{u | (u, 0) ∈ Φ.source}` carried by `F` to `u ↦ Φ (u, 0)`.
 
 This is the slice-chart description of an embedded submanifold, cf. Lee, *Introduction to Smooth
@@ -34,14 +34,14 @@ noncomputable section
 
 /-- The sheet coordinate of a point: the first component of its image under the inverse of a chart
 in which the sheet is the zero set of the second coordinate. -/
-def NativeSheetCoordinates.projection {D B E M N : Type*} [NormedAddCommGroup D]
+def SliceChart.projection {D B E M N : Type*} [NormedAddCommGroup D]
     [NormedSpace ℝ D] [NormedAddCommGroup B] [NormedSpace ℝ B] [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     (Φ : PartialDiffeomorph 𝓘(ℝ, D × B) 𝓘(ℝ, E) (D × B) M ∞) (F : N → M) (x : N) : D :=
   (Φ.symm (F x)).1
 
 /-- The sheet projection is smooth on the preimage of the chart target. -/
-theorem NativeSheetCoordinates.contMDiffOn_projection {D B E G H M N : Type*}
+theorem SliceChart.contMDiffOn_projection {D B E G H M N : Type*}
     [NormedAddCommGroup D] [NormedSpace ℝ D] [NormedAddCommGroup B] [NormedSpace ℝ B]
     [NormedAddCommGroup E] [NormedSpace ℝ E] [NormedAddCommGroup G] [NormedSpace ℝ G]
     [TopologicalSpace H] {I : ModelWithCorners ℝ G H} [TopologicalSpace M] [ChartedSpace E M]
@@ -55,7 +55,7 @@ theorem NativeSheetCoordinates.contMDiffOn_projection {D B E G H M N : Type*}
 /-- Where the chart is clean for the image of `F` (the image meets the chart exactly in the zero set
 of the second coordinate), the differential of the sheet projection is injective wherever that
 of `F` is. -/
-theorem NativeSheetCoordinates.injective_mfderiv_projection {D B E G H M N : Type*}
+theorem SliceChart.injective_mfderiv_projection {D B E G H M N : Type*}
     [NormedAddCommGroup D] [NormedSpace ℝ D] [NormedAddCommGroup B] [NormedSpace ℝ B]
     [NormedAddCommGroup E] [NormedSpace ℝ E] [NormedAddCommGroup G] [NormedSpace ℝ G]
     [TopologicalSpace H] {I : ModelWithCorners ℝ G H} [TopologicalSpace M] [ChartedSpace E M]
@@ -110,7 +110,7 @@ theorem NativeSheetCoordinates.injective_mfderiv_projection {D B E G H M N : Typ
 
 /-- Under the same cleanness hypothesis, and when source and sheet directions have the same
 dimension, the sheet projection is a local diffeomorphism on the preimage of the chart target. -/
-theorem NativeSheetCoordinates.isLocalDiffeomorphOn_projection {D B E G H M N : Type*}
+theorem SliceChart.isLocalDiffeomorphOn_projection {D B E G H M N : Type*}
     [NormedAddCommGroup D] [NormedSpace ℝ D] [NormedAddCommGroup B] [NormedSpace ℝ B]
     [NormedAddCommGroup E] [NormedSpace ℝ E] [NormedAddCommGroup G] [NormedSpace ℝ G]
     [TopologicalSpace H] {I : ModelWithCorners ℝ G H} [TopologicalSpace M] [ChartedSpace E M]
@@ -134,7 +134,7 @@ theorem NativeSheetCoordinates.isLocalDiffeomorphOn_projection {D B E G H M N : 
 /-- A clean chart for an injective immersion `F` induces a chart of the source: a partial
 diffeomorphism onto the slice `{u | (u, 0) ∈ Φ.source}` whose inverse is the sheet projection
 and which is carried by `F` to `u ↦ Φ (u, 0)`. -/
-theorem NativeSheetCoordinates.exists_induced_sheet_chart {D B E G H M N : Type*}
+theorem SliceChart.exists_induced_sheet_chart {D B E G H M N : Type*}
     [NormedAddCommGroup D] [NormedSpace ℝ D] [FiniteDimensional ℝ D] [NormedAddCommGroup B]
     [NormedSpace ℝ B] [NormedAddCommGroup E] [NormedSpace ℝ E] [NormedAddCommGroup G]
     [NormedSpace ℝ G] [FiniteDimensional ℝ G] [TopologicalSpace H] {I : ModelWithCorners ℝ G H}

@@ -19,7 +19,7 @@ derivative is a clean immersive embedding of a thin rectangle around the centre 
 (`StripCoordinates.exists_clean_strip_neighborhood`); together, two local germs are joined by a
 clean embedded strip keeping both germs
 (`StripCoordinates.exists_clean_strip_matching_local_germs`), also inside an ambient chart clean for
-a sheet (`exists_native_clean_strip_matching_germs`).
+a sheet (`exists_clean_strip_matching_germs_in_chart`).
 
 These strips are the thickenings of the arcs in the Whitney trick, cf. Milnor, *Lectures on the
 h-cobordism theorem*, §6.
@@ -286,7 +286,7 @@ theorem StripCoordinates.exists_clean_strip_matching_local_germs {A B : Type*}
 /-- Native form of the strip interpolation: inside an ambient chart clean for a sheet, two germs at
 the two ends are joined by a clean embedded strip along the centre line with nowhere-vanishing
 normal derivative. -/
-theorem exists_native_clean_strip_matching_germs {A B E M : Type*} [NormedAddCommGroup A]
+theorem exists_clean_strip_matching_germs_in_chart {A B E M : Type*} [NormedAddCommGroup A]
     [NormedSpace ℝ A] [FiniteDimensional ℝ A] [NormedAddCommGroup B] [InnerProductSpace ℝ B]
     [FiniteDimensional ℝ B] [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] [T2Space M]

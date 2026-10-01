@@ -265,7 +265,7 @@ theorem ManifoldMorse.MorseSurgeryData.exists_belt_tubular_strip_pair {E M : Typ
   have hiG := d.belt_derivative_injective hf 3
   obtain
     ⟨α, β, -, -, hα₀, hα₁, hβ₀, hβ₁, -, -, -, -, -, -, -, c₀, c₁, k, l, hnK, hnL, -, hboundary⟩ :=
-    exists_native_shared_corner_strip_pair_dim_two hg hG hinj
+    exists_shared_corner_strip_pair_of_two_le_finrank hg hG hinj
       d.belt_isClosedEmbedding.injective hi hiG (by simp) (by simp)
       (by simp [RegularLevel.Model, hdim]) ht hcross₀ hcross₁ hxy γ η
   refine

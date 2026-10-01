@@ -252,7 +252,7 @@ theorem SphereNormalCoordinates.opposite_normalJacobians_iff_retained_sheet
         0 := by
   let _ : Nonempty (Metric.sphere (0 : V) 1) := ⟨x₀⟩
   obtain ⟨c, hcS, _, hFc, _⟩ :=
-    NativeSheetCoordinates.exists_induced_sheet_chart Φ F hF hinjF hclean
+    SliceChart.exists_induced_sheet_chart Φ F hF hinjF hclean
       (by simpa only [finrank_euclideanSpace_fin] using hdim.symm) hiF
   let a : ℝ → (ℝ × A) := fun t => (t, 0)
   have ha : ContinuousOn a (Set.Icc (0 : ℝ) 1) :=

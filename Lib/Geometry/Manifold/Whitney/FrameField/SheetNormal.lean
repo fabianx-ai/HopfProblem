@@ -279,7 +279,7 @@ theorem StripNormalData.contDiffOn_normalDetector {A B Z E M N : Type*}
 
 /-- The normal detector is the composite of the differential of the ambient map with the
 differential of the tubular chart. -/
-theorem StripNormalData.normalDetector_eq_native {A B Z E M N : Type*}
+theorem StripNormalData.normalDetector_eq_mfderiv_comp {A B Z E M N : Type*}
     [NormedAddCommGroup A] [NormedSpace ℝ A] [NormedAddCommGroup B] [NormedSpace ℝ B]
     [NormedAddCommGroup Z] [NormedSpace ℝ Z] [NormedAddCommGroup E] [NormedSpace ℝ E]
     [NormedAddCommGroup N] [NormedSpace ℝ N] [TopologicalSpace M] [ChartedSpace E M] {S : Set M}
@@ -317,7 +317,7 @@ theorem StripNormalData.surjective_normalDetector {A B Z E M N : Type*}
       Function.Surjective
         (mfderiv 𝓘(ℝ, E) 𝓘(ℝ, N) q (d.chart (StripCoordinates.center t)))) :
     Function.Surjective (d.normalDetector Ψ q t) := by
-  rw [d.normalDetector_eq_native Ψ q htarget hq]
+  rw [d.normalDetector_eq_mfderiv_comp Ψ q htarget hq]
   exact hqs.comp (PartialChart.bijective_mfderiv Ψ (Ψ.map_target' htarget)).surjective
 
 /-- If the ambient map vanishes on the sheet, its normal detector kills the sheet differential. -/

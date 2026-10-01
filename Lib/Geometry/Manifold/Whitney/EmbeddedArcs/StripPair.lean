@@ -20,7 +20,7 @@ patch restricts to thinner rectangles (`CleanStripPatch.restrict`).
 The main arc-pair statement in codimension two: two transverse intersection points of two embedded
 sheets, joined by paths, are joined by embedded arcs, one in each sheet, meeting only at the two
 intersection points and carrying a clean strip pair
-(`exists_native_shared_corner_strip_pair_dim_two`). This is the boundary of the Whitney disc, cf.
+(`exists_shared_corner_strip_pair_of_two_le_finrank`). This is the boundary of the Whitney disc, cf.
 Milnor, *Lectures on the h-cobordism theorem*, §6.
 
 ## Tags
@@ -211,7 +211,7 @@ def CleanStripPatch.restrict {E M : Type*} [NormedAddCommGroup E] [NormedSpace �
 embedded sheets, joined by paths, are joined by embedded arcs, one in each sheet, meeting only
 at the two intersection points, and carrying clean corner patches, clean strip patches and strip
 normal data on both sides. -/
-theorem exists_native_shared_corner_strip_pair_dim_two {E M D Z N P : Type*}
+theorem exists_shared_corner_strip_pair_of_two_le_finrank {E M D Z N P : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M]
     [NormedAddCommGroup D] [NormedSpace ℝ D] [FiniteDimensional ℝ D] [NormedAddCommGroup Z]
