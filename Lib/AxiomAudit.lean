@@ -8512,6 +8512,17 @@ is an evidence command rather than library content.
 #check Hyperbolic.planeCoefficient_timelike_iff
 #print axioms Hyperbolic.planeCoefficient_timelike_iff
 
+#check Hyperbolic.upperHalfPlaneMetric_inner_coordinates
+#print axioms Hyperbolic.upperHalfPlaneMetric_inner_coordinates
+#check Hyperbolic.upperHalfPlaneMetric_norm_coordinates
+#print axioms Hyperbolic.upperHalfPlaneMetric_norm_coordinates
+#check Hyperbolic.upperHalfPlaneMetric_normalized_coordinates
+#print axioms Hyperbolic.upperHalfPlaneMetric_normalized_coordinates
+#check Hyperbolic.upperHalfPlaneMetric_angle_coordinates
+#print axioms Hyperbolic.upperHalfPlaneMetric_angle_coordinates
+#check Hyperbolic.toHyperboloid_angle_coordinates
+#print axioms Hyperbolic.toHyperboloid_angle_coordinates
+
 #check LinearMap.BilinForm.unitNormalReflection
 #print axioms LinearMap.BilinForm.unitNormalReflection
 

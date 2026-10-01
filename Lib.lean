@@ -446,6 +446,7 @@ import Lib.Geometry.Manifold.VectorBundle.Riemannian
 import Lib.Order.Fin.Refinement
 import Lib.Geometry.Manifold.Riemannian.CurveTransport
 import Lib.Geometry.Hyperbolic.GeodesicEquations
+import Lib.Geometry.Hyperbolic.ConformalCoordinates
 import Lib.LinearAlgebra.BilinearForm.Reflection
 /-!
 # Reusable V10 Section 6 library
