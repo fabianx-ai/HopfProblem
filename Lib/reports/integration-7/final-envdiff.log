@@ -1,0 +1,6 @@
+HEAD 752dfd1e start 2026-10-01T21:06:59Z
+dump: 39175 constants from #[Solution, Lib] under #[Hopf, Lib]; rename map: 0 entries
+dump rc 0 lines 39175
+envdiff rc 1
+elapsed 688 s
+done 1
