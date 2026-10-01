@@ -1,0 +1,18 @@
+constants before 38301 after 38302 (keys 38199 38200 )
+lost 2 added 3 of which source declarations: 0 0 ; names with changed type 2 of which source: 0
+auxiliary lost/added/changed (not judged): 2 3 2
+module moves (source declarations, 1-to-1):
+      16  Lib.Geometry.Manifold.Morse.SurgeryWindows -> Lib.Geometry.Manifold.Morse.SurgeryWindows.Avoidance
+       9  Lib.Geometry.Manifold.Morse.SurgeryWindows -> Lib.Geometry.Manifold.Morse.SurgeryWindows.BeltComplement
+       8  Lib.Geometry.Manifold.Morse.SurgeryWindows -> Lib.Geometry.Manifold.Morse.SurgeryWindows.DiskDouble
+       8  Lib.Geometry.Manifold.Morse.SurgeryWindows -> Lib.Geometry.Manifold.Morse.SurgeryWindows.HausdorffDimension
+      18  Lib.Geometry.Manifold.Morse.SurgeryWindows -> Lib.Geometry.Manifold.Morse.SurgeryWindows.Hemisphere
+       6  Lib.Geometry.Manifold.Morse.SurgeryWindows -> Lib.Geometry.Manifold.Morse.SurgeryWindows.ImageComplement
+      10  Lib.Geometry.Manifold.Morse.SurgeryWindows -> Lib.Geometry.Manifold.Morse.SurgeryWindows.NewInterior
+       5  Lib.Geometry.Manifold.Morse.SurgeryWindows -> Lib.Geometry.Manifold.Morse.SurgeryWindows.OpenHomotopyExtension
+      35  Lib.Geometry.Manifold.Morse.SurgeryWindows -> Lib.Geometry.Manifold.Morse.SurgeryWindows.SurgeryData
+      25  Lib.Geometry.Manifold.Morse.SurgeryWindows -> Lib.Geometry.Manifold.Morse.SurgeryWindows.Windows
+      17  Lib.Geometry.Manifold.Morse.SurgeryWindows -> Lib.Geometry.Manifold.Morse.SurgeryWindows.ZeroAvoidanceCutoff
+ambiguous module changes: 0
+auxiliary constants that changed module: 94
+VERDICT PASS
