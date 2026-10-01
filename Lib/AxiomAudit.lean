@@ -7445,9 +7445,6 @@ is an evidence command rather than library content.
 #check Complex.fractionalLinear_reverse_local
 #print axioms Complex.fractionalLinear_reverse_local
 
-#check RiemannBoundary.principalRoot_three_reverse_of_wedge
-#print axioms RiemannBoundary.principalRoot_three_reverse_of_wedge
-
 #check Compactification.exists_homeomorph_of_paired_limits
 #print axioms Compactification.exists_homeomorph_of_paired_limits
 
@@ -8484,6 +8481,44 @@ is an evidence command rather than library content.
 #print axioms Hyperbolic.planeCoefficient_toHyperboloid_mul
 #check Hyperbolic.planeCoefficient_toHyperboloid_iff
 #print axioms Hyperbolic.planeCoefficient_toHyperboloid_iff
+
+#check Hyperbolic.planeCoefficient_positiveScalars
+#print axioms Hyperbolic.planeCoefficient_positiveScalars
+#check Hyperbolic.planeCoefficientUnitDirection
+#print axioms Hyperbolic.planeCoefficientUnitDirection
+#check Hyperbolic.planeCoefficientNegativeVector
+#print axioms Hyperbolic.planeCoefficientNegativeVector
+#check Hyperbolic.planeCoefficientFrame_spec
+#print axioms Hyperbolic.planeCoefficientFrame_spec
+#check Hyperbolic.planeCoefficientFrame_basis
+#print axioms Hyperbolic.planeCoefficientFrame_basis
+#check Hyperbolic.planeCoefficientFrame_gram
+#print axioms Hyperbolic.planeCoefficientFrame_gram
+#check Hyperbolic.planeCoefficientBaseCoords
+#print axioms Hyperbolic.planeCoefficientBaseCoords
+#check Hyperbolic.planeCoefficientBaseCoords_mem
+#print axioms Hyperbolic.planeCoefficientBaseCoords_mem
+#check Hyperbolic.planeCoefficientBasePoint
+#print axioms Hyperbolic.planeCoefficientBasePoint
+#check Hyperbolic.planeCoefficientBasePoint_spec
+#print axioms Hyperbolic.planeCoefficientBasePoint_spec
+#check Hyperbolic.planeCoefficient_timelike_of_discriminant_pos
+#print axioms Hyperbolic.planeCoefficient_timelike_of_discriminant_pos
+#check Hyperbolic.planeCoefficient_whole_section
+#print axioms Hyperbolic.planeCoefficient_whole_section
+#check Hyperbolic.planeCoefficient_timelike_iff
+#print axioms Hyperbolic.planeCoefficient_timelike_iff
+
+#check Hyperbolic.upperHalfPlaneMetric_inner_coordinates
+#print axioms Hyperbolic.upperHalfPlaneMetric_inner_coordinates
+#check Hyperbolic.upperHalfPlaneMetric_norm_coordinates
+#print axioms Hyperbolic.upperHalfPlaneMetric_norm_coordinates
+#check Hyperbolic.upperHalfPlaneMetric_normalized_coordinates
+#print axioms Hyperbolic.upperHalfPlaneMetric_normalized_coordinates
+#check Hyperbolic.upperHalfPlaneMetric_angle_coordinates
+#print axioms Hyperbolic.upperHalfPlaneMetric_angle_coordinates
+#check Hyperbolic.toHyperboloid_angle_coordinates
+#print axioms Hyperbolic.toHyperboloid_angle_coordinates
 
 #check LinearMap.BilinForm.unitNormalReflection
 #print axioms LinearMap.BilinForm.unitNormalReflection

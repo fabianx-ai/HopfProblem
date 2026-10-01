@@ -1,0 +1,28 @@
+constants before 39175 after 39199 (keys 39073 39095 )
+lost 0 added 24 of which source declarations: 0 19 ; names with changed type 0 of which source: 0
+  ADDED Hyperbolic.planeCoefficientBaseCoords {'Lib.Geometry.Hyperbolic.GeodesicEquations': 1}
+  ADDED Hyperbolic.planeCoefficientBaseCoords_mem {'Lib.Geometry.Hyperbolic.GeodesicEquations': 1}
+  ADDED Hyperbolic.planeCoefficientBasePoint {'Lib.Geometry.Hyperbolic.GeodesicEquations': 1}
+  ADDED Hyperbolic.planeCoefficientBasePoint_spec {'Lib.Geometry.Hyperbolic.GeodesicEquations': 1}
+  ADDED Hyperbolic.planeCoefficientFrame_basis {'Lib.Geometry.Hyperbolic.GeodesicEquations': 1}
+  ADDED Hyperbolic.planeCoefficientFrame_gram {'Lib.Geometry.Hyperbolic.GeodesicEquations': 1}
+  ADDED Hyperbolic.planeCoefficientFrame_spec {'Lib.Geometry.Hyperbolic.GeodesicEquations': 1}
+  ADDED Hyperbolic.planeCoefficientNegativeVector {'Lib.Geometry.Hyperbolic.GeodesicEquations': 1}
+  ADDED Hyperbolic.planeCoefficientUnitDirection {'Lib.Geometry.Hyperbolic.GeodesicEquations': 1}
+  ADDED Hyperbolic.planeCoefficient_positiveScalars {'Lib.Geometry.Hyperbolic.GeodesicEquations': 1}
+  ADDED Hyperbolic.planeCoefficient_timelike_iff {'Lib.Geometry.Hyperbolic.GeodesicEquations': 1}
+  ADDED Hyperbolic.planeCoefficient_timelike_of_discriminant_pos {'Lib.Geometry.Hyperbolic.GeodesicEquations': 1}
+  ADDED Hyperbolic.planeCoefficient_whole_section {'Lib.Geometry.Hyperbolic.GeodesicEquations': 1}
+  ADDED Hyperbolic.termI {'Lib.Geometry.Hyperbolic.ConformalCoordinates': 1, 'Lib.Geometry.Hyperbolic.Models': 1}
+  ADDED Hyperbolic.toHyperboloid_angle_coordinates {'Lib.Geometry.Hyperbolic.ConformalCoordinates': 1}
+  ADDED Hyperbolic.upperHalfPlaneMetric_angle_coordinates {'Lib.Geometry.Hyperbolic.ConformalCoordinates': 1}
+  ADDED Hyperbolic.upperHalfPlaneMetric_inner_coordinates {'Lib.Geometry.Hyperbolic.ConformalCoordinates': 1}
+  ADDED Hyperbolic.upperHalfPlaneMetric_norm_coordinates {'Lib.Geometry.Hyperbolic.ConformalCoordinates': 1}
+  ADDED Hyperbolic.upperHalfPlaneMetric_normalized_coordinates {'Lib.Geometry.Hyperbolic.ConformalCoordinates': 1}
+auxiliary lost/added/changed (not judged): 0 5 0
+module moves (source declarations, 1-to-1):
+       1  Lib.Analysis.Complex.RiemannMapping.PrincipalRoot -> Hopf.Proof.Analysis.Complex.RiemannMapping.SectorRoots
+ambiguous module changes: 1
+  AMB ('Hyperbolic.termI', {}, {'Lib.Geometry.Hyperbolic.ConformalCoordinates': 1})
+auxiliary constants that changed module: 1
+VERDICT FAIL
