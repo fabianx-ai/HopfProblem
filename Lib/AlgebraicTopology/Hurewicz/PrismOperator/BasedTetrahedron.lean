@@ -16,8 +16,9 @@ homotopic rel boundary through the tetrahedron (`tetrahedronFillingsHomotopy`), 
 same class in `π_2` (`tetrahedronFillings_class`).  Cyclically permuting the vertices of a
 based triangle does not change its class either (`basedTriangleClass_cyclic`), since the
 permuted loop is homotopic to the quarter-turn rotation of the original.  These are the
-geometric inputs to the boundary relation of Hatcher, Thm 4.32 (the class of a based `3`-simplex
-boundary vanishes), proved in `TetrahedronRelation`.
+geometric inputs to the boundary relation (the class of a based `3`-simplex boundary vanishes),
+proved in `TetrahedronRelation`, of this development's proof of the degree-two Hurewicz theorem
+(statement: Hatcher, Thm 4.32; the argument is recorded in `Lib/docs/C.md`).
 
 ## Main definitions
 

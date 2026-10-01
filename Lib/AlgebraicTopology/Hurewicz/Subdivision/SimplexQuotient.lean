@@ -25,8 +25,9 @@ corrected chain (`basedSimplex_simplexChain_sum`). The boundary strata of the qu
 (`simplexTwoBoundary`, `simplexQuotient_codimTwo`) and the behaviour of the prefix minima
 under `Fin.insertNth` complete the calculus.
 
-This is the cube-to-simplex half of the comparison used in the proof of the Hurewicz
-theorem (Hatcher, *Algebraic Topology*, Theorem 4.32); the Kuhn (Freudenthal)
+This is the cube-to-simplex half of the comparison used in this development's proof of the
+Hurewicz theorem (statement: Hatcher, *Algebraic Topology*, Theorem 4.32; the argument is
+recorded in `Lib/docs/C.md`); the Kuhn (Freudenthal)
 triangulation of the cube is the one of `Lib.AlgebraicTopology.Hurewicz.CubeTriangulation`.
 
 ## Main definitions

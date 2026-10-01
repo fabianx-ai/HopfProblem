@@ -12,9 +12,9 @@ triangles cut out by the diagonal are again based squares after reparametrizatio
 (`subdivisionLowerTriangleLoop`, `subdivisionUpperTriangleLoop`), and `p` is homotopic rel
 boundary to their concatenation in the second coordinate (`subdivision_homotopic`).  Hence
 `⟦p⟧ = ⟦lower⟧ * ⟦upper⟧` in `π_2` (`subdivision_class`, additive form
-`subdivision_additiveClass`).  This is the subdivision argument used in the proof of the
-Hurewicz theorem to split the class of a square into the classes of its two triangles
-(Hatcher, Thm 4.32, proof).
+`subdivision_additiveClass`).  This is the subdivision argument used in this development's
+proof of the Hurewicz theorem to split the class of a square into the classes of its two
+triangles (statement: Hatcher, Thm 4.32; the argument is recorded in `Lib/docs/C.md`).
 
 ## Main definitions
 

@@ -16,7 +16,8 @@ are vertex-based, their edge straightenings are homotopies that agree on the dia
 constant on the outer edges, and gluing two such triangle homotopies along the diagonal gives a
 homotopy of based squares (`gluedTriangleHomotopy`).  The glued square of two based triangles
 `τ`, `υ` is `basedTrianglesLoop τ υ`.  This is the reduction of an arbitrary square to based
-triangles in the proof of Hatcher, Thm 4.32.
+triangles in this development's proof of the degree-two Hurewicz theorem (statement: Hatcher,
+Thm 4.32; the argument is recorded in `Lib/docs/C.md`).
 
 ## Main definitions
 

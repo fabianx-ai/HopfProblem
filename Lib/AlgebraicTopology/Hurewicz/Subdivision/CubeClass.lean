@@ -28,8 +28,9 @@ coordinatewise convex blend (`nativeCubeLinearHomotopy`). This is the tool by wh
 subdivision argument replaces one chart of a chamber by another.
 
 The sign of a permuted cube is the classical statement that `π_n` is acted on by `S_n`
-through the sign character (cf. Hatcher, *Algebraic Topology*, §4.1, and the proof of
-Theorem 4.32).
+through the sign character (cf. Hatcher, *Algebraic Topology*, §4.1); it enters this
+development's proof of the Hurewicz theorem (statement: Hatcher, Theorem 4.32; the argument is
+recorded in `Lib/docs/C.md`).
 
 ## Main definitions
 

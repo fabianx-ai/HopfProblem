@@ -25,7 +25,8 @@ combination of the two cuts produces the chart `insertChamberChart e r chart` of
 chamber `insertPermutation e r` of the `(n + 1)`-cube.
 
 This is the recursive description of the Kuhn chambers used to subdivide a based cube
-in the proof of the Hurewicz theorem (Hatcher, *Algebraic Topology*, Theorem 4.32).
+in this development's proof of the Hurewicz theorem (statement: Hatcher, *Algebraic Topology*,
+Theorem 4.32; the argument is recorded in `Lib/docs/C.md`).
 
 ## Main definitions
 

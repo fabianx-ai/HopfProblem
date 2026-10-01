@@ -19,7 +19,8 @@ This module re-exports the subdivision of a based `n`-cube into the based simpli
 its Kuhn (Freudenthal) cells, culminating in
 `Hurewicz.NativeSubdivision.nativeCubeSubdivision_class`:
 `Additive.ofMul ⟦p⟧ = ∑ e : Perm (Fin n), cubeOrientation e • basedSimplexClass (nativeBasedCubeSimplex p hp e)`
-for an internally based cube `p` (Hatcher, *Algebraic Topology*, proof of Theorem 4.32).
+for an internally based cube `p`, a step of this development's proof of the Hurewicz theorem
+(statement: Hatcher, *Algebraic Topology*, Theorem 4.32).
 
 The development lives in the following modules, in dependency order.
 

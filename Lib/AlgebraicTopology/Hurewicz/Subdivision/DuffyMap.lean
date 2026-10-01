@@ -24,8 +24,9 @@ cube.
 
 The cumulative-product map from the cube onto a simplex is Duffy's transformation
 (cf. M. G. Duffy, *Quadrature over a pyramid or cube of integrands with a singularity at
-a vertex*, 1982); here it serves as the canonical chart of a Kuhn chamber in the proof of
-the Hurewicz theorem (Hatcher, *Algebraic Topology*, Theorem 4.32).
+a vertex*, 1982); here it serves as the canonical chart of a Kuhn chamber in this
+development's proof of the Hurewicz theorem (statement: Hatcher, *Algebraic Topology*,
+Theorem 4.32; the argument is recorded in `Lib/docs/C.md`).
 
 ## Main definitions
 

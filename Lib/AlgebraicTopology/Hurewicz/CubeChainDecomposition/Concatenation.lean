@@ -26,8 +26,9 @@ The general lemmas on supported chains used along the way (a pushforward along a
 of a point chain is a point chain) are stated for the singular chains of
 `Lib.AlgebraicTopology.SingularHomology`.
 
-This is the chain-level form of the additivity of the Hurewicz map (Hatcher,
-*Algebraic Topology*, proof of Theorem 4.32).
+This is the chain-level form of the additivity of the Hurewicz map in this development's proof
+of the Hurewicz theorem (statement: Hatcher, *Algebraic Topology*, Theorem 4.32; the argument is
+recorded in `Lib/docs/C.md`).
 
 ## Main results
 

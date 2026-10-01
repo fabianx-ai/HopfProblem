@@ -16,7 +16,8 @@ the tetrahedron boundary along their diagonals; each yields a pair of faces, and
 are homotopic, so `[face 3] + [face 1] = [face 0] + [face 2]`.  Applied to the normalized
 tetrahedron of a singular `3`-simplex this gives `normalizedTriangle_boundary_relation`: the
 triangle-class operator vanishes on boundaries.  This is the relation that makes the inverse
-Hurewicz map well defined on `H_2` (Hatcher, Thm 4.32, proof).
+Hurewicz map well defined on `H_2` in this development's proof of the degree-two Hurewicz
+theorem (statement: Hatcher, Thm 4.32; the argument is recorded in `Lib/docs/C.md`).
 
 ## Main results
 
