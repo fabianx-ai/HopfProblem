@@ -143,9 +143,11 @@ def GeneralPosition.MapAvoidancePatch.Compatible {E G H K X N : Type*}
     (f : X → N) : Prop :=
   Set.MapsTo f (tsupport p.cutoff) p.chart.source
 
-/-- One patch step: a smooth `f` compatible with all patches is homotopic rel `C` to a smooth map,
-  still compatible, that misses the range of `g` wherever `f` did or the cutoff of patch `i` is
-  nonzero. -/
+/-- One patch step: let `X`, `Y` be smooth manifolds modelled on finite-dimensional `E`, `E'` with
+  `X × Y` Lindelöf, `N` modelled on finite-dimensional `G` with `dim E + dim E' < dim G`, `p` a
+  finite family of avoidance patches rel `C` and `g : Y → N` smooth. Then a smooth `f` compatible
+  with all patches is homotopic rel `C` to a smooth map, still compatible, that misses the range
+  of `g` wherever `f` did or the cutoff of patch `i` is nonzero. -/
 theorem GeneralPosition.exists_patch_step {E G H K X N : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [NormedAddCommGroup G] [NormedSpace ℝ G] [TopologicalSpace H]
     [TopologicalSpace K] {I : ModelWithCorners ℝ E H} {J : ModelWithCorners ℝ G K}
