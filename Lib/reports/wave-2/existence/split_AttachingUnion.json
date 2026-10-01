@@ -1,0 +1,1305 @@
+{
+"module": "Lib.Geometry.Manifold.Morse.Existence",
+"source": "Lib/Geometry/Manifold/Morse/Existence.lean",
+"source_sha256": "cafc53a546def8d90623bacdf4f956764fa5c55a98702dfd25f91cea887a4785",
+"units_kept": 109,
+"units_moved": 8,
+"units": [
+{
+"names": [
+"ManifoldMorse.SignedMorseChart.exists_attachingUnionHomeomorph_with_level_and_orbits"
+],
+"class": "move",
+"lines": [
+46,
+133
+],
+"sha256": "52a67132492bf109d76533daf0a85b3770c06fcee28525bd0cee3f2659bf4f12"
+},
+{
+"names": [
+"ManifoldMorse.SignedMorseChart.FollowsModelBoundaryOrbits"
+],
+"class": "move",
+"lines": [
+135,
+160
+],
+"sha256": "35d9b96e65295683882144b78365ad67dfee4c2bfd1d1eafbca73726826a69dc"
+},
+{
+"names": [
+"ManifoldMorse.SignedMorseChart.followsModelBoundaryOrbits_of_flow"
+],
+"class": "move",
+"lines": [
+162,
+193
+],
+"sha256": "bc9fcf86a9c520ed47fb7c750a1e68332dcf9584f6e5398a2a98d8c459f43318"
+},
+{
+"names": [
+"ManifoldMorse.SignedMorseChart.exists_closed_productBlock_in"
+],
+"class": "move",
+"lines": [
+195,
+218
+],
+"sha256": "0f04285271eb015eb151273f11ade86c9600239a3f1e9ef00dfc9dfd185bb100"
+},
+{
+"names": [
+"ManifoldMorse.SignedMorseChart.exists_fieldCompatibleBlock"
+],
+"class": "move",
+"lines": [
+220,
+238
+],
+"sha256": "ce6150eafa2c0fcb566b5e964c94d3196341d961a58d268f82623741741fca3b"
+},
+{
+"names": [
+"ManifoldMorse.exists_isolating_radius"
+],
+"class": "move",
+"lines": [
+240,
+262
+],
+"sha256": "c5ba070f5a6f0bc32602d569576413a320e46f77be364a89c0d6762776752270"
+},
+{
+"names": [
+"ManifoldMorse.SignedMorseChart.exists_isolated_fieldCompatibleBlock_lt"
+],
+"class": "move",
+"lines": [
+264,
+293
+],
+"sha256": "02fc0c549ba84f4884179b9c8f743ffd81a261e16843ad620fabbe475e2021f9"
+},
+{
+"names": [
+"ManifoldMorse.isOpen_regularInChart"
+],
+"class": "keep",
+"lines": [
+297,
+324
+],
+"sha256": "6cfc30a90a6e2eda9f3c5ff9251af6603895128bdeaf4fb07b03ac854e82b0eb"
+},
+{
+"names": [
+"ManifoldMorse.isOpen_regularPoint"
+],
+"class": "keep",
+"lines": [
+326,
+343
+],
+"sha256": "ced6e535c7e8534d08e08e6786dedda73d45905e3d8a52892bb34e0fb65ab0b9"
+},
+{
+"names": [
+"ManifoldMorse.isOpen_regularOn"
+],
+"class": "keep",
+"lines": [
+345,
+351
+],
+"sha256": "a9fad84fd27977b27e5aea416dbd469734b56088338f21644537fe356691fa5b"
+},
+{
+"names": [
+"ManifoldMorse.eventually_criticalPoints_eq"
+],
+"class": "keep",
+"lines": [
+353,
+367
+],
+"sha256": "fd0dcc113aff9e2f29ee1c4523c204f2ce09f030f51341f9d5614cd9a564678e"
+},
+{
+"names": [
+"ManifoldMorse.constantPerturb"
+],
+"class": "keep",
+"lines": [
+371,
+373
+],
+"sha256": "20acf77247acba9ea447bc5d25f2196e8ba27171ae4345727e5232e1880ae4a6"
+},
+{
+"names": [
+"ManifoldMorse.contMDiff_constantPerturb"
+],
+"class": "keep",
+"lines": [
+375,
+380
+],
+"sha256": "6668a2118f85650566783a33559f2cae39f55838862880ea98f1e67b7cac0732"
+},
+{
+"names": [
+"ManifoldMorse.mfderiv_constantPerturb_of_locally_constant"
+],
+"class": "keep",
+"lines": [
+382,
+393
+],
+"sha256": "5f9e75a61358dea7c38c7e569eb80a4aa1a06419dba6296d39fa404a80b69a1d"
+},
+{
+"names": [
+"ManifoldMorse.eventually_constantPerturb_morse_criticalPoints"
+],
+"class": "keep",
+"lines": [
+395,
+432
+],
+"sha256": "42d6f27f85b5fa33772aca2da1bc160b66a2110f41ee0799a3e81a8727767f2c"
+},
+{
+"names": [
+"ManifoldMorse.exists_separating_critical_value"
+],
+"class": "keep",
+"lines": [
+434,
+488
+],
+"sha256": "4a8c791c84a7d47858a8c5fb32e0a6d446a83b45aa7387e68bb9ff01b12b3f2d"
+},
+{
+"names": [
+"ManifoldMorse.exists_distinct_critical_values"
+],
+"class": "keep",
+"lines": [
+490,
+537
+],
+"sha256": "e9723b4b87b5053249bc4bf65a6a0220f93ec38b799adec8f643e751af3a4426"
+},
+{
+"names": [
+"ManifoldMorse.exists_morse_function_with_distinct_critical_values"
+],
+"class": "keep",
+"lines": [
+539,
+549
+],
+"sha256": "62cd58fbb70458ba47de95615ff2847b37a0868cc0190b675f0ef15c9132a304"
+},
+{
+"names": [
+"ManifoldMorse.exists_morse_boundary_attachment_with_model_orbits_lt"
+],
+"class": "move",
+"lines": [
+551,
+626
+],
+"sha256": "a1d8adc3c9e9fbdb2684512eb8e0973b96df0acb5b2b4222126bba84109cac5a"
+},
+{
+"names": [
+"SurgeryBoundaryPair.changeNewBoundary"
+],
+"class": "keep",
+"lines": [
+630,
+656
+],
+"sha256": "a7260b3ffad57987a554809b2f1913b4faa0aa5779d57f887a8f30031d651b62"
+},
+{
+"names": [
+"ClosedCover.frontierLevelHomeomorph"
+],
+"class": "keep",
+"lines": [
+658,
+691
+],
+"sha256": "5d866d0ac0609b9999d3a1cbba87b6e97f7d50e12cb71e8e1c4345fb54ead8fc"
+},
+{
+"names": [
+"SurgeryBoundaryPair.exchange_preserves_incidence"
+],
+"class": "keep",
+"lines": [
+693,
+707
+],
+"sha256": "8d35304fdf257d3d888b8c1116b41cdaa0325dcdb251cf25cbfdf355468c49ad"
+},
+{
+"names": [
+"SurgeryBoundaryPair.complementHomeomorph"
+],
+"class": "keep",
+"lines": [
+709,
+717
+],
+"sha256": "d94efc1a3ce6631d3d9b512a7faff0f1272a4b2eed77bb07ef829c95d2d98320"
+},
+{
+"names": [
+"ManifoldMorse.SignedMorseChart.boundaryLevelHomeomorph"
+],
+"class": "keep",
+"lines": [
+719,
+743
+],
+"sha256": "6009b9470962788c271edb21ba33262c57c6b4d89126600a048a42e21d65ee59"
+},
+{
+"names": [
+"ManifoldMorse.SignedMorseChart.levelSurgeryBoundaryPair"
+],
+"class": "keep",
+"lines": [
+745,
+770
+],
+"sha256": "355950b5c964581c8fd1d4c6426154ca05a5ab5077cdbf35418e5106471481fb"
+},
+{
+"names": [
+"ManifoldMorse.SignedMorseChart.normHandleMap_belt_height"
+],
+"class": "keep",
+"lines": [
+772,
+794
+],
+"sha256": "04eba305a34dc46ebd30a280ef99f339b5ab27a81cc91f6464fb0dd6aa9721e9"
+},
+{
+"names": [
+"ManifoldMorse.SignedMorseChart.beltCoreMap"
+],
+"class": "keep",
+"lines": [
+798,
+817
+],
+"sha256": "2a9d33a396739a2829760609e7ee71ceeb8a49b7cd633c8a94148f3c21f3d86f"
+},
+{
+"names": [
+"ManifoldMorse.SignedMorseChart.beltCoreMap_coe"
+],
+"class": "keep",
+"lines": [
+819,
+835
+],
+"sha256": "42ce6c7cd46cdbd844e6f233369a7db1c6c0e5ebdf29a1cdb1168e91cc4ec439"
+},
+{
+"names": [
+"ManifoldMorse.SignedMorseChart.contMDiff_beltCoreMap_ambient"
+],
+"class": "keep",
+"lines": [
+837,
+880
+],
+"sha256": "02f66674ed999e60eee1c036b6ce346598f6215cca5eb505f537fec443f381c5"
+},
+{
+"names": [
+"ManifoldMorse.SignedMorseChart.beltSphere_eq_beltCoreMap"
+],
+"class": "keep",
+"lines": [
+882,
+907
+],
+"sha256": "fe9824e9a086266bcd8f9a09342655b8da036bbc66a91368d0f58a7b0bbfb581"
+},
+{
+"names": [
+"ManifoldMorse.SignedMorseChart.contMDiff_beltCoreMap"
+],
+"class": "keep",
+"lines": [
+909,
+926
+],
+"sha256": "56793f71f28467650b9f2ac9f1f9114b917634f95177976ef5c3751cba618492"
+},
+{
+"names": [
+"PartialChart.restrictSource"
+],
+"class": "keep",
+"lines": [
+930,
+941
+],
+"sha256": "0ca0bab4c297e9cb7c8d7260d9fbcdb59e2c2d84ad2dbdcefe989461e149feaf"
+},
+{
+"names": [
+"PartialChart.restrictTarget"
+],
+"class": "keep",
+"lines": [
+943,
+950
+],
+"sha256": "e4230596cd31aff40d897feb9100d43926e24809727ee29b890db5fc9edb2b54"
+},
+{
+"names": [
+"PartialChart.bijective_mfderiv"
+],
+"class": "keep",
+"lines": [
+952,
+961
+],
+"sha256": "f4b394123785b547f58a029d3c977d7943a5d3bfad35914a154ef11e102930f5"
+},
+{
+"names": [
+"PartialChart.injective_mfderiv_linear_sphere"
+],
+"class": "keep",
+"lines": [
+963,
+983
+],
+"sha256": "d2210c146cc464abdc8992bd67d584f544058e636322e2c32c69c0cf0996386c"
+},
+{
+"names": [
+"ManifoldMorse.SignedMorseChart.injective_attachingCoreMap"
+],
+"class": "keep",
+"lines": [
+985,
+999
+],
+"sha256": "56635791c1926aa7340f4da9304a6c9205ec653000123ca56eb6e4a2ae763726"
+},
+{
+"names": [
+"ManifoldMorse.SignedMorseChart.injective_beltCoreMap"
+],
+"class": "keep",
+"lines": [
+1001,
+1015
+],
+"sha256": "341a07d23cadb0dd24768ca93d8e2ccef8efabae5ac4f134c2b2824599bfdf24"
+},
+{
+"names": [
+"ManifoldMorse.SignedMorseChart.attachingCoreMap_isClosedEmbedding"
+],
+"class": "keep",
+"lines": [
+1017,
+1029
+],
+"sha256": "5f9273d38b2c01d50c1d166f5bba358bb744f095f5af6a270e149461dbad23db"
+},
+{
+"names": [
+"ManifoldMorse.SignedMorseChart.beltCoreMap_isClosedEmbedding"
+],
+"class": "keep",
+"lines": [
+1031,
+1042
+],
+"sha256": "5509f6871b307314dfeca2b5207c984688fd293805756c8d14286dadf80360c4"
+},
+{
+"names": [
+"ManifoldMorse.SignedMorseChart.injective_mfderiv_attachingCoreMap_ambient"
+],
+"class": "keep",
+"lines": [
+1044,
+1079
+],
+"sha256": "03e2bf7bd43db68e50d98615326dfcb8dc3622ae839b62bfbaef7428b6149da7"
+},
+{
+"names": [
+"ManifoldMorse.SignedMorseChart.injective_mfderiv_beltCoreMap_ambient"
+],
+"class": "keep",
+"lines": [
+1081,
+1115
+],
+"sha256": "88bf3bcfdd15391178e7f2845277ebef4ef49255926aeab6484b9e41f28e71a8"
+},
+{
+"names": [
+"ManifoldMorse.SignedMorseChart.injective_mfderiv_attachingCoreMap"
+],
+"class": "keep",
+"lines": [
+1117,
+1136
+],
+"sha256": "2e2d244873bfe544fa2aeb03c6a9a4e598d85734f032f9ce7e4e6389a0e68469"
+},
+{
+"names": [
+"ManifoldMorse.SignedMorseChart.injective_mfderiv_beltCoreMap"
+],
+"class": "keep",
+"lines": [
+1138,
+1157
+],
+"sha256": "18a1fb2be1d10bd9fec03e0e6fe09bd00ab2a556287ad6ad03a55a5db8b2bb05"
+},
+{
+"names": [
+"ManifoldSmoothing.flattenTime"
+],
+"class": "keep",
+"lines": [
+1161,
+1163
+],
+"sha256": "9e42a152e880bdabe0505633cc75f85981ffafb5ebd729764b6475c02845a7e3"
+},
+{
+"names": [
+"ManifoldSmoothing.continuous_flattenTime"
+],
+"class": "keep",
+"lines": [
+1165,
+1170
+],
+"sha256": "08f360be97c1c61c8dc545142e990e2cf1d55d0824419fb92c838af7cdef6030"
+},
+{
+"names": [
+"ManifoldSmoothing.flattenTime_eq_zero"
+],
+"class": "keep",
+"lines": [
+1172,
+1177
+],
+"sha256": "ff16b522ffebc66e813408184e08f2640be5800b80dfb88cc820ff0488a55cf4"
+},
+{
+"names": [
+"ManifoldSmoothing.flattenTime_eq_one"
+],
+"class": "keep",
+"lines": [
+1179,
+1184
+],
+"sha256": "1fdb7ae71a9bcb4febaf9e7930b8e302ab9d93728f0b987928230909c27b3e58"
+},
+{
+"names": [
+"ManifoldSmoothing.flattenedHomotopyMap"
+],
+"class": "keep",
+"lines": [
+1186,
+1192
+],
+"sha256": "ae54cedf88d4f813fee9fdb537de0e59f8230c3cb3c974fd97496b2b7fd6fcf3"
+},
+{
+"names": [
+"ManifoldSmoothing.flattenedHomotopyMap_lower"
+],
+"class": "keep",
+"lines": [
+1194,
+1199
+],
+"sha256": "142a12084d5a93fee830871c0a1c0d4581d38b719d9390dbc0c8028801e9be1f"
+},
+{
+"names": [
+"ManifoldSmoothing.flattenedHomotopyMap_upper"
+],
+"class": "keep",
+"lines": [
+1201,
+1206
+],
+"sha256": "dfd378ed2bf5e1db11740ab4c50e948597cedbbcb70fad0c8e4105c587b13af9"
+},
+{
+"names": [
+"ManifoldSmoothing.homotopyCollars"
+],
+"class": "keep",
+"lines": [
+1210,
+1212
+],
+"sha256": "f57b52a3e8bc588610a9908971521ecd47464aa54e2f17cc67d5500c80305041"
+},
+{
+"names": [
+"ManifoldSmoothing.homotopyCollarNeighborhood"
+],
+"class": "keep",
+"lines": [
+1214,
+1216
+],
+"sha256": "8c1ecbbd1721370833f9150a35e4808ccfc8ae8af230bf3157682c17526b8ec0"
+},
+{
+"names": [
+"ManifoldSmoothing.isClosed_homotopyCollars"
+],
+"class": "keep",
+"lines": [
+1218,
+1222
+],
+"sha256": "a4ecef641105c00c71f6704bf9291257c56a8fb0da5abf5b5551d755ea13544e"
+},
+{
+"names": [
+"ManifoldSmoothing.isOpen_homotopyCollarNeighborhood"
+],
+"class": "keep",
+"lines": [
+1224,
+1228
+],
+"sha256": "79dade2ce2debc6ba90dd2a6dc6ba08e534ab80fc4e1c8f4268e90dc86f7899e"
+},
+{
+"names": [
+"ManifoldSmoothing.homotopyCollars_subset"
+],
+"class": "keep",
+"lines": [
+1230,
+1235
+],
+"sha256": "48d5eefa114ca5c887864dfd5a39b32fd54dc14c1b3a0e28b04cdc059bc68d96"
+},
+{
+"names": [
+"ChartMapPerturbation.coordinateFamily"
+],
+"class": "keep",
+"lines": [
+1239,
+1244
+],
+"sha256": "5431a881d206aa2297b1df82dc8971898365000a17f275e11e2621116cca9f85"
+},
+{
+"names": [
+"ChartMapPerturbation.Valid"
+],
+"class": "keep",
+"lines": [
+1246,
+1251
+],
+"sha256": "ac2e87f2f6781adfc9c1ec442a70ce4c93c9ef630f01e4e02be5d126dee72a1c"
+},
+{
+"names": [
+"ChartMapPerturbation.perturb"
+],
+"class": "keep",
+"lines": [
+1253,
+1258
+],
+"sha256": "5595cf44876032ebeeaf86c5fac4ef8a57173da7591a4507d47964f61b0fecf9"
+},
+{
+"names": [
+"ChartMapPerturbation.perturb_eq_of_zero"
+],
+"class": "keep",
+"lines": [
+1260,
+1270
+],
+"sha256": "4df48fc5fd20ed5d83166fc481c4ed961b3f69fac6d99a30640e9f767dd8b950"
+},
+{
+"names": [
+"ChartMapPerturbation.perturb_zero"
+],
+"class": "keep",
+"lines": [
+1272,
+1282
+],
+"sha256": "5db11ccc1e1aa8e0f63c6ce0a1c2fa4e51d086552b49f3da3e6044b7aa04e45b"
+},
+{
+"names": [
+"ChartMapPerturbation.valid_zero"
+],
+"class": "keep",
+"lines": [
+1284,
+1291
+],
+"sha256": "7caadfbbbade01a96da0826643182ae40aed7afddb11eb1eeeafd7fade77efca"
+},
+{
+"names": [
+"ChartMapPerturbation.coordinate_mem_target"
+],
+"class": "keep",
+"lines": [
+1293,
+1302
+],
+"sha256": "ad93cf51565dc09ff0202115f750246af84ce2a3d6cc55c758a9fc9d2f66d30f"
+},
+{
+"names": [
+"ChartMapPerturbation.perturb_mem_source"
+],
+"class": "keep",
+"lines": [
+1304,
+1312
+],
+"sha256": "e60a8ba509deb7aaaf49d4b2e691d08b68577bf893636c428df177891e68b729"
+},
+{
+"names": [
+"ChartMapPerturbation.chart_perturb"
+],
+"class": "keep",
+"lines": [
+1314,
+1322
+],
+"sha256": "c338a6e5e2d976eec1c7043249e121345e204b1e882f36e81007a7e9a4c7a1c5"
+},
+{
+"names": [
+"ChartMapPerturbation.contMDiffAt_coordinateFamily"
+],
+"class": "keep",
+"lines": [
+1324,
+1335
+],
+"sha256": "6c2c756f87f8fc5589ffe23392f95bfda30983aee0c9e1dd66dc7015bacf319f"
+},
+{
+"names": [
+"ChartMapPerturbation.eventually_valid"
+],
+"class": "keep",
+"lines": [
+1337,
+1350
+],
+"sha256": "7ebe6af557bd3aa220077c16a79d6dee70c3017653f64a9b964f36ece0bdb66f"
+},
+{
+"names": [
+"ChartMapPerturbation.exists_radius_valid"
+],
+"class": "keep",
+"lines": [
+1352,
+1362
+],
+"sha256": "ac5fcbd9c235b2ea4fb4cedc1aebea62cc710e6b493ba84eff2fe3ba51b6590c"
+},
+{
+"names": [
+"ChartMapPerturbation.contMDiffAt_perturb"
+],
+"class": "keep",
+"lines": [
+1364,
+1390
+],
+"sha256": "5a2ed324546af4e85e29e7e00d0a6249dd16bfc336fea968ba3605288dc1922d"
+},
+{
+"names": [
+"ChartMapPerturbation.contMDiff_perturb"
+],
+"class": "keep",
+"lines": [
+1392,
+1404
+],
+"sha256": "26a455182f2ad7025aea6ce6efe0c2222ea69092057c1d7b0ab0476825ac97b5"
+},
+{
+"names": [
+"ChartMapPerturbation.continuousAt_coordinateFamily"
+],
+"class": "keep",
+"lines": [
+1406,
+1415
+],
+"sha256": "6b4a37b8bed10a6372de7a3169230c5b252fac2e48a4c66291c6df0423698b9b"
+},
+{
+"names": [
+"ChartMapPerturbation.eventually_valid_of_continuous"
+],
+"class": "keep",
+"lines": [
+1417,
+1428
+],
+"sha256": "53e7737b14a53c290785ba212a0a65d840f0a2e1426ec697472819225b89cab9"
+},
+{
+"names": [
+"ChartMapPerturbation.exists_radius_valid_of_continuous"
+],
+"class": "keep",
+"lines": [
+1430,
+1439
+],
+"sha256": "720a86966514385e33f82b80d4c3f3c2fc5267c5f04d0e1f521d54080caf6b49"
+},
+{
+"names": [
+"ChartMapPerturbation.continuousAt_perturb"
+],
+"class": "keep",
+"lines": [
+1441,
+1465
+],
+"sha256": "c0e08dc974312285f25a77d691ae8182d6200f36669cd515e16a913d7757b923"
+},
+{
+"names": [
+"ChartMapPerturbation.eventually_maps_compact_into_open_of_continuous"
+],
+"class": "keep",
+"lines": [
+1467,
+1480
+],
+"sha256": "68d297ecdcf49590232f6d9782f5a0b9c6f5fb30e72e957a33bf29fe453059b2"
+},
+{
+"names": [
+"ChartMapPerturbation.contMDiffAt_perturb_of_contMDiffAt"
+],
+"class": "keep",
+"lines": [
+1482,
+1510
+],
+"sha256": "e3547a92e8682cef9b6341c4754b73f1020187e38dc19312a1cb875d14921392"
+},
+{
+"names": [
+"ChartMapPerturbation.eventually_maps_compact_into_open"
+],
+"class": "keep",
+"lines": [
+1512,
+1528
+],
+"sha256": "5a2aa292c7e776723e1d945f2e02360a20202bdb23ad61dce66e0e1a36eabdd9"
+},
+{
+"names": [
+"ChartMapPerturbation.norm_interval_smul_lt"
+],
+"class": "keep",
+"lines": [
+1530,
+1536
+],
+"sha256": "d8afd369195f74688d6372bd801d6c7bbdf685b1d4292c33e6addccd788f41ac"
+},
+{
+"names": [
+"ChartMapPerturbation.homotopyRel"
+],
+"class": "keep",
+"lines": [
+1538,
+1570
+],
+"sha256": "67356eb33405b55b3bdb668bca1124702eb1ee15158208321bb00bdb402fae52"
+},
+{
+"names": [
+"ChartMapPerturbation.variablePerturb"
+],
+"class": "keep",
+"lines": [
+1572,
+1577
+],
+"sha256": "d60e5329ebf395448beb6df3e700485aeeb48958970aa158fc5fdef8e933290e"
+},
+{
+"names": [
+"ChartMapPerturbation.continuous_variablePerturb"
+],
+"class": "keep",
+"lines": [
+1579,
+1591
+],
+"sha256": "ebfaf860385cee94caf1c0d71882d5d2ed97e65c4f59465b5da772d9c33cd58f"
+},
+{
+"names": [
+"ChartMapPerturbation.contMDiffAt_variablePerturb"
+],
+"class": "keep",
+"lines": [
+1593,
+1604
+],
+"sha256": "e2e3659454bb194a15f32d0d0629a4f116efb855f0b74fd263d73ad3ea36cb42"
+},
+{
+"names": [
+"ChartMapPerturbation.variableHomotopyRel"
+],
+"class": "keep",
+"lines": [
+1606,
+1643
+],
+"sha256": "a2b39fc04fa2953884706e10a05803cb93591c70e869af191ccad425c49dfe30"
+},
+{
+"names": [
+"ChartMapPerturbation.cutoffCoordinates"
+],
+"class": "keep",
+"lines": [
+1645,
+1650
+],
+"sha256": "59fd18843dc0b285c6b2f0414651b689122f86a741df4f48d70807262c63dc57"
+},
+{
+"names": [
+"ChartMapPerturbation.cutoffCoordinates_eq_of_one"
+],
+"class": "keep",
+"lines": [
+1652,
+1657
+],
+"sha256": "88f4e11fc466b422cca6ef2bc6950bb2b9210090677d338bf1ecc8da5d475037"
+},
+{
+"names": [
+"ChartMapPerturbation.continuous_cutoffCoordinates"
+],
+"class": "keep",
+"lines": [
+1659,
+1677
+],
+"sha256": "16872ff8b83373511fbac9a1402ebf3c575c5d0094441d760838de4b9e9f5553"
+},
+{
+"names": [
+"ChartMapPerturbation.contMDiffAt_cutoffCoordinates"
+],
+"class": "keep",
+"lines": [
+1679,
+1694
+],
+"sha256": "573b0c5857116a657fa241654bb376caa8211b2f7c141bc5fa113c3f1e0ed549"
+},
+{
+"names": [
+"ChartMapPerturbation.exists_smooth_coordinate_approximation"
+],
+"class": "keep",
+"lines": [
+1696,
+1720
+],
+"sha256": "ba8613c7946c0b182c7d4c04fb7614d4637cfea8149ae772e9c45ddbaa2f9727"
+},
+{
+"names": [
+"ChartMapPerturbation.smoothedMap"
+],
+"class": "keep",
+"lines": [
+1722,
+1727
+],
+"sha256": "09a069de859a47e055851c18e3de3d0e13b5b73ae8108e4cceb519d243faea31"
+},
+{
+"names": [
+"ChartMapPerturbation.coordinateFamily_eq_on_plateau"
+],
+"class": "keep",
+"lines": [
+1729,
+1737
+],
+"sha256": "4a4bbc55508ae30e47f79a8a1340875ed1554e8c4c869e97f56918c486460877"
+},
+{
+"names": [
+"ChartMapPerturbation.smoothedMap_eq_on_plateau"
+],
+"class": "keep",
+"lines": [
+1739,
+1756
+],
+"sha256": "03b441d8946598e9d1fef626f45da137d86f569235b0822d1ce20fba635f350c"
+},
+{
+"names": [
+"ChartMapPerturbation.contMDiffAt_smoothedMap_on_plateau"
+],
+"class": "keep",
+"lines": [
+1758,
+1781
+],
+"sha256": "d5084d036d82cd9eb70a753c5838e5fb7df0693a3c66ba6dc669624fff8483f8"
+},
+{
+"names": [
+"ChartMapPerturbation.contMDiffAt_smoothedMap_of_old"
+],
+"class": "keep",
+"lines": [
+1783,
+1796
+],
+"sha256": "f620d325a14532d54ae7d3975fa65194dee55d846bef8ea6d3421304ccc73558"
+},
+{
+"names": [
+"HomotopicRelWithin"
+],
+"class": "keep",
+"lines": [
+1800,
+1803
+],
+"sha256": "6b53abe0b1bf421b928afdbb008eb98eba72e4583922374804867ac17e0a419d"
+},
+{
+"names": [
+"HomotopicRelWithin.refl"
+],
+"class": "keep",
+"lines": [
+1805,
+1809
+],
+"sha256": "1c92710fdc4f2af4514c1b60187354d63806b279d754ef22a6ce3ee5fb187cee"
+},
+{
+"names": [
+"HomotopicRelWithin.homotopicRel"
+],
+"class": "keep",
+"lines": [
+1811,
+1816
+],
+"sha256": "4db873ecd036cc33ddad49a6d089168bedf4a1d49aa91972af7c1063a1ce8ad5"
+},
+{
+"names": [
+"HomotopicRelWithin.mapsTo_right"
+],
+"class": "keep",
+"lines": [
+1818,
+1824
+],
+"sha256": "319354f3e14e9bc16c38e3d2c83261c41242b12cc824d6911f627fac7b25329b"
+},
+{
+"names": [
+"HomotopicRelWithin.trans"
+],
+"class": "keep",
+"lines": [
+1826,
+1838
+],
+"sha256": "714bd1df07323c95ec1fc27b9880e7a2bc700c337c7d7ef5b020de4730466116"
+},
+{
+"names": [
+"HomotopicRelWithin.mono"
+],
+"class": "keep",
+"lines": [
+1840,
+1848
+],
+"sha256": "dcc57873b3e9fd2e98d99ea4e12542ad070989c697060928fef02842812410ec"
+},
+{
+"names": [
+"ChartMapPerturbation.perturb_mem_of_source_subset"
+],
+"class": "keep",
+"lines": [
+1850,
+1859
+],
+"sha256": "26b90027b50c62ca4910942efb5e0bf7445026be6b40d9cd88ca3d0a92bc8d82"
+},
+{
+"names": [
+"ChartMapPerturbation.homotopicRelWithin_of_source_subset"
+],
+"class": "keep",
+"lines": [
+1861,
+1877
+],
+"sha256": "4d3868ff7a0b4be51c33acc997a59210c03406ade4415c4b52b5a24f43ed4f51"
+},
+{
+"names": [
+"ChartMapPerturbation.variableHomotopicRelWithin_of_source_subset"
+],
+"class": "keep",
+"lines": [
+1879,
+1896
+],
+"sha256": "e1545dcc49711ae5f0caaa650b536fcace68aec54b123695f6360ae8a4a839d0"
+},
+{
+"names": [
+"ManifoldSmoothing.MapSmoothingPatch",
+"ManifoldSmoothing.MapSmoothingPatch.mk",
+"ManifoldSmoothing.MapSmoothingPatch.chart",
+"ManifoldSmoothing.MapSmoothingPatch.cutoff",
+"ManifoldSmoothing.MapSmoothingPatch.outer",
+"ManifoldSmoothing.MapSmoothingPatch.smooth",
+"ManifoldSmoothing.MapSmoothingPatch.outer_smooth",
+"ManifoldSmoothing.MapSmoothingPatch.compact",
+"ManifoldSmoothing.MapSmoothingPatch.outer_compact",
+"ManifoldSmoothing.MapSmoothingPatch.nested"
+],
+"class": "keep",
+"lines": [
+1900,
+1912
+],
+"sha256": "419e501ca06a7b6dc4b6997174ca8041ce470124aa8b8a0faf3bec7a7074a0a8"
+},
+{
+"names": [
+"ManifoldSmoothing.MapSmoothingPatch.Compatible"
+],
+"class": "keep",
+"lines": [
+1914,
+1921
+],
+"sha256": "660b614817a0f50eb4324169779d4d8a1c93fb2b2f3446ee552fe82482911800"
+},
+{
+"names": [
+"ManifoldSmoothing.MapSmoothingPatch.plateau"
+],
+"class": "keep",
+"lines": [
+1923,
+1929
+],
+"sha256": "634241a7e1c146a6a9102d1414f0b8b5a225f8401e28c13e0da4c1c5361fc889"
+},
+{
+"names": [
+"ManifoldSmoothing.MapSmoothingPatch.inner_support_subset_outer"
+],
+"class": "keep",
+"lines": [
+1931,
+1942
+],
+"sha256": "41356a51b4a0d05a888774b3dabf8e94c25a1c80d67a634002b5db417b3f9038"
+},
+{
+"names": [
+"ManifoldSmoothing.MapSmoothingPatch.inner_compatible"
+],
+"class": "keep",
+"lines": [
+1944,
+1951
+],
+"sha256": "85bd61bdf81c55b4cd5398801f0631140b6be076fa7bd35dc4669e5d5bfa6e81"
+},
+{
+"names": [
+"ManifoldSmoothing.MapSmoothingPatch.plateau_eventually_one"
+],
+"class": "keep",
+"lines": [
+1953,
+1961
+],
+"sha256": "aa08a8711ef7dd37656cde6f02f1fc68ef6aa493bac8ef615679e929f12731fa"
+},
+{
+"names": [
+"ManifoldSmoothing.exists_smoothing_patch_step_within_target"
+],
+"class": "keep",
+"lines": [
+1963,
+2025
+],
+"sha256": "5b2c898fd67ab397bae32a0726a359488a648215c3a7358b70df1a5b0e3d66ca"
+},
+{
+"names": [
+"ManifoldSmoothing.exists_finite_patch_smoothing_within_target"
+],
+"class": "keep",
+"lines": [
+2027,
+2062
+],
+"sha256": "4abe306af4af90dec45e28bcd6578074b5d8a35b9643b9d7933abce507b8d92b"
+},
+{
+"names": [
+"ManifoldSmoothing.exists_finite_patch_smoothing"
+],
+"class": "keep",
+"lines": [
+2064,
+2080
+],
+"sha256": "0ff4d05ec9adfd2d3aa5f71924850e89049ef1d3e98a0be77aa52f5356779527"
+},
+{
+"names": [
+"ManifoldSmoothing.exists_smoothing_of_finite_patches"
+],
+"class": "keep",
+"lines": [
+2082,
+2099
+],
+"sha256": "1a7d74918c5d6d1c308bc2cdd702437653af37eecd4c9e04711829db6a628a1f"
+},
+{
+"names": [
+"ManifoldSmoothing.exists_smoothing_patch_at_in_open"
+],
+"class": "keep",
+"lines": [
+2103,
+2131
+],
+"sha256": "a1ccd6506394d5241250c89ccbf0727e20e518f121babad79be9c84b061e3a01"
+},
+{
+"names": [
+"ManifoldSmoothing.exists_smoothing_patch_at"
+],
+"class": "keep",
+"lines": [
+2133,
+2143
+],
+"sha256": "7b4c8165ec3753140a89bc895cd152e1b70685622fa6c2e918c87d35f570a0e1"
+},
+{
+"names": [
+"ManifoldSmoothing.exists_smooth_map_homotopicRel"
+],
+"class": "keep",
+"lines": [
+2145,
+2168
+],
+"sha256": "268213b262695bf43ab83d61a8ffd5dddd39b86a254a3b4c3887f85920abe280"
+},
+{
+"names": [
+"ManifoldSmoothing.exists_smooth_map_homotopic"
+],
+"class": "keep",
+"lines": [
+2170,
+2180
+],
+"sha256": "6ba374e0328c381e1f7217edff7e045731480270a5b2673c56061233036ef88a"
+},
+{
+"names": [
+"ManifoldSmoothing.contMDiffOn_flattenedHomotopyMap"
+],
+"class": "keep",
+"lines": [
+2182,
+2206
+],
+"sha256": "20e4c77f415bf02af2d61b652b320f328e6ca33eb88a223992f75a866b930bbf"
+},
+{
+"names": [
+"ManifoldSmoothing.exists_smooth_homotopy_with_collars"
+],
+"class": "keep",
+"lines": [
+2208,
+2236
+],
+"sha256": "8c9318540311598a91248493e85243463ad6f7db4b3164c9df69b3905936e28b"
+}
+]
+}
