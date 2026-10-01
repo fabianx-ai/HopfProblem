@@ -140,9 +140,10 @@ theorem MorseCancellation.cancel_unique_zero_one_connection {E M : Type*} [Norme
       fun x : M => x) mdifferentiableAt_const mdifferentiableAt_id rfl rfl
       (Filter.Eventually.of_forall (fun _ => hq)) hbasin htrans
 
-/-- Let `P` be a diffeomorphism of `N`, `γ`, `δ : X → N` with `P ∘ γ = δ`, and `β : Y → N`
-transverse to `δ` at `(x, y)` with `β y = δ x`.  Then `β' := P⁻¹ ∘ β` is differentiable at `y`,
-meets `γ` at `β' y = γ x`, is transverse to `γ` there, and satisfies `P ∘ β' = β`. -/
+/-- Let `P` be a diffeomorphism of `N`, `γ`, `δ : X → N` with `P ∘ γ = δ` and `γ` differentiable
+at `x`, and `β : Y → N` differentiable at `y` and transverse to `δ` at `(x, y)` with `β y = δ x`.
+Then `β' := P⁻¹ ∘ β` is differentiable at `y`, meets `γ` at `β' y = γ x`, is transverse to `γ`
+there, and satisfies `P ∘ β' = β`. -/
 theorem MorseCancellation.exists_transverse_sheet_of_circle_placement {A B E HA HB H X Y N : Type*}
     [NormedAddCommGroup A] [NormedSpace ℝ A] [TopologicalSpace HA] {I : ModelWithCorners ℝ A HA}
     [TopologicalSpace X] [ChartedSpace HA X] [NormedAddCommGroup B] [NormedSpace ℝ B]
