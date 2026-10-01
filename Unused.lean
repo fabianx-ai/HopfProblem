@@ -1,3 +1,5 @@
+import Unused.Topology.Dimension.CubeBoundaryThreeCells
+
 /-!
 # `Unused`: proved declarations that nothing uses
 
@@ -14,5 +16,6 @@ the private helpers of the declarations it received); nothing imports `Unused` â
 
 ## Modules
 
-None yet.
+* `Unused.Topology.Dimension.CubeBoundaryThreeCells`: the dead lemmas of the pieces of
+  `Lib.Topology.Dimension.CubeBoundaryThreeCells` (receipt `Lib/reports/unused/cube3.md`).
 -/

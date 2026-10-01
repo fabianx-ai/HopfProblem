@@ -70,9 +70,6 @@ public theorem edge_mem_iff {N : ℕ} {h : ℝ} {e : Set Ambient} :
 /-- A lower corner belongs to the set and is coordinatewise below every point of it. -/
 def coordinateLowerCorner (C : Set Ambient) (v : Ambient) : Prop :=
   v ∈ C ∧ ∀ r x, x ∈ C → v r ≤ x r
-/-- A coordinate is nonconstant exactly when two points of the set have different values there. -/
-@[expose] public def coordinateNonconstant (C : Set Ambient) (r : Fin 3) : Prop :=
-  ∃ x ∈ C, ∃ y ∈ C, x r ≠ y r
 /-- Two coordinatewise lower corners bound one another, hence agree in every coordinate and are equal. -/
 theorem coordinateLowerCorner_unique {C : Set Ambient} {v w : Ambient}
   (hv : coordinateLowerCorner C v) (hw : coordinateLowerCorner C w) : v = w := by
@@ -148,14 +145,6 @@ theorem square_initial_lowerCorner {h : ℝ} (hh : 0 ≤ h) {v : Ambient} {j k :
   · subst r
     exact le_add_of_nonneg_right (mul_nonneg hb.1 hh)
   · exact le_rfl
-/-- The initial vertex attains every coordinate minimum on a nonnegative-mesh edge. -/
-theorem edge_coordinate_minima_attained {h : ℝ} (hh : 0 ≤ h) (v : Ambient) (j r : Fin 3) :
-  v ∈ edgeGeom h v j ∧ (∀ x ∈ edgeGeom h v j, v r ≤ x r) :=
-  ⟨(edge_initial_lowerCorner hh v j).1, (edge_initial_lowerCorner hh v j).2 r⟩
-/-- The initial vertex attains every coordinate minimum on a nonnegative-mesh square. -/
-theorem square_coordinate_minima_attained {h : ℝ} (hh : 0 ≤ h) {v : Ambient} {j k : Fin 3}
-  (hjk : j < k) (r : Fin 3) : v ∈ squareGeom h v j k ∧ (∀ x ∈ squareGeom h v j k, v r ≤ x r) :=
-  ⟨(square_initial_lowerCorner hh hjk).1, (square_initial_lowerCorner hh hjk).2 r⟩
 /-- Equal nonnegative-mesh edges have the same unique coordinatewise lower corner. -/
 theorem edge_initial_eq_of_set_eq {h : ℝ} (hh : 0 ≤ h) {v w : Ambient} {j l : Fin 3}
   (heq : edgeGeom h v j = edgeGeom h w l) : v = w := by
@@ -188,28 +177,6 @@ theorem edge_direction_eq_of_set_eq {h : ℝ} (hh : 0 < h) {v w : Ambient} {j l 
   have hc := congrArg (fun x : Ambient => x j) hxt
   simp [hjl] at hc
   linarith
-/-- Admissible presentations of the same positive edge have identical starts and directions. -/
-theorem edge_presentation_unique {N : ℕ} {h : ℝ} (hh : 0 < h) {e : Set Ambient}
-  {v w : Ambient} {j l : Fin 3} (hp : EdgeParam N h v j) (he : e = edgeGeom h v j)
-  (hp' : EdgeParam N h w l) (he' : e = edgeGeom h w l) : v = w ∧ j = l := by
-  have _ := hp.1
-  have _ := hp'.1
-  have hgeom : edgeGeom h v j = edgeGeom h w l := he.symm.trans he'
-  exact ⟨edge_initial_eq_of_set_eq (le_of_lt hh) hgeom, edge_direction_eq_of_set_eq hh hgeom⟩
-/-- For positive mesh, an edge varies in exactly its defining coordinate `j`. -/
-theorem edge_nonconstant_coordinates {h : ℝ} (hh : 0 < h) (v : Ambient) (j r : Fin 3) :
-  coordinateNonconstant (edgeGeom h v j) r ↔ r = j := by
-  constructor
-  · rintro ⟨x, hx, y, hy, hxy⟩
-    by_contra hrj
-    obtain ⟨a, ha, rfl⟩ := edge_parameter_extract hx
-    obtain ⟨b, hb, rfl⟩ := edge_parameter_extract hy
-    simp [hrj] at hxy
-  · intro hr
-    subst r
-    refine ⟨v, edge_zero_mem h v j, v + h • EuclideanSpace.single j 1,
-      edge_terminal_mem h v j, ?_⟩
-    simpa using ne_of_gt hh
 /-- Equality of positive square images forces each source moving direction to be one of the target directions. -/
 theorem square_directions_mem_of_set_eq {h : ℝ} (hh : 0 < h) {v w : Ambient} {j k p q : Fin 3}
   (hjk : j < k) (hpq : p < q) (heq : squareGeom h v j k = squareGeom h w p q) :
@@ -239,65 +206,11 @@ theorem square_directions_mem_of_set_eq {h : ℝ} (hh : 0 < h) {v w : Ambient} {
 theorem square_ordered_directions_eq {j k p q : Fin 3} (hjk : j < k) (hpq : p < q)
   (hj : j = p ∨ j = q) (hk : k = p ∨ k = q) : j = p ∧ k = q := by
   omega
-/-- Admissible presentations of the same positive square have identical starts and ordered directions. -/
-theorem square_presentation_unique {N : ℕ} {h : ℝ} (hh : 0 < h) {s : Set Ambient}
-  {v w : Ambient} {j k p q : Fin 3} (hp : SquareParam N h v j k) (hs : s = squareGeom h v j k)
-  (hp' : SquareParam N h w p q) (hs' : s = squareGeom h w p q) : v = w ∧ j = p ∧ k = q := by
-  have heq := hs.symm.trans hs'
-  have hvw := square_initial_eq_of_set_eq (le_of_lt hh) hp.2.1 hp'.2.1 heq
-  have hd := square_directions_mem_of_set_eq hh hp.2.1 hp'.2.1 heq
-  exact ⟨hvw, square_ordered_directions_eq hp.2.1 hp'.2.1 hd.1 hd.2⟩
-/-- For positive mesh, a square varies in exactly its two defining coordinates `j` and `k`. -/
-public theorem square_nonconstant_coordinates {h : ℝ} (hh : 0 < h) {v : Ambient} {j k : Fin 3}
-  (hjk : j < k) (r : Fin 3) : coordinateNonconstant (squareGeom h v j k) r ↔ r = j ∨ r = k := by
-  have _ := hjk
-  constructor
-  · rintro ⟨x, hx, y, hy, hxy⟩
-    by_contra hr
-    push Not at hr
-    obtain ⟨a, ha, b, hb, rfl⟩ := square_parameter_extract hx
-    obtain ⟨c, hc, d, hd, rfl⟩ := square_parameter_extract hy
-    simp [hr.1, hr.2] at hxy
-  · intro hr
-    rcases hr with hr | hr
-    · rw [hr]
-      refine ⟨v, square_zero_mem h v j k, v + h • EuclideanSpace.single j 1,
-        square_first_corner_mem h v j k, ?_⟩
-      simpa using ne_of_gt hh
-    · rw [hr]
-      refine ⟨v, square_zero_mem h v j k, v + h • EuclideanSpace.single k 1,
-        square_second_corner_mem h v j k, ?_⟩
-      simpa using ne_of_gt hh
-/-- Equality of sets transports the existence of two points differing in a chosen coordinate. -/
-theorem coordinate_variation_of_set_eq {C D : Set Ambient} (hCD : C = D) (r : Fin 3) :
-  coordinateNonconstant C r ↔ coordinateNonconstant D r := by subst D; rfl
-/-- Equality of sets transports the assertion that a chosen coordinate has a fixed value. -/
-theorem coordinate_constant_value_transport {C D : Set Ambient} (hCD : C = D)
-  (r : Fin 3) (c : ℝ) : (∀ x ∈ C, x r = c) ↔ (∀ x ∈ D, x r = c) := by subst D; rfl
-/-- Equal two-element direction sets with increasing enumerations have the same ordered pair. -/
-theorem increasing_pair_eq_of_direction_set_eq {j k p q : Fin 3} (hjk : j < k) (hpq : p < q)
-  (hset : ({j, k} : Set (Fin 3)) = {p, q}) : j = p ∧ k = q := by
-  apply square_ordered_directions_eq hjk hpq
-  · have : j ∈ ({p, q} : Set (Fin 3)) := by rw [← hset]; simp
-    simpa using this
-  · have : k ∈ ({p, q} : Set (Fin 3)) := by rw [← hset]; simp
-    simpa using this
 /-- Equal positive edge presentations determine the same unordered pair of endpoints. -/
 theorem edge_endpoints_coherent {h : ℝ} (hh : 0 < h) {v w : Ambient} {j l : Fin 3}
   (heq : edgeGeom h v j = edgeGeom h w l) :
   ({v, v + h • EuclideanSpace.single j 1} : Set Ambient) = {w, w + h • EuclideanSpace.single l 1} := by
   rw [edge_initial_eq_of_set_eq (le_of_lt hh) heq, edge_direction_eq_of_set_eq hh heq]
-/-- Variation in the defining coordinate of a positive edge prevents its two endpoints from coinciding. -/
-theorem edge_endpoints_distinct {h : ℝ} (hh : 0 < h) (v : Ambient) (j : Fin 3) :
-  v ≠ v + h • EuclideanSpace.single j 1 := by
-  have hvar : coordinateNonconstant (edgeGeom h v j) j :=
-    (edge_nonconstant_coordinates hh v j j).2 rfl
-  intro hend
-  obtain ⟨x, hx, y, hy, hxy⟩ := hvar
-  have hedge : edgeGeom h v j = {v} := by rw [edgeGeom, ← hend, segment_same]
-  rw [hedge] at hx hy
-  simp only [Set.mem_singleton_iff] at hx hy
-  exact hxy (by rw [hx, hy])
 /-- Uniqueness of positive square presentations makes the relative-open image independent of the chosen presentation. -/
 theorem square_relInterior_coherent_raw {h : ℝ} (hh : 0 < h) {v w : Ambient} {j k p q : Fin 3}
   (hjk : j < k) (hpq : p < q) (heq : squareGeom h v j k = squareGeom h w p q) :
@@ -321,97 +234,11 @@ public theorem square_remaining_index {j k : Fin 3} (hjk : j < k) :
   · refine ⟨0, by decide, ?_⟩
     intro y hy
     fin_cases y <;> simp_all
-/-- Enumerating the three increasing coordinate pairs identifies their respective remaining coordinates. -/
-theorem square_remaining_index_cases {j k : Fin 3} (hjk : j < k) :
-  (j = 0 ∧ k = 1 ∧ Classical.choose (square_remaining_index hjk) = 2) ∨
-  (j = 0 ∧ k = 2 ∧ Classical.choose (square_remaining_index hjk) = 1) ∨
-  (j = 1 ∧ k = 2 ∧ Classical.choose (square_remaining_index hjk) = 0) := by
-  have hc : (j = 0 ∧ k = 1) ∨ (j = 0 ∧ k = 2) ∨ (j = 1 ∧ k = 2) := by omega
-  rcases hc with ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩
-  · left
-    refine ⟨rfl, rfl, ?_⟩
-    exact ((square_remaining_index (j := 0) (k := 1) (by decide)).unique (by decide)
-      (Classical.choose_spec (square_remaining_index (j := 0) (k := 1) (by decide))).1).symm
-  · right; left
-    refine ⟨rfl, rfl, ?_⟩
-    exact ((square_remaining_index (j := 0) (k := 2) (by decide)).unique (by decide)
-      (Classical.choose_spec (square_remaining_index (j := 0) (k := 2) (by decide))).1).symm
-  · right; right
-    refine ⟨rfl, rfl, ?_⟩
-    exact ((square_remaining_index (j := 1) (k := 2) (by decide)).unique (by decide)
-      (Classical.choose_spec (square_remaining_index (j := 1) (k := 2) (by decide))).1).symm
 /-- The coordinate outside `j,k` is unchanged at every point of the square. -/
 public theorem square_remaining_coordinate {h : ℝ} {v : Ambient} {j k i : Fin 3}
   (hij : i ≠ j) (hik : i ≠ k) {x : Ambient} (hx : x ∈ squareGeom h v j k) : x i = v i := by
   obtain ⟨a, ha, b, hb, rfl⟩ := square_parameter_extract hx
   simp [hij, hik]
-/-- Equal positive squares have the same remaining coordinate and the same constant value there. -/
-theorem square_remaining_intrinsic {h : ℝ} (hh : 0 < h) {v w : Ambient} {j k p q i i' : Fin 3}
-  (hjk : j < k) (hpq : p < q) (heq : squareGeom h v j k = squareGeom h w p q)
-  (hi : i ≠ j ∧ i ≠ k) (hi' : i' ≠ p ∧ i' ≠ q) : i = i' ∧ v i = w i' := by
-  have hd := square_directions_mem_of_set_eq hh hjk hpq heq
-  have hord := square_ordered_directions_eq hjk hpq hd.1 hd.2
-  have hvw := square_initial_eq_of_set_eq (le_of_lt hh) hjk hpq heq
-  have hii : i = i' := by
-    apply (square_remaining_index hjk).unique hi
-    rwa [← hord.1, ← hord.2] at hi'
-  subst w
-  subst i'
-  exact ⟨rfl, rfl⟩
-/-- Zero mesh collapses the edge, closed square, and relative-open square images to the singleton `{v}`. -/
-theorem zero_mesh_images (v : Ambient) (j k : Fin 3) :
-  edgeGeom 0 v j = {v} ∧ squareGeom 0 v j k = {v} ∧ squareOpenGeom 0 v j k = {v} := by
-  constructor
-  · rw [edgeGeom]
-    simp
-  constructor <;> ext x
-  · constructor
-    · rintro ⟨a, ha, b, hb, hx⟩
-      simpa using hx
-    · intro hx
-      subst x
-      exact ⟨0, by simp, 0, by simp, by simp⟩
-  · constructor
-    · rintro ⟨a, ha, b, hb, hx⟩
-      simpa using hx
-    · intro hx
-      subst x
-      exact ⟨1 / 2, by norm_num, 1 / 2, by norm_num, by simp⟩
-/-- At zero mesh, distinct directions present the same collapsed edge. -/
-theorem zero_mesh_edge_nonunique : ∃ (v : Ambient) (j l : Fin 3), j ≠ l ∧ edgeGeom 0 v j = edgeGeom 0 v l := by
-  exact ⟨0, 0, 1, by decide, (zero_mesh_images 0 0 0).1.trans (zero_mesh_images 0 1 1).1.symm⟩
-/-- At zero mesh, distinct ordered direction pairs present the same collapsed square. -/
-theorem zero_mesh_square_nonunique : ∃ (v : Ambient) (j k p q : Fin 3),
-  j < k ∧ p < q ∧ (j, k) ≠ (p, q) ∧ squareGeom 0 v j k = squareGeom 0 v p q := by
-  exact ⟨0, 0, 1, 0, 2, by decide, by decide, by decide,
-    (zero_mesh_images 0 0 1).2.1.trans (zero_mesh_images 0 0 2).2.1.symm⟩
-/-- Swapping the two square parameters and commuting the displacements leaves both the closed and open images unchanged. -/
-theorem square_parameter_swap (h : ℝ) (v : Ambient) (j k : Fin 3) :
-  squareGeom h v j k = squareGeom h v k j ∧ squareOpenGeom h v j k = squareOpenGeom h v k j := by
-  constructor <;> ext x <;> constructor
-  · rintro ⟨a, ha, b, hb, rfl⟩
-    exact ⟨b, hb, a, ha, by module⟩
-  · rintro ⟨a, ha, b, hb, rfl⟩
-    exact ⟨b, hb, a, ha, by module⟩
-  · rintro ⟨a, ha, b, hb, rfl⟩
-    exact ⟨b, hb, a, ha, by module⟩
-  · rintro ⟨a, ha, b, hb, rfl⟩
-    exact ⟨b, hb, a, ha, by module⟩
-/-- For distinct directions, reversing an ordered pair produces a different pair. -/
-theorem swapped_ordered_pair_ne {j k : Fin 3} (hjk : j ≠ k) : (j, k) ≠ (k, j) := by
-  intro hp
-  exact hjk (congrArg Prod.fst hp)
-/-- Requiring increasing directions removes the swap ambiguity from square presentations. -/
-theorem square_order_suffices {h : ℝ} (hh : 0 < h) {v w : Ambient} {j k p q : Fin 3}
-  (hjk : j < k) (hpq : p < q) (heq : squareGeom h v j k = squareGeom h w p q) : j = p ∧ k = q := by
-  have hd := square_directions_mem_of_set_eq hh hjk hpq heq
-  exact square_ordered_directions_eq hjk hpq hd.1 hd.2
-/-- A shared positive edge has presentation data, direction, and endpoints independent of which incident face supplies it. -/
-theorem shared_edge_presentation_identity {h : ℝ} (hh : 0 < h) {v w : Ambient} {j l : Fin 3}
-  (heq : edgeGeom h v j = edgeGeom h w l) :
-  v = w ∧ j = l ∧ ({v, v + h • EuclideanSpace.single j 1} : Set Ambient) = {w, w + h • EuclideanSpace.single l 1} :=
-  ⟨edge_initial_eq_of_set_eq (le_of_lt hh) heq, edge_direction_eq_of_set_eq hh heq,
-    edge_endpoints_coherent hh heq⟩
 /-- The raw relative interior uses a chosen admissible presentation of the square. -/
 noncomputable def squareRelInteriorRaw (N : ℕ) (h : ℝ) (s : {s : Set Ambient // s ∈ squares N h}) : Set Ambient :=
   squareOpenGeom h (Classical.choose s.property) (Classical.choose (Classical.choose_spec s.property))
