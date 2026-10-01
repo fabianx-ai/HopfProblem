@@ -324,7 +324,7 @@ theorem MorseCancellation.monotone_cubicAxisParameter {a : ℝ} (ha : 0 < a) :
     Monotone (cubicAxisParameter a) := by
   intro s t hst
   exact
-    mul_le_mul_of_nonneg_left (strictMono_tanh.monotone (mul_le_mul_of_nonneg_left hst ha.le))
+    mul_le_mul_of_nonneg_left (Real.strictMono_tanh.monotone (mul_le_mul_of_nonneg_left hst ha.le))
       ha.le
 
 /-- The cylinder's transverse norm is bounded by the maximum. -/
