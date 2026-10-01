@@ -458,7 +458,7 @@ theorem MorseCancellation.cubicFlowCylinder_backward_stays_box {m : ℕ} (σ : F
 theorem MorseCancellation.strictMono_cubicAxisParameter {a : ℝ} (ha : 0 < a) :
     StrictMono (cubicAxisParameter a) := by
   intro s t hst
-  exact mul_lt_mul_of_pos_left (strictMono_tanh (mul_lt_mul_of_pos_left hst ha)) ha
+  exact mul_lt_mul_of_pos_left (Real.strictMono_tanh (mul_lt_mul_of_pos_left hst ha)) ha
 
 /-- The cylinder axis tends to the top endpoint. -/
 theorem MorseCancellation.tendsto_cubicFlowCylinder_axis_atTop {m : ℕ} (σ : Fin m → ℝ) {a : ℝ}

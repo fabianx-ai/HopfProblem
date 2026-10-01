@@ -38,7 +38,7 @@ def MorseCancellation.cubicAxisParameter (a t : ℝ) : ℝ :=
 /-- The cubic axis parameter is differentiable. -/
 theorem MorseCancellation.hasDerivAt_cubicAxisParameter (a t : ℝ) :
     HasDerivAt (cubicAxisParameter a) (a ^ 2 - cubicAxisParameter a t ^ 2) t := by
-  have h := ((hasDerivAt_tanh (a * t)).comp t ((hasDerivAt_id t).const_mul a)).const_mul a
+  have h := ((Real.hasDerivAt_tanh (a * t)).comp t ((hasDerivAt_id t).const_mul a)).const_mul a
   change HasDerivAt (cubicAxisParameter a) (a * ((1 - Real.tanh (a * t) ^ 2) * (a * 1))) t at h
   convert h using 1
   dsimp [cubicAxisParameter]
@@ -73,14 +73,14 @@ theorem MorseCancellation.range_cubicAxisParameter {a : ℝ} (ha : 0 < a) :
 /-- The axis parameter tends to the positive endpoint. -/
 theorem MorseCancellation.tendsto_cubicAxisParameter_atTop {a : ℝ} (ha : 0 < a) :
     Filter.Tendsto (cubicAxisParameter a) Filter.atTop (𝓝 a) := by
-  have h := (tendsto_tanh_atTop.comp (Filter.tendsto_id.const_mul_atTop ha)).const_mul a
+  have h := (Real.tendsto_tanh_atTop.comp (Filter.tendsto_id.const_mul_atTop ha)).const_mul a
   change Filter.Tendsto (cubicAxisParameter a) Filter.atTop (𝓝 (a * 1)) at h
   simpa only [mul_one] using h
 
 /-- The axis parameter tends to the negative endpoint. -/
 theorem MorseCancellation.tendsto_cubicAxisParameter_atBot {a : ℝ} (ha : 0 < a) :
     Filter.Tendsto (cubicAxisParameter a) Filter.atBot (𝓝 (-a)) := by
-  have h := (tendsto_tanh_atBot.comp (Filter.tendsto_id.const_mul_atBot ha)).const_mul a
+  have h := (Real.tendsto_tanh_atBot.comp (Filter.tendsto_id.const_mul_atBot ha)).const_mul a
   change Filter.Tendsto (cubicAxisParameter a) Filter.atBot (𝓝 (a * -1)) at h
   simpa only [mul_neg, mul_one] using h
 
@@ -165,4 +165,4 @@ theorem MorseCancellation.contDiffOn_cubicAxisClock {a : ℝ} (ha : 0 < a) :
     · exact (lt_div_iff₀ ha).mpr (by simpa only [neg_one_mul] using hs.1)
     · exact (div_lt_iff₀ ha).mpr (by simpa only [one_mul] using hs.2)
   exact
-    (((contDiffAt_artanh hs').comp s (contDiffAt_id.div_const a)).div_const a).contDiffWithinAt
+    (((Real.contDiffAt_artanh hs').comp s (contDiffAt_id.div_const a)).div_const a).contDiffWithinAt
