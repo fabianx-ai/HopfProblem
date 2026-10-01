@@ -1,0 +1,14 @@
+constants before 38301 after 38301 (keys 38199 38199 )
+lost 0 added 0 of which source declarations: 0 0 ; names with changed type 0 of which source: 0
+auxiliary lost/added/changed (not judged): 0 0 0
+module moves (source declarations, 1-to-1):
+       6  Lib.Geometry.Manifold.Flow.HeightTranslating -> Lib.Geometry.Manifold.Flow.HeightTranslating.AbsorbingSublevel
+       4  Lib.Geometry.Manifold.Flow.HeightTranslating -> Lib.Geometry.Manifold.Flow.HeightTranslating.AttachingUnion
+       9  Lib.Geometry.Manifold.Flow.HeightTranslating -> Lib.Geometry.Manifold.Flow.HeightTranslating.DescentFlow
+       7  Lib.Geometry.Manifold.Flow.HeightTranslating -> Lib.Geometry.Manifold.Flow.HeightTranslating.DescentModel
+      20  Lib.Geometry.Manifold.Flow.HeightTranslating -> Lib.Geometry.Manifold.Flow.HeightTranslating.EntryTime
+      62  Lib.Geometry.Manifold.Flow.HeightTranslating -> Lib.Geometry.Manifold.Flow.HeightTranslating.FlowCollar
+       9  Lib.Geometry.Manifold.Flow.HeightTranslating -> Lib.Geometry.Manifold.Flow.HeightTranslating.HandleCoordinates
+ambiguous module changes: 0
+auxiliary constants that changed module: 54
+VERDICT PASS
