@@ -30,14 +30,21 @@ open scoped ContDiff
 /-- A signed Morse chart: a chart in which the function is a signed quadratic form. -/
 structure ManifoldMorse.SignedMorseChart {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] (f : M → ℝ) (x : M) where
+  /-- The coefficients `w i` of the squares, indexed by `Fin (finrank ℝ E)`. -/
   weights : Fin (Module.finrank ℝ E) → ℝ
+  /-- Every weight is `-1` or `1`. -/
   signs : ∀ i, weights i = -1 ∨ weights i = 1
+  /-- The chart, a partial diffeomorphism from `M` to `ℝ^(finrank ℝ E)`. -/
   chart :
     PartialDiffeomorph 𝓘(ℝ, E) 𝓘(ℝ, Fin (Module.finrank ℝ E) → ℝ) M (Fin (Module.finrank ℝ E) → ℝ)
       ∞
+  /-- The point `x` lies in the chart's source. -/
   mem_source : x ∈ chart.source
+  /-- The chart sends `x` to `0`. -/
   center : chart x = 0
+  /-- On the source, `f y = f x + ∑ i, w i * (chart y i) ^ 2`. -/
   equation : ∀ y ∈ chart.source, f y = f x + ∑ i, weights i * (chart y i) ^ 2
+  /-- On the target, `f (chart.symm y) = f x + ∑ i, w i * y i ^ 2`. -/
   inverse_equation : ∀ y ∈ chart.target, f (chart.symm y) = f x + ∑ i, weights i * y i ^ 2
 
 /-- A signed Morse chart exists near a Morse critical point. -/

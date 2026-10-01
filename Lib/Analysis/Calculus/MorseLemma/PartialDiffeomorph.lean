@@ -118,6 +118,8 @@ def SmoothMorseLemma.translationToZero {E : Type*} [NormedAddCommGroup E] [Norme
   contMDiff_invFun :=
     (show ContDiff ℝ ∞ (fun x : E => a + x) from contDiff_const.add contDiff_id).contMDiff
 
+/-- A `C^∞` diffeomorphism `h : X ≃ Y` (models `I`, `J`) as a partial diffeomorphism with
+source and target `Set.univ`. -/
 def SmoothMorseLemma.diffeomorphToPartialDiffeomorph {E F H H' X Y : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace H]
     {I : ModelWithCorners ℝ E H} [NormedAddCommGroup F] [NormedSpace ℝ F]
