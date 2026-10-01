@@ -431,3 +431,43 @@ private theorem shifted_corner_commutes (h : ℝ) (v : Ambient) (j k : Fin 3) :
   simp only [shiftedVertexJ, shiftedVertexK]
   module
 end TopologicalSpace.CubeBoundaryThree
+
+/-! ### Axiom probes
+
+The moved theorems are private to this module, so they are probed here rather than from a
+separate audit file: each must depend on at most `propext`, `Classical.choice`, `Quot.sound`. -/
+
+#print axioms TopologicalSpace.CubeBoundaryThree.card_lattice
+#print axioms TopologicalSpace.CubeBoundaryThree.mesh_two_of_one
+#print axioms TopologicalSpace.CubeBoundaryThree.edge_coordinate_minima_attained
+#print axioms TopologicalSpace.CubeBoundaryThree.square_coordinate_minima_attained
+#print axioms TopologicalSpace.CubeBoundaryThree.edge_presentation_unique
+#print axioms TopologicalSpace.CubeBoundaryThree.edge_nonconstant_coordinates
+#print axioms TopologicalSpace.CubeBoundaryThree.square_presentation_unique
+#print axioms TopologicalSpace.CubeBoundaryThree.square_nonconstant_coordinates
+#print axioms TopologicalSpace.CubeBoundaryThree.coordinate_variation_of_set_eq
+#print axioms TopologicalSpace.CubeBoundaryThree.coordinate_constant_value_transport
+#print axioms TopologicalSpace.CubeBoundaryThree.increasing_pair_eq_of_direction_set_eq
+#print axioms TopologicalSpace.CubeBoundaryThree.edge_endpoints_distinct
+#print axioms TopologicalSpace.CubeBoundaryThree.square_remaining_index_cases
+#print axioms TopologicalSpace.CubeBoundaryThree.square_remaining_intrinsic
+#print axioms TopologicalSpace.CubeBoundaryThree.zero_mesh_images
+#print axioms TopologicalSpace.CubeBoundaryThree.zero_mesh_edge_nonunique
+#print axioms TopologicalSpace.CubeBoundaryThree.zero_mesh_square_nonunique
+#print axioms TopologicalSpace.CubeBoundaryThree.square_parameter_swap
+#print axioms TopologicalSpace.CubeBoundaryThree.swapped_ordered_pair_ne
+#print axioms TopologicalSpace.CubeBoundaryThree.square_order_suffices
+#print axioms TopologicalSpace.CubeBoundaryThree.shared_edge_presentation_identity
+#print axioms TopologicalSpace.CubeBoundaryThree.face_sign_eq_of_mem
+#print axioms TopologicalSpace.CubeBoundaryThree.square_intrinsic_face
+#print axioms TopologicalSpace.CubeBoundaryThree.square_unit_mesh_endpoint_case
+#print axioms TopologicalSpace.CubeBoundaryThree.edge_saturated_coordinate_suffices
+#print axioms TopologicalSpace.CubeBoundaryThree.edge_no_other_saturated_forces_moving_neg_one
+#print axioms TopologicalSpace.CubeBoundaryThree.edgeMidpoint_mem
+#print axioms TopologicalSpace.CubeBoundaryThree.edge_midpoint_all_abs_lt
+#print axioms TopologicalSpace.CubeBoundaryThree.all_abs_lt_not_boundary
+#print axioms TopologicalSpace.CubeBoundaryThree.edge_subset_boundary_iff
+#print axioms TopologicalSpace.CubeBoundaryThree.ambientOfThreeCoordinates_apply_i
+#print axioms TopologicalSpace.CubeBoundaryThree.ambientOfThreeCoordinates_apply_j
+#print axioms TopologicalSpace.CubeBoundaryThree.ambientOfThreeCoordinates_apply_k
+#print axioms TopologicalSpace.CubeBoundaryThree.shifted_corner_commutes
