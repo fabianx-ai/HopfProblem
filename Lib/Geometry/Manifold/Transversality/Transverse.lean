@@ -7,12 +7,6 @@ module
 
 public import Mathlib
 public import Lib.Geometry.Manifold.Morse.Existence
-public import Lib.Geometry.Manifold.RegularLevel
-public import Lib.Geometry.Manifold.WhitneyEmbedding
-public import Lib.Geometry.Manifold.Collar
-public import Lib.Geometry.Manifold.Morse.SurgeryWindows
-public import Lib.Geometry.Manifold.Morse.CubicFlow
-public import Mathlib.Geometry.Manifold.LocalDiffeomorph
 public import Lib.Geometry.Manifold.Transversality.RegularValues
 /-!
 # Transversality of two maps at a pair of points
