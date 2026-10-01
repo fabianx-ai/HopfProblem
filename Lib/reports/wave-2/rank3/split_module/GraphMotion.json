@@ -1,0 +1,1878 @@
+{
+"module": "Lib.Geometry.Manifold.Whitney.RankThreeModel",
+"source": "Lib/Geometry/Manifold/Whitney/RankThreeModel.lean",
+"source_sha256": "165e4d6dde4958d2ac7e3c093d6b5a7d952258c2d071f449da01519fe6b783ae",
+"units_kept": 135,
+"units_moved": 25,
+"units": [
+{
+"names": [
+"WhitneyPairModel.scaledBigonEmbedding"
+],
+"class": "move",
+"lines": [
+44,
+47
+],
+"sha256": "89ab0d8a2e3ff9dd2fd49449a6c4a78a6ada8d3b45353dd89101aef120243eea"
+},
+{
+"names": [
+"WhitneyPairModel.scaledBigonEmbedding_one"
+],
+"class": "move",
+"lines": [
+49,
+52
+],
+"sha256": "3704123a526afdef5aeae139ba7a2d6b51c06c22f208bc349c3c93ac71fc00f4"
+},
+{
+"names": [
+"WhitneyPairModel.continuous_scaledBigonEmbedding"
+],
+"class": "move",
+"lines": [
+54,
+58
+],
+"sha256": "e21a8d1d1d696bbfed59e8b446ef0f689fffa824bc8dafed8aed64c81b715ef8"
+},
+{
+"names": [
+"WhitneyPairModel.exists_scaled_bigon_in_open"
+],
+"class": "move",
+"lines": [
+60,
+78
+],
+"sha256": "d20b0d7bbde103d0f7c92916a948fb68511b79cb1bfba1bb6b1f57907ff25394"
+},
+{
+"names": [
+"WhitneyPairModel.enlarged_cap_parametrization"
+],
+"class": "move",
+"lines": [
+80,
+99
+],
+"sha256": "97877cb5efb8753a7b09468abe109d0761d211c4beb256710d4a13393ac7552b"
+},
+{
+"names": [
+"WhitneyPairModel.verticalGraph"
+],
+"class": "move",
+"lines": [
+101,
+104
+],
+"sha256": "05b8308a8a62261ff368c5f8bab0cf75ce248ee616c235e6f8225a6fa1a20966"
+},
+{
+"names": [
+"WhitneyPairModel.exists_supported_graph_height"
+],
+"class": "move",
+"lines": [
+106,
+177
+],
+"sha256": "3ccba92abfac4450ee3e92825a81938d5cfd1b04a4b44de22cf4db67c63e6943"
+},
+{
+"names": [
+"WhitneyPairModel.graphTrace"
+],
+"class": "move",
+"lines": [
+179,
+182
+],
+"sha256": "de76f83cf9eb1979218fcbf1acd6fa1251d24c7f5393dab436c48469f274b7c1"
+},
+{
+"names": [
+"WhitneyPairModel.isCompact_graphTrace"
+],
+"class": "move",
+"lines": [
+184,
+189
+],
+"sha256": "0b4ff6ea2992e8c013d398e61b693bda93003109ee8fb560771803aacc1b97b9"
+},
+{
+"names": [
+"WhitneyPairModel.exists_graph_motion_cutoff"
+],
+"class": "move",
+"lines": [
+191,
+228
+],
+"sha256": "363b0575e3f947112e88e4f120ce7d9d82302f96f76b6a6c598eb182cecf256a"
+},
+{
+"names": [
+"WhitneyPairModel.GraphMotionData",
+"WhitneyPairModel.GraphMotionData.mk",
+"WhitneyPairModel.GraphMotionData.height",
+"WhitneyPairModel.GraphMotionData.smooth_height",
+"WhitneyPairModel.GraphMotionData.compact_height",
+"WhitneyPairModel.GraphMotionData.nonneg_height",
+"WhitneyPairModel.GraphMotionData.above",
+"WhitneyPairModel.GraphMotionData.trace_source",
+"WhitneyPairModel.GraphMotionData.cutoff",
+"WhitneyPairModel.GraphMotionData.smooth_cutoff",
+"WhitneyPairModel.GraphMotionData.compact_cutoff",
+"WhitneyPairModel.GraphMotionData.support_cutoff",
+"WhitneyPairModel.GraphMotionData.nonneg_cutoff",
+"WhitneyPairModel.GraphMotionData.tracking"
+],
+"class": "move",
+"lines": [
+230,
+244
+],
+"sha256": "d6afce1168d5ce10aa19c5739517e66d6a68f5b6f397af07ab6be9e556de76aa"
+},
+{
+"names": [
+"WhitneyPairModel.nonempty_graphMotionData"
+],
+"class": "move",
+"lines": [
+246,
+265
+],
+"sha256": "008ddbc6dee40ede68cc9504eabb7eaa10aa8964cb2f7b8eb9459639b1cc9c5b"
+},
+{
+"names": [
+"WhitneyPairModel.verticalVector"
+],
+"class": "move",
+"lines": [
+267,
+269
+],
+"sha256": "35f3667be718c7ba2221eb2f356681bec0124be42f312d37143ab472bd46f5f1"
+},
+{
+"names": [
+"WhitneyPairModel.norm_verticalVector"
+],
+"class": "move",
+"lines": [
+271,
+274
+],
+"sha256": "567b8468ded31f9e7cc9df49932052ff7ea5f70afdde565cf566487f460102d4"
+},
+{
+"names": [
+"WhitneyPairModel.graphStep"
+],
+"class": "move",
+"lines": [
+276,
+280
+],
+"sha256": "82cb3aa2e6d0dcceb370b95b8432b692757f2fda5272ae56dc1ff0115e39c8b4"
+},
+{
+"names": [
+"WhitneyPairModel.contDiff_graphStep"
+],
+"class": "move",
+"lines": [
+282,
+289
+],
+"sha256": "eafedcc5636d17fecfe09a6ff68f13c8c4b287d93b9d4b6abd7cc2725f7c5c7f"
+},
+{
+"names": [
+"WhitneyPairModel.graphStep_zero"
+],
+"class": "move",
+"lines": [
+291,
+294
+],
+"sha256": "f0ed3966b6a7d7d82c5a313c3afb9555179601f8ce68a68e32f629699ed97128"
+},
+{
+"names": [
+"WhitneyPairModel.graphStep_horizontal"
+],
+"class": "move",
+"lines": [
+296,
+298
+],
+"sha256": "c37cf0249b32176d655a7bd6509b454c7e2c7d91577b8201972e51399a8c6fcc"
+},
+{
+"names": [
+"WhitneyPairModel.graphStep_normal"
+],
+"class": "move",
+"lines": [
+300,
+302
+],
+"sha256": "1fe194dc5968d6025bc332f2e18ddb59753aa0d0ee611fd38f9882f25d0018c5"
+},
+{
+"names": [
+"WhitneyPairModel.graphStep_fixed"
+],
+"class": "move",
+"lines": [
+304,
+310
+],
+"sha256": "9ae51d8e08e0b596b03883263645a48989277f04c5936a0236dfc6a3786b3c7d"
+},
+{
+"names": [
+"WhitneyPairModel.exists_radius_graphStep"
+],
+"class": "move",
+"lines": [
+312,
+335
+],
+"sha256": "2b7e9a3abff7ad69e219f11a396e72753cce8ec8ee9beb129a4cc887a6b1cb97"
+},
+{
+"names": [
+"WhitneyPairModel.graphStep_tracking"
+],
+"class": "move",
+"lines": [
+337,
+345
+],
+"sha256": "679cba5aed8c90b2a9a8af60ac67aeb8bbb699382aadd8e4be8ae37ec2f052cd"
+},
+{
+"names": [
+"WhitneyPairModel.GraphMotion",
+"WhitneyPairModel.GraphMotion.mk",
+"WhitneyPairModel.GraphMotion.support",
+"WhitneyPairModel.GraphMotion.compact_support",
+"WhitneyPairModel.GraphMotion.support_subset",
+"WhitneyPairModel.GraphMotion.family",
+"WhitneyPairModel.GraphMotion.smooth",
+"WhitneyPairModel.GraphMotion.initial",
+"WhitneyPairModel.GraphMotion.diffeomorph",
+"WhitneyPairModel.GraphMotion.fixed",
+"WhitneyPairModel.GraphMotion.horizontal",
+"WhitneyPairModel.GraphMotion.normal",
+"WhitneyPairModel.GraphMotion.tracking"
+],
+"class": "move",
+"lines": [
+347,
+363
+],
+"sha256": "029d4a1751cd2fe2769db5a6c654123653783829eedc30d4a14114c7f6cdb8f2"
+},
+{
+"names": [
+"WhitneyPairModel.GraphMotionData.nonempty_graphMotion"
+],
+"class": "move",
+"lines": [
+365,
+438
+],
+"sha256": "20d20a79db94e762e2a2e38223e9ba960fcd8ad364858526ecbfb579d9f3eafd"
+},
+{
+"names": [
+"WhitneyPairModel.GraphMotion.firstSheet_ne_secondSheet"
+],
+"class": "move",
+"lines": [
+440,
+464
+],
+"sha256": "da1631e61feb2a4e79adb73ac8a4697e5c3f6e642756f0d4da67e0bc1e648929"
+},
+{
+"names": [
+"RankThreeWhitneyModel.Lower"
+],
+"class": "keep",
+"lines": [
+466,
+468
+],
+"sha256": "f0cb07ee385a8acb13f743e88ec2051be8552150db47e123895ace01ced10364"
+},
+{
+"names": [
+"RankThreeWhitneyModel.Upper"
+],
+"class": "keep",
+"lines": [
+470,
+472
+],
+"sha256": "76484940500afefa84301f8c6f93589f7423eb4c92b288684153e1ac005efe06"
+},
+{
+"names": [
+"RankThreeWhitneyModel.Space"
+],
+"class": "keep",
+"lines": [
+474,
+477
+],
+"sha256": "5519b805ba25eeb1ebb7116ee4b0dd22016701932bb39f1a91366f8d1bb33c6c"
+},
+{
+"names": [
+"RankThreeWhitneyModel.LowerSheet"
+],
+"class": "keep",
+"lines": [
+479,
+481
+],
+"sha256": "f6a56b0ced4b1b63cdc43f86fe05e10c269b3ab339ed60dc62d2b0c60f84a8eb"
+},
+{
+"names": [
+"RankThreeWhitneyModel.UpperSheet"
+],
+"class": "keep",
+"lines": [
+483,
+485
+],
+"sha256": "ed91b817d5b2afada313513b70cd3cd2586ec0ff387857ee97548dc23cd7e82c"
+},
+{
+"names": [
+"RankThreeWhitneyModel.firstSheet"
+],
+"class": "keep",
+"lines": [
+487,
+490
+],
+"sha256": "efd71de383e166de28a18092ca930bd7d10603c1d66c5a3328b8c5a1d2bc6a59"
+},
+{
+"names": [
+"RankThreeWhitneyModel.secondSheet"
+],
+"class": "keep",
+"lines": [
+492,
+495
+],
+"sha256": "dca38c38ce0bcaa53ffe486b0be2d2458ae5690562388f355d7e6750e384dee5"
+},
+{
+"names": [
+"RankThreeWhitneyModel.contDiff_firstSheet"
+],
+"class": "keep",
+"lines": [
+497,
+500
+],
+"sha256": "3b4adf364473b288d03ff2915e8e9ce1f4fcbfd84057e4a6190219a6dc66ff0a"
+},
+{
+"names": [
+"RankThreeWhitneyModel.contDiff_secondSheet"
+],
+"class": "keep",
+"lines": [
+502,
+506
+],
+"sha256": "a3d640e6cdd34d5086b6dbf5593918a83703f641d455c2dc6b28bbc6cc8b5fe8"
+},
+{
+"names": [
+"RankThreeWhitneyModel.firstSheetDerivative"
+],
+"class": "keep",
+"lines": [
+508,
+510
+],
+"sha256": "a14e2b3be0ef2571fe62b3ae2bcbff343a752bcc7ff7ccf575ed5db535f4a364"
+},
+{
+"names": [
+"RankThreeWhitneyModel.secondSheetDerivative"
+],
+"class": "keep",
+"lines": [
+512,
+517
+],
+"sha256": "5e985ae9c7fb267dc91a5aeacac7812db331793cde536ae805befcdb367e35e2"
+},
+{
+"names": [
+"RankThreeWhitneyModel.firstSheetDerivative_apply"
+],
+"class": "keep",
+"lines": [
+519,
+522
+],
+"sha256": "b540a6995d6472e589fc700575a0cea90b10d14b705f4a4331634e26b4afb27e"
+},
+{
+"names": [
+"RankThreeWhitneyModel.secondSheetDerivative_apply"
+],
+"class": "keep",
+"lines": [
+524,
+527
+],
+"sha256": "04fdcc1d394731606b09bc04cb3b4609a3f719d90b50f9fc79d189320a64c3a1"
+},
+{
+"names": [
+"RankThreeWhitneyModel.hasFDerivAt_firstSheet"
+],
+"class": "keep",
+"lines": [
+529,
+532
+],
+"sha256": "d0c906df1faed62f15afbdef9aa8154e50a6fe50818af3185a1ef42aa4ea9b97"
+},
+{
+"names": [
+"RankThreeWhitneyModel.hasFDerivAt_secondSheet"
+],
+"class": "keep",
+"lines": [
+534,
+548
+],
+"sha256": "8a008ccdfc944ff9b822c9b36e97c0ae0a4ac40270b9224c66bc91316af27ac1"
+},
+{
+"names": [
+"RankThreeWhitneyModel.lowerSplit"
+],
+"class": "keep",
+"lines": [
+550,
+553
+],
+"sha256": "7fe4c3723c6bdb54852a425779d336c708f482ea500f4e96fa9ce3c6699a7feb"
+},
+{
+"names": [
+"RankThreeWhitneyModel.lowerInclude"
+],
+"class": "keep",
+"lines": [
+555,
+557
+],
+"sha256": "b0c6bc735b50e931670d77d65cfd36c31e6c044663139910a3086e85e4fa6130"
+},
+{
+"names": [
+"RankThreeWhitneyModel.lowerProject"
+],
+"class": "keep",
+"lines": [
+559,
+561
+],
+"sha256": "89fcaa02c21b91e7d074877a64fedb014f46265b4ef2a98417493a72e880d1af"
+},
+{
+"names": [
+"RankThreeWhitneyModel.lowerProject_include"
+],
+"class": "keep",
+"lines": [
+563,
+567
+],
+"sha256": "d77bf140e2863bf73343f2abcba58e58bdf2f8b1de2cab4b64ce6b1371af1df3"
+},
+{
+"names": [
+"RankThreeWhitneyModel.normalInclude"
+],
+"class": "keep",
+"lines": [
+569,
+572
+],
+"sha256": "36107fb72f04de86bd99b083cc4fe80748a49edd1c545671f05e3d827177e740"
+},
+{
+"names": [
+"RankThreeWhitneyModel.normalProject"
+],
+"class": "keep",
+"lines": [
+574,
+577
+],
+"sha256": "6b20a682ed430571dd54f0c5a502f932453ca6c1905d702455bf3409f37012b9"
+},
+{
+"names": [
+"RankThreeWhitneyModel.normalProject_include"
+],
+"class": "keep",
+"lines": [
+579,
+582
+],
+"sha256": "857defa4ffe8d10c3cb68fa044c58c6b301b3f4e796db543a4eadbca16f52fd6"
+},
+{
+"names": [
+"RankThreeWhitneyModel.expand"
+],
+"class": "keep",
+"lines": [
+584,
+586
+],
+"sha256": "f8957db7cf976fae8f05707eac4c26eac70f1158665dea953732f756c6be01a0"
+},
+{
+"names": [
+"RankThreeWhitneyModel.collapse"
+],
+"class": "keep",
+"lines": [
+588,
+590
+],
+"sha256": "e8e079fda9c5df27c185c41917356e44ba3e560a11772f4728d35e9a667c703a"
+},
+{
+"names": [
+"RankThreeWhitneyModel.collapse_expand"
+],
+"class": "keep",
+"lines": [
+592,
+594
+],
+"sha256": "2932f2464a0335825cca2ba818a22e31c1ab20cf5c8f0244cc689caa3a2c1572"
+},
+{
+"names": [
+"RankThreeWhitneyModel.expand_zero"
+],
+"class": "keep",
+"lines": [
+596,
+598
+],
+"sha256": "8b23c7a6781b2c1581999096df4f7e834f0a0ca2ddeaffeb2fe5a4d371fb7c95"
+},
+{
+"names": [
+"RankThreeWhitneyModel.collapse_zero"
+],
+"class": "keep",
+"lines": [
+600,
+602
+],
+"sha256": "ffd811566c36ac7e0fda199c2ad810466a7a1af9a85ea86b902983f7d821fd0e"
+},
+{
+"names": [
+"RankThreeWhitneyModel.verticalGraph"
+],
+"class": "keep",
+"lines": [
+604,
+606
+],
+"sha256": "5a1332cc390634e50f4ce8ed21bce9d0335b2bef4a9ac369d8ac802666a2959f"
+},
+{
+"names": [
+"RankThreeWhitneyModel.collapse_verticalGraph"
+],
+"class": "keep",
+"lines": [
+608,
+611
+],
+"sha256": "34449d453190511837a80c9c94acf8ca13154dc89251df3b26826ed6c68f37b7"
+},
+{
+"names": [
+"RankThreeWhitneyModel.GraphMotion",
+"RankThreeWhitneyModel.GraphMotion.mk",
+"RankThreeWhitneyModel.GraphMotion.height",
+"RankThreeWhitneyModel.GraphMotion.nonneg_height",
+"RankThreeWhitneyModel.GraphMotion.above",
+"RankThreeWhitneyModel.GraphMotion.support",
+"RankThreeWhitneyModel.GraphMotion.compact_support",
+"RankThreeWhitneyModel.GraphMotion.support_subset",
+"RankThreeWhitneyModel.GraphMotion.family",
+"RankThreeWhitneyModel.GraphMotion.smooth",
+"RankThreeWhitneyModel.GraphMotion.initial",
+"RankThreeWhitneyModel.GraphMotion.diffeomorph",
+"RankThreeWhitneyModel.GraphMotion.fixed",
+"RankThreeWhitneyModel.GraphMotion.horizontal",
+"RankThreeWhitneyModel.GraphMotion.normal",
+"RankThreeWhitneyModel.GraphMotion.tracking"
+],
+"class": "keep",
+"lines": [
+613,
+630
+],
+"sha256": "fcd195413f22d75d8075939e54f2f20792cc4bfa6d82303d55576f68af068897"
+},
+{
+"names": [
+"RankThreeWhitneyModel.nonempty_graphMotion"
+],
+"class": "keep",
+"lines": [
+632,
+698
+],
+"sha256": "15f64d0ef1295ddad4816ea39a8e792958a6b5a341372acf6d5796a29029993b"
+},
+{
+"names": [
+"RankThreeWhitneyModel.GraphMotion.firstSheet_ne_secondSheet"
+],
+"class": "keep",
+"lines": [
+700,
+726
+],
+"sha256": "d20470cf7c4ffc176c4b11e95c00c9f2ff9e3ec3bea004c45f5158156914ee25"
+},
+{
+"names": [
+"TubularBigon.RankThreeTangentAdaptedChart",
+"TubularBigon.RankThreeTangentAdaptedChart.mk",
+"TubularBigon.RankThreeTangentAdaptedChart.base",
+"TubularBigon.RankThreeTangentAdaptedChart.normal",
+"TubularBigon.RankThreeTangentAdaptedChart.domain",
+"TubularBigon.RankThreeTangentAdaptedChart.open_domain",
+"TubularBigon.RankThreeTangentAdaptedChart.contains",
+"TubularBigon.RankThreeTangentAdaptedChart.smooth_base",
+"TubularBigon.RankThreeTangentAdaptedChart.smooth_normal",
+"TubularBigon.RankThreeTangentAdaptedChart.normal_invertible",
+"TubularBigon.RankThreeTangentAdaptedChart.lower_transverse",
+"TubularBigon.RankThreeTangentAdaptedChart.upper_transverse",
+"TubularBigon.RankThreeTangentAdaptedChart.radius",
+"TubularBigon.RankThreeTangentAdaptedChart.radius_pos",
+"TubularBigon.RankThreeTangentAdaptedChart.chart",
+"TubularBigon.RankThreeTangentAdaptedChart.source_contains",
+"TubularBigon.RankThreeTangentAdaptedChart.zero_section",
+"TubularBigon.RankThreeTangentAdaptedChart.coordinates",
+"TubularBigon.RankThreeTangentAdaptedChart.target_subset",
+"TubularBigon.RankThreeTangentAdaptedChart.transition_derivative"
+],
+"class": "keep",
+"lines": [
+728,
+775
+],
+"sha256": "2bc637a99885aea8214cd136f96d0a36c227e85d9102aad904644eb407987e4b"
+},
+{
+"names": [
+"TubularBigon.nonempty_rankThreeTangentAdaptedChart_of_opposite_corner_signs"
+],
+"class": "keep",
+"lines": [
+777,
+886
+],
+"sha256": "ea6f14585d799c31c88254c9be804b0384751714d5d6210be245e778b9cecb76"
+},
+{
+"names": [
+"TubularBigon.TangentAdaptedChart",
+"TubularBigon.TangentAdaptedChart.mk",
+"TubularBigon.TangentAdaptedChart.base",
+"TubularBigon.TangentAdaptedChart.normal",
+"TubularBigon.TangentAdaptedChart.domain",
+"TubularBigon.TangentAdaptedChart.open_domain",
+"TubularBigon.TangentAdaptedChart.contains",
+"TubularBigon.TangentAdaptedChart.smooth_base",
+"TubularBigon.TangentAdaptedChart.smooth_normal",
+"TubularBigon.TangentAdaptedChart.normal_invertible",
+"TubularBigon.TangentAdaptedChart.lower_transverse",
+"TubularBigon.TangentAdaptedChart.upper_transverse",
+"TubularBigon.TangentAdaptedChart.radius",
+"TubularBigon.TangentAdaptedChart.radius_pos",
+"TubularBigon.TangentAdaptedChart.chart",
+"TubularBigon.TangentAdaptedChart.source_contains",
+"TubularBigon.TangentAdaptedChart.zero_section",
+"TubularBigon.TangentAdaptedChart.coordinates",
+"TubularBigon.TangentAdaptedChart.target_subset",
+"TubularBigon.TangentAdaptedChart.transition_derivative"
+],
+"class": "keep",
+"lines": [
+888,
+934
+],
+"sha256": "0a59620a1609115f4016506b46991c006ef54810274acd1d387dfc9a76b70797"
+},
+{
+"names": [
+"WhitneyPairModel.halfTimeDerivative"
+],
+"class": "keep",
+"lines": [
+936,
+939
+],
+"sha256": "4976a488d4d99ded06eb3e6da56363ecba9be14894042d4883ede3cfd77370eb"
+},
+{
+"names": [
+"WhitneyPairModel.halfTimeDerivative_apply"
+],
+"class": "keep",
+"lines": [
+941,
+947
+],
+"sha256": "5454183b7c194a01955dcc49508b8d76c6a5aade92bbef40b0b30f4023a94f96"
+},
+{
+"names": [
+"WhitneyPairModel.sheetTimeCoordinates"
+],
+"class": "keep",
+"lines": [
+949,
+953
+],
+"sha256": "09bc207acfaa8fb7b2c4f5407147f743329244fe758a02d20de6ee76b9a50c73"
+},
+{
+"names": [
+"WhitneyPairModel.sheetTimeCoordinates_apply"
+],
+"class": "keep",
+"lines": [
+955,
+962
+],
+"sha256": "2d2b8b3b5a73f65fd09ad97603a372257e42f1bdf0e6095cc86b416712dda27f"
+},
+{
+"names": [
+"WhitneyPairModel.sheetTimeCoordinates_center"
+],
+"class": "keep",
+"lines": [
+964,
+971
+],
+"sha256": "b670b79eb754369a3caf7deef8ec5043547e1c426c035220f55b3867460330a5"
+},
+{
+"names": [
+"WhitneyPairModel.contDiff_sheetTimeCoordinates"
+],
+"class": "keep",
+"lines": [
+973,
+976
+],
+"sha256": "2e14f55b3e31f6c39f4710cc3c8e93724c4b323aae1764e5a63a851f267caf1c"
+},
+{
+"names": [
+"WhitneyPairModel.hasFDerivAt_sheetTimeCoordinates"
+],
+"class": "keep",
+"lines": [
+978,
+981
+],
+"sha256": "7599ba3f0fcff5b23ca66b97277262cbc317f9f9bb1614222642ea2059a87036"
+},
+{
+"names": [
+"StripNormalData.sheetTransitionDomain"
+],
+"class": "keep",
+"lines": [
+983,
+990
+],
+"sha256": "3d354bd92e0efefa469773e76998efc25e24c507c1afa3f624a2b514e98f81eb"
+},
+{
+"names": [
+"StripNormalData.isOpen_sheetTransitionDomain"
+],
+"class": "keep",
+"lines": [
+992,
+1002
+],
+"sha256": "8bb3690d8a026e57c45613ffcf2d2d2bdae59286243bf60b9430f2b4701350c8"
+},
+{
+"names": [
+"StripNormalData.contDiffOn_sheetTransition"
+],
+"class": "keep",
+"lines": [
+1004,
+1015
+],
+"sha256": "1e761267d5a21bab741e100b4d3d922c200864490d55486708f3420f0d805c9e"
+},
+{
+"names": [
+"StripNormalData.retimedSheetTransition"
+],
+"class": "keep",
+"lines": [
+1017,
+1024
+],
+"sha256": "f5aae620c24ad26b91b2ed79c6335c1360180ba391aeb35d726424be2d2edfea"
+},
+{
+"names": [
+"StripNormalData.retimedDomain"
+],
+"class": "keep",
+"lines": [
+1026,
+1032
+],
+"sha256": "e8b7ab71472c28e689671b14620032f60722e95bd481acaf0d6a2f5a456d0079"
+},
+{
+"names": [
+"StripNormalData.isOpen_retimedDomain"
+],
+"class": "keep",
+"lines": [
+1034,
+1042
+],
+"sha256": "ab9cc8484357c6237abfaea1d270386c0a7924d9313556f0f6712341e80450c1"
+},
+{
+"names": [
+"StripNormalData.contDiffOn_retimedSheetTransition"
+],
+"class": "keep",
+"lines": [
+1044,
+1053
+],
+"sha256": "94920f2b70457ef22565c109c0c84a093add0bac5b7cdec71bcb84b2cdd7cd1e"
+},
+{
+"names": [
+"StripNormalData.retimedDomain_contains_center"
+],
+"class": "keep",
+"lines": [
+1055,
+1068
+],
+"sha256": "82c4b4989fced6e4477530169b048f99b3561e72d01b3adf5f17287721c8c38b"
+},
+{
+"names": [
+"StripNormalData.hasFDerivAt_retimedSheetTransition"
+],
+"class": "keep",
+"lines": [
+1070,
+1088
+],
+"sha256": "8ab022509c3df2b7af12a73bb685fc80fae212a01ae21fa1c35c6bfac0d8d999"
+},
+{
+"names": [
+"TubularBigon.RankThreeTangentAdaptedChart.lower_model_tangent"
+],
+"class": "keep",
+"lines": [
+1090,
+1136
+],
+"sha256": "728dfd263a4fc1a9004930ef05d06c8ebb4833279c9ddd33315688059ba148bb"
+},
+{
+"names": [
+"TubularBigon.RankThreeTangentAdaptedChart.upper_model_tangent"
+],
+"class": "keep",
+"lines": [
+1138,
+1190
+],
+"sha256": "ab435b65ff9de9b823399fe52ceb25de38dfd946a34ee8621b68133ab5ae7e83"
+},
+{
+"names": [
+"SheetCorrection.centerProjection"
+],
+"class": "keep",
+"lines": [
+1192,
+1195
+],
+"sha256": "54841540055ba74088f4b02e32afde691deb2850303bb22a665c09eefd846a8a"
+},
+{
+"names": [
+"SheetCorrection.centerProjection_apply"
+],
+"class": "keep",
+"lines": [
+1197,
+1200
+],
+"sha256": "09cf0a2a26f59917839e1979ebc0ad1d5e4e88acbee3b846231aac56d4064d86"
+},
+{
+"names": [
+"SheetCorrection.centeredCorrection"
+],
+"class": "keep",
+"lines": [
+1202,
+1206
+],
+"sha256": "dd49383a91d1dc44d9d0dff743a3cb857380f4e86e97464e8dc971029b93ce22"
+},
+{
+"names": [
+"SheetCorrection.centeredCorrection_zero"
+],
+"class": "keep",
+"lines": [
+1208,
+1212
+],
+"sha256": "2b5423cebeeec3d092e13210d46840d0864fff72d6b062c441d54d08e75b396a"
+},
+{
+"names": [
+"SheetCorrection.centeredCorrection_eq_sub"
+],
+"class": "keep",
+"lines": [
+1214,
+1218
+],
+"sha256": "43fcc526fff334d1ed6adae5be36781313271430a392ea2b9a82767ee2cf4216"
+},
+{
+"names": [
+"SheetCorrection.contDiffOn_centeredCorrection"
+],
+"class": "keep",
+"lines": [
+1220,
+1226
+],
+"sha256": "cef105971449a3a12b0ea5f37cbd6d360e2b88eabfa07e7c6d10ac09086828af"
+},
+{
+"names": [
+"SheetCorrection.hasFDerivAt_centeredCorrection_zero"
+],
+"class": "keep",
+"lines": [
+1228,
+1244
+],
+"sha256": "e828cdf21ca3f8bf85b5abffdea3f40cac79fe4c3f16db3f6c3dce1e3db75e16"
+},
+{
+"names": [
+"RankThreeWhitneyModel.lowerSheetCoordinates"
+],
+"class": "keep",
+"lines": [
+1246,
+1251
+],
+"sha256": "c97f6488d4ebc05dee95eb53a7fc23f5a3a57d281a9a9397df46e1f0d60d1575"
+},
+{
+"names": [
+"RankThreeWhitneyModel.upperSheetCoordinates"
+],
+"class": "keep",
+"lines": [
+1253,
+1258
+],
+"sha256": "8a3339a070a118f91c0f0f36973b7ca65ef1c15004d6269689980eaff5970b02"
+},
+{
+"names": [
+"RankThreeWhitneyModel.correctedSheetMap"
+],
+"class": "keep",
+"lines": [
+1260,
+1265
+],
+"sha256": "e8ef56a746a6be15c170643119d4dd5ee503b5716b7f8666a9b7a769f7eed50b"
+},
+{
+"names": [
+"RankThreeWhitneyModel.correctedSheetMap_zero"
+],
+"class": "keep",
+"lines": [
+1267,
+1276
+],
+"sha256": "1eb76c3dc5dc8f2d5947b2c19f1b27971c638c58f8ab5cd60349a47bf05dfea9"
+},
+{
+"names": [
+"RankThreeWhitneyModel.correctedSheetMap_lower"
+],
+"class": "keep",
+"lines": [
+1278,
+1288
+],
+"sha256": "8c5d7bc7d79c8ec0cc0f97259aa75a827f4e514d4600846b5a89ea22350071d2"
+},
+{
+"names": [
+"RankThreeWhitneyModel.correctedSheetMap_upper"
+],
+"class": "keep",
+"lines": [
+1290,
+1300
+],
+"sha256": "ad358853afd7d20202a804d2f0137fd0c1ae7770d609226ae878d4ba4761ba0d"
+},
+{
+"names": [
+"RankThreeWhitneyModel.correctionDomain"
+],
+"class": "keep",
+"lines": [
+1302,
+1308
+],
+"sha256": "d0e8874c63c93b0b473ac5d78f920c9fd2c796932fda8d096810b1ebee35d7ad"
+},
+{
+"names": [
+"RankThreeWhitneyModel.isOpen_correctionDomain"
+],
+"class": "keep",
+"lines": [
+1310,
+1318
+],
+"sha256": "df63d42e3e550f78d7057a7eb43e73b21cd0f418d4ffd3176c27bf5efd0605d9"
+},
+{
+"names": [
+"RankThreeWhitneyModel.contDiffOn_correctedSheetMap"
+],
+"class": "keep",
+"lines": [
+1320,
+1332
+],
+"sha256": "12ae2376540a0b98c143b3ea52a1309bc66193639b26af5ae50daef7f2ef8ac1"
+},
+{
+"names": [
+"RankThreeWhitneyModel.hasFDerivAt_correctedSheetMap_zero"
+],
+"class": "keep",
+"lines": [
+1334,
+1360
+],
+"sha256": "8298e475ddf15eacfc50af0cea734d09182ac47ef31d1d98223d1f3b9074c2ae"
+},
+{
+"names": [
+"TubularBigon.RankThreeTangentAdaptedChart.shearedCoordinates"
+],
+"class": "keep",
+"lines": [
+1362,
+1378
+],
+"sha256": "7dffb1c4d0d2b66831e06c06a3fed6bce6d5c438f352b048b4fcf2dd6ced6a12"
+},
+{
+"names": [
+"TubularBigon.RankThreeTangentAdaptedChart.correctedCoordinates"
+],
+"class": "keep",
+"lines": [
+1380,
+1397
+],
+"sha256": "e68ad6bff84da76d3cec1f923379b6ef6c8e38ab5219ed17539d3aca1ec8e4e5"
+},
+{
+"names": [
+"TubularBigon.RankThreeTangentAdaptedChart.correctedCoordinates_zero"
+],
+"class": "keep",
+"lines": [
+1399,
+1415
+],
+"sha256": "50d824a29251acc18a81f0bb7e070edaf05e09d1ff8a2060230749af235f0d6c"
+},
+{
+"names": [
+"TubularBigon.RankThreeTangentAdaptedChart.hasFDerivAt_shearedCoordinates_zero"
+],
+"class": "keep",
+"lines": [
+1417,
+1438
+],
+"sha256": "ac7fb431c54e93982a4b352db6618ace6290c0bf481ec38b6b4b60218bd92dab"
+},
+{
+"names": [
+"TubularBigon.RankThreeTangentAdaptedChart.hasFDerivAt_sheared_lower"
+],
+"class": "keep",
+"lines": [
+1440,
+1463
+],
+"sha256": "c577c185a175d6e5484976fee092ba936049efe2e9374afc9cb6343b1c2760ab"
+},
+{
+"names": [
+"TubularBigon.RankThreeTangentAdaptedChart.hasFDerivAt_sheared_upper"
+],
+"class": "keep",
+"lines": [
+1465,
+1488
+],
+"sha256": "3e869f1b89f6914268f2cd6edc6fc59d7bbe8bd098127af08828e4010e5bbcda"
+},
+{
+"names": [
+"TubularBigon.RankThreeTangentAdaptedChart.hasFDerivAt_correctedCoordinates_zero"
+],
+"class": "keep",
+"lines": [
+1490,
+1523
+],
+"sha256": "9a26fadda8531ceeb0c2a5c07cc1121ccdc85bf618ba272c9cbf54b6b9ed2ad1"
+},
+{
+"names": [
+"TubularBigon.RankThreeTangentAdaptedChart.retimed_lower_center_germ"
+],
+"class": "keep",
+"lines": [
+1525,
+1555
+],
+"sha256": "c7b619ca04ebeab4d1fc3231fbdf7f01078391ba9595c44aad0b26173cd7af50"
+},
+{
+"names": [
+"TubularBigon.RankThreeTangentAdaptedChart.retimed_upper_center_germ"
+],
+"class": "keep",
+"lines": [
+1557,
+1587
+],
+"sha256": "0ce6ddc2f2d18710892286769b21b44db2c0eecc66d86521298e22ed0cefb293"
+},
+{
+"names": [
+"TubularBigon.RankThreeTangentAdaptedChart.shearedDomain"
+],
+"class": "keep",
+"lines": [
+1589,
+1605
+],
+"sha256": "7fb34629fa3715707ebba5927b4bd60354bab77960cac16735ff2fd12d3014dc"
+},
+{
+"names": [
+"TubularBigon.RankThreeTangentAdaptedChart.lowerCorrectionDomain"
+],
+"class": "keep",
+"lines": [
+1607,
+1622
+],
+"sha256": "566789ec63ee2b43ba57f667c294dfd57f09fb6edb6d4d287e04222c036910b2"
+},
+{
+"names": [
+"TubularBigon.RankThreeTangentAdaptedChart.upperCorrectionDomain"
+],
+"class": "keep",
+"lines": [
+1624,
+1639
+],
+"sha256": "3db2267c2fe4578784d48e00cee0de2ef96ac5c2f6bd1d0aa4cc629edcc0d2d7"
+},
+{
+"names": [
+"TubularBigon.RankThreeTangentAdaptedChart.centerMatchingTimes"
+],
+"class": "keep",
+"lines": [
+1641,
+1661
+],
+"sha256": "249e8db4745f2a191670c2dd8496891f0fa8e97975ebbf276ef7896a1fe879ef"
+},
+{
+"names": [
+"TubularBigon.RankThreeTangentAdaptedChart.nonlinearDomain"
+],
+"class": "keep",
+"lines": [
+1663,
+1681
+],
+"sha256": "3a35a73d57336eeeb535f6a35df959cbaf3918cdba7d0066767bd208d445add9"
+},
+{
+"names": [
+"TubularBigon.RankThreeTangentAdaptedChart.isOpen_shearedDomain"
+],
+"class": "keep",
+"lines": [
+1683,
+1697
+],
+"sha256": "9945fc37201365c9ef85a776d44fb27bc865787dae704dffa3bb1f4b10324d88"
+},
+{
+"names": [
+"TubularBigon.RankThreeTangentAdaptedChart.isOpen_lowerCorrectionDomain"
+],
+"class": "keep",
+"lines": [
+1699,
+1715
+],
+"sha256": "757b429a98ee244ddea64eaa04a10f5d2b522fec4203e162332b1aa004155b49"
+},
+{
+"names": [
+"TubularBigon.RankThreeTangentAdaptedChart.isOpen_upperCorrectionDomain"
+],
+"class": "keep",
+"lines": [
+1717,
+1734
+],
+"sha256": "6efe1e369122fc6874f349b5714576a47e4a0a7f6bbd2194ce892dc86b332396"
+},
+{
+"names": [
+"TubularBigon.RankThreeTangentAdaptedChart.isOpen_nonlinearDomain"
+],
+"class": "keep",
+"lines": [
+1736,
+1752
+],
+"sha256": "e2624b38b046081cceec558b9ea7af88226428cd9984a74ab27962dc0470b227"
+},
+{
+"names": [
+"TubularBigon.RankThreeTangentAdaptedChart.contDiffOn_correctedCoordinates"
+],
+"class": "keep",
+"lines": [
+1754,
+1778
+],
+"sha256": "e08bf91400a1ab60a0988a47b3e61961af4510c5cf2b06bc630e17cf28c0b95e"
+},
+{
+"names": [
+"TubularBigon.RankThreeTangentAdaptedChart.centerMatchingTimes_contains"
+],
+"class": "keep",
+"lines": [
+1780,
+1796
+],
+"sha256": "c21bf9f7f7968adecba76185dc69b714a1cb8a02d0dc968986be0dd9349edc42"
+},
+{
+"names": [
+"TubularBigon.RankThreeTangentAdaptedChart.lowerCorrectionDomain_contains_center"
+],
+"class": "keep",
+"lines": [
+1798,
+1816
+],
+"sha256": "fe9da292bcaafba8e0247cbd0810b08aad6d13e8470c54aab440bafd8cf8c653"
+},
+{
+"names": [
+"TubularBigon.RankThreeTangentAdaptedChart.upperCorrectionDomain_contains_center"
+],
+"class": "keep",
+"lines": [
+1818,
+1836
+],
+"sha256": "748dc4979152faad315adc1bf536650dfa97491eeab208505515aa88d4d0a562"
+},
+{
+"names": [
+"TubularBigon.RankThreeTangentAdaptedChart.nonlinearDomain_contains_zero"
+],
+"class": "keep",
+"lines": [
+1838,
+1865
+],
+"sha256": "e71a47b4bf15e2db2bfdf7fcdfea9f82904b0ac8a552901b9432941ab42e0f64"
+},
+{
+"names": [
+"TubularBigon.RankThreeTangentAdaptedChart.lower_native_parameters"
+],
+"class": "keep",
+"lines": [
+1867,
+1887
+],
+"sha256": "f5be65e99c08fd963949a3e959c0aad3340373516c98e853e767870f5ab34486"
+},
+{
+"names": [
+"TubularBigon.RankThreeTangentAdaptedChart.upper_native_parameters"
+],
+"class": "keep",
+"lines": [
+1889,
+1909
+],
+"sha256": "af52ce5b78381d82ccc370c58df037c0d7b3c92de924e160437355d5ac780fab"
+},
+{
+"names": [
+"TubularBigon.RankThreeTangentAdaptedChart.correctedCoordinates_lower_of_mem_domain"
+],
+"class": "keep",
+"lines": [
+1911,
+1941
+],
+"sha256": "4cae66c42bd08738b2ea16c2fc1523d4aebeb6d57ad9b388c2c696e7084b33da"
+},
+{
+"names": [
+"TubularBigon.RankThreeTangentAdaptedChart.correctedCoordinates_upper_of_mem_domain"
+],
+"class": "keep",
+"lines": [
+1943,
+1973
+],
+"sha256": "f96117f745a5c68cd8391634c0b61feeed9bd0fb130dbcb87632bc2b713e89fc"
+},
+{
+"names": [
+"TubularBigon.RankThreeSheetParametrizedChart",
+"TubularBigon.RankThreeSheetParametrizedChart.mk",
+"TubularBigon.RankThreeSheetParametrizedChart.radius",
+"TubularBigon.RankThreeSheetParametrizedChart.radius_pos",
+"TubularBigon.RankThreeSheetParametrizedChart.chart",
+"TubularBigon.RankThreeSheetParametrizedChart.source_contains",
+"TubularBigon.RankThreeSheetParametrizedChart.zero_section",
+"TubularBigon.RankThreeSheetParametrizedChart.target_subset",
+"TubularBigon.RankThreeSheetParametrizedChart.lower_source",
+"TubularBigon.RankThreeSheetParametrizedChart.upper_source",
+"TubularBigon.RankThreeSheetParametrizedChart.lower",
+"TubularBigon.RankThreeSheetParametrizedChart.upper"
+],
+"class": "keep",
+"lines": [
+1975,
+2016
+],
+"sha256": "f79f26cdb93514c85df8c85075d7310bd2b0cfebcb637a8b3c2ad82ab71c2b79"
+},
+{
+"names": [
+"TubularBigon.RankThreeTangentAdaptedChart.nonempty_rankThreeSheetParametrizedChart"
+],
+"class": "keep",
+"lines": [
+2018,
+2112
+],
+"sha256": "afae68ddf65e741f3d9998a38e005bd7fee17905cef704310fc7f1aff293b7f1"
+},
+{
+"names": [
+"TubularBigon.nonempty_rankThreeSheetParametrizedChart_of_opposite_corner_signs"
+],
+"class": "keep",
+"lines": [
+2114,
+2131
+],
+"sha256": "8ac96e3c9130ece8af6e5c09797e6d48b13bff102d4839cfa5eedaf703d1e5fd"
+},
+{
+"names": [
+"TubularBigon.RankThreeSheetParametrizedChart.lower_mem_sheet"
+],
+"class": "keep",
+"lines": [
+2133,
+2151
+],
+"sha256": "3f89f3a47c40e27202d9b99ff86d230aa20a91c78beb6fa217eefa208a1f8fe0"
+},
+{
+"names": [
+"TubularBigon.RankThreeSheetParametrizedChart.upper_mem_sheet"
+],
+"class": "keep",
+"lines": [
+2153,
+2171
+],
+"sha256": "06a4f5d4c3a088a0bc7c53da6be9652b4a44f84fef5f925c744e40e6390253b4"
+},
+{
+"names": [
+"SheetRecognition.eventually_mem_sheet_iff"
+],
+"class": "keep",
+"lines": [
+2173,
+2231
+],
+"sha256": "e652f4b54768dae70fa79963c1491db60c486c7ec027c0661f6de9f4883c8f51"
+},
+{
+"names": [
+"WhitneyPairModel.sheetTimeInverse"
+],
+"class": "keep",
+"lines": [
+2233,
+2235
+],
+"sha256": "4fe343360561f59480ae1bf8673c84b06fbfe0621e3a5af4024ac8b27397ebae"
+},
+{
+"names": [
+"WhitneyPairModel.contDiff_sheetTimeInverse"
+],
+"class": "keep",
+"lines": [
+2237,
+2241
+],
+"sha256": "998393126dbbe7340bbfa8d715bba5f7f91e58ef964c3744fdb87383aad1f00f"
+},
+{
+"names": [
+"WhitneyPairModel.sheetTimeInverse_leftInverse"
+],
+"class": "keep",
+"lines": [
+2243,
+2251
+],
+"sha256": "ef5f82b196e9b49b59292abe4449337e7a62d7118e4cb9512b1454590dd8ecf7"
+},
+{
+"names": [
+"WhitneyPairModel.sheetTimeInverse_rightInverse"
+],
+"class": "keep",
+"lines": [
+2253,
+2261
+],
+"sha256": "f94a333e9ea390d81d93bbd3a29010a03f094335659315e23dc2d1eaf08ecef8"
+},
+{
+"names": [
+"TubularBigon.RankThreeSheetParametrizedChart.eventually_lower_mem_iff"
+],
+"class": "keep",
+"lines": [
+2263,
+2288
+],
+"sha256": "a0918ff6033441b261406799b170246e0ba38d0949e2b114820502c88bb1916e"
+},
+{
+"names": [
+"TubularBigon.RankThreeSheetParametrizedChart.eventually_upper_mem_iff"
+],
+"class": "keep",
+"lines": [
+2290,
+2315
+],
+"sha256": "f0203f044fa43586ad9a2245b577c93e6b6432668f2e95cda55daa9ff55e3885"
+},
+{
+"names": [
+"TubularBigon.SheetParametrizedChart",
+"TubularBigon.SheetParametrizedChart.mk",
+"TubularBigon.SheetParametrizedChart.radius",
+"TubularBigon.SheetParametrizedChart.radius_pos",
+"TubularBigon.SheetParametrizedChart.chart",
+"TubularBigon.SheetParametrizedChart.source_contains",
+"TubularBigon.SheetParametrizedChart.zero_section",
+"TubularBigon.SheetParametrizedChart.target_subset",
+"TubularBigon.SheetParametrizedChart.lower_source",
+"TubularBigon.SheetParametrizedChart.upper_source",
+"TubularBigon.SheetParametrizedChart.lower",
+"TubularBigon.SheetParametrizedChart.upper"
+],
+"class": "keep",
+"lines": [
+2317,
+2356
+],
+"sha256": "f8d412426bce31b18b1a6642831cb60a262b565bdd193097c7bfe4422a6f0bde"
+},
+{
+"names": [
+"TubularBigon.lower_center_mem_sheet"
+],
+"class": "keep",
+"lines": [
+2358,
+2369
+],
+"sha256": "0ce2e31e991387b282c7df0f8b129b7cc7ecf7300978620e26d52fa2bb3b06f2"
+},
+{
+"names": [
+"TubularBigon.upper_center_mem_sheet"
+],
+"class": "keep",
+"lines": [
+2371,
+2383
+],
+"sha256": "ff7fc81f942f57dedcec63396ecd6c757ce76a4df3224ac2fed83ce2baa3ce37"
+},
+{
+"names": [
+"TubularBigon.map_mem_first_iff"
+],
+"class": "keep",
+"lines": [
+2385,
+2420
+],
+"sha256": "5dab02156b760c35c154a9bc48fc49c8de76ee651f6377c4d59ee9d358371dbf"
+},
+{
+"names": [
+"TubularBigon.map_mem_second_iff"
+],
+"class": "keep",
+"lines": [
+2422,
+2462
+],
+"sha256": "d6ac1f5ea4a422a6bd126203b761a234bfadcff1af8275df70080525d85a4105"
+},
+{
+"names": [
+"SheetRecognition.exists_open_recognition_domain"
+],
+"class": "keep",
+"lines": [
+2464,
+2488
+],
+"sha256": "a906a34c2c2c6739b1506964808676b7f6762c5ae530e3a243093eee58362b70"
+},
+{
+"names": [
+"RankThreeWhitneyModel.zero_mem_firstSheet_iff"
+],
+"class": "keep",
+"lines": [
+2490,
+2498
+],
+"sha256": "fbf557cbbeb8f06cfaa392270fc888ae48c979bc2e8c1025c006ffd7950f454a"
+},
+{
+"names": [
+"RankThreeWhitneyModel.zero_mem_secondSheet_iff"
+],
+"class": "keep",
+"lines": [
+2500,
+2511
+],
+"sha256": "c1079c0926d999e619d83bcca170b66805c7419bf848dc714768f5932695bfef"
+},
+{
+"names": [
+"TubularBigon.RankThreeSheetParametrizedChart.exists_open_full_sheet_neighborhood"
+],
+"class": "keep",
+"lines": [
+2513,
+2594
+],
+"sha256": "e424b83a0cd2f6690de2d934d745e5255f5d79d04390d29c98675338d442442e"
+},
+{
+"names": [
+"RankThreeWhitneyModel.nativeFirstSheet"
+],
+"class": "keep",
+"lines": [
+2596,
+2600
+],
+"sha256": "ba053f8fbc63b8935e7abf4dfc7c63ba42ccc77d390d0cbcef4610474f600f1e"
+},
+{
+"names": [
+"RankThreeWhitneyModel.nativeSecondSheet"
+],
+"class": "keep",
+"lines": [
+2602,
+2606
+],
+"sha256": "250596fa81a995858234b5e115c106500e2aa25c09b60473116b360b385c5f9e"
+},
+{
+"names": [
+"TubularBigon.RankThreeCompatibleChart",
+"TubularBigon.RankThreeCompatibleChart.mk",
+"TubularBigon.RankThreeCompatibleChart.radius",
+"TubularBigon.RankThreeCompatibleChart.radius_pos",
+"TubularBigon.RankThreeCompatibleChart.chart",
+"TubularBigon.RankThreeCompatibleChart.source_contains",
+"TubularBigon.RankThreeCompatibleChart.zero_section",
+"TubularBigon.RankThreeCompatibleChart.target_subset",
+"TubularBigon.RankThreeCompatibleChart.first_sheet",
+"TubularBigon.RankThreeCompatibleChart.second_sheet"
+],
+"class": "keep",
+"lines": [
+2608,
+2626
+],
+"sha256": "a04d6b7876d9ba9ef0df7df60fafb7f1db27858727ccbc1cf844266844557115"
+},
+{
+"names": [
+"TubularBigon.RankThreeSheetParametrizedChart.nonempty_rankThreeCompatibleChart"
+],
+"class": "keep",
+"lines": [
+2628,
+2671
+],
+"sha256": "eb99ac797f15e244e9046b030c078a10e24ee413adfb24f1d466075ea2c54e4a"
+},
+{
+"names": [
+"TubularBigon.nonempty_rankThreeCompatibleChart_of_opposite_corner_signs"
+],
+"class": "keep",
+"lines": [
+2673,
+2691
+],
+"sha256": "4ad66a87f91bbdfe14a3ec9bb38741f2c037ef0d575aa101e3f45a051b6b178e"
+},
+{
+"names": [
+"TubularBigon.RankThreeCompatibleChart.nativeFirstSheet_eq"
+],
+"class": "keep",
+"lines": [
+2693,
+2714
+],
+"sha256": "711dfd0091fdebd1991e025f70fe5ee55c56c841ee04660d748e6e976fb6bacf"
+},
+{
+"names": [
+"TubularBigon.RankThreeCompatibleChart.nativeSecondSheet_eq"
+],
+"class": "keep",
+"lines": [
+2716,
+2737
+],
+"sha256": "8d27fc4a3d44b95aabe0d41d689ae3cec87aaa81a542ce8b14af5295a6e23cec"
+},
+{
+"names": [
+"RankThreeWhitneyModel.GraphMotion.exists_native_cancellation"
+],
+"class": "keep",
+"lines": [
+2739,
+2817
+],
+"sha256": "e47507b6028d2ada2dba38cd07408fe73c781dead9af8eddaebde383441511dc"
+},
+{
+"names": [
+"RankThreeWhitneyModel.exists_supported_native_bigon_cancellation"
+],
+"class": "keep",
+"lines": [
+2819,
+2836
+],
+"sha256": "31d7397fb1afd34be42cd6de8f1f4f8e6ad584d27bef407d8ee5c8f696ae62e1"
+},
+{
+"names": [
+"SupportedDiffeomorph.image_inter_eq_diff"
+],
+"class": "keep",
+"lines": [
+2838,
+2857
+],
+"sha256": "74b4d2c851df78c6c778ec337bae5ff44b6ae727fcf6fa385254ce4bc8424143"
+},
+{
+"names": [
+"SupportedDiffeomorph.preimage_target_eq_diff_of_relative_removal"
+],
+"class": "keep",
+"lines": [
+2859,
+2878
+],
+"sha256": "20a93700cb7bab41ff03c98031ca049070275e0143595dbd0d0e980b0c17f8f7"
+},
+{
+"names": [
+"SupportedDiffeomorph.eventuallyEq_comp_of_fixed_off_closed"
+],
+"class": "keep",
+"lines": [
+2880,
+2887
+],
+"sha256": "8115fc4fce2c0c2e05dd09f288fdfa58764a8c70906c7f20ceb2cf2612bd318c"
+},
+{
+"names": [
+"RankThreeWhitneyModel.firstSheet_eq_secondSheet_iff"
+],
+"class": "keep",
+"lines": [
+2889,
+2925
+],
+"sha256": "9679056209fda66c8f921f33556ee1feeb500ee2422268bd065df69c521cd455"
+},
+{
+"names": [
+"TubularBigon.RankThreeCompatibleChart.intersection_in_target_eq"
+],
+"class": "keep",
+"lines": [
+2927,
+3001
+],
+"sha256": "3cb7eef433c140babe62621fdd395948bfd4a5b0d1efd36119062420b1c4010e"
+},
+{
+"names": [
+"TubularBigon.RankThreeCompatibleChart.exists_cancellation"
+],
+"class": "keep",
+"lines": [
+3003,
+3040
+],
+"sha256": "5c57540ec9604cc652c3f495d467254a3f4ba24162229039f82625ecd2d1319a"
+},
+{
+"names": [
+"TubularBigon.RankThreeCompatibleChart.exists_relative_cancellation"
+],
+"class": "keep",
+"lines": [
+3042,
+3067
+],
+"sha256": "c1515bafe0daf40a2c2b1b587b58f2bf08ac33c8345754e7bb9ffb9077a7cffc"
+},
+{
+"names": [
+"TubularBigon.exists_rankThree_relative_cancellation"
+],
+"class": "keep",
+"lines": [
+3069,
+3098
+],
+"sha256": "a18657d259c134d9689a14d49769249dd9d11cd33b0bb6a2fa2a6bccca25611b"
+}
+]
+}
