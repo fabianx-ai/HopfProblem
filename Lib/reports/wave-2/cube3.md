@@ -202,6 +202,7 @@ changed type, was lost or added.
    them"; the review `Lib/reports/wave-reviews/W2.md` finding 2 found the fourth, `square_zero_mem`,
    whose only uses outside `Cells` are `Faces.lean:129` and `:144`, inside the dead
    `square_intrinsic_face`).
+   (2026-10-02: the 36 moved to `Unused/…`, see `Lib/reports/unused/cube3.md`)
 2. **Floor lemmas** (auditors: belong in `Algebra/Order/Floor`): `floor_real_bounds` is
    `⟨Int.floor_le u, Int.lt_floor_add_one u⟩` (twins `Int.floor_le`, `Int.lt_floor_add_one`);
    `cast_int_nat_sub_one`, `int_nat_sub_one_nonneg`, `int_floor_top_split` are `push_cast`/`omega`
