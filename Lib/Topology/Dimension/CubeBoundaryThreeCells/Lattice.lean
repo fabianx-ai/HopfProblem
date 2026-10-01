@@ -46,7 +46,7 @@ public theorem mesh_identities (N : ℕ) (h : ℝ) (hN : 0 < N) (hh : h = 2 / (N
   · field_simp
   · have hN1 : (1 : ℝ) ≤ N := by exact_mod_cast (Nat.one_le_iff_ne_zero.mpr (ne_of_gt hN))
     exact (div_le_iff₀ hNr).2 (by nlinarith)
-/-- The mesh identities immediately supply the positivity of `h`. -/
+/-- For `N > 0` and `h = 2 / N`, the mesh `h` is positive. -/
 public theorem mesh_pos {N : ℕ} {h : ℝ} (hN : 0 < N) (hh : h = 2 / (N : ℝ)) : 0 < h :=
   (mesh_identities N h hN hh).1
 /-- Every indexed mesh point lies between `-1` and `1`. -/
@@ -85,7 +85,7 @@ theorem card_lattice {N : ℕ} {h : ℝ} (hN : 0 < N) (hh : h = 2 / (N : ℝ)) :
       apply mul_right_cancel₀ hh0
       linarith
     exact_mod_cast this
-/-- The indices zero and `N` give the two endpoints `-1` and `1`. -/
+/-- For `N > 0` and `h = 2 / N`, both `-1` (index `0`) and `1` (index `N`) are lattice points. -/
 public theorem lattice_endpoints {N : ℕ} {h : ℝ} (hN : 0 < N)
   (hh : h = 2 / (N : ℝ)) : (-1 : ℝ) ∈ lattice N h ∧ (1 : ℝ) ∈ lattice N h := by
   constructor
@@ -137,7 +137,8 @@ noncomputable def unclippedFloorIndex (h t : ℝ) : ℤ := ⌊normalizedFloorInp
 /-- Clip the floor index at the last lower mesh index. -/
 noncomputable def clippedFloorIndex (N : ℕ) (h t : ℝ) : ℤ :=
   min (unclippedFloorIndex h t) ((N : ℤ) - 1)
-/-- The clipped index determines the lower endpoint of a mesh interval. -/
+/-- The lattice point `-1 + k h` for the clipped floor index `k = min ⌊(t + 1) / h⌋ (N - 1)`: the
+lower endpoint of a mesh interval containing `t` (see `clipped_floor_enclosure`). -/
 public noncomputable def latticeLowerEndpoint (N : ℕ) (h t : ℝ) : ℝ :=
   -1 + (clippedFloorIndex N h t : ℝ) * h
 
@@ -268,7 +269,8 @@ theorem top_floor_case {N : ℕ} {h t : ℝ} (hN : 0 < N)
   refine ⟨htone, hc, ?_⟩
   simpa only [latticeLowerEndpoint, hc] using top_endpoint_cast_algebra hm.2.1
 
-/-- Either the ordinary floor interval or the final interval contains the original coordinate. -/
+/-- For `N > 0`, `h = 2 / N` and `t ∈ [-1, 1]`, the point `t` lies in the mesh interval
+`[a, a + h]` with `a = latticeLowerEndpoint N h t`. -/
 public theorem clipped_floor_enclosure {N : ℕ} {h t : ℝ} (hN : 0 < N)
     (hh : h = 2 / (N : ℝ)) (ht : t ∈ Set.Icc (-1 : ℝ) 1) :
     t ∈ Set.Icc (latticeLowerEndpoint N h t) (latticeLowerEndpoint N h t + h) := by

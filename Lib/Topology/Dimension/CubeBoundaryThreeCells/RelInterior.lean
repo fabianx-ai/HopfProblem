@@ -81,7 +81,7 @@ private theorem square_lower_vertices_eq_of_common_open
   ext r
   fin_cases i <;> fin_cases j <;> fin_cases k <;> fin_cases r <;> simp_all
 
-/-- Intrinsic relative interiors of distinct permitted squares are disjoint. -/
+/-- For `N > 0` and `h = 2 / N`, two mesh squares whose relative interiors meet are equal. -/
 public theorem square_eq_of_relInterior_inter_nonempty
     {N : ℕ} {h : ℝ} (hN : 0 < N) (hh : h = 2 / (N : ℝ))
     {s t : Set Ambient} (hs : s ∈ squares N h) (ht : t ∈ squares N h)

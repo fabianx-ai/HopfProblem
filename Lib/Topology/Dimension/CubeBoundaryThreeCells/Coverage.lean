@@ -183,7 +183,7 @@ theorem point_mem_coverageSquare {N : ℕ} {h : ℝ} (hN : 0 < N)
   · simpa only [coverageVertex_apply_j (Ne.symm hij)] using hxj
   · simpa only [coverageVertex_apply_k (Ne.symm hik) (ne_of_lt hjk).symm] using hxk
 
-/-- Retaining a saturated coordinate and taking two clipped lower endpoints covers each boundary point by a square. -/
+/-- For `N > 0` and `h = 2 / N`, every point of the cube boundary lies in some mesh square. -/
 public theorem exists_square_mem {N : ℕ} {h : ℝ} (hN : 0 < N)
     (hh : h = 2 / (N : ℝ)) {x : Ambient} (hx : x ∈ boundary) :
     ∃ s : Set Ambient, s ∈ squares N h ∧ x ∈ s := by

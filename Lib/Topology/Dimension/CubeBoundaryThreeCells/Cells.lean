@@ -34,9 +34,10 @@ namespace TopologicalSpace.CubeBoundaryThree
 /-- A vertex parameter has three lattice coordinates and lies on the cube boundary. -/
 @[expose] public def VertexParam (N : ℕ) (h : ℝ) (v : Ambient) : Prop :=
   (∀ i, v i ∈ lattice N h) ∧ v ∈ boundary
-/-- The vertex set collects all ambient points satisfying the vertex parameter. -/
+/-- The vertices of the mesh-`h` subdivision of the cube boundary: boundary points all of whose
+coordinates lie in `lattice N h`. -/
 @[expose] public def vertices (N : ℕ) (h : ℝ) : Set Ambient := {v | VertexParam N h v}
-/-- The boundary clause of a vertex parameter places every vertex on the cube boundary. -/
+/-- Every mesh vertex lies on the cube boundary. -/
 public theorem vertex_mem_boundary {N : ℕ} {h : ℝ} {v : Ambient}
     (hv : v ∈ vertices N h) : v ∈ boundary := hv.2
 /-- An edge is the segment from `v` to `v+h e_j`. -/
@@ -414,9 +415,12 @@ theorem shared_edge_presentation_identity {h : ℝ} (hh : 0 < h) {v w : Ambient}
 noncomputable def squareRelInteriorRaw (N : ℕ) (h : ℝ) (s : {s : Set Ambient // s ∈ squares N h}) : Set Ambient :=
   squareOpenGeom h (Classical.choose s.property) (Classical.choose (Classical.choose_spec s.property))
     (Classical.choose (Classical.choose_spec (Classical.choose_spec s.property)))
-/-- The public relative interior packages the raw chosen-presentation construction. -/
+/-- The relative interior of a mesh square `s`: the open square `squareOpenGeom h v j k` of a chosen
+admissible presentation `(v, j, k)` of `s`; by `square_presentation` it is the open square of every
+admissible presentation. -/
 public noncomputable def squareRelInterior (N : ℕ) (h : ℝ) (s : {s : Set Ambient // s ∈ squares N h}) : Set Ambient := squareRelInteriorRaw N h s
-/-- Presentation uniqueness identifies the public relative interior with the open image of every admissible presentation. -/
+/-- For `N > 0` and `h = 2 / N`, if `(v, j, k)` is an admissible presentation of the mesh square `s`,
+then `squareRelInterior N h s = squareOpenGeom h v j k`. -/
 public theorem square_relInterior_coherent {N : ℕ} {h : ℝ} (_hN : 0 < N) (_hh : h = 2 / (N : ℝ))
   (s : {s : Set Ambient // s ∈ squares N h}) {v : Ambient} {j k : Fin 3} (hp : SquareParam N h v j k)
   (hs : (s : Set Ambient) = squareGeom h v j k) : squareRelInterior N h s = squareOpenGeom h v j k := by
@@ -427,7 +431,10 @@ public theorem square_relInterior_coherent {N : ℕ} {h : ℝ} (_hN : 0 < N) (_h
   simp only [squareRelInterior, squareRelInteriorRaw]
   exact square_relInterior_coherent_raw (mesh_pos _hN _hh) hspec.1.2.1 hp.2.1
     (hspec.2.symm.trans hs)
-/-- Every square admits a vertex, ordered directions, coordinate bounds, boundary containment, equality to its image, and the coherent interior. -/
+/-- For `N > 0` and `h = 2 / N`, every mesh square `s` has a presentation: a vertex `v` and
+directions `j < k` with `v j ≤ 1 - h`, `v k ≤ 1 - h`, such that `s` is the closed square
+`{v + (a h) e_j + (b h) e_k | a, b ∈ [0, 1]}`, this square lies in the boundary, and
+`squareRelInterior N h s` is the same set with `a, b ∈ (0, 1)`. -/
 public theorem square_presentation {N : ℕ} {h : ℝ} (hN : 0 < N) (hh : h = 2 / (N : ℝ))
   {s : Set Ambient} (hs : s ∈ squares N h) : ∃ (v : Ambient) (j k : Fin 3), v ∈ vertices N h ∧ j < k ∧
   v j ≤ 1-h ∧ v k ≤ 1-h ∧
@@ -444,9 +451,12 @@ public theorem square_presentation {N : ℕ} {h : ℝ} (hN : 0 < N) (hh : h = 2 
 /-- The raw endpoint assignment uses the initial and terminal points of a chosen admissible edge presentation. -/
 noncomputable def edgeEndpointsRaw (N : ℕ) (h : ℝ) (e : {e : Set Ambient // e ∈ edges N h}) : Set Ambient :=
   let v := Classical.choose e.property; let j := Classical.choose (Classical.choose_spec e.property); {v, v + h • EuclideanSpace.single j 1}
-/-- The public endpoint set packages the raw chosen-presentation assignment. -/
+/-- The endpoint set `{v, v + h e_j}` of a mesh edge, for a chosen admissible presentation `(v, j)`;
+by `edge_presentation` it is the endpoint set of every admissible presentation. -/
 public noncomputable def edgeEndpoints (N : ℕ) (h : ℝ) (e : {e : Set Ambient // e ∈ edges N h}) : Set Ambient := edgeEndpointsRaw N h e
-/-- Every edge admits a vertex, direction, coordinate bound, boundary containment, equality to its segment, and coherent endpoints. -/
+/-- For `N > 0` and `h = 2 / N`, every mesh edge `e` has a presentation: a vertex `v` and a
+direction `j` with `v j ≤ 1 - h` such that `e` is the segment `[v, v + h e_j]`, this segment lies in
+the boundary, and `edgeEndpoints N h e = {v, v + h e_j}`. -/
 public theorem edge_presentation {N : ℕ} {h : ℝ} (hN : 0 < N) (hh : h = 2 / (N : ℝ))
   {e : Set Ambient} (he : e ∈ edges N h) : ∃ (v : Ambient) (j : Fin 3), v ∈ vertices N h ∧ v j ≤ 1-h ∧
   segment ℝ v (v + h • EuclideanSpace.single j 1) ⊆ boundary ∧ e = segment ℝ v (v + h • EuclideanSpace.single j 1) ∧
@@ -475,7 +485,7 @@ theorem finite_Ambient_coordinate_bridge {A : Fin 3 → Set ℝ} (hA : ∀ i, (A
 theorem finite_vertex_product (N : ℕ) (h : ℝ) :
   ({v : Ambient | ∀ i, v i ∈ lattice N h}).Finite :=
   finite_Ambient_coordinate_bridge (fun _ => finite_lattice N h)
-/-- The vertex set is a subset of the finite coordinatewise lattice product. -/
+/-- The set of mesh vertices is finite. -/
 public theorem finite_vertices (N : ℕ) (h : ℝ) : (vertices N h).Finite := by
   apply (finite_vertex_product N h).subset
   intro v hv
@@ -494,7 +504,7 @@ theorem edges_eq_image (N : ℕ) (h : ℝ) :
   constructor
   · rintro ⟨v, j, hp, rfl⟩; exact ⟨(v, j), hp, rfl⟩
   · rintro ⟨⟨v, j⟩, hp, rfl⟩; exact ⟨v, j, hp, rfl⟩
-/-- The image description makes the edge family finite. -/
+/-- The family of mesh edges is finite. -/
 public theorem finite_edges (N : ℕ) (h : ℝ) : (edges N h).Finite := by
   rw [edges_eq_image]
   exact (finite_edge_parameters N h).image _
@@ -512,7 +522,7 @@ theorem squares_eq_image (N : ℕ) (h : ℝ) :
   constructor
   · rintro ⟨v, j, k, hp, rfl⟩; exact ⟨(v, j, k), hp, rfl⟩
   · rintro ⟨⟨v, j, k⟩, hp, rfl⟩; exact ⟨v, j, k, hp, rfl⟩
-/-- The image description makes the square family finite. -/
+/-- The family of mesh squares is finite. -/
 public theorem finite_squares (N : ℕ) (h : ℝ) : (squares N h).Finite := by
   rw [squares_eq_image]
   exact (finite_square_parameters N h).image _
@@ -527,7 +537,7 @@ theorem edge_terminal_is_vertex {N : ℕ} {h : ℝ} (hN : 0 < N) (hh : h = 2 / (
       simpa using lattice_successor hN hh (hp.1.1 j) hp.2.1
     · simpa [hr] using hp.1.1 r
   · exact hp.2.2 (edge_terminal_mem h v j)
-/-- An edge presentation identifies its endpoint set with the initial and terminal vertices, the latter supplied by the terminal-vertex lemma. -/
+/-- For `N > 0` and `h = 2 / N`, both endpoints of every mesh edge are mesh vertices. -/
 public theorem edge_endpoints_vertices {N : ℕ} {h : ℝ} (hN : 0 < N) (hh : h = 2 / (N : ℝ))
   (e : {e : Set Ambient // e ∈ edges N h}) : edgeEndpoints N h e ⊆ vertices N h := by
   obtain ⟨v, j, hv, hvj, hface, hedge, hend⟩ := edge_presentation hN hh e.property

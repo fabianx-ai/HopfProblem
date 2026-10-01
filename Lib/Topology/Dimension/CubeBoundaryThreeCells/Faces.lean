@@ -317,7 +317,8 @@ theorem square_containment_forces_remaining_abs {N : ℕ} {h : ℝ} (hN : 0 < N)
   exact (square_midpoint_remaining_abs (mesh_pos hN hh)
     (squareParamOfContainment hv hjk hvj hvk hsub) hij hik).2.2
 
-/-- Square containment is equivalent to saturation of the remaining coordinate. -/
+/-- For `N > 0`, `h = 2 / N`, a vertex `v`, directions `j < k` with `v j ≤ 1 - h`, `v k ≤ 1 - h` and
+the third index `i`, the square `squareGeom h v j k` lies in the boundary iff `|v i| = 1`. -/
 public theorem square_subset_boundary_iff {N : ℕ} {h : ℝ} (hN : 0 < N)
     (hh : h = 2 / (N : ℝ)) {v : Ambient} {j k i : Fin 3}
     (hv : v ∈ vertices N h) (hjk : j < k) (hvj : v j ≤ 1 - h)

@@ -322,7 +322,8 @@ private theorem square_boundary_mem_four_segments
     rw [hx, ← H.2]
     exact H.1
 
-/-- The square boundary is the union of its four edges. -/
+/-- For `N > 0` and `h = 2 / N`, a point of a mesh square `s` outside its relative interior lies on
+one of the four sides of a presentation of `s`, and all four sides are mesh edges. -/
 public theorem square_boundary_edges
     {N : ℕ} {h : ℝ} (hN : 0 < N) (hh : h = 2 / (N : ℝ))
     {s : Set Ambient} (hs : s ∈ squares N h) {x : Ambient}
