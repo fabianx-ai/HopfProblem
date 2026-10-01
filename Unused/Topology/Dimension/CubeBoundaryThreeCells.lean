@@ -66,12 +66,12 @@ theorem card_lattice {N : ℕ} {h : ℝ} (hN : 0 < N) (hh : h = 2 / (N : ℝ)) :
     exact_mod_cast this
 
 /-- When `N=1`, the identity `h=2/N` reduces the mesh to two. -/
-public theorem mesh_two_of_one {h : ℝ} (hh : h = 2 / ((1 : ℕ) : ℝ)) : h = 2 := by norm_num at hh ⊢; exact hh
+theorem mesh_two_of_one {h : ℝ} (hh : h = 2 / ((1 : ℕ) : ℝ)) : h = 2 := by norm_num at hh ⊢; exact hh
 
 /-! ### From `Lib.Topology.Dimension.CubeBoundaryThreeCells.Cells` -/
 
 /-- A coordinate is nonconstant exactly when two points of the set have different values there. -/
-@[expose] public def coordinateNonconstant (C : Set Ambient) (r : Fin 3) : Prop :=
+def coordinateNonconstant (C : Set Ambient) (r : Fin 3) : Prop :=
   ∃ x ∈ C, ∃ y ∈ C, x r ≠ y r
 
 /-- The initial vertex attains every coordinate minimum on a nonnegative-mesh edge. -/
@@ -115,7 +115,7 @@ theorem square_presentation_unique {N : ℕ} {h : ℝ} (hh : 0 < h) {s : Set Amb
   have hd := square_directions_mem_of_set_eq hh hp.2.1 hp'.2.1 heq
   exact ⟨hvw, square_ordered_directions_eq hp.2.1 hp'.2.1 hd.1 hd.2⟩
 /-- For positive mesh, a square varies in exactly its two defining coordinates `j` and `k`. -/
-public theorem square_nonconstant_coordinates {h : ℝ} (hh : 0 < h) {v : Ambient} {j k : Fin 3}
+theorem square_nonconstant_coordinates {h : ℝ} (hh : 0 < h) {v : Ambient} {j k : Fin 3}
   (hjk : j < k) (r : Fin 3) : coordinateNonconstant (squareGeom h v j k) r ↔ r = j ∨ r = k := by
   have _ := hjk
   constructor

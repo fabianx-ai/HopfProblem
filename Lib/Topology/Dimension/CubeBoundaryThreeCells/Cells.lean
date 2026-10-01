@@ -116,7 +116,7 @@ public theorem square_coordinate_formula (h a b : ℝ) (v : Ambient) (j k r : Fi
       simp [hrj]
     · simp [hrj, hrk]
 /-- Parameters `(0,0)` place the initial point `v` in the square. -/
-public theorem square_zero_mem (h : ℝ) (v : Ambient) (j k : Fin 3) : v ∈ squareGeom h v j k := by
+theorem square_zero_mem (h : ℝ) (v : Ambient) (j k : Fin 3) : v ∈ squareGeom h v j k := by
   exact ⟨0, by simp, 0, by simp, by simp⟩
 /-- Parameters `(1,0)` place the first adjacent corner `v+h e_j` in the square. -/
 theorem square_first_corner_mem (h : ℝ) (v : Ambient) (j k : Fin 3) :
