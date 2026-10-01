@@ -1,0 +1,9 @@
+constants before 38373 after 38373 (keys 38271 38271 )
+lost 2 added 2 of which source declarations: 0 0 ; names with changed type 2 of which source: 2
+  PROOF-NAMING DiskFraming.exists_smooth_frame_near_starConvex
+  PROOF-NAMING DiskFraming.exists_smooth_frame_on_neighborhood_closedBall
+auxiliary lost/added/changed (not judged): 2 2 0
+module moves (source declarations, 1-to-1):
+ambiguous module changes: 0
+auxiliary constants that changed module: 0
+VERDICT PASS
