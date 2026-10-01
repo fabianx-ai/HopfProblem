@@ -103,7 +103,7 @@ theorem ManifoldMorse.MorseSurgeryData.upperCollapse_old {E M : Type*}
 
 attribute [local instance 100] Classical.propDecidable in
 /-- `upperCollapseMap hf` on the handle point `handleMap z` is `DiskOnePointCollapse.collapse z.1`.
-`upperCollapseMap hf` on the handle point `handleMap z` is `DiskOnePointCollapse.collapse z.1`. -/
+-/
 theorem ManifoldMorse.MorseSurgeryData.upperCollapse_handle {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [T2Space M]
     {f : M → ℝ} {p : M} (d : ManifoldMorse.MorseSurgeryData E f p) (hf : Continuous f)
@@ -251,8 +251,8 @@ theorem ManifoldMorse.MorseSurgeryData.upperCollapse_homology_equiv_compare {E M
   d.upperCollapse_connecting_compare hf (k + 1) a
 
 attribute [local instance 100] Classical.propDecidable in
-/-- The kernel of `H_{k+1}(upperCollapseMap hf)` is the image of `lowerRealizationHomologyMap (k + 1)`.
-The kernel of `H_{k+1}(upperCollapseMap hf)` is the image of `lowerRealizationHomologyMap (k + 1)`. -/
+/-- The kernel of `H_{k+1}(upperCollapseMap hf)` is the image of
+`lowerRealizationHomologyMap (k + 1)`. -/
 theorem ManifoldMorse.MorseSurgeryData.upperCollapse_homology_kernel {E M : Type}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [T2Space M]
     {f : M → ℝ} {p : M} (d : ManifoldMorse.MorseSurgeryData E f p) (hf : Continuous f)
@@ -275,8 +275,8 @@ theorem ManifoldMorse.MorseSurgeryData.upperCollapse_homology_kernel {E M : Type
         (h.trans (map_zero _).symm)
 
 attribute [local instance 100] Classical.propDecidable in
-/-- For `k ≠ 0`, if `H_k(M_{lower})` is a subsingleton then `morseConnectingMap hf k` is surjective.
-For `k ≠ 0`, if `H_k(M_{lower})` is a subsingleton then `morseConnectingMap hf k` is surjective. -/
+/-- For `k ≠ 0`, if `H_k(M_{lower})` is a subsingleton then `morseConnectingMap hf k` is
+surjective. -/
 theorem ManifoldMorse.MorseSurgeryData.morseConnecting_surjective_of_lower {E M : Type}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [T2Space M]
     {f : M → ℝ} {p : M} (d : ManifoldMorse.MorseSurgeryData E f p) (hf : Continuous f)

@@ -44,7 +44,7 @@ open scoped ContDiff ContinuousMap
 noncomputable section
 
 /-- `normalJacobian j x (c • A) * c ^ dim N = normalJacobian j x A` for invertible `A` and `c ≠ 0`.
-`normalJacobian j x (c • A) * c ^ dim N = normalJacobian j x A` for invertible `A` and `c ≠ 0`. -/
+-/
 theorem SphereNormalCoordinates.normalJacobian_smul_mul_pow {V N : Type*}
     [NormedAddCommGroup V] [InnerProductSpace ℝ V] [NormedAddCommGroup N] [NormedSpace ℝ N]
     [FiniteDimensional ℝ N] {n : ℕ} [Fact (Module.finrank ℝ V = n + 1)] (j : (ℝ × N) ≃L[ℝ] V)
@@ -360,8 +360,8 @@ theorem SpherePoint.puncture_contractible {V : Type} [NormedAddCommGroup V]
     (x : Metric.sphere (0 : V) 1) : ContractibleSpace ({ x }ᶜ : Set (Metric.sphere (0 : V) 1)) :=
   (punctureHomeomorph (n := n) x).contractibleSpace
 
-/-- The point connecting isomorphism `H_{k+2}(S(V)) ≃ H_{k+1}(S(ℝⁿ))` at `x ∈ S(V)`, `dim V = n + 1`.
-The point connecting isomorphism `H_{k+2}(S(V)) ≃ H_{k+1}(S(ℝⁿ))` at `x ∈ S(V)`, `dim V = n + 1`. -/
+/-- The point connecting isomorphism `H_{k+2}(S(V)) ≃ H_{k+1}(S(ℝⁿ))` at `x ∈ S(V)`,
+`dim V = n + 1`. -/
 def SpherePoint.connectingHomologyEquiv {V : Type} [NormedAddCommGroup V]
     [InnerProductSpace ℝ V] {n : ℕ} [hdim : Fact (Module.finrank ℝ V = n + 1)] {F : Type}
     [NormedAddCommGroup F] [NormedSpace ℝ F] (x : Metric.sphere (0 : V) 1)
@@ -475,7 +475,7 @@ theorem SpherePoint.chartSign_mul_self (n : ℕ) {H : Type} [NormedAddCommGroup 
 
 attribute [local instance] SpherePoint.instLocal2 in
 /-- `sphereConnecting x dx (k + 1) a = sign (chartJacobian …) • outwardPointClass n j B x dx k a`.
-`sphereConnecting x dx (k + 1) a = sign (chartJacobian …) • outwardPointClass n j B x dx k a`. -/
+-/
 theorem SpherePoint.connecting_eq_sign_outward (n : ℕ) {F H : Type} [NormedAddCommGroup F]
     [NormedSpace ℝ F] [NormedAddCommGroup H] [NormedSpace ℝ H]
     (j : (ℝ × H) ≃L[ℝ] EuclideanSpace ℝ (Fin (n + 3)))
@@ -574,7 +574,7 @@ theorem SpherePoint.outwardPointClass_eq_global (n : ℕ) {H : Type} [NormedAddC
   outwardPointClass_eq n j B (referencePoint n) x (referenceNeighborhood n (referencePoint n)) d k
 
 attribute [local instance] SpherePoint.instLocal3 in
-/-- `sphereConnecting x d (k + 1) a = sign (chartJacobian (centered x) j B 0) • outwardClass n j B k a`.
+/--
 `sphereConnecting x d (k + 1) a = sign (chartJacobian (centered x) j B 0) • outwardClass n j B k a`. -/
 theorem SpherePoint.pointConnecting_eq_outward (n : ℕ) {H : Type} [NormedAddCommGroup H]
     [NormedSpace ℝ H] (j : (ℝ × H) ≃L[ℝ] EuclideanSpace ℝ (Fin (n + 3)))

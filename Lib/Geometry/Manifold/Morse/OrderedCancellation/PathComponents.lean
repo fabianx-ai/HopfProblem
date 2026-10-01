@@ -41,7 +41,7 @@ def MorseCancellation.componentChainWeight {X : Type} [TopologicalSpace X] (x : 
 
 attribute [local instance 100] Classical.propDecidable in
 /-- `componentChainWeight x` of the point chain at `y` is `1` if `x` and `y` are joined, else `0`.
-`componentChainWeight x` of the point chain at `y` is `1` if `x` and `y` are joined, else `0`. -/
+-/
 theorem MorseCancellation.componentChainWeight_point {X : Type} [TopologicalSpace X] (x y : X) :
     componentChainWeight x (SingularChains.pointChain y) = if Joined x y then 1 else 0 := by
   exact SingularChains.chainLift_simplex X 0 _ _
@@ -142,7 +142,7 @@ theorem MorseCancellation.cell_old_empty_of_empty_boundary {N X : Type} [NormedA
     exact False.elim (hdisjoint z (h ▸ Set.mem_univ _))
 
 /-- Every singular `0`-chain is a cycle: the linear map `Chains X 0 → Cycle (singularComplex X) 0`.
-Every singular `0`-chain is a cycle: the linear map `Chains X 0 → Cycle (singularComplex X) 0`. -/
+-/
 def MorseCancellation.zeroChainCycle {X : Type} [TopologicalSpace X] :
     SingularChains.Chains X 0 →ₗ[ℤ]
       SingularMayerVietoris.ModuleHomology.Cycle (SingularChains.singularComplex X) 0
