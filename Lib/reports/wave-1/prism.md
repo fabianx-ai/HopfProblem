@@ -8,11 +8,26 @@ Topology*, Thm 2.10 (prism operator) and Thm 4.32 at `n = 2` (degree-two Hurewic
 ## The cut
 
 Every declaration of the base file (455 ranged declaration units, 464 ranged constants counting
-structure fields and constructors) was moved verbatim by `split_module.py` — one run per piece against
+structure fields and constructors) was moved by `split_module.py`, its declaration text verbatim, but
+16 `attribute [local instance] SingularHomology.integerLinearMapModule
+SingularHomology.integerTensorModule in` prefixes were dropped (corrected 2026-10-02: this said
+"was moved verbatim by `split_module.py`" and, of the unit lines, "(docstrings, attributes and
+`… in` prefixes included; context lines excluded)". The tool stops a
+unit's upward extension at a blank line, so the prefix was lost wherever a blank line separated it
+from the docstring: before `suspensionOne_apply`, `suspensionTwo_apply`,
+`squareHomologyClass_const` (`HurewiczMap`), `prismOperator_apply` (`Basic`),
+`lowerProductTriangle_fst/_snd`, `upperProductTriangle_fst/_snd`, `leftProductDegenerate_fst`,
+`bottomProductDegenerate_snd`, `lowerSquareTriangle_zero/_one`, `upperSquareTriangle_zero/_one`
+(`TwoTriangles`) — fourteen in force at the base — and before the `/-! ### -/` headers above
+`timeSlice` and `squareAffineTriangle`, where the prefix bound to the header and was vacuous. The
+SHA-256 receipts cover the tool's unit, not the source text, and could not see it. The fourteen
+effective prefixes are restored by the fix round, commit `f04032e6` on `fix/waves`, receipt
+`Lib/reports/wave-reviews/fixes.md`; the two vacuous ones are not.) — one run per piece against
 the base file, stay set = all constants except the piece's, receipts `prism/receipt_<Piece>.json` — into
 `Lib/AlgebraicTopology/Hurewicz/PrismOperator/<Piece>.lean`; `PrismOperator.lean` is a facade that
 imports the sixteen pieces. Line numbers are those of the base file; "unit lines" count the moved
-declaration units (docstrings, attributes and `… in` prefixes included; context lines excluded).
+declaration units (docstrings and attributes included, `… in` prefixes only where no blank line
+separated them from the docstring; context lines excluded).
 
 | piece | lines moved | declarations | textbook topic |
 |---|---|---|---|
