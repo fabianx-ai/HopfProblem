@@ -36,7 +36,6 @@ open scoped ContDiff InnerProductSpace
 
 noncomputable section
 
-
 /-- A reference linear isomorphism between the radial line times the negative coordinates of the
 Morse chart and the ambient space of the belt sphere, available once the negative coordinates
 have dimension `m`.
@@ -197,6 +196,5 @@ theorem ManifoldMorse.MorseSurgeryData.finite_beltIntersectionPoints {E M : Type
   have hpre : (g ⁻¹' (Set.range g ∩ Set.range d.surgery.beltSphere)).Finite :=
     hfin.preimage hinj.injOn
   exact hpre.subset (fun x hx => ⟨⟨x, rfl⟩, hx⟩)
-
 
 end

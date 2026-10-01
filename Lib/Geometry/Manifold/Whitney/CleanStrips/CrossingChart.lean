@@ -643,5 +643,4 @@ theorem finite_transverse_intersections {E M D Z N P : Type*} [NormedAddCommGrou
     ((isCompact_range hF.continuous).inter_right (isCompact_range hG.continuous).isClosed).finite
       (isDiscrete_transverse_intersections hF hG hembF hembG hdim ht)
 
-
 end

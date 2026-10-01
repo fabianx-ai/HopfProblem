@@ -26,7 +26,6 @@ open scoped ContDiff InnerProductSpace
 
 noncomputable section
 
-
 /-- The second coordinate of a chart `Φ : D × B ≃ M`, viewed as a function on the target of `Φ`; it
 is the normal coordinate that cuts out the first sheet.
 -/
@@ -113,7 +112,6 @@ theorem TransverseCoordinates.normalDerivative_comp_sheet_eq_zero {D B E M : Typ
       (hF.mdifferentiableAt (by simp))] at hzero
   exact hzero
 
-
 /-- The derivative of the zero section `x ↦ Φ (x, 0)` of a chart is the derivative of the chart
 restricted to the first factor.
 -/
@@ -170,6 +168,5 @@ theorem TransverseCoordinates.ker_normalDerivative_eq_range_zero_section {D B E 
   · rintro ⟨a, rfl⟩
     change (R (L (a, 0))).2 = 0
     rw [hRL_apply]
-
 
 end

@@ -29,7 +29,6 @@ open scoped ContDiff InnerProductSpace
 
 noncomputable section
 
-
 /-- A clean strip patch along an arc `a` joining two corners: an immersed injective map of a
 neighbourhood of the strip `[0, 1] × [-w, w]` into `M` which is a closed embedding on that
 strip, meets the sheet `S` exactly in the centre line `s = 0` and the sheet `T` exactly in the two
@@ -38,23 +37,37 @@ the corner patch `k₀`, and agrees near `(1, 0)` with `k₁ ∘ StripCoordinate
 -/
 structure CleanStripPatch {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [TopologicalSpace M] [ChartedSpace E M] (S T : Set M) (a : ℝ → M) (k₀ k₁ : (ℝ × ℝ) → M) where
+  /-- The half-width `w` of the strip `[0, 1] × [-w, w]`. -/
   width : ℝ
+  /-- The half-width is positive. -/
   width_pos : 0 < width
+  /-- The domain of the patch in the plane. -/
   domain : Set (ℝ × ℝ)
+  /-- The domain is open. -/
   open_domain : IsOpen domain
+  /-- The domain contains the strip `[0, 1] × [-w, w]`. -/
   contains_strip : Set.Icc (0 : ℝ) 1 ×ˢ Set.Icc (-width) width ⊆ domain
+  /-- The patch map. -/
   map : (ℝ × ℝ) → M
+  /-- The patch map is smooth on its domain. -/
   smooth : ContMDiffOn 𝓘(ℝ, ℝ × ℝ) 𝓘(ℝ, E) ∞ map domain
+  /-- The patch map is injective on its domain. -/
   injective : Set.InjOn map domain
+  /-- The patch map restricted to the strip is a closed embedding. -/
   closed_embedding :
     Topology.IsClosedEmbedding (fun p : Set.Icc (0 : ℝ) 1 ×ˢ Set.Icc (-width) width => map p)
+  /-- The patch map is an immersion on its domain. -/
   derivative_injective : ∀ p ∈ domain, Function.Injective (mfderiv 𝓘(ℝ, ℝ × ℝ) 𝓘(ℝ, E) map p)
+  /-- A point of the domain is sent into `S` exactly when its second coordinate vanishes. -/
   first_sheet : ∀ p ∈ domain, map p ∈ S ↔ p.2 = 0
+  /-- A point of the domain is sent into `T` exactly when its first coordinate is `0` or `1`. -/
   second_sheet : ∀ p ∈ domain, map p ∈ T ↔ p.1 = 0 ∨ p.1 = 1
+  /-- On the centre line over `[0, 1]` the patch map is the arc `a`. -/
   center : ∀ t ∈ Set.Icc (0 : ℝ) 1, map (t, 0) = a t
+  /-- Near `(0, 0)` the patch map agrees with the corner patch `k₀`. -/
   left_germ : map =ᶠ[𝓝 (0, 0)] k₀
+  /-- Near `(1, 0)` the patch map agrees with `k₁ ∘ StripCoordinates.reverse`. -/
   right_germ : map =ᶠ[𝓝 (1, 0)] k₁ ∘ StripCoordinates.reverse
-
 
 /-- The centre arc of a clean strip patch is injective on `[0, 1]`. -/
 theorem CleanStripPatch.center_injOn {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
@@ -117,7 +130,6 @@ theorem injective_mfderiv_of_eqOn_cleanStripPatch_comp {E M : Type*} [NormedAddC
     exact hi
   exact (k.derivative_injective (r p) (hmap hp)).comp hri
 
-
 /-- A clean strip patch avoids both sheets at parameters with time strictly between `0` and `1` and
 nonzero height.
 -/
@@ -130,6 +142,5 @@ theorem CleanStripPatch.avoids_sheets {E M : Type*} [NormedAddCommGroup E] [Norm
   · rcases (k.second_sheet p hp).mp hT with h0 | h1
     · exact ht.1.ne' h0
     · exact ht.2.ne h1
-
 
 end

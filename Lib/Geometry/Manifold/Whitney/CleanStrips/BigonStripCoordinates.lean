@@ -30,7 +30,6 @@ open scoped ContDiff InnerProductSpace
 
 noncomputable section
 
-
 /-- The lower strip chart of the bigon has horizontal derivative `(1/2, 0)` on the lower edge, the
 arc parameter running at half speed.
 -/
@@ -176,7 +175,6 @@ theorem WhitneyPairModel.injOn_frontier_bigon_of_arcs {M : Type*} {h : ℝ} (hh 
   · rw [hupper t ht, hupper s hs] at heq
     rw [hb ht hs heq]
 
-
 /-- The interpolated strip time `t + (2β - 1) z / (4 h J)` of an interior point of the bigon again
 lies strictly between `0` and `1`.
 -/
@@ -246,6 +244,5 @@ theorem WhitneyPairModel.upperStripCoordinates_interior {h : ℝ} (hh : 0 < h) {
     (hp : p ∈ interior (bigon h)) :
     (upperStripCoordinates h p).1 ∈ Set.Ioo (0 : ℝ) 1 ∧ 0 < (upperStripCoordinates h p).2 :=
   lowerStripCoordinates_interior hh (exchangeEdges_mem_interior hp)
-
 
 end

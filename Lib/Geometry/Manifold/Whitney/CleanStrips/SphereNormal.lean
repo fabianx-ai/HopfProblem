@@ -30,7 +30,6 @@ open scoped ContDiff InnerProductSpace
 
 noncomputable section
 
-
 /-- The defining function `x ↦ ‖x‖² - 1` of the unit sphere. -/
 def SphereBoundary.definingFunction {E : Type*} [NormedAddCommGroup E] (x : E) : ℝ :=
   ‖x‖ ^ 2 - 1
@@ -244,6 +243,5 @@ theorem SphereNormalCoordinates.normalJacobian_change_normal_model {V N : Type*}
     (r.symm v).1 • (x : V) + inclusionDerivative x (B.inverse (j.symm (r.symm v).2)) =
       (r.symm v).1 • (x : V) + inclusionDerivative x (A.inverse (r.symm v).2)
   rw [hinv]
-
 
 end

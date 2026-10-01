@@ -28,7 +28,6 @@ open scoped ContDiff InnerProductSpace
 
 noncomputable section
 
-
 /-- The linear corner map `(s, t) ↦ (s • u, t • v)` of the plane into `D × Z`, spanning the two
 coordinate directions by the given vectors.
 -/
@@ -169,15 +168,26 @@ and `b`, and which meets `S` exactly in the first axis and `T` exactly in the se
 -/
 structure CleanCornerPatch {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [TopologicalSpace M] [ChartedSpace E M] (S T : Set M) (a b : ℝ → M) where
+  /-- The domain of the patch in the plane. -/
   domain : Set (ℝ × ℝ)
+  /-- The domain is open. -/
   open_domain : IsOpen domain
+  /-- The domain contains the origin. -/
   contains_zero : (0 : ℝ × ℝ) ∈ domain
+  /-- The patch map. -/
   map : (ℝ × ℝ) → M
+  /-- The patch map is smooth on its domain. -/
   smooth : ContMDiffOn 𝓘(ℝ, ℝ × ℝ) 𝓘(ℝ, E) ∞ map domain
+  /-- The patch map is injective on its domain. -/
   injective : Set.InjOn map domain
+  /-- The patch map is an immersion on its domain. -/
   derivative_injective : ∀ p ∈ domain, Function.Injective (mfderiv 𝓘(ℝ, ℝ × ℝ) 𝓘(ℝ, E) map p)
+  /-- A point of the domain is sent into `S` exactly when its second coordinate vanishes, and
+  into `T` exactly when its first coordinate vanishes. -/
   sheets : ∀ p ∈ domain, (map p ∈ S ↔ p.2 = 0) ∧ (map p ∈ T ↔ p.1 = 0)
+  /-- On the first axis the patch map is the arc `a`. -/
   axis_first : ∀ t, (t, 0) ∈ domain → map (t, 0) = a t
+  /-- On the second axis the patch map is the arc `b`. -/
   axis_second : ∀ t, (0, t) ∈ domain → map (0, t) = b t
 
 /-- Exchanging the two sheets of a clean corner patch, by composing the patch with the swap of the
@@ -211,6 +221,5 @@ def CleanCornerPatch.swap {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ 
       (c.derivative_injective (e p) hp).comp
         (PartialChart.bijective_mfderiv e.toDiffeomorph.toPartialDiffeomorph
             (Set.mem_univ p)).1
-
 
 end

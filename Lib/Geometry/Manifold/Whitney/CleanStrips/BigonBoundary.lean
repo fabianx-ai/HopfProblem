@@ -36,7 +36,6 @@ open scoped ContDiff InnerProductSpace
 
 noncomputable section
 
-
 /-- Near the left corner of the bigon the lower and the upper strip charts of a Whitney pair give
 the same map into `M`, both being the left corner patch in its two coordinate orders.
 -/
@@ -234,7 +233,6 @@ theorem exists_smooth_bigon_boundary_neighborhood {E M : Type*} [NormedAddCommGr
     rw [WhitneyPairModel.upperStripCoordinates_upper]
     exact l.center t ht
 
-
 /-- The map glued from the two strip patches is an immersion at every point of the frontier of the
 bigon.
 -/
@@ -315,7 +313,6 @@ theorem exists_embedded_bigon_boundary_neighborhood {E M : Type*} [NormedAddComm
     ManifoldImmersion.exists_open_embedded_immersive_neighborhood (hU.union hV) hf hcompact hfront
       hinj hi
 
-
 /-- The map glued from the two strip patches avoids both sheets on the interior of the bigon; the
 bigon meets the two sheets only in its two edges.
 -/
@@ -348,27 +345,48 @@ points of the neighbourhood outside the bigon.
 structure CleanBigonBoundary {E M : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [TopologicalSpace M] [ChartedSpace E M] (S T : Set M) (a b : ℝ → M) (k l : (ℝ × ℝ) → M)
     (h : ℝ) where
+  /-- The height of the bigon is positive. -/
   height_pos : 0 < h
+  /-- The neighbourhood map. -/
   map : (ℝ × ℝ) → M
+  /-- The open domain of the map. -/
   domain : Set (ℝ × ℝ)
+  /-- The domain is open. -/
   open_domain : IsOpen domain
+  /-- The map is smooth on its domain. -/
   smooth : ContMDiffOn 𝓘(ℝ, ℝ × ℝ) 𝓘(ℝ, E) ∞ map domain
+  /-- The map is injective on its domain. -/
   injective : Set.InjOn map domain
+  /-- The map is an immersion on its domain. -/
   derivative_injective : ∀ p ∈ domain, Function.Injective (mfderiv 𝓘(ℝ, ℝ × ℝ) 𝓘(ℝ, E) map p)
+  /-- On the domain, the map sends the interior of the bigon off `S ∪ T`. -/
   interior_avoids : ∀ p ∈ domain ∩ interior (WhitneyPairModel.bigon h), map p ∉ S ∪ T
+  /-- A compact neighbourhood of the frontier of the bigon inside the domain. -/
   closed_neighborhood : Set (ℝ × ℝ)
+  /-- The neighbourhood is compact. -/
   compact_neighborhood : IsCompact closed_neighborhood
+  /-- The neighbourhood is closed. -/
   closed_closed_neighborhood : IsClosed closed_neighborhood
+  /-- The frontier of the bigon lies in the interior of the neighbourhood. -/
   boundary_covered : frontier (WhitneyPairModel.bigon h) ⊆ interior closed_neighborhood
+  /-- The neighbourhood lies in the domain. -/
   neighborhood_subset : closed_neighborhood ⊆ domain
+  /-- The map restricted to the neighbourhood is a closed embedding. -/
   closed_embedding : Topology.IsClosedEmbedding (fun p : closed_neighborhood => map p)
+  /-- Points of the bigon in the neighbourhood but off its frontier are sent off `S ∪ T`. -/
   clean :
     ∀ p ∈ WhitneyPairModel.bigon h ∩ closed_neighborhood,
       p ∉ frontier (WhitneyPairModel.bigon h) → map p ∉ S ∪ T
+  /-- On the lower edge the map is the arc `a`. -/
   lower : ∀ t ∈ Set.Icc (0 : ℝ) 1, map (2 * t - 1, 0) = a t
+  /-- On the upper edge the map is the arc `b`. -/
   upper : ∀ t ∈ Set.Icc (0 : ℝ) 1, map (2 * t - 1, h * (1 - (2 * t - 1) ^ 2)) = b t
+  /-- Near each point of the lower edge the map is `k` composed with the lower strip
+  coordinates. -/
   lower_germ :
     ∀ t ∈ Set.Icc (0 : ℝ) 1, map =ᶠ[𝓝 (2 * t - 1, 0)] k ∘ WhitneyPairModel.lowerStripCoordinates h
+  /-- Near each point of the upper edge the map is `l` composed with the upper strip
+  coordinates. -/
   upper_germ :
     ∀ t ∈ Set.Icc (0 : ℝ) 1,
       map =ᶠ[𝓝 (2 * t - 1, h * (1 - (2 * t - 1) ^ 2))]

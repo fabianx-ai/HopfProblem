@@ -37,7 +37,6 @@ open scoped ContDiff InnerProductSpace
 
 noncomputable section
 
-
 /-- Partial derivative in the first variable: if `F : ℝ × ℝ → E` is differentiable at `(t, s)`, then
 the horizontal slice `u ↦ F (u, s)` has derivative `fderiv ℝ F (t, s) (1, 0)` at `t`.
 -/
@@ -175,7 +174,6 @@ theorem StripCoordinates.normalDerivative_blend {A B : Type*} [NormedAddCommGrou
     (hasDerivAt_verticalSlice
           ((contDiff_blend hv hF₀ hF₁ hβ₀ hβ₁).snd.contDiffAt.differentiableAt (by simp))).unique
       hblend'
-
 
 /-- A strip map whose restriction to the axis is the centre line has horizontal derivative
 `center 1` at each point of the axis.
@@ -337,7 +335,6 @@ theorem StripCoordinates.ker_comp_eq_range_of_injective {A B Z : Type*}
       exact ⟨p, rfl⟩
     exact hmem
 
-
 /-- A linear endomorphism of the plane fixing `(1, 0)` and with nonzero second component on `(0, 1)`
 is injective.
 -/
@@ -413,6 +410,5 @@ theorem StripCoordinates.injective_fderiv_detector_at_center {A B : Type*}
   apply injective_plane_of_horizontal_and_normal _ hh
   rw [detector_vertical_derivative hv hF hn t]
   exact inner_self_ne_zero.mpr ht
-
 
 end

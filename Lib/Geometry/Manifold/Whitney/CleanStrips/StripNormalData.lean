@@ -32,7 +32,6 @@ open scoped ContDiff InnerProductSpace
 
 noncomputable section
 
-
 /-- A strip chart for a sheet `S` along a map `k : ℝ × ℝ → M`: a chart of `M` with model
 `(ℝ × A) × B` in which `S` is cut out by the vanishing of the last coordinate, the centre line
 is the image of `t ↦ ((t, 0), 0)`, and `k` has nonvanishing normal derivative along `[0, 1]`.
@@ -40,15 +39,19 @@ is the image of `t ↦ ((t, 0), 0)`, and `k` has nonvanishing normal derivative 
 structure StripNormalData (A B : Type*) [NormedAddCommGroup A] [NormedSpace ℝ A]
     [NormedAddCommGroup B] [NormedSpace ℝ B] {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] (S : Set M) (k : (ℝ × ℝ) → M) where
+  /-- The strip chart, with model `(ℝ × A) × B`. -/
   chart :
     PartialDiffeomorph 𝓘(ℝ, StripCoordinates.Space A B) 𝓘(ℝ, E) (StripCoordinates.Space A B) M ∞
+  /-- The centre line over `[0, 1]` lies in the source of the chart. -/
   line : Set.MapsTo StripCoordinates.center (Set.Icc (0 : ℝ) 1) chart.source
+  /-- In the chart, the sheet `S` is the zero set of the `B`-coordinate. -/
   sheet : ∀ q ∈ chart.source, chart q ∈ S ↔ q.2 = 0
+  /-- On the axis, `k` is the centre line read through the chart. -/
   center : ∀ t, k (t, 0) = chart (StripCoordinates.center t)
+  /-- Along `[0, 1]` the normal coordinate of `k` has nonzero vertical derivative. -/
   normal_nonzero :
     ∀ t ∈ Set.Icc (0 : ℝ) 1,
       fderiv ℝ (TransverseCoordinates.normalCoordinate chart ∘ k) (t, 0) (0, 1) ≠ 0
-
 
 /-- The map `k` read in the strip chart, `chart⁻¹ ∘ k`. -/
 def StripNormalData.coordinateMap {A B E M : Type*} [NormedAddCommGroup A] [NormedSpace ℝ A]
@@ -149,7 +152,6 @@ theorem StripNormalData.mfderiv_eq_comp_fderiv_coordinateMap {A B E M : Type*}
       (hcoords.contMDiffAt.mdifferentiableAt (by simp)),
     d.coordinate_center ht, mfderiv_eq_fderiv]
   rfl
-
 
 /-- The frame of the normal bundle of `Ψ` along the strip at time `t`: the transverse directions of
 the sheet pushed into the normal factor `Z` of the chart `Ψ`.
@@ -429,6 +431,5 @@ theorem StripNormalData.sheetDifferential_arc_of_germ {A B Z E M : Type*}
   have hq' : HasDerivAt (fun s => (q s, (0 : Z))) (v, 0) t :=
     hq.prodMk (hasDerivAt_const t (0 : Z))
   exact hd.unique (hq'.congr_of_eventuallyEq hgerm)
-
 
 end
