@@ -9,7 +9,6 @@ public import Mathlib
 public import Lib.Analysis.Calculus.MorseLemma.PartialDiffeomorph
 public import Lib.Analysis.Calculus.MorseLemma.CriticalPoints
 public import Lib.Analysis.Calculus.MorseLemma.MorseChart
-import all Mathlib.Geometry.Manifold.LocalDiffeomorph
 
 /-!
 # Signed Morse charts on a manifold
