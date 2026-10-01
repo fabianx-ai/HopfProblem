@@ -1,0 +1,17 @@
+constants before 38301 after 38302 (keys 38199 38200 )
+lost 0 added 1 of which source declarations: 0 0 ; names with changed type 0 of which source: 0
+auxiliary lost/added/changed (not judged): 0 1 0
+module moves (source declarations, 1-to-1):
+       9  Lib.Geometry.Manifold.Whitney.CleanStrips -> Lib.Geometry.Manifold.Whitney.CleanStrips.BeltIntersection
+      30  Lib.Geometry.Manifold.Whitney.CleanStrips -> Lib.Geometry.Manifold.Whitney.CleanStrips.BigonBoundary
+      11  Lib.Geometry.Manifold.Whitney.CleanStrips -> Lib.Geometry.Manifold.Whitney.CleanStrips.BigonStripCoordinates
+      21  Lib.Geometry.Manifold.Whitney.CleanStrips -> Lib.Geometry.Manifold.Whitney.CleanStrips.CornerPatch
+      21  Lib.Geometry.Manifold.Whitney.CleanStrips -> Lib.Geometry.Manifold.Whitney.CleanStrips.CrossingChart
+       8  Lib.Geometry.Manifold.Whitney.CleanStrips -> Lib.Geometry.Manifold.Whitney.CleanStrips.NormalCoordinate
+      16  Lib.Geometry.Manifold.Whitney.CleanStrips -> Lib.Geometry.Manifold.Whitney.CleanStrips.SphereNormal
+      29  Lib.Geometry.Manifold.Whitney.CleanStrips -> Lib.Geometry.Manifold.Whitney.CleanStrips.StripModel
+      27  Lib.Geometry.Manifold.Whitney.CleanStrips -> Lib.Geometry.Manifold.Whitney.CleanStrips.StripNormalData
+      21  Lib.Geometry.Manifold.Whitney.CleanStrips -> Lib.Geometry.Manifold.Whitney.CleanStrips.StripPatch
+ambiguous module changes: 0
+auxiliary constants that changed module: 103
+VERDICT PASS

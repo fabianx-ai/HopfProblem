@@ -1,0 +1,80 @@
+{
+ "before": "/home/goblin/.claude/jobs/06995e68/tmp/wave2/dump_head.jsonl",
+ "after": "/home/goblin/.claude/jobs/06995e68/tmp/wave2/cleanstrips/dump_after.jsonl",
+ "prefix": "",
+ "constants": [
+  38301,
+  38302
+ ],
+ "lost": [],
+ "added": [
+  [
+   "StripCoordinates.sheetTransverseInclusion._proof_1",
+   1158307750,
+   {
+    "Lib.Geometry.Manifold.Whitney.CleanStrips.StripModel": 1
+   }
+  ]
+ ],
+ "changed_type_source": [],
+ "changed_type_proof_naming": [],
+ "changed_type_accepted": [],
+ "added_accepted": [],
+ "accept_without_effect": [],
+ "changed_type_all": [],
+ "moves": [
+  [
+   "Lib.Geometry.Manifold.Whitney.CleanStrips",
+   "Lib.Geometry.Manifold.Whitney.CleanStrips.BeltIntersection",
+   9
+  ],
+  [
+   "Lib.Geometry.Manifold.Whitney.CleanStrips",
+   "Lib.Geometry.Manifold.Whitney.CleanStrips.BigonBoundary",
+   30
+  ],
+  [
+   "Lib.Geometry.Manifold.Whitney.CleanStrips",
+   "Lib.Geometry.Manifold.Whitney.CleanStrips.BigonStripCoordinates",
+   11
+  ],
+  [
+   "Lib.Geometry.Manifold.Whitney.CleanStrips",
+   "Lib.Geometry.Manifold.Whitney.CleanStrips.CornerPatch",
+   21
+  ],
+  [
+   "Lib.Geometry.Manifold.Whitney.CleanStrips",
+   "Lib.Geometry.Manifold.Whitney.CleanStrips.CrossingChart",
+   21
+  ],
+  [
+   "Lib.Geometry.Manifold.Whitney.CleanStrips",
+   "Lib.Geometry.Manifold.Whitney.CleanStrips.NormalCoordinate",
+   8
+  ],
+  [
+   "Lib.Geometry.Manifold.Whitney.CleanStrips",
+   "Lib.Geometry.Manifold.Whitney.CleanStrips.SphereNormal",
+   16
+  ],
+  [
+   "Lib.Geometry.Manifold.Whitney.CleanStrips",
+   "Lib.Geometry.Manifold.Whitney.CleanStrips.StripModel",
+   29
+  ],
+  [
+   "Lib.Geometry.Manifold.Whitney.CleanStrips",
+   "Lib.Geometry.Manifold.Whitney.CleanStrips.StripNormalData",
+   27
+  ],
+  [
+   "Lib.Geometry.Manifold.Whitney.CleanStrips",
+   "Lib.Geometry.Manifold.Whitney.CleanStrips.StripPatch",
+   21
+  ]
+ ],
+ "ambiguous": [],
+ "auxiliary_moved": 103,
+ "verdict": "PASS"
+}
