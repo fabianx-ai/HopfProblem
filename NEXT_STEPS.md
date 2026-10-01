@@ -1,43 +1,39 @@
-# Next steps (after the monolith wave, 2026-10-01)
+# Next steps (after integration 7 and the wave review, 2026-10-02)
 
-The monolith wave is done: all 24 files of `Lib/reports/round-7/judgement/monoliths.md` are split into 290
-topic modules behind name-preserving facades (`Lib/reports/wave-1/MERGE.md`, eleven files, Fable agents;
-`Lib/reports/wave-2/MERGE.md`, thirteen files, three Fable and nine Opus 5.5 seats in batches of three).
-4,380 declarations moved verbatim, 82 of them to `Hopf/Proof`, nothing deleted, no statement changed, 156
-renames (`wave-1/rename_all.txt`, `wave-2/rename_all.txt`). Head: chain green (9,480 jobs), 3,302 probes
-standard, census 123, source pins 268, envdiff PASS on both waves; no `Lib` file over 1,800 lines except the
-probe list. Open, in order:
-(1) **integration 7**: the `Lib` work added on `center-solution` since `bcf711d6` (42 commits, ~11,600 lines:
-`Geometry/Hyperbolic/Models` 6,519 lines, `Riemannian/CurveTransport`, `Order/Fin/Refinement`,
-`Calculus/CurveVariation`, `Compactification/BoundaryLimits`, five small files, +215 lines on
-`RiemannMapping.lean`, additions to `Algebra/Group/Prod.lean`, `Lib.lean`, `AxiomAudit.lean`). Replay per commit
-with original authorship; the `RiemannMapping` additions (`principalRoot_three_reverse_of_wedge`,
-`rotatedPrincipalRootFour_reverse_of_wedge`) go into the piece that now holds their neighbours (they are
-exponent-3/4 material: check whether `Hopf/Proof/…/SectorRoots` is their home); then split `Models.lean`
-(nine namespaces), sweep its manuscript labels ("Textbook j.6.A", "G01.d/e/k", "canonical lines"), and add
-the comparison with Mathlib's `UpperHalfPlane` `dist`/`ProperSpace` (none exists yet);
-(2) **fresh-reviewer pass (Fable) over the wave receipts**: the points listed in `wave-2/MERGE.md` §"Things a
-reviewer should look at" (visibility widening in `CubeBoundaryThreeCells`, the 322 rewritten docstrings, the
-deviations from the judgement, the closure arguments behind the 82 `Hopf/Proof` moves) and wave 1's
-(morse-d's 281 docstrings, twin claims);
-(3) **dissolve the facades**: reroute consumers to the pieces, delete the 24 facade modules, fix `Lib.lean`,
+State: all 24 monoliths split behind facades (`Lib/reports/wave-1/MERGE.md`, `wave-2/MERGE.md`); both waves
+reviewed by Fable reviewers (`Lib/reviews/REVIEW-WAVES.md`: nothing unsound) and the findings fixed
+(§5 there); integration 7 replayed the 51 `Lib` commits of `center-solution` up to `8ea19482` per commit
+(`Lib/reviews/INTEGRATION-7.md`). Merged head `17ba7739`: chain green (9,489 jobs), 3,741 probes standard,
+census 123, source pins 268. Open, in order:
+(1) **`Unused/`** (owner decision 2026-10-02): proved declarations that nothing uses are neither deleted nor
+kept in `Lib`; they move verbatim to a top-level `Unused/<same path>.lean` (own Lake lib, may import `Lib`,
+imported by nothing, built in the check chain). First: the 36 lemmas of `Lib/reports/wave-2/cube3/notneed.txt`
+(then the four declarations made `public` only for them go private again). Candidates after that: the two
+consumer-less `TubularBigon.*Chart` structures (`wave-2/rank3.md`), the seven `Connection/BeltArc` meridian
+constructions (`wave-1/connection.md`);
+(2) **integration 7b**: the `Lib` commits of `center-solution` after `8ea19482` (one so far, `75a6f9a9`), same
+method; move `RiemannBoundary.principalRoot_three_reverse_of_wedge` beside its exponent-3 relatives in
+`Hopf/Proof/…/SectorRoots`; fix the module docstring of `Hopf/Proof/AxiomAudit.lean`;
+(3) **owner's word needed** (INTEGRATION-7 §Left): split `Hyperbolic/Models.lean` (7,870 lines) and
+`CurveTransport.lean`, sweep their manuscript labels, add the comparison with Mathlib's `UpperHalfPlane`
+metric — now, or after the source branch stops appending to those files (recommended: after; replays stay
+clean cherry-picks);
+(4) **dissolve the facades**: reroute consumers to the pieces, delete the 24 facade modules, fix `Lib.lean`,
 take the "better homes" of both MERGE receipts, then the `native*`/`Native*`/`MorseCancellation.*`/
-`FlowConstruction` rename wave the facades blocked; delete the 36 dead lemmas of `cube3/notneed.txt` if the
-owner agrees;
-(4) the owner decisions: chain-interface coefficients (new polymorphic `chains` beside the pinned one plus a
-`u = 0` comparison, an addition; it unblocks the ~600 universe-0 binders the waves left), the pre-PR chain
-tower;
-(5) carried over: the twins listed in both MERGE receipts (nothing deleted in the waves); the 40 Jev
-two-letter disagreements and the auditors' ten low-confidence calls; dup-hom items 4–6; dup-sheaf items 1–5;
-dfiles-c's `sheaf`/`unit` removal; moved's `Matrix.Pivot`/`Module.Presentation`/`sheetSum` items; the ~17
-unattributed remaining pins; the optional citation restores in `wave-1/residue.md`; the three tool items at
-the end of `wave-2/MERGE.md`.
-Standing rules (REVIEW-7-8 §4, REVIEW-FIX §4, `wave-2/RULES.md`): at most three work seats at a time, merge,
-then the next three; Opus 5.5 for work seats, Fable for review seats; per-seat `PROGRESS.md` rewritten after
-every step and small green commits; per-branch `envdiff.json` committed; totals computed from tables; "not
-done because X" ships a reproduction; a "Left" list carries a reproducing grep per bullet; twin claims ship
-as `example`s; consumer counts come from the dump's `uses` or a grep that allows `public import`; a move to
-`Hopf/Proof` carries its probes to `Hopf/Proof/AxiomAudit.lean`; Lake 5.0.0 has no `-j`, use `taskset`.
+`FlowConstruction` rename wave; the misnamed groups of REVIEW-WAVES §2 finding 6;
+(5) the owner decisions: chain-interface coefficients (new polymorphic `chains` beside the pinned one plus a
+`u = 0` comparison, an addition), the pre-PR chain tower;
+(6) carried over: the twins listed in both MERGE receipts; the 40 Jev two-letter disagreements and the
+auditors' ten low-confidence calls; dup-hom items 4–6; dup-sheaf items 1–5; dfiles-c's `sheaf`/`unit` removal;
+moved's `Matrix.Pivot`/`Module.Presentation`/`sheetSum` items; the ~17 unattributed pins; the tool requests of
+REVIEW-WAVES §4 for `~/lean-agent-ide`.
+Standing rules (REVIEW-7-8 §4, REVIEW-FIX §4, REVIEW-WAVES §4, `wave-2/RULES.md`): at most three work seats at
+a time, merge, then the next three; Opus 5.5 for work seats, Fable for review seats; per-seat `PROGRESS.md`
+and small green commits; integrations replay per commit with original authorship; "verbatim" is checked on
+the lines a split did not move as well (`set_option`, `… in` prefixes, `open`); a changed type hash with
+identical text is a finding; a textbook is cited for a proof step only when its proof has that step; counts
+come from one stated unit and one command; consumer counts allow `public import`; per-branch `envdiff.json`
+committed; a "Left" list carries a reproducing command per bullet; Lake 5.0.0 has no `-j`, use `taskset`.
 `w4-w1-solution` must reroute its `SphereTwo` import to the `Hopf.Proof` path when it meets this branch.
 
 The reviewer pass (`Lib/reviews/REVIEW-7-8.md`, twenty-one Fable reviewers) accepted all receipts with

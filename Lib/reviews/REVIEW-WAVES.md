@@ -84,3 +84,14 @@ four declarations of finding 3 go private again); moving the misnamed groups of 
   hash-changed names, the full changed-type list in `envdiff.txt`.
 - Counts in a merge receipt come from one stated unit and one command, quoted beside the number.
 - A textbook is cited for a proof step only when the textbook's proof has that step.
+
+## 5. Fix round (2026-10-02)
+
+One Opus 5.5 seat closed the §3 list on `fix/waves` (18 commits, receipt `Lib/reports/wave-reviews/fixes.md`),
+merged at `17ba7739`. The 14 effective instance prefixes are back in the prism pieces (the two vacuous ones
+stay out); `set_option maxSynthPendingDepth 3` is back in `Collar/RangeTransport.lean`, and the two
+`DiskFraming` type hashes equal their base values again (3226562774, 995586449). Docstring and citation
+findings W1-4…W1-10, W2-5…W2-7 closed in comment-only commits; five receipts corrected in place. Checked on
+the merged head together with integration 7 (`Lib/reviews/INTEGRATION-7.md`). Left for the owner: the 36 dead
+lemmas (decision 2026-10-02: move them verbatim to a top-level `Unused/` tree, not delete), the misnamed
+groups of finding 6, the tool requests of §4.
