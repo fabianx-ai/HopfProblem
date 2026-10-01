@@ -24,10 +24,14 @@ Merged `--no-ff` in arrival order, zero conflicts (`Hopf/SphereTopology.lean`, `
 
 76 non-merge commits, 417 files, +411,310 / −44,796 (the bulk is the `split_module` receipt JSON per
 piece, ~40 KB each, and the per-branch `envdiff.json`). Eleven of the 24 monoliths are split: 139 new
-modules (132 under `Lib/`, 7 under `Hopf/Proof/`), 2,345 declarations moved verbatim (every unit
-SHA-256-checked by the tool), 39 of them to `Hopf/Proof` (the dimension-5/6 and index-3 material of
+modules (132 under `Lib/`, 7 under `Hopf/Proof/`), 2,299 top-level declaration units = 2,423 ranged constants
+moved (corrected 2026-10-02 after the review `Lib/reviews/REVIEW-WAVES.md`: this said "2,345 declarations moved
+verbatim (every unit SHA-256-checked by the tool)"; the table column below mixes three units, and the move is
+verbatim for the declarations but not for 16 `attribute [local instance] … in` prefixes the prism split
+dropped, 14 of them in force at the base — harmless, restored by the fix round), 39 of them to `Hopf/Proof` (the dimension-5/6 and index-3 material of
 `OrderedCancellation`, `SurgeryCollapse`, `Rearrangement`). Nothing deleted, no statement changed; every
-facade keeps every name, so the 59 + 43 + 39 + … consumers and `Lib.lean` are untouched.
+facade keeps every name that stayed in `Lib`, and `Lib.lean` is untouched (corrected 2026-10-02: five `Hopf`
+consumers gained `import Hopf.Proof.…` lines for the 39 moved names, and five files were edited for renames).
 
 Each agent kept a `PROGRESS.md` (Done / In progress / Next) in its scratch after the first launch was cut
 off by a rate limit with 0–14 commits per branch; all ten were resumed from those files and their
@@ -42,7 +46,7 @@ transcripts without loss. Lake 5.0.0 has no `-j` flag; the agents pinned builds 
 | `lake build Lib.AxiomAudit Hopf.Proof.AxiomAudit` | green; 3,298 + 4 probes (+ 12 axiom-free), every set ⊆ `{propext, Classical.choice, Quot.sound}`, `sorryAx` 0 |
 | `scripts/lib_stock_census.py --check` | 123, ratchet PASS |
 | `grep -rn '^import Hopf' Lib/ --include=*.lean` | empty |
-| `.{0}` in `Lib/**/*.lean` | 269 → 278 textually; 268 in source (−1, the `dualHomotopyEquiv` lift) + 9 in two committed lift-check scratch files `prism/lift_examples.lean`, `residue/LiftCheck.lean` |
+| `.{0}` in `Lib/**/*.lean` | 269 → 278 textually; 268 in source (−1, the `dualHomotopyEquiv` lift) + 10 (corrected; this said 9) in two committed lift-check scratch files `prism/lift_examples.lean`, `residue/LiftCheck.lean` |
 | files over 1,800 lines under `Lib/` | 14: `Lib/AxiomAudit.lean` (probes) and the 13 monoliths of batch 2 |
 | environment diff (`envdiff.{json,txt}` here; base dump of `e669bc93`, after dump of `8eba3d72` under `rename_all.txt`, 139 lines) | 38,248 → 38,301 constants; lost 0 / added 0 source; 2,407 source declarations moved 1-to-1 over 139 module pairs (7 pairs, 39 declarations, into `Hopf.Proof`); 0 ambiguous; 34 source types changed, all `PROOF-NAMING`: the 10 prism lifts, the `dualHomotopyEquiv` lift, 17 `SecondHurewicz.SimplyConnected.*.eq_1` aliases in `Hopf/LibShims.lean` (equation lemmas re-generated under the renamed prism constants), and 6 `SingularMayerVietoris.*` statements whose abstracted proof term is now named `toSmallLeft._proof_1` instead of `smallDifferential._proof_1` because the module boundary moved (`mayer.md` reconciles all six: `uses` without `_proof_n` equal on both sides). Verdict PASS |
 

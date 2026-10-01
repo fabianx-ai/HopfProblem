@@ -22,8 +22,10 @@ file. Merged `--no-ff` in arrival order, zero conflicts:
 | 11 | `wave2/rank3` | `dc55b6c9` | Opus 5.5 | `Whitney/RankThreeModel` 3,100 | 12 | 0 | 3 | 0 | — |
 | 12 | `wave2/whitney` | `63337fee` | Opus 5.5 | `Whitney/FrameField` 2,774, `Whitney/EmbeddedArcs` 3,463 | 25 | 0 | 5 | 9 (`NativeSheetCoordinates.*` → `SliceChart.*`, `…_dim_two` → `…_of_two_le_finrank`) | 1 |
 
-53 non-merge commits, 373 files. 151 new `Lib` modules and 2 under `Hopf/Proof`; 2,035 source declarations
-moved 1-to-1 (envdiff), 43 of them to `Hopf/Proof` (the triangle normalisation and sector roots of
+53 non-merge commits, 373 files. 141 new `Lib` modules and 2 under `Hopf/Proof` (corrected 2026-10-02 after the
+review `Lib/reviews/REVIEW-WAVES.md`: this said 151; the table column sums to 141); 2,072 ranged declarations
+changed module over 143 module pairs (envdiff prints 2,035 over 142 because it leaves out the 37 hash-changed
+names and with them the piece `MorseLemma/Congruence`), 43 of them to `Hopf/Proof` (the triangle normalisation and sector roots of
 `RiemannMapping`). Nothing deleted, no statement changed, 17 renames (`rename_all.txt`). With wave 1 all 24
 monoliths are split: no file under `Lib/` exceeds 1,800 lines except `Lib/AxiomAudit.lean` (the probe list);
 20 files exceed 1,000 lines (list in the final-check log, largest `Hurewicz/CubeGluing.lean` 1,686).
@@ -39,7 +41,7 @@ monoliths are split: no file under `Lib/` exceeds 1,800 lines except `Lib/AxiomA
 | `grep -rnE '^(public )?import Hopf' Lib/ --include=*.lean` | empty |
 | `.{0}` in `Lib/**/*.lean` | 278, unchanged (268 in source + the two wave-1 lift-check scratch files) |
 | facades | all 24 contain only `module`, imports and a module docstring |
-| environment diff (`envdiff.{json,txt}` here; base dump of `8eba3d72`, after dump of `63337fee` under `rename_all.txt`, 17 lines) | 38,301 → 38,373 constants; lost 0 / added 0 source; 2,035 source declarations moved 1-to-1 over 142 module pairs (2 pairs, 43 declarations, into `Hopf.Proof.Analysis.Complex.RiemannMapping.*`); 0 ambiguous; 37 source types changed, all `PROOF-NAMING` and exactly the union of the branch receipts: 2 `DiskFraming.*` (`collar.md`) and 35 `SmoothMorseLemma.*` (the proof obligations of the `symmetricForms` submodule, `morselemma.md`). Verdict PASS |
+| environment diff (`envdiff.{json,txt}` here; base dump of `8eba3d72`, after dump of `63337fee` under `rename_all.txt`, 17 lines) | 38,301 → 38,373 constants; lost 0 / added 0 source; 2,035 source declarations moved 1-to-1 over 142 module pairs (2 pairs, 43 declarations, into `Hopf.Proof.Analysis.Complex.RiemannMapping.*`); 0 ambiguous; 37 source types changed, all classed `PROOF-NAMING` by the tool and exactly the union of the branch receipts: 2 `DiskFraming.*` (`collar.md`) and 35 `SmoothMorseLemma.*` (`morselemma.md`). Corrected 2026-10-02 after the review: the 2 `DiskFraming` changes are NOT proof naming but an instance-path change caused by `wave2/collar` dropping `set_option maxSynthPendingDepth 3` (old and new statements are definitionally equal, proved by the reviewer; restored by the fix round); the 35 come from `MorsePerturbation.coordinateGradient._proof_1..3` being re-abstracted as `SmoothMorseLemma.Bilinear._proof_1..3` in the new module, not from the `symmetricForms` obligations. Verdict PASS |
 
 ## Things a reviewer should look at
 
@@ -48,7 +50,8 @@ monoliths are split: no file under `Lib/` exceeds 1,800 lines except `Lib/AxiomA
   final-check log and `cube3.md`). No statement changed, but this is the wave's only API widening.
 - **36 dead private lemmas** in the same file (`cube3/notneed.txt`): used by nothing in `Lib`, `Hopf`,
   `Solution`. Deletion candidates; nothing deleted.
-- **322 docstrings rewritten** across six branches (comment-only commits). The seats report 9 + 4 + 3 + 2
+- **289 docstrings rewritten** across six branches (85 + 44 + 47 + 9 + 85 + 19, comment-only commits; this said
+  322, a figure derivable from nothing — corrected 2026-10-02). The seats report 9 + 4 + 3 + 2
   that were factually wrong before. A sample against the statements is due.
 - **Deviations from the judgement packet, with reasons in the receipts**: `riemann.md` keeps the
   `logHalfStrip`/`onePointDomain`/`halfStripExp` lemmas in `Lib` (general in `D`, `a`, `c`) and says
