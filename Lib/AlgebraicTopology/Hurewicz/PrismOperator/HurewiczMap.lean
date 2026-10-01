@@ -203,6 +203,9 @@ def Hurewicz.DegreeTwo.suspensionOne {X : Type} [TopologicalSpace X] (x : X) :
       (SingularHomology.crossProductEdge (BasedLoopSpace x) (unitInterval) 1)
       intervalChain)
 
+attribute [local instance] SingularHomology.integerLinearMapModule
+    SingularHomology.integerTensorModule in
+
 /-- `suspensionOne x c` is the `evaluation x`-pushforward of `c × intervalChain`. -/
 @[simp]
 theorem Hurewicz.DegreeTwo.suspensionOne_apply {X : Type} [TopologicalSpace X] (x : X)
@@ -223,6 +226,9 @@ def Hurewicz.DegreeTwo.suspensionTwo {X : Type} [TopologicalSpace X] (x : X) :
     (SingularHomology.integerBilinearRightApply
       (SingularHomology.crossProductTriangle (BasedLoopSpace x) (unitInterval) 1)
       intervalChain)
+
+attribute [local instance] SingularHomology.integerLinearMapModule
+    SingularHomology.integerTensorModule in
 
 /-- `suspensionTwo x c` is the `evaluation x`-pushforward of `c × intervalChain`. -/
 @[simp]
@@ -497,6 +503,9 @@ theorem Hurewicz.DegreeTwo.toLoop_const {X : Type} [TopologicalSpace X] {x : X} 
   apply GenLoop.ext
   intro u
   rfl
+
+attribute [local instance] SingularHomology.integerLinearMapModule
+    SingularHomology.integerTensorModule in
 
 /-- The square class of the constant square is `0`. -/
 @[simp]
