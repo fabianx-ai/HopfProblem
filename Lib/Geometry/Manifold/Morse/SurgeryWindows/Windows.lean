@@ -36,13 +36,18 @@ attribute [local instance 100] Classical.propDecidable in
 /-- A pair of surgery windows around a critical point, with lower and upper levels. -/
 structure ManifoldMorse.SurgeryWindows (E : Type*) [NormedAddCommGroup E] [NormedSpace ℝ E]
     {M : Type*} [TopologicalSpace M] [ChartedSpace E M] (f : M → ℝ) where
+  /-- `f` has finitely many critical points. -/
   finite : (criticalPoints E f).Finite
+  /-- Distinct critical points have distinct critical values. -/
   distinct : Set.InjOn f (criticalPoints E f)
+  /-- The surgery data at each critical point. -/
   data : ∀ p : criticalPoints E f, MorseSurgeryData E f p.val
+  /-- No critical point other than `p` has its value in the window `[f p - ρ ^ 2, f p + ρ ^ 2]`. -/
   isolated :
     ∀ (p : criticalPoints E f) (x : M),
       x ∈ criticalPoints E f →
         f x ∈ Set.Icc (f p - (data p).radius ^ 2) (f p + (data p).radius ^ 2) → x = p.val
+  /-- If `f p < f q`, the window of `p` lies strictly below the window of `q`. -/
   separated :
     ∀ p q : criticalPoints E f, f p < f q → f p + (data p).radius ^ 2 < f q - (data q).radius ^ 2
 
