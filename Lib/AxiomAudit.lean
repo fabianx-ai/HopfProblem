@@ -8458,3 +8458,9 @@ is an evidence command rather than library content.
 
 #check Hyperbolic.hyperboloid_lengthCauchy_compact_tail
 #print axioms Hyperbolic.hyperboloid_lengthCauchy_compact_tail
+
+#check Hyperbolic.upperHalfPlane_finite_length_tail_cauchy
+#print axioms Hyperbolic.upperHalfPlane_finite_length_tail_cauchy
+
+#check Hyperbolic.hyperboloid_finite_length_tail_cauchy
+#print axioms Hyperbolic.hyperboloid_finite_length_tail_cauchy

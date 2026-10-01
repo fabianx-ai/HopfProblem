@@ -75,6 +75,12 @@ public import Mathlib.Analysis.Complex.UpperHalfPlane.Topology
 public import Mathlib.Topology.UniformSpace.Cauchy
 public import Mathlib.Topology.Separation.Hausdorff
 public import Mathlib.Topology.Constructions
+public import Mathlib.MeasureTheory.Integral.Lebesgue.Basic
+public import Mathlib.MeasureTheory.Measure.Lebesgue.Basic
+public import Mathlib.MeasureTheory.Measure.Restrict
+public import Mathlib.Topology.Order.DenselyOrdered
+public import Mathlib.Topology.Order.Basic
+public import Mathlib.Topology.Instances.ENNReal.Lemmas
 
 /-!
 # Upper-half-plane and hyperboloid coordinates
@@ -6211,5 +6217,231 @@ theorem hyperboloid_lengthCauchy_compact_tail
   exact Filter.mem_of_superset hS (fun j hj => (hpair j hj i hi).le)
 
 end IdealLengthEnds
+
+section FiniteLengthTails
+
+open Manifold Set Filter MeasureTheory
+open scoped Bundle Topology ENNReal OnePoint
+
+/-- A locally piecewise continuously differentiable upper-half-plane curve of finite original
+Riemannian speed length has a Cauchy tail along its finite right endpoint filter.
+The proof bounds every pair on one tail by the same small nonnegative speed integral.
+Textbook source: ideal-reflection G04.F, canonical lines 125–126. -/
+theorem upperHalfPlane_finite_length_tail_cauchy
+    (a b : ℝ) (hab : a < b) (γ : ℝ → UpperHalfPlane)
+    (hlocal : ∀ s t : ℝ, a < s → s ≤ t → t < b →
+      ∃ n : ℕ, ∃ cut : Fin (n + 1) → ℝ,
+        IsPiecewiseC1On 𝓘(ℝ, ℂ) γ s t n cut)
+    (hLength :
+      letI : Bundle.RiemannianBundle
+          (fun p : UpperHalfPlane => TangentSpace 𝓘(ℝ, ℂ) p) :=
+        ⟨upperHalfPlaneMetric.toRiemannianMetric⟩
+      pathELength 𝓘(ℝ, ℂ) γ a b < ⊤) :
+    ∀ ε : ℝ, 0 < ε →
+      ∃ S : Set ℝ, S ∈ nhdsWithin b (Ioo a b) ∧
+        ∀ s ∈ S, ∀ t ∈ S, (piecewiseC1EDist upperHalfPlaneMetric (γ s) (γ t)).toReal < ε := by
+  letI : Bundle.RiemannianBundle
+      (fun p : UpperHalfPlane => TangentSpace 𝓘(ℝ, ℂ) p) :=
+    ⟨upperHalfPlaneMetric.toRiemannianMetric⟩
+  let L : Filter ℝ := nhdsWithin b (Ioo a b)
+  letI : L.NeBot := right_nhdsWithin_Ioo_neBot hab
+  let μ : Measure ℝ := volume.restrict (Ioo a b)
+  let v : ℝ → ℝ≥0∞ :=
+    fun r => ‖mfderiv 𝓘(ℝ, ℝ) 𝓘(ℝ, ℂ) γ r (1 : ℝ)‖ₑ
+  let W : ℝ → ℝ≥0∞ := fun y => ∫⁻ r in Ioo y b, v r ∂μ
+  have hfinite : (∫⁻ r, v r ∂μ) ≠ ⊤ := by
+    change (∫⁻ r in Ioo a b,
+      ‖mfderiv 𝓘(ℝ, ℝ) 𝓘(ℝ, ℂ) γ r (1 : ℝ)‖ₑ) ≠ ⊤
+    have h := ne_of_lt hLength
+    rw [pathELength_eq_lintegral_mfderiv_Ioo] at h
+    exact h
+  have hId : Tendsto (fun y : ℝ => y) L (𝓝 b) :=
+    (continuous_id.tendsto b).mono_left nhdsWithin_le_nhds
+  have hDiff : Tendsto (fun y : ℝ => b - y) L (𝓝 (b - b)) :=
+    tendsto_const_nhds.sub hId
+  have hVol : Tendsto (fun y : ℝ => volume (Ioo y b)) L (𝓝 0) := by
+    simpa only [Real.volume_Ioo, sub_self, ENNReal.ofReal_zero] using
+      (ENNReal.tendsto_ofReal hDiff)
+  have hμ : Tendsto (μ ∘ (fun y : ℝ => Ioo y b)) L (𝓝 0) := by
+    apply tendsto_of_tendsto_of_tendsto_of_le_of_le tendsto_const_nhds hVol
+    · intro y
+      exact zero_le
+    · intro y
+      exact Measure.restrict_apply_le (Ioo a b) (Ioo y b)
+  have hW : Tendsto W L (𝓝 0) :=
+    tendsto_setLIntegral_zero (μ := μ) (f := v) hfinite hμ
+  intro ε hε
+  have hsmall : ∀ᶠ y in L, W y < ENNReal.ofReal ε :=
+    (tendsto_order.1 hW).2 (ENNReal.ofReal ε) (ENNReal.ofReal_pos.2 hε)
+  have hOriginal : ∀ᶠ y in L, y ∈ Ioo a b := self_mem_nhdsWithin
+  obtain ⟨c, hcSmall, hc⟩ := (hsmall.and hOriginal).exists
+  have hS : Ioo c b ∈ L := by
+    change Ioo c b ∈ nhdsWithin b (Ioo a b)
+    rw [nhdsWithin_Ioo_eq_nhdsLT hab]
+    exact Ioo_mem_nhdsLT hc.2
+  have hordered (s t : ℝ) (hs : s ∈ Ioo c b) (ht : t ∈ Ioo c b)
+      (hst : s ≤ t) : (piecewiseC1EDist upperHalfPlaneMetric (γ s) (γ t)).toReal < ε := by
+    have has : a < s := hc.1.trans hs.1
+    obtain ⟨n, cut, hγ⟩ := hlocal s t has hst ht.2
+    let η : PiecewiseC1CurveOn 𝓘(ℝ, ℂ) s t n cut (γ s) (γ t) :=
+      ⟨γ, hγ, rfl, rfl⟩
+    have he :
+        piecewiseC1EDist upperHalfPlaneMetric (γ s) (γ t) ≤
+          ENNReal.ofReal (piecewiseC1Length upperHalfPlaneMetric γ cut) :=
+      (piecewiseC1EDist_finite_of_curve upperHalfPlaneMetric η).1
+    rcases hγ.speed_length upperHalfPlaneMetric with
+      ⟨hpi, hpii, hm, hint, hreal, hset, hnonneg, hepi, hfpi,
+        hsum, hext, hpath, hpieceFinite⟩
+    have heLength :
+        piecewiseC1EDist upperHalfPlaneMetric (γ s) (γ t) ≤
+          pathELength 𝓘(ℝ, ℂ) γ s t :=
+      he.trans_eq hpath.symm
+    have hsubOriginal : Icc s t ⊆ Ioo a b := by
+      intro r hr
+      exact ⟨has.trans_le hr.1, hr.2.trans_lt ht.2⟩
+    have hsubTail : Icc s t ⊆ Ioo c b := by
+      intro r hr
+      exact ⟨hs.1.trans_le hr.1, hr.2.trans_lt ht.2⟩
+    have hμInterval :
+        μ.restrict (Icc s t) = volume.restrict (Icc s t) :=
+      Measure.restrict_restrict_of_subset hsubOriginal
+    have hInterval :
+        pathELength 𝓘(ℝ, ℂ) γ s t = ∫⁻ r in Icc s t, v r ∂μ := by
+      rw [pathELength_eq_lintegral_mfderiv_Icc]
+      change (∫⁻ r, v r ∂volume.restrict (Icc s t)) =
+        ∫⁻ r, v r ∂μ.restrict (Icc s t)
+      rw [hμInterval]
+    have hIntervalTail : pathELength 𝓘(ℝ, ℂ) γ s t ≤ W c := by
+      rw [hInterval]
+      exact lintegral_mono_set hsubTail
+    have hExtended :
+        piecewiseC1EDist upperHalfPlaneMetric (γ s) (γ t) < ENNReal.ofReal ε :=
+      (heLength.trans hIntervalTail).trans_lt hcSmall
+    exact ENNReal.toReal_lt_of_lt_ofReal hExtended
+  refine ⟨Ioo c b, hS, ?_⟩
+  intro s hs t ht
+  rcases le_total s t with hst | hts
+  · exact hordered s t hs ht hst
+  · have hsym :
+        piecewiseC1EDist upperHalfPlaneMetric (γ s) (γ t) =
+          piecewiseC1EDist upperHalfPlaneMetric (γ t) (γ s) :=
+      (piecewiseC1EDist_eq_riemannianEDist upperHalfPlaneMetric (γ s) (γ t)).trans
+        (riemannianEDist_comm.trans
+          (piecewiseC1EDist_eq_riemannianEDist upperHalfPlaneMetric (γ t) (γ s)).symm)
+    change (piecewiseC1EDist upperHalfPlaneMetric (γ s) (γ t)).toReal < ε
+    rw [hsym]
+    exact hordered t s ht hs hts
+
+/-- A locally piecewise continuously differentiable hyperboloid curve of finite original
+Riemannian speed length has a Cauchy tail for the same length distance.
+Local finite partitions may vary with the compact interval; no endpoint extension is assumed.
+Textbook source: ideal-reflection G04.F, canonical lines 125–126. -/
+theorem hyperboloid_finite_length_tail_cauchy
+    (a b : ℝ) (hab : a < b) (γ : ℝ → Hyperboloid)
+    (hlocal : ∀ s t : ℝ, a < s → s ≤ t → t < b →
+      ∃ n : ℕ, ∃ cut : Fin (n + 1) → ℝ,
+        IsPiecewiseC1On 𝓘(ℝ, ℂ) γ s t n cut)
+    (hLength :
+      letI : Bundle.RiemannianBundle
+          (fun p : Hyperboloid => TangentSpace 𝓘(ℝ, ℂ) p) :=
+        ⟨hyperboloidMetric.toRiemannianMetric⟩
+      pathELength 𝓘(ℝ, ℂ) γ a b < ⊤) :
+    ∀ ε : ℝ, 0 < ε →
+      ∃ S : Set ℝ, S ∈ nhdsWithin b (Ioo a b) ∧
+        ∀ s ∈ S, ∀ t ∈ S, hyperboloidLengthDist (γ s) (γ t) < ε := by
+  letI : Bundle.RiemannianBundle
+      (fun p : Hyperboloid => TangentSpace 𝓘(ℝ, ℂ) p) :=
+    ⟨hyperboloidMetric.toRiemannianMetric⟩
+  let L : Filter ℝ := nhdsWithin b (Ioo a b)
+  letI : L.NeBot := right_nhdsWithin_Ioo_neBot hab
+  let μ : Measure ℝ := volume.restrict (Ioo a b)
+  let v : ℝ → ℝ≥0∞ :=
+    fun r => ‖mfderiv 𝓘(ℝ, ℝ) 𝓘(ℝ, ℂ) γ r (1 : ℝ)‖ₑ
+  let W : ℝ → ℝ≥0∞ := fun y => ∫⁻ r in Ioo y b, v r ∂μ
+  have hfinite : (∫⁻ r, v r ∂μ) ≠ ⊤ := by
+    change (∫⁻ r in Ioo a b,
+      ‖mfderiv 𝓘(ℝ, ℝ) 𝓘(ℝ, ℂ) γ r (1 : ℝ)‖ₑ) ≠ ⊤
+    have h := ne_of_lt hLength
+    rw [pathELength_eq_lintegral_mfderiv_Ioo] at h
+    exact h
+  have hId : Tendsto (fun y : ℝ => y) L (𝓝 b) :=
+    (continuous_id.tendsto b).mono_left nhdsWithin_le_nhds
+  have hDiff : Tendsto (fun y : ℝ => b - y) L (𝓝 (b - b)) :=
+    tendsto_const_nhds.sub hId
+  have hVol : Tendsto (fun y : ℝ => volume (Ioo y b)) L (𝓝 0) := by
+    simpa only [Real.volume_Ioo, sub_self, ENNReal.ofReal_zero] using
+      (ENNReal.tendsto_ofReal hDiff)
+  have hμ : Tendsto (μ ∘ (fun y : ℝ => Ioo y b)) L (𝓝 0) := by
+    apply tendsto_of_tendsto_of_tendsto_of_le_of_le tendsto_const_nhds hVol
+    · intro y
+      exact zero_le
+    · intro y
+      exact Measure.restrict_apply_le (Ioo a b) (Ioo y b)
+  have hW : Tendsto W L (𝓝 0) :=
+    tendsto_setLIntegral_zero (μ := μ) (f := v) hfinite hμ
+  intro ε hε
+  have hsmall : ∀ᶠ y in L, W y < ENNReal.ofReal ε :=
+    (tendsto_order.1 hW).2 (ENNReal.ofReal ε) (ENNReal.ofReal_pos.2 hε)
+  have hOriginal : ∀ᶠ y in L, y ∈ Ioo a b := self_mem_nhdsWithin
+  obtain ⟨c, hcSmall, hc⟩ := (hsmall.and hOriginal).exists
+  have hS : Ioo c b ∈ L := by
+    change Ioo c b ∈ nhdsWithin b (Ioo a b)
+    rw [nhdsWithin_Ioo_eq_nhdsLT hab]
+    exact Ioo_mem_nhdsLT hc.2
+  have hordered (s t : ℝ) (hs : s ∈ Ioo c b) (ht : t ∈ Ioo c b)
+      (hst : s ≤ t) : hyperboloidLengthDist (γ s) (γ t) < ε := by
+    have has : a < s := hc.1.trans hs.1
+    obtain ⟨n, cut, hγ⟩ := hlocal s t has hst ht.2
+    let η : PiecewiseC1CurveOn 𝓘(ℝ, ℂ) s t n cut (γ s) (γ t) :=
+      ⟨γ, hγ, rfl, rfl⟩
+    have he :
+        piecewiseC1EDist hyperboloidMetric (γ s) (γ t) ≤
+          ENNReal.ofReal (piecewiseC1Length hyperboloidMetric γ cut) :=
+      (piecewiseC1EDist_finite_of_curve hyperboloidMetric η).1
+    rcases hγ.speed_length hyperboloidMetric with
+      ⟨hpi, hpii, hm, hint, hreal, hset, hnonneg, hepi, hfpi,
+        hsum, hext, hpath, hpieceFinite⟩
+    have heLength :
+        piecewiseC1EDist hyperboloidMetric (γ s) (γ t) ≤
+          pathELength 𝓘(ℝ, ℂ) γ s t :=
+      he.trans_eq hpath.symm
+    have hsubOriginal : Icc s t ⊆ Ioo a b := by
+      intro r hr
+      exact ⟨has.trans_le hr.1, hr.2.trans_lt ht.2⟩
+    have hsubTail : Icc s t ⊆ Ioo c b := by
+      intro r hr
+      exact ⟨hs.1.trans_le hr.1, hr.2.trans_lt ht.2⟩
+    have hμInterval :
+        μ.restrict (Icc s t) = volume.restrict (Icc s t) :=
+      Measure.restrict_restrict_of_subset hsubOriginal
+    have hInterval :
+        pathELength 𝓘(ℝ, ℂ) γ s t = ∫⁻ r in Icc s t, v r ∂μ := by
+      rw [pathELength_eq_lintegral_mfderiv_Icc]
+      change (∫⁻ r, v r ∂volume.restrict (Icc s t)) =
+        ∫⁻ r, v r ∂μ.restrict (Icc s t)
+      rw [hμInterval]
+    have hIntervalTail : pathELength 𝓘(ℝ, ℂ) γ s t ≤ W c := by
+      rw [hInterval]
+      exact lintegral_mono_set hsubTail
+    have hExtended :
+        piecewiseC1EDist hyperboloidMetric (γ s) (γ t) < ENNReal.ofReal ε :=
+      (heLength.trans hIntervalTail).trans_lt hcSmall
+    change (piecewiseC1EDist hyperboloidMetric (γ s) (γ t)).toReal < ε
+    exact ENNReal.toReal_lt_of_lt_ofReal hExtended
+  refine ⟨Ioo c b, hS, ?_⟩
+  intro s hs t ht
+  rcases le_total s t with hst | hts
+  · exact hordered s t hs ht hst
+  · have hsym :
+        piecewiseC1EDist hyperboloidMetric (γ s) (γ t) =
+          piecewiseC1EDist hyperboloidMetric (γ t) (γ s) :=
+      (piecewiseC1EDist_eq_riemannianEDist hyperboloidMetric (γ s) (γ t)).trans
+        (riemannianEDist_comm.trans
+          (piecewiseC1EDist_eq_riemannianEDist hyperboloidMetric (γ t) (γ s)).symm)
+    change (piecewiseC1EDist hyperboloidMetric (γ s) (γ t)).toReal < ε
+    rw [hsym]
+    exact hordered t s ht hs hts
+
+end FiniteLengthTails
 
 end Hyperbolic
