@@ -27,8 +27,8 @@ open scoped ContDiff ENNReal
 
 @[expose] public noncomputable section
 
-/-- If `dim M < dim F`, every continuous `f : M → F` has a smooth nowhere-vanishing
-  `ε`-approximation. -/
+/-- If `M` is a σ-compact Hausdorff boundaryless smooth manifold and `dim M < dim F`, every
+  continuous `f : M → F` has a smooth nowhere-vanishing `ε`-approximation. -/
 theorem exists_smooth_nonzero_approx {B H M F : Type*} [NormedAddCommGroup B]
     [NormedSpace ℝ B] [FiniteDimensional ℝ B] [TopologicalSpace H] {I : ModelWithCorners ℝ B H}
     [I.Boundaryless] [TopologicalSpace M] [ChartedSpace H M] [IsManifold I ∞ M]

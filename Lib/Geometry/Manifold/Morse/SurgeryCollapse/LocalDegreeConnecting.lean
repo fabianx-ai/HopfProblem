@@ -77,8 +77,8 @@ theorem LocalDegree.SeparatedNeighborhoods.overlapSphereEquiv_apply {E F M : Typ
       NativeParametrization.centered (x : M) ((D.data x).innerBoundary.radius • (u : E)) :=
   rfl
 
-/-- `D.overlapMap x ∘ D.overlapSphereEquiv x` is the inner boundary map `(D.data x).innerBoundary.map`.
-`D.overlapMap x ∘ D.overlapSphereEquiv x` is the inner boundary map `(D.data x).innerBoundary.map`. -/
+/-- `D.overlapMap x ∘ D.overlapSphereEquiv x` is the inner boundary map
+`(D.data x).innerBoundary.map`. -/
 theorem LocalDegree.SeparatedNeighborhoods.overlapMap_sphereEquiv {E F M : Type}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [NormedAddCommGroup F] [NormedSpace ℝ F]
     [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] {P : Set M} {f : M → F}

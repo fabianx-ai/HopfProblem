@@ -18,8 +18,8 @@ chain scaled in the coordinate `0`, with the cross product of that boundary agai
 remaining fundamental cube (`cubeScale_zero_sum_fundamentalCubeChain`).
 
 This is the chain-level input for the additivity of the cube chain under concatenation
-`GenLoop.transAt 0` (cf. Hatcher, *Algebraic Topology*, proof of Theorem 4.32, where the
-Hurewicz map is shown to be a homomorphism).
+`GenLoop.transAt 0`, by which this development shows that the Hurewicz map is a homomorphism
+(the argument is recorded in `Lib/docs/C.md`).
 
 ## Main definitions
 

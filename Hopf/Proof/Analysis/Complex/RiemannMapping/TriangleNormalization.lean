@@ -20,7 +20,8 @@ open Set Function Filter Topology
 
 noncomputable section
 
-/-- The disc coordinate: the affine identification of the triangle with the unit disc underlying the normalization of the Riemann mapping target (Ahlfors, Complex Analysis, Ch. 6). -/
+/-- The disc coordinate of a point `x` of a space `K` with a homeomorphism
+`e : K ≃ₜ closedBall (0 : ℂ) 1`: the complex number `e x`, of norm at most one. -/
 def TriangleRiemannNormalization.discCoordinate {K : Type*} [TopologicalSpace K]
     (e : K ≃ₜ Metric.closedBall (0 : ℂ) 1) (x : K) : ℂ :=
   e x

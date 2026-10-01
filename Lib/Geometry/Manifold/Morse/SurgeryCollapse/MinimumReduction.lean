@@ -137,11 +137,15 @@ theorem MorseCancellation.exists_native_one_handle_joining_components {E M : Typ
   by_contra huv
   exact h ⟨p, hp, u, v, huv⟩
 
-/-- Let `p`, `r`, `q` be critical points of `f₀` of indices `0`, `?`, `1` with `f₀ r < f₀ p < S.lower q`,
-`V` a gradient-like field with flow `G` whose backward basin of `q` in the lower level is the
-attaching sphere, with the attaching points `u`, `v` flowing to `p`, `r`, and no flow line from `q`
-to another critical point.  Then there is a Morse function with distinct critical values and two
-critical points fewer than `f₀`. -/
+/-- Let `f₀` be a smooth Morse function with surgery windows `S` on a compact, path-connected
+Hausdorff manifold, and `V` a smooth field with flow `G` that vanishes at the critical points,
+strictly decreases `f₀` elsewhere and is a model descent field near each critical point. Let `p`,
+`r`, `q` be critical points, `p` of index `0`, `q` of index `1` and `r` of any index, with
+`f₀ r < f₀ p < S.lower q`. Suppose a point of the lower level of `q` tends to `q` in backward time
+exactly when it lies on the attaching sphere, the attaching points `u`, `v` flow forward to `p`
+and `r`, and no flow line from `q` ends at a critical point other than `q`, `p`, `r`. Then there
+is a smooth Morse function, injective on its critical points, with two critical points fewer
+than `f₀`. -/
 theorem MorseCancellation.cancel_realized_higher_minimum {E M : Type} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] [PathConnectedSpace M] {f₀ : M → ℝ}
@@ -246,9 +250,10 @@ theorem MorseCancellation.exists_excellent_morse_reduction_of_multiple_minima {E
       cancel_realized_higher_minimum S.toSurgeryWindows hf₀ hm₀ hV G hG hzero hdesc hmodels p r q
         hpzero hqone hgt hp u v hback hu hv hnoconnection
 
-/-- Milnor, h-cobordism Theorem 8.1: a Morse function with an `AdaptedWindows` package on a compact
-path-connected manifold with the least number of critical points among Morse functions with
-distinct critical values has exactly one critical point of index `0`. -/
+/-- A smooth Morse function with an `AdaptedWindows` package on a compact path-connected manifold
+with the least number of critical points among smooth Morse functions with distinct critical
+values has exactly one critical point of index `0` (cf. Milnor, *Lectures on the h-cobordism
+theorem*, Theorem 8.1 (index 0)). -/
 theorem MorseCancellation.minimal_excellent_morse_minimum_count_one {E M : Type} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] [PathConnectedSpace M] {f : M → ℝ}

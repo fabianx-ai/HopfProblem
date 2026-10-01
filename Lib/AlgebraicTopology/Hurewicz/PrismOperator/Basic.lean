@@ -73,6 +73,9 @@ def Hurewicz.Prism.prismOperator {A X : Type} [TopologicalSpace A]
   (SingularChains.inducedChain H (n + 1)).comp
     (SingularHomology.crossProductEdge (unitInterval) A n Hurewicz.DegreeTwo.intervalChain)
 
+attribute [local instance] SingularHomology.integerLinearMapModule
+    SingularHomology.integerTensorModule in
+
 /-- `prismOperator n H c` is the `H`-pushforward of `c × intervalChain`. -/
 @[simp]
 theorem Hurewicz.Prism.prismOperator_apply {A X : Type} [TopologicalSpace A]

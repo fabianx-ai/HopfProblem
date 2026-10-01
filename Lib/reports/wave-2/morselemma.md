@@ -120,9 +120,17 @@ VERDICT PASS
 
 The result is 0 source declarations lost, 0 added and 0 judged type changes. The 35 source names
 with a changed hash are all `PROOF-NAMING`: their `uses` are equal once `_proof_n` constants are
-dropped. The changes come from the proof obligations of the `symmetricForms` submodule (and the
-`codRestrict` in `symmetrize`). Lean abstracts these into auxiliary `_proof_n` constants named
-after their module, so every type that mentions `SymmetricForm` changes hash. By piece the 35 are:
+dropped. The change common to all 35 is that the auxiliary proofs
+`MorsePerturbation.coordinateGradient._proof_1..3`, first abstracted by an earlier declaration of
+the monolith and reused by the later ones, are re-abstracted in the new module as
+`SmoothMorseLemma.Bilinear._proof_1..3`; 14 of the 35 also see other `_proof_n` constants
+renumbered (`symmetricForms`, `symmetrize`, `secondTaylorFactor`, `congruencePolynomial`, …)
+(corrected 2026-10-02: this said "The changes come from the proof obligations of the
+`symmetricForms` submodule (and the `codRestrict` in `symmetrize`). Lean abstracts these into
+auxiliary `_proof_n` constants named after their module, so every type that mentions
+`SymmetricForm` changes hash." — the `uses` diff of the 35 names between the wave-2 base dump and
+the head dump shows the `coordinateGradient` → `Bilinear` replacement in every one of them). By
+piece the 35 are:
 SymmetricForm 13, Congruence 12, TaylorFactor 5, SignedCoordinates 5.
 
 The listed 1-to-1 moves cover the other 132 constants. The 35 proof-naming names do not appear in

@@ -40,6 +40,12 @@ Checked in `residue/LiftCheck.lean` (`lake env lean`, exit 0; output `LiftCheck.
 found by a `run_cmd` scan of `env.constants` (suffix `SingularCochains.dualHomotopyEquiv`) and the two
 examples are elaborated by `elabCommand` with that identifier:
 
+(Corrected 2026-10-02: the first example was introduced as "the old statement at u = 0, proved by
+the lifted constant"; it is the special case `w = 0` of that statement, since it takes
+`(A : AddCommGrpCat.{0})` where the base statement had `(A : AddCommGrpCat.{w})`. The lift is still
+the old statement at `u = 0`: the printed type above, `(A : AddCommGrpCat.{u_2}) → …`, is the base
+type with `u_1 = 0`. Review `Lib/reports/wave-reviews/W1.md`, finding 12.)
+
 ```lean
 -- the old statement at u = 0, proved by the lifted constant
 example (A : AddCommGrpCat.{0}) {K L : ChainComplex (ModuleCat.{0} ℤ) ℕ} (e : HomotopyEquiv K L) :

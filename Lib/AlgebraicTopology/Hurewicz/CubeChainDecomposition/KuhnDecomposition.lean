@@ -25,8 +25,9 @@ simplices by permutation insertion.
 Together with the boundary of the constant simplex (`boundary_const_simplex`) this is the
 chain identity behind the Hurewicz theorem: the singular chain of a spheroid is the
 alternating sum of the simplices of the Kuhn (Freudenthal) triangulation of the cube
-(Hatcher, *Algebraic Topology*, proof of Theorem 4.32; cross-product convention of
-§3.B).
+(statement of the Hurewicz theorem: Hatcher, *Algebraic Topology*, Theorem 4.32; the argument
+is this development's own, recorded in `Lib/docs/C.md`, §§3 and 10–11; cross-product convention
+of Hatcher, §3.B).
 
 ## Main results
 
@@ -174,8 +175,9 @@ attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
 /-- The Kuhn decomposition of the cube chain in every degree: the chain of a based `n`-cube is
 the alternating sum of its `n!` permutation simplices. This is the chain identity
-`[Π n] = Σ_σ sign(σ)·σ_e` behind the Hurewicz theorem (Hatcher, proof of Theorem 4.32; cross
-product as in §3.B), proved by induction through the prism realization. -/
+`[Π n] = Σ_σ sign(σ)·σ_e` behind this development's proof of the Hurewicz theorem (statement:
+Hatcher, Theorem 4.32; the argument is recorded in `Lib/docs/C.md`; cross product as in Hatcher,
+§3.B), proved by induction through the prism realization. -/
 theorem Hurewicz.cubeChain_eq_sum_simplices (n : ℕ) {X : Type} [TopologicalSpace X]
     {x : X} (p : GenLoop (Fin n) X x) :
     Hurewicz.cubeChain p = ∑ e : Equiv.Perm (Fin n),

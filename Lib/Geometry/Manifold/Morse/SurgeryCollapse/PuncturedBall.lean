@@ -14,7 +14,7 @@ import Lib.Geometry.Manifold.Morse.SublevelSets
 The punctured open ball `PuncturedBall.Space E R = {x | 0 < ‖x‖ < R}` deformation retracts onto
 the sphere of radius `r < R` (`PuncturedBall.deformation`), so the unit sphere is homotopy
 equivalent to the punctured ball (`PuncturedBall.sphereHomotopyEquiv`), cf. Hatcher, *Algebraic
-Topology*, Example 0.2 / Proposition 2.22 (`ℝⁿ ∖ 0 ≃ Sⁿ⁻¹`).
+Topology*, Chapter 0 (`ℝⁿ ∖ 0 ≃ Sⁿ⁻¹`).
 -/
 
 open Set Function Filter Manifold Topology
@@ -51,8 +51,8 @@ def PuncturedBall.deformation {E : Type*} [NormedAddCommGroup E] [NormedSpace �
     simp [blendVector, PuncturedRadial.blendVector, toPunctured, fromSphere, toSphere,
       PuncturedRadial.toSphere, RadialExtension.direction, div_eq_mul_inv, smul_smul]
 
-/-- Hatcher, Example 0.2: the unit sphere of `E` is homotopy equivalent to the punctured ball
-`PuncturedBall.Space E R`, by `fromSphere R r` and `toSphere R` (`0 < r < R`). -/
+/-- The unit sphere of `E` is homotopy equivalent to the punctured ball `PuncturedBall.Space E R`,
+by `fromSphere R r` and `toSphere R` (`0 < r < R`); cf. Hatcher, *Algebraic Topology*, Chapter 0. -/
 def PuncturedBall.sphereHomotopyEquiv {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     (R : ℝ) (r : ℝ) (hr : 0 < r) (hrR : r < R) : Metric.sphere (0 : E) 1 ≃ₕ Space E R
     where

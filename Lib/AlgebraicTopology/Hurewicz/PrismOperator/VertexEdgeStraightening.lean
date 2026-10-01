@@ -14,8 +14,9 @@ by degree and compatibly with faces, to a simplex whose vertices lie at `x`
 (`vertexStraighteningHomotopy`) and then to one whose edges are constant loops at `x`
 (`edgeStraighteningHomotopy`); the homotopy extension property of the simplex boundary
 (`extendBoundaryHomotopy`) propagates a face-compatible family in degree `n + 1` to degree
-`n + 2` (`extendCoherentSimplexHomotopy`).  This is the simplicial form of the straightening
-step in the proof of the Hurewicz theorem (Hatcher, Thm 4.32, proof).
+`n + 2` (`extendCoherentSimplexHomotopy`).  This is the straightening step of this development's
+simplicial proof of the Hurewicz theorem (statement: Hatcher, Thm 4.32; the argument is recorded
+in `Lib/docs/C.md`, §8).
 
 ## Main definitions
 

@@ -31,7 +31,8 @@ chamber loop is homotopic to the based simplex loop of its cell
 permutation as orientation (`nativeClass_chamber_eq_orientedSimplex`).
 
 This is the step "a spheroid is the signed sum of the simplices of a triangulation of the
-cube" in the proof of the Hurewicz theorem (Hatcher, *Algebraic Topology*, Theorem 4.32).
+cube" in this development's proof of the Hurewicz theorem (statement: Hatcher, *Algebraic
+Topology*, Theorem 4.32; the argument is recorded in `Lib/docs/C.md`).
 
 ## Main definitions
 

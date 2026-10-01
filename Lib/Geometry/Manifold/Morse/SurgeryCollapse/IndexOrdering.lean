@@ -121,8 +121,9 @@ theorem AdaptedWindows.remove_connections_of_index_le {E M : Type*} [NormedAddCo
       e (fun x => hback x q.val) (fun x => hforward x p.val) hbasins
 
 /-- `remove_connections_of_index_le` without the positivity hypotheses: for consecutive critical
-points `p`, `q` with `f p < f q` and `index q ≤ index p` there is a gradient-like field with no
-flow line from `q` to `p`. -/
+points `p`, `q` with `f p < f q` and `index q ≤ index p` there is a smooth field `V` with flow `G`
+that vanishes at the critical points, strictly decreases `f` elsewhere, equals `S.field` near
+every critical point, and has no flow line from `q` to `p`. -/
 theorem AdaptedWindows.remove_connections_of_nonincreasing_indices {E M : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
     [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {f : M → ℝ}

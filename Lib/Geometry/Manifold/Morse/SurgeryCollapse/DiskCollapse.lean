@@ -18,8 +18,8 @@ import Lib.Geometry.Manifold.Morse.SurgeryCollapse.OnePointCover
 # Collapsing the complement of an attached cell to a point
 
 The quotient of the closed unit disk of `N` by its boundary is the one-point compactification
-`OnePoint N` (`DiskOnePointCollapse.collapse`, Hatcher, *Algebraic Topology*, Example 0.2 /
-Proposition 2.22).  For a cell attached to `A` along its boundary, or a handle
+`OnePoint N` (`DiskOnePointCollapse.collapse`; cf. Hatcher, *Algebraic Topology*, Chapter 0).
+For a cell attached to `A` along its boundary, or a handle
 `Dᵏ × Dⁿ⁻ᵏ` attached along `∂Dᵏ × Dⁿ⁻ᵏ`, collapsing `A` to the point at infinity gives a
 continuous map `X → OnePoint N` (`EmbeddedCellAttachment.collapseMap`,
 `ClosedHandleCore.collapseMap`) which carries the Mayer–Vietoris cover of the cell attachment to

@@ -24,7 +24,8 @@ chamber loops of the inserted charts `insertChamberChart e r chart`
 `chamberCutIndex h` along the extended cut sequence of the chart (`finiteCuts_class`).
 
 This is the induction step of the subdivision of a based cube into its Kuhn chambers in
-the proof of the Hurewicz theorem (Hatcher, *Algebraic Topology*, Theorem 4.32).
+this development's proof of the Hurewicz theorem (statement: Hatcher, *Algebraic Topology*,
+Theorem 4.32; the argument is recorded in `Lib/docs/C.md`).
 
 ## Main definitions
 

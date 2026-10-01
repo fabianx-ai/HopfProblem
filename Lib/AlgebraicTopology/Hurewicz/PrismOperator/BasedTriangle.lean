@@ -18,8 +18,9 @@ defines a based square `basedTriangleLoop τ` and hence a class
 `2`-simplex is straightened, first at the vertices and then along the edges, to a based triangle
 `normalizedTriangle x smp`, and the endpoint operator of the straightening turns a `2`-cycle
 into the homologous normalized cycle `normalizedTwoCycle x c` (`normalizedTwoCycle_class`).
-This is the step of the proof of Hatcher, Thm 4.32, that represents a homology class by based
-simplices.
+This is the step of this development's proof of the degree-two Hurewicz theorem that represents a
+homology class by based simplices (statement: Hatcher, Thm 4.32; the argument is recorded in
+`Lib/docs/C.md`).
 
 ## Main definitions
 

@@ -21,8 +21,9 @@ Slicing is compatible with concatenation: for cuts independent of the coordinate
 `finiteCuts_class` writes the class of `p` as the sum of the classes of the slices
 between consecutive members of a finite family of cuts running from `0` to `1`.
 
-This is the "cutting a cube into slabs" step of the subdivision argument in the proof of
-the Hurewicz theorem (Hatcher, *Algebraic Topology*, Theorem 4.32).
+This is the "cutting a cube into slabs" step of the subdivision argument in this development's
+proof of the Hurewicz theorem (statement: Hatcher, *Algebraic Topology*, Theorem 4.32; the
+argument is recorded in `Lib/docs/C.md`).
 
 ## Main definitions
 

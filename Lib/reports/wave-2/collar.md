@@ -42,7 +42,9 @@ Imports (trimmed; the base had `Mathlib` + 16 Lib imports + a duplicate Mathlib 
 `Collar.HeightCollar`, `Collar.SmallPerturbation`, `Collar.SupportedDiffeomorph`. The transitive Lib
 import closure of the facade equals that of the base file (44 modules, script over the `import` lines),
 so no consumer loses an import. Dropped from every piece: `set_option maxSynthPendingDepth 3` (build
-passes without), the duplicate `public import Mathlib.Geometry.Manifold.LocalDiffeomorph`.
+passes without, but it changes two elaborated statements, see the reconciliation below; restored in
+`RangeTransport` by the fix round, commit `5a03b3bc` on `fix/waves`), the duplicate
+`public import Mathlib.Geometry.Manifold.LocalDiffeomorph`.
 
 ## Moves to `Hopf/Proof` and the closure argument
 
@@ -113,9 +115,17 @@ VERDICT PASS
 Reconciliation, name by name. Source declarations lost 0, added 0. Two source names are listed
 with a changed type hash, both classified `PROOF-NAMING` by the tool (same `uses` up to `_proof_n`):
 `DiskFraming.exists_smooth_frame_near_starConvex` and
-`DiskFraming.exists_smooth_frame_on_neighborhood_closedBall` — their statements (text unchanged,
-verbatim units) embed an abstracted proof constant whose number depends on what the module
-elaborated before; in the smaller module `RangeTransport` the numbering differs. They are the 2
+`DiskFraming.exists_smooth_frame_on_neighborhood_closedBall` — their statement text is unchanged,
+but without the dropped `set_option maxSynthPendingDepth 3` it elaborates with different instance
+paths (e.g. `Semiring.toMonoid (Ring.toSemiring Real.instRing)` in place of `Real.instMonoid`), so
+the type hashes changed, 3226562774 → 3622023359 and 995586449 → 3798691450; the old and new types
+are definitionally equal, and the tool's `PROOF-NAMING` class only compared `uses`, which are
+identical (corrected 2026-10-02: this said "their statements (text unchanged, verbatim units) embed
+an abstracted proof constant whose number depends on what the module elaborated before; in the
+smaller module `RangeTransport` the numbering differs"; neither `uses` list contains a `_proof_n`
+constant, at base or head. The fix round restores the option in `RangeTransport`, commit
+`5a03b3bc` on `fix/waves`, which gives both theorems their base type hashes back; receipt
+`Lib/reports/wave-reviews/fixes.md`). They are the 2
 missing from `RangeTransport`'s move count: 22 + 2 = 24 = plan. The other counts equal `plan.tsv`
 (55, 29, 17, 10, 16, 10, 1; total 162). The remaining lost/added entries are `_proof_n` constants
 only: `DiskFraming.SmoothRangeTransportOn.trans._proof_8` (→ `_proof_8`, `_proof_9`) and

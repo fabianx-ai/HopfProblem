@@ -94,12 +94,18 @@ def Hurewicz.DegreeTwo.SimplyConnected.bottomProductDegenerate :
     C(SingularChains.Simplex 2, (unitInterval) × (unitInterval)) :=
   squareAffineTriangle ![(0, 0), (0, 0), (1, 0)]
 
+attribute [local instance] SingularHomology.integerLinearMapModule
+    SingularHomology.integerTensorModule in
+
 /-- The first coordinate of `lowerProductTriangle` is `s 1 + s 2`. -/
 @[simp]
 theorem Hurewicz.DegreeTwo.SimplyConnected.lowerProductTriangle_fst (s : SingularChains.Simplex 2) :
     ((lowerProductTriangle s).1 : ℝ) = s 1 + s 2 := by
   simp [lowerProductTriangle, squareAffineTriangle_fst_coe, SingularMayerVietoris.stdVertices,
     stdSimplex.vertex, Fin.sum_univ_succ, Pi.single_apply]
+
+attribute [local instance] SingularHomology.integerLinearMapModule
+    SingularHomology.integerTensorModule in
 
 /-- The second coordinate of `lowerProductTriangle` is `s 2`. -/
 @[simp]
@@ -108,12 +114,18 @@ theorem Hurewicz.DegreeTwo.SimplyConnected.lowerProductTriangle_snd (s : Singula
   simp [lowerProductTriangle, squareAffineTriangle_snd_coe, SingularMayerVietoris.stdVertices,
     stdSimplex.vertex, Fin.sum_univ_succ, Pi.single_apply]
 
+attribute [local instance] SingularHomology.integerLinearMapModule
+    SingularHomology.integerTensorModule in
+
 /-- The first coordinate of `upperProductTriangle` is `s 2`. -/
 @[simp]
 theorem Hurewicz.DegreeTwo.SimplyConnected.upperProductTriangle_fst (s : SingularChains.Simplex 2) :
     ((upperProductTriangle s).1 : ℝ) = s 2 := by
   simp [upperProductTriangle, squareAffineTriangle_fst_coe, SingularMayerVietoris.stdVertices,
     stdSimplex.vertex, Fin.sum_univ_succ, Pi.single_apply]
+
+attribute [local instance] SingularHomology.integerLinearMapModule
+    SingularHomology.integerTensorModule in
 
 /-- The second coordinate of `upperProductTriangle` is `s 1 + s 2`. -/
 @[simp]
@@ -122,6 +134,9 @@ theorem Hurewicz.DegreeTwo.SimplyConnected.upperProductTriangle_snd (s : Singula
   simp [upperProductTriangle, squareAffineTriangle_snd_coe, SingularMayerVietoris.stdVertices,
     stdSimplex.vertex, Fin.sum_univ_succ, Pi.single_apply]
 
+attribute [local instance] SingularHomology.integerLinearMapModule
+    SingularHomology.integerTensorModule in
+
 /-- The first coordinate of `leftProductDegenerate` is `0`. -/
 @[simp]
 theorem Hurewicz.DegreeTwo.SimplyConnected.leftProductDegenerate_fst (s : SingularChains.Simplex 2) :
@@ -129,6 +144,9 @@ theorem Hurewicz.DegreeTwo.SimplyConnected.leftProductDegenerate_fst (s : Singul
   apply Subtype.ext
   simp [leftProductDegenerate, squareAffineTriangle_fst_coe, SingularMayerVietoris.stdVertices,
     stdSimplex.vertex, Fin.sum_univ_succ, Pi.single_apply]
+
+attribute [local instance] SingularHomology.integerLinearMapModule
+    SingularHomology.integerTensorModule in
 
 /-- The second coordinate of `bottomProductDegenerate` is `0`. -/
 @[simp]
@@ -154,20 +172,32 @@ def Hurewicz.DegreeTwo.SimplyConnected.upperSquareTriangle :
     C(SingularChains.Simplex 2, Fin 2 → (unitInterval)) :=
   Hurewicz.DegreeTwo.squareCoordinates.comp upperProductTriangle
 
+attribute [local instance] SingularHomology.integerLinearMapModule
+    SingularHomology.integerTensorModule in
+
 /-- `lowerSquareTriangle s` has coordinate `0` equal to `s 1 + s 2`. -/
 @[simp]
 theorem Hurewicz.DegreeTwo.SimplyConnected.lowerSquareTriangle_zero (s : SingularChains.Simplex 2) :
     (lowerSquareTriangle s 0 : ℝ) = s 1 + s 2 := by simp [lowerSquareTriangle]
+
+attribute [local instance] SingularHomology.integerLinearMapModule
+    SingularHomology.integerTensorModule in
 
 /-- `lowerSquareTriangle s` has coordinate `1` equal to `s 2`. -/
 @[simp]
 theorem Hurewicz.DegreeTwo.SimplyConnected.lowerSquareTriangle_one (s : SingularChains.Simplex 2) :
     (lowerSquareTriangle s 1 : ℝ) = s 2 := by simp [lowerSquareTriangle]
 
+attribute [local instance] SingularHomology.integerLinearMapModule
+    SingularHomology.integerTensorModule in
+
 /-- `upperSquareTriangle s` has coordinate `0` equal to `s 2`. -/
 @[simp]
 theorem Hurewicz.DegreeTwo.SimplyConnected.upperSquareTriangle_zero (s : SingularChains.Simplex 2) :
     (upperSquareTriangle s 0 : ℝ) = s 2 := by simp [upperSquareTriangle]
+
+attribute [local instance] SingularHomology.integerLinearMapModule
+    SingularHomology.integerTensorModule in
 
 /-- `upperSquareTriangle s` has coordinate `1` equal to `s 1 + s 2`. -/
 @[simp]

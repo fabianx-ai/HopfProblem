@@ -20,7 +20,7 @@ packages both, and `Hurewicz.NativeSubdivision.sum_insertPermutation` reindexes 
 
 This is the recursion `S_{n+1} = S_n × (n + 1)` on the Kuhn chambers of the cube: a
 chamber of the `(n + 1)`-cube is a chamber of the `n`-cube together with the slot of
-the new coordinate in the order (cf. the proof of Hatcher, Theorem 4.32).
+the new coordinate in the order (`Lib/docs/C.md`, §3).
 
 ## Main definitions
 

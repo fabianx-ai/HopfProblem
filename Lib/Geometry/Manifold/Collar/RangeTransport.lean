@@ -37,6 +37,8 @@ compact set, presented as the range of a projection family, is trivial (cf. Hirs
 projection, vector bundle, frame, star-convex
 -/
 
+set_option maxSynthPendingDepth 3
+
 open Set Function Filter Manifold Topology
 
 open scoped ContDiff NNReal

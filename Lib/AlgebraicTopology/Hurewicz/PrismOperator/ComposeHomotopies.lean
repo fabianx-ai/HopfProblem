@@ -16,7 +16,7 @@ Two families `H`, `G` of homotopies starting at each singular simplex compose to
 compatibility (`composeSimplexHomotopies_face`) and stationarity on the constant simplex
 (`composeSimplexHomotopies_const`); the coherent extension of a family that is stationary on
 constant simplices is stationary as well (`extendCoherentSimplexHomotopy_const`).  These are
-the bookkeeping lemmas for iterating straightening homotopies (cf. Hatcher, Thm 4.32, proof).
+the bookkeeping lemmas for iterating straightening homotopies (`Lib/docs/C.md`, §8).
 
 ## Main definitions
 
