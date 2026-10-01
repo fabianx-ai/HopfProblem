@@ -238,7 +238,7 @@ theorem exists_smooth_bigon_boundary_neighborhood {E M : Type*} [NormedAddCommGr
 /-- The map glued from the two strip patches is an immersion at every point of the frontier of the
 bigon.
 -/
-theorem injective_nativeDerivative_bigon_boundary {E M : Type*} [NormedAddCommGroup E]
+theorem injective_mfderiv_of_mem_frontier_bigon {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {h : ℝ} (hh : 0 < h) {S T : Set M}
     {a b : ℝ → M} {k₀ k₁ l₀ l₁ : (ℝ × ℝ) → M} (k : CleanStripPatch (E := E) S T a k₀ k₁)
     (l : CleanStripPatch (E := E) T S b l₀ l₁) {f : (ℝ × ℝ) → M} {U V : Set (ℝ × ℝ)}
@@ -254,11 +254,11 @@ theorem injective_nativeDerivative_bigon_boundary {E M : Type*} [NormedAddCommGr
   intro p hp
   obtain ⟨t, ht, rfl | rfl⟩ := (WhitneyPairModel.mem_frontier_bigon_iff_exists_time hh p).mp hp
   · exact
-      injective_nativeDerivative_of_strip_germ k
+      injective_mfderiv_of_eqOn_cleanStripPatch_comp k
         (WhitneyPairModel.contDiff_lowerStripCoordinates hh.ne') hU hflo hmapU (hlowU ht)
         (WhitneyPairModel.injective_fderiv_lowerStripCoordinates hh.ne' _)
   · exact
-      injective_nativeDerivative_of_strip_germ l
+      injective_mfderiv_of_eqOn_cleanStripPatch_comp l
         (WhitneyPairModel.contDiff_upperStripCoordinates hh.ne') hV hfhi hmapV (huppV ht)
         (WhitneyPairModel.injective_fderiv_upperStripCoordinates hh.ne' _)
 
@@ -307,7 +307,7 @@ theorem exists_embedded_bigon_boundary_neighborhood {E M : Type*} [NormedAddComm
     WhitneyPairModel.injOn_frontier_bigon_of_arcs hh k.center_injOn l.center_injOn hlow hupp
       (strip_center_coincidences_of_corner_overlap k l hover)
   have hi :=
-    injective_nativeDerivative_bigon_boundary hh k l hU hV hlowU huppV hmapU hmapV hflo hfhi
+    injective_mfderiv_of_mem_frontier_bigon hh k l hU hV hlowU huppV hmapU hmapV hflo hfhi
   have hcompact : IsCompact (frontier (WhitneyPairModel.bigon h)) :=
     (WhitneyPairModel.isCompact_bigon hh).of_isClosed_subset isClosed_frontier
       (fun p hp => ((WhitneyPairModel.mem_frontier_bigon_iff h p).mp hp).1)

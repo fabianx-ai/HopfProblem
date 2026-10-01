@@ -101,7 +101,7 @@ theorem strip_center_coincidences_of_corner_overlap {E M : Type*} [NormedAddComm
 /-- A map given on an open set by a clean strip patch composed with an immersion `r` is itself an
 immersion there.
 -/
-theorem injective_nativeDerivative_of_strip_germ {E M : Type*} [NormedAddCommGroup E]
+theorem injective_mfderiv_of_eqOn_cleanStripPatch_comp {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {S T : Set M} {a : ℝ → M}
     {k₀ k₁ : (ℝ × ℝ) → M} (k : CleanStripPatch (E := E) S T a k₀ k₁) {r : (ℝ × ℝ) → ℝ × ℝ}
     (hr : ContDiff ℝ ∞ r) {f : (ℝ × ℝ) → M} {U : Set (ℝ × ℝ)} (hU : IsOpen U)

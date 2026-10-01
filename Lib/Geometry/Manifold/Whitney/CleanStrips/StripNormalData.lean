@@ -125,10 +125,10 @@ theorem StripNormalData.normal_coordinateDerivative_nonzero {A B E M : Type*}
 /-- Along the axis the derivative of `k` factors as the derivative of the chart composed with the
 derivative of the coordinate map.
 -/
-theorem StripNormalData.native_derivative_factor {A B E M : Type*} [NormedAddCommGroup A]
-    [NormedSpace ℝ A] [NormedAddCommGroup B] [NormedSpace ℝ B] [NormedAddCommGroup E]
-    [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {S : Set M} {k : (ℝ × ℝ) → M}
-    (d : StripNormalData A B (E := E) S k) {t : ℝ} (ht : t ∈ Set.Icc (0 : ℝ) 1)
+theorem StripNormalData.mfderiv_eq_comp_fderiv_coordinateMap {A B E M : Type*}
+    [NormedAddCommGroup A] [NormedSpace ℝ A] [NormedAddCommGroup B] [NormedSpace ℝ B]
+    [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {S : Set M}
+    {k : (ℝ × ℝ) → M} (d : StripNormalData A B (E := E) S k) {t : ℝ} (ht : t ∈ Set.Icc (0 : ℝ) 1)
     (hk : ContMDiffAt 𝓘(ℝ, ℝ × ℝ) 𝓘(ℝ, E) ∞ k (t, 0)) :
     mfderiv 𝓘(ℝ, ℝ × ℝ) 𝓘(ℝ, E) k (t, 0) =
       (mfderiv 𝓘(ℝ, StripCoordinates.Space A B) 𝓘(ℝ, E) d.chart
@@ -261,7 +261,7 @@ theorem StripNormalData.injective_normalFrame_of_strip_germ {A B Z E M : Type*}
       exact LinearMap.range_comp_of_range_eq_top _ (LinearMap.range_eq_top.mpr hcs)
     have h3 : K.range = (T.comp L).range := by
       change (mfderiv 𝓘(ℝ, ℝ × ℝ) 𝓘(ℝ, E) k (t, 0)).range = (T.comp L).range
-      rw [d.native_derivative_factor ht hk]
+      rw [d.mfderiv_eq_comp_fderiv_coordinateMap ht hk]
       rfl
     exact h1.trans (h2.trans h3)
   have hT : Function.Injective T := (PartialChart.bijective_mfderiv d.chart (d.line ht)).1
