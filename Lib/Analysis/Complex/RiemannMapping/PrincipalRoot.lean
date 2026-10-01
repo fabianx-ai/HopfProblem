@@ -24,11 +24,11 @@ open scoped ComplexConjugate ContDiff Interval NNReal UniformConvergence Uniform
 
 noncomputable section
 
-/-- The principal `n`-th root. -/
+/-- The principal `n`-th root `z ^ (1 / n)`. -/
 def RiemannBoundary.principalRoot (n : ℕ) (z : ℂ) : ℂ :=
   z ^ ((n : ℂ)⁻¹)
 
-/-- The principal root raised to `n` is the argument. -/
+/-- `(principalRoot n z) ^ n = z` for `n > 0`. -/
 @[simp]
 theorem RiemannBoundary.principalRoot_pow {n : ℕ} (hn : 0 < n) (z : ℂ) :
     principalRoot n z ^ n = z :=
@@ -58,7 +58,7 @@ theorem RiemannBoundary.norm_principalRoot (n : ℕ) (z : ℂ) :
     ‖principalRoot n z‖ = ‖z‖ ^ ((n : ℝ)⁻¹) :=
   Complex.norm_cpow_inv_nat z n
 
-/-- The principal root's exponent has positive real part on the sector. -/
+/-- For `n > 0` the exponent `1 / n` has positive real part. -/
 theorem RiemannBoundary.principalRoot_exponent_re_pos {n : ℕ} (hn : 0 < n) :
     0 < ((n : ℂ)⁻¹).re := by
   simpa only [← Complex.ofReal_natCast, ← Complex.ofReal_inv, Complex.ofReal_re] using
@@ -110,7 +110,7 @@ theorem RiemannBoundary.principalRoot_ofReal_nonneg (n : ℕ) {x : ℝ} (hx : 0 
   simpa only [principalRoot, Complex.ofReal_inv, Complex.ofReal_natCast] using
     (Complex.ofReal_cpow hx ((n : ℝ)⁻¹)).symm
 
-/-- The principal root of a nonpositive real has controlled argument. -/
+/-- For real `x ≤ 0`, `principalRoot n x = (-x) ^ (1 / n) e^{iπ/n}`. -/
 theorem RiemannBoundary.principalRoot_ofReal_nonpos (n : ℕ) {x : ℝ} (hx : x ≤ 0) :
     principalRoot n (x : ℂ) =
       ((-x) ^ ((n : ℝ)⁻¹) : ℝ) * Complex.exp ((Real.pi / (n : ℝ) : ℝ) * Complex.I) := by
@@ -123,7 +123,7 @@ theorem RiemannBoundary.principalRoot_ofReal_nonpos (n : ℕ) {x : ℝ} (hx : x 
   simp only [div_eq_mul_inv, Complex.ofReal_mul, Complex.ofReal_inv, Complex.ofReal_natCast]
   ring
 
-/-- The divided argument lies in the standard interval. -/
+/-- For `n > 0`, `arg z / n` lies in `(-π, π]`. -/
 theorem RiemannBoundary.arg_div_nat_mem_Ioc {n : ℕ} (hn : 0 < n) (z : ℂ) :
     z.arg / (n : ℝ) ∈ Set.Ioc (-Real.pi) Real.pi := by
   have hnR : (0 : ℝ) < n := Nat.cast_pos.mpr hn
@@ -152,7 +152,7 @@ theorem RiemannBoundary.arg_principalRoot {n : ℕ} (hn : 0 < n) (z : ℂ) :
     Complex.arg_mul_cos_add_sin_mul_I (Real.rpow_pos_of_pos (norm_pos_iff.mpr hz) ((n : ℝ)⁻¹))
       (arg_div_nat_mem_Ioc hn z)
 
-/-- The principal root's argument lies in the open sector. -/
+/-- For `n > 0` and `Im z > 0`, `arg (principalRoot n z)` lies in `(0, π / n)`. -/
 theorem RiemannBoundary.principalRoot_arg_mem_Ioo {n : ℕ} (hn : 0 < n) {z : ℂ} (hz : 0 < z.im) :
     Complex.arg (principalRoot n z) ∈ Set.Ioo 0 (Real.pi / (n : ℝ)) := by
   rw [arg_principalRoot hn]
@@ -163,7 +163,7 @@ theorem RiemannBoundary.principalRoot_arg_mem_Ioo {n : ℕ} (hn : 0 < n) {z : �
       (div_lt_div_iff_of_pos_right (Nat.cast_pos.mpr hn)).mpr
         (Complex.arg_lt_pi_iff.mpr (Or.inr (ne_of_gt hz)))⟩
 
-/-- The principal-root power on the sector. -/
+/-- If `0 ≤ arg z ≤ π / n` (`n > 0`), then `principalRoot n (z ^ n) = z`. -/
 theorem RiemannBoundary.principalRoot_pow_of_sector {n : ℕ} (hn : 0 < n) {z : ℂ}
     (hz : z.arg ∈ Set.Icc 0 (Real.pi / (n : ℝ))) : principalRoot n (z ^ n) = z := by
   apply Complex.pow_cpow_nat_inv hn.ne' _ hz.2

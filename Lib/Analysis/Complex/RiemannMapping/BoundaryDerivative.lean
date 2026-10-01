@@ -24,7 +24,7 @@ open scoped ComplexConjugate ContDiff Interval NNReal UniformConvergence Uniform
 
 noncomputable section
 
-/-- The imaginary part of a scaled exponential. -/
+/-- `Im (c e^{iθ}) = ‖c‖ sin (arg c + θ)`. -/
 theorem RiemannMapping.im_mul_exp_real (c : ℂ) (θ : ℝ) :
     (c * Complex.exp ((θ : ℂ) * Complex.I)).im = ‖c‖ * Real.sin (c.arg + θ) := by
   calc
@@ -39,7 +39,7 @@ theorem RiemannMapping.im_mul_exp_real (c : ℂ) (θ : ℝ) :
       ring
     _ = ‖c‖ * Real.sin (c.arg + θ) := by rw [Complex.im_ofReal_mul, Complex.exp_ofReal_mul_I_im]
 
-/-- The imaginary part of a scaled exponential power. -/
+/-- `Im (c (e^{iθ})ⁿ) = ‖c‖ sin (arg c + n θ)`. -/
 theorem RiemannMapping.im_mul_exp_real_pow (c : ℂ) (θ : ℝ) (n : ℕ) :
     (c * Complex.exp ((θ : ℂ) * Complex.I) ^ n).im = ‖c‖ * Real.sin (c.arg + (n : ℝ) * θ) := by
   rw [← Complex.exp_nat_mul]
@@ -49,7 +49,8 @@ theorem RiemannMapping.im_mul_exp_real_pow (c : ℂ) (θ : ℝ) (n : ℕ) :
   rw [h]
   exact im_mul_exp_real c ((n : ℝ) * θ)
 
-/-- A unit direction whose power lies in the upper half-plane exists. -/
+/-- For `c ≠ 0` and `n ≥ 2` some unit `v` in the upper half-plane has `c vⁿ` in the lower
+half-plane. -/
 theorem RiemannMapping.exists_unit_upperHalf_power_direction {c : ℂ} (hc : c ≠ 0) {n : ℕ}
     (hn : 2 ≤ n) : ∃ v : ℂ, ‖v‖ = 1 ∧ 0 < v.im ∧ (c * v ^ n).im < 0 := by
   have hn₂ : (2 : ℝ) ≤ n := by exact_mod_cast hn
@@ -93,25 +94,26 @@ theorem RiemannMapping.exists_unit_upperHalf_power_direction {c : ℂ} (hc : c �
       exact
         mul_neg_of_pos_of_neg hc₀ (Real.sin_neg_of_neg_of_neg_pi_lt (by linarith) (by linarith))
 
-/-- A direction whose power lies in the upper half-plane exists. -/
+/-- For `c ≠ 0` and `n ≥ 2` some `v` in the upper half-plane has `c vⁿ` in the lower half-plane. -/
 theorem RiemannMapping.exists_upperHalf_power_direction {c : ℂ} (hc : c ≠ 0) {n : ℕ}
     (hn : 2 ≤ n) : ∃ v : ℂ, 0 < v.im ∧ (c * v ^ n).im < 0 := by
   obtain ⟨v, _, hv, hcv⟩ := exists_unit_upperHalf_power_direction hc hn
   exact ⟨v, hv, hcv⟩
 
-/-- The boundary ray converges to the vertex. -/
+/-- `a + t v → a` as `t → 0⁺`. -/
 theorem RiemannMapping.tendsto_boundaryRay (a v : ℂ) :
     Filter.Tendsto (fun t : ℝ => a + (t : ℂ) * v) (𝓝[>] 0) (𝓝 a) := by
   have hc : Continuous (fun t : ℝ => a + (t : ℂ) * v) := by fun_prop
   simpa using (hc.continuousAt (x := 0)).tendsto.mono_left nhdsWithin_le_nhds
 
-/-- The boundary ray has positive imaginary part. -/
+/-- For real `a`, `Im v > 0` and `t > 0`, the point `a + t v` lies in the upper half-plane. -/
 theorem RiemannMapping.boundaryRay_im_pos {a v : ℂ} (ha : a.im = 0) (hv : 0 < v.im) {t : ℝ}
     (ht : 0 < t) : 0 < (a + (t : ℂ) * v).im := by
   simpa only [Complex.add_im, Complex.mul_im, Complex.ofReal_re, Complex.ofReal_im, ha,
     MulZeroClass.zero_mul, MulZeroClass.mul_zero, add_zero, zero_add] using mul_pos ht hv
 
-/-- The analytic order at an upper-half-plane boundary point is finite. -/
+/-- If `f` maps the upper half-plane near a real point `a` into the upper half-plane, then `f` does
+not vanish identically near `a`. -/
 theorem RiemannMapping.analyticOrderAt_ne_top_of_upper_halfPlane {f : ℂ → ℂ} {a : ℂ}
     (ha : a.im = 0) (hupper : ∀ᶠ z in 𝓝 a, 0 < z.im → 0 < (f z).im) : analyticOrderAt f a ≠ ⊤ := by
   intro htop
@@ -124,7 +126,8 @@ theorem RiemannMapping.analyticOrderAt_ne_top_of_upper_halfPlane {f : ℂ → �
   obtain ⟨t, ht⟩ := hfalse.exists
   exact ht
 
-/-- The leading coefficient has nonnegative imaginary part. -/
+/-- If `f z = (z - a) ^ m u z` near a real point `a` with `u` continuous at `a`, and `f` maps the
+upper half-plane near `a` into the upper half-plane, then `Im (vᵐ u a) ≥ 0` whenever `Im v > 0`. -/
 theorem RiemannMapping.nonneg_im_leading_of_upper_halfPlane {f u : ℂ → ℂ} {a : ℂ} {m : ℕ}
     (ha : a.im = 0) (hu : ContinuousAt u a) (hfactor : ∀ᶠ z in 𝓝 a, f z = (z - a) ^ m * u z)
     (hupper : ∀ᶠ z in 𝓝 a, 0 < z.im → 0 < (f z).im) {v : ℂ} (hv : 0 < v.im) :
@@ -149,7 +152,8 @@ theorem RiemannMapping.nonneg_im_leading_of_upper_halfPlane {f u : ℂ → ℂ} 
     exact hpos (boundaryRay_im_pos ha hv ht)
   exact ((mul_pos_iff_of_pos_left (pow_pos ht m)).mp hp).le
 
-/-- The analytic order at the boundary is one. -/
+/-- If `f` is analytic at a real point `a`, `f a = 0`, and `f` maps the upper half-plane near `a`
+into the upper half-plane, then `f` has a zero of order one at `a`. -/
 theorem RiemannMapping.analyticOrderAt_eq_one_of_upper_halfPlane {f : ℂ → ℂ} {a : ℂ}
     (hf : AnalyticAt ℂ f a) (ha : a.im = 0) (hfa : f a = 0)
     (hupper : ∀ᶠ z in 𝓝 a, 0 < z.im → 0 < (f z).im) : analyticOrderAt f a = 1 := by
@@ -173,7 +177,8 @@ theorem RiemannMapping.analyticOrderAt_eq_one_of_upper_halfPlane {f : ℂ → �
   rw [← horder, hm]
   rfl
 
-/-- The derivative at an upper-half-plane boundary point is nonzero. -/
+/-- If `f` is analytic at a real point `a`, `f a = 0`, and `f` maps the upper half-plane near `a`
+into the upper half-plane, then `deriv f a ≠ 0`. -/
 theorem RiemannMapping.deriv_ne_zero_of_upper_halfPlane {f : ℂ → ℂ} {a : ℂ}
     (hf : AnalyticAt ℂ f a) (ha : a.im = 0) (hfa : f a = 0)
     (hupper : ∀ᶠ z in 𝓝 a, 0 < z.im → 0 < (f z).im) : deriv f a ≠ 0 := by
@@ -181,23 +186,23 @@ theorem RiemannMapping.deriv_ne_zero_of_upper_halfPlane {f : ℂ → ℂ} {a : �
   have hd := (analyticOrderAt_eq_nat_iff_iteratedDeriv_eq_zero hf).mp ho
   simpa only [iteratedDeriv_one] using hd.2
 
-/-- The boundary logarithm near a vertex. -/
+/-- `boundaryLog f a z = -i log (f z / f a)`. -/
 def RiemannMapping.boundaryLog (f : ℂ → ℂ) (a z : ℂ) : ℂ :=
   -Complex.I * Complex.log (f z / f a)
 
-/-- The boundary logarithm computes on the point. -/
+/-- `boundaryLog f a a = 0` when `f a ≠ 0`. -/
 @[simp]
 theorem RiemannMapping.boundaryLog_self {f : ℂ → ℂ} {a : ℂ} (hfa : f a ≠ 0) :
     boundaryLog f a a = 0 := by simp [boundaryLog, hfa]
 
-/-- The boundary logarithm is analytic. -/
+/-- `boundaryLog f a` is analytic at `a` when `f` is and `f a ≠ 0`. -/
 theorem RiemannMapping.analyticAt_boundaryLog {f : ℂ → ℂ} {a : ℂ} (hf : AnalyticAt ℂ f a)
     (hfa : f a ≠ 0) : AnalyticAt ℂ (boundaryLog f a) a := by
   have hratio : AnalyticAt ℂ (fun z => f z / f a) a := hf.div_const
   have hslit : f a / f a ∈ Complex.slitPlane := by simp [hfa]
   exact analyticAt_const.mul (hratio.clog hslit)
 
-/-- The boundary logarithm is differentiable. -/
+/-- If `f' a = d` and `f a ≠ 0`, then `boundaryLog f a` has derivative `-i d / f a` at `a`. -/
 theorem RiemannMapping.hasDerivAt_boundaryLog {f : ℂ → ℂ} {a d : ℂ} (hf : HasDerivAt f d a)
     (hfa : f a ≠ 0) : HasDerivAt (boundaryLog f a) (-Complex.I * (d / f a)) a := by
   have hslit : f a / f a ∈ Complex.slitPlane := by simp [hfa]
@@ -205,7 +210,7 @@ theorem RiemannMapping.hasDerivAt_boundaryLog {f : ℂ → ℂ} {a d : ℂ} (hf 
   change HasDerivAt (fun z => -Complex.I * Complex.log (f z / f a)) (-Complex.I * (d / f a)) a
   simpa only [div_self hfa, div_one] using hlog.const_mul (-Complex.I)
 
-/-- The boundary logarithm has positive imaginary part. -/
+/-- If `‖f a‖ = 1`, `f z ≠ 0` and `‖f z‖ < 1`, then `Im (boundaryLog f a z) > 0`. -/
 theorem RiemannMapping.im_boundaryLog_pos {f : ℂ → ℂ} {a z : ℂ} (hfa : ‖f a‖ = 1) (hfz : f z ≠ 0)
     (hz : ‖f z‖ < 1) : 0 < (boundaryLog f a z).im := by
   have hfa0 : f a ≠ 0 := by
@@ -216,7 +221,8 @@ theorem RiemannMapping.im_boundaryLog_pos {f : ℂ → ℂ} {a z : ℂ} (hfa : �
   have hlog := Real.log_neg hratio0 hratio1
   simpa [boundaryLog, Complex.mul_im, Complex.log_re] using neg_pos.mpr hlog
 
-/-- The disc map's derivative is nonzero at the boundary. -/
+/-- If `f` is analytic at a real point `a`, `‖f a‖ = 1`, and `f` maps the upper half-plane near `a`
+into the open unit disc, then `deriv f a ≠ 0`. -/
 theorem RiemannMapping.deriv_ne_zero_of_upper_halfPlane_to_unitDisc {f : ℂ → ℂ} {a : ℂ}
     (hf : AnalyticAt ℂ f a) (ha : a.im = 0) (hfa : ‖f a‖ = 1)
     (hupper : ∀ᶠ z in 𝓝 a, 0 < z.im → ‖f z‖ < 1) : deriv f a ≠ 0 := by

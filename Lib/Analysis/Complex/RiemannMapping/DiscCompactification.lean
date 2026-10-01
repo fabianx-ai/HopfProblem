@@ -26,20 +26,22 @@ open scoped ComplexConjugate ContDiff Interval NNReal UniformConvergence Uniform
 
 noncomputable section
 
-/-- The inverse disc homeomorphism at a boundary point. -/
+/-- The inverse of `e : D ≃ₜ 𝔻` as a map `ℂ → X`, with the value `e.symm 0` off the open disc. -/
 def RiemannBoundary.discHomeomorphInverse {X : Type*} [TopologicalSpace X] {D : Set X}
     (e : D ≃ₜ Metric.ball (0 : ℂ) 1) (z : ℂ) : X := by
   classical
     exact
     if hz : z ∈ Metric.ball (0 : ℂ) 1 then (e.symm ⟨z, hz⟩ : X) else (e.symm ⟨0, by simp⟩ : X)
 
-/-- The inverse disc map computes on the image. -/
+/-- On the open disc, `discHomeomorphInverse e` computes `e.symm`. -/
 theorem RiemannBoundary.discHomeomorphInverse_of_mem {X : Type*} [TopologicalSpace X] {D : Set X}
     (e : D ≃ₜ Metric.ball (0 : ℂ) 1) {z : ℂ} (hz : z ∈ Metric.ball (0 : ℂ) 1) :
     discHomeomorphInverse e z = (e.symm ⟨z, hz⟩ : X) := by
   simp only [discHomeomorphInverse, dif_pos hz]
 
-/-- The inverse disc map converges in the boundary chart. -/
+/-- Let `f` restrict to `e : D ≃ₜ 𝔻`, let `H` have a nonzero strict derivative at `0`, and let `φ :
+ℂ → X` be continuous at `0` with `φ z ∈ D` and `f (φ z) = H z` whenever `‖H z‖ < 1`, for `z` near
+`0`. Then the inverse of `e` tends to `φ 0` at `H 0` within the open disc. -/
 theorem RiemannBoundary.tendsto_discHomeomorphInverse_of_boundary_chart {X : Type*}
     [TopologicalSpace X] {D : Set X} (e : D ≃ₜ Metric.ball (0 : ℂ) 1) {f : X → ℂ}
     (he : ∀ z : D, f z = (e z : ℂ)) {φ : ℂ → X} {H : ℂ → ℂ} {d : ℂ} (hφ : ContinuousAt φ 0)
@@ -73,13 +75,14 @@ theorem RiemannBoundary.tendsto_discHomeomorphInverse_of_boundary_chart {X : Typ
     exact congrArg Subtype.val hinv
   exact ht.congr' heq.symm
 
-/-- A unit-circle point is in the closed unit ball. -/
+/-- A point of the unit circle lies in the closure of the open unit disc. -/
 theorem RiemannBoundary.unitCircle_mem_closure_unitBall {w : ℂ} (hw : ‖w‖ = 1) :
     w ∈ closure (Metric.ball (0 : ℂ) 1) := by
   rw [closure_ball (0 : ℂ) (by norm_num : (1 : ℝ) ≠ 0)]
   simpa only [Metric.mem_closedBall, dist_zero_right, hw] using le_rfl (a := (1 : ℝ))
 
-/-- Boundary points with equal disc values are equal. -/
+/-- Two boundary charts `φ`, `ψ` as in `tendsto_discHomeomorphInverse_of_boundary_chart`, for `F`
+and `G` with `‖F 0‖ = 1` and `F 0 = G 0`, satisfy `φ 0 = ψ 0` (`X` Hausdorff). -/
 theorem RiemannBoundary.boundary_points_eq_of_equal_disc_values {X : Type*} [TopologicalSpace X]
     {D : Set X} [T2Space X] (e : D ≃ₜ Metric.ball (0 : ℂ) 1) {f : X → ℂ}
     (he : ∀ z : D, f z = (e z : ℂ)) {φ ψ : ℂ → X} {F G : ℂ → ℂ} {dF dG : ℂ}
@@ -95,7 +98,7 @@ theorem RiemannBoundary.boundary_points_eq_of_equal_disc_values {X : Type*} [Top
   rw [← hvalue] at htG
   exact tendsto_nhds_unique htF htG
 
-/-- The map from the domain compactification to the closed disc. -/
+/-- The extension by continuity (`Dense.extend`) of `e : D ≃ₜ 𝔻` from the dense set `D` to `X`. -/
 def RiemannBoundary.discCompactificationMap {X : Type*} [TopologicalSpace X] {D : Set X}
     (hD : Dense D) (e : D ≃ₜ Metric.ball (0 : ℂ) 1) : X → ℂ :=
   hD.extend (fun z : D => (e z : ℂ))
@@ -106,7 +109,8 @@ theorem RiemannBoundary.discCompactificationMap_coe {X : Type*} [TopologicalSpac
     discCompactificationMap hD e z = (e z : ℂ) :=
   hD.extend_eq (continuous_subtype_val.comp e.continuous) z
 
-/-- The disc map has limits at every boundary point. -/
+/-- At every `x ∉ D`, `e` has a limit `w` with `‖w‖ = 1`, and the inverse of `e` tends to `x` at `w`
+within the open disc. -/
 def RiemannBoundary.DiscBoundaryLimits {X : Type*} [TopologicalSpace X] {D : Set X}
     (e : D ≃ₜ Metric.ball (0 : ℂ) 1) : Prop :=
   ∀ x ∉ D,
@@ -196,7 +200,8 @@ theorem RiemannBoundary.discCompactificationMap_range {X : Type*} [TopologicalSp
     rw [← closure_ball (0 : ℂ) (by norm_num : (1 : ℝ) ≠ 0)]
     exact closure_minimal hdisc hclosed
 
-/-- The domain compactification is homeomorphic to the closed disc. -/
+/-- Carathéodory extension: for `X` compact Hausdorff, `D` dense and `DiscBoundaryLimits e`, the map
+`e` extends to a homeomorphism `X ≃ₜ closedBall 0 1`. -/
 def RiemannBoundary.closedDiscHomeomorph {X : Type*} [TopologicalSpace X] {D : Set X} [T2Space X]
     [CompactSpace X] (hD : Dense D) (e : D ≃ₜ Metric.ball (0 : ℂ) 1) (hb : DiscBoundaryLimits e) :
     X ≃ₜ Metric.closedBall (0 : ℂ) 1 := by

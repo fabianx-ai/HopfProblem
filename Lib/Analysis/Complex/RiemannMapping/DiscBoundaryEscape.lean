@@ -31,7 +31,8 @@ open scoped ComplexConjugate ContDiff Interval NNReal UniformConvergence Uniform
 
 noncomputable section
 
-/-- Preimages of closed balls under the disc map are compact: properness of the Riemann mapping on the interior (Ahlfors, Complex Analysis, Ch. 6). -/
+/-- For a homeomorphism `e : U ≃ₜ 𝔻` and `r < 1`, the set of points of `U` with `‖e z‖ ≤ r` is
+compact. -/
 theorem RiemannMapping.isCompact_discHomeomorph_preimage_closedBall {U : Set ℂ}
     (e : U ≃ₜ Metric.ball (0 : ℂ) 1) {r : ℝ} (hr : r < 1) :
     IsCompact
@@ -43,7 +44,7 @@ theorem RiemannMapping.isCompact_discHomeomorph_preimage_closedBall {U : Set ℂ
     Topology.IsInducing.subtypeVal.isCompact_preimage' (ProperSpace.isCompact_closedBall _ _) ?_
   simpa only [Subtype.range_coe] using Metric.closedBall_subset_ball hr
 
-/-- The disc map escapes to the boundary: points outside the source domain have images of norm tending to 1 along the map (boundary behaviour, Ahlfors, Complex Analysis, Ch. 6). -/
+/-- For a homeomorphism `e : U ≃ₜ 𝔻`, if `z i → a` with `a ∉ U`, then `‖e (z i)‖ → 1`. -/
 theorem RiemannMapping.tendsto_norm_discHomeomorph_of_notMem {U : Set ℂ}
     (e : U ≃ₜ Metric.ball (0 : ℂ) 1) {α : Type*} {l : Filter α} {z : α → U} {a : ℂ} (ha : a ∉ U)
     (hz : Filter.Tendsto (fun i => (z i : ℂ)) l (𝓝 a)) :
@@ -116,7 +117,8 @@ theorem RiemannBoundary.tendsto_norm_discHomeomorph_of_im_atTop {D : Set ℂ}
   tendsto_norm_discHomeomorph_of_norm_atTop e he
     (Filter.tendsto_atTop_mono (fun i => Complex.im_le_norm (z i)) hz) hmem
 
-/-- The disc norm tends to `1` approaching a non-member. -/
+/-- If `f` restricts to a homeomorphism `D ≃ₜ 𝔻` and `a ∉ D`, then `‖f z‖ → 1` as `z → a` within
+`D`. -/
 theorem RiemannBoundary.tendsto_norm_discHomeomorph_nhdsWithin_of_notMem {D : Set ℂ}
     (e : D ≃ₜ Metric.ball (0 : ℂ) 1) {f : ℂ → ℂ} (he : ∀ z : D, f z = (e z : ℂ)) {a : ℂ}
     (ha : a ∉ D) : Filter.Tendsto (fun z => ‖f z‖) (𝓝[D] a) (𝓝 1) := by
@@ -128,7 +130,9 @@ theorem RiemannBoundary.tendsto_norm_discHomeomorph_nhdsWithin_of_notMem {D : Se
   · simpa only [Function.comp_def, he] using ht
   · simpa only [Subtype.range_coe] using (self_mem_nhdsWithin : D ∈ 𝓝[D] a)
 
-/-- The disc norm tends to `1` in the boundary chart. -/
+/-- Let `f` restrict to a homeomorphism `D ≃ₜ 𝔻` and let `φ` be continuous on `U ∩ {Im z ≥ 0}` (`U`
+open) and map `U ∩ {Im z > 0}` into `D`. If `x ∈ U` is real and `φ x ∉ D`, then `‖f (φ z)‖ → 1` as
+`z → x` from the upper half-plane. -/
 theorem RiemannBoundary.tendsto_norm_discHomeomorph_in_boundary_chart {D U : Set ℂ}
     (e : D ≃ₜ Metric.ball (0 : ℂ) 1) {f φ : ℂ → ℂ} (he : ∀ z : D, f z = (e z : ℂ)) (hU : IsOpen U)
     (hφ : ContinuousOn φ (U ∩ {z : ℂ | 0 ≤ z.im}))

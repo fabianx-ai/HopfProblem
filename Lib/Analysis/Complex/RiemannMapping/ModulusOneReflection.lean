@@ -28,14 +28,15 @@ open scoped ComplexConjugate ContDiff Interval NNReal UniformConvergence Uniform
 
 noncomputable section
 
-/-- The horizontal primitive is differentiable. -/
+/-- If `F` has derivative `f` at `x + y i`, then `t ↦ F (t + y i)` has derivative `f` at `x`. -/
 theorem RiemannBoundary.hasDerivAt_horizontal {F : ℂ → ℂ} {f : ℂ} {x y : ℝ}
     (hF : HasDerivAt F f ((x : ℂ) + y * Complex.I)) :
     HasDerivAt (fun t : ℝ => F (t + y * Complex.I)) f x := by
   have h := hF.comp (x : ℂ) ((hasDerivAt_id (x : ℂ)).add_const (y * Complex.I))
   simpa only [mul_one, Function.comp_def, id_eq] using h.comp_ofReal
 
-/-- The upper limit converges uniformly on the filter. -/
+/-- If `q z → 0` as `z → x` from the upper half-plane, then `q (t + y i) → 0` uniformly for `t` near
+`x` as `y → 0⁺`. -/
 theorem RiemannBoundary.upper_limit_tendstoUniformlyOnFilter {q : ℂ → ℂ} {x : ℝ}
     (hq : Filter.Tendsto q (𝓝[{z : ℂ | 0 < z.im}] (x : ℂ)) (𝓝 0)) :
     TendstoUniformlyOnFilter (fun y t : ℝ => q (t + y * Complex.I)) (fun _ => 0) (𝓝[>] 0) (𝓝 x) :=
@@ -60,7 +61,9 @@ theorem RiemannBoundary.upper_limit_tendstoUniformlyOnFilter {q : ℂ → ℂ} {
   simpa only [Function.comp_def, dist_zero_left, dist_zero_right] using
     Metric.tendsto_nhds.mp (hq.comp ht) ε hε
 
-/-- The boundary trace difference is differentiable. -/
+/-- Let `F`, `G` be continuous with `F' = f` on `(a, b) × (0, h)` and `G' = g` on `(a, b) × (-h,
+0)`. If `f z - g (conj z) → 0` as `z` approaches each point of `(a, b)` from above, then `t ↦ F t -
+G t` has derivative `0` at every `x ∈ (a, b)`. -/
 theorem RiemannBoundary.hasDerivAt_boundary_trace_sub {F G f g : ℂ → ℂ} {a b h x : ℝ} (hh : 0 < h)
     (hx : x ∈ Set.Ioo a b) (hF : Continuous F) (hG : Continuous G)
     (hFd :
@@ -97,7 +100,8 @@ theorem RiemannBoundary.hasDerivAt_boundary_trace_sub {F G f g : ℂ → ℂ} {a
     simpa [H] using (hc.tendsto 0).mono_left (nhdsWithin_le_nhds (s := Set.Ioi 0))
   exact hasDerivAt_of_tendstoLocallyUniformlyOn isOpen_Ioo hdu hd hlim hx
 
-/-- The boundary trace difference computes the jump. -/
+/-- Under the hypotheses of `hasDerivAt_boundary_trace_sub`, `F - G` takes the same value at any two
+points of `(a, b)`. -/
 theorem RiemannBoundary.boundary_trace_sub_eq {F G f g : ℂ → ℂ} {a b h x t : ℝ} (hh : 0 < h)
     (hx : x ∈ Set.Ioo a b) (ht : t ∈ Set.Ioo a b) (hF : Continuous F) (hG : Continuous G)
     (hFd :
@@ -117,7 +121,9 @@ theorem RiemannBoundary.boundary_trace_sub_eq {F G f g : ℂ → ℂ} {a b h x t
       (fun s hs => (hd s hs).differentiableAt.differentiableWithinAt)
       (fun s hs => (hd s hs).deriv) hx ht
 
-/-- A vanishing boundary jump gives an analytic extension. -/
+/-- If `f` is holomorphic and bounded on `(a, b) × (0, h)`, `g` on `(a, b) × (-h, 0)`, and `f z - g
+(conj z) → 0` as `z` approaches each point of `(a, b)` from above, then some `H` analytic on `(a, b)
+× (-h, h)` equals `f` above and `g` below the real axis. -/
 theorem RiemannBoundary.exists_analytic_extension_of_vanishing_jump {f g : ℂ → ℂ} {a b h M N : ℝ}
     (hab : a < b) (hh : 0 < h) (hf : DifferentiableOn ℂ f (openRectangle a b 0 h))
     (hg : DifferentiableOn ℂ g (openRectangle a b (-h) 0))
@@ -180,7 +186,7 @@ theorem RiemannBoundary.exists_analytic_extension_of_vanishing_jump {f g : ℂ �
       exact SchwarzReflection.pasteUpper_of_neg F (fun w => G w + c) hw
     exact (((hGd z hz).add_const c).congr_of_eventuallyEq hnear).deriv
 
-/-- The norm of `z − 1/conj z`. -/
+/-- `‖w - (conj w)⁻¹‖ = |‖w‖ ^ 2 - 1| / ‖w‖`. -/
 theorem RiemannBoundary.norm_sub_inv_conj (w : ℂ) : ‖w - (conj w)⁻¹‖ = |‖w‖ ^ 2 - 1| / ‖w‖ := by
   have heq : w - (conj w)⁻¹ = ((‖w‖ ^ 2 - 1 : ℝ) : ℂ) / conj w := by
     by_cases hw : w = 0
@@ -191,7 +197,7 @@ theorem RiemannBoundary.norm_sub_inv_conj (w : ℂ) : ‖w - (conj w)⁻¹‖ = 
       Complex.ofReal_sub, Complex.ofReal_one]
   rw [heq, norm_div, Complex.norm_real, Real.norm_eq_abs, Complex.norm_conj]
 
-/-- `z − 1/conj z` tends to zero as `|z|` tends to `1`. -/
+/-- If `‖f x‖ → 1`, then `f x - (conj (f x))⁻¹ → 0`. -/
 theorem RiemannBoundary.tendsto_sub_inv_conj_of_norm {α : Type*} {l : Filter α} {f : α → ℂ}
     (hf : Filter.Tendsto (fun x => ‖f x‖) l (𝓝 1)) :
     Filter.Tendsto (fun x => f x - (conj (f x))⁻¹) l (𝓝 0) := by
@@ -205,7 +211,8 @@ theorem RiemannBoundary.tendsto_sub_inv_conj_of_norm {α : Type*} {l : Filter α
   rw [hfun] at hdiv
   simpa only [zero_div] using hdiv
 
-/-- A modulus-one extension has norm one on the axis. -/
+/-- If `H` is continuous on `(a, b) × (-h, h)`, equals `f` on `(a, b) × (0, h)`, and `‖f z‖ → 1` as
+`z → x` from above for some `x ∈ (a, b)`, then `‖H x‖ = 1`. -/
 theorem RiemannBoundary.norm_axis_eq_one_of_extension {H f : ℂ → ℂ} {a b h x : ℝ} (hh : 0 < h)
     (hx : x ∈ Set.Ioo a b) (hH : ContinuousOn H (openRectangle a b (-h) h))
     (heq : Set.EqOn H f (openRectangle a b 0 h))
@@ -234,7 +241,10 @@ theorem RiemannBoundary.norm_axis_eq_one_of_extension {H f : ℂ → ℂ} {a b h
     rw [heq (by simpa [openRectangle] using And.intro hx hy)]
   exact tendsto_nhds_unique hHt (hft.congr' hevent.symm)
 
-/-- A bounded modulus-one boundary trace gives an analytic extension. -/
+/-- Schwarz reflection in the circle on a rectangle: if `f` is holomorphic on `(a, b) × (0, h)` with
+`m ≤ ‖f‖ ≤ M` (`m > 0`) and `‖f z‖ → 1` as `z` approaches each point of `(a, b)` from above, then
+some `H` analytic on `(a, b) × (-h, h)` equals `f` above the axis, `z ↦ (conj (f (conj z)))⁻¹` below
+it, and has modulus `1` on `(a, b)`. -/
 theorem RiemannBoundary.exists_analytic_extension_of_modulus_one_bounded {f : ℂ → ℂ}
     {a b h M m : ℝ} (hab : a < b) (hh : 0 < h) (hm : 0 < m)
     (hf : DifferentiableOn ℂ f (openRectangle a b 0 h))
@@ -278,7 +288,7 @@ theorem RiemannBoundary.exists_analytic_extension_of_modulus_one_bounded {f : �
     ⟨H, hH, he, hl, fun x hx =>
       norm_axis_eq_one_of_extension hh hx hH.continuousOn he (hmod x hx)⟩
 
-/-- Points of a centered rectangle are within twice the radius. -/
+/-- Points of the rectangle `(x - r, x + r) × (-r, r)` lie within distance `2 r` of `x`. -/
 theorem RiemannBoundary.dist_lt_two_mul_of_mem_centeredRectangle {x r : ℝ} {z : ℂ}
     (hz : z ∈ openRectangle (x - r) (x + r) (-r) r) : Dist.dist z (x : ℂ) < 2 * r := by
   have hre : |(z - x).re| < r := by
@@ -289,7 +299,7 @@ theorem RiemannBoundary.dist_lt_two_mul_of_mem_centeredRectangle {x r : ℝ} {z 
   rw [dist_eq_norm]
   exact (Complex.norm_le_abs_re_add_abs_im (z - x)).trans_lt (by linarith)
 
-/-- A ball lies in the centered rectangle. -/
+/-- The ball `B(x, r)` lies in the rectangle `(x - r, x + r) × (-r, r)`. -/
 theorem RiemannBoundary.ball_subset_centeredRectangle (x r : ℝ) :
     Metric.ball (x : ℂ) r ⊆ openRectangle (x - r) (x + r) (-r) r := by
   intro z hz
@@ -300,7 +310,10 @@ theorem RiemannBoundary.ball_subset_centeredRectangle (x r : ℝ) :
     sub_zero] at hre him
   exact ⟨⟨by linarith [hre.1], by linarith [hre.2]⟩, him⟩
 
-/-- A modulus-one boundary trace gives an analytic extension. -/
+/-- Schwarz reflection in the circle: let `U` be open and `f` holomorphic on `U ∩ {Im z > 0}` with
+`‖f z‖ → 1` as `z` approaches any real point of `U` from above. Then near each real `x ∈ U` some `H`
+analytic on a ball `B(x, r)` equals `f` on its upper half, `z ↦ (conj (f (conj z)))⁻¹` on its lower
+half, and has modulus `1` at its real points (Ahlfors, *Complex Analysis*, Ch. 4 §6.5). -/
 theorem RiemannBoundary.exists_analytic_extension_of_modulus_one {U : Set ℂ} (hU : IsOpen U)
     {f : ℂ → ℂ} {x : ℝ} (hx : (x : ℂ) ∈ U) (hf : DifferentiableOn ℂ f (U ∩ {z : ℂ | 0 < z.im}))
     (hmod :

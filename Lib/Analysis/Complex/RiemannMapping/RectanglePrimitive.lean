@@ -21,7 +21,7 @@ open scoped ComplexConjugate ContDiff Interval NNReal UniformConvergence Uniform
 
 noncomputable section
 
-/-- An open rectangle in the plane. -/
+/-- The open rectangle `(a, b) × (c, d)` in `ℂ`. -/
 def RiemannBoundary.openRectangle (a b c d : ℝ) : Set ℂ :=
   {z | z.re ∈ Set.Ioo a b ∧ z.im ∈ Set.Ioo c d}
 
@@ -34,7 +34,7 @@ theorem RiemannBoundary.convex_openRectangle (a b c d : ℝ) : Convex ℝ (openR
   ((convex_halfSpace_re_gt a).inter (convex_halfSpace_re_lt b)).inter
     ((convex_halfSpace_im_gt c).inter (convex_halfSpace_im_lt d))
 
-/-- A point with mixed coordinates lies in the open rectangle. -/
+/-- For `z`, `w` in an open rectangle, the point `Re z + i Im w` lies in it. -/
 theorem RiemannBoundary.mixed_mem_openRectangle {a b c d : ℝ} {z w : ℂ}
     (hz : z ∈ openRectangle a b c d) (hw : w ∈ openRectangle a b c d) :
     z.re + w.im * Complex.I ∈ openRectangle a b c d := by
@@ -43,7 +43,7 @@ theorem RiemannBoundary.mixed_mem_openRectangle {a b c d : ℝ} {z w : ℂ}
     sub_zero, add_zero, Complex.add_im, Complex.mul_im, mul_one, zero_add] using
     And.intro hz.1 hw.2
 
-/-- The closed rectangle lies in the open rectangle. -/
+/-- The rectangle `Complex.Rectangle z w` spanned by two points of an open rectangle lies in it. -/
 theorem RiemannBoundary.rectangle_subset_openRectangle {a b c d : ℝ} {z w : ℂ}
     (hz : z ∈ openRectangle a b c d) (hw : w ∈ openRectangle a b c d) :
     Complex.Rectangle z w ⊆ openRectangle a b c d :=
@@ -66,7 +66,8 @@ theorem RiemannBoundary.vertical_segment_subset {a b c d : ℝ} {x y₁ y₂ : �
   convert rectangle_subset_openRectangle h₁ h₂ using 1
   simp [Complex.verticalSegment_eq x y₁ y₂, Complex.Rectangle]
 
-/-- The difference of wedge integrals over an open rectangle. -/
+/-- For `f` continuous and conservative on an open rectangle and `p`, `z`, `w` in it, `wedgeIntegral
+p w f - wedgeIntegral p z f = wedgeIntegral z w f`. -/
 theorem RiemannBoundary.wedgeIntegral_sub_wedgeIntegral_openRectangle {a b c d : ℝ} {f : ℂ → ℂ}
     (hc : ContinuousOn f (openRectangle a b c d))
     (hf : Complex.IsConservativeOn f (openRectangle a b c d)) {p z w : ℂ}
@@ -122,7 +123,8 @@ theorem RiemannBoundary.wedgeIntegral_sub_wedgeIntegral_openRectangle {a b c d :
   rw [hHoriz, hVert]
   linear_combination hBoundary
 
-/-- The wedge integral is differentiable on the open rectangle. -/
+/-- For `f` holomorphic on an open rectangle containing `p`, `w ↦ wedgeIntegral p w f` has
+derivative `f z` at every point `z` of the rectangle. -/
 theorem RiemannBoundary.hasDerivAt_wedgeIntegral_openRectangle {a b c d : ℝ} {f : ℂ → ℂ}
     (hf : DifferentiableOn ℂ f (openRectangle a b c d)) {p z : ℂ} (hp : p ∈ openRectangle a b c d)
     (hz : z ∈ openRectangle a b c d) :
@@ -137,7 +139,7 @@ theorem RiemannBoundary.hasDerivAt_wedgeIntegral_openRectangle {a b c d : ℝ} {
     sub_eq_iff_eq_add.mp
       (wedgeIntegral_sub_wedgeIntegral_openRectangle hf.continuousOn hf.isConservativeOn hp hz hw)
 
-/-- A closed form is exact on the open rectangle. -/
+/-- A function holomorphic on an open rectangle has a primitive there. -/
 theorem RiemannBoundary.isExactOn_openRectangle {a b c d : ℝ} {f : ℂ → ℂ}
     (hf : DifferentiableOn ℂ f (openRectangle a b c d)) :
     Complex.IsExactOn f (openRectangle a b c d) := by
@@ -149,7 +151,9 @@ theorem RiemannBoundary.isExactOn_openRectangle {a b c d : ℝ} {f : ℂ → ℂ
   · refine ⟨fun _ => 0, fun z hz => ?_⟩
     exact (h ⟨z, hz⟩).elim
 
-/-- A Lipschitz extension primitive exists on the open rectangle. -/
+/-- If `F' = f` on an open rectangle and `‖f‖₊ ≤ K` there, some `G : ℂ → ℂ` that is Lipschitz with
+constant `lipschitzExtensionConstant ℂ * K` agrees with `F` on the rectangle and has `G' = f` there.
+-/
 theorem RiemannBoundary.exists_lipschitz_extension_primitive_openRectangle {a b c d : ℝ}
     {f : ℂ → ℂ} {F : ℂ → ℂ} {K : ℝ≥0} (hF : ∀ z ∈ openRectangle a b c d, HasDerivAt F (f z) z)
     (hb : ∀ z ∈ openRectangle a b c d, ‖f z‖₊ ≤ K) :
@@ -166,7 +170,8 @@ theorem RiemannBoundary.exists_lipschitz_extension_primitive_openRectangle {a b 
   filter_upwards [(isOpen_openRectangle a b c d).mem_nhds hz] with w hw
   exact (heq hw).symm
 
-/-- A continuous primitive exists on the open rectangle. -/
+/-- A holomorphic function on an open rectangle with `‖f‖₊ ≤ K` has a primitive on the rectangle
+that is continuous on `ℂ`. -/
 theorem RiemannBoundary.exists_continuous_primitive_openRectangle {a b c d : ℝ} {f : ℂ → ℂ}
     {K : ℝ≥0} (hf : DifferentiableOn ℂ f (openRectangle a b c d))
     (hb : ∀ z ∈ openRectangle a b c d, ‖f z‖₊ ≤ K) :
@@ -175,7 +180,8 @@ theorem RiemannBoundary.exists_continuous_primitive_openRectangle {a b c d : ℝ
   obtain ⟨G, hG, _, hd⟩ := exists_lipschitz_extension_primitive_openRectangle hF hb
   exact ⟨G, hG.continuous, hd⟩
 
-/-- A bounded continuous primitive exists on the open rectangle. -/
+/-- A holomorphic function on an open rectangle with `‖f‖ ≤ M` has a primitive on the rectangle that
+is continuous on `ℂ`. -/
 theorem RiemannBoundary.exists_continuous_primitive_openRectangle_of_norm_le {a b c d : ℝ}
     {f : ℂ → ℂ} {M : ℝ} (hf : DifferentiableOn ℂ f (openRectangle a b c d))
     (hb : ∀ z ∈ openRectangle a b c d, ‖f z‖ ≤ M) :

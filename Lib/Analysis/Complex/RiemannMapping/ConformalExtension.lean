@@ -31,7 +31,8 @@ open scoped ComplexConjugate ContDiff Interval NNReal UniformConvergence Uniform
 
 noncomputable section
 
-/-- A boundary chart maps into a ball at the target. -/
+/-- For a partial homeomorphism `e` with `a ∈ e.source` and `r > 0`, some ball around `e a` lies in
+`e.target` and is sent by `e.symm` into `B(a, r)`. -/
 theorem RiemannMapping.exists_boundary_chart_target_ball (e : OpenPartialHomeomorph ℂ ℂ) {a : ℂ}
     (ha : a ∈ e.source) {r : ℝ} (hr : 0 < r) :
     ∃ δ > 0, ∀ w ∈ Metric.ball (e a) δ, w ∈ e.target ∧ e.symm w ∈ Metric.ball a r := by
@@ -45,7 +46,9 @@ theorem RiemannMapping.exists_boundary_chart_target_ball (e : OpenPartialHomeomo
     exact ⟨hw, hb⟩
   exact Metric.mem_nhds_iff.mp hnear
 
-/-- Near the boundary point `|z|<1` is eventually the upper half-plane. -/
+/-- Let `H` be continuous at a real `x` with `‖H x‖ = 1`, equal near `x` to `k` on the upper
+half-plane, to `z ↦ (conj (k (conj z)))⁻¹` on the lower half-plane, of modulus `1` on the real axis,
+with `‖k‖ < 1` on the upper half-plane. Then near `x`, `‖H z‖ < 1 ↔ Im z > 0`. -/
 theorem RiemannBoundary.norm_lt_one_iff_im_pos_eventually {H k : ℂ → ℂ} {x : ℝ}
     (hH : ContinuousAt H (x : ℂ)) (hcenter : ‖H (x : ℂ)‖ = 1)
     (hk : ∀ᶠ z in 𝓝 (x : ℂ), 0 < z.im → ‖k z‖ < 1) (hu : ∀ᶠ z in 𝓝 (x : ℂ), 0 < z.im → H z = k z)
@@ -75,7 +78,9 @@ theorem RiemannBoundary.norm_lt_one_iff_im_pos_eventually {H k : ℂ → ℂ} {x
   · rw [hzu hpos]
     exact iff_of_true (hzk hpos) hpos
 
-/-- A modulus-one boundary trace gives a conformal extension. -/
+/-- Under the hypotheses of `exists_analytic_extension_of_modulus_one` and `‖f‖ < 1` on `U ∩ {Im z >
+0}`, the reflected extension `H` near a real `x ∈ U` moreover has a nonzero strict derivative at `x`
+and satisfies `‖H z‖ < 1 ↔ Im z > 0` near `x`. -/
 theorem RiemannBoundary.exists_conformal_extension_of_modulus_one {U : Set ℂ} (hU : IsOpen U)
     {f : ℂ → ℂ} {x : ℝ} (hx : (x : ℂ) ∈ U) (hf : DifferentiableOn ℂ f (U ∩ {z : ℂ | 0 < z.im}))
     (hmod :
@@ -117,7 +122,11 @@ theorem RiemannBoundary.exists_conformal_extension_of_modulus_one {U : Set ℂ} 
     ⟨r, hr, H, hHa, hHe, hHl, hHc, hHx.hasStrictDerivAt, hnonzero,
       norm_lt_one_iff_im_pos_eventually hHx.continuousAt hcenter hk hu hl hreal⟩
 
-/-- The disc map extends conformally in the half chart. -/
+/-- Let `f` be holomorphic on `D` and restrict to a homeomorphism `D ≃ₜ 𝔻`, and let `φ` be
+holomorphic on `U ∩ {Im z > 0}` (`U` open), continuous on `U ∩ {Im z ≥ 0}`, mapping `U ∩ {Im z > 0}`
+into `D` and the real points of `U` outside `D`. Then near each real `x ∈ U`, `f ∘ φ` extends by
+reflection to `H` analytic on a ball with `‖H‖ = 1` on the real axis, a nonzero strict derivative at
+`x`, and `‖H z‖ < 1 ↔ Im z > 0` near `x`. -/
 theorem RiemannBoundary.exists_conformal_extension_discHomeomorph_in_half_chart {D U : Set ℂ}
     (e : D ≃ₜ Metric.ball (0 : ℂ) 1) {f φ : ℂ → ℂ} (he : ∀ z : D, f z = (e z : ℂ)) (hU : IsOpen U)
     (hf : DifferentiableOn ℂ f D) (hφ : DifferentiableOn ℂ φ (U ∩ {z : ℂ | 0 < z.im}))
@@ -142,7 +151,11 @@ theorem RiemannBoundary.exists_conformal_extension_discHomeomorph_in_half_chart 
     simpa only [Function.comp_def, Metric.mem_ball, dist_zero_right, ← hv] using
       (e ⟨φ z, hp⟩).property
 
-/-- The disc map extends conformally at an ideal vertex. -/
+/-- Let `f` be holomorphic on `D` and restrict to a homeomorphism `D ≃ₜ 𝔻`. If `D` contains the
+half-strip `a < Re z < a + cπ`, `Im z > B` (`c > 0`), and its two edges above height `B` lie outside
+`D`, then `f ∘ logHalfStrip a c` extends by reflection to `H` analytic on a ball around `0` with
+`‖H‖ = 1` on the real axis, a nonzero strict derivative at `0`, and `‖H z‖ < 1 ↔ Im z > 0` near `0`.
+-/
 theorem RiemannBoundary.exists_conformal_extension_discHomeomorph_at_ideal_vertex {D : Set ℂ}
     (e : D ≃ₜ Metric.ball (0 : ℂ) 1) {f : ℂ → ℂ} (he : ∀ z : D, f z = (e z : ℂ))
     (hf : DifferentiableOn ℂ f D) (a B : ℝ) {c : ℝ} (hc : 0 < c)

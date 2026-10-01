@@ -32,7 +32,8 @@ open scoped ComplexConjugate ContDiff Interval NNReal UniformConvergence Uniform
 
 noncomputable section
 
-/-- A bounded holomorphic family is uniformly equicontinuous on a thickening. -/
+/-- A uniformly bounded family of maps holomorphic on `U` is uniformly equicontinuous on every `s`
+whose `r`-thickening (`r > 0`) lies in `U`. -/
 theorem RiemannMapping.uniformEquicontinuousOn_of_thickening_subset_of_forall_norm_le
     {ι E F : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] [NormedAddCommGroup F]
     [NormedSpace ℂ F] {f : ι → E → F} {s U : Set E} {r : ℝ} (hr₀ : 0 < r)
@@ -81,15 +82,15 @@ theorem RiemannMapping.equicontinuousAt_of_forall_norm_le {ι E F : Type*} [Norm
   rwa [EquicontinuousWithinAt,
     nhdsWithin_eq_nhds.mpr (Metric.ball_mem_nhds _ (by positivity))] at this
 
-/-- An exhaustion of the domain by compact subsets. -/
+/-- The family of compact subsets of `U`. -/
 def RiemannMapping.compactSubsets (U : Set ℂ) : Set (Set ℂ) :=
   {K | K ⊆ U ∧ IsCompact K}
 
-/-- The function space of holomorphic maps to the disc. -/
+/-- Functions `ℂ → ℂ` with the topology of uniform convergence on the compact subsets of `U`. -/
 abbrev RiemannMapping.FunctionSpace (U : Set ℂ) :=
   ℂ →ᵤ[compactSubsets U] ℂ
 
-/-- Evaluation at a point of the domain. -/
+/-- The underlying function `ℂ → ℂ` of an element of `FunctionSpace U`. -/
 def RiemannMapping.evaluation {U : Set ℂ} (f : FunctionSpace U) : ℂ → ℂ :=
   UniformOnFun.toFun (compactSubsets U) f
 
@@ -136,7 +137,8 @@ theorem RiemannMapping.isCompact_closure_of_bounded_holomorphic {U : Set ℂ} (h
       ⟨Metric.closedBall 0 C, ProperSpace.isCompact_closedBall _ _, fun f hf => by
         simpa only [mem_closedBall_zero_iff] using hC f hf x (hK.1 hx)⟩
 
-/-- The normalized class of injective disc maps with prescribed derivative data. -/
+/-- The maps that send `U` into the unit disc, are injective and holomorphic with nonvanishing
+derivative on `U`, and vanish at `x₀`. -/
 def RiemannMapping.normalizedClass (U : Set ℂ) (x₀ : ℂ) : Set (FunctionSpace U) :=
   {f |
     Set.MapsTo (evaluation f) U (Metric.ball 0 1) ∧
@@ -150,7 +152,9 @@ theorem RiemannMapping.normalizedClass_compact_closure {U : Set ℂ} (hUo : IsOp
   apply isCompact_closure_of_bounded_holomorphic hUo (fun f hf => hf.2.2.1)
   exact ⟨1, fun f hf z hz => (mem_ball_zero_iff.mp (hf.1 hz)).le⟩
 
-/-- The closure of the normalized class. -/
+/-- Hurwitz: for `U` open and preconnected and `x₀ ∈ U`, every element of the closure of the
+normalized class maps `U` into the open unit disc, is constant or injective on `U`, is holomorphic
+on `U`, vanishes at `x₀`, and has derivative identically zero or nowhere zero on `U`. -/
 theorem RiemannMapping.closure_normalizedClass {U : Set ℂ} (hUo : IsOpen U)
     (hUc : IsPreconnected U) {x₀ : ℂ} (hx₀ : x₀ ∈ U) :
     closure (normalizedClass U x₀) ⊆
@@ -196,7 +200,7 @@ theorem RiemannMapping.closure_normalizedClass {U : Set ℂ} (hUo : IsOpen U)
         (hFd.mono fun g hg => hg.deriv hUo)
     exact htendsto.deriv hFd hUo
 
-/-- The derivative norm is continuous on the closure. -/
+/-- `f ↦ ‖f' x₀‖` is continuous on the closure of the normalized class. -/
 theorem RiemannMapping.norm_deriv_continuousOn_closure {U : Set ℂ} (hUo : IsOpen U)
     (hUc : IsPreconnected U) {x₀ : ℂ} (hx₀ : x₀ ∈ U) :
     ContinuousOn (fun f : FunctionSpace U => ‖deriv (evaluation f) x₀‖)
@@ -208,7 +212,9 @@ theorem RiemannMapping.norm_deriv_continuousOn_closure {U : Set ℂ} (hUo : IsOp
       (TendstoLocallyUniformlyOn.deriv (evaluation_tendstoLocallyUniformlyOn hUo) ?_ hUo) hx₀
   exact eventually_mem_nhdsWithin.mono fun g hg => hg.2.2.1
 
-/-- Existence of a maximal normalized map: the extremal map maximizing the derivative at the base point, the heart of the Riemann mapping theorem (Ahlfors, Complex Analysis, Ch. 6; Rudin, Real and Complex Analysis, Theorem 14.8). -/
+/-- If the normalized class is nonempty (`U` open, preconnected, `x₀ ∈ U`), some member maximizes
+`‖f' x₀‖` over it (Ahlfors, *Complex Analysis*, Ch. 6 §1.1; Rudin, *Real and Complex Analysis*, Thm
+14.8). -/
 theorem RiemannMapping.exists_maximal_normalizedMap {U : Set ℂ} (hUo : IsOpen U)
     (hUc : IsPreconnected U) {x₀ : ℂ} (hx₀ : x₀ ∈ U) (hne : (normalizedClass U x₀).Nonempty) :
     ∃ f : FunctionSpace U,
@@ -234,14 +240,15 @@ theorem RiemannMapping.exists_maximal_normalizedMap {U : Set ℂ} (hUo : IsOpen 
     simp only [hz, norm_zero, lt_self_iff_false] at hpos
   exact ⟨f, ⟨hmap, hinj', hdiff, hderiv', hzero⟩, fun g hg => hmax (subset_closure hg)⟩
 
-/-- The disc extension of a limit map. -/
+/-- A map `f` sending `U` into the unit ball, as a map `ℂ → Complex.UnitDisc` (value `0` off `U`).
+-/
 def RiemannMapping.discExtension {U : Set ℂ} (f : ℂ → ℂ) (hf : Set.MapsTo f U (Metric.ball 0 1)) :
     ℂ → Complex.UnitDisc := by
   classical
     exact fun z =>
     if hz : z ∈ U then Complex.UnitDisc.mk (f z) (mem_ball_zero_iff.mp (hf hz)) else 0
 
-/-- The disc extension computes the map. -/
+/-- On `U`, `discExtension f hf` computes `f`. -/
 @[simp]
 theorem RiemannMapping.discExtension_coe {U : Set ℂ} (f : ℂ → ℂ)
     (hf : Set.MapsTo f U (Metric.ball 0 1)) {z : ℂ} (hz : z ∈ U) :
@@ -254,7 +261,7 @@ theorem RiemannMapping.discExtension_eqOn {U : Set ℂ} (f : ℂ → ℂ)
     Set.EqOn (Complex.UnitDisc.coe ∘ discExtension f hf) f U := fun _ hz =>
   discExtension_coe f hf hz
 
-/-- The normalized class is nonempty. -/
+/-- For `U` open, simply connected, `U ≠ ℂ` and `x₀ ∈ U`, the normalized class is nonempty. -/
 theorem RiemannMapping.normalizedClass_nonempty {U : Set ℂ} (hUo : IsOpen U)
     (hUc : IsSimplyConnected U) (hU : U ≠ Set.univ) {x₀ : ℂ} (hx₀ : x₀ ∈ U) :
     (normalizedClass U x₀).Nonempty := by
@@ -269,7 +276,10 @@ theorem RiemannMapping.normalizedClass_nonempty {U : Set ℂ} (hUo : IsOpen U)
     rw [hf₀]
     rfl
 
-/-- THE HEADLINE — the Riemann mapping theorem in normalized form: a simply connected proper domain admits a bijective holomorphic map onto the unit disc with nonvanishing derivative sending the base point to 0 (Rudin, Real and Complex Analysis, Theorem 14.8; Ahlfors, Complex Analysis, Ch. 6). -/
+/-- The Riemann mapping theorem: for a simply connected open set `U ≠ ℂ` and `x₀ ∈ U` there is `f`
+holomorphic on `U`, bijective from `U` onto the open unit disc, with nonvanishing derivative on `U`
+and `f x₀ = 0` (Rudin, *Real and Complex Analysis*, Thm 14.8; Ahlfors, *Complex Analysis*, Ch. 6
+§1.1). -/
 theorem RiemannMapping.exists_bijOn_unitBall_deriv_ne_zero_map_eq_zero {U : Set ℂ}
     (hUo : IsOpen U) (hUc : IsSimplyConnected U) (hU : U ≠ Set.univ) {x₀ : ℂ} (hx₀ : x₀ ∈ U) :
     ∃ f : ℂ → ℂ,
@@ -322,7 +332,8 @@ theorem RiemannMapping.exists_bijOn_unitBall_deriv_ne_zero_map_eq_zero {U : Set 
   rw [heDeriv] at hglt
   exact hle.not_gt hglt
 
-/-- A holomorphic map with nonvanishing derivative is a local diffeomorphism. -/
+/-- A map holomorphic on an open set `U` with nonvanishing derivative on `U` is a local analytic
+diffeomorphism at every point of `U`. -/
 theorem RiemannMapping.isLocalDiffeomorphAt_of_deriv_ne_zero (U : TopologicalSpace.Opens ℂ)
     {f : ℂ → ℂ} (hf : DifferentiableOn ℂ f (U : Set ℂ)) (hderiv : ∀ z ∈ U, deriv f z ≠ 0) {z : ℂ}
     (hz : z ∈ U) :
@@ -362,16 +373,18 @@ theorem RiemannMapping.isLocalDiffeomorphAt_of_deriv_ne_zero (U : TopologicalSpa
       (e.contDiffAt_symm hw ((hD _ hwU).hasFDerivAt_equiv (hderiv _ hwU))
           (hF _ hwU)).contDiffWithinAt
 
-/-- The unit disc as a subtype. -/
+/-- The open unit disc as an element of `TopologicalSpace.Opens ℂ`. -/
 def RiemannMapping.unitDisc : TopologicalSpace.Opens ℂ :=
   ⟨Metric.ball 0 1, Metric.isOpen_ball⟩
 
-/-- The Riemann map of the domain onto the disc. -/
+/-- A Riemann map of a simply connected open `U ≠ ℂ` normalized at `x₀`, chosen from
+`exists_bijOn_unitBall_deriv_ne_zero_map_eq_zero`. -/
 def RiemannMapping.riemannMap (U : TopologicalSpace.Opens ℂ) (hUc : IsSimplyConnected (U : Set ℂ))
     (hU : (U : Set ℂ) ≠ Set.univ) (x₀ : U) : ℂ → ℂ :=
   (exists_bijOn_unitBall_deriv_ne_zero_map_eq_zero U.isOpen hUc hU x₀.property).choose
 
-/-- The Riemann map is the maximizing normalized map. -/
+/-- The Riemann map is holomorphic on `U`, bijective onto the unit disc, has nonvanishing derivative
+on `U`, and sends `x₀` to `0`. -/
 theorem RiemannMapping.riemannMap_spec (U : TopologicalSpace.Opens ℂ)
     (hUc : IsSimplyConnected (U : Set ℂ)) (hU : (U : Set ℂ) ≠ Set.univ) (x₀ : U) :
     DifferentiableOn ℂ (riemannMap U hUc hU x₀) (U : Set ℂ) ∧

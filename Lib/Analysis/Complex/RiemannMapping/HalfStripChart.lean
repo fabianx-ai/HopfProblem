@@ -28,7 +28,8 @@ open scoped ComplexConjugate ContDiff Interval NNReal UniformConvergence Uniform
 
 noncomputable section
 
-/-- The logarithm identifying a half-strip with a half-plane: the standard biholomorphism used to normalize boundary strips (Ahlfors, Complex Analysis, Ch. 6; Rudin, Real and Complex Analysis, 14.8-adjacent steps). -/
+/-- `logHalfStrip a c q = a - i c log q`; for `c > 0` it maps the upper half-plane onto the
+half-strip `a < Re z < a + cπ`. -/
 def RiemannBoundary.logHalfStrip (a c : ℝ) (q : ℂ) : ℂ :=
   a - Complex.I * c * Complex.log q
 
@@ -67,7 +68,7 @@ theorem RiemannBoundary.tendsto_norm_discHomeomorph_logHalfStrip {D : Set ℂ}
   rw [heq, Complex.zero_im] at hz
   exact (lt_irrefl 0) hz
 
-/-- The half-strip coordinate on the one-point domain. -/
+/-- The half-strip chart as a map into `OnePoint ℂ`, sending `0` to `∞`. -/
 def RiemannBoundary.onePointLogHalfStrip (a c : ℝ) (q : ℂ) : OnePoint ℂ :=
   if q = 0 then (OnePoint.infty) else (logHalfStrip a c q : OnePoint ℂ)
 
@@ -105,7 +106,7 @@ theorem RiemannBoundary.continuousAt_onePointLogHalfStrip_zero (a : ℝ) {c : �
   filter_upwards [self_mem_nhdsWithin] with q hq
   exact (onePointLogHalfStrip_of_ne_zero a c hq).symm
 
-/-- The one-point domain of the boundary chart. -/
+/-- The image of `D ⊆ ℂ` in `OnePoint ℂ`. -/
 def RiemannBoundary.onePointDomain (D : Set ℂ) : Set (OnePoint ℂ) :=
   ((↑) : ℂ → OnePoint ℂ) '' D
 
@@ -125,7 +126,7 @@ theorem RiemannBoundary.isOpen_onePointDomain {D : Set ℂ} (hD : IsOpen D) :
     IsOpen (onePointDomain D) :=
   OnePoint.isOpen_image_coe.mpr hD
 
-/-- The one-point domain is homeomorphic to its model. -/
+/-- `D` is homeomorphic to its image in `OnePoint ℂ`. -/
 def RiemannBoundary.onePointDomainHomeomorph (D : Set ℂ) : D ≃ₜ onePointDomain D :=
   OnePoint.isOpenEmbedding_coe.isEmbedding.homeomorphImage D
 
@@ -135,7 +136,7 @@ theorem RiemannBoundary.onePointDomainHomeomorph_apply_coe (D : Set ℂ) (z : D)
     (onePointDomainHomeomorph D z : OnePoint ℂ) = (z : ℂ) :=
   rfl
 
-/-- The one-point domain is homeomorphic to the disc. -/
+/-- A homeomorphism `D ≃ₜ 𝔻` transported to the image of `D` in `OnePoint ℂ`. -/
 def RiemannBoundary.onePointDomainDiscHomeomorph {D : Set ℂ} (e : D ≃ₜ Metric.ball (0 : ℂ) 1) :
     onePointDomain D ≃ₜ Metric.ball (0 : ℂ) 1 :=
   (onePointDomainHomeomorph D).symm.trans e
@@ -147,7 +148,8 @@ theorem RiemannBoundary.onePointDomainDiscHomeomorph_apply {D : Set ℂ}
     onePointDomainDiscHomeomorph e (onePointDomainHomeomorph D z) = e z := by
   simp [onePointDomainDiscHomeomorph]
 
-/-- The disc homeomorphism computes on a representative. -/
+/-- If `f` restricts to `e : D ≃ₜ 𝔻`, then `OnePoint.elim b f` computes the transported
+homeomorphism on the image of `D`. -/
 theorem RiemannBoundary.onePointDomainDiscHomeomorph_representative {D : Set ℂ}
     (e : D ≃ₜ Metric.ball (0 : ℂ) 1) {f : ℂ → ℂ} (he : ∀ z : D, f z = (e z : ℂ)) (b : ℂ)
     (z : onePointDomain D) : (z : OnePoint ℂ).elim b f = (onePointDomainDiscHomeomorph e z : ℂ) :=
@@ -156,7 +158,8 @@ theorem RiemannBoundary.onePointDomainDiscHomeomorph_representative {D : Set ℂ
   simpa only [onePointDomainHomeomorph_apply_coe, OnePoint.elim_some,
     onePointDomainDiscHomeomorph_apply] using he w
 
-/-- `∞` is a frontier point of the cocompact one-point domain. -/
+/-- If `z i ∈ D` eventually along a nontrivial filter and `z i` tends to infinity cocompactly, then
+`∞` lies in the frontier of the image of `D` in `OnePoint ℂ`. -/
 theorem RiemannBoundary.infty_mem_frontier_onePointDomain_of_cocompact {D : Set ℂ} {α : Type*}
     {l : Filter α} [Filter.NeBot l] {z : α → ℂ} (hz : Filter.Tendsto z l (Filter.cocompact ℂ))
     (hmem : ∀ᶠ i in l, z i ∈ D) : ((OnePoint.infty) : OnePoint ℂ) ∈ frontier (onePointDomain D) :=
@@ -223,7 +226,8 @@ theorem RiemannBoundary.exists_logHalfStrip_height_radius (a B : ℝ) {c : ℝ} 
   obtain ⟨R, hR, hs⟩ := Metric.mem_nhdsWithin_iff.mp ht
   exact ⟨R, hR, fun q hq hne => hs ⟨hq, hne⟩⟩
 
-/-- The half-strip exponential coordinate. -/
+/-- `halfStripExp a c z = exp (i (z - a) / c)`, the inverse of `logHalfStrip a c` on the half-strip.
+-/
 def RiemannBoundary.halfStripExp (a c : ℝ) (z : ℂ) : ℂ :=
   Complex.exp (Complex.I * (z - a) / c)
 
