@@ -283,7 +283,7 @@ theorem StripCoordinates.exists_clean_strip_matching_local_germs {A B : Type*}
     ⟨F, hF, hc, hFG₀.trans heq₀, hFG₁.trans heq₁, ε, hε, W, hW, hrect, hinj, hmap, hi, hclean,
       hemb, fun t => by rw [hD t]; exact hvne t⟩
 
-/-- Native form of the strip interpolation: inside an ambient chart clean for a sheet, two germs at
+/-- Chart form of the strip interpolation: inside an ambient chart clean for a sheet, two germs at
 the two ends are joined by a clean embedded strip along the centre line with nowhere-vanishing
 normal derivative. -/
 theorem exists_clean_strip_matching_germs_in_chart {A B E M : Type*} [NormedAddCommGroup A]
