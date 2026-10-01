@@ -5,7 +5,10 @@ Authors: Fabian Franz
 -/
 
 import Mathlib
-import Lib.Geometry.Manifold.Morse.CircleGluing
+import Lib.Geometry.Manifold.Collar
+import Lib.Geometry.Manifold.Morse.Existence
+import Lib.Geometry.Manifold.Transversality.Basic
+import Lib.Geometry.Manifold.WhitneyEmbedding
 
 /-!
 # Simultaneous charts at a transverse crossing

@@ -5,7 +5,7 @@ Authors: Fabian Franz
 -/
 
 import Mathlib
-import Lib.Geometry.Manifold.Morse.CircleGluing
+import Lib.Geometry.Manifold.Whitney.BigonModel
 
 /-!
 # The linear model of a strip chart

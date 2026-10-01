@@ -5,7 +5,7 @@ Authors: Fabian Franz
 -/
 
 import Mathlib
-import Lib.Geometry.Manifold.Morse.CircleGluing
+import Lib.Geometry.Manifold.Morse.Existence
 
 /-!
 # The normal coordinate of a product chart

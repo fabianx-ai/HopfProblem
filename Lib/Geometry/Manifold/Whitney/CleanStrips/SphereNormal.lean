@@ -5,7 +5,7 @@ Authors: Fabian Franz
 -/
 
 import Mathlib
-import Lib.Geometry.Manifold.Morse.CircleGluing
+import Lib.Geometry.Manifold.Morse.Handle
 
 /-!
 # Normal coordinates along the unit sphere
