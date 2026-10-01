@@ -49,7 +49,8 @@ open scoped ContDiff ContinuousMap
 
 /-! ### Forward invariance and entry -/
 
-/-- A locally forward-invariant set is forward invariant. -/
+/-- A closed set `A` such that every `x ∈ A` satisfies `F t x ∈ A` for all `t` in some `[0, ε]`,
+`ε > 0`, is forward invariant: `F t x ∈ A` for all `x ∈ A` and `0 ≤ t`. -/
 theorem FlowConstruction.forwardInvariant_of_local {X : Type*} [TopologicalSpace X]
     (F : Flow ℝ X) {A : Set X} (hA : IsClosed A)
     (hlocal : ∀ x ∈ A, ∃ ε > (0 : ℝ), ∀ t ∈ Set.Icc 0 ε, F t x ∈ A) :
@@ -72,7 +73,8 @@ theorem FlowConstruction.forwardInvariant_of_local {X : Type*} [TopologicalSpace
   rw [add_comm s δ, F.map_add]
   exact hstay δ ⟨hδ.le, hδε⟩
 
-/-- The interior of a forward-invariant set is forward invariant. -/
+/-- If `A` is forward invariant under the flow `F`, then so is `interior A`: for `x ∈ interior A` and
+`0 ≤ t`, `F t x ∈ interior A`. -/
 theorem FlowConstruction.forwardInvariant_interior {X : Type*} [TopologicalSpace X]
     (F : Flow ℝ X) {A : Set X} (hforward : ∀ x ∈ A, ∀ t : ℝ, 0 ≤ t → F t x ∈ A) {x : X}
     (hx : x ∈ interior A) {t : ℝ} (ht : 0 ≤ t) : F t x ∈ interior A := by
@@ -82,7 +84,8 @@ theorem FlowConstruction.forwardInvariant_interior {X : Type*} [TopologicalSpace
     exact hforward y (interior_subset hy) t ht
   · exact ⟨x, hx, rfl⟩
 
-/-- The flow enters the interior of a locally absorbing set. -/
+/-- If `A` is forward invariant and every `x ∈ A` satisfies `F t x ∈ interior A` for all `t` in some
+`(0, ε]`, `ε > 0`, then `F t x ∈ interior A` for all `x ∈ A` and `0 < t`. -/
 theorem FlowConstruction.interior_entry_of_local {X : Type*} [TopologicalSpace X]
     (F : Flow ℝ X) {A : Set X} (hforward : ∀ x ∈ A, ∀ t : ℝ, 0 ≤ t → F t x ∈ A)
     (hlocal : ∀ x ∈ A, ∃ ε > (0 : ℝ), ∀ t ∈ Set.Ioc 0 ε, F t x ∈ interior A) :
@@ -99,22 +102,23 @@ theorem FlowConstruction.interior_entry_of_local {X : Type*} [TopologicalSpace X
 
 /-! ### The entry time -/
 
-/-- The entry time of a point into a set under the flow. -/
+/-- The entry time of `x` into `A` under the flow `F`: the infimum of the times `t ≥ 0` with
+`F t x ∈ A` (it is `sInf ∅ = 0` if the forward orbit of `x` does not meet `A`). -/
 def FlowConstruction.entryTime {X : Type*} [TopologicalSpace X] (F : Flow ℝ X) (A : Set X)
     (x : X) : ℝ :=
   InfSet.sInf {t : ℝ | 0 ≤ t ∧ F t x ∈ A}
 
-/-- The entry time is nonnegative. -/
+/-- If the forward orbit of `x` meets `A`, then `0 ≤ entryTime F A x`. -/
 theorem FlowConstruction.entryTime_nonneg {X : Type*} [TopologicalSpace X] (F : Flow ℝ X)
     {A : Set X} {x : X} (hx : ∃ t : ℝ, 0 ≤ t ∧ F t x ∈ A) : 0 ≤ entryTime F A x :=
   le_csInf hx (fun _ ht => ht.1)
 
-/-- The entry time is bounded by any hitting time. -/
+/-- If `0 ≤ t` and `F t x ∈ A`, then `entryTime F A x ≤ t`. -/
 theorem FlowConstruction.entryTime_le_of_mem {X : Type*} [TopologicalSpace X] (F : Flow ℝ X)
     {A : Set X} {x : X} {t : ℝ} (ht : 0 ≤ t) (hx : F t x ∈ A) : entryTime F A x ≤ t :=
   csInf_le ⟨0, fun _ hs => hs.1⟩ ⟨ht, hx⟩
 
-/-- The flow at the entry time lies in the closure. -/
+/-- If `A` is closed and the forward orbit of `x` meets `A`, then `F (entryTime F A x) x ∈ A`. -/
 theorem FlowConstruction.flow_entryTime_mem {X : Type*} [TopologicalSpace X] (F : Flow ℝ X)
     {A : Set X} (hA : IsClosed A) {x : X} (hx : ∃ t : ℝ, 0 ≤ t ∧ F t x ∈ A) :
     F (entryTime F A x) x ∈ A := by
@@ -122,13 +126,14 @@ theorem FlowConstruction.flow_entryTime_mem {X : Type*} [TopologicalSpace X] (F 
     isClosed_Ici.inter (hA.preimage (F.continuous continuous_id continuous_const))
   exact (hclosed.csInf_mem hx ⟨0, fun _ hs => hs.1⟩).2
 
-/-- The entry time is zero exactly on the set. -/
+/-- A point of `A` has entry time `0` into `A`. -/
 theorem FlowConstruction.entryTime_eq_zero {X : Type*} [TopologicalSpace X] (F : Flow ℝ X)
     {A : Set X} {x : X} (hx : x ∈ A) : entryTime F A x = 0 := by
   have hhit : F 0 x ∈ A := by simpa only [F.map_zero_apply] using hx
   exact le_antisymm (entryTime_le_of_mem F le_rfl hhit) (entryTime_nonneg F ⟨0, le_rfl, hhit⟩)
 
-/-- The entry time bound characterizes hitting the set. -/
+/-- Let `A` be closed and forward invariant and let the forward orbit of `x` meet `A`. Then for
+`0 ≤ t`, `entryTime F A x ≤ t ↔ F t x ∈ A`. -/
 theorem FlowConstruction.entryTime_le_iff {X : Type*} [TopologicalSpace X] (F : Flow ℝ X)
     {A : Set X} (hA : IsClosed A) (hforward : ∀ x ∈ A, ∀ t : ℝ, 0 ≤ t → F t x ∈ A) {x : X}
     (hx : ∃ t : ℝ, 0 ≤ t ∧ F t x ∈ A) {t : ℝ} (ht : 0 ≤ t) : entryTime F A x ≤ t ↔ F t x ∈ A := by
@@ -139,7 +144,8 @@ theorem FlowConstruction.entryTime_le_iff {X : Type*} [TopologicalSpace X] (F : 
     exact hh
   · exact entryTime_le_of_mem F ht
 
-/-- Past the entry time the flow lies in the interior. -/
+/-- Let `A` be closed and strictly absorbing (`F t x ∈ interior A` for `x ∈ A`, `0 < t`) and let the
+forward orbit of `x` meet `A`. Then `F t x ∈ interior A` for every `t > entryTime F A x`. -/
 theorem FlowConstruction.flow_mem_interior_of_entryTime_lt {X : Type*} [TopologicalSpace X]
     (F : Flow ℝ X) {A : Set X} (hA : IsClosed A)
     (hentry : ∀ x ∈ A, ∀ t : ℝ, 0 < t → F t x ∈ interior A) {x : X}
@@ -148,7 +154,8 @@ theorem FlowConstruction.flow_mem_interior_of_entryTime_lt {X : Type*} [Topologi
   rw [← F.map_add, sub_add_cancel] at hh
   exact hh
 
-/-- The entry time of a frontier hit. -/
+/-- Let `A` be closed and strictly absorbing. If `0 ≤ t` and `F t x ∈ frontier A`, then
+`entryTime F A x = t`. -/
 theorem FlowConstruction.entryTime_eq_of_flow_mem_frontier {X : Type*} [TopologicalSpace X]
     (F : Flow ℝ X) {A : Set X} (hA : IsClosed A)
     (hentry : ∀ x ∈ A, ∀ t : ℝ, 0 < t → F t x ∈ interior A) {x : X} {t : ℝ} (ht : 0 ≤ t)
@@ -159,7 +166,8 @@ theorem FlowConstruction.entryTime_eq_of_flow_mem_frontier {X : Type*} [Topologi
   intro hlt
   exact hfront.2 (flow_mem_interior_of_entryTime_lt F hA hentry ⟨t, ht, hmem⟩ hlt)
 
-/-- The entry time is continuous. -/
+/-- Let `A` be closed, forward invariant and strictly absorbing. Then `entryTime F A` is continuous
+on any set `B` each of whose points has a forward orbit meeting `A`. -/
 theorem FlowConstruction.continuousOn_entryTime {X : Type*} [TopologicalSpace X]
     (F : Flow ℝ X) {A : Set X} (hA : IsClosed A) (hforward : ∀ x ∈ A, ∀ t : ℝ, 0 ≤ t → F t x ∈ A)
     (hentry : ∀ x ∈ A, ∀ t : ℝ, 0 < t → F t x ∈ interior A) {B : Set X}
@@ -193,7 +201,8 @@ theorem FlowConstruction.continuousOn_entryTime {X : Type*} [TopologicalSpace X]
 
 /-! ### The entry retraction -/
 
-/-- The retraction sending a point to its entry point. -/
+/-- The entry map `B → A`, `x ↦ F (entryTime F A x) x`, for `A` closed, forward invariant and strictly
+absorbing and `B` a set each of whose points has a forward orbit meeting `A`. -/
 def FlowConstruction.entryRetraction {X : Type*} [TopologicalSpace X] (F : Flow ℝ X)
     {A B : Set X} (hA : IsClosed A) (hforward : ∀ x ∈ A, ∀ t : ℝ, 0 ≤ t → F t x ∈ A)
     (hentry : ∀ x ∈ A, ∀ t : ℝ, 0 < t → F t x ∈ interior A)
@@ -207,7 +216,7 @@ def FlowConstruction.entryRetraction {X : Type*} [TopologicalSpace X] (F : Flow 
           continuous_subtype_val).subtype_mk
       _
 
-/-- The entry retraction followed by inclusion is the flow to entry. -/
+/-- For `A ⊆ B`, the entry map `B → A` restricts to the identity on `A`. -/
 theorem FlowConstruction.entryRetraction_inclusion {X : Type*} [TopologicalSpace X]
     (F : Flow ℝ X) {A B : Set X} (hA : IsClosed A)
     (hforward : ∀ x ∈ A, ∀ t : ℝ, 0 ≤ t → F t x ∈ A)
@@ -218,7 +227,8 @@ theorem FlowConstruction.entryRetraction_inclusion {X : Type*} [TopologicalSpace
   change F (entryTime F A x.1) x.1 = x.1
   rw [entryTime_eq_zero F x.2, F.map_zero_apply]
 
-/-- The deformation retract along the flow to the entry set. -/
+/-- For `A ⊆ B` with `B` forward invariant, the homotopy `(s, x) ↦ F (s * entryTime F A x) x` of `B`,
+from the identity to the entry map followed by the inclusion `A → B`, stationary on `A`. -/
 def FlowConstruction.entryDeformation {X : Type*} [TopologicalSpace X] (F : Flow ℝ X)
     {A B : Set X} (hA : IsClosed A) (hforward : ∀ x ∈ A, ∀ t : ℝ, 0 ≤ t → F t x ∈ A)
     (hentry : ∀ x ∈ A, ∀ t : ℝ, 0 < t → F t x ∈ interior A)
@@ -257,7 +267,9 @@ def FlowConstruction.entryDeformation {X : Type*} [TopologicalSpace X] (F : Flow
     rw [entryTime_eq_zero F (A := A) (show x.1 ∈ A from hx), MulZeroClass.mul_zero,
       F.map_zero_apply]
 
-/-- The entry set is a deformation retract of the domain. -/
+/-- Let `A ⊆ B` with `A` closed, forward invariant and strictly absorbing, `B` forward invariant, and
+every forward orbit from `B` meeting `A`. Then the inclusion `A → B` is a homotopy equivalence,
+with homotopy inverse the entry map `entryRetraction`. -/
 def FlowConstruction.entryHomotopyEquiv {X : Type*} [TopologicalSpace X] (F : Flow ℝ X)
     {A B : Set X} (hA : IsClosed A) (hforward : ∀ x ∈ A, ∀ t : ℝ, 0 ≤ t → F t x ∈ A)
     (hentry : ∀ x ∈ A, ∀ t : ℝ, 0 < t → F t x ∈ interior A)
@@ -278,7 +290,8 @@ def FlowConstruction.entryHomotopyEquiv {X : Type*} [TopologicalSpace X] (F : Fl
 
 /-! ### Entry times along an orbit -/
 
-/-- The entry time of a flowed point shifts by the flow time. -/
+/-- Let `A` be closed and let the forward orbit of `x` meet `A`. For `0 ≤ t ≤ entryTime F A x`,
+`entryTime F A (F t x) = entryTime F A x - t`. -/
 theorem FlowConstruction.entryTime_flow_of_le {X : Type*} [TopologicalSpace X]
     (F : Flow ℝ X) {A : Set X} (hA : IsClosed A) {x : X} (hx : ∃ t : ℝ, 0 ≤ t ∧ F t x ∈ A) {t : ℝ}
     (ht : 0 ≤ t) (hle : t ≤ entryTime F A x) : entryTime F A (F t x) = entryTime F A x - t := by
@@ -292,7 +305,7 @@ theorem FlowConstruction.entryTime_flow_of_le {X : Type*} [TopologicalSpace X]
   have hb := entryTime_le_of_mem F (add_nonneg (entryTime_nonneg F hy) ht) hh
   linarith
 
-/-- An interior hit bounds the entry time. -/
+/-- If `0 < t` and `F t x ∈ interior A`, then `entryTime F A x < t`. -/
 theorem FlowConstruction.entryTime_lt_of_flow_mem_interior {X : Type*} [TopologicalSpace X]
     (F : Flow ℝ X) {A : Set X} {x : X} {t : ℝ} (ht : 0 < t) (hx : F t x ∈ interior A) :
     entryTime F A x < t := by
@@ -303,7 +316,8 @@ theorem FlowConstruction.entryTime_lt_of_flow_mem_interior {X : Type*} [Topologi
   obtain ⟨s, hst, hs⟩ := he.exists_lt
   exact (entryTime_le_of_mem F hs.1.le (interior_subset hs.2)).trans_lt hst
 
-/-- The entry time adds under a positive flow. -/
+/-- Let `A` be closed and forward invariant and let the forward orbit of `x` meet `A`. If `0 ≤ t` and
+`F t x` has positive entry time, then `entryTime F A x = t + entryTime F A (F t x)`. -/
 theorem FlowConstruction.entryTime_eq_add_of_flow_pos {X : Type*} [TopologicalSpace X]
     (F : Flow ℝ X) {A : Set X} (hA : IsClosed A) (hforward : ∀ x ∈ A, ∀ t : ℝ, 0 ≤ t → F t x ∈ A)
     {x : X} (hx : ∃ t : ℝ, 0 ≤ t ∧ F t x ∈ A) {t : ℝ} (ht : 0 ≤ t)
@@ -318,7 +332,8 @@ theorem FlowConstruction.entryTime_eq_add_of_flow_pos {X : Type*} [TopologicalSp
 
 /-! ### The frontier of a sublevel -/
 
-/-- The frontier of a strict-flow sublevel is the level set. -/
+/-- Let `f` be continuous and antitone along every orbit of the flow `F`, and suppose
+`f (F t x) < b` whenever `f x = b` and `0 < t`. Then `frontier {x | f x ≤ b} = {x | f x = b}`. -/
 theorem FlowConstruction.frontier_sublevel_eq_of_strict_flow {X : Type*}
     [TopologicalSpace X] {f : X → ℝ} (hf : Continuous f) (F : Flow ℝ X)
     (hmono : ∀ x, Antitone (fun t => f (F t x))) {b : ℝ}

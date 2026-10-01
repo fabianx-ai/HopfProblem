@@ -50,7 +50,9 @@ open scoped ContDiff ContinuousMap
 
 /-! ### Flow collar data -/
 
-/-- Data for a flow collar: a core, an inner set, and timing bounds. -/
+/-- Collar data for a flow `F` and sets `A ⊆ B`: both sets are closed, forward invariant and
+strictly absorbing (`F t` maps each into its own interior for `t > 0`), and there is a time
+`time > 0` with `F time x ∈ interior A` for all `x ∈ B`. -/
 structure FlowConstruction.FlowCollarData {X : Type*} [TopologicalSpace X] (F : Flow ℝ X)
     (A B : Set X) where
   time : ℝ
@@ -64,7 +66,7 @@ structure FlowConstruction.FlowCollarData {X : Type*} [TopologicalSpace X] (F : 
   strict_inner : ∀ x ∈ A, ∀ t : ℝ, 0 < t → F t x ∈ interior A
   core_inside : ∀ x ∈ B, F time x ∈ interior A
 
-/-- The core of the flow collar. -/
+/-- The core of the collar data: the set `F (-time) ⁻¹' B = F time '' B`. -/
 def FlowConstruction.FlowCollarData.core {X : Type*} [TopologicalSpace X] {F : Flow ℝ X}
     {A B : Set X} (d : FlowConstruction.FlowCollarData F A B) : Set X :=
   (F (-d.time)) ⁻¹' B
@@ -113,7 +115,7 @@ theorem FlowConstruction.FlowCollarData.hits_inner {X : Type*} [TopologicalSpace
     (hx : x ∈ B) : ∃ t : ℝ, 0 ≤ t ∧ F t x ∈ A :=
   ⟨d.time, d.time_pos.le, interior_subset (d.core_inside x hx)⟩
 
-/-- The collar duration: the entry time into the inner set. -/
+/-- The duration of `x ∈ B`: its entry time into the core `F time '' B`. -/
 def FlowConstruction.FlowCollarData.duration {X : Type*} [TopologicalSpace X] {F : Flow ℝ X}
     {A B : Set X} (d : FlowConstruction.FlowCollarData F A B) (x : B) : ℝ :=
   FlowConstruction.entryTime F d.core x.1
@@ -138,7 +140,8 @@ theorem FlowConstruction.FlowCollarData.continuous_duration {X : Type*} [Topolog
     (FlowConstruction.continuousOn_entryTime F d.closed_core d.forward_core d.strict_core
       (fun _ hx => d.hits_core hx))
 
-/-- The collar origin: the entry point in the inner set. -/
+/-- The origin of `x ∈ B`: the point `F (duration x - time) x` of `B`, whose image under `F time` is
+the point where the orbit of `x` enters the core. -/
 def FlowConstruction.FlowCollarData.origin {X : Type*} [TopologicalSpace X] {F : Flow ℝ X}
     {A B : Set X} (d : FlowConstruction.FlowCollarData F A B) (x : B) : B :=
   ⟨F (d.duration x - d.time) x.1,
@@ -153,14 +156,14 @@ theorem FlowConstruction.FlowCollarData.continuous_origin {X : Type*} [Topologic
     Continuous d.origin :=
   (F.continuous (d.continuous_duration.sub continuous_const) continuous_subtype_val).subtype_mk _
 
-/-- A point is the flow of its origin for its duration. -/
+/-- A point of `B` is recovered from its origin: `F (time - duration x) (origin x) = x`. -/
 theorem FlowConstruction.FlowCollarData.origin_reconstruct {X : Type*} [TopologicalSpace X]
     {F : Flow ℝ X} {A B : Set X} (d : FlowConstruction.FlowCollarData F A B) (x : B) :
     F (d.time - d.duration x) (d.origin x).1 = x.1 := by
   change F (d.time - d.duration x) (F (d.duration x - d.time) x.1) = x.1
   rw [← F.map_add, sub_add_sub_cancel, sub_self, F.map_zero_apply]
 
-/-- The collar delay before reaching the core. -/
+/-- The delay of `x ∈ B`: the entry time into `A` of its origin. -/
 def FlowConstruction.FlowCollarData.delay {X : Type*} [TopologicalSpace X] {F : Flow ℝ X}
     {A B : Set X} (d : FlowConstruction.FlowCollarData F A B) (x : B) : ℝ :=
   FlowConstruction.entryTime F A (d.origin x).1
@@ -187,7 +190,7 @@ theorem FlowConstruction.FlowCollarData.continuous_delay {X : Type*} [Topologica
           d.strict_inner (fun _ hx => d.hits_inner hx))).comp
     d.continuous_origin
 
-/-- The rescaling factor of the collar time. -/
+/-- The rescaling factor `(time - delay x) / time` of `x ∈ B`. -/
 def FlowConstruction.FlowCollarData.factor {X : Type*} [TopologicalSpace X] {F : Flow ℝ X}
     {A B : Set X} (d : FlowConstruction.FlowCollarData F A B) (x : B) : ℝ :=
   (d.time - d.delay x) / d.time
@@ -229,7 +232,7 @@ theorem FlowConstruction.FlowCollarData.duration_le_retained {X : Type*}
   rw [d.time_mul_factor]
   linarith
 
-/-- The collar shift of a point. -/
+/-- The shift `duration x * (1 - factor x)` of `x ∈ B`: the time by which `rescale` moves `x`. -/
 def FlowConstruction.FlowCollarData.shift {X : Type*} [TopologicalSpace X] {F : Flow ℝ X}
     {A B : Set X} (d : FlowConstruction.FlowCollarData F A B) (x : B) : ℝ :=
   d.duration x * (1 - d.factor x)
@@ -255,14 +258,15 @@ theorem FlowConstruction.FlowCollarData.continuous_shift {X : Type*} [Topologica
 
 /-! ### The collar rescaling -/
 
-/-- The rescaling homeomorphism candidate of the collar. -/
+/-- The rescaling map `B → B`, `x ↦ F (shift x) x`. Its image is `A` (`rescale_mem_inner`,
+`exists_rescale_eq`). -/
 def FlowConstruction.FlowCollarData.rescale {X : Type*} [TopologicalSpace X] {F : Flow ℝ X}
     {A B : Set X} (d : FlowConstruction.FlowCollarData F A B) : C(B, B)
     where
   toFun x := ⟨F (d.shift x) x.1, d.forward_outer x.1 x.2 _ (d.shift_nonneg x)⟩
   continuous_toFun := (F.continuous d.continuous_shift continuous_subtype_val).subtype_mk _
 
-/-- The rescaling computes from the origin. -/
+/-- `rescale x = F (time - duration x * factor x) (origin x)`. -/
 theorem FlowConstruction.FlowCollarData.rescale_from_origin {X : Type*} [TopologicalSpace X]
     {F : Flow ℝ X} {A B : Set X} (d : FlowConstruction.FlowCollarData F A B) (x : B) :
     (d.rescale x).1 = F (d.time - d.duration x * d.factor x) (d.origin x).1 := by
@@ -273,7 +277,7 @@ theorem FlowConstruction.FlowCollarData.rescale_from_origin {X : Type*} [Topolog
   dsimp [shift]
   ring
 
-/-- The rescaling lands in the inner set. -/
+/-- The rescaling map sends `B` into `A`. -/
 theorem FlowConstruction.FlowCollarData.rescale_mem_inner {X : Type*} [TopologicalSpace X]
     {F : Flow ℝ X} {A B : Set X} (d : FlowConstruction.FlowCollarData F A B) (x : B) :
     (d.rescale x).1 ∈ A := by
@@ -287,7 +291,7 @@ theorem FlowConstruction.FlowCollarData.rescale_mem_inner {X : Type*} [Topologic
           (d.hits_inner (d.origin x).2) ((d.delay_nonneg x).trans hh)).mp
       hh
 
-/-- The duration of a rescaled point. -/
+/-- `duration (rescale x) = duration x * factor x`. -/
 theorem FlowConstruction.FlowCollarData.duration_rescale {X : Type*} [TopologicalSpace X]
     {F : Flow ℝ X} {A B : Set X} (d : FlowConstruction.FlowCollarData F A B) (x : B) :
     d.duration (d.rescale x) = d.duration x * d.factor x := by
@@ -298,7 +302,7 @@ theorem FlowConstruction.FlowCollarData.duration_rescale {X : Type*} [Topologica
   dsimp [shift]
   ring
 
-/-- The origin of a rescaled point. -/
+/-- `rescale x` has the same origin as `x`. -/
 theorem FlowConstruction.FlowCollarData.origin_rescale {X : Type*} [TopologicalSpace X]
     {F : Flow ℝ X} {A B : Set X} (d : FlowConstruction.FlowCollarData F A B) (x : B) :
     d.origin (d.rescale x) = d.origin x := by
@@ -309,7 +313,7 @@ theorem FlowConstruction.FlowCollarData.origin_rescale {X : Type*} [TopologicalS
   dsimp [shift]
   ring
 
-/-- The factor of a rescaled point. -/
+/-- `rescale x` has the same rescaling factor as `x`. -/
 theorem FlowConstruction.FlowCollarData.factor_rescale {X : Type*} [TopologicalSpace X]
     {F : Flow ℝ X} {A B : Set X} (d : FlowConstruction.FlowCollarData F A B) (x : B) :
     d.factor (d.rescale x) = d.factor x := by
@@ -339,7 +343,7 @@ theorem FlowConstruction.FlowCollarData.rescale_eq_self_of_duration_eq_zero {X :
   change F (d.shift x) x.1 = x.1
   simp only [shift, hx, MulZeroClass.zero_mul, F.map_zero_apply]
 
-/-- Every point is a rescale of a core point. -/
+/-- Every point of `B` that lies in `A` is `rescale x` for some `x ∈ B`. -/
 theorem FlowConstruction.FlowCollarData.exists_rescale_eq {X : Type*} [TopologicalSpace X]
     {F : Flow ℝ X} {A B : Set X} (d : FlowConstruction.FlowCollarData F A B) (y : B)
     (hy : y.1 ∈ A) : ∃ x : B, d.rescale x = y := by
@@ -381,7 +385,7 @@ theorem FlowConstruction.FlowCollarData.exists_rescale_eq {X : Type*} [Topologic
 
 /-! ### The collar homeomorphism -/
 
-/-- The inner map of the collar homeomorphism. -/
+/-- The rescaling map with codomain restricted to `A`, as a continuous map `B → A`. -/
 def FlowConstruction.FlowCollarData.innerMap {X : Type*} [TopologicalSpace X] {F : Flow ℝ X}
     {A B : Set X} (d : FlowConstruction.FlowCollarData F A B) : C(B, A)
     where
@@ -400,14 +404,14 @@ theorem FlowConstruction.FlowCollarData.innerMap_bijective {X : Type*} [Topologi
     obtain ⟨x, hx⟩ := d.exists_rescale_eq ⟨y.1, d.inner_subset y.2⟩ y.2
     exact ⟨x, Subtype.ext (congrArg (fun z : B => (z : X)) hx)⟩
 
-/-- The flow collar homeomorphism. -/
+/-- The collar homeomorphism `B ≃ₜ A` given by the rescaling map, for `X` Hausdorff and `B` compact. -/
 def FlowConstruction.FlowCollarData.homeomorph {X : Type*} [TopologicalSpace X]
     {F : Flow ℝ X} {A B : Set X} (d : FlowConstruction.FlowCollarData F A B) [T2Space X]
     [CompactSpace B] : B ≃ₜ A :=
   Continuous.homeoOfEquivCompactToT2 (f := Equiv.ofBijective d.innerMap d.innerMap_bijective)
     d.innerMap.continuous
 
-/-- The interior is characterized by the duration-time inequality. -/
+/-- For `x ∈ B`: `duration x < time ↔ x ∈ interior B`. -/
 theorem FlowConstruction.FlowCollarData.duration_lt_time_iff_interior {X : Type*}
     [TopologicalSpace X] {F : Flow ℝ X} {A B : Set X}
     (d : FlowConstruction.FlowCollarData F A B) (x : B) :
@@ -426,7 +430,7 @@ theorem FlowConstruction.FlowCollarData.duration_lt_time_iff_interior {X : Type*
       simpa only [← F.map_add, neg_add_cancel, F.map_zero_apply] using hi
     exact FlowConstruction.entryTime_lt_of_flow_mem_interior F d.time_pos hcore
 
-/-- The frontier is characterized by the duration-time equality. -/
+/-- For `x ∈ B`: `duration x = time ↔ x ∈ frontier B`. -/
 theorem FlowConstruction.FlowCollarData.duration_eq_time_iff_frontier {X : Type*}
     [TopologicalSpace X] {F : Flow ℝ X} {A B : Set X}
     (d : FlowConstruction.FlowCollarData F A B) (x : B) :
@@ -442,7 +446,7 @@ theorem FlowConstruction.FlowCollarData.duration_eq_time_iff_frontier {X : Type*
     apply le_antisymm (d.duration_le x)
     exact le_of_not_gt (fun hlt => hx.2 ((d.duration_lt_time_iff_interior x).mp hlt))
 
-/-- The rescaling preserves the interior. -/
+/-- For `x ∈ B`: `rescale x ∈ interior A ↔ x ∈ interior B`. -/
 theorem FlowConstruction.FlowCollarData.rescale_mem_interior_iff {X : Type*}
     [TopologicalSpace X] {F : Flow ℝ X} {A B : Set X}
     (d : FlowConstruction.FlowCollarData F A B) (x : B) :
@@ -475,7 +479,7 @@ theorem FlowConstruction.FlowCollarData.rescale_mem_interior_iff {X : Type*}
       FlowConstruction.flow_mem_interior_of_entryTime_lt F d.closed_inner d.strict_inner
         (d.hits_inner (d.origin x).property) hdelay
 
-/-- The inner map preserves the frontier. -/
+/-- For `x ∈ B`: `innerMap x ∈ frontier A ↔ x ∈ frontier B`. -/
 theorem FlowConstruction.FlowCollarData.innerMap_mem_frontier_iff {X : Type*}
     [TopologicalSpace X] {F : Flow ℝ X} {A B : Set X}
     (d : FlowConstruction.FlowCollarData F A B) (x : B) :
@@ -488,14 +492,16 @@ theorem FlowConstruction.FlowCollarData.innerMap_mem_frontier_iff {X : Type*}
   · intro hx
     exact ⟨d.rescale_mem_inner x, fun hi => hx.2 ((d.rescale_mem_interior_iff x).mp hi)⟩
 
-/-- The collar homeomorphism preserves the frontier. -/
+/-- The collar homeomorphism maps `frontier B` onto `frontier A`:
+`homeomorph x ∈ frontier A ↔ x ∈ frontier B`. -/
 theorem FlowConstruction.FlowCollarData.homeomorph_mem_frontier_iff {X : Type*}
     [TopologicalSpace X] {F : Flow ℝ X} {A B : Set X}
     (d : FlowConstruction.FlowCollarData F A B) [T2Space X] [CompactSpace B] (x : B) :
     (d.homeomorph x).val ∈ frontier A ↔ x.val ∈ frontier B :=
   d.innerMap_mem_frontier_iff x
 
-/-- The collar homeomorphism computes the flow to the entry time. -/
+/-- On `frontier B` the collar homeomorphism is the flow up to the entry time into `A`:
+`homeomorph x = F (entryTime F A x) x`. -/
 theorem FlowConstruction.FlowCollarData.homeomorph_eq_flow_entryTime {X : Type*}
     [TopologicalSpace X] {F : Flow ℝ X} {A B : Set X}
     (d : FlowConstruction.FlowCollarData F A B) [T2Space X] [CompactSpace B] (x : B)
@@ -510,7 +516,7 @@ theorem FlowConstruction.FlowCollarData.homeomorph_eq_flow_entryTime {X : Type*}
   change F (FlowConstruction.entryTime F A (d.origin x).val) (d.origin x).val = _
   rw [ho]
 
-/-- The collar homeomorphism on the frontier is the flow. -/
+/-- If `x ∈ frontier B`, `0 ≤ t` and `F t x ∈ frontier A`, then `homeomorph x = F t x`. -/
 theorem FlowConstruction.FlowCollarData.homeomorph_eq_flow_of_mem_frontier {X : Type*}
     [TopologicalSpace X] {F : Flow ℝ X} {A B : Set X}
     (d : FlowConstruction.FlowCollarData F A B) [T2Space X] [CompactSpace B] (x : B)
@@ -520,7 +526,7 @@ theorem FlowConstruction.FlowCollarData.homeomorph_eq_flow_of_mem_frontier {X : 
     FlowConstruction.entryTime_eq_of_flow_mem_frontier F d.closed_inner d.strict_inner ht
       hfront]
 
-/-- The collar homeomorphism inverse on the frontier is the flow. -/
+/-- If `y ∈ frontier A`, `t ≤ 0` and `F t y ∈ frontier B`, then `homeomorph.symm y = F t y`. -/
 theorem FlowConstruction.FlowCollarData.homeomorph_symm_eq_flow_of_mem_frontier {X : Type*}
     [TopologicalSpace X] {F : Flow ℝ X} {A B : Set X}
     (d : FlowConstruction.FlowCollarData F A B) [T2Space X] [CompactSpace B] (y : A)
@@ -539,7 +545,7 @@ theorem FlowConstruction.FlowCollarData.homeomorph_symm_eq_flow_of_mem_frontier 
   rw [d.homeomorph.symm_apply_apply] at hinv
   exact congrArg (fun z : B => z.val) hinv.symm
 
-/-- The rescaling fixes the inner frontier. -/
+/-- The rescaling map fixes every point of `A ∩ frontier B`. -/
 theorem FlowConstruction.FlowCollarData.rescale_eq_self_of_mem_inner_frontier_outer
     {X : Type*} [TopologicalSpace X] {F : Flow ℝ X} {A B : Set X}
     (d : FlowConstruction.FlowCollarData F A B) (x : B) (hxA : x.val ∈ A)
@@ -552,7 +558,7 @@ theorem FlowConstruction.FlowCollarData.rescale_eq_self_of_mem_inner_frontier_ou
   change F (d.shift x) x.val = x.val
   simp only [shift, hfac, sub_self, MulZeroClass.mul_zero, F.map_zero_apply]
 
-/-- The collar homeomorphism fixes the common frontier. -/
+/-- The collar homeomorphism fixes every point of `A ∩ frontier B`. -/
 theorem FlowConstruction.FlowCollarData.homeomorph_fixed_on_common_frontier {X : Type*}
     [TopologicalSpace X] {F : Flow ℝ X} {A B : Set X}
     (d : FlowConstruction.FlowCollarData F A B) [T2Space X] [CompactSpace B] (x : B)
