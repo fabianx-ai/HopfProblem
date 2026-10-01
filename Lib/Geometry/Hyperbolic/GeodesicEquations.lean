@@ -167,4 +167,48 @@ theorem exists_planeCoefficientNormal
     ring_nf
   exact ⟨a,b,c,hcoeff,hkernel,hLorentzKernel,hnormal,hsq,hmem,hperp⟩
 
+/-- A nonzero coefficient plane meeting the upper hyperboloid has positive Lorentz
+normal discriminant. The signed normal is perpendicular to the given point, so
+the positive Lorentz form on that point's tangent plane applies.
+Textbook source: G05.B, lines 59–72, including the nonempty-section conclusion. -/
+theorem planeCoefficient_discriminant_pos_of_mem
+    (a b c : ℝ) (hcoeff : ![a,b,c] ≠ (0 : Fin 3 → ℝ))
+    (p : Hyperboloid)
+    (hp : p.val ∈ LinearMap.ker (planeCoefficientFunctional a b c)) :
+    0 < a^2 + b^2 - c^2 := by
+  have hn : ![a,b,-c] ≠ (0 : Fin 3 → ℝ) := by
+    intro hz
+    apply hcoeff
+    have ha : a = 0 := by simpa using congrFun hz 0
+    have hb : b = 0 := by simpa using congrFun hz 1
+    have hc : c = 0 := by simpa using congrFun hz 2
+    ext i
+    fin_cases i <;> simp [ha,hb,hc]
+  have hpn : lorentzBilinear p.val ![a,b,-c] = 0 := by
+    change a*p.val 0+b*p.val 1+c*p.val 2=0 at hp
+    change p.val 0*a+p.val 1*b-p.val 2*(-c)=0
+    nlinarith only [hp]
+  have hk : ![a,b,-c] ∈ (lorentzFunctional p.val).ker := by
+    change lorentzFunctional p.val ![a,b,-c] = 0
+    rw [← lorentzBilinear_eq_functional]
+    exact hpn
+  have hpos := lorentzKer_quadratic_pos p ![a,b,-c] hk hn
+  have hsq : lorentzBilinear ![a,b,-c] ![a,b,-c] = a^2+b^2-c^2 := by
+    change a*a+b*b-(-c)*(-c)=a^2+b^2-c^2
+    ring
+  rwa [hsq] at hpos
+
+/-- A timelike coefficient plane has positive Lorentz normal discriminant.
+The existing timelike-plane construction normalizes a negative vector and
+chooses positive time; its upper-sheet point reduces to the pointwise result.
+Textbook source: G05.B, lines 56–59 and 70–72. -/
+theorem planeCoefficient_discriminant_pos_of_timelike
+    (a b c : ℝ) (hcoeff : ![a,b,c] ≠ (0 : Fin 3 → ℝ))
+    (hP : IsLorentzTimelikePlane
+      (LinearMap.ker (planeCoefficientFunctional a b c))) :
+    0 < a^2 + b^2 - c^2 := by
+  obtain ⟨p,v,hvp,hvv,hpP,hvP,hspan,hrange⟩ :=
+    IsLorentzTimelikePlane.exists_hyperboloidGeodesic hP
+  exact planeCoefficient_discriminant_pos_of_mem a b c hcoeff p hpP
+
 end Hyperbolic

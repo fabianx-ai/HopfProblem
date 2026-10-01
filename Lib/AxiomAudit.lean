@@ -8474,6 +8474,12 @@ is an evidence command rather than library content.
 #check Hyperbolic.exists_planeCoefficientNormal
 #print axioms Hyperbolic.exists_planeCoefficientNormal
 
+#check Hyperbolic.planeCoefficient_discriminant_pos_of_mem
+#print axioms Hyperbolic.planeCoefficient_discriminant_pos_of_mem
+
+#check Hyperbolic.planeCoefficient_discriminant_pos_of_timelike
+#print axioms Hyperbolic.planeCoefficient_discriminant_pos_of_timelike
+
 #check LinearMap.BilinForm.unitNormalReflection
 #print axioms LinearMap.BilinForm.unitNormalReflection
 
