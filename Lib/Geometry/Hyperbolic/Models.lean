@@ -7174,6 +7174,88 @@ def hyperboloidReflectionDiffeomorph (n : Fin 3 → ℝ)
     contMDiff_toFun := contMDiff_hyperboloidReflection n hn
     contMDiff_invFun := contMDiff_hyperboloidReflection n hn }
 
+/-- Lorentz reflection carries each tangent kernel into the kernel at the reflected point.
+
+Textbook source: reviewed Lorentz reflection proof, M01, lines 118–120. -/
+theorem lorentzReflection_mem_tangentKer
+    (n : V) (hn : lorentzBilinear n n = 1) (p : Hyperboloid)
+    (v : V) (hv : v ∈ (lorentzFunctional p.val).ker) :
+    lorentzReflection n hn v ∈
+      (lorentzFunctional (hyperboloidReflection n hn p).val).ker := by
+  change lorentzFunctional (hyperboloidReflection n hn p).val
+    (lorentzReflection n hn v) = 0
+  rw [← lorentzBilinear_eq_functional, hyperboloidReflection_val,
+    lorentzReflection_preserves]
+  exact hv
+
+/-- The intrinsic differential of the restricted reflection is its ambient linear map
+under the actual hyperboloid inclusion.
+
+Textbook source: reviewed Lorentz reflection proof, M01, line 118. -/
+theorem mfderiv_hyperboloidReflection_val
+    (n : V) (hn : lorentzBilinear n n = 1) (p : Hyperboloid)
+    (v : TangentSpace I p) :
+    mfderiv I J (fun q : Hyperboloid => q.val) (hyperboloidReflection n hn p)
+      (mfderiv I I (hyperboloidReflection n hn) p v) =
+    lorentzReflection n hn (mfderiv I J (fun q : Hyperboloid => q.val) p v) := by
+  let A : V ≃L[ℝ] V := (lorentzReflection n hn).toContinuousLinearEquiv
+  have hf := (contMDiff_hyperboloidReflection n hn).mdifferentiable (by simp)
+  have hi := contMDiff_hyperboloid_val.mdifferentiable (by simp)
+  have hA : MDifferentiable J J (A : V → V) :=
+    (A.contDiff (n := ∞)).contMDiff.mdifferentiable (by simp)
+  have hleft := mfderiv_comp_apply p (hi (hyperboloidReflection n hn p)) (hf p) v
+  have hright := mfderiv_comp_apply p (hA p.val) (hi p) v
+  have hfun : (fun q : Hyperboloid => q.val) ∘ hyperboloidReflection n hn =
+      (A : V → V) ∘ (fun q : Hyperboloid => q.val) := rfl
+  have hcongr :
+      mfderiv I J ((fun q : Hyperboloid => q.val) ∘ hyperboloidReflection n hn) p =
+      mfderiv I J ((A : V → V) ∘ (fun q : Hyperboloid => q.val)) p :=
+    mfderiv_congr hfun
+  have hderiv : mfderiv J J (A : V → V) p.val = A.toContinuousLinearMap := by
+    rw [mfderiv_eq_fderiv]
+    exact A.toContinuousLinearMap.fderiv
+  have heq := hleft.symm.trans ((congrArg (fun L => L v) hcongr).trans hright)
+  rw [hderiv] at heq
+  exact heq
+
+/-- Under the established tangent-kernel identification, the differential is Lorentz reflection.
+
+Textbook source: reviewed Lorentz reflection proof, M01, lines 118–120. -/
+theorem hyperboloidReflection_tangentEquivKer
+    (n : V) (hn : lorentzBilinear n n = 1) (p : Hyperboloid)
+    (v : TangentSpace I p) :
+    (hyperboloidTangentEquivKer (hyperboloidReflection n hn p)
+      (mfderiv I I (hyperboloidReflection n hn) p v)).val =
+    lorentzReflection n hn (hyperboloidTangentEquivKer p v).val := by
+  simp only [hyperboloidTangentEquivKer_apply]
+  exact mfderiv_hyperboloidReflection_val n hn p v
+
+/-- The restricted reflection preserves the existing hyperboloid tangent tensor.
+
+Textbook source: reviewed Lorentz reflection proof, M01, lines 120–122. -/
+theorem hyperboloidReflection_preserves_tangentTensor
+    (n : V) (hn : lorentzBilinear n n = 1) (p : Hyperboloid)
+    (v w : TangentSpace I p) :
+    hyperboloidTangentTensor (hyperboloidReflection n hn p)
+      (mfderiv I I (hyperboloidReflection n hn) p v)
+      (mfderiv I I (hyperboloidReflection n hn) p w) =
+    hyperboloidTangentTensor p v w := by
+  simp only [hyperboloidTangentTensor_apply, mfderiv_hyperboloidReflection_val]
+  exact lorentzReflection_preserves n hn _ _
+
+/-- The restricted reflection preserves the existing intrinsic hyperboloid metric pairing.
+
+Textbook source: reviewed Lorentz reflection proof, M01, line 122. -/
+theorem hyperboloidReflection_preserves_metric
+    (n : V) (hn : lorentzBilinear n n = 1) (p : Hyperboloid)
+    (v w : TangentSpace I p) :
+    hyperboloidMetric.inner (hyperboloidReflection n hn p)
+      (mfderiv I I (hyperboloidReflection n hn) p v)
+      (mfderiv I I (hyperboloidReflection n hn) p w) =
+    hyperboloidMetric.inner p v w := by
+  simp only [hyperboloidMetric_inner]
+  exact hyperboloidReflection_preserves_tangentTensor n hn p v w
+
 /-- The timelike coefficient of a vector in an adapted Lorentz frame.
 
 Textbook source: reviewed Lorentz reflection proof, S03, lines 105–107. -/
