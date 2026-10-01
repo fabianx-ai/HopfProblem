@@ -17,11 +17,19 @@ declaration in the dependency closure of that theorem, and `Lib/AxiomAudit.lean`
 reusable library.  Neither covers declarations that live under `Hopf/Proof` and are *not* in
 the dependency closure of the final theorem; those are probed here.
 
-Currently that is the four two-sphere vanishing theorems of
-`Hopf/Proof/Topology/Sheaves/Cohomology/SphereTwo.lean`, whose manuscript consumers live on a
-different branch: `Hopf/Proof/Final.lean` imports the module, but no declaration reachable
-from `Mathoverflow1973.mathoverflow_1973` mentions them, so the `Solution.lean` probe says
-nothing about them.
+Currently that is:
+
+* the four two-sphere vanishing theorems of
+  `Hopf/Proof/Topology/Sheaves/Cohomology/SphereTwo.lean`, whose manuscript consumers live on a
+  different branch: `Hopf/Proof/Final.lean` imports the module, but no declaration reachable
+  from `Mathoverflow1973.mathoverflow_1973` mentions them;
+* the two wedge reversals of the sector roots in
+  `Hopf/Proof/Analysis/Complex/RiemannMapping/SectorRoots.lean`,
+  `RiemannBoundary.principalRoot_three_reverse_of_wedge` (cube root) and
+  `RiemannBoundary.rotatedPrincipalRootFour_reverse_of_wedge` (rotated fourth root), which no
+  declaration in the dependency closure of the final theorem uses.
+
+The `Solution.lean` probe therefore says nothing about any of them.
 -/
 
 /-! ## `Hopf.Proof.Topology.Sheaves.Cohomology.SphereTwo` -/
