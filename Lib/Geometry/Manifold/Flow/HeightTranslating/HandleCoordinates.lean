@@ -8,7 +8,6 @@ module
 public import Mathlib
 public import Lib.Analysis.Calculus.MorseLemma
 public import Lib.Geometry.Manifold.Morse.Handle
-public import Lib.Geometry.Manifold.Flow.Compact
 public import Lib.Geometry.Manifold.RegularLevel
 public import Lib.Geometry.Manifold.Morse.HandleAttachment
 
