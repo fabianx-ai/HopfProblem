@@ -21,7 +21,7 @@ with value in `[f p - ρ², f p + ρ²]`, then the sublevel set `{f ≤ f p + ρ
 `{f ≤ f p - ρ²}` with the model handle `c.attachingHandleMap ρ` attached, by a homeomorphism
 that is the identity on the upper level and follows the flow lines from the frontier of the
 attaching union to the upper level. This is the handle-attachment step of Morse theory
-(Milnor, *Morse theory*, Theorem 3.2; Milnor, *Lectures on the h-cobordism theorem*, §3).
+(cf. Milnor, *Morse theory*, §3; Milnor, *Lectures on the h-cobordism theorem*, §3).
 
 ## Main results
 
@@ -245,7 +245,9 @@ theorem ManifoldMorse.SignedMorseChart.exists_fieldCompatibleBlock {E M : Type*}
   rw [show 2 * (r / 2) = r by ring]
   exact hblock
 
-/-- Critical points can be isolated: a radius exists so that the ball around a critical point contains no other critical point (discreteness made quantitative; Milnor, Morse Theory, Section 2). -/
+/-- If `K` is finite and `p` is the only point of `K` with value `f p`, then for every `R > 0`
+there is `0 < ρ < R` such that `p` is the only point of `K` with value in
+`[f p - ρ ^ 2, f p + ρ ^ 2]`. -/
 theorem ManifoldMorse.exists_isolating_radius {X : Type*} {f : X → ℝ} {K : Set X}
     (hK : K.Finite) (p : X) (hunique : ∀ x ∈ K, f x = f p → x = p) {R : ℝ} (hR : 0 < R) :
     ∃ ρ > (0 : ℝ), ρ < R ∧ ∀ x ∈ K, f x ∈ Set.Icc (f p - ρ ^ 2) (f p + ρ ^ 2) → x = p := by

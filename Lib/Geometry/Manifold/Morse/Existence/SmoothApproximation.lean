@@ -20,8 +20,8 @@ boundary is homotopic to a smooth map, and the homotopy can be taken relative to
 `C` on a neighbourhood of which `f` is already smooth; consequently, homotopic smooth maps are
 smoothly homotopic by a homotopy that is stationary near both ends. The proof covers `X` by
 finitely many `MapSmoothingPatch`es (a chart of `N` together with nested bump functions) and
-smooths `f` one patch at a time (Hirsch, *Differential Topology*, Thm 2.2.6; Lee,
-*Introduction to Smooth Manifolds*, Thms 6.26 and 6.29).
+smooths `f` one patch at a time (cf. Hirsch, *Differential Topology*, §2.2; Lee,
+*Introduction to Smooth Manifolds*, Ch. 6, Whitney approximation).
 
 ## Main definitions and results
 
@@ -179,7 +179,11 @@ theorem ManifoldSmoothing.exists_smoothing_patch_step_within_target {E G H K X N
         ChartMapPerturbation.contMDiffAt_smoothedMap_on_plateau (p i).chart hinner
           (p i).nested ((p i).plateau_eventually_one hplateau) hg.contMDiffAt (hvalid _ (har x))
 
-/-- Finite-patch smoothing: finitely many smoothing patches suffice to make a piecewise-defined function smooth on the whole compact manifold (Milnor, h-cobordism, Theorem 2.5 proof). -/
+/-- Given finitely many smoothing patches `p i` compatible with a continuous `f` that is smooth on
+an open `U ⊇ C`, and any `s : Finset ι`, there is a continuous `f'` compatible with every patch,
+homotopic to `f` relative to `C` by a homotopy mapping `D` into `O` (when every chart source lies
+in `O` and `f` maps `D` into `O`), and smooth at every point where `f` is smooth or which lies in
+the plateau of a patch indexed by `s`. -/
 theorem ManifoldSmoothing.exists_finite_patch_smoothing_within_target {E G H K X N : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [NormedAddCommGroup G]
     [NormedSpace ℝ G] [TopologicalSpace H] [TopologicalSpace K] {I : ModelWithCorners ℝ E H}

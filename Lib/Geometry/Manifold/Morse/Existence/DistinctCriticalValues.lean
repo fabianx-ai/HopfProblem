@@ -17,7 +17,7 @@ perturbed, by adding `a • ψ` for a bump function `ψ` that is locally constan
 points, into a Morse function with the same critical points and pairwise distinct critical
 values. Combined with the existence of Morse functions (`ManifoldMorse.exists_morse_function`)
 this gives a Morse function with finitely many critical points, all on distinct levels
-(Milnor, *Lectures on the h-cobordism theorem*, Theorem 2.7).
+(cf. Milnor, *Lectures on the h-cobordism theorem*, §2).
 
 ## Main results
 
@@ -28,7 +28,7 @@ this gives a Morse function with finitely many critical points, all on distinct 
 
 ## References
 
-* [John Milnor, *Lectures on the h-cobordism theorem*][milnor65], Theorem 2.7
+* [John Milnor, *Lectures on the h-cobordism theorem*][milnor65], §2
 
 ## Tags
 
@@ -106,7 +106,10 @@ theorem ManifoldMorse.eventually_constantPerturb_morse_criticalPoints {E M : Typ
   filter_upwards [hmor, hcrit] with a ha hc
   exact ⟨fun x => ha x (Set.mem_univ x), hc⟩
 
-/-- Critical values can be separated: between any two critical levels there is a regular level, the running hypothesis of the Morse-handle induction (Milnor, Morse Theory, Section 3). -/
+/-- Given a smooth Morse function `f` on a compact manifold and a point `p`, there is a smooth
+Morse function `g` with the same critical points, equal to `f` at every critical point other than
+`p`, such that `p` is the only critical point with value `g p` (cf. Milnor, *Lectures on the
+h-cobordism theorem*, §2). -/
 theorem ManifoldMorse.exists_separating_critical_value {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {f : M → ℝ}
@@ -162,7 +165,9 @@ theorem ManifoldMorse.exists_separating_critical_value {E M : Type*} [NormedAddC
   have hax : f x - f p = a := by rw [hvalues x hx hxp, hpvalue] at heq; linarith
   exact haT ⟨x, ⟨hx, by simpa only [Set.mem_singleton_iff] using hxp⟩, hax⟩
 
-/-- Critical values can be made pairwise distinct by an arbitrarily small perturbation (Milnor, h-cobordism Theorem 2.5). -/
+/-- A smooth Morse function `f` on a compact manifold can be replaced by a smooth Morse function
+`g` with the same critical points that is injective on them, i.e. has pairwise distinct critical
+values (cf. Milnor, *Lectures on the h-cobordism theorem*, §2). -/
 theorem ManifoldMorse.exists_distinct_critical_values {E M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
     [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {f : M → ℝ}
@@ -211,7 +216,9 @@ theorem ManifoldMorse.exists_distinct_critical_values {E M : Type*} [NormedAddCo
   rw [hcrit]
   simpa only [hK.coe_toFinset] using hinj
 
-/-- A Morse function with all critical values distinct exists on every compact smooth manifold - the form used throughout the handle induction (Milnor, h-cobordism Theorem 2.5; Hatcher, Algebraic Topology, Section 0). -/
+/-- Every compact smooth manifold modelled on a finite-dimensional space carries a smooth Morse
+function with finitely many critical points and pairwise distinct critical values (cf. Milnor,
+*Lectures on the h-cobordism theorem*, §2). -/
 theorem ManifoldMorse.exists_morse_function_with_distinct_critical_values (E : Type*)
     (M : Type*) [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E]
     [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M]

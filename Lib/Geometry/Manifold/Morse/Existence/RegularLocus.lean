@@ -69,7 +69,8 @@ theorem ManifoldMorse.isOpen_regularInChart {E P M : Type*} [NormedAddCommGroup 
   · rintro ⟨hq, -, hn⟩
     exact ⟨hq, hn⟩
 
-/-- Regular points are open: the set where the differential of a family of functions is nonzero is open (transversality openness; Hatcher, Algebraic Topology, Section 0). -/
+/-- For a jointly smooth family `f : P → M → ℝ`, the set of pairs `(a, x)` such that `x` is not a
+critical point of `f a` is open in `P × M`. -/
 theorem ManifoldMorse.isOpen_regularPoint {E P M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [NormedAddCommGroup P] [NormedSpace ℝ P] [TopologicalSpace M]
     [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] {f : P → M → ℝ}
@@ -96,7 +97,10 @@ theorem ManifoldMorse.isOpen_regularOn {E P M : Type*} [NormedAddCommGroup E]
     (hK : IsCompact K) : IsOpen {a : P | ∀ x ∈ K, x ∉ criticalPoints E (f a)} :=
   MorsePerturbation.isOpen_forall_mem_compact hK (isOpen_regularPoint hf)
 
-/-- Perturbation stability of critical points: for small enough parameters the critical-point set stabilizes (Milnor, h-cobordism Theorem 2.5 machinery). -/
+/-- Let `f : P → M → ℝ` be a jointly smooth family on a compact manifold and `U` an open set
+containing the critical points of `f a₀`. If for every parameter `a` the critical points of `f a`
+in `U` are exactly those of `f a₀` in `U`, then for `a` near `a₀` the critical sets of `f a` and
+`f a₀` are equal. -/
 theorem ManifoldMorse.eventually_criticalPoints_eq {E P M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [NormedAddCommGroup P] [NormedSpace ℝ P] [TopologicalSpace M]
     [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M] [CompactSpace M] {f : P → M → ℝ}

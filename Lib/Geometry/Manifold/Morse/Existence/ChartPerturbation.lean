@@ -21,7 +21,7 @@ when `f x ∈ c.source` and to `f x` otherwise; it is `Valid` when the shifted c
 `c.source ⊆ O` and `f` maps `D` into `O`. With `cutoffCoordinates c f χ = χ • (c ∘ f)` approximated by a
 smooth `g` (`exists_smooth_coordinate_approximation`), `smoothedMap` replaces `f` on the plateau
 `{χ = 1}` by a smooth map. This is the local step of the Whitney approximation theorem
-(Hirsch, *Differential Topology*, Thm 2.2.6; Lee, *Introduction to Smooth Manifolds*, Thm 6.26).
+(cf. Hirsch, *Differential Topology*, §2.2; Lee, *Introduction to Smooth Manifolds*, Ch. 6).
 
 ## Main definitions and results
 
@@ -158,7 +158,8 @@ theorem ChartMapPerturbation.eventually_valid {E G F H K X N : Type*} [NormedAdd
   apply c.open_target.mem_nhds
   simpa only [coordinateFamily, smul_zero, add_zero] using c.map_source' (hsupport hx)
 
-/-- The perturbation radius lemma: with positive radius one can choose a perturbation parameter making the perturbed chart map avoid a finite set of target points while staying smooth - the avoidance engine of the existence proof (Milnor, h-cobordism, proof of Theorem 2.5). -/
+/-- If `f` and `β` are smooth, `β` has compact support and `tsupport β ⊆ f ⁻¹' c.source`, then
+there is `ε > 0` such that the perturbation by every `a` with `‖a‖ < ε` is `Valid`. -/
 theorem ChartMapPerturbation.exists_radius_valid {E G F H K X N : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [NormedAddCommGroup G] [NormedSpace ℝ G]
     [NormedAddCommGroup F] [NormedSpace ℝ F] [TopologicalSpace H] [TopologicalSpace K]
@@ -502,7 +503,10 @@ theorem ChartMapPerturbation.contMDiffAt_cutoffCoordinates {E G F H K X N : Type
     filter_upwards [hz] with y hy
     simp only [cutoffCoordinates, hy, zero_smul, Pi.zero_apply]
 
-/-- Smooth approximation within a chart: coordinate functions can be smoothly approximated while avoiding prescribed finite sets (Whitney approximation, chart form; Lee, Introduction to Smooth Manifolds, Thm 6.21-adjacent). -/
+/-- Whitney approximation in a chart: if `f` is continuous, smooth on an open set `U ⊇ C` with `C`
+closed, and `χ` is a smooth bump with `tsupport χ ⊆ f ⁻¹' c.source`, then for every `ε > 0` there
+is a smooth `g : X → F` within `ε` of `cutoffCoordinates c f χ` everywhere and equal to it on `C`
+(cf. Lee, *Introduction to Smooth Manifolds*, Ch. 6, Whitney approximation). -/
 theorem ChartMapPerturbation.exists_smooth_coordinate_approximation {E G F H K X N : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] [NormedAddCommGroup G] [NormedSpace ℝ G]
     [NormedAddCommGroup F] [NormedSpace ℝ F] [TopologicalSpace H] [TopologicalSpace K]
