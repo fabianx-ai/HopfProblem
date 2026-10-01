@@ -36,17 +36,25 @@ attribute [local instance 100] Classical.propDecidable in
 structure ManifoldMorse.MorseSurgeryData (E : Type*) [NormedAddCommGroup E]
     [NormedSpace ℝ E] {M : Type*} [TopologicalSpace M] [ChartedSpace E M] (f : M → ℝ)
     (p : M) where
+  /-- The radius `ρ`: the surgery runs from the level `f p - ρ ^ 2` to the level `f p + ρ ^ 2`. -/
   radius : ℝ
+  /-- The radius is positive. -/
   radius_pos : 0 < radius
+  /-- The signed Morse chart at `p`. -/
   chart : SignedMorseChart (E := E) f p
+  /-- The closed block of radius `2 * ρ` in the split coordinates lies in the chart's target. -/
   block :
     Metric.closedBall (0 : chart.NegativeCoordinates) (2 * radius) ×ˢ
         Metric.closedBall (0 : chart.PositiveCoordinates) (2 * radius) ⊆
       chart.splitChart.target
+  /-- The homeomorphism of the lower sublevel set `{f ≤ f p - ρ ^ 2}` with the attached handle onto
+    the upper sublevel set `{f ≤ f p + ρ ^ 2}`. -/
   attachmentHomeomorph :
     ↥({x : M | f x ≤ f p - radius ^ 2} ∪
           Set.range (chart.attachingHandleMap radius radius_pos block)) ≃ₜ
       { x : M // f x ≤ f p + radius ^ 2 }
+  /-- A point is sent to the upper level exactly when it lies on the frontier of the lower sublevel
+    set with the attached handle. -/
   attachment_frontier :
     ∀ x,
       f (attachmentHomeomorph x) = f p + radius ^ 2 ↔
@@ -54,9 +62,12 @@ structure ManifoldMorse.MorseSurgeryData (E : Type*) [NormedAddCommGroup E]
           frontier
             ({y : M | f y ≤ f p - radius ^ 2} ∪
               Set.range (chart.attachingHandleMap radius radius_pos block))
+  /-- Points of the source on the upper level are fixed. -/
   attachment_fixed : ∀ x, f x.val = f p + radius ^ 2 → (attachmentHomeomorph x).val = x.val
+  /-- The homeomorphism follows the model boundary orbits of the chart. -/
   attachment_model_orbits :
     chart.FollowsModelBoundaryOrbits radius radius_pos block attachmentHomeomorph
+  /-- The surgery boundary pair from the level `f p - ρ ^ 2` to the level `f p + ρ ^ 2`. -/
   surgery :
     SurgeryBoundaryPair chart.NegativeCoordinates chart.PositiveCoordinates
       { x : M //
@@ -66,13 +77,17 @@ structure ManifoldMorse.MorseSurgeryData (E : Type*) [NormedAddCommGroup E]
               ({y | f y ≤ f p - radius ^ 2} ∪
                 Set.range (chart.normHandleMap radius radius_pos block)) }
       { x : M // f x = f p - radius ^ 2 } { x : M // f x = f p + radius ^ 2 }
+  /-- The old exterior is the inclusion of its points into `M`. -/
   oldExterior_eq : ∀ r, (surgery.oldExterior r : M) = r.val
+  /-- The new exterior is the image of the old exterior under `attachmentHomeomorph`. -/
   newExterior_eq :
     ∀ r, (surgery.newExterior r : M) = (attachmentHomeomorph ⟨r.val, Or.inl r.property.1.le⟩).val
+  /-- The old piece is the chart's norm handle map on the attaching region. -/
   oldPiece_eq :
     ∀ z,
       (surgery.oldPiece z : M) =
         chart.normHandleMap radius radius_pos block (PuncturedHandle.sphereToBall z.1, z.2)
+  /-- The new piece is the image of the chart's norm handle map under `attachmentHomeomorph`. -/
   newPiece_eq :
     ∀ z,
       (surgery.newPiece z : M) =
@@ -82,8 +97,11 @@ structure ManifoldMorse.MorseSurgeryData (E : Type*) [NormedAddCommGroup E]
               Or.inr
                 ⟨chart.handleBallCoordinates (z.1, PuncturedHandle.sphereToBall z.2),
                   rfl⟩⟩).val
+  /-- The belt sphere of the surgery is the chart's belt core map. -/
   belt_eq : surgery.beltSphere = chart.beltCoreMap radius radius_pos block
+  /-- The lower level contains no critical point. -/
   lower_regular : ∀ x, f x = f p - radius ^ 2 → x ∉ criticalPoints E f
+  /-- The upper level contains no critical point. -/
   upper_regular : ∀ x, f x = f p + radius ^ 2 → x ∉ criticalPoints E f
 
 /-- The lower level of the surgery data. -/
