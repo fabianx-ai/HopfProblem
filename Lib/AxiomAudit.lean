@@ -8473,3 +8473,63 @@ is an evidence command rather than library content.
 
 #check Hyperbolic.exists_planeCoefficientNormal
 #print axioms Hyperbolic.exists_planeCoefficientNormal
+
+#check LinearMap.BilinForm.unitNormalReflection
+#print axioms LinearMap.BilinForm.unitNormalReflection
+
+#check LinearMap.BilinForm.unitNormalReflection_apply_left
+#print axioms LinearMap.BilinForm.unitNormalReflection_apply_left
+
+#check LinearMap.BilinForm.unitNormalReflection_apply
+#print axioms LinearMap.BilinForm.unitNormalReflection_apply
+
+#check LinearMap.BilinForm.unitNormalReflection_preserves
+#print axioms LinearMap.BilinForm.unitNormalReflection_preserves
+
+#check LinearMap.BilinForm.unitNormalReflection_normal
+#print axioms LinearMap.BilinForm.unitNormalReflection_normal
+
+#check LinearMap.BilinForm.unitNormalReflection_involutive
+#print axioms LinearMap.BilinForm.unitNormalReflection_involutive
+
+#check LinearMap.BilinForm.unitNormalReflection_symm
+#print axioms LinearMap.BilinForm.unitNormalReflection_symm
+
+#check LinearMap.BilinForm.unitNormalReflection_fixed_iff
+#print axioms LinearMap.BilinForm.unitNormalReflection_fixed_iff
+
+#check LinearMap.BilinForm.unitNormalReflection_self
+#print axioms LinearMap.BilinForm.unitNormalReflection_self
+
+#check Hyperbolic.lorentzBilinForm
+#print axioms Hyperbolic.lorentzBilinForm
+
+#check Hyperbolic.lorentzBilinForm_apply
+#print axioms Hyperbolic.lorentzBilinForm_apply
+
+#check Hyperbolic.lorentzBilinForm_symm
+#print axioms Hyperbolic.lorentzBilinForm_symm
+
+#check Hyperbolic.lorentzReflection
+#print axioms Hyperbolic.lorentzReflection
+
+#check Hyperbolic.lorentzReflection_apply
+#print axioms Hyperbolic.lorentzReflection_apply
+
+#check Hyperbolic.lorentzReflection_preserves
+#print axioms Hyperbolic.lorentzReflection_preserves
+
+#check Hyperbolic.lorentzReflection_normal
+#print axioms Hyperbolic.lorentzReflection_normal
+
+#check Hyperbolic.lorentzReflection_involutive
+#print axioms Hyperbolic.lorentzReflection_involutive
+
+#check Hyperbolic.lorentzReflection_symm
+#print axioms Hyperbolic.lorentzReflection_symm
+
+#check Hyperbolic.lorentzReflection_fixed_iff
+#print axioms Hyperbolic.lorentzReflection_fixed_iff
+
+#check Hyperbolic.lorentzReflection_self
+#print axioms Hyperbolic.lorentzReflection_self

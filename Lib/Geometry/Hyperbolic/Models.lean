@@ -21,6 +21,7 @@ public import Mathlib.Analysis.Calculus.FDeriv.Pow
 public import Mathlib.Analysis.Calculus.Deriv.Inv
 
 public import Mathlib.LinearAlgebra.BilinearForm.Properties
+public import Lib.LinearAlgebra.BilinearForm.Reflection
 public import Mathlib.LinearAlgebra.BilinearForm.Hom
 public import Mathlib.Geometry.Manifold.VectorBundle.Tangent
 public import Mathlib.Geometry.Manifold.VectorBundle.Hom
@@ -6443,5 +6444,76 @@ theorem hyperboloid_finite_length_tail_cauchy
     exact hordered t s ht hs hts
 
 end FiniteLengthTails
+
+
+/-! ## Ambient Lorentz reflection
+
+Textbook source: G06 R01/R02, literal specialization of the generic real
+bilinear reflection. These are ambient identities only; upper-sheet, metric,
+side and polar geometry remain separate results.
+-/
+
+/-- R01: forget continuity in both slots of the literal Lorentz form. -/
+def lorentzBilinForm : LinearMap.BilinForm ℝ (Fin 3 → ℝ) :=
+  (ContinuousLinearMap.coeLM ℝ).comp Hyperbolic.lorentzBilinear.toLinearMap
+
+/-- R01: the algebraic form evaluates as the original continuous form. -/
+theorem lorentzBilinForm_apply (v w : Fin 3 → ℝ) :
+    lorentzBilinForm v w = Hyperbolic.lorentzBilinear v w := rfl
+
+/-- R01: the literal Lorentz form is symmetric. -/
+theorem lorentzBilinForm_symm (v w : Fin 3 → ℝ) :
+    lorentzBilinForm v w = lorentzBilinForm w v :=
+  Hyperbolic.lorentzBilinear_symm v w
+
+/-- R01: the Lorentz reflection is the generic unit-normal reflection. -/
+def lorentzReflection (n : Fin 3 → ℝ)
+    (hn : Hyperbolic.lorentzBilinear n n = 1) : (Fin 3 → ℝ) ≃ₗ[ℝ] (Fin 3 → ℝ) :=
+  LinearMap.BilinForm.unitNormalReflection lorentzBilinForm n
+    (by change Hyperbolic.lorentzBilinear n n = 1; exact hn)
+
+/-- R01: the literal second-slot reflection formula. -/
+theorem lorentzReflection_apply (n : Fin 3 → ℝ)
+    (hn : Hyperbolic.lorentzBilinear n n = 1) (v : Fin 3 → ℝ) :
+    lorentzReflection n hn v = v - (2 * Hyperbolic.lorentzBilinear v n) • n :=
+  LinearMap.BilinForm.unitNormalReflection_apply lorentzBilinForm lorentzBilinForm_symm n hn v
+
+/-- R01: the ambient Lorentz pairing is preserved. -/
+theorem lorentzReflection_preserves (n : Fin 3 → ℝ)
+    (hn : Hyperbolic.lorentzBilinear n n = 1) (v w : Fin 3 → ℝ) :
+    Hyperbolic.lorentzBilinear (lorentzReflection n hn v) (lorentzReflection n hn w) =
+      Hyperbolic.lorentzBilinear v w :=
+  LinearMap.BilinForm.unitNormalReflection_preserves lorentzBilinForm lorentzBilinForm_symm n hn v w
+
+/-- R02: the literal normal coordinate is negated. -/
+theorem lorentzReflection_normal (n : Fin 3 → ℝ)
+    (hn : Hyperbolic.lorentzBilinear n n = 1) (v : Fin 3 → ℝ) :
+    Hyperbolic.lorentzBilinear (lorentzReflection n hn v) n =
+      -Hyperbolic.lorentzBilinear v n :=
+  LinearMap.BilinForm.unitNormalReflection_normal lorentzBilinForm lorentzBilinForm_symm n hn v
+
+/-- R02: the literal ambient reflection is involutive. -/
+theorem lorentzReflection_involutive (n : Fin 3 → ℝ)
+    (hn : Hyperbolic.lorentzBilinear n n = 1) :
+    Function.Involutive (lorentzReflection n hn) :=
+  LinearMap.BilinForm.unitNormalReflection_involutive lorentzBilinForm n hn
+
+/-- R02: the literal inverse equals the reflection. -/
+theorem lorentzReflection_symm (n : Fin 3 → ℝ)
+    (hn : Hyperbolic.lorentzBilinear n n = 1) :
+    (lorentzReflection n hn).symm = lorentzReflection n hn :=
+  LinearMap.BilinForm.unitNormalReflection_symm lorentzBilinForm n hn
+
+/-- R02: the ambient fixed set is exactly the Lorentz perpendicular kernel. -/
+theorem lorentzReflection_fixed_iff (n : Fin 3 → ℝ)
+    (hn : Hyperbolic.lorentzBilinear n n = 1) (v : Fin 3 → ℝ) :
+    lorentzReflection n hn v = v ↔ Hyperbolic.lorentzBilinear v n = 0 :=
+  LinearMap.BilinForm.unitNormalReflection_fixed_iff lorentzBilinForm lorentzBilinForm_symm n hn v
+
+/-- R02: the unit normal is reversed. -/
+theorem lorentzReflection_self (n : Fin 3 → ℝ)
+    (hn : Hyperbolic.lorentzBilinear n n = 1) :
+    lorentzReflection n hn n = -n :=
+  LinearMap.BilinForm.unitNormalReflection_self lorentzBilinForm n hn
 
 end Hyperbolic
