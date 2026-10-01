@@ -1,0 +1,20 @@
+constants before 38301 after 38301 (keys 38199 38199 )
+lost 0 added 0 of which source declarations: 0 0 ; names with changed type 0 of which source: 0
+auxiliary lost/added/changed (not judged): 0 0 0
+module moves (source declarations, 1-to-1):
+       5  Lib.Geometry.Manifold.Transversality.Basic -> Lib.Geometry.Manifold.Transversality.CenteredChart
+       2  Lib.Geometry.Manifold.Transversality.Basic -> Lib.Geometry.Manifold.Transversality.Diffeomorph
+       5  Lib.Geometry.Manifold.Transversality.Basic -> Lib.Geometry.Manifold.Transversality.DiscTheorem
+      29  Lib.Geometry.Manifold.Transversality.Basic -> Lib.Geometry.Manifold.Transversality.DiskShrinking
+       8  Lib.Geometry.Manifold.Transversality.Basic -> Lib.Geometry.Manifold.Transversality.GermLinearization
+      13  Lib.Geometry.Manifold.Transversality.Basic -> Lib.Geometry.Manifold.Transversality.GermRealization
+       2  Lib.Geometry.Manifold.Transversality.Basic -> Lib.Geometry.Manifold.Transversality.Homogeneity
+      13  Lib.Geometry.Manifold.Transversality.Basic -> Lib.Geometry.Manifold.Transversality.LinearFramePaths
+      28  Lib.Geometry.Manifold.Transversality.Basic -> Lib.Geometry.Manifold.Transversality.MorseBelt
+       2  Lib.Geometry.Manifold.Transversality.Basic -> Lib.Geometry.Manifold.Transversality.Parametric
+       5  Lib.Geometry.Manifold.Transversality.Basic -> Lib.Geometry.Manifold.Transversality.RegularValues
+      13  Lib.Geometry.Manifold.Transversality.Basic -> Lib.Geometry.Manifold.Transversality.SupportedIsotopy
+      11  Lib.Geometry.Manifold.Transversality.Basic -> Lib.Geometry.Manifold.Transversality.Transverse
+ambiguous module changes: 0
+auxiliary constants that changed module: 64
+VERDICT PASS
