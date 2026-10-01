@@ -7436,3 +7436,1258 @@ is an evidence command rather than library content.
 #print axioms DeterminingFamily.commute_all_of_hom_ext
 #check DeterminingFamily.commute_all_of_lattice_image_eq_zpow
 #print axioms DeterminingFamily.commute_all_of_lattice_image_eq_zpow
+#check AddMonoidHom.surjective_restrict_left_of_signed_zero
+#print axioms AddMonoidHom.surjective_restrict_left_of_signed_zero
+#check AddMonoidHom.restrict_left_eq_zero_iff_of_signed_exact
+#print axioms AddMonoidHom.restrict_left_eq_zero_iff_of_signed_exact
+
+
+#check Complex.fractionalLinear_reverse_local
+#print axioms Complex.fractionalLinear_reverse_local
+
+#check RiemannBoundary.principalRoot_three_reverse_of_wedge
+#print axioms RiemannBoundary.principalRoot_three_reverse_of_wedge
+
+#check Compactification.exists_homeomorph_of_paired_limits
+#print axioms Compactification.exists_homeomorph_of_paired_limits
+
+#check RiemannSphere.closedOrientedHalfPlane_topology
+#print axioms RiemannSphere.closedOrientedHalfPlane_topology
+
+#check RiemannSphere.closedDiscHalfPlaneHomeomorph_inverse_receipt
+#print axioms RiemannSphere.closedDiscHalfPlaneHomeomorph_inverse_receipt
+
+#check Hyperbolic.upperHalfPlaneToHyperboloidCoords_mem
+#print axioms Hyperbolic.upperHalfPlaneToHyperboloidCoords_mem
+
+#check Hyperbolic.upperHalfPlaneToHyperboloidCoords_sub
+#print axioms Hyperbolic.upperHalfPlaneToHyperboloidCoords_sub
+
+#check Hyperbolic.upperHalfPlaneToHyperboloidCoords_add
+#print axioms Hyperbolic.upperHalfPlaneToHyperboloidCoords_add
+
+#check Hyperbolic.hyperboloid_abs_y_lt_t
+#print axioms Hyperbolic.hyperboloid_abs_y_lt_t
+
+#check Hyperbolic.hyperboloid_denominator_pos
+#print axioms Hyperbolic.hyperboloid_denominator_pos
+
+#check Hyperbolic.hyperboloidToUpperHalfPlaneCoords_im_pos
+#print axioms Hyperbolic.hyperboloidToUpperHalfPlaneCoords_im_pos
+
+#check Hyperbolic.hyperboloidCoords_left_inv
+#print axioms Hyperbolic.hyperboloidCoords_left_inv
+
+#check Hyperbolic.hyperboloidCoords_right_inv
+#print axioms Hyperbolic.hyperboloidCoords_right_inv
+
+#check Hyperbolic.toHyperboloid
+#print axioms Hyperbolic.toHyperboloid
+
+#check Hyperbolic.fromHyperboloid
+#print axioms Hyperbolic.fromHyperboloid
+
+#check Hyperbolic.toHyperboloid_val
+#print axioms Hyperbolic.toHyperboloid_val
+
+#check Hyperbolic.fromHyperboloid_coe
+#print axioms Hyperbolic.fromHyperboloid_coe
+
+#check Hyperbolic.fromHyperboloid_toHyperboloid
+#print axioms Hyperbolic.fromHyperboloid_toHyperboloid
+
+#check Hyperbolic.toHyperboloid_fromHyperboloid
+#print axioms Hyperbolic.toHyperboloid_fromHyperboloid
+
+#check Hyperbolic.upperHalfPlaneEquivHyperboloid
+#print axioms Hyperbolic.upperHalfPlaneEquivHyperboloid
+
+#check Hyperbolic.upperHalfPlaneEquivHyperboloid_apply
+#print axioms Hyperbolic.upperHalfPlaneEquivHyperboloid_apply
+
+#check Hyperbolic.upperHalfPlaneEquivHyperboloid_symm_apply
+#print axioms Hyperbolic.upperHalfPlaneEquivHyperboloid_symm_apply
+
+-- Real smooth coordinates and the actual Lorentz-kernel tangent identification.
+#check Hyperbolic.contDiffOn_upperHalfPlaneToHyperboloidCoords
+#print axioms Hyperbolic.contDiffOn_upperHalfPlaneToHyperboloidCoords
+
+#check Hyperbolic.contDiffOn_hyperboloidToUpperHalfPlaneCoords
+#print axioms Hyperbolic.contDiffOn_hyperboloidToUpperHalfPlaneCoords
+
+#check Hyperbolic.continuous_toHyperboloid
+#print axioms Hyperbolic.continuous_toHyperboloid
+
+#check Hyperbolic.continuous_fromHyperboloid
+#print axioms Hyperbolic.continuous_fromHyperboloid
+
+#check Hyperbolic.upperHalfPlaneHomeomorphHyperboloid
+#print axioms Hyperbolic.upperHalfPlaneHomeomorphHyperboloid
+
+#check Hyperbolic.upperHalfPlaneHomeomorphHyperboloid_toEquiv
+#print axioms Hyperbolic.upperHalfPlaneHomeomorphHyperboloid_toEquiv
+
+#check Hyperbolic.isOpenEmbedding_hyperboloidCoords
+#print axioms Hyperbolic.isOpenEmbedding_hyperboloidCoords
+
+#check Hyperbolic.range_hyperboloidCoords
+#print axioms Hyperbolic.range_hyperboloidCoords
+
+#check Hyperbolic.hyperboloidNonempty
+#print axioms Hyperbolic.hyperboloidNonempty
+
+#check Hyperbolic.hyperboloidChartedSpace
+#print axioms Hyperbolic.hyperboloidChartedSpace
+
+#check Hyperbolic.hyperboloidIsManifoldReal
+#print axioms Hyperbolic.hyperboloidIsManifoldReal
+
+#check Hyperbolic.upperHalfPlaneIsManifoldReal
+#print axioms Hyperbolic.upperHalfPlaneIsManifoldReal
+
+#check Hyperbolic.hyperboloid_chartAt
+#print axioms Hyperbolic.hyperboloid_chartAt
+
+#check Hyperbolic.hyperboloid_extChartAt
+#print axioms Hyperbolic.hyperboloid_extChartAt
+
+#check Hyperbolic.hyperboloid_extChartAt_symm_val
+#print axioms Hyperbolic.hyperboloid_extChartAt_symm_val
+
+#check Hyperbolic.contMDiff_toHyperboloid
+#print axioms Hyperbolic.contMDiff_toHyperboloid
+
+#check Hyperbolic.contMDiff_fromHyperboloid
+#print axioms Hyperbolic.contMDiff_fromHyperboloid
+
+#check Hyperbolic.contMDiff_hyperboloid_val
+#print axioms Hyperbolic.contMDiff_hyperboloid_val
+
+#check Hyperbolic.fderiv_upperHalfPlaneToHyperboloidCoords
+#print axioms Hyperbolic.fderiv_upperHalfPlaneToHyperboloidCoords
+
+#check Hyperbolic.fderiv_hyperboloidToUpperHalfPlaneCoords
+#print axioms Hyperbolic.fderiv_hyperboloidToUpperHalfPlaneCoords
+
+#check Hyperbolic.lorentzFunctional
+#print axioms Hyperbolic.lorentzFunctional
+
+#check Hyperbolic.lorentzFunctional_apply
+#print axioms Hyperbolic.lorentzFunctional_apply
+
+#check Hyperbolic.fderiv_toHyperboloid_mem_ker
+#print axioms Hyperbolic.fderiv_toHyperboloid_mem_ker
+
+#check Hyperbolic.fderiv_hyperboloid_left_inv
+#print axioms Hyperbolic.fderiv_hyperboloid_left_inv
+
+#check Hyperbolic.fderiv_hyperboloid_right_inv
+#print axioms Hyperbolic.fderiv_hyperboloid_right_inv
+
+#check Hyperbolic.range_fderiv_toHyperboloid
+#print axioms Hyperbolic.range_fderiv_toHyperboloid
+
+#check Hyperbolic.injective_fderiv_toHyperboloid
+#print axioms Hyperbolic.injective_fderiv_toHyperboloid
+
+#check Hyperbolic.mfderiv_hyperboloid_val
+#print axioms Hyperbolic.mfderiv_hyperboloid_val
+
+#check Hyperbolic.range_mfderiv_hyperboloid_val
+#print axioms Hyperbolic.range_mfderiv_hyperboloid_val
+
+#check Hyperbolic.mfderiv_fromHyperboloid_comp_toHyperboloid
+#print axioms Hyperbolic.mfderiv_fromHyperboloid_comp_toHyperboloid
+
+#check Hyperbolic.mfderiv_toHyperboloid_comp_fromHyperboloid
+#print axioms Hyperbolic.mfderiv_toHyperboloid_comp_fromHyperboloid
+
+#check Hyperbolic.hyperboloidTangentEquivKer
+#print axioms Hyperbolic.hyperboloidTangentEquivKer
+
+#check Hyperbolic.hyperboloidTangentEquivKer_apply
+#print axioms Hyperbolic.hyperboloidTangentEquivKer_apply
+
+#check Hyperbolic.hyperboloidTangentEquivKer_symm_apply
+#print axioms Hyperbolic.hyperboloidTangentEquivKer_symm_apply
+
+#check Hyperbolic.hyperboloid_chart_inverse_eventually
+#print axioms Hyperbolic.hyperboloid_chart_inverse_eventually
+
+#check ContinuousLinearMap.isVonNBounded_positiveBilinear_unitBall
+#print axioms ContinuousLinearMap.isVonNBounded_positiveBilinear_unitBall
+
+#check Bundle.smoothMetricOfPositive
+#print axioms Bundle.smoothMetricOfPositive
+
+#check Bundle.smoothMetricOfPositive_inner
+#print axioms Bundle.smoothMetricOfPositive_inner
+
+#check Hyperbolic.lorentzBilinear
+#print axioms Hyperbolic.lorentzBilinear
+
+#check Hyperbolic.upperHalfPlaneCoordinateTensor
+#print axioms Hyperbolic.upperHalfPlaneCoordinateTensor
+
+#check Hyperbolic.lorentzBilinear_apply
+#print axioms Hyperbolic.lorentzBilinear_apply
+
+#check Hyperbolic.lorentzBilinear_eq_functional
+#print axioms Hyperbolic.lorentzBilinear_eq_functional
+
+#check Hyperbolic.upperHalfPlaneCoordinateTensor_apply
+#print axioms Hyperbolic.upperHalfPlaneCoordinateTensor_apply
+
+#check Hyperbolic.fderiv_upperHalfPlaneToHyperboloidCoords_x
+#print axioms Hyperbolic.fderiv_upperHalfPlaneToHyperboloidCoords_x
+
+#check Hyperbolic.fderiv_upperHalfPlaneToHyperboloidCoords_sub
+#print axioms Hyperbolic.fderiv_upperHalfPlaneToHyperboloidCoords_sub
+
+#check Hyperbolic.fderiv_upperHalfPlaneToHyperboloidCoords_add
+#print axioms Hyperbolic.fderiv_upperHalfPlaneToHyperboloidCoords_add
+
+#check Hyperbolic.lorentz_fderiv_eq_auxiliary
+#print axioms Hyperbolic.lorentz_fderiv_eq_auxiliary
+
+#check Hyperbolic.auxiliary_fderiv_quadratic
+#print axioms Hyperbolic.auxiliary_fderiv_quadratic
+
+#check Hyperbolic.lorentz_fderiv_quadratic
+#print axioms Hyperbolic.lorentz_fderiv_quadratic
+
+#check Hyperbolic.lorentzBilinear_symm
+#print axioms Hyperbolic.lorentzBilinear_symm
+
+#check Hyperbolic.upperHalfPlaneCoordinateTensor_symm
+#print axioms Hyperbolic.upperHalfPlaneCoordinateTensor_symm
+
+#check Hyperbolic.lorentz_fderiv_bilinear
+#print axioms Hyperbolic.lorentz_fderiv_bilinear
+
+#check Hyperbolic.upperHalfPlaneCoordinateTensor_pos
+#print axioms Hyperbolic.upperHalfPlaneCoordinateTensor_pos
+
+#check Hyperbolic.lorentzBilinear_pos_on_ker
+#print axioms Hyperbolic.lorentzBilinear_pos_on_ker
+
+#check Hyperbolic.upperHalfPlaneTangentTensor
+#print axioms Hyperbolic.upperHalfPlaneTangentTensor
+
+#check Hyperbolic.hyperboloidTangentTensor
+#print axioms Hyperbolic.hyperboloidTangentTensor
+
+#check Hyperbolic.upperHalfPlaneTangentTensor_apply
+#print axioms Hyperbolic.upperHalfPlaneTangentTensor_apply
+
+#check Hyperbolic.hyperboloidTangentTensor_apply
+#print axioms Hyperbolic.hyperboloidTangentTensor_apply
+
+#check Hyperbolic.upperHalfPlaneTangentTensor_symm
+#print axioms Hyperbolic.upperHalfPlaneTangentTensor_symm
+
+#check Hyperbolic.hyperboloidTangentTensor_symm
+#print axioms Hyperbolic.hyperboloidTangentTensor_symm
+
+#check Hyperbolic.upperHalfPlaneTangentTensor_pos
+#print axioms Hyperbolic.upperHalfPlaneTangentTensor_pos
+
+#check Hyperbolic.hyperboloidTangentTensor_pos
+#print axioms Hyperbolic.hyperboloidTangentTensor_pos
+
+#check Hyperbolic.toHyperboloid_preserves_tangentTensor
+#print axioms Hyperbolic.toHyperboloid_preserves_tangentTensor
+
+#check Hyperbolic.upperHalfPlaneTangentTensor_inCoordinates
+#print axioms Hyperbolic.upperHalfPlaneTangentTensor_inCoordinates
+
+#check Hyperbolic.hyperboloidTangentTensor_inCoordinates
+#print axioms Hyperbolic.hyperboloidTangentTensor_inCoordinates
+
+#check Hyperbolic.contMDiff_upperHalfPlaneCoordinateTensor
+#print axioms Hyperbolic.contMDiff_upperHalfPlaneCoordinateTensor
+
+#check Hyperbolic.contMDiff_upperHalfPlaneTangentTensor
+#print axioms Hyperbolic.contMDiff_upperHalfPlaneTangentTensor
+
+#check Hyperbolic.contMDiff_hyperboloidTangentTensor
+#print axioms Hyperbolic.contMDiff_hyperboloidTangentTensor
+
+#check Manifold.speed_comp_of_tensorPreserving
+#print axioms Manifold.speed_comp_of_tensorPreserving
+
+#check Manifold.speedWithin_comp_of_tensorPreserving
+#print axioms Manifold.speedWithin_comp_of_tensorPreserving
+
+#check Manifold.mfderiv_symm_comp_of_diffeomorph
+#print axioms Manifold.mfderiv_symm_comp_of_diffeomorph
+
+#check Manifold.mfderiv_comp_symm_of_diffeomorph
+#print axioms Manifold.mfderiv_comp_symm_of_diffeomorph
+
+#check Manifold.symm_tensorPreserving_of_diffeomorph
+#print axioms Manifold.symm_tensorPreserving_of_diffeomorph
+
+#check Manifold.symm_norm_enorm_of_tensorPreserving
+#print axioms Manifold.symm_norm_enorm_of_tensorPreserving
+
+#check Manifold.IsPiecewiseC1On
+#print axioms Manifold.IsPiecewiseC1On
+
+#check Manifold.PiecewiseC1CurveOn
+#print axioms Manifold.PiecewiseC1CurveOn
+
+#check Manifold.IsPiecewiseC1On.comp_contMDiff
+#print axioms Manifold.IsPiecewiseC1On.comp_contMDiff
+
+#check Manifold.PiecewiseC1CurveOn.map
+#print axioms Manifold.PiecewiseC1CurveOn.map
+
+#check Manifold.PiecewiseC1CurveOn.map_apply
+#print axioms Manifold.PiecewiseC1CurveOn.map_apply
+
+#check Manifold.PiecewiseC1CurveOn.mapEquiv
+#print axioms Manifold.PiecewiseC1CurveOn.mapEquiv
+
+#check Manifold.PiecewiseC1CurveOn.mapEquiv_apply
+#print axioms Manifold.PiecewiseC1CurveOn.mapEquiv_apply
+
+#check Manifold.PiecewiseC1CurveOn.mapEquiv_symm_apply
+#print axioms Manifold.PiecewiseC1CurveOn.mapEquiv_symm_apply
+
+#check Fin.commonCutValues
+#print axioms Fin.commonCutValues
+
+#check Fin.commonCutCount
+#print axioms Fin.commonCutCount
+
+#check Fin.commonCutValues_nonempty
+#print axioms Fin.commonCutValues_nonempty
+
+#check Fin.commonCutValues_card
+#print axioms Fin.commonCutValues_card
+
+#check Fin.commonCut
+#print axioms Fin.commonCut
+
+#check Fin.commonCutRankLeft
+#print axioms Fin.commonCutRankLeft
+
+#check Fin.commonCutRankRight
+#print axioms Fin.commonCutRankRight
+
+#check Fin.commonCut_properties
+#print axioms Fin.commonCut_properties
+
+#check Fin.commonCut_order_endpoints
+#print axioms Fin.commonCut_order_endpoints
+
+#check Fin.commonCutCount_eq_zero
+#print axioms Fin.commonCutCount_eq_zero
+
+#check Fin.rankBlock
+#print axioms Fin.rankBlock
+
+#check Fin.rankBlockSize
+#print axioms Fin.rankBlockSize
+
+#check Fin.rankBlock_disjoint
+#print axioms Fin.rankBlock_disjoint
+
+#check Fin.rankBlock_cover
+#print axioms Fin.rankBlock_cover
+
+#check Fin.rankBlock_unique_owner
+#print axioms Fin.rankBlock_unique_owner
+
+#check Fin.rankBlock_empty
+#print axioms Fin.rankBlock_empty
+
+#check Fin.rankBlock_strict
+#print axioms Fin.rankBlock_strict
+
+#check Fin.rankTarget_zero_of_source_zero
+#print axioms Fin.rankTarget_zero_of_source_zero
+
+#check Fin.rankBlockEquiv
+#print axioms Fin.rankBlockEquiv
+
+#check Fin.rankBlockEquiv_val
+#print axioms Fin.rankBlockEquiv_val
+
+#check Fin.rankBlockCut_bound
+#print axioms Fin.rankBlockCut_bound
+
+#check Fin.rankBlockCuts
+#print axioms Fin.rankBlockCuts
+
+#check Fin.rankBlockCuts_endpoints
+#print axioms Fin.rankBlockCuts_endpoints
+
+#check Fin.rankBlockCuts_monotone
+#print axioms Fin.rankBlockCuts_monotone
+
+#check Fin.rankBlockCuts_adjacent
+#print axioms Fin.rankBlockCuts_adjacent
+
+#check Fin.rankBlock_interval_subset
+#print axioms Fin.rankBlock_interval_subset
+
+#check Fin.rankBlock_strict_interval
+#print axioms Fin.rankBlock_strict_interval
+
+#check Fin.exists_strict_piece_containing_of_range_subset
+#print axioms Fin.exists_strict_piece_containing_of_range_subset
+
+#check Manifold.piecewiseC1Length
+#print axioms Manifold.piecewiseC1Length
+
+#check Manifold.continuousOn_pieceSpeed
+#print axioms Manifold.continuousOn_pieceSpeed
+
+#check Manifold.IsPiecewiseC1On.speedRepresentative_length
+#print axioms Manifold.IsPiecewiseC1On.speedRepresentative_length
+
+#check Manifold.IsPiecewiseC1On.speed_length
+#print axioms Manifold.IsPiecewiseC1On.speed_length
+
+#check Manifold.IsPiecewiseC1On.speed_extension
+#print axioms Manifold.IsPiecewiseC1On.speed_extension
+
+#check Manifold.IsPiecewiseC1On.piecewiseC1Length_eq_zero
+#print axioms Manifold.IsPiecewiseC1On.piecewiseC1Length_eq_zero
+
+#check Manifold.IsPiecewiseC1On.refine
+#print axioms Manifold.IsPiecewiseC1On.refine
+
+#check Manifold.IsPiecewiseC1On.pieceIntegral_eq_sum_rankBlock
+#print axioms Manifold.IsPiecewiseC1On.pieceIntegral_eq_sum_rankBlock
+
+#check Manifold.IsPiecewiseC1On.length_eq_of_strictRefinement
+#print axioms Manifold.IsPiecewiseC1On.length_eq_of_strictRefinement
+
+#check Manifold.IsPiecewiseC1On.length_eq
+#print axioms Manifold.IsPiecewiseC1On.length_eq
+
+#check Manifold.IsPiecewiseC1On.refine_length
+#print axioms Manifold.IsPiecewiseC1On.refine_length
+
+#check Manifold.pieceIntegral_comp_of_tensorPreserving
+#print axioms Manifold.pieceIntegral_comp_of_tensorPreserving
+
+#check Manifold.IsPiecewiseC1On.length_comp_of_tensorPreserving
+#print axioms Manifold.IsPiecewiseC1On.length_comp_of_tensorPreserving
+
+#check Manifold.IsPiecewiseC1On.length_symm_of_tensorPreserving
+#print axioms Manifold.IsPiecewiseC1On.length_symm_of_tensorPreserving
+
+#check Manifold.PiecewiseC1CurveOn.mapEquiv_length
+#print axioms Manifold.PiecewiseC1CurveOn.mapEquiv_length
+
+/-! Actual hyperbolic-model norm, angle, speed and finite-length transport (G01.k). -/
+
+#check Hyperbolic.upperHalfPlaneDiffeomorphHyperboloid
+#print axioms Hyperbolic.upperHalfPlaneDiffeomorphHyperboloid
+
+#check Hyperbolic.upperHalfPlaneMetric
+#print axioms Hyperbolic.upperHalfPlaneMetric
+
+#check Hyperbolic.hyperboloidMetric
+#print axioms Hyperbolic.hyperboloidMetric
+
+#check Hyperbolic.upperHalfPlaneDiffeomorphHyperboloid_coe
+#print axioms Hyperbolic.upperHalfPlaneDiffeomorphHyperboloid_coe
+
+#check Hyperbolic.upperHalfPlaneMetric_inner
+#print axioms Hyperbolic.upperHalfPlaneMetric_inner
+
+#check Hyperbolic.hyperboloidMetric_inner
+#print axioms Hyperbolic.hyperboloidMetric_inner
+
+#check Hyperbolic.toHyperboloid_preserves_metric
+#print axioms Hyperbolic.toHyperboloid_preserves_metric
+
+#check Hyperbolic.fromHyperboloid_preserves_metric
+#print axioms Hyperbolic.fromHyperboloid_preserves_metric
+
+#check Hyperbolic.toHyperboloid_norm_angle
+#print axioms Hyperbolic.toHyperboloid_norm_angle
+
+#check Hyperbolic.toHyperboloid_speed
+#print axioms Hyperbolic.toHyperboloid_speed
+
+#check Hyperbolic.toHyperboloid_speedWithin
+#print axioms Hyperbolic.toHyperboloid_speedWithin
+
+#check Hyperbolic.fromHyperboloid_norm_angle
+#print axioms Hyperbolic.fromHyperboloid_norm_angle
+
+#check Hyperbolic.fromHyperboloid_speed
+#print axioms Hyperbolic.fromHyperboloid_speed
+
+#check Hyperbolic.fromHyperboloid_speedWithin
+#print axioms Hyperbolic.fromHyperboloid_speedWithin
+
+#check Hyperbolic.toHyperboloid_length
+#print axioms Hyperbolic.toHyperboloid_length
+
+#check Hyperbolic.fromHyperboloid_length
+#print axioms Hyperbolic.fromHyperboloid_length
+
+#check Hyperbolic.upperHalfPlaneDiffeomorphHyperboloid_curveFamily_length
+#print axioms Hyperbolic.upperHalfPlaneDiffeomorphHyperboloid_curveFamily_length
+
+#check Manifold.piecewiseC1EDist
+#print axioms Manifold.piecewiseC1EDist
+
+#check Manifold.piecewiseC1EDist_le_pathELength
+#print axioms Manifold.piecewiseC1EDist_le_pathELength
+
+#check Manifold.piecewiseC1EDist_le_riemannianEDist
+#print axioms Manifold.piecewiseC1EDist_le_riemannianEDist
+
+#check Manifold.IsPiecewiseC1On.riemannianEDist_le_piece
+#print axioms Manifold.IsPiecewiseC1On.riemannianEDist_le_piece
+
+#check Manifold.IsPiecewiseC1On.riemannianEDist_le_length
+#print axioms Manifold.IsPiecewiseC1On.riemannianEDist_le_length
+
+#check Manifold.riemannianEDist_le_piecewiseC1EDist
+#print axioms Manifold.riemannianEDist_le_piecewiseC1EDist
+
+#check Manifold.piecewiseC1EDist_eq_riemannianEDist
+#print axioms Manifold.piecewiseC1EDist_eq_riemannianEDist
+
+#check Manifold.piecewiseC1EDist_eq_top_iff
+#print axioms Manifold.piecewiseC1EDist_eq_top_iff
+
+#check Manifold.piecewiseC1EDist_eq_top_iff_no_c1
+#print axioms Manifold.piecewiseC1EDist_eq_top_iff_no_c1
+
+#check Manifold.piecewiseC1EDist_finite_of_curve
+#print axioms Manifold.piecewiseC1EDist_finite_of_curve
+
+#check Hyperbolic.upperHalfPlaneSegment
+#print axioms Hyperbolic.upperHalfPlaneSegment
+
+#check Hyperbolic.upperHalfPlaneSegment_properties
+#print axioms Hyperbolic.upperHalfPlaneSegment_properties
+
+#check Hyperbolic.upperHalfPlane_exists_finiteCurve
+#print axioms Hyperbolic.upperHalfPlane_exists_finiteCurve
+
+#check Hyperbolic.hyperboloid_exists_finiteCurve
+#print axioms Hyperbolic.hyperboloid_exists_finiteCurve
+
+#check Hyperbolic.toHyperboloid_piecewiseC1EDist_le
+#print axioms Hyperbolic.toHyperboloid_piecewiseC1EDist_le
+
+#check Hyperbolic.fromHyperboloid_piecewiseC1EDist_le
+#print axioms Hyperbolic.fromHyperboloid_piecewiseC1EDist_le
+
+#check Hyperbolic.upperHalfPlane_intrinsicEDist_finite
+#print axioms Hyperbolic.upperHalfPlane_intrinsicEDist_finite
+
+#check Hyperbolic.hyperboloid_intrinsicEDist_finite
+#print axioms Hyperbolic.hyperboloid_intrinsicEDist_finite
+
+#check Hyperbolic.toHyperboloid_intrinsicEDist
+#print axioms Hyperbolic.toHyperboloid_intrinsicEDist
+
+#check Hyperbolic.fromHyperboloid_intrinsicEDist
+#print axioms Hyperbolic.fromHyperboloid_intrinsicEDist
+
+#check Hyperbolic.lorentzKer_time_eq
+#print axioms Hyperbolic.lorentzKer_time_eq
+
+#check Hyperbolic.lorentzKer_quadratic_lowerBound
+#print axioms Hyperbolic.lorentzKer_quadratic_lowerBound
+
+#check Hyperbolic.lorentzKer_quadratic_nonneg
+#print axioms Hyperbolic.lorentzKer_quadratic_nonneg
+
+#check Hyperbolic.lorentzKer_quadratic_eq_zero_iff
+#print axioms Hyperbolic.lorentzKer_quadratic_eq_zero_iff
+
+#check Hyperbolic.lorentzKer_quadratic_pos
+#print axioms Hyperbolic.lorentzKer_quadratic_pos
+
+#check Hyperbolic.finrank_lorentzKer
+#print axioms Hyperbolic.finrank_lorentzKer
+
+#check Hyperbolic.lorentzKerBilinear
+#print axioms Hyperbolic.lorentzKerBilinear
+
+#check Hyperbolic.lorentzKerBilinear_properties
+#print axioms Hyperbolic.lorentzKerBilinear_properties
+
+#check Hyperbolic.hyperboloid_tangent_lorentz_positive
+#print axioms Hyperbolic.hyperboloid_tangent_lorentz_positive
+
+#check Hyperbolic.lorentzPlaneCore
+#print axioms Hyperbolic.lorentzPlaneCore
+
+#check Hyperbolic.lorentzPlaneBasis
+#print axioms Hyperbolic.lorentzPlaneBasis
+
+#check Hyperbolic.lorentzPlaneBasis_gram
+#print axioms Hyperbolic.lorentzPlaneBasis_gram
+
+#check Hyperbolic.lorentzSumMap
+#print axioms Hyperbolic.lorentzSumMap
+
+#check Hyperbolic.lorentz_directSum
+#print axioms Hyperbolic.lorentz_directSum
+
+#check Hyperbolic.lorentzSumMap_bijective
+#print axioms Hyperbolic.lorentzSumMap_bijective
+
+#check Hyperbolic.lorentzSumEquiv
+#print axioms Hyperbolic.lorentzSumEquiv
+
+#check Hyperbolic.lorentzFrameBasis
+#print axioms Hyperbolic.lorentzFrameBasis
+
+#check Hyperbolic.lorentzFrameBasis_apply
+#print axioms Hyperbolic.lorentzFrameBasis_apply
+
+#check Hyperbolic.lorentzFrameBasis_gram
+#print axioms Hyperbolic.lorentzFrameBasis_gram
+
+#check Hyperbolic.lorentzCenterCoordinates
+#print axioms Hyperbolic.lorentzCenterCoordinates
+
+#check Hyperbolic.lorentzCenterCoordinates_properties
+#print axioms Hyperbolic.lorentzCenterCoordinates_properties
+
+#check Hyperbolic.lorentzCenterCoordinates_time
+#print axioms Hyperbolic.lorentzCenterCoordinates_time
+
+#check Hyperbolic.lorentzCenterCoordinates_preserves
+#print axioms Hyperbolic.lorentzCenterCoordinates_preserves
+
+#check Hyperbolic.lorentzCenterCoordinates_symm_preserves
+#print axioms Hyperbolic.lorentzCenterCoordinates_symm_preserves
+
+#check Hyperbolic.lorentzUnit_time_ne_zero
+#print axioms Hyperbolic.lorentzUnit_time_ne_zero
+
+#check Hyperbolic.hyperboloid_spatial_dot_lt_time_mul
+#print axioms Hyperbolic.hyperboloid_spatial_dot_lt_time_mul
+
+#check Hyperbolic.hyperboloid_neg_lorentz_pos
+#print axioms Hyperbolic.hyperboloid_neg_lorentz_pos
+
+#check Hyperbolic.lorentzUnit_time_sign
+#print axioms Hyperbolic.lorentzUnit_time_sign
+
+#check Hyperbolic.lorentzCenterCoordinates_mem
+#print axioms Hyperbolic.lorentzCenterCoordinates_mem
+
+#check Hyperbolic.lorentzCenterCoordinates_symm_mem
+#print axioms Hyperbolic.lorentzCenterCoordinates_symm_mem
+
+#check Hyperbolic.centerHyperboloid
+#print axioms Hyperbolic.centerHyperboloid
+
+#check Hyperbolic.uncenterHyperboloid
+#print axioms Hyperbolic.uncenterHyperboloid
+
+#check Hyperbolic.centerHyperboloid_properties
+#print axioms Hyperbolic.centerHyperboloid_properties
+
+#check Hyperbolic.centerHyperboloidEquiv
+#print axioms Hyperbolic.centerHyperboloidEquiv
+
+#check Hyperbolic.contMDiff_centerHyperboloid
+#print axioms Hyperbolic.contMDiff_centerHyperboloid
+
+#check Hyperbolic.contMDiff_uncenterHyperboloid
+#print axioms Hyperbolic.contMDiff_uncenterHyperboloid
+
+#check Hyperbolic.centerHyperboloidDiffeomorph
+#print axioms Hyperbolic.centerHyperboloidDiffeomorph
+
+#check Hyperbolic.mfderiv_centerHyperboloid_val
+#print axioms Hyperbolic.mfderiv_centerHyperboloid_val
+
+#check Hyperbolic.mfderiv_uncenterHyperboloid_val
+#print axioms Hyperbolic.mfderiv_uncenterHyperboloid_val
+
+#check Hyperbolic.centerHyperboloid_mfderiv_inverse
+#print axioms Hyperbolic.centerHyperboloid_mfderiv_inverse
+
+#check Hyperbolic.centerHyperboloid_kernel_transport
+#print axioms Hyperbolic.centerHyperboloid_kernel_transport
+
+#check Hyperbolic.centerHyperboloid_preserves_tangentTensor
+#print axioms Hyperbolic.centerHyperboloid_preserves_tangentTensor
+
+#check Hyperbolic.uncenterHyperboloid_preserves_tangentTensor
+#print axioms Hyperbolic.uncenterHyperboloid_preserves_tangentTensor
+
+#check Hyperbolic.centerHyperboloid_preserves_metric
+#print axioms Hyperbolic.centerHyperboloid_preserves_metric
+
+#check Hyperbolic.uncenterHyperboloid_preserves_metric
+#print axioms Hyperbolic.uncenterHyperboloid_preserves_metric
+
+#check Hyperbolic.centerHyperboloid_norm_enorm
+#print axioms Hyperbolic.centerHyperboloid_norm_enorm
+
+#check Hyperbolic.uncenterHyperboloid_norm_enorm
+#print axioms Hyperbolic.uncenterHyperboloid_norm_enorm
+
+#check Hyperbolic.centerHyperboloid_speed
+#print axioms Hyperbolic.centerHyperboloid_speed
+
+#check Hyperbolic.centerHyperboloid_speedWithin
+#print axioms Hyperbolic.centerHyperboloid_speedWithin
+
+#check Hyperbolic.uncenterHyperboloid_speed
+#print axioms Hyperbolic.uncenterHyperboloid_speed
+
+#check Hyperbolic.uncenterHyperboloid_speedWithin
+#print axioms Hyperbolic.uncenterHyperboloid_speedWithin
+
+#check Hyperbolic.centerHyperboloid_length
+#print axioms Hyperbolic.centerHyperboloid_length
+
+#check Hyperbolic.uncenterHyperboloid_length
+#print axioms Hyperbolic.uncenterHyperboloid_length
+
+#check Hyperbolic.centerHyperboloid_curveFamily_length
+#print axioms Hyperbolic.centerHyperboloid_curveFamily_length
+
+#check AbsolutelyContinuousOnInterval.trans_of_le
+#print axioms AbsolutelyContinuousOnInterval.trans_of_le
+
+#check AbsolutelyContinuousOnInterval.of_monotone_subdivision
+#print axioms AbsolutelyContinuousOnInterval.of_monotone_subdivision
+
+#check AbsolutelyContinuousOnInterval.sum_abs_sub_le_integral_abs_deriv
+#print axioms AbsolutelyContinuousOnInterval.sum_abs_sub_le_integral_abs_deriv
+
+#check AbsolutelyContinuousOnInterval.eVariationOn_le_ofReal_integral_abs_deriv
+#print axioms AbsolutelyContinuousOnInterval.eVariationOn_le_ofReal_integral_abs_deriv
+
+#check AbsolutelyContinuousOnInterval.variation_bounds_integral_abs_deriv
+#print axioms AbsolutelyContinuousOnInterval.variation_bounds_integral_abs_deriv
+
+#check Hyperbolic.hyperboloidSpatial
+#print axioms Hyperbolic.hyperboloidSpatial
+
+#check Hyperbolic.hyperboloidRadius
+#print axioms Hyperbolic.hyperboloidRadius
+
+#check Hyperbolic.hyperboloidPolarCoords
+#print axioms Hyperbolic.hyperboloidPolarCoords
+
+#check Hyperbolic.hyperboloidPolarCoords_mem
+#print axioms Hyperbolic.hyperboloidPolarCoords_mem
+
+#check Hyperbolic.hyperboloidPolar
+#print axioms Hyperbolic.hyperboloidPolar
+
+#check Hyperbolic.hyperboloidRadius_properties
+#print axioms Hyperbolic.hyperboloidRadius_properties
+
+#check Hyperbolic.hyperboloidPolar_radius
+#print axioms Hyperbolic.hyperboloidPolar_radius
+
+#check Hyperbolic.hyperboloidPolar_arg
+#print axioms Hyperbolic.hyperboloidPolar_arg
+
+#check Hyperbolic.hyperboloidPolar_eq_iff
+#print axioms Hyperbolic.hyperboloidPolar_eq_iff
+
+#check Hyperbolic.hyperboloidPolar_center_direction
+#print axioms Hyperbolic.hyperboloidPolar_center_direction
+
+#check Hyperbolic.contMDiffAt_hyperboloidRadius
+#print axioms Hyperbolic.contMDiffAt_hyperboloidRadius
+
+#check Hyperbolic.hyperboloidPolar_local_coordinates
+#print axioms Hyperbolic.hyperboloidPolar_local_coordinates
+
+#check Hyperbolic.contMDiff_hyperboloidPolar
+#print axioms Hyperbolic.contMDiff_hyperboloidPolar
+
+#check Hyperbolic.mfderiv_hyperboloidPolar_val
+#print axioms Hyperbolic.mfderiv_hyperboloidPolar_val
+
+#check Hyperbolic.hyperboloidPolar_tangentTensor
+#print axioms Hyperbolic.hyperboloidPolar_tangentTensor
+
+#check Hyperbolic.hyperboloidPolar_metric
+#print axioms Hyperbolic.hyperboloidPolar_metric
+
+#check Hyperbolic.hyperboloidPolar_norm
+#print axioms Hyperbolic.hyperboloidPolar_norm
+
+#check Hyperbolic.hyperboloidPolar_curve_speed
+#print axioms Hyperbolic.hyperboloidPolar_curve_speed
+
+#check Hyperbolic.hyperboloidRadius_lipschitzOn_piece
+#print axioms Hyperbolic.hyperboloidRadius_lipschitzOn_piece
+
+#check Hyperbolic.hyperboloidRadius_absolutelyContinuous
+#print axioms Hyperbolic.hyperboloidRadius_absolutelyContinuous
+
+#check Hyperbolic.hyperboloidRadius_deriv_le_pieceSpeed
+#print axioms Hyperbolic.hyperboloidRadius_deriv_le_pieceSpeed
+
+#check Hyperbolic.hyperboloidRadius_ae_deriv_le_pieceSpeed
+#print axioms Hyperbolic.hyperboloidRadius_ae_deriv_le_pieceSpeed
+
+#check Hyperbolic.hyperboloidRadius_piece_variation
+#print axioms Hyperbolic.hyperboloidRadius_piece_variation
+
+#check Hyperbolic.hyperboloidRadius_variation_le_length
+#print axioms Hyperbolic.hyperboloidRadius_variation_le_length
+
+#check AbsolutelyContinuousOnInterval.monotoneOn_of_integral_abs_deriv_eq_sub
+#print axioms AbsolutelyContinuousOnInterval.monotoneOn_of_integral_abs_deriv_eq_sub
+
+#check AbsolutelyContinuousOnInterval.const_of_monotone_subdivision_of_ae_hasDerivAt_zero
+#print axioms AbsolutelyContinuousOnInterval.const_of_monotone_subdivision_of_ae_hasDerivAt_zero
+
+#check Hyperbolic.hyperboloidRadialCurve
+#print axioms Hyperbolic.hyperboloidRadialCurve
+
+#check Hyperbolic.hyperboloidRadialCurve_properties
+#print axioms Hyperbolic.hyperboloidRadialCurve_properties
+
+#check Hyperbolic.hyperboloidRadialCurve_length
+#print axioms Hyperbolic.hyperboloidRadialCurve_length
+
+#check Hyperbolic.hyperboloid_centered_piecewiseC1EDist
+#print axioms Hyperbolic.hyperboloid_centered_piecewiseC1EDist
+
+#check Hyperbolic.hyperboloid_centered_minimizer_losses
+#print axioms Hyperbolic.hyperboloid_centered_minimizer_losses
+
+#check Hyperbolic.hyperboloid_centered_minimizer_radius_monotone
+#print axioms Hyperbolic.hyperboloid_centered_minimizer_radius_monotone
+
+#check Hyperbolic.hyperboloid_centered_minimizer_direction_deriv
+#print axioms Hyperbolic.hyperboloid_centered_minimizer_direction_deriv
+
+#check Hyperbolic.hyperboloid_centered_minimizer_direction
+#print axioms Hyperbolic.hyperboloid_centered_minimizer_direction
+
+#check Hyperbolic.hyperboloid_centered_minimizer_image
+#print axioms Hyperbolic.hyperboloid_centered_minimizer_image
+
+#check Hyperbolic.hyperboloid_centered_unitSpeed_unique
+#print axioms Hyperbolic.hyperboloid_centered_unitSpeed_unique
+
+#check Hyperbolic.hyperboloid_centered_minimizer_zero
+#print axioms Hyperbolic.hyperboloid_centered_minimizer_zero
+
+#check Hyperbolic.hyperboloidLengthDist
+#print axioms Hyperbolic.hyperboloidLengthDist
+
+#check Hyperbolic.hyperboloidSegment
+#print axioms Hyperbolic.hyperboloidSegment
+
+#check Hyperbolic.hyperboloidSegmentInitial
+#print axioms Hyperbolic.hyperboloidSegmentInitial
+
+#check Hyperbolic.hyperboloidLengthDist_center
+#print axioms Hyperbolic.hyperboloidLengthDist_center
+
+#check Hyperbolic.hyperboloidLengthDist_nonneg_eq_zero
+#print axioms Hyperbolic.hyperboloidLengthDist_nonneg_eq_zero
+
+#check Hyperbolic.hyperboloidSegment_properties
+#print axioms Hyperbolic.hyperboloidSegment_properties
+
+#check Hyperbolic.hyperboloidSegment_length
+#print axioms Hyperbolic.hyperboloidSegment_length
+
+#check Hyperbolic.hyperboloid_minimizer_image
+#print axioms Hyperbolic.hyperboloid_minimizer_image
+
+#check Hyperbolic.hyperboloid_unitSpeed_minimizer_unique
+#print axioms Hyperbolic.hyperboloid_unitSpeed_minimizer_unique
+
+#check Hyperbolic.hyperboloidSegment_initial_formula
+#print axioms Hyperbolic.hyperboloidSegment_initial_formula
+
+#check Hyperbolic.hyperboloidLengthDist_cosh
+#print axioms Hyperbolic.hyperboloidLengthDist_cosh
+
+#check Hyperbolic.hyperboloidSegmentInitial_endpoint
+#print axioms Hyperbolic.hyperboloidSegmentInitial_endpoint
+
+#check Hyperbolic.hyperboloidLengthDist_arcosh
+#print axioms Hyperbolic.hyperboloidLengthDist_arcosh
+
+#check Hyperbolic.hyperboloidLengthDist_symm
+#print axioms Hyperbolic.hyperboloidLengthDist_symm
+
+#check Hyperbolic.continuous_hyperboloidLengthDist
+#print axioms Hyperbolic.continuous_hyperboloidLengthDist
+
+#check Hyperbolic.hyperboloidSegment_endpoint
+#print axioms Hyperbolic.hyperboloidSegment_endpoint
+
+#check Hyperbolic.hyperboloidSegment_reverse
+#print axioms Hyperbolic.hyperboloidSegment_reverse
+
+#check Hyperbolic.hyperboloidNormalizedSegment
+#print axioms Hyperbolic.hyperboloidNormalizedSegment
+
+#check Hyperbolic.hyperboloidNormalizedSegment_properties
+#print axioms Hyperbolic.hyperboloidNormalizedSegment_properties
+
+#check Hyperbolic.continuous_hyperboloidNormalizedSegment
+#print axioms Hyperbolic.continuous_hyperboloidNormalizedSegment
+
+#check Hyperbolic.hyperboloidGeodesicCoords
+#print axioms Hyperbolic.hyperboloidGeodesicCoords
+
+#check Hyperbolic.hyperboloidGeodesicCoords_mem
+#print axioms Hyperbolic.hyperboloidGeodesicCoords_mem
+
+#check Hyperbolic.hyperboloidGeodesic
+#print axioms Hyperbolic.hyperboloidGeodesic
+
+#check Hyperbolic.hyperboloidGeodesic_properties
+#print axioms Hyperbolic.hyperboloidGeodesic_properties
+
+#check Hyperbolic.hyperboloidGeodesic_plane
+#print axioms Hyperbolic.hyperboloidGeodesic_plane
+
+#check Hyperbolic.hyperboloidGeodesic_lengthDist
+#print axioms Hyperbolic.hyperboloidGeodesic_lengthDist
+
+#check Hyperbolic.hyperboloidGeodesic_subsegment
+#print axioms Hyperbolic.hyperboloidGeodesic_subsegment
+
+#check Hyperbolic.IsLorentzTimelikePlane
+#print axioms Hyperbolic.IsLorentzTimelikePlane
+
+#check Hyperbolic.IsLorentzTimelikePlane.exists_hyperboloidGeodesic
+#print axioms Hyperbolic.IsLorentzTimelikePlane.exists_hyperboloidGeodesic
+
+#check Hyperbolic.IsLocallyArclengthMinimizingHyperboloid
+#print axioms Hyperbolic.IsLocallyArclengthMinimizingHyperboloid
+
+#check Hyperbolic.locallyArclengthMinimizingHyperboloid_iff
+#print axioms Hyperbolic.locallyArclengthMinimizingHyperboloid_iff
+
+#check Hyperbolic.hyperboloid_distinct_span_plane
+#print axioms Hyperbolic.hyperboloid_distinct_span_plane
+
+#check Hyperbolic.hyperboloidLengthMetricSpace
+#print axioms Hyperbolic.hyperboloidLengthMetricSpace
+
+#check Hyperbolic.upperHalfPlaneLengthMetricSpace
+#print axioms Hyperbolic.upperHalfPlaneLengthMetricSpace
+
+#check Hyperbolic.hyperboloidLengthMetricSpace_coherence
+#print axioms Hyperbolic.hyperboloidLengthMetricSpace_coherence
+
+#check Hyperbolic.upperHalfPlaneLengthMetricSpace_coherence
+#print axioms Hyperbolic.upperHalfPlaneLengthMetricSpace_coherence
+
+#check Hyperbolic.hyperboloidLengthDist_nhds
+#print axioms Hyperbolic.hyperboloidLengthDist_nhds
+
+#check Hyperbolic.upperHalfPlaneLengthDist_nhds
+#print axioms Hyperbolic.upperHalfPlaneLengthDist_nhds
+
+#check Hyperbolic.modelLengthMetric_isometries
+#print axioms Hyperbolic.modelLengthMetric_isometries
+
+#check Hyperbolic.hyperboloidLengthDist_center_le_iff
+#print axioms Hyperbolic.hyperboloidLengthDist_center_le_iff
+
+#check Hyperbolic.hyperboloidLengthDist_center_bounds
+#print axioms Hyperbolic.hyperboloidLengthDist_center_bounds
+
+#check Hyperbolic.hyperboloidLengthDist_center_sublevel_zero
+#print axioms Hyperbolic.hyperboloidLengthDist_center_sublevel_zero
+
+#check Hyperbolic.hyperboloidLengthDist_center_sublevel_neg
+#print axioms Hyperbolic.hyperboloidLengthDist_center_sublevel_neg
+
+#check Hyperbolic.isCompact_hyperboloid_center_ambient
+#print axioms Hyperbolic.isCompact_hyperboloid_center_ambient
+
+#check Hyperbolic.isCompact_hyperboloidLengthDist_center_sublevel
+#print axioms Hyperbolic.isCompact_hyperboloidLengthDist_center_sublevel
+
+#check Hyperbolic.isCompact_hyperboloidLengthMetricSpace_center_closedBall
+#print axioms Hyperbolic.isCompact_hyperboloidLengthMetricSpace_center_closedBall
+
+#check Hyperbolic.isCompact_hyperboloidLengthMetricSpace_closedBall
+#print axioms Hyperbolic.isCompact_hyperboloidLengthMetricSpace_closedBall
+
+#check Hyperbolic.properSpace_hyperboloidLengthMetricSpace
+#print axioms Hyperbolic.properSpace_hyperboloidLengthMetricSpace
+
+#check Hyperbolic.isCompact_upperHalfPlaneLengthMetricSpace_closedBall
+#print axioms Hyperbolic.isCompact_upperHalfPlaneLengthMetricSpace_closedBall
+
+#check Hyperbolic.properSpace_upperHalfPlaneLengthMetricSpace
+#print axioms Hyperbolic.properSpace_upperHalfPlaneLengthMetricSpace
+
+#check Hyperbolic.cauchySeq_tendsto_hyperboloidLengthMetricSpace
+#print axioms Hyperbolic.cauchySeq_tendsto_hyperboloidLengthMetricSpace
+
+#check Hyperbolic.completeSpace_hyperboloidLengthMetricSpace
+#print axioms Hyperbolic.completeSpace_hyperboloidLengthMetricSpace
+
+#check Hyperbolic.cauchySeq_tendsto_upperHalfPlaneLengthMetricSpace
+#print axioms Hyperbolic.cauchySeq_tendsto_upperHalfPlaneLengthMetricSpace
+
+#check Hyperbolic.completeSpace_upperHalfPlaneLengthMetricSpace
+#print axioms Hyperbolic.completeSpace_upperHalfPlaneLengthMetricSpace
+
+#check Hyperbolic.upperHalfPlane_lengthCauchy_not_tendsto_ideal
+#print axioms Hyperbolic.upperHalfPlane_lengthCauchy_not_tendsto_ideal
+
+#check Hyperbolic.upperHalfPlane_lengthCauchy_compact_tail
+#print axioms Hyperbolic.upperHalfPlane_lengthCauchy_compact_tail
+
+#check Hyperbolic.hyperboloid_lengthCauchy_not_tendsto_ideal
+#print axioms Hyperbolic.hyperboloid_lengthCauchy_not_tendsto_ideal
+
+#check Hyperbolic.hyperboloid_lengthCauchy_compact_tail
+#print axioms Hyperbolic.hyperboloid_lengthCauchy_compact_tail
+
+#check Hyperbolic.upperHalfPlane_finite_length_tail_cauchy
+#print axioms Hyperbolic.upperHalfPlane_finite_length_tail_cauchy
+
+#check Hyperbolic.hyperboloid_finite_length_tail_cauchy
+#print axioms Hyperbolic.hyperboloid_finite_length_tail_cauchy
+
+#check Hyperbolic.planeCoefficientFunctional
+#print axioms Hyperbolic.planeCoefficientFunctional
+
+#check Hyperbolic.planeCoefficientFunctional_apply
+#print axioms Hyperbolic.planeCoefficientFunctional_apply
+
+#check Hyperbolic.exists_planeCoefficientNormal
+#print axioms Hyperbolic.exists_planeCoefficientNormal
+
+#check Hyperbolic.planeCoefficient_discriminant_pos_of_mem
+#print axioms Hyperbolic.planeCoefficient_discriminant_pos_of_mem
+
+#check Hyperbolic.planeCoefficient_discriminant_pos_of_timelike
+#print axioms Hyperbolic.planeCoefficient_discriminant_pos_of_timelike
+
+#check Hyperbolic.planeCoefficient_toHyperboloid_mul
+#print axioms Hyperbolic.planeCoefficient_toHyperboloid_mul
+#check Hyperbolic.planeCoefficient_toHyperboloid_iff
+#print axioms Hyperbolic.planeCoefficient_toHyperboloid_iff
+
+#check LinearMap.BilinForm.unitNormalReflection
+#print axioms LinearMap.BilinForm.unitNormalReflection
+
+#check LinearMap.BilinForm.unitNormalReflection_apply_left
+#print axioms LinearMap.BilinForm.unitNormalReflection_apply_left
+
+#check LinearMap.BilinForm.unitNormalReflection_apply
+#print axioms LinearMap.BilinForm.unitNormalReflection_apply
+
+#check LinearMap.BilinForm.unitNormalReflection_preserves
+#print axioms LinearMap.BilinForm.unitNormalReflection_preserves
+
+#check LinearMap.BilinForm.unitNormalReflection_normal
+#print axioms LinearMap.BilinForm.unitNormalReflection_normal
+
+#check LinearMap.BilinForm.unitNormalReflection_involutive
+#print axioms LinearMap.BilinForm.unitNormalReflection_involutive
+
+#check LinearMap.BilinForm.unitNormalReflection_symm
+#print axioms LinearMap.BilinForm.unitNormalReflection_symm
+
+#check LinearMap.BilinForm.unitNormalReflection_fixed_iff
+#print axioms LinearMap.BilinForm.unitNormalReflection_fixed_iff
+
+#check LinearMap.BilinForm.unitNormalReflection_self
+#print axioms LinearMap.BilinForm.unitNormalReflection_self
+
+#check Hyperbolic.lorentzBilinForm
+#print axioms Hyperbolic.lorentzBilinForm
+
+#check Hyperbolic.lorentzBilinForm_apply
+#print axioms Hyperbolic.lorentzBilinForm_apply
+
+#check Hyperbolic.lorentzBilinForm_symm
+#print axioms Hyperbolic.lorentzBilinForm_symm
+
+#check Hyperbolic.lorentzReflection
+#print axioms Hyperbolic.lorentzReflection
+
+#check Hyperbolic.lorentzReflection_apply
+#print axioms Hyperbolic.lorentzReflection_apply
+
+#check Hyperbolic.lorentzReflection_preserves
+#print axioms Hyperbolic.lorentzReflection_preserves
+
+#check Hyperbolic.lorentzReflection_normal
+#print axioms Hyperbolic.lorentzReflection_normal
+
+#check Hyperbolic.lorentzReflection_involutive
+#print axioms Hyperbolic.lorentzReflection_involutive
+
+#check Hyperbolic.lorentzReflection_symm
+#print axioms Hyperbolic.lorentzReflection_symm
+
+#check Hyperbolic.lorentzReflection_fixed_iff
+#print axioms Hyperbolic.lorentzReflection_fixed_iff
+
+#check Hyperbolic.lorentzReflection_self
+#print axioms Hyperbolic.lorentzReflection_self
+
+#check Hyperbolic.lorentzAxisProjection
+#print axioms Hyperbolic.lorentzAxisProjection
+#check Hyperbolic.lorentzAxisProjection_spec
+#print axioms Hyperbolic.lorentzAxisProjection_spec
+#check Hyperbolic.lorentzAxisPointCoords
+#print axioms Hyperbolic.lorentzAxisPointCoords
+#check Hyperbolic.lorentzAxisPointCoords_spec
+#print axioms Hyperbolic.lorentzAxisPointCoords_spec
+#check Hyperbolic.lorentzAxisPoint
+#print axioms Hyperbolic.lorentzAxisPoint
+#check Hyperbolic.lorentzAxisDirectionCoords
+#print axioms Hyperbolic.lorentzAxisDirectionCoords
+#check Hyperbolic.lorentzAxisDirectionRemainder_spec
+#print axioms Hyperbolic.lorentzAxisDirectionRemainder_spec
+#check Hyperbolic.lorentzAxisDirectionCoords_spec
+#print axioms Hyperbolic.lorentzAxisDirectionCoords_spec
+#check Hyperbolic.exists_lorentzAxisDirection
+#print axioms Hyperbolic.exists_lorentzAxisDirection
+#check Hyperbolic.lorentzAxis_span_ker
+#print axioms Hyperbolic.lorentzAxis_span_ker
+
+#check Hyperbolic.hyperboloidGraphCoords
+#print axioms Hyperbolic.hyperboloidGraphCoords
+#check Hyperbolic.hyperboloidGraphCoords_mem
+#print axioms Hyperbolic.hyperboloidGraphCoords_mem
+#check Hyperbolic.hyperboloidGraph
+#print axioms Hyperbolic.hyperboloidGraph
+#check Hyperbolic.hyperboloidGraphProjection
+#print axioms Hyperbolic.hyperboloidGraphProjection
+#check Hyperbolic.hyperboloidGraph_right_inv
+#print axioms Hyperbolic.hyperboloidGraph_right_inv
+#check Hyperbolic.continuous_hyperboloidGraph
+#print axioms Hyperbolic.continuous_hyperboloidGraph
+#check Hyperbolic.hyperboloidGraphHomeomorph
+#print axioms Hyperbolic.hyperboloidGraphHomeomorph
+#check Hyperbolic.connectedSpace_hyperboloidGraph
+#print axioms Hyperbolic.connectedSpace_hyperboloidGraph
+
+#check Hyperbolic.exists_lorentzNormal_of_unitTangent
+#print axioms Hyperbolic.exists_lorentzNormal_of_unitTangent
+#check Hyperbolic.lorentzPlane_eq_normalKer
+#print axioms Hyperbolic.lorentzPlane_eq_normalKer
+#check Hyperbolic.lorentzPlane_unitNormals_iff
+#print axioms Hyperbolic.lorentzPlane_unitNormals_iff
+#check Hyperbolic.lorentzReflection_neg_normal
+#print axioms Hyperbolic.lorentzReflection_neg_normal
+#check Hyperbolic.IsLorentzTimelikePlane.exists_unitNormal
+#print axioms Hyperbolic.IsLorentzTimelikePlane.exists_unitNormal
+
+#check Hyperbolic.continuous_lorentzReflection_time
+#print axioms Hyperbolic.continuous_lorentzReflection_time
+#check Hyperbolic.lorentzReflection_hyperboloid_square
+#print axioms Hyperbolic.lorentzReflection_hyperboloid_square
+#check Hyperbolic.lorentzReflection_time_ne_zero
+#print axioms Hyperbolic.lorentzReflection_time_ne_zero
+#check Hyperbolic.lorentzReflection_axisPoint
+#print axioms Hyperbolic.lorentzReflection_axisPoint
+#check Hyperbolic.lorentzReflection_time_pos
+#print axioms Hyperbolic.lorentzReflection_time_pos
+#check Hyperbolic.lorentzReflection_hyperboloid_mem
+#print axioms Hyperbolic.lorentzReflection_hyperboloid_mem
+#check Hyperbolic.hyperboloidReflection
+#print axioms Hyperbolic.hyperboloidReflection
+#check Hyperbolic.hyperboloidReflection_val
+#print axioms Hyperbolic.hyperboloidReflection_val
+#check Hyperbolic.hyperboloidReflection_involutive
+#print axioms Hyperbolic.hyperboloidReflection_involutive
+#check Hyperbolic.hyperboloidReflectionEquiv
+#print axioms Hyperbolic.hyperboloidReflectionEquiv
+#check Hyperbolic.contMDiff_hyperboloidReflection
+#print axioms Hyperbolic.contMDiff_hyperboloidReflection
+#check Hyperbolic.hyperboloidReflectionDiffeomorph
+#print axioms Hyperbolic.hyperboloidReflectionDiffeomorph
+
+#check Hyperbolic.hyperboloidReflection_fixed_iff
+#print axioms Hyperbolic.hyperboloidReflection_fixed_iff
+#check Hyperbolic.hyperboloidReflection_normal
+#print axioms Hyperbolic.hyperboloidReflection_normal
+#check Hyperbolic.hyperboloidReflection_fixed_geodesic
+#print axioms Hyperbolic.hyperboloidReflection_fixed_geodesic
+#check Hyperbolic.hyperboloidGeodesic_normal_coordinate
+#print axioms Hyperbolic.hyperboloidGeodesic_normal_coordinate
+#check Hyperbolic.hyperboloidReflection_sides_open_nonempty
+#print axioms Hyperbolic.hyperboloidReflection_sides_open_nonempty
+#check Hyperbolic.hyperboloidReflection_open_side_images
+#print axioms Hyperbolic.hyperboloidReflection_open_side_images
+#check Hyperbolic.hyperboloidReflection_open_side_bijOn
+#print axioms Hyperbolic.hyperboloidReflection_open_side_bijOn
+#check Hyperbolic.hyperboloidReflection_closed_side_images
+#print axioms Hyperbolic.hyperboloidReflection_closed_side_images
+
+#check Hyperbolic.lorentzReflection_mem_tangentKer
+#print axioms Hyperbolic.lorentzReflection_mem_tangentKer
+#check Hyperbolic.mfderiv_hyperboloidReflection_val
+#print axioms Hyperbolic.mfderiv_hyperboloidReflection_val
+#check Hyperbolic.hyperboloidReflection_tangentEquivKer
+#print axioms Hyperbolic.hyperboloidReflection_tangentEquivKer
+#check Hyperbolic.hyperboloidReflection_preserves_tangentTensor
+#print axioms Hyperbolic.hyperboloidReflection_preserves_tangentTensor
+#check Hyperbolic.hyperboloidReflection_preserves_metric
+#print axioms Hyperbolic.hyperboloidReflection_preserves_metric
+
+#check Hyperbolic.hyperboloidAdaptedTime
+#print axioms Hyperbolic.hyperboloidAdaptedTime
+#check Hyperbolic.hyperboloidAdaptedProjection
+#print axioms Hyperbolic.hyperboloidAdaptedProjection
+#check Hyperbolic.lorentzAdapted_decomposition
+#print axioms Hyperbolic.lorentzAdapted_decomposition
+#check Hyperbolic.hyperboloidAdaptedTime_square
+#print axioms Hyperbolic.hyperboloidAdaptedTime_square
+#check Hyperbolic.hyperboloidAdaptedTime_ne_zero
+#print axioms Hyperbolic.hyperboloidAdaptedTime_ne_zero
+#check Hyperbolic.hyperboloidAdaptedTime_self
+#print axioms Hyperbolic.hyperboloidAdaptedTime_self
+#check Hyperbolic.hyperboloidAdaptedTime_pos
+#print axioms Hyperbolic.hyperboloidAdaptedTime_pos
+#check Hyperbolic.hyperboloidAdaptedTime_sqrt
+#print axioms Hyperbolic.hyperboloidAdaptedTime_sqrt
+#check Hyperbolic.hyperboloidAdaptedGraphCoords
+#print axioms Hyperbolic.hyperboloidAdaptedGraphCoords
+#check Hyperbolic.hyperboloidAdaptedGraphCoords_spec
+#print axioms Hyperbolic.hyperboloidAdaptedGraphCoords_spec
+#check Hyperbolic.hyperboloidAdaptedGraphCoords_zero
+#print axioms Hyperbolic.hyperboloidAdaptedGraphCoords_zero
+#check Hyperbolic.hyperboloidAdaptedGraphCoords_time_pos
+#print axioms Hyperbolic.hyperboloidAdaptedGraphCoords_time_pos
+#check Hyperbolic.hyperboloidAdaptedGraphCoords_mem
+#print axioms Hyperbolic.hyperboloidAdaptedGraphCoords_mem
+#check Hyperbolic.hyperboloidAdaptedGraph
+#print axioms Hyperbolic.hyperboloidAdaptedGraph
+#check Hyperbolic.hyperboloidAdaptedGraph_inverse
+#print axioms Hyperbolic.hyperboloidAdaptedGraph_inverse
+#check Hyperbolic.continuous_hyperboloidAdaptedGraph
+#print axioms Hyperbolic.continuous_hyperboloidAdaptedGraph
+#check Hyperbolic.hyperboloidAdaptedHomeomorph
+#print axioms Hyperbolic.hyperboloidAdaptedHomeomorph
+#check Hyperbolic.hyperboloidAdaptedGraph_normal
+#print axioms Hyperbolic.hyperboloidAdaptedGraph_normal
+#check Hyperbolic.hyperboloidAdaptedGraph_sides
+#print axioms Hyperbolic.hyperboloidAdaptedGraph_sides
+#check Hyperbolic.hyperboloid_normal_sides_pathConnected
+#print axioms Hyperbolic.hyperboloid_normal_sides_pathConnected
+#check Hyperbolic.hyperboloid_normal_sign_on_preconnected
+#print axioms Hyperbolic.hyperboloid_normal_sign_on_preconnected
+#check Hyperbolic.hyperboloid_normal_components
+#print axioms Hyperbolic.hyperboloid_normal_components

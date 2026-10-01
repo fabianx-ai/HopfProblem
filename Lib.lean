@@ -5,6 +5,7 @@ import Lib.Algebra.Homology.MayerVietorisShortExact
 import Lib.Topology.Homotopy.Suspension
 import Lib.Topology.Algebra.FreeActionLocus
 import Lib.Topology.OnePointCollapse
+import Lib.Topology.Compactification.BoundaryLimits
 import Lib.AlgebraicTopology.SingularHomology.Chains
 import Lib.AlgebraicTopology.SingularHomology.ModuleHomology
 import Lib.AlgebraicTopology.SingularHomology.MayerVietoris
@@ -25,6 +26,7 @@ import Lib.AlgebraicTopology.SingularHomology.LinearSphereAction
 import Lib.AlgebraicTopology.SingularHomology.SpherePointTransport
 import Lib.Geometry.Manifold.Morse.Handle
 import Lib.Analysis.Calculus.MorseLemma
+import Lib.Analysis.Calculus.CurveVariation
 import Lib.Geometry.Manifold.Flow.Compact
 import Lib.Geometry.Manifold.RegularLevel
 import Lib.Geometry.Manifold.Morse.HandleAttachment
@@ -438,6 +440,13 @@ import Lib.Algebra.Homology.DerivedCategory.Ext.ShortExactDegreeOne
 import Lib.Algebra.Homology.DerivedCategory.Ext.AcyclicResolutionH2H3
 import Lib.Algebra.Homology.DerivedCategory.Ext.AcyclicResolutionFiniteCompatibility
 import Lib.Topology.Sheaves.Cohomology.DerivedGlobalSections
+import Lib.Geometry.Hyperbolic.Models
+import Lib.Analysis.InnerProductSpace.FiniteDimensional
+import Lib.Geometry.Manifold.VectorBundle.Riemannian
+import Lib.Order.Fin.Refinement
+import Lib.Geometry.Manifold.Riemannian.CurveTransport
+import Lib.Geometry.Hyperbolic.GeodesicEquations
+import Lib.LinearAlgebra.BilinearForm.Reflection
 /-!
 # Reusable V10 Section 6 library
 
