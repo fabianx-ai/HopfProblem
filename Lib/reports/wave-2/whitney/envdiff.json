@@ -1,0 +1,319 @@
+{
+ "before": "../dump_head.jsonl",
+ "after": "dump_after.jsonl",
+ "prefix": "",
+ "constants": [
+  38301,
+  38303
+ ],
+ "lost": [
+  [
+   "FrameField.rankThreePairDet._proof_1",
+   1209676977,
+   {
+    "Lib.Geometry.Manifold.Whitney.FrameField": 1
+   }
+  ],
+  [
+   "exists_native_shared_corner_strip_pair_dim_two._proof_1_10",
+   3670583278,
+   {
+    "Lib.Geometry.Manifold.Whitney.EmbeddedArcs": 1
+   }
+  ],
+  [
+   "exists_native_shared_corner_strip_pair_dim_two._proof_1_3",
+   2812573647,
+   {
+    "Lib.Geometry.Manifold.Whitney.EmbeddedArcs": 1
+   }
+  ],
+  [
+   "exists_native_shared_corner_strip_pair_dim_two._proof_1_4",
+   1707248130,
+   {
+    "Lib.Geometry.Manifold.Whitney.EmbeddedArcs": 1
+   }
+  ],
+  [
+   "exists_native_shared_corner_strip_pair_dim_two._proof_1_7",
+   3449823949,
+   {
+    "Lib.Geometry.Manifold.Whitney.EmbeddedArcs": 1
+   }
+  ],
+  [
+   "exists_native_shared_corner_strip_pair_dim_two._proof_1_9",
+   3751247344,
+   {
+    "Lib.Geometry.Manifold.Whitney.EmbeddedArcs": 1
+   }
+  ],
+  [
+   "exists_native_shared_corner_strip_pair_dim_two._simp_1_1",
+   1822873633,
+   {
+    "Lib.Geometry.Manifold.Whitney.EmbeddedArcs": 1
+   }
+  ],
+  [
+   "exists_native_shared_corner_strip_pair_dim_two._simp_1_2",
+   4228119963,
+   {
+    "Lib.Geometry.Manifold.Whitney.EmbeddedArcs": 1
+   }
+  ],
+  [
+   "exists_native_shared_corner_strip_pair_dim_two._simp_1_5",
+   4173162993,
+   {
+    "Lib.Geometry.Manifold.Whitney.EmbeddedArcs": 1
+   }
+  ],
+  [
+   "exists_native_shared_corner_strip_pair_dim_two._simp_1_6",
+   2525783790,
+   {
+    "Lib.Geometry.Manifold.Whitney.EmbeddedArcs": 1
+   }
+  ],
+  [
+   "exists_native_shared_corner_strip_pair_dim_two._simp_1_8",
+   1040236611,
+   {
+    "Lib.Geometry.Manifold.Whitney.EmbeddedArcs": 1
+   }
+  ]
+ ],
+ "added": [
+  [
+   "FrameField.rankThreePairDet._proof_1",
+   1158307750,
+   {
+    "Lib.Geometry.Manifold.Whitney.FrameField.RankThreeFrame": 1
+   }
+  ],
+  [
+   "FrameField.rankThreePairDet._proof_2",
+   1209676977,
+   {
+    "Lib.Geometry.Manifold.Whitney.FrameField.RankThreeFrame": 1
+   }
+  ],
+  [
+   "StripNormalData.sheetBaseFrame._proof_1",
+   1158307750,
+   {
+    "Lib.Geometry.Manifold.Whitney.FrameField.SheetNormal": 1
+   }
+  ],
+  [
+   "exists_shared_corner_strip_pair_of_two_le_finrank._proof_1_10",
+   3670583278,
+   {
+    "Lib.Geometry.Manifold.Whitney.EmbeddedArcs.StripPair": 1
+   }
+  ],
+  [
+   "exists_shared_corner_strip_pair_of_two_le_finrank._proof_1_3",
+   2812573647,
+   {
+    "Lib.Geometry.Manifold.Whitney.EmbeddedArcs.StripPair": 1
+   }
+  ],
+  [
+   "exists_shared_corner_strip_pair_of_two_le_finrank._proof_1_4",
+   1707248130,
+   {
+    "Lib.Geometry.Manifold.Whitney.EmbeddedArcs.StripPair": 1
+   }
+  ],
+  [
+   "exists_shared_corner_strip_pair_of_two_le_finrank._proof_1_7",
+   3449823949,
+   {
+    "Lib.Geometry.Manifold.Whitney.EmbeddedArcs.StripPair": 1
+   }
+  ],
+  [
+   "exists_shared_corner_strip_pair_of_two_le_finrank._proof_1_9",
+   3751247344,
+   {
+    "Lib.Geometry.Manifold.Whitney.EmbeddedArcs.StripPair": 1
+   }
+  ],
+  [
+   "exists_shared_corner_strip_pair_of_two_le_finrank._simp_1_1",
+   1822873633,
+   {
+    "Lib.Geometry.Manifold.Whitney.EmbeddedArcs.StripPair": 1
+   }
+  ],
+  [
+   "exists_shared_corner_strip_pair_of_two_le_finrank._simp_1_2",
+   4228119963,
+   {
+    "Lib.Geometry.Manifold.Whitney.EmbeddedArcs.StripPair": 1
+   }
+  ],
+  [
+   "exists_shared_corner_strip_pair_of_two_le_finrank._simp_1_5",
+   4173162993,
+   {
+    "Lib.Geometry.Manifold.Whitney.EmbeddedArcs.StripPair": 1
+   }
+  ],
+  [
+   "exists_shared_corner_strip_pair_of_two_le_finrank._simp_1_6",
+   2525783790,
+   {
+    "Lib.Geometry.Manifold.Whitney.EmbeddedArcs.StripPair": 1
+   }
+  ],
+  [
+   "exists_shared_corner_strip_pair_of_two_le_finrank._simp_1_8",
+   1040236611,
+   {
+    "Lib.Geometry.Manifold.Whitney.EmbeddedArcs.StripPair": 1
+   }
+  ]
+ ],
+ "changed_type_source": [],
+ "changed_type_proof_naming": [],
+ "changed_type_accepted": [],
+ "added_accepted": [],
+ "accept_without_effect": [],
+ "changed_type_all": [
+  "FrameField.rankThreePairDet._proof_1"
+ ],
+ "moves": [
+  [
+   "Lib.Geometry.Manifold.Whitney.EmbeddedArcs",
+   "Lib.Geometry.Manifold.Whitney.EmbeddedArcs.Arcs",
+   3
+  ],
+  [
+   "Lib.Geometry.Manifold.Whitney.EmbeddedArcs",
+   "Lib.Geometry.Manifold.Whitney.EmbeddedArcs.BeltBigon",
+   3
+  ],
+  [
+   "Lib.Geometry.Manifold.Whitney.EmbeddedArcs",
+   "Lib.Geometry.Manifold.Whitney.EmbeddedArcs.CornerCharts",
+   3
+  ],
+  [
+   "Lib.Geometry.Manifold.Whitney.EmbeddedArcs",
+   "Lib.Geometry.Manifold.Whitney.EmbeddedArcs.FiberRestriction",
+   5
+  ],
+  [
+   "Lib.Geometry.Manifold.Whitney.EmbeddedArcs",
+   "Lib.Geometry.Manifold.Whitney.EmbeddedArcs.ImmersionRepair",
+   13
+  ],
+  [
+   "Lib.Geometry.Manifold.Whitney.EmbeddedArcs",
+   "Lib.Geometry.Manifold.Whitney.EmbeddedArcs.InnerBigon",
+   14
+  ],
+  [
+   "Lib.Geometry.Manifold.Whitney.EmbeddedArcs",
+   "Lib.Geometry.Manifold.Whitney.EmbeddedArcs.SmallPerturbation",
+   8
+  ],
+  [
+   "Lib.Geometry.Manifold.Whitney.EmbeddedArcs",
+   "Lib.Geometry.Manifold.Whitney.EmbeddedArcs.SphereNormalCoordinates",
+   11
+  ],
+  [
+   "Lib.Geometry.Manifold.Whitney.EmbeddedArcs",
+   "Lib.Geometry.Manifold.Whitney.EmbeddedArcs.StripAlongArc",
+   3
+  ],
+  [
+   "Lib.Geometry.Manifold.Whitney.EmbeddedArcs",
+   "Lib.Geometry.Manifold.Whitney.EmbeddedArcs.StripInterpolation",
+   6
+  ],
+  [
+   "Lib.Geometry.Manifold.Whitney.EmbeddedArcs",
+   "Lib.Geometry.Manifold.Whitney.EmbeddedArcs.StripPair",
+   5
+  ],
+  [
+   "Lib.Geometry.Manifold.Whitney.EmbeddedArcs",
+   "Lib.Geometry.Manifold.Whitney.EmbeddedArcs.TransverseCoordinates",
+   7
+  ],
+  [
+   "Lib.Geometry.Manifold.Whitney.EmbeddedArcs",
+   "Lib.Geometry.Manifold.Whitney.EmbeddedArcs.WhitneyDisc",
+   7
+  ],
+  [
+   "Lib.Geometry.Manifold.Whitney.FrameField",
+   "Lib.Geometry.Manifold.Whitney.FrameField.BlockDeterminant",
+   13
+  ],
+  [
+   "Lib.Geometry.Manifold.Whitney.FrameField",
+   "Lib.Geometry.Manifold.Whitney.FrameField.BoundaryArcs",
+   17
+  ],
+  [
+   "Lib.Geometry.Manifold.Whitney.FrameField",
+   "Lib.Geometry.Manifold.Whitney.FrameField.BoundaryField",
+   2
+  ],
+  [
+   "Lib.Geometry.Manifold.Whitney.FrameField",
+   "Lib.Geometry.Manifold.Whitney.FrameField.Complement",
+   3
+  ],
+  [
+   "Lib.Geometry.Manifold.Whitney.FrameField",
+   "Lib.Geometry.Manifold.Whitney.FrameField.FrameExtension",
+   8
+  ],
+  [
+   "Lib.Geometry.Manifold.Whitney.FrameField",
+   "Lib.Geometry.Manifold.Whitney.FrameField.IntersectionCoordinates",
+   12
+  ],
+  [
+   "Lib.Geometry.Manifold.Whitney.FrameField",
+   "Lib.Geometry.Manifold.Whitney.FrameField.InvertibleJoin",
+   4
+  ],
+  [
+   "Lib.Geometry.Manifold.Whitney.FrameField",
+   "Lib.Geometry.Manifold.Whitney.FrameField.PlanarFrame",
+   23
+  ],
+  [
+   "Lib.Geometry.Manifold.Whitney.FrameField",
+   "Lib.Geometry.Manifold.Whitney.FrameField.RankThreeCorners",
+   3
+  ],
+  [
+   "Lib.Geometry.Manifold.Whitney.FrameField",
+   "Lib.Geometry.Manifold.Whitney.FrameField.RankThreeFrame",
+   12
+  ],
+  [
+   "Lib.Geometry.Manifold.Whitney.FrameField",
+   "Lib.Geometry.Manifold.Whitney.FrameField.SheetCoordinates",
+   5
+  ],
+  [
+   "Lib.Geometry.Manifold.Whitney.FrameField",
+   "Lib.Geometry.Manifold.Whitney.FrameField.SheetNormal",
+   19
+  ]
+ ],
+ "ambiguous": [],
+ "auxiliary_moved": 74,
+ "verdict": "PASS"
+}
