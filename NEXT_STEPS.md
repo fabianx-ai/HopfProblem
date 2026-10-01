@@ -1,19 +1,21 @@
-# Next steps (after integration 7 and the wave review, 2026-10-02)
+# Next steps (after integration 7b and the first `Unused/` move, 2026-10-02)
 
 State: all 24 monoliths split behind facades (`Lib/reports/wave-1/MERGE.md`, `wave-2/MERGE.md`); both waves
 reviewed by Fable reviewers (`Lib/reviews/REVIEW-WAVES.md`: nothing unsound) and the findings fixed
 (§5 there); integration 7 replayed the 51 `Lib` commits of `center-solution` up to `8ea19482` per commit
 (`Lib/reviews/INTEGRATION-7.md`). Merged head `17ba7739`: chain green (9,489 jobs), 3,741 probes standard,
 census 123, source pins 268. Open, in order:
-(1) **`Unused/`** (owner decision 2026-10-02): proved declarations that nothing uses are neither deleted nor
-kept in `Lib`; they move verbatim to a top-level `Unused/<same path>.lean` (own Lake lib, may import `Lib`,
-imported by nothing, built in the check chain). First: the 36 lemmas of `Lib/reports/wave-2/cube3/notneed.txt`
-(then the four declarations made `public` only for them go private again). Candidates after that: the two
-consumer-less `TubularBigon.*Chart` structures (`wave-2/rank3.md`), the seven `Connection/BeltArc` meridian
-constructions (`wave-1/connection.md`);
-(2) **integration 7b**: the `Lib` commits of `center-solution` after `8ea19482` (one so far, `75a6f9a9`), same
-method; move `RiemannBoundary.principalRoot_three_reverse_of_wedge` beside its exponent-3 relatives in
-`Hopf/Proof/…/SectorRoots`; fix the module docstring of `Hopf/Proof/AxiomAudit.lean`;
+(1) **`Unused/`** exists (owner decision 2026-10-02; `Unused/README.md`, receipt `Lib/reports/unused/cube3.md`):
+proved declarations that nothing uses move verbatim to the top-level `Unused/` tree (own Lake lib, may
+`import all` a `Lib` module, imported by nothing, built by `lake build Unused` in the check chain). Done: the
+36 cube-boundary cell lemmas; the four declarations widened only for them are private again. Next: a
+dead-code closure over all of `Lib` from the dump (`Lib/reports/unused/cube3/deadset.py` generalised) to list
+what else nothing uses; known candidates: the two consumer-less `TubularBigon.*Chart` structures
+(`wave-2/rank3.md`), the seven `Connection/BeltArc` meridian constructions (`wave-1/connection.md`);
+(2) **integration 7b done** (`Lib/reports/integration-7/REPLAY-7b.md`): `center-solution` replayed up to
+`d4db0d1a` (two clean cherry-picks, new module `Geometry/Hyperbolic/ConformalCoordinates`); the cube-root lemma
+moved to `Hopf/Proof/…/SectorRoots`. The next replay starts at `d4db0d1a`; the source worktree had uncommitted
+edits to `Models.lean` when 7b finished, so more is coming;
 (3) **owner's word needed** (INTEGRATION-7 §Left): split `Hyperbolic/Models.lean` (7,870 lines) and
 `CurveTransport.lean`, sweep their manuscript labels, add the comparison with Mathlib's `UpperHalfPlane`
 metric — now, or after the source branch stops appending to those files (recommended: after; replays stay
