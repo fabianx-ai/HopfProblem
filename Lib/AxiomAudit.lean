@@ -8571,3 +8571,14 @@ is an evidence command rather than library content.
 #print axioms Hyperbolic.hyperboloidGraphHomeomorph
 #check Hyperbolic.connectedSpace_hyperboloidGraph
 #print axioms Hyperbolic.connectedSpace_hyperboloidGraph
+
+#check Hyperbolic.exists_lorentzNormal_of_unitTangent
+#print axioms Hyperbolic.exists_lorentzNormal_of_unitTangent
+#check Hyperbolic.lorentzPlane_eq_normalKer
+#print axioms Hyperbolic.lorentzPlane_eq_normalKer
+#check Hyperbolic.lorentzPlane_unitNormals_iff
+#print axioms Hyperbolic.lorentzPlane_unitNormals_iff
+#check Hyperbolic.lorentzReflection_neg_normal
+#print axioms Hyperbolic.lorentzReflection_neg_normal
+#check Hyperbolic.IsLorentzTimelikePlane.exists_unitNormal
+#print axioms Hyperbolic.IsLorentzTimelikePlane.exists_unitNormal

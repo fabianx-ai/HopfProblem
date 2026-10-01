@@ -6830,4 +6830,217 @@ theorem connectedSpace_hyperboloidGraph : ConnectedSpace Hyperboloid := by
   exact hyperboloidGraphHomeomorph.surjective.connectedSpace
     continuous_hyperboloidGraph
 
+/-- A unit tangent admits a unit perpendicular normal by the same independent-vector orthogonalization.
+Textbook G06 N02.1, lines 59–61: retain the witness and literal normalization formula. -/
+theorem exists_lorentzNormal_of_unitTangent
+    (p : Hyperboloid) (e : Fin 3 → ℝ)
+    (hep : lorentzBilinear e p.val = 0)
+    (hee : lorentzBilinear e e = 1) :
+    ∃ z : Fin 3 → ℝ,
+      z ∈ (lorentzFunctional p.val).ker ∧
+      z ∉ Submodule.span ℝ ({e} : Set (Fin 3 → ℝ)) ∧
+      ∃ n : Fin 3 → ℝ,
+        n = (Real.sqrt (lorentzBilinear
+          (z - lorentzBilinear z e • e)
+          (z - lorentzBilinear z e • e)))⁻¹ •
+            (z - lorentzBilinear z e • e) ∧
+        lorentzBilinear n n = 1 ∧
+        lorentzBilinear n p.val = 0 ∧ lorentzBilinear n e = 0 := by
+  obtain ⟨z, hzp, hze, hnp, hne, hnn⟩ :=
+    Hyperbolic.exists_lorentzAxisDirection e hee p
+      ((Hyperbolic.lorentzBilinear_symm p.val e).trans hep)
+  exact ⟨z, hzp, hze, lorentzAxisDirectionCoords e z, rfl, hnn, hnp, hne⟩
+
+/-- A timelike plane spanned by a point and tangent equals its unit normal's kernel.
+Textbook G06 N02.2, lines 61–63: span inclusion and equality of dimensions. -/
+theorem lorentzPlane_eq_normalKer
+    (W : Submodule ℝ (Fin 3 → ℝ))
+    (hW : IsLorentzTimelikePlane W)
+    (p : Hyperboloid) (e n : Fin 3 → ℝ)
+    (hspan : W = Submodule.span ℝ ({p.val, e} : Set (Fin 3 → ℝ)))
+    (hnn : lorentzBilinear n n = 1)
+    (hnp : lorentzBilinear n p.val = 0)
+    (hne : lorentzBilinear n e = 0) :
+    W = (lorentzFunctional n).ker := by
+  have hsurj : Function.Surjective (lorentzFunctional n).toLinearMap := by
+    intro a
+    refine ⟨a • n, ?_⟩
+    change lorentzFunctional n (a • n) = a
+    rw [← lorentzBilinear_eq_functional]
+    simp [hnn]
+  have hdim : Module.finrank ℝ (lorentzFunctional n).ker = 2 := by
+    have h := (lorentzFunctional n).toLinearMap.finrank_range_add_finrank_ker
+    rw [LinearMap.range_eq_top.mpr hsurj] at h
+    have h' : 1 + Module.finrank ℝ (lorentzFunctional n).ker = 3 := by
+      simpa using h
+    omega
+  have hle : W ≤ (lorentzFunctional n).ker := by
+    rw [hspan]
+    apply Submodule.span_le.mpr
+    intro x hx
+    change lorentzFunctional n x = 0
+    rw [← lorentzBilinear_eq_functional]
+    rcases Set.mem_insert_iff.mp hx with hx | hx
+    · subst x
+      exact hnp
+    · have he : x = e := by simpa using hx
+      subst x
+      exact hne
+  exact Submodule.eq_of_le_of_finrank_eq hle (hW.1.trans hdim.symm)
+
+/-- A timelike plane's unit normals are exactly the two signs of any one unit normal.
+Textbook G06 N02.3, lines 63–65: the restricted tangent functional has one-dimensional kernel. -/
+theorem lorentzPlane_unitNormals_iff
+    (W : Submodule ℝ (Fin 3 → ℝ))
+    (p : Hyperboloid) (e n : Fin 3 → ℝ)
+    (hep : lorentzBilinear e p.val = 0)
+    (hee : lorentzBilinear e e = 1)
+    (hspan : W = Submodule.span ℝ ({p.val, e} : Set (Fin 3 → ℝ)))
+    (hnn : lorentzBilinear n n = 1)
+    (hWn : W = (lorentzFunctional n).ker)
+    (m : Fin 3 → ℝ) :
+    (lorentzBilinear m m = 1 ∧ W = (lorentzFunctional m).ker) ↔
+      m = n ∨ m = -n := by
+  have hpW : p.val ∈ W := by
+    rw [hspan]
+    exact Submodule.subset_span (by simp)
+  have heW : e ∈ W := by
+    rw [hspan]
+    exact Submodule.subset_span (by simp)
+  have horth (v : Fin 3 → ℝ) (hWv : W = (lorentzFunctional v).ker) :
+      lorentzBilinear v p.val = 0 ∧ lorentzBilinear v e = 0 := by
+    have hp := hpW
+    have he := heW
+    rw [hWv] at hp he
+    change lorentzFunctional v p.val = 0 at hp
+    change lorentzFunctional v e = 0 at he
+    rw [← lorentzBilinear_eq_functional] at hp he
+    exact ⟨hp, he⟩
+  constructor
+  · rintro ⟨hmm, hWm⟩
+    obtain ⟨hnp, hne⟩ := horth n hWn
+    obtain ⟨hmp, hme⟩ := horth m hWm
+    let tangentKer := (lorentzFunctional p.val).ker
+    have heK : e ∈ tangentKer := by
+      change lorentzFunctional p.val e = 0
+      rw [← lorentzBilinear_eq_functional, lorentzBilinear_symm]
+      exact hep
+    have hnK : n ∈ tangentKer := by
+      change lorentzFunctional p.val n = 0
+      rw [← lorentzBilinear_eq_functional, lorentzBilinear_symm]
+      exact hnp
+    have hmK : m ∈ tangentKer := by
+      change lorentzFunctional p.val m = 0
+      rw [← lorentzBilinear_eq_functional, lorentzBilinear_symm]
+      exact hmp
+    let eK : tangentKer := ⟨e, heK⟩
+    let nK : tangentKer := ⟨n, hnK⟩
+    let mK : tangentKer := ⟨m, hmK⟩
+    let f : tangentKer →ₗ[ℝ] ℝ :=
+      (lorentzFunctional e).toLinearMap.comp tangentKer.subtype
+    have hsurj : Function.Surjective f := by
+      intro a
+      refine ⟨a • eK, ?_⟩
+      change lorentzFunctional e (a • e) = a
+      rw [← lorentzBilinear_eq_functional]
+      simp [hee]
+    have hdim : Module.finrank ℝ f.ker = 1 := by
+      have h := f.finrank_range_add_finrank_ker
+      rw [LinearMap.range_eq_top.mpr hsurj] at h
+      have h' : 1 + Module.finrank ℝ f.ker = 2 := by
+        simpa [tangentKer, finrank_lorentzKer] using h
+      omega
+    have hnker : nK ∈ f.ker := by
+      change lorentzFunctional e n = 0
+      rw [← lorentzBilinear_eq_functional, lorentzBilinear_symm]
+      exact hne
+    have hmker : mK ∈ f.ker := by
+      change lorentzFunctional e m = 0
+      rw [← lorentzBilinear_eq_functional, lorentzBilinear_symm]
+      exact hme
+    have hnne : nK ≠ 0 := by
+      intro hz
+      have hnzero : n = 0 := congrArg (fun v : tangentKer => (v : Fin 3 → ℝ)) hz
+      rw [hnzero] at hnn
+      simpa using hnn
+    have hle : Submodule.span ℝ ({nK} : Set tangentKer) ≤ f.ker := by
+      apply Submodule.span_le.mpr
+      intro v hv
+      have hvn : v = nK := by simpa using hv
+      subst v
+      exact hnker
+    have hspanKer : Submodule.span ℝ ({nK} : Set tangentKer) = f.ker :=
+      Submodule.eq_of_le_of_finrank_eq hle ((finrank_span_singleton hnne).trans hdim.symm)
+    have hmspan : mK ∈ Submodule.span ℝ ({nK} : Set tangentKer) := by
+      rw [hspanKer]
+      exact hmker
+    obtain ⟨a, ha⟩ := Submodule.mem_span_singleton.mp hmspan
+    have ham : a • n = m := congrArg (fun v : tangentKer => (v : Fin 3 → ℝ)) ha
+    have haa : a * a = 1 := by
+      rw [← ham] at hmm
+      simpa only [map_smul, ContinuousLinearMap.smul_apply, smul_eq_mul, hnn, mul_one] using hmm
+    have hfactor : (a - 1) * (a + 1) = 0 := by nlinarith [haa]
+    rcases mul_eq_zero.mp hfactor with hpos | hneg
+    · have haone : a = 1 := by linarith
+      left
+      simpa [haone] using ham.symm
+    · have haneg : a = -1 := by linarith
+      right
+      simpa [haneg] using ham.symm
+  · rintro (rfl | rfl)
+    · exact ⟨hnn, hWn⟩
+    · constructor
+      · simpa only [map_neg, ContinuousLinearMap.neg_apply, neg_neg] using hnn
+      · rw [hWn]
+        ext v
+        change lorentzFunctional n v = 0 ↔ lorentzFunctional (-n) v = 0
+        rw [← lorentzBilinear_eq_functional, ← lorentzBilinear_eq_functional]
+        simp only [map_neg, ContinuousLinearMap.neg_apply, neg_eq_zero]
+
+/-- Changing a unit normal's sign leaves the actual ambient reflection unchanged.
+Textbook G06 N02.4, line 66: both signs have the same reflection formula. -/
+theorem lorentzReflection_neg_normal
+    (n : Fin 3 → ℝ) (hn : lorentzBilinear n n = 1)
+    (hneg : lorentzBilinear (-n) (-n) = 1) :
+    lorentzReflection (-n) hneg = lorentzReflection n hn := by
+  ext v
+  rw [lorentzReflection_apply, lorentzReflection_apply]
+  simp only [map_neg, mul_neg, smul_neg, neg_smul, neg_neg]
+
+/-- Every timelike plane admits a unit normal, unique up to sign, defining the same reflection.
+Textbook G06 N02.5, lines 53–66: the arbitrary-plane construction and full geodesic receipt. -/
+theorem IsLorentzTimelikePlane.exists_unitNormal
+    (W : Submodule ℝ (Fin 3 → ℝ)) (hW : IsLorentzTimelikePlane W) :
+    ∃ p : Hyperboloid, ∃ e n : Fin 3 → ℝ,
+      ∃ hep : lorentzBilinear e p.val = 0,
+      ∃ hee : lorentzBilinear e e = 1,
+      ∃ hnn : lorentzBilinear n n = 1,
+        p.val ∈ W ∧ e ∈ W ∧
+        W = Submodule.span ℝ ({p.val, e} : Set (Fin 3 → ℝ)) ∧
+        lorentzBilinear n p.val = 0 ∧ lorentzBilinear n e = 0 ∧
+        W = (lorentzFunctional n).ker ∧
+        Set.range (hyperboloidGeodesic p e hep hee) =
+          {q : Hyperboloid | q.val ∈ W} ∧
+        (∀ m : Fin 3 → ℝ,
+          (lorentzBilinear m m = 1 ∧ W = (lorentzFunctional m).ker) ↔
+            m = n ∨ m = -n) ∧
+        (∀ (m : Fin 3 → ℝ) (hm : lorentzBilinear m m = 1),
+          W = (lorentzFunctional m).ker →
+          lorentzReflection m hm = lorentzReflection n hnn) := by
+  obtain ⟨p,e,hep,hee,hpW,heW,hspan,hrange⟩ :=
+    Hyperbolic.IsLorentzTimelikePlane.exists_hyperboloidGeodesic hW
+  obtain ⟨z,hzp,hze,n,hnformula,hnn,hnp,hne⟩ :=
+    exists_lorentzNormal_of_unitTangent p e hep hee
+  have hWn := lorentzPlane_eq_normalKer
+    W hW p e n hspan hnn hnp hne
+  have hclass := lorentzPlane_unitNormals_iff
+    W p e n hep hee hspan hnn hWn
+  refine ⟨p,e,n,hep,hee,hnn,hpW,heW,hspan,hnp,hne,hWn,hrange,hclass,?_⟩
+  intro m hm hWm
+  rcases (hclass m).mp ⟨hm,hWm⟩ with hpos | hneg
+  · subst m
+    rfl
+  · subst m
+    exact lorentzReflection_neg_normal n hnn hm
+
 end Hyperbolic
