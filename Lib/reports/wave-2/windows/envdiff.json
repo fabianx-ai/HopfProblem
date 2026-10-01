@@ -1,0 +1,117 @@
+{
+ "before": "/home/goblin/.claude/jobs/06995e68/tmp/wave2/dump_head.jsonl",
+ "after": "/home/goblin/.claude/jobs/06995e68/tmp/wave2/windows/dump_after.jsonl",
+ "prefix": "",
+ "constants": [
+  38301,
+  38302
+ ],
+ "lost": [
+  [
+   "ZeroAvoidanceCutoff.weight._proof_1",
+   2725756926,
+   {
+    "Lib.Geometry.Manifold.Morse.SurgeryWindows": 1
+   }
+  ],
+  [
+   "ZeroAvoidanceCutoff.weight.eq_1",
+   2646476459,
+   {
+    "Lib.Geometry.Manifold.Morse.SurgeryWindows": 1
+   }
+  ]
+ ],
+ "added": [
+  [
+   "ZeroAvoidanceCutoff.weight._proof_1",
+   2547959801,
+   {
+    "Lib.Geometry.Manifold.Morse.SurgeryWindows.ZeroAvoidanceCutoff": 1
+   }
+  ],
+  [
+   "ZeroAvoidanceCutoff.weight._proof_2",
+   466881091,
+   {
+    "Lib.Geometry.Manifold.Morse.SurgeryWindows.ZeroAvoidanceCutoff": 1
+   }
+  ],
+  [
+   "ZeroAvoidanceCutoff.weight.eq_1",
+   1152517572,
+   {
+    "Lib.Geometry.Manifold.Morse.SurgeryWindows.ZeroAvoidanceCutoff": 1
+   }
+  ]
+ ],
+ "changed_type_source": [],
+ "changed_type_proof_naming": [],
+ "changed_type_accepted": [],
+ "added_accepted": [],
+ "accept_without_effect": [],
+ "changed_type_all": [
+  "ZeroAvoidanceCutoff.weight._proof_1",
+  "ZeroAvoidanceCutoff.weight.eq_1"
+ ],
+ "moves": [
+  [
+   "Lib.Geometry.Manifold.Morse.SurgeryWindows",
+   "Lib.Geometry.Manifold.Morse.SurgeryWindows.Avoidance",
+   16
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.SurgeryWindows",
+   "Lib.Geometry.Manifold.Morse.SurgeryWindows.BeltComplement",
+   9
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.SurgeryWindows",
+   "Lib.Geometry.Manifold.Morse.SurgeryWindows.DiskDouble",
+   8
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.SurgeryWindows",
+   "Lib.Geometry.Manifold.Morse.SurgeryWindows.HausdorffDimension",
+   8
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.SurgeryWindows",
+   "Lib.Geometry.Manifold.Morse.SurgeryWindows.Hemisphere",
+   18
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.SurgeryWindows",
+   "Lib.Geometry.Manifold.Morse.SurgeryWindows.ImageComplement",
+   6
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.SurgeryWindows",
+   "Lib.Geometry.Manifold.Morse.SurgeryWindows.NewInterior",
+   10
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.SurgeryWindows",
+   "Lib.Geometry.Manifold.Morse.SurgeryWindows.OpenHomotopyExtension",
+   5
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.SurgeryWindows",
+   "Lib.Geometry.Manifold.Morse.SurgeryWindows.SurgeryData",
+   35
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.SurgeryWindows",
+   "Lib.Geometry.Manifold.Morse.SurgeryWindows.Windows",
+   25
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.SurgeryWindows",
+   "Lib.Geometry.Manifold.Morse.SurgeryWindows.ZeroAvoidanceCutoff",
+   17
+  ]
+ ],
+ "ambiguous": [],
+ "auxiliary_moved": 94,
+ "verdict": "PASS"
+}
