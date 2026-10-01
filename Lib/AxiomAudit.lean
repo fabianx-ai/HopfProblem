@@ -8464,3 +8464,12 @@ is an evidence command rather than library content.
 
 #check Hyperbolic.hyperboloid_finite_length_tail_cauchy
 #print axioms Hyperbolic.hyperboloid_finite_length_tail_cauchy
+
+#check Hyperbolic.planeCoefficientFunctional
+#print axioms Hyperbolic.planeCoefficientFunctional
+
+#check Hyperbolic.planeCoefficientFunctional_apply
+#print axioms Hyperbolic.planeCoefficientFunctional_apply
+
+#check Hyperbolic.exists_planeCoefficientNormal
+#print axioms Hyperbolic.exists_planeCoefficientNormal
