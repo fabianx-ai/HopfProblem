@@ -121,10 +121,15 @@ structure GeneralPosition.MapAvoidancePatch {E G H K X N : Type*} [NormedAddComm
     [TopologicalSpace K] (I : ModelWithCorners ℝ E H) (J : ModelWithCorners ℝ G K)
     [TopologicalSpace X] [ChartedSpace H X] [TopologicalSpace N] [ChartedSpace K N]
     (C : Set X) where
+  /-- The chart of the target in which the map is perturbed. -/
   chart : PartialDiffeomorph J 𝓘(ℝ, G) N G ∞
+  /-- The bump function on the source that scales the perturbation vector. -/
   cutoff : X → ℝ
+  /-- The cutoff is smooth. -/
   smooth : ContMDiff I 𝓘(ℝ, ℝ) ∞ cutoff
+  /-- The cutoff has compact support. -/
   compact : HasCompactSupport cutoff
+  /-- The cutoff vanishes on `C`, so the perturbation is relative to `C`. -/
   fixed : ∀ x ∈ C, cutoff x = 0
 
 /-- A patch is compatible with a map when the chart covers the image of the core. -/
