@@ -1,0 +1,42 @@
+constants before 38301 after 38356 (keys 38199 38254 )
+lost 81 added 136 of which source declarations: 0 0 ; names with changed type 81 of which source: 35
+  PROOF-NAMING SmoothMorseLemma.SymmetricForm
+  PROOF-NAMING SmoothMorseLemma.congruenceDoubleEquiv
+  PROOF-NAMING SmoothMorseLemma.congruenceDoubleEquiv_toContinuousLinearMap
+  PROOF-NAMING SmoothMorseLemma.congruencePolynomial
+  PROOF-NAMING SmoothMorseLemma.congruencePolynomial_add_reference
+  PROOF-NAMING SmoothMorseLemma.congruencePolynomial_zero
+  PROOF-NAMING SmoothMorseLemma.congruence_apply
+  PROOF-NAMING SmoothMorseLemma.congruence_zero
+  PROOF-NAMING SmoothMorseLemma.contDiff_congruencePolynomial
+  PROOF-NAMING SmoothMorseLemma.contDiff_symmetricTaylorFactor
+  PROOF-NAMING SmoothMorseLemma.exists_congruencePolynomial_partialDiffeomorph
+  PROOF-NAMING SmoothMorseLemma.exists_quadratic_chart_of_smooth_congruence
+  PROOF-NAMING SmoothMorseLemma.exists_signed_coordinates
+  PROOF-NAMING SmoothMorseLemma.exists_signed_diffeomorph
+  PROOF-NAMING SmoothMorseLemma.exists_smooth_congruence_factor
+  PROOF-NAMING SmoothMorseLemma.flipBilinear
+  PROOF-NAMING SmoothMorseLemma.halfHessianQuadratic_apply
+  PROOF-NAMING SmoothMorseLemma.halfHessianQuadratic_associated
+  PROOF-NAMING SmoothMorseLemma.halfHessianQuadratic_separatingLeft
+  PROOF-NAMING SmoothMorseLemma.hasFDerivAt_congruencePolynomial_zero
+auxiliary lost/added/changed (not judged): 81 136 46
+module moves (source declarations, 1-to-1):
+       8  Lib.Analysis.Calculus.MorseLemma -> Lib.Analysis.Calculus.MorseLemma.AdaptedDescentField
+      15  Lib.Analysis.Calculus.MorseLemma -> Lib.Analysis.Calculus.MorseLemma.CriticalPoints
+       6  Lib.Analysis.Calculus.MorseLemma -> Lib.Analysis.Calculus.MorseLemma.Cutoff
+      10  Lib.Analysis.Calculus.MorseLemma -> Lib.Analysis.Calculus.MorseLemma.DescentField
+      10  Lib.Analysis.Calculus.MorseLemma -> Lib.Analysis.Calculus.MorseLemma.Existence
+      18  Lib.Analysis.Calculus.MorseLemma -> Lib.Analysis.Calculus.MorseLemma.LinearPerturbation
+       7  Lib.Analysis.Calculus.MorseLemma -> Lib.Analysis.Calculus.MorseLemma.MorseChart
+       2  Lib.Analysis.Calculus.MorseLemma -> Lib.Analysis.Calculus.MorseLemma.ParametricIntegral
+      10  Lib.Analysis.Calculus.MorseLemma -> Lib.Analysis.Calculus.MorseLemma.PartialDiffeomorph
+       2  Lib.Analysis.Calculus.MorseLemma -> Lib.Analysis.Calculus.MorseLemma.PartitionOfUnity
+       1  Lib.Analysis.Calculus.MorseLemma -> Lib.Analysis.Calculus.MorseLemma.SignedCoordinates
+      10  Lib.Analysis.Calculus.MorseLemma -> Lib.Analysis.Calculus.MorseLemma.SignedMorseChart
+      22  Lib.Analysis.Calculus.MorseLemma -> Lib.Analysis.Calculus.MorseLemma.SplitChart
+       3  Lib.Analysis.Calculus.MorseLemma -> Lib.Analysis.Calculus.MorseLemma.SymmetricForm
+       8  Lib.Analysis.Calculus.MorseLemma -> Lib.Analysis.Calculus.MorseLemma.TaylorFactor
+ambiguous module changes: 0
+auxiliary constants that changed module: 104
+VERDICT PASS
