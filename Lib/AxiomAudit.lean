@@ -8446,3 +8446,15 @@ is an evidence command rather than library content.
 
 #check Hyperbolic.completeSpace_upperHalfPlaneLengthMetricSpace
 #print axioms Hyperbolic.completeSpace_upperHalfPlaneLengthMetricSpace
+
+#check Hyperbolic.upperHalfPlane_lengthCauchy_not_tendsto_ideal
+#print axioms Hyperbolic.upperHalfPlane_lengthCauchy_not_tendsto_ideal
+
+#check Hyperbolic.upperHalfPlane_lengthCauchy_compact_tail
+#print axioms Hyperbolic.upperHalfPlane_lengthCauchy_compact_tail
+
+#check Hyperbolic.hyperboloid_lengthCauchy_not_tendsto_ideal
+#print axioms Hyperbolic.hyperboloid_lengthCauchy_not_tendsto_ideal
+
+#check Hyperbolic.hyperboloid_lengthCauchy_compact_tail
+#print axioms Hyperbolic.hyperboloid_lengthCauchy_compact_tail

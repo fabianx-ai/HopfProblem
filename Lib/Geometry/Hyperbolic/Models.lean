@@ -70,6 +70,11 @@ public import Mathlib.Topology.MetricSpace.Cauchy
 public import Mathlib.Topology.Sequences
 public import Mathlib.Order.WellFounded
 public import Mathlib.Topology.Neighborhoods
+public import Mathlib.Topology.Compactification.OnePoint.Basic
+public import Mathlib.Analysis.Complex.UpperHalfPlane.Topology
+public import Mathlib.Topology.UniformSpace.Cauchy
+public import Mathlib.Topology.Separation.Hausdorff
+public import Mathlib.Topology.Constructions
 
 /-!
 # Upper-half-plane and hyperboloid coordinates
@@ -6025,5 +6030,186 @@ theorem completeSpace_upperHalfPlaneLengthMetricSpace :
     (fun x hx => Hyperbolic.cauchySeq_tendsto_upperHalfPlaneLengthMetricSpace x hx)
 
 end CompleteLengthMetrics
+
+section IdealLengthEnds
+
+open Set Filter
+open scoped Topology OnePoint
+universe u
+
+/-- A nontrivial length-Cauchy filter in the upper half-plane cannot converge to a real ideal endpoint or infinity in OnePoint complex. The SAME complete metric supplies an interior limit; its original topology and Hausdorff uniqueness exclude the ideal limit (G04.F, textbook lines 125–126). -/
+theorem upperHalfPlane_lengthCauchy_not_tendsto_ideal
+    {ι : Type u} (l : Filter ι) [l.NeBot] (x : ι → UpperHalfPlane)
+    (hC : ∀ ε : ℝ, 0 < ε → ∃ S : Set ι, S ∈ l ∧
+      ∀ i ∈ S, ∀ j ∈ S, (Manifold.piecewiseC1EDist upperHalfPlaneMetric (x i) (x j)).toReal < ε)
+    (b : OnePoint ℂ)
+    (hb : b = OnePoint.infty ∨ ∃ r : ℝ, b = ((r : ℂ) : OnePoint ℂ)) :
+    ¬ Tendsto (fun i => ((x i : ℂ) : OnePoint ℂ)) l (𝓝 b) := by
+  let originalTopology : TopologicalSpace UpperHalfPlane := inferInstance
+  have htop :
+      upperHalfPlaneLengthMetricSpace.toPseudoMetricSpace.toUniformSpace.toTopologicalSpace =
+        originalTopology := upperHalfPlaneLengthMetricSpace_coherence.1
+  have hinc : Continuous (fun p : UpperHalfPlane => ((p : ℂ) : OnePoint ℂ)) :=
+    OnePoint.continuous_coe.comp UpperHalfPlane.continuous_coe
+  letI : MetricSpace UpperHalfPlane := upperHalfPlaneLengthMetricSpace
+  letI : UniformSpace UpperHalfPlane := upperHalfPlaneLengthMetricSpace.toPseudoMetricSpace.toUniformSpace
+  letI : TopologicalSpace UpperHalfPlane :=
+    upperHalfPlaneLengthMetricSpace.toPseudoMetricSpace.toUniformSpace.toTopologicalSpace
+  -- Actual committed E supplies completeness of this SAME uniformity.
+  letI : CompleteSpace UpperHalfPlane := Hyperbolic.completeSpace_upperHalfPlaneLengthMetricSpace
+  have hx : Cauchy (Filter.map x l) := Metric.cauchy_iff.2 (by
+    refine ⟨inferInstance, ?_⟩
+    intro ε hε
+    rcases hC ε hε with ⟨S, hS, hpair⟩
+    refine ⟨x '' S, Filter.image_mem_map hS, ?_⟩
+    rintro a ⟨i, hi, rfl⟩ b' ⟨j, hj, rfl⟩
+    rw [upperHalfPlaneLengthMetricSpace_coherence.2.2]
+    exact hpair i hi j hj)
+  obtain ⟨p, hp⟩ := cauchy_map_iff_exists_tendsto.1 hx
+  have hpOriginal : Tendsto x l (@nhds UpperHalfPlane originalTopology p) := by
+    change Tendsto x l
+      (@nhds UpperHalfPlane
+        upperHalfPlaneLengthMetricSpace.toPseudoMetricSpace.toUniformSpace.toTopologicalSpace p) at hp
+    rw [htop] at hp
+    exact hp
+  have hpAmbient : Tendsto (fun i => ((x i : ℂ) : OnePoint ℂ)) l
+      (𝓝 ((p : ℂ) : OnePoint ℂ)) :=
+    hinc.continuousAt.tendsto.comp hpOriginal
+  intro hideal
+  have heq : ((p : ℂ) : OnePoint ℂ) = b := tendsto_nhds_unique hpAmbient hideal
+  rcases hb with hb | ⟨r, hb⟩
+  · exact OnePoint.coe_ne_infty ((p) : ℂ) (heq.trans hb)
+  · have hz : ((p) : ℂ) = (r : ℂ) := OnePoint.coe_injective (heq.trans hb)
+    have him : (p).im = 0 := by
+      simpa only [UpperHalfPlane.coe_im, Complex.ofReal_im] using congrArg Complex.im hz
+    exact (ne_of_gt (p).im_pos) him
+
+/-- A nontrivial upper-half-plane length-Cauchy filter is eventually contained in one compact closed unit length ball, in the original topology. This fixed compact tail rules out eventual escape from every compact set (G04.F, textbook lines 125–126). -/
+theorem upperHalfPlane_lengthCauchy_compact_tail
+    {ι : Type u} (l : Filter ι) [l.NeBot] (x : ι → UpperHalfPlane)
+    (hC : ∀ ε : ℝ, 0 < ε → ∃ S : Set ι, S ∈ l ∧
+      ∀ i ∈ S, ∀ j ∈ S, (Manifold.piecewiseC1EDist upperHalfPlaneMetric (x i) (x j)).toReal < ε) :
+    ∃ p : UpperHalfPlane, IsCompact {q : UpperHalfPlane | (Manifold.piecewiseC1EDist upperHalfPlaneMetric (q) (p)).toReal ≤ 1} ∧
+      ∀ᶠ i in l, (Manifold.piecewiseC1EDist upperHalfPlaneMetric (x i) (p)).toReal ≤ 1 := by
+  let originalTopology : TopologicalSpace UpperHalfPlane := inferInstance
+  have htop :
+      upperHalfPlaneLengthMetricSpace.toPseudoMetricSpace.toUniformSpace.toTopologicalSpace =
+        originalTopology := upperHalfPlaneLengthMetricSpace_coherence.1
+  rcases hC 1 zero_lt_one with ⟨S, hS, hpair⟩
+  obtain ⟨i, hi⟩ := Filter.nonempty_of_mem hS
+  letI : MetricSpace UpperHalfPlane := upperHalfPlaneLengthMetricSpace
+  letI : UniformSpace UpperHalfPlane := upperHalfPlaneLengthMetricSpace.toPseudoMetricSpace.toUniformSpace
+  letI : TopologicalSpace UpperHalfPlane :=
+    upperHalfPlaneLengthMetricSpace.toPseudoMetricSpace.toUniformSpace.toTopologicalSpace
+  have hball : Metric.closedBall (x i) 1 =
+      {q : UpperHalfPlane | (Manifold.piecewiseC1EDist upperHalfPlaneMetric (q) (x i)).toReal ≤ 1} := by
+    ext q
+    change dist q (x i) ≤ 1 ↔ (Manifold.piecewiseC1EDist upperHalfPlaneMetric (q) (x i)).toReal ≤ 1
+    rw [upperHalfPlaneLengthMetricSpace_coherence.2.2]
+  -- Actual committed D supplies this SAME metric ball's compactness.
+  have hc : IsCompact (Metric.closedBall (x i) 1) :=
+    Hyperbolic.isCompact_upperHalfPlaneLengthMetricSpace_closedBall (x i) 1
+  rw [hball] at hc
+  change @IsCompact UpperHalfPlane
+    upperHalfPlaneLengthMetricSpace.toPseudoMetricSpace.toUniformSpace.toTopologicalSpace
+    {q : UpperHalfPlane | (Manifold.piecewiseC1EDist upperHalfPlaneMetric (q) (x i)).toReal ≤ 1} at hc
+  rw [htop] at hc
+  refine ⟨x i, hc, ?_⟩
+  exact Filter.mem_of_superset hS (fun j hj => (hpair j hj i hi).le)
+
+/-- A nontrivial hyperboloid length-Cauchy filter cannot converge to a real ideal endpoint or infinity under the actual inverse model inclusion into OnePoint complex. The SAME complete metric and original topology give the interior limit (G04.F, textbook lines 125–126). -/
+theorem hyperboloid_lengthCauchy_not_tendsto_ideal
+    {ι : Type u} (l : Filter ι) [l.NeBot] (x : ι → Hyperboloid)
+    (hC : ∀ ε : ℝ, 0 < ε → ∃ S : Set ι, S ∈ l ∧
+      ∀ i ∈ S, ∀ j ∈ S, hyperboloidLengthDist (x i) (x j) < ε)
+    (b : OnePoint ℂ)
+    (hb : b = OnePoint.infty ∨ ∃ r : ℝ, b = ((r : ℂ) : OnePoint ℂ)) :
+    ¬ Tendsto (fun i => ((fromHyperboloid (x i) : ℂ) : OnePoint ℂ)) l (𝓝 b) := by
+  let originalTopology : TopologicalSpace Hyperboloid := inferInstance
+  have htop :
+      hyperboloidLengthMetricSpace.toPseudoMetricSpace.toUniformSpace.toTopologicalSpace =
+        originalTopology := hyperboloidLengthMetricSpace_coherence.1
+  have hinc : Continuous (fun p : Hyperboloid => ((fromHyperboloid (p) : ℂ) : OnePoint ℂ)) :=
+    OnePoint.continuous_coe.comp
+      (UpperHalfPlane.continuous_coe.comp contMDiff_fromHyperboloid.continuous)
+  letI : MetricSpace Hyperboloid := hyperboloidLengthMetricSpace
+  letI : PseudoMetricSpace Hyperboloid := hyperboloidLengthMetricSpace.toPseudoMetricSpace
+  letI : PseudoEMetricSpace Hyperboloid :=
+    @PseudoMetricSpace.toPseudoEMetricSpace Hyperboloid hyperboloidLengthMetricSpace.toPseudoMetricSpace
+  letI : WeakPseudoEMetricSpace Hyperboloid :=
+    @PseudoEMetricSpace.toWeakPseudoEMetricSpace Hyperboloid
+      (@PseudoMetricSpace.toPseudoEMetricSpace Hyperboloid hyperboloidLengthMetricSpace.toPseudoMetricSpace)
+  letI : UniformSpace Hyperboloid := hyperboloidLengthMetricSpace.toPseudoMetricSpace.toUniformSpace
+  letI : TopologicalSpace Hyperboloid :=
+    hyperboloidLengthMetricSpace.toPseudoMetricSpace.toUniformSpace.toTopologicalSpace
+  -- Actual committed E supplies completeness of this SAME uniformity.
+  letI : CompleteSpace Hyperboloid := Hyperbolic.completeSpace_hyperboloidLengthMetricSpace
+  have hx : Cauchy (Filter.map x l) := Metric.cauchy_iff.2 (by
+    refine ⟨inferInstance, ?_⟩
+    intro ε hε
+    rcases hC ε hε with ⟨S, hS, hpair⟩
+    refine ⟨x '' S, Filter.image_mem_map hS, ?_⟩
+    rintro a ⟨i, hi, rfl⟩ b' ⟨j, hj, rfl⟩
+    rw [hyperboloidLengthMetricSpace_coherence.2.2]
+    exact hpair i hi j hj)
+  obtain ⟨p, hp⟩ := cauchy_map_iff_exists_tendsto.1 hx
+  have hpOriginal : Tendsto x l (@nhds Hyperboloid originalTopology p) := by
+    change Tendsto x l
+      (@nhds Hyperboloid
+        hyperboloidLengthMetricSpace.toPseudoMetricSpace.toUniformSpace.toTopologicalSpace p) at hp
+    rw [htop] at hp
+    exact hp
+  have hpAmbient : Tendsto (fun i => ((fromHyperboloid (x i) : ℂ) : OnePoint ℂ)) l
+      (𝓝 ((fromHyperboloid (p) : ℂ) : OnePoint ℂ)) :=
+    hinc.continuousAt.tendsto.comp hpOriginal
+  intro hideal
+  have heq : ((fromHyperboloid (p) : ℂ) : OnePoint ℂ) = b := tendsto_nhds_unique hpAmbient hideal
+  rcases hb with hb | ⟨r, hb⟩
+  · exact OnePoint.coe_ne_infty ((fromHyperboloid p) : ℂ) (heq.trans hb)
+  · have hz : ((fromHyperboloid p) : ℂ) = (r : ℂ) := OnePoint.coe_injective (heq.trans hb)
+    have him : (fromHyperboloid p).im = 0 := by
+      simpa only [UpperHalfPlane.coe_im, Complex.ofReal_im] using congrArg Complex.im hz
+    exact (ne_of_gt (fromHyperboloid p).im_pos) him
+
+/-- A nontrivial hyperboloid length-Cauchy filter is eventually contained in one compact closed unit length ball, in the original topology. Compactness concerns this single fixed tail ball (G04.F, textbook lines 125–126). -/
+theorem hyperboloid_lengthCauchy_compact_tail
+    {ι : Type u} (l : Filter ι) [l.NeBot] (x : ι → Hyperboloid)
+    (hC : ∀ ε : ℝ, 0 < ε → ∃ S : Set ι, S ∈ l ∧
+      ∀ i ∈ S, ∀ j ∈ S, hyperboloidLengthDist (x i) (x j) < ε) :
+    ∃ p : Hyperboloid, IsCompact {q : Hyperboloid | hyperboloidLengthDist (q) (p) ≤ 1} ∧
+      ∀ᶠ i in l, hyperboloidLengthDist (x i) (p) ≤ 1 := by
+  let originalTopology : TopologicalSpace Hyperboloid := inferInstance
+  have htop :
+      hyperboloidLengthMetricSpace.toPseudoMetricSpace.toUniformSpace.toTopologicalSpace =
+        originalTopology := hyperboloidLengthMetricSpace_coherence.1
+  rcases hC 1 zero_lt_one with ⟨S, hS, hpair⟩
+  obtain ⟨i, hi⟩ := Filter.nonempty_of_mem hS
+  letI : MetricSpace Hyperboloid := hyperboloidLengthMetricSpace
+  letI : PseudoMetricSpace Hyperboloid := hyperboloidLengthMetricSpace.toPseudoMetricSpace
+  letI : PseudoEMetricSpace Hyperboloid :=
+    @PseudoMetricSpace.toPseudoEMetricSpace Hyperboloid hyperboloidLengthMetricSpace.toPseudoMetricSpace
+  letI : WeakPseudoEMetricSpace Hyperboloid :=
+    @PseudoEMetricSpace.toWeakPseudoEMetricSpace Hyperboloid
+      (@PseudoMetricSpace.toPseudoEMetricSpace Hyperboloid hyperboloidLengthMetricSpace.toPseudoMetricSpace)
+  letI : UniformSpace Hyperboloid := hyperboloidLengthMetricSpace.toPseudoMetricSpace.toUniformSpace
+  letI : TopologicalSpace Hyperboloid :=
+    hyperboloidLengthMetricSpace.toPseudoMetricSpace.toUniformSpace.toTopologicalSpace
+  have hball : Metric.closedBall (x i) 1 =
+      {q : Hyperboloid | hyperboloidLengthDist (q) (x i) ≤ 1} := by
+    ext q
+    change dist q (x i) ≤ 1 ↔ hyperboloidLengthDist (q) (x i) ≤ 1
+    rw [hyperboloidLengthMetricSpace_coherence.2.2]
+  -- Actual committed D supplies this SAME metric ball's compactness.
+  have hc : IsCompact (Metric.closedBall (x i) 1) :=
+    Hyperbolic.isCompact_hyperboloidLengthMetricSpace_closedBall (x i) 1
+  rw [hball] at hc
+  change @IsCompact Hyperboloid
+    hyperboloidLengthMetricSpace.toPseudoMetricSpace.toUniformSpace.toTopologicalSpace
+    {q : Hyperboloid | hyperboloidLengthDist (q) (x i) ≤ 1} at hc
+  rw [htop] at hc
+  refine ⟨x i, hc, ?_⟩
+  exact Filter.mem_of_superset hS (fun j hj => (hpair j hj i hi).le)
+
+end IdealLengthEnds
 
 end Hyperbolic
