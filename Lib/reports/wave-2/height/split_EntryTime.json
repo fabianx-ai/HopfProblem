@@ -1,0 +1,1186 @@
+{
+"module": "Lib.Geometry.Manifold.Flow.HeightTranslating",
+"source": "Lib/Geometry/Manifold/Flow/HeightTranslating.lean",
+"source_sha256": "fbd42bdf354cf672c91d71f440cff8e6a760edd28b4ec64d8274ba28cc88fb9e",
+"units_kept": 86,
+"units_moved": 20,
+"units": [
+{
+"names": [
+"MorseHandle.unitBallHomeomorph"
+],
+"class": "keep",
+"lines": [
+47,
+56
+],
+"sha256": "78887d65a8ca599691ccefe48f7634df40af170e4f6bb641ad9420a802259363"
+},
+{
+"names": [
+"ManifoldMorse.SignedMorseChart.handleBallCoordinates"
+],
+"class": "keep",
+"lines": [
+58,
+68
+],
+"sha256": "1524e2fd6bab609c6daf7d1e55135a38bc32aa3f2c68f8bb598cf2ac9de2a3ec"
+},
+{
+"names": [
+"ManifoldMorse.SignedMorseChart.normHandleMap"
+],
+"class": "keep",
+"lines": [
+70,
+83
+],
+"sha256": "da35bd4b9aeb924e3ec04876bc9cd9f2069df1860a0f6cc554f11f4ff9acc7a0"
+},
+{
+"names": [
+"ManifoldMorse.SignedMorseChart.range_normHandleMap"
+],
+"class": "keep",
+"lines": [
+85,
+105
+],
+"sha256": "85000206a2f768fed85c8c1c65f6db87be9ed9b2f01daa899a95897f7520bc1f"
+},
+{
+"names": [
+"ManifoldMorse.SignedMorseChart.attachmentBoundaryData"
+],
+"class": "keep",
+"lines": [
+109,
+136
+],
+"sha256": "37380469f087c072cf9f0767f76f07d81d3c0cba882b05579cbc1c6a7d06c0ae"
+},
+{
+"names": [
+"ManifoldMorse.SignedMorseChart.attachingCoreMap"
+],
+"class": "keep",
+"lines": [
+138,
+149
+],
+"sha256": "d27a49342be9ebc7d90ed4371c19f90968e6c3eedd80b0b6d4faec6ca2c17070"
+},
+{
+"names": [
+"ManifoldMorse.SignedMorseChart.attachingCoreMap_coe"
+],
+"class": "keep",
+"lines": [
+151,
+168
+],
+"sha256": "dbac6e86d1a37d219f985402778e98523abd9c499dbf92aa2860404a910d13d1"
+},
+{
+"names": [
+"ManifoldMorse.SignedMorseChart.contMDiff_attachingCoreMap_ambient"
+],
+"class": "keep",
+"lines": [
+170,
+213
+],
+"sha256": "1b8013ce9853b1af6bf8b8a6e35bc16d1ef71b3e148682a01ab7f6a991b785e6"
+},
+{
+"names": [
+"ManifoldMorse.SignedMorseChart.contMDiff_attachingCoreMap"
+],
+"class": "keep",
+"lines": [
+215,
+233
+],
+"sha256": "d0f83a3352c2677ed24d04011e8607e5f625c1b7d979a75bf27dd2bb82a8d1f0"
+},
+{
+"names": [
+"MorseHandle.quadratic_descentFlow_lt"
+],
+"class": "keep",
+"lines": [
+237,
+259
+],
+"sha256": "015bd2763ff4aa348c1fe05775dcf26a21a89cfebf30ce208167de35b4f6eaec"
+},
+{
+"names": [
+"MorseHandle.descentFlow_mem_interior_lower_union_handle"
+],
+"class": "keep",
+"lines": [
+261,
+289
+],
+"sha256": "0aec73307dc350317f0205944c2282928b455ef11b0552dc3c1a80b07c3eb96d"
+},
+{
+"names": [
+"FlowConstruction.partialChartField_eq_mfderiv_symm"
+],
+"class": "keep",
+"lines": [
+291,
+312
+],
+"sha256": "9ccf47616a05340540db03f6f5f1a2de8df7512c0b0398bd1342881eec066935"
+},
+{
+"names": [
+"FlowConstruction.hasMFDerivAt_lift_partialChartCurve"
+],
+"class": "keep",
+"lines": [
+314,
+336
+],
+"sha256": "1eac55f2c5ece7ca80790dd5b029552e9fc0162faf00521b6d85b081e11dea66"
+},
+{
+"names": [
+"ManifoldMorse.SignedMorseChart.eventually_flow_eq_descentModel"
+],
+"class": "keep",
+"lines": [
+338,
+374
+],
+"sha256": "42045084b0ca1373fb80df5ad0544d536933f12c0a8d25ed7afb65344c1a7791"
+},
+{
+"names": [
+"ManifoldMorse.SignedMorseChart.flow_eqOn_descentModel"
+],
+"class": "keep",
+"lines": [
+376,
+434
+],
+"sha256": "a1ef2caaae78688e791ac77651632e66323e04a06a9b2f5749704117edccf9b7"
+},
+{
+"names": [
+"ManifoldMorse.SignedMorseChart.flow_eq_descentModel_of_mem_uIcc"
+],
+"class": "keep",
+"lines": [
+436,
+454
+],
+"sha256": "5349395a759e51ca67f952f7185c1d861c00c1ac694ae8cc7afe3ff610dad865"
+},
+{
+"names": [
+"FlowConstruction.forwardInvariant_of_local"
+],
+"class": "move",
+"lines": [
+458,
+479
+],
+"sha256": "e7e174c22dc8aeca7f0973f88224ca35d38da0c1e66dec32865716616284b5f1"
+},
+{
+"names": [
+"FlowConstruction.forwardInvariant_interior"
+],
+"class": "move",
+"lines": [
+481,
+489
+],
+"sha256": "db050c4d810e492947725cbebd857495553065c972f7eb01b4231b767cbd3b42"
+},
+{
+"names": [
+"FlowConstruction.interior_entry_of_local"
+],
+"class": "move",
+"lines": [
+491,
+504
+],
+"sha256": "5dfd4c5aefccf4315a7abf1b265a4c5261cece6e767b13a2badd0ec779f49d36"
+},
+{
+"names": [
+"ManifoldMorse.SignedMorseChart.exists_local_attachingUnion_entry"
+],
+"class": "keep",
+"lines": [
+506,
+552
+],
+"sha256": "ed17ca90b5fcf84132a738d8967d229ebde7ac3ec597125e689589234175ef83"
+},
+{
+"names": [
+"ManifoldMorse.SignedMorseChart.forwardInvariant_attachingUnion"
+],
+"class": "keep",
+"lines": [
+554,
+597
+],
+"sha256": "a041f76718b356173b07d05ba9afe192a8bb3599e3492b11b25c48b3f7f1c777"
+},
+{
+"names": [
+"ManifoldMorse.SignedMorseChart.interior_entry_attachingUnion"
+],
+"class": "keep",
+"lines": [
+599,
+645
+],
+"sha256": "f9895dc27d099549496548c4b915e1daf71bf6e693631c45f12e627b81590b39"
+},
+{
+"names": [
+"FlowConstruction.entryTime"
+],
+"class": "move",
+"lines": [
+649,
+652
+],
+"sha256": "f4102d5cdf2ba69556873cdd16bb0fe6a90cbcbb88d9d9ccce1e9e2befc4aa33"
+},
+{
+"names": [
+"FlowConstruction.entryTime_nonneg"
+],
+"class": "move",
+"lines": [
+654,
+657
+],
+"sha256": "fdc560f1ba8d8881c466b2995b81e9ff44e25e0155b9c10ec60f24dbec43b4e3"
+},
+{
+"names": [
+"FlowConstruction.entryTime_le_of_mem"
+],
+"class": "move",
+"lines": [
+659,
+662
+],
+"sha256": "69c9ddd441af40d0bfc747d5711a9b2de87d04e316728a0d3f11ed5b1d995f72"
+},
+{
+"names": [
+"FlowConstruction.flow_entryTime_mem"
+],
+"class": "move",
+"lines": [
+664,
+670
+],
+"sha256": "c7b8e8d20f4024d566a16ba2707cb8c8e2ccb38055de7c86f40fcd7994a0aff5"
+},
+{
+"names": [
+"FlowConstruction.entryTime_eq_zero"
+],
+"class": "move",
+"lines": [
+672,
+676
+],
+"sha256": "73695d5f8b6a175361c0d14893aba6ad83d59dfed24535bddf102efd15a29ca7"
+},
+{
+"names": [
+"FlowConstruction.entryTime_le_iff"
+],
+"class": "move",
+"lines": [
+678,
+687
+],
+"sha256": "556bbd3ca03d685d07cb0fac97e4ae0c79af341bdac75ecc0b627134a58a6489"
+},
+{
+"names": [
+"FlowConstruction.flow_mem_interior_of_entryTime_lt"
+],
+"class": "move",
+"lines": [
+689,
+696
+],
+"sha256": "6b83550c0e243b516e85867a6fbb0e244a7b99577dfcda73cbca4be68338e096"
+},
+{
+"names": [
+"FlowConstruction.entryTime_eq_of_flow_mem_frontier"
+],
+"class": "move",
+"lines": [
+698,
+707
+],
+"sha256": "492c6108ca58792be02c40b7812dbe67f8405b50ef12239b4afde39de7df822d"
+},
+{
+"names": [
+"FlowConstruction.continuousOn_entryTime"
+],
+"class": "move",
+"lines": [
+709,
+739
+],
+"sha256": "c6761602166d5f216d4afe60feb2abe7f567ffe2579f3b4dfbbed16d67c8eadb"
+},
+{
+"names": [
+"FlowConstruction.entryRetraction"
+],
+"class": "move",
+"lines": [
+743,
+755
+],
+"sha256": "2cefb48ca8496e7dff99ea17d054a87d99d656e87933646cf3965151879aea20"
+},
+{
+"names": [
+"FlowConstruction.entryRetraction_inclusion"
+],
+"class": "move",
+"lines": [
+757,
+766
+],
+"sha256": "defd5c8f4187b034ff0847cf477266c3e446bb0ef6bb8c960e75b413dc0b9e80"
+},
+{
+"names": [
+"FlowConstruction.entryDeformation"
+],
+"class": "move",
+"lines": [
+768,
+805
+],
+"sha256": "dfa6cea1dec3f4c5ba6a26715e57b22034ffe7cdc2f77308ef6fd892aff52121"
+},
+{
+"names": [
+"FlowConstruction.entryHomotopyEquiv"
+],
+"class": "move",
+"lines": [
+807,
+824
+],
+"sha256": "5220bae3800d460a933e0236f5deb5b309b8028d9cf01f186aef44192246d98d"
+},
+{
+"names": [
+"FlowConstruction.hasDerivAt_comp_integralCurve"
+],
+"class": "keep",
+"lines": [
+828,
+843
+],
+"sha256": "1f7a3eddbc0238c457886e000d253d5445024851ed4f8506eda097b6c3d40ddb"
+},
+{
+"names": [
+"FlowConstruction.exists_regularBandField"
+],
+"class": "keep",
+"lines": [
+845,
+875
+],
+"sha256": "e4738421c1ef86ac500793792872c59aeb940ae3b5b273c008a03384d2505228"
+},
+{
+"names": [
+"FlowConstruction.exists_regularBandFlow"
+],
+"class": "keep",
+"lines": [
+877,
+897
+],
+"sha256": "50f3aa3acf8b1d26452cd8efc3531a27c8d86a0fcd7856fd8133335abe91faa0"
+},
+{
+"names": [
+"FlowConstruction.flow_fixed_of_zero"
+],
+"class": "keep",
+"lines": [
+899,
+909
+],
+"sha256": "f4d10676aee492ee674666990c5efb7c7a5e25c6b01611e78607ebd4618ffc07"
+},
+{
+"names": [
+"FlowConstruction.flow_preserves_regular"
+],
+"class": "keep",
+"lines": [
+911,
+924
+],
+"sha256": "9fd1f1354a249fd336264598ce0e443ab1211d844274de16eb8cbf4c25013984"
+},
+{
+"names": [
+"FlowConstruction.antitone_flow_height"
+],
+"class": "keep",
+"lines": [
+926,
+939
+],
+"sha256": "a5e51535c491764eb0a9f65531af77d6592efb16a1c1b5a12132d9098ee151ab"
+},
+{
+"names": [
+"FlowConstruction.strictAnti_flow_height"
+],
+"class": "keep",
+"lines": [
+941,
+951
+],
+"sha256": "7802d354f133eac3b41c2203e41e193f55c26a6dc77b2ed06542674cda1d93d9"
+},
+{
+"names": [
+"FlowConstruction.exists_adaptedDescentFlow"
+],
+"class": "keep",
+"lines": [
+953,
+981
+],
+"sha256": "2a689a3aa9ef9763eff250806111f3ee29a4c5a847c934600964808b83113ffb"
+},
+{
+"names": [
+"FlowConstruction.continuous_mvfderiv_field"
+],
+"class": "keep",
+"lines": [
+983,
+992
+],
+"sha256": "0f7da18bcefbd801f00a2cfaecf34e514490756b41bf25ff3d9d36e809d0dea4"
+},
+{
+"names": [
+"FlowConstruction.exists_uniform_negative_speed"
+],
+"class": "keep",
+"lines": [
+996,
+1010
+],
+"sha256": "b63098cfa5cf634c7d10672b0938a81d829384d920bfca6058086dd364c874d2"
+},
+{
+"names": [
+"FlowConstruction.exists_uniform_residence_bound"
+],
+"class": "keep",
+"lines": [
+1012,
+1053
+],
+"sha256": "f059f0c1636aefa7104f42a0718d66442cea6f5e91abebd98c4b46ec9c223ea7"
+},
+{
+"names": [
+"FlowConstruction.exists_uniform_criticalNeighborhood_entry"
+],
+"class": "keep",
+"lines": [
+1055,
+1084
+],
+"sha256": "f5e34d44865981622f3532e13f8c11ff7f65e70c13a600c066d9982c9ae4b901"
+},
+{
+"names": [
+"FlowConstruction.exists_uniform_absorbing_entry"
+],
+"class": "keep",
+"lines": [
+1086,
+1104
+],
+"sha256": "9e0de941f2c459b0ae7d18479346d4ee3eb05e66ae54b37573cc381cb908fd3c"
+},
+{
+"names": [
+"FlowConstruction.exists_absorbingSublevelHomotopyEquiv"
+],
+"class": "keep",
+"lines": [
+1106,
+1129
+],
+"sha256": "51b3b97cc668a964ea81a82cceec5f509c8ee221e3eee716775301e67460adf9"
+},
+{
+"names": [
+"ManifoldMorse.SignedMorseChart.exists_attachingUnionHomotopyEquiv"
+],
+"class": "keep",
+"lines": [
+1131,
+1182
+],
+"sha256": "ebdc66f49fb4c595b9c0e5c9eac82a282c03146824d133318eda3f2024805506"
+},
+{
+"names": [
+"FlowConstruction.entryTime_flow_of_le"
+],
+"class": "move",
+"lines": [
+1184,
+1196
+],
+"sha256": "d600b15e4e0227ee8eb075313281370197c5fa4ee9dcd4f2553de87d2a6cd161"
+},
+{
+"names": [
+"FlowConstruction.entryTime_lt_of_flow_mem_interior"
+],
+"class": "move",
+"lines": [
+1198,
+1207
+],
+"sha256": "2471a5ffe7887dfabf9a5893d01ab4d5ecfbf1341524a3ce71327a7b1dae4e1c"
+},
+{
+"names": [
+"FlowConstruction.entryTime_eq_add_of_flow_pos"
+],
+"class": "move",
+"lines": [
+1209,
+1220
+],
+"sha256": "2f80f38694059a85c570f96dd88eba59519250d45de57ed03b1ce2f8e62d5cec"
+},
+{
+"names": [
+"FlowConstruction.FlowCollarData",
+"FlowConstruction.FlowCollarData.mk",
+"FlowConstruction.FlowCollarData.time",
+"FlowConstruction.FlowCollarData.time_pos",
+"FlowConstruction.FlowCollarData.closed_outer",
+"FlowConstruction.FlowCollarData.closed_inner",
+"FlowConstruction.FlowCollarData.inner_subset",
+"FlowConstruction.FlowCollarData.forward_outer",
+"FlowConstruction.FlowCollarData.forward_inner",
+"FlowConstruction.FlowCollarData.strict_outer",
+"FlowConstruction.FlowCollarData.strict_inner",
+"FlowConstruction.FlowCollarData.core_inside"
+],
+"class": "keep",
+"lines": [
+1224,
+1236
+],
+"sha256": "18682707e70126e679ba44ad8ecd978e39d6ad3ed32983aa7217540eef06b61f"
+},
+{
+"names": [
+"FlowConstruction.FlowCollarData.core"
+],
+"class": "keep",
+"lines": [
+1238,
+1241
+],
+"sha256": "870b2e5461ee62f6738686c2840fb3bd3deacdaccb168198fee72ea7c65cf7cf"
+},
+{
+"names": [
+"FlowConstruction.FlowCollarData.closed_core"
+],
+"class": "keep",
+"lines": [
+1243,
+1247
+],
+"sha256": "59cb103317a9ef50b03709e254f5f87ca629510c04bcc8dcdfc0dbf83187126c"
+},
+{
+"names": [
+"FlowConstruction.FlowCollarData.forward_core"
+],
+"class": "keep",
+"lines": [
+1249,
+1256
+],
+"sha256": "4070b15f1c148bc2ed53fa3acd3d83f393a6a6754c6727ad22009bc9919503ff"
+},
+{
+"names": [
+"FlowConstruction.FlowCollarData.strict_core"
+],
+"class": "keep",
+"lines": [
+1258,
+1266
+],
+"sha256": "9bbf631cbaac56f8f3587512d03e93dbb08f1fbcfbf314136e425ba6720aff4a"
+},
+{
+"names": [
+"FlowConstruction.FlowCollarData.flow_time_mem_core"
+],
+"class": "keep",
+"lines": [
+1268,
+1273
+],
+"sha256": "aecc86fc9626a5770428e4ed7d87c74facc9433bf1f3981b9476bf1884d75429"
+},
+{
+"names": [
+"FlowConstruction.FlowCollarData.hits_core"
+],
+"class": "keep",
+"lines": [
+1275,
+1279
+],
+"sha256": "1502f40a69b3062154b03e085c3bc33afeb8407b7435020fb30459514d814125"
+},
+{
+"names": [
+"FlowConstruction.FlowCollarData.hits_inner"
+],
+"class": "keep",
+"lines": [
+1281,
+1285
+],
+"sha256": "db138d8870321af93bfad252333dd094aa176ce7196f6da94f4ba127deee90c7"
+},
+{
+"names": [
+"FlowConstruction.FlowCollarData.duration"
+],
+"class": "keep",
+"lines": [
+1287,
+1290
+],
+"sha256": "58995c4544c8a98bd48d80ae8427c08d4de2400adcab94ef30595d8acccca9bc"
+},
+{
+"names": [
+"FlowConstruction.FlowCollarData.duration_nonneg"
+],
+"class": "keep",
+"lines": [
+1292,
+1296
+],
+"sha256": "e1fe8edaa34351fe9b5956b89cc2ee316353e0946fb3920a81ac674b1e498a19"
+},
+{
+"names": [
+"FlowConstruction.FlowCollarData.duration_le"
+],
+"class": "keep",
+"lines": [
+1298,
+1302
+],
+"sha256": "e74640aa27af99dcf78fb0f7ad0cc6b81e4a4fb5737415e870a3f6d189b3b102"
+},
+{
+"names": [
+"FlowConstruction.FlowCollarData.continuous_duration"
+],
+"class": "keep",
+"lines": [
+1304,
+1310
+],
+"sha256": "a73d7839e8de27284f84af29e018549395ca1bbc6718069e2f4484f7e9f7885c"
+},
+{
+"names": [
+"FlowConstruction.FlowCollarData.origin"
+],
+"class": "keep",
+"lines": [
+1312,
+1319
+],
+"sha256": "294cea216bc8cb2aae5adb3a59f59dd774fcee1541dd158d9530f648614ad124"
+},
+{
+"names": [
+"FlowConstruction.FlowCollarData.continuous_origin"
+],
+"class": "keep",
+"lines": [
+1321,
+1325
+],
+"sha256": "40eacd8bfc5f5f3c28ef4258d78fec89bdefa181c58071151473be6af17f8f97"
+},
+{
+"names": [
+"FlowConstruction.FlowCollarData.origin_reconstruct"
+],
+"class": "keep",
+"lines": [
+1327,
+1332
+],
+"sha256": "7e8cd7f45e7f42abb06d3ae38c57ec775ab5e291721c185f71602c8cf519e068"
+},
+{
+"names": [
+"FlowConstruction.FlowCollarData.delay"
+],
+"class": "keep",
+"lines": [
+1334,
+1337
+],
+"sha256": "7aa3f67fe701e48bdaea6010676ea7dcc0f25ea83e0b7ef308ed10e4d7e214d8"
+},
+{
+"names": [
+"FlowConstruction.FlowCollarData.delay_nonneg"
+],
+"class": "keep",
+"lines": [
+1339,
+1343
+],
+"sha256": "08effc4bc0288c712add9140eebda1279fb9be97da353e27b3e28fd0439a9775"
+},
+{
+"names": [
+"FlowConstruction.FlowCollarData.delay_lt"
+],
+"class": "keep",
+"lines": [
+1345,
+1350
+],
+"sha256": "6974174c47f7e23e819dbbadf27d4359bba2272757e6d013587fc95793edcf53"
+},
+{
+"names": [
+"FlowConstruction.FlowCollarData.continuous_delay"
+],
+"class": "keep",
+"lines": [
+1352,
+1359
+],
+"sha256": "c26aac555a0d9f06c626b8736c7cde052a0c518b2f870ab7038affd895199840"
+},
+{
+"names": [
+"FlowConstruction.FlowCollarData.factor"
+],
+"class": "keep",
+"lines": [
+1361,
+1364
+],
+"sha256": "8d35ee5cfb0b12b6e479cfd6334a08173408b1cdd8966e6545f417d0b409366b"
+},
+{
+"names": [
+"FlowConstruction.FlowCollarData.factor_pos"
+],
+"class": "keep",
+"lines": [
+1366,
+1370
+],
+"sha256": "b40cf53404255a49c5bca15ce782326f1f9295981ce50f1854da29567dd86533"
+},
+{
+"names": [
+"FlowConstruction.FlowCollarData.factor_le_one"
+],
+"class": "keep",
+"lines": [
+1372,
+1377
+],
+"sha256": "16356ac5c69901b57dd3b99ad2d8fd31d11d03efb6302f6904c422a7dc21b657"
+},
+{
+"names": [
+"FlowConstruction.FlowCollarData.time_mul_factor"
+],
+"class": "keep",
+"lines": [
+1379,
+1384
+],
+"sha256": "909cfa81d60aa07ab132319c57389833ae51ca6efd053b04386f56e4575bc97c"
+},
+{
+"names": [
+"FlowConstruction.FlowCollarData.continuous_factor"
+],
+"class": "keep",
+"lines": [
+1386,
+1390
+],
+"sha256": "d90361d70ed84bab1efcbe93863416760118e490776a21a0c9e85f202c010c17"
+},
+{
+"names": [
+"FlowConstruction.FlowCollarData.duration_le_retained"
+],
+"class": "keep",
+"lines": [
+1392,
+1401
+],
+"sha256": "260c5a197350166bea1fc17ed1e617db2946d336127e51bf7c497fd7a115d3dd"
+},
+{
+"names": [
+"FlowConstruction.FlowCollarData.shift"
+],
+"class": "keep",
+"lines": [
+1403,
+1406
+],
+"sha256": "aa8405d03bf5b36750ea6990f246441f0cf2de094693872471a5179778be4717"
+},
+{
+"names": [
+"FlowConstruction.FlowCollarData.shift_nonneg"
+],
+"class": "keep",
+"lines": [
+1408,
+1412
+],
+"sha256": "d1a12ccc523d82c30792a008eb280a40e9bcdb3d8a043e7349da1833ef676d2a"
+},
+{
+"names": [
+"FlowConstruction.FlowCollarData.shift_le_duration"
+],
+"class": "keep",
+"lines": [
+1414,
+1419
+],
+"sha256": "df5eda1f82130606154e522b35966856d5d33eb20483f4ee65ffc4bf97f633df"
+},
+{
+"names": [
+"FlowConstruction.FlowCollarData.continuous_shift"
+],
+"class": "keep",
+"lines": [
+1421,
+1425
+],
+"sha256": "e43b202bdba57534b21f0c79ba50fd9bdac4e14ce088a6789d405d6cc4686066"
+},
+{
+"names": [
+"FlowConstruction.FlowCollarData.rescale"
+],
+"class": "keep",
+"lines": [
+1429,
+1434
+],
+"sha256": "71945bdd07fcb7d296dbf7af80a69951f65d46a48e6ec9c816213fa31bf0b35d"
+},
+{
+"names": [
+"FlowConstruction.FlowCollarData.rescale_from_origin"
+],
+"class": "keep",
+"lines": [
+1436,
+1445
+],
+"sha256": "c647ea50e18128dfd9a2fe88dcb583f56218a59ec4fa72f2ff31729a4f6f3d28"
+},
+{
+"names": [
+"FlowConstruction.FlowCollarData.rescale_mem_inner"
+],
+"class": "keep",
+"lines": [
+1447,
+1459
+],
+"sha256": "fba7aed60b99f0d33953265a6df1d7f03378f8f8f6826a9a01375acffa0d2c0e"
+},
+{
+"names": [
+"FlowConstruction.FlowCollarData.duration_rescale"
+],
+"class": "keep",
+"lines": [
+1461,
+1470
+],
+"sha256": "994f287eeefdac64bd7ef94e5b27a414cb7b8eef31b27d0c274d7b83cd2cc88c"
+},
+{
+"names": [
+"FlowConstruction.FlowCollarData.origin_rescale"
+],
+"class": "keep",
+"lines": [
+1472,
+1481
+],
+"sha256": "0ddd6dfe01b942ed39f3195ef62384cb6bef4946c300cfecbe838a532acfa310"
+},
+{
+"names": [
+"FlowConstruction.FlowCollarData.factor_rescale"
+],
+"class": "keep",
+"lines": [
+1483,
+1488
+],
+"sha256": "1718c92bd98767949c5e4890a06010d62f399d974ef6462351b8abf87396cb84"
+},
+{
+"names": [
+"FlowConstruction.FlowCollarData.rescale_injective"
+],
+"class": "keep",
+"lines": [
+1490,
+1502
+],
+"sha256": "874f83b1f3b13c46780b16dd5a458c65735e10e3b27da221ff34e2da45b30b4f"
+},
+{
+"names": [
+"FlowConstruction.FlowCollarData.rescale_eq_self_of_duration_eq_zero"
+],
+"class": "keep",
+"lines": [
+1504,
+1511
+],
+"sha256": "4b1c04650bdd072264bed89ac061773989ae89090288ebffea9c411ddfb35b30"
+},
+{
+"names": [
+"FlowConstruction.FlowCollarData.exists_rescale_eq"
+],
+"class": "keep",
+"lines": [
+1513,
+1551
+],
+"sha256": "0759dfa9cb7417c9c1e6d461a7edc7d1d8e91fe481d1ca0a0718791cfa7b2747"
+},
+{
+"names": [
+"FlowConstruction.FlowCollarData.innerMap"
+],
+"class": "keep",
+"lines": [
+1555,
+1560
+],
+"sha256": "01a11c746e4bcf5930fcd8140ad416a36d3d7a15d5ab16d24ac2ee183793366f"
+},
+{
+"names": [
+"FlowConstruction.FlowCollarData.innerMap_bijective"
+],
+"class": "keep",
+"lines": [
+1562,
+1572
+],
+"sha256": "46fce8ac4c94bb94bd6e8486877649cb71b88ea005df5b306eb8b59c56b5065e"
+},
+{
+"names": [
+"FlowConstruction.FlowCollarData.homeomorph"
+],
+"class": "keep",
+"lines": [
+1574,
+1579
+],
+"sha256": "ea9613723bb712d400d77e647cee0de4f4cbd171b176f700b1118addac268c12"
+},
+{
+"names": [
+"FlowConstruction.FlowCollarData.duration_lt_time_iff_interior"
+],
+"class": "keep",
+"lines": [
+1581,
+1598
+],
+"sha256": "16443eb62662e33d64c97c0d586b943b5bd005f43744ec9a9c72b907cb3725a0"
+},
+{
+"names": [
+"FlowConstruction.FlowCollarData.duration_eq_time_iff_frontier"
+],
+"class": "keep",
+"lines": [
+1600,
+1614
+],
+"sha256": "49f40c4988d7a5b7e9f6c37ac532b54066bacd6147a770ffd562552f557386a1"
+},
+{
+"names": [
+"FlowConstruction.FlowCollarData.rescale_mem_interior_iff"
+],
+"class": "keep",
+"lines": [
+1616,
+1647
+],
+"sha256": "d52f72596517e28f1e4a1e7a7fcad84aea77b48aa29a16c90a4e299f8bffd7bb"
+},
+{
+"names": [
+"FlowConstruction.FlowCollarData.innerMap_mem_frontier_iff"
+],
+"class": "keep",
+"lines": [
+1649,
+1660
+],
+"sha256": "da2d0e1dd40538d92e2ebad35cf9954d4ef339a0c47ea3b0b557bb55c39d27d4"
+},
+{
+"names": [
+"FlowConstruction.FlowCollarData.homeomorph_mem_frontier_iff"
+],
+"class": "keep",
+"lines": [
+1662,
+1667
+],
+"sha256": "e1c6727815aa87615b24689234b345e874e41de999b5de9e6ef1bac41593b691"
+},
+{
+"names": [
+"FlowConstruction.FlowCollarData.homeomorph_eq_flow_entryTime"
+],
+"class": "keep",
+"lines": [
+1669,
+1682
+],
+"sha256": "ef2a7c60ad7f008be67fac326742e6bf5a5b2c352158d435165ca72c37814b72"
+},
+{
+"names": [
+"FlowConstruction.FlowCollarData.homeomorph_eq_flow_of_mem_frontier"
+],
+"class": "keep",
+"lines": [
+1684,
+1692
+],
+"sha256": "e7e996f82486c93b6ca40e6408b3bff0f9e68a6b61511c2f87bca0f502a313bf"
+},
+{
+"names": [
+"FlowConstruction.FlowCollarData.homeomorph_symm_eq_flow_of_mem_frontier"
+],
+"class": "keep",
+"lines": [
+1694,
+1711
+],
+"sha256": "d5d89ac10bb72c1a19818ada1d787554dfd108c781a70bf9d0c45de2c0f92ce9"
+},
+{
+"names": [
+"FlowConstruction.FlowCollarData.rescale_eq_self_of_mem_inner_frontier_outer"
+],
+"class": "keep",
+"lines": [
+1713,
+1724
+],
+"sha256": "22966d2a6f5a08a3fb7b877c0c91f166f92ad5a1f3c4337a4af794968ed847f8"
+},
+{
+"names": [
+"FlowConstruction.FlowCollarData.homeomorph_fixed_on_common_frontier"
+],
+"class": "keep",
+"lines": [
+1726,
+1731
+],
+"sha256": "651d95c5eea22b65d22a7cb0399ff0129fe8c144adeb1f4beadd1ce97b2dacb1"
+},
+{
+"names": [
+"FlowConstruction.exists_absorbingSublevelHomeomorph_with_boundary_orbits"
+],
+"class": "keep",
+"lines": [
+1733,
+1790
+],
+"sha256": "47b5e2a3498ed16203f0150f08858c5f4605bafb5c49b04be5cbdb592cb9d8bd"
+},
+{
+"names": [
+"FlowConstruction.frontier_sublevel_eq_of_strict_flow"
+],
+"class": "move",
+"lines": [
+1792,
+1824
+],
+"sha256": "21402cdef9c833824f292567709f49234fcb03a7252004fb4ddb7fab9296a981"
+}
+]
+}
