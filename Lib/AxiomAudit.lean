@@ -8682,6 +8682,19 @@ is an evidence command rather than library content.
 #check Hyperbolic.hyperboloidReflection_preserves_metric
 #print axioms Hyperbolic.hyperboloidReflection_preserves_metric
 
+#check Hyperbolic.hyperboloidAxis_velocity_constraints
+#print axioms Hyperbolic.hyperboloidAxis_velocity_constraints
+#check Hyperbolic.hyperboloidAxis_radial_tangent
+#print axioms Hyperbolic.hyperboloidAxis_radial_tangent
+#check Hyperbolic.hyperboloidAxis_tangent_basis
+#print axioms Hyperbolic.hyperboloidAxis_tangent_basis
+#check Hyperbolic.hyperboloidAxis_velocity_iff
+#print axioms Hyperbolic.hyperboloidAxis_velocity_iff
+#check Hyperbolic.hyperboloidAxis_reflection_values
+#print axioms Hyperbolic.hyperboloidAxis_reflection_values
+#check Hyperbolic.hyperboloidAxis_tangent_reflection
+#print axioms Hyperbolic.hyperboloidAxis_tangent_reflection
+
 #check Hyperbolic.hyperboloidReflection_speed
 #print axioms Hyperbolic.hyperboloidReflection_speed
 #check Hyperbolic.hyperboloidReflection_speedWithin

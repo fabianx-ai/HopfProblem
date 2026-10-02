@@ -7424,6 +7424,260 @@ theorem hyperboloidReflection_preserves_metric
   simp only [hyperboloidMetric_inner]
   exact hyperboloidReflection_preserves_tangentTensor n hn p v w
 
+/-- Differentiating both axis equations constrains every ambient curve velocity.
+
+Textbook source: G06 P01, lines 136–138. -/
+theorem hyperboloidAxis_velocity_constraints
+    (n : Fin 3 → ℝ) (p : Hyperboloid) (γ : ℝ → Hyperboloid)
+    (hzero : γ 0 = p) (haxis : ∀ t, lorentzBilinear (γ t).val n = 0)
+    (v : Fin 3 → ℝ) (hv : HasDerivAt (fun t => (γ t).val) v 0) :
+    lorentzBilinear v p.val = 0 ∧ lorentzBilinear v n = 0 := by
+  have hsq (t : ℝ) : lorentzBilinear (γ t).val (γ t).val = -1 := by
+    simpa only [lorentzBilinear_apply, pow_two] using (γ t).property.1
+  have hd := lorentzBilinear.hasDerivAt_of_bilinear (fun _ => hv) (fun _ => hv)
+  have hc : HasDerivAt (fun t => lorentzBilinear (γ t).val (γ t).val) 0 0 := by
+    simpa only [hsq] using (hasDerivAt_const (0 : ℝ) (-1 : ℝ))
+  have heq := hd.unique hc
+  rw [hzero, lorentzBilinear_symm p.val v] at heq
+  have hdn := lorentzBilinear.hasDerivAt_of_bilinear (fun _ => hv)
+    (fun _ => hasDerivAt_const (0 : ℝ) n)
+  have hcn : HasDerivAt (fun t => lorentzBilinear (γ t).val n) 0 0 := by
+    simpa only [haxis] using (hasDerivAt_const (0 : ℝ) (0 : ℝ))
+  have hen := hdn.unique hcn
+  simp only [map_zero, zero_add] at hen
+  exact ⟨by linarith, hen⟩
+
+/-- The actual radial axis curve realizes either unit axis tangent, with its full metric receipt.
+
+Textbook source: G06 P01, lines 138–139. -/
+theorem hyperboloidAxis_radial_tangent
+    (n : Fin 3 → ℝ) (hn : lorentzBilinear n n = 1)
+    (p : Hyperboloid) (hpn : lorentzBilinear p.val n = 0)
+    (e : Fin 3 → ℝ) (hep : lorentzBilinear e p.val = 0)
+    (hen : lorentzBilinear e n = 0) (hee : lorentzBilinear e e = 1) :
+    let γ := hyperboloidGeodesic p e hep hee
+    ContMDiff 𝓘(ℝ, ℝ) I ∞ γ ∧ γ 0 = p ∧
+    (∀ s, HasDerivAt (fun t => (γ t).val)
+      (Real.sinh s • p.val + Real.cosh s • e) s) ∧
+    (letI : Bundle.RiemannianBundle (fun q : Hyperboloid => TangentSpace I q) :=
+      ⟨hyperboloidMetric.toRiemannianMetric⟩
+      ∀ s, ‖mfderiv 𝓘(ℝ, ℝ) I γ s (1 : ℝ)‖ = 1) ∧
+    (∀ s, lorentzBilinear (γ s).val n = 0) ∧
+    HasDerivAt (fun t => (γ t).val) e 0 ∧
+    mfderiv I J (fun q : Hyperboloid => q.val) (γ 0)
+      (mfderiv 𝓘(ℝ, ℝ) I γ 0 (1 : ℝ)) = e := by
+  let γ := hyperboloidGeodesic p e hep hee
+  obtain ⟨hs, hz, hd, hu⟩ := hyperboloidGeodesic_properties p e hep hee
+  have haxis (s : ℝ) : lorentzBilinear (γ s).val n = 0 := by
+    change lorentzBilinear (Real.cosh s • p.val + Real.sinh s • e) n = 0
+    simp only [map_add, map_smul, ContinuousLinearMap.add_apply,
+      ContinuousLinearMap.smul_apply, hpn, hen, smul_zero, add_zero]
+  have hzero : HasDerivAt (fun t => (γ t).val) e 0 := by
+    simpa only [Real.sinh_zero, Real.cosh_zero, zero_smul, one_smul, zero_add] using hd 0
+  refine ⟨hs, hz, hd, hu, haxis, hzero, ?_⟩
+  have hchain := mfderiv_comp_apply (0 : ℝ)
+    (contMDiff_hyperboloid_val.mdifferentiable (by simp) (γ 0))
+    (hs.mdifferentiable (by simp) 0) (1 : ℝ)
+  have he : mfderiv 𝓘(ℝ, ℝ) J (fun t => (γ t).val) 0 =
+      fderiv ℝ (fun t => (γ t).val) 0 := mfderiv_eq_fderiv
+  have heval := congrArg (fun L : ℝ →L[ℝ] (Fin 3 → ℝ) => L 1)
+    (he.trans hzero.hasFDerivAt.fderiv)
+  exact hchain.symm.trans (heval.trans (by simp))
+
+/-- At any axis point, the tangent intersection is a line and either unit direction completes the normal to a Lorentz-orthonormal basis.
+
+Textbook source: G06 P01, lines 135–140. -/
+theorem hyperboloidAxis_tangent_basis
+    (n : Fin 3 → ℝ) (hn : lorentzBilinear n n = 1)
+    (p : Hyperboloid) (hpn : lorentzBilinear p.val n = 0)
+    (e : Fin 3 → ℝ) (hep : lorentzBilinear e p.val = 0)
+    (hen : lorentzBilinear e n = 0) (hee : lorentzBilinear e e = 1) :
+    n ∈ (lorentzFunctional p.val).ker ∧
+    ((lorentzFunctional p.val).ker ⊓ (lorentzFunctional n).ker) =
+      Submodule.span ℝ ({e} : Set (Fin 3 → ℝ)) ∧
+    Module.finrank ℝ ((lorentzFunctional p.val).ker ⊓ (lorentzFunctional n).ker :
+      Submodule ℝ (Fin 3 → ℝ)) = 1 ∧
+    ∃ b : Module.Basis (Fin 2) ℝ (lorentzFunctional p.val).ker,
+      (b 0).val = e ∧ (b 1).val = n ∧
+      ∀ i j : Fin 2, lorentzBilinear (b i).val (b j).val = if i = j then 1 else 0 := by
+  have hnmem : n ∈ (lorentzFunctional p.val).ker := by
+    change lorentzFunctional p.val n = 0
+    rw [← lorentzBilinear_eq_functional]
+    exact hpn
+  have hemem : e ∈ (lorentzFunctional p.val).ker := by
+    change lorentzFunctional p.val e = 0
+    rw [← lorentzBilinear_eq_functional, lorentzBilinear_symm]
+    exact hep
+  have henn : e ∈ (lorentzFunctional n).ker := by
+    change lorentzFunctional n e = 0
+    rw [← lorentzBilinear_eq_functional, lorentzBilinear_symm]
+    exact hen
+  have hpp : lorentzBilinear p.val p.val = -1 := by
+    simpa only [lorentzBilinear_apply, pow_two] using p.property.1
+  have hspan : ((lorentzFunctional p.val).ker ⊓ (lorentzFunctional n).ker) =
+      Submodule.span ℝ ({e} : Set (Fin 3 → ℝ)) := by
+    apply le_antisymm
+    · intro v hv
+      have hvn : v ∈ Submodule.span ℝ ({p.val, e} : Set (Fin 3 → ℝ)) := by
+        rw [lorentzAxis_span_ker n hn p hpn e hep hen hee]
+        exact hv.2
+      obtain ⟨a, b, hab⟩ := Submodule.mem_span_pair.mp hvn
+      have hvp : lorentzBilinear v p.val = 0 := by
+        rw [lorentzBilinear_symm, lorentzBilinear_eq_functional]
+        exact hv.1
+      rw [← hab] at hvp
+      simp only [map_add, map_smul, ContinuousLinearMap.add_apply,
+        ContinuousLinearMap.smul_apply, hpp, hep, smul_eq_mul] at hvp
+      have ha : a = 0 := by linarith
+      apply Submodule.mem_span_singleton.mpr
+      exact ⟨b, by simpa only [ha, zero_smul, zero_add] using hab⟩
+    · apply Submodule.span_le.mpr
+      intro v hv
+      have hve : v = e := by simpa using hv
+      subst v
+      exact ⟨hemem, henn⟩
+  have hene : e ≠ 0 := by
+    intro he
+    simp only [he, map_zero, ContinuousLinearMap.zero_apply] at hee
+    norm_num at hee
+  refine ⟨hnmem, hspan, ?_, ?_⟩
+  · rw [hspan]
+    exact finrank_span_singleton hene
+  · let v : Fin 2 → (lorentzFunctional p.val).ker := ![⟨e, hemem⟩, ⟨n, hnmem⟩]
+    have hgram : ∀ i j : Fin 2,
+        lorentzBilinear (v i).val (v j).val = if i = j then 1 else 0 := by
+      intro i j
+      fin_cases i <;> fin_cases j <;>
+        simp [v, hee, hn, hen, lorentzBilinear_symm n e]
+    let c := lorentzPlaneCore p
+    letI : InnerProductSpace.Core ℝ (lorentzFunctional p.val).ker := c
+    let normed : NormedAddCommGroup (lorentzFunctional p.val).ker :=
+      InnerProductSpace.Core.toNormedAddCommGroup (𝕜 := ℝ)
+    letI : NormedAddCommGroup (lorentzFunctional p.val).ker := normed
+    letI : SeminormedAddCommGroup (lorentzFunctional p.val).ker :=
+      normed.toSeminormedAddCommGroup
+    letI : InnerProductSpace ℝ (lorentzFunctional p.val).ker :=
+      InnerProductSpace.ofCore c.toCore
+    have hv : Orthonormal ℝ v := by
+      apply orthonormal_iff_ite.mpr
+      intro i j
+      change lorentzBilinear (v i).val (v j).val = if i = j then 1 else 0
+      exact hgram i j
+    have hcard : Fintype.card (Fin 2) = Module.finrank ℝ (lorentzFunctional p.val).ker := by
+      simpa using (finrank_lorentzKer p).symm
+    let b := basisOfOrthonormalOfCardEqFinrank hv hcard
+    have hb : (b : Fin 2 → (lorentzFunctional p.val).ker) = v :=
+      coe_basisOfOrthonormalOfCardEqFinrank hv hcard
+    refine ⟨b, ?_, ?_, ?_⟩
+    · change ((b : Fin 2 → (lorentzFunctional p.val).ker) 0).val = e
+      rw [hb]
+      rfl
+    · change ((b : Fin 2 → (lorentzFunctional p.val).ker) 1).val = n
+      rw [hb]
+      rfl
+    · intro i j
+      change lorentzBilinear ((b : Fin 2 → (lorentzFunctional p.val).ker) i).val
+        ((b : Fin 2 → (lorentzFunctional p.val).ker) j).val = _
+      rw [hb]
+      exact hgram i j
+
+/-- The axis tangent intersection is exactly the set of smooth axis-curve velocities, including zero.
+
+Textbook source: G06 P01, lines 136–139. -/
+theorem hyperboloidAxis_velocity_iff
+    (n : Fin 3 → ℝ) (hn : lorentzBilinear n n = 1)
+    (p : Hyperboloid) (hpn : lorentzBilinear p.val n = 0) (v : Fin 3 → ℝ) :
+    (∃ γ : ℝ → Hyperboloid, ContMDiff 𝓘(ℝ, ℝ) I ∞ γ ∧ γ 0 = p ∧
+      (∀ t, lorentzBilinear (γ t).val n = 0) ∧
+      HasDerivAt (fun t => (γ t).val) v 0) ↔
+    lorentzBilinear v p.val = 0 ∧ lorentzBilinear v n = 0 := by
+  constructor
+  · rintro ⟨γ, _, hz, haxis, hv⟩
+    exact hyperboloidAxis_velocity_constraints n p γ hz haxis v hv
+  · rintro ⟨hvp, hvn⟩
+    obtain ⟨z, _, _, hep, hen, hee⟩ := exists_lorentzAxisDirection n hn p hpn
+    let e := lorentzAxisDirectionCoords n z
+    have hspan := (hyperboloidAxis_tangent_basis n hn p hpn e hep hen hee).2.1
+    have hmem : v ∈ Submodule.span ℝ ({e} : Set (Fin 3 → ℝ)) := by
+      rw [← hspan]
+      constructor
+      · change lorentzFunctional p.val v = 0
+        rw [← lorentzBilinear_eq_functional, lorentzBilinear_symm]
+        exact hvp
+      · change lorentzFunctional n v = 0
+        rw [← lorentzBilinear_eq_functional, lorentzBilinear_symm]
+        exact hvn
+    obtain ⟨a, ha⟩ := Submodule.mem_span_singleton.mp hmem
+    have hrad := hyperboloidAxis_radial_tangent n hn p hpn e hep hen hee
+    have hsmooth : ContMDiff 𝓘(ℝ, ℝ) 𝓘(ℝ, ℝ) ∞ (fun t : ℝ => a*t) :=
+      (contDiff_const.mul contDiff_id).contMDiff
+    have hbase : HasDerivAt (fun t => (hyperboloidGeodesic p e hep hee t).val) e (a*0) := by
+      simpa only [mul_zero] using hrad.2.2.2.2.2.1
+    refine ⟨fun t => hyperboloidGeodesic p e hep hee (a*t),
+      hrad.1.comp hsmooth, ?_, fun t => hrad.2.2.2.2.1 (a*t), ?_⟩
+    · simpa only [mul_zero] using hrad.2.1
+    · rw [← ha]
+      exact hbase.scomp 0 (hasDerivAt_const_mul a)
+
+/-- Reflection fixes each axis point and tangent direction and negates its unit normal.
+
+Textbook source: G06 P01, lines 140–141. -/
+theorem hyperboloidAxis_reflection_values
+    (n : Fin 3 → ℝ) (hn : lorentzBilinear n n = 1)
+    (p : Hyperboloid) (hpn : lorentzBilinear p.val n = 0)
+    (e : Fin 3 → ℝ) (hen : lorentzBilinear e n = 0) :
+    hyperboloidReflection n hn p = p ∧
+    lorentzReflection n hn e = e ∧ lorentzReflection n hn n = -n := by
+  refine ⟨?_, (lorentzReflection_fixed_iff n hn e).mpr hen, lorentzReflection_self n hn⟩
+  apply Subtype.ext
+  rw [hyperboloidReflection_val]
+  exact (lorentzReflection_fixed_iff n hn p.val).mpr hpn
+
+/-- The actual intrinsic differential reflects every tangent coefficient in the axis line, independently of the fixed-fiber equality proof.
+
+Textbook source: G06 P01, lines 140–142. -/
+theorem hyperboloidAxis_tangent_reflection
+    (n : Fin 3 → ℝ) (hn : lorentzBilinear n n = 1)
+    (p : Hyperboloid) (hpn : lorentzBilinear p.val n = 0)
+    (e : Fin 3 → ℝ) (hep : lorentzBilinear e p.val = 0)
+    (hen : lorentzBilinear e n = 0) (hee : lorentzBilinear e e = 1) :
+    ∃ b : Module.Basis (Fin 2) ℝ (TangentSpace I p),
+      (hyperboloidTangentEquivKer p (b 0)).val = e ∧
+      (hyperboloidTangentEquivKer p (b 1)).val = n ∧
+      (∀ i j : Fin 2, hyperboloidMetric.inner p (b i) (b j) = if i = j then 1 else 0) ∧
+      ∀ (hfix : hyperboloidReflection n hn p = p) (a c : ℝ),
+        Eq.mp (congrArg (fun q : Hyperboloid => TangentSpace I q) hfix)
+          (mfderiv I I (hyperboloidReflection n hn) p (a • b 0 + c • b 1)) =
+            a • b 0 - c • b 1 := by
+  obtain ⟨_, _, _, b, hb0, hb1, hb⟩ :=
+    hyperboloidAxis_tangent_basis n hn p hpn e hep hen hee
+  let bT := b.map (hyperboloidTangentEquivKer p).symm.toLinearEquiv
+  have hval (i : Fin 2) : (hyperboloidTangentEquivKer p (bT i)).val = (b i).val := by
+    change (hyperboloidTangentEquivKer p ((hyperboloidTangentEquivKer p).symm (b i))).val = (b i).val
+    rw [ContinuousLinearEquiv.apply_symm_apply]
+  refine ⟨bT, (hval 0).trans hb0, (hval 1).trans hb1, ?_, ?_⟩
+  · intro i j
+    rw [hyperboloidMetric_inner, hyperboloidTangentTensor_apply,
+      ← hyperboloidTangentEquivKer_apply, ← hyperboloidTangentEquivKer_apply,
+      hval i, hval j]
+    exact hb i j
+  · intro hfix a c
+    have htransport (q : Hyperboloid) (h : q = p) (w : TangentSpace I q) :
+        (hyperboloidTangentEquivKer p
+          (Eq.mp (congrArg (fun x : Hyperboloid => TangentSpace I x) h) w)).val =
+          (hyperboloidTangentEquivKer q w).val := by
+      cases h
+      rfl
+    apply (hyperboloidTangentEquivKer p).injective
+    apply Subtype.ext
+    rw [htransport (hyperboloidReflection n hn p) hfix,
+      hyperboloidReflection_tangentEquivKer]
+    simp only [map_add, map_sub, map_smul, Submodule.coe_add,
+      Submodule.coe_sub, Submodule.coe_smul]
+    rw [hval 0, hval 1, hb0, hb1]
+    obtain ⟨_, he, hnval⟩ := hyperboloidAxis_reflection_values n hn p hpn e hen
+    simp only [map_add, map_smul, he, hnval, smul_neg, sub_eq_add_neg]
+
 /-- The restricted reflection preserves both real and extended speeds in the existing tangent metric.
 
 Textbook source: reviewed Lorentz reflection proof, M02, lines 124–126. -/
