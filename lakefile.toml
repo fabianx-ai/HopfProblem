@@ -16,6 +16,9 @@ rev = "v4.33.0"
 name = "Hopf"
 
 [[lean_lib]]
+name = "Center"
+
+[[lean_lib]]
 name = "S6Shortcuts"
 
 [[lean_lib]]

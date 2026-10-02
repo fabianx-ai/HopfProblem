@@ -3,7 +3,6 @@
 Released under Apache 2.0 license as described in the file LICENSE.
 SPDX-License-Identifier: Apache-2.0
 -/
-import Hopf.Proof.Topology.Sheaves.Cohomology.SphereTwo
 import Hopf.Proof.Analysis.Complex.RiemannMapping.SectorRoots
 
 /-!
@@ -17,35 +16,16 @@ declaration in the dependency closure of that theorem, and `Lib/AxiomAudit.lean`
 reusable library.  Neither covers declarations that live under `Hopf/Proof` and are *not* in
 the dependency closure of the final theorem; those are probed here.
 
-Currently that is:
+Currently that is the wedge reversal of the rotated fourth root in
+`Hopf/Proof/Analysis/Complex/RiemannMapping/SectorRoots.lean`,
+`RiemannBoundary.rotatedPrincipalRootFour_reverse_of_wedge`, which no declaration in the
+dependency closure of the final theorem uses.  The probes of the center construction's
+declarations under `Center/Proof` are in `Center/Proof/AxiomAudit.lean`.
 
-* the four two-sphere vanishing theorems of
-  `Hopf/Proof/Topology/Sheaves/Cohomology/SphereTwo.lean`, whose manuscript consumers live on a
-  different branch: `Hopf/Proof/Final.lean` imports the module, but no declaration reachable
-  from `Mathoverflow1973.mathoverflow_1973` mentions them;
-* the two wedge reversals of the sector roots in
-  `Hopf/Proof/Analysis/Complex/RiemannMapping/SectorRoots.lean`,
-  `RiemannBoundary.principalRoot_three_reverse_of_wedge` (cube root) and
-  `RiemannBoundary.rotatedPrincipalRootFour_reverse_of_wedge` (rotated fourth root), which no
-  declaration in the dependency closure of the final theorem uses.
-
-The `Solution.lean` probe therefore says nothing about any of them.
+The `Solution.lean` probe therefore says nothing about it.
 -/
-
-/-! ## `Hopf.Proof.Topology.Sheaves.Cohomology.SphereTwo` -/
-
-#check @TopCat.Sheaf.derivedGlobalSections_isZero_of_homeomorph_sphereTwo
-#print axioms TopCat.Sheaf.derivedGlobalSections_isZero_of_homeomorph_sphereTwo
-#check @TopCat.Sheaf.hasProjectiveDimensionLT_three_of_homeomorph_sphereTwo
-#print axioms TopCat.Sheaf.hasProjectiveDimensionLT_three_of_homeomorph_sphereTwo
-#check @TopCat.Sheaf.higherDirectImage_derivedGlobalSections_isZero_of_homeomorph_sphereTwo
-#print axioms TopCat.Sheaf.higherDirectImage_derivedGlobalSections_isZero_of_homeomorph_sphereTwo
-#check @TopCat.Sheaf.higherDirectImage_one_derivedGlobalSections_three_four_isZero_of_homeomorph_sphereTwo
-#print axioms TopCat.Sheaf.higherDirectImage_one_derivedGlobalSections_three_four_isZero_of_homeomorph_sphereTwo
 
 /-! ## `Hopf.Proof.Analysis.Complex.RiemannMapping.SectorRoots` -/
 
-#check RiemannBoundary.principalRoot_three_reverse_of_wedge
-#print axioms RiemannBoundary.principalRoot_three_reverse_of_wedge
 #check RiemannBoundary.rotatedPrincipalRootFour_reverse_of_wedge
 #print axioms RiemannBoundary.rotatedPrincipalRootFour_reverse_of_wedge
