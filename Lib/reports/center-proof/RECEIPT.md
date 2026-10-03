@@ -5,7 +5,8 @@ Seat: Claude Opus 5.5 (model ID `claude-opus-5-5`), work seat. Branch `fix/cente
 
 Commits: `a460339b` (Center/Proof, first five moves), `6bcd3825` (first receipt), `4ae8b0ef`
 (Shared/Proof, owner decision of 2026-10-02, plus the two Center moves it unblocked), `a212d624`
-(SphereTwo docstring location), then this receipt.
+(SphereTwo docstring location), `7f4b883d` (receipt), `457b3861` (LatticeImageCollapse
+Center → Shared), then this receipt.
 
 ## Layout
 
@@ -23,7 +24,7 @@ Hopf/Proof file. No other repository document lists the trees, so no other doc w
 
 | file at `b210042f` (Hopf/Proof/…) | decls | → Center/Proof | → Shared/Proof | stays Hopf/Proof | file afterwards |
 |---|---|---|---|---|---|
-| `Algebra/Group/LatticeImageCollapse.lean` | 14 | 14 | 0 | 0 | deleted |
+| `Algebra/Group/LatticeImageCollapse.lean` | 14 | 0 | 14 | 0 | deleted |
 | `Algebra/Group/ResidualRelations.lean` | 1 | 1 | 0 | 0 | deleted |
 | `AlgebraicTopology/FundamentalGroup/VanKampen/FiniteStarCharacter.lean` | 1 | 1 | 0 | 0 | deleted |
 | `AlgebraicTopology/Hurewicz/DegreeSix.lean` | 21 | 0 | 4 | 17 | kept (cut) |
@@ -45,7 +46,7 @@ Hopf/Proof file. No other repository document lists the trees, so no other doc w
 | `Geometry/Manifold/Morse/SurgeryHomology.lean` | 2 | 0 | 0 | 2 | unchanged |
 | `GroupTheory/PresentedGroup/CentralTwist.lean` | 20 | 0 | 0 | 20 | unchanged |
 | `Topology/Sheaves/Cohomology/SphereTwo.lean` | 4 | 4 | 0 | 0 | deleted |
-| **total** | 233 | 23 | 40 | 170 | |
+| **total** | 233 | 9 | 54 | 170 | |
 
 Plus the two anonymous `local instance`s of `SphereTwo.lean` (to Center). Structure fields and
 auto-generated lemmas are not counted. Module docstrings of moved whole files are verbatim, except
@@ -90,7 +91,12 @@ Owner's method: classify by git history, usage as cross-check.
   `TwistGroup` (`CentralTwist.lean:36`; the hit `W4W1/UnitVanKampenConsumer.lean:238` is the
   namespace prefix of `TwistGroup.main_realization_generators_eq_one`, an old-proof theorem of
   `Hopf/Proof/LCP/BoundaryTopology.lean`), and `twistRelators` (both only through `TwistGroup`).
-  So Shared received 43 − 3 = 40.
+  So Shared first received 43 − 3 = 40.
+- `LatticeImageCollapse` (14) was first moved to Center and then, by the owner's decision, moved
+  whole to `Shared/Proof/Algebra/Group/LatticeImageCollapse.lean` (`457b3861`): on
+  `center-solution` the old-proof files `Hopf/Proof/FiniteCore.lean:65` and
+  `Hopf/Proof/LCP/BoundaryTopology.lean` (l. 20664–20680) use the family too, so by the owner's
+  rule it is used by both proofs. Shared now holds 54, Center 9.
 - `SixthHurewicz.homotopyMap_bijective_of_homologyMap_bijective`: history center (`ea3aa7d4` on CS,
   replay `35a7942e`), but `Hopf/Proof/Recognition.lean:405` (`sphereMap_piSix_bijective`) uses it,
   so it is "both" and went to **Shared**, by the owner's decision. It is one of the 40.
@@ -98,15 +104,14 @@ Owner's method: classify by git history, usage as cross-check.
 ## Remaining history/usage disagreements (reported, not resolved)
 
 1. `homotopyMap_bijective_of_homologyMap_bijective`: history center, in Shared (above).
-2. `LatticeImageCollapse.*` (14, Center): history center (`74eae34b`, replay `49179556`), unused by
-   our old proof, used by `W4W1/CenterNativeFundamentalGroup.lean`. On `center-solution` the
-   old-proof files `Hopf/Proof/FiniteCore.lean:65` and `Hopf/Proof/LCP/BoundaryTopology.lean`
-   (l. 20664–20680) also import/use it (a CS-side rewiring never replayed here; our BoundaryTopology
-   keeps its own `LatticeCuspNormalClosure.*`). After the rebase those CS commits would need
-   Hopf → Center: expect a conflict; either keep the local copies or move the family to Shared.
-   The statements restate the old `Mathoverflow1973.LatticeCuspNormalClosure.*` of
+2. `LatticeImageCollapse.*` (14, now **Shared**): history center (`74eae34b`, replay `49179556`),
+   unused by our old proof, used by `W4W1/CenterNativeFundamentalGroup.lean`; on
+   `center-solution` also used by the old-proof files `Hopf/Proof/FiniteCore.lean:65` and
+   `Hopf/Proof/LCP/BoundaryTopology.lean` (l. 20664–20680; a CS-side rewiring never replayed here,
+   our BoundaryTopology keeps its own `LatticeCuspNormalClosure.*`). Hence Shared, so that rewiring
+   rebases as Hopf → Shared. The statements restate the old `Mathoverflow1973.LatticeCuspNormalClosure.*` of
    `cc698c96:Solution.lean` l. 211268–211320 under a new namespace.
-3. `LatticeImageCollapse.image_firstBasis_eq` (Center): history center, usage neither.
+3. `LatticeImageCollapse.image_firstBasis_eq` (Shared with its file): history center, usage neither.
 4. `SixthHurewicz.hurewiczFunction` (`DegreeSix.lean:71`, Hopf): history old, usage W4W1 only
    (`W4W1/CenterResidualCharacter.lean:245`). Stays in Hopf per "old history stays"; note that
    W4W1 on CS imports `Hopf.Proof.*` anyway.
@@ -125,7 +130,7 @@ Names are unchanged; only module paths differ (CS = module on `center-solution` 
 | declarations | module on CS | module here |
 |---|---|---|
 | `ResidualRelations.eq_one_of_mul_eq_one_cube_fourth` | `Lib.Algebra.Group.ResidualRelations` | `Center.Proof.Algebra.Group.ResidualRelations` |
-| `LatticeImageCollapse.*` (14) | `Lib.Algebra.Group.LatticeImageCollapse` | `Center.Proof.Algebra.Group.LatticeImageCollapse` |
+| `LatticeImageCollapse.*` (14) | `Lib.Algebra.Group.LatticeImageCollapse` | `Shared.Proof.Algebra.Group.LatticeImageCollapse` |
 | `FundamentalGroup.VanKampen.exists_stageCharacter` | `Lib.AlgebraicTopology.FundamentalGroup.VanKampen.FiniteStarCharacter` | `Center.Proof.AlgebraicTopology.FundamentalGroup.VanKampen.FiniteStarCharacter` |
 | `TopCat.Sheaf.*_of_homeomorph_sphereTwo` (4) | `Lib.Topology.Sheaves.Cohomology.SphereTwo` | `Center.Proof.Topology.Sheaves.Cohomology.SphereTwo` |
 | `RiemannBoundary.principalRoot_three_reverse_of_wedge`, `RiemannBoundary.rotatedPrincipalRootFour_reverse_of_wedge` | `Lib.Analysis.Complex.RiemannMapping` (l. 2418, 2515) | `Center.Proof.Analysis.Complex.RiemannMapping.SectorRoots` |
@@ -145,29 +150,31 @@ DegreeSix, SphereGenerator and SignedResidual material through `Lib.*` today; he
 Shared declarations from the CS monolith `Lib.Analysis.Complex.RiemannMapping` sit there next to
 library material that stayed in `Lib.Analysis.Complex.RiemannMapping.*` here, so a CS file
 importing the monolith may need both the `Lib` facade and the `Shared`/`Center` modules.
-Expected conflict: `Hopf/Proof/FiniteCore.lean:65` on CS (disagreement 2).
+CS's `Hopf/Proof/FiniteCore.lean:65` import of `Lib.Algebra.Group.LatticeImageCollapse` becomes
+`Shared.Proof.Algebra.Group.LatticeImageCollapse` (allowed: Hopf may import Shared).
 
 The two anonymous `local instance`s of `SphereTwo.lean` get auto-generated names from the module
 root (`…_hopf` before, `…_center` now); local and unreferenced.
 
-## Checks (head `a212d624` before this receipt)
+## Checks (head `457b3861` before this receipt)
 
 Baseline before any edit, `b210042f`: `lake build Lib Unused Hopf.Proof.AxiomAudit` →
 `Build completed successfully (9435 jobs).`, 0 errors, 40 probes (Hopf/Proof/AxiomAudit 6, Unused
 34), all `[propext, Classical.choice, Quot.sound]`.
 
-After the Shared move (Lake pinned with `taskset -c 0-7`):
+After the LatticeImageCollapse move to Shared, at `457b3861` (Lake pinned with `taskset -c 0-7`):
 
 - `lake build Lib` → `Build completed successfully (9429 jobs).`
 - `lake build Solution S6Shortcuts S6 Challenge` → `Build completed successfully (9489 jobs).`;
   `'Mathoverflow1973.mathoverflow_1973' depends on axioms: [propext, Classical.choice, Quot.sound]`.
-  Additionally every `Hopf/**` and `S6/**` module was built explicitly at `4ae8b0ef`:
+  Additionally every `Hopf/**` and `S6/**` module was built explicitly at `4ae8b0ef` (before this
+  last move, which touches no Hopf file):
   `Build completed successfully (9490 jobs).`
-- `lake build Shared` → `Build completed successfully (8802 jobs).`
-- `lake build Center` → `Build completed successfully (8871 jobs).`
+- `lake build Shared` → `Build completed successfully (8803 jobs).`
+- `lake build Center` → `Build completed successfully (8870 jobs).`
 - `lake build Lib.AxiomAudit Shared.Proof.AxiomAudit Center.Proof.AxiomAudit Unused` →
-  `Build completed successfully (9442 jobs).`; probes Lib 3762, Shared 40, Center 7, Unused 34,
-  total 3843, every one exactly `[propext, Classical.choice, Quot.sound]`.
+  `Build completed successfully (9443 jobs).`; probes Lib 3762, Shared 54, Center 7, Unused 34,
+  total 3857, every one exactly `[propext, Classical.choice, Quot.sound]`.
   (`Hopf.Proof.AxiomAudit` no longer exists; see Layout.)
 - `python3 scripts/lib_stock_census.py --check` → `stock declarations under Hopf/: 123`,
   `ratchet PASS: 123 <= baseline 1648` (unchanged).
@@ -182,11 +189,10 @@ After the Shared move (Lake pinned with `taskset -c 0-7`):
 
 ## Open items
 
-1. `LatticeImageCollapse` is also consumed by CS's old-proof files (rebase conflict, disagreement 2).
-2. `homotopyMap_bijective_of_homologyMap_bijective`: center history, in Shared because of the
+1. `homotopyMap_bijective_of_homologyMap_bijective`: center history, in Shared because of the
    old-proof use.
-3. (b) is grep evidence on `center-solution`, not a build of it; three grep hits were noise.
-4. Remaining module docstrings of the cut Hopf files still describe the whole former file (e.g.
+2. (b) is grep evidence on `center-solution`, not a build of it; three grep hits were noise.
+3. Remaining module docstrings of the cut Hopf files still describe the whole former file (e.g.
    `Hopf/Proof/…/SectorRoots.lean` still names `rotatedPrincipalRootFour`); left verbatim.
 
 ## Appendix: per-declaration classification and final tree
@@ -194,24 +200,24 @@ After the Shared move (Lake pinned with `taskset -c 0-7`):
 Lines refer to `b210042f`. "CS" hash = original commit on `center-solution`, the second hash its
 replay here. Usage: (a) old proof, (b) W4W1 at `center-solution`.
 
-#### `Hopf/Proof/Algebra/Group/LatticeImageCollapse.lean` — 14: 14 Center
+#### `Hopf/Proof/Algebra/Group/LatticeImageCollapse.lean` — 14: 14 Shared
 
 | line | declaration | history | introduced in (file) | into Hopf/Proof by | usage | evidence (a) | evidence (b) | final tree |
 |---|---|---|---|---|---|---|---|---|
-| 39 | `LatticeImageCollapse.A1` | center | `74eae34b` (CS) = `49179556` `Lib/Algebra/Group/LatticeImageCollapse.lean` | `31c38660` | W4W1-only | — | W4W1/CenterNativeFundamentalGroup.lean:706 | **Center** `Center/Proof/Algebra/Group/LatticeImageCollapse.lean` |
-| 43 | `LatticeImageCollapse.A2` | center | `74eae34b` (CS) = `49179556` `Lib/Algebra/Group/LatticeImageCollapse.lean` | `31c38660` | W4W1-only | — | W4W1/CenterNativeFundamentalGroup.lean:750 | **Center** `Center/Proof/Algebra/Group/LatticeImageCollapse.lean` |
-| 47 | `LatticeImageCollapse.epsilon` | center | `74eae34b` (CS) = `49179556` `Lib/Algebra/Group/LatticeImageCollapse.lean` | `31c38660` | W4W1-only | — | (transitive) | **Center** `Center/Proof/Algebra/Group/LatticeImageCollapse.lean` |
-| 50 | `LatticeImageCollapse.epsilonPrime` | center | `74eae34b` (CS) = `49179556` `Lib/Algebra/Group/LatticeImageCollapse.lean` | `31c38660` | W4W1-only | — | (transitive) | **Center** `Center/Proof/Algebra/Group/LatticeImageCollapse.lean` |
-| 53 | `LatticeImageCollapse.gamma` | center | `74eae34b` (CS) = `49179556` `Lib/Algebra/Group/LatticeImageCollapse.lean` | `31c38660` | W4W1-only | — | (transitive) | **Center** `Center/Proof/Algebra/Group/LatticeImageCollapse.lean` |
-| 55 | `LatticeImageCollapse.image_eq_one_of_gamma_eq_zero` | center | `74eae34b` (CS) = `49179556` `Lib/Algebra/Group/LatticeImageCollapse.lean` | `31c38660` | W4W1-only | — | (transitive) | **Center** `Center/Proof/Algebra/Group/LatticeImageCollapse.lean` |
-| 83 | `LatticeImageCollapse.image_eq_zpow_gamma` | center | `74eae34b` (CS) = `49179556` `Lib/Algebra/Group/LatticeImageCollapse.lean` | `31c38660` | W4W1-only | — | W4W1/CenterNativeFundamentalGroup.lean:714 | **Center** `Center/Proof/Algebra/Group/LatticeImageCollapse.lean` |
-| 110 | `LatticeImageCollapse.gamma_epsilonPrime` | center | `74eae34b` (CS) = `49179556` `Lib/Algebra/Group/LatticeImageCollapse.lean` | `31c38660` | W4W1-only | — | (transitive) | **Center** `Center/Proof/Algebra/Group/LatticeImageCollapse.lean` |
-| 112 | `LatticeImageCollapse.image_epsilonPrime_eq` | center | `74eae34b` (CS) = `49179556` `Lib/Algebra/Group/LatticeImageCollapse.lean` | `31c38660` | W4W1-only | — | (transitive) | **Center** `Center/Proof/Algebra/Group/LatticeImageCollapse.lean` |
-| 125 | `LatticeImageCollapse.image_firstBasis_eq` | center | `74eae34b` (CS) = `49179556` `Lib/Algebra/Group/LatticeImageCollapse.lean` | `31c38660` | neither | — | — | **Center** `Center/Proof/Algebra/Group/LatticeImageCollapse.lean` |
-| 138 | `LatticeImageCollapse.A1_fixes_epsilon` | center | `74eae34b` (CS) = `49179556` `Lib/Algebra/Group/LatticeImageCollapse.lean` | `31c38660` | W4W1-only | — | (transitive) | **Center** `Center/Proof/Algebra/Group/LatticeImageCollapse.lean` |
-| 140 | `LatticeImageCollapse.image_epsilon_commute_first` | center | `74eae34b` (CS) = `49179556` `Lib/Algebra/Group/LatticeImageCollapse.lean` | `31c38660` | W4W1-only | — | W4W1/CenterNativeFundamentalGroup.lean:730 | **Center** `Center/Proof/Algebra/Group/LatticeImageCollapse.lean` |
-| 152 | `LatticeImageCollapse.A2_fixes_epsilonPrime` | center | `74eae34b` (CS) = `49179556` `Lib/Algebra/Group/LatticeImageCollapse.lean` | `31c38660` | W4W1-only | — | (transitive) | **Center** `Center/Proof/Algebra/Group/LatticeImageCollapse.lean` |
-| 154 | `LatticeImageCollapse.image_epsilon_commute_second` | center | `74eae34b` (CS) = `49179556` `Lib/Algebra/Group/LatticeImageCollapse.lean` | `31c38660` | W4W1-only | — | W4W1/CenterNativeFundamentalGroup.lean:758 | **Center** `Center/Proof/Algebra/Group/LatticeImageCollapse.lean` |
+| 39 | `LatticeImageCollapse.A1` | center | `74eae34b` (CS) = `49179556` `Lib/Algebra/Group/LatticeImageCollapse.lean` | `31c38660` | W4W1-only | — | W4W1/CenterNativeFundamentalGroup.lean:706 | **Shared** `Shared/Proof/Algebra/Group/LatticeImageCollapse.lean` |
+| 43 | `LatticeImageCollapse.A2` | center | `74eae34b` (CS) = `49179556` `Lib/Algebra/Group/LatticeImageCollapse.lean` | `31c38660` | W4W1-only | — | W4W1/CenterNativeFundamentalGroup.lean:750 | **Shared** `Shared/Proof/Algebra/Group/LatticeImageCollapse.lean` |
+| 47 | `LatticeImageCollapse.epsilon` | center | `74eae34b` (CS) = `49179556` `Lib/Algebra/Group/LatticeImageCollapse.lean` | `31c38660` | W4W1-only | — | (transitive) | **Shared** `Shared/Proof/Algebra/Group/LatticeImageCollapse.lean` |
+| 50 | `LatticeImageCollapse.epsilonPrime` | center | `74eae34b` (CS) = `49179556` `Lib/Algebra/Group/LatticeImageCollapse.lean` | `31c38660` | W4W1-only | — | (transitive) | **Shared** `Shared/Proof/Algebra/Group/LatticeImageCollapse.lean` |
+| 53 | `LatticeImageCollapse.gamma` | center | `74eae34b` (CS) = `49179556` `Lib/Algebra/Group/LatticeImageCollapse.lean` | `31c38660` | W4W1-only | — | (transitive) | **Shared** `Shared/Proof/Algebra/Group/LatticeImageCollapse.lean` |
+| 55 | `LatticeImageCollapse.image_eq_one_of_gamma_eq_zero` | center | `74eae34b` (CS) = `49179556` `Lib/Algebra/Group/LatticeImageCollapse.lean` | `31c38660` | W4W1-only | — | (transitive) | **Shared** `Shared/Proof/Algebra/Group/LatticeImageCollapse.lean` |
+| 83 | `LatticeImageCollapse.image_eq_zpow_gamma` | center | `74eae34b` (CS) = `49179556` `Lib/Algebra/Group/LatticeImageCollapse.lean` | `31c38660` | W4W1-only | — | W4W1/CenterNativeFundamentalGroup.lean:714 | **Shared** `Shared/Proof/Algebra/Group/LatticeImageCollapse.lean` |
+| 110 | `LatticeImageCollapse.gamma_epsilonPrime` | center | `74eae34b` (CS) = `49179556` `Lib/Algebra/Group/LatticeImageCollapse.lean` | `31c38660` | W4W1-only | — | (transitive) | **Shared** `Shared/Proof/Algebra/Group/LatticeImageCollapse.lean` |
+| 112 | `LatticeImageCollapse.image_epsilonPrime_eq` | center | `74eae34b` (CS) = `49179556` `Lib/Algebra/Group/LatticeImageCollapse.lean` | `31c38660` | W4W1-only | — | (transitive) | **Shared** `Shared/Proof/Algebra/Group/LatticeImageCollapse.lean` |
+| 125 | `LatticeImageCollapse.image_firstBasis_eq` | center | `74eae34b` (CS) = `49179556` `Lib/Algebra/Group/LatticeImageCollapse.lean` | `31c38660` | neither | — | — | **Shared** `Shared/Proof/Algebra/Group/LatticeImageCollapse.lean` |
+| 138 | `LatticeImageCollapse.A1_fixes_epsilon` | center | `74eae34b` (CS) = `49179556` `Lib/Algebra/Group/LatticeImageCollapse.lean` | `31c38660` | W4W1-only | — | (transitive) | **Shared** `Shared/Proof/Algebra/Group/LatticeImageCollapse.lean` |
+| 140 | `LatticeImageCollapse.image_epsilon_commute_first` | center | `74eae34b` (CS) = `49179556` `Lib/Algebra/Group/LatticeImageCollapse.lean` | `31c38660` | W4W1-only | — | W4W1/CenterNativeFundamentalGroup.lean:730 | **Shared** `Shared/Proof/Algebra/Group/LatticeImageCollapse.lean` |
+| 152 | `LatticeImageCollapse.A2_fixes_epsilonPrime` | center | `74eae34b` (CS) = `49179556` `Lib/Algebra/Group/LatticeImageCollapse.lean` | `31c38660` | W4W1-only | — | (transitive) | **Shared** `Shared/Proof/Algebra/Group/LatticeImageCollapse.lean` |
+| 154 | `LatticeImageCollapse.image_epsilon_commute_second` | center | `74eae34b` (CS) = `49179556` `Lib/Algebra/Group/LatticeImageCollapse.lean` | `31c38660` | W4W1-only | — | W4W1/CenterNativeFundamentalGroup.lean:758 | **Shared** `Shared/Proof/Algebra/Group/LatticeImageCollapse.lean` |
 
 #### `Hopf/Proof/Algebra/Group/ResidualRelations.lean` — 1: 1 Center
 
