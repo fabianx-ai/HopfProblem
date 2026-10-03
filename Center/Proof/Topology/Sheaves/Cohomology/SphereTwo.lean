@@ -33,7 +33,7 @@ projective-dimension bound for the constant integer sheaf, and the substitution
 of a higher direct image into the coefficient slot.  Singling out the
 two-sphere, fixing `TopCat.{0}` and `AddCommGrpCat.{0}`, and naming the
 manuscript's equations are exactly why this is not library material: it lives
-under `Hopf/Proof/` and the general statements stay in `Lib/`.
+under `Center/Proof/` and the general statements stay in `Lib/`.
 
 The same homeomorphism supplies all hypotheses.  The sphere is compact in its
 finite-dimensional real ambient space, so it is paracompact, and its metric
