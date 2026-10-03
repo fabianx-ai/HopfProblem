@@ -13,6 +13,7 @@ import Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition
 import Lib.AlgebraicTopology.Hurewicz.Straightening
 import Lib.AlgebraicTopology.Hurewicz.CubeSphere
 import Lib.AlgebraicTopology.Hurewicz.Naturality
+import Shared.Proof.AlgebraicTopology.Hurewicz.DegreeSix
 
 /-!
 # The Hurewicz map in degree six
@@ -55,18 +56,10 @@ theorem SixthHurewicz.cubeCycle_val {X : Type} [TopologicalSpace X] {x : X}
     (p : GenLoop (Fin 6) X x) : (cubeCycle p).1 = cubeChain p :=
   rfl
 
-def SixthHurewicz.cubeHomologyClass {X : Type} [TopologicalSpace X] {x : X}
-    (p : GenLoop (Fin 6) X x) : SingularMayerVietoris.SingularHomology X 6 :=
-  Hurewicz.cubeHomologyClass p
-
 theorem SixthHurewicz.cubeHomologyClass_homotopic {X : Type} [TopologicalSpace X] {x : X}
     {p q : GenLoop (Fin 6) X x} (h : GenLoop.Homotopic p q) :
     cubeHomologyClass p = cubeHomologyClass q :=
   Hurewicz.cubeHomologyClass_homotopic h
-
-def SixthHurewicz.homotopyMap {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y] (f : C(X, Y))
-    (x : X) : π_ 6 X x →* π_ 6 Y (f x) :=
-  Hurewicz.homotopyMap f x
 
 def SixthHurewicz.hurewiczFunction {X : Type} [TopologicalSpace X] (x : X) :
     π_ 6 X x → SingularMayerVietoris.SingularHomology X 6 :=
@@ -92,14 +85,6 @@ def SixthHurewicz.hurewiczInverse {X : Type} [TopologicalSpace X] [SimplyConnect
     [Subsingleton (π_ 5 X x)] :
     SingularMayerVietoris.SingularHomology X 6 →ₗ[ℤ] Additive (π_ 6 X x) :=
   Hurewicz.hurewiczInverse (m := 3) x (by
-    intro j hj hjn
-    interval_cases j <;> infer_instance)
-
-def SixthHurewicz.hurewiczLinearEquiv {X : Type} [TopologicalSpace X] [SimplyConnectedSpace X]
-    (x : X) [Subsingleton (π_ 2 X x)] [Subsingleton (π_ 3 X x)] [Subsingleton (π_ 4 X x)]
-    [Subsingleton (π_ 5 X x)] :
-    Additive (π_ 6 X x) ≃ₗ[ℤ] SingularMayerVietoris.SingularHomology X 6 :=
-  Hurewicz.hurewiczLinearEquiv (m := 3) x (by
     intro j hj hjn
     interval_cases j <;> infer_instance)
 
@@ -145,16 +130,5 @@ theorem SixthHurewicz.hurewiczMap_natural {X Y : Type} [TopologicalSpace X] [Top
     SingularMayerVietoris.singularHomologyMap f 6 (hurewiczMap x a) =
       hurewiczMap (f x) ((homotopyMap f x).toAdditive a) :=
   Hurewicz.hurewiczMap_natural f x a
-
-theorem SixthHurewicz.hurewiczLinearEquiv_natural {X Y : Type} [TopologicalSpace X]
-    [TopologicalSpace Y] [SimplyConnectedSpace X] [SimplyConnectedSpace Y] (f : C(X, Y)) (x : X)
-    [Subsingleton (π_ 2 X x)] [Subsingleton (π_ 3 X x)] [Subsingleton (π_ 4 X x)]
-    [Subsingleton (π_ 5 X x)] [Subsingleton (π_ 2 Y (f x))] [Subsingleton (π_ 3 Y (f x))]
-    [Subsingleton (π_ 4 Y (f x))] [Subsingleton (π_ 5 Y (f x))] (a : Additive (π_ 6 X x)) :
-    SingularMayerVietoris.singularHomologyMap f 6 (hurewiczLinearEquiv x a) =
-      hurewiczLinearEquiv (f x) ((homotopyMap f x).toAdditive a) :=
-  Hurewicz.hurewiczLinearEquiv_natural f x
-    (by intro j hj hjn; interval_cases j <;> infer_instance)
-    (by intro j hj hjn; interval_cases j <;> infer_instance) a
 
 end

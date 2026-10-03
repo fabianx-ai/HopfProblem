@@ -5,6 +5,7 @@ SPDX-License-Identifier: Apache-2.0
 -/
 import Center.Proof.Topology.Sheaves.Cohomology.SphereTwo
 import Center.Proof.Analysis.Complex.RiemannMapping.SectorRoots
+import Center.Proof.AlgebraicTopology.Hurewicz.SphereGenerator
 
 /-!
 # Axiom probes for the center construction's declarations under `Center/Proof`
@@ -18,8 +19,14 @@ library; neither covers `Center/Proof`.  The probes below moved here verbatim fr
 
 * the four two-sphere vanishing theorems of
   `Center/Proof/Topology/Sheaves/Cohomology/SphereTwo.lean`;
-* the cube-root wedge reversal `RiemannBoundary.principalRoot_three_reverse_of_wedge` of
-  `Center/Proof/Analysis/Complex/RiemannMapping/SectorRoots.lean`.
+* the cube-root wedge reversal `RiemannBoundary.principalRoot_three_reverse_of_wedge` and the
+  rotated fourth-root wedge reversal `RiemannBoundary.rotatedPrincipalRootFour_reverse_of_wedge`
+  of `Center/Proof/Analysis/Complex/RiemannMapping/SectorRoots.lean` (the latter was the last
+  probe of `Hopf/Proof/AxiomAudit.lean`, now deleted).
+
+`SixthHurewicz.exists_sphereMap_of_homologySixEquiv` of
+`Center/Proof/AlgebraicTopology/Hurewicz/SphereGenerator.lean` had no probe before; it gets one
+here.
 -/
 
 /-! ## `Center.Proof.Topology.Sheaves.Cohomology.SphereTwo` -/
@@ -37,3 +44,10 @@ library; neither covers `Center/Proof`.  The probes below moved here verbatim fr
 
 #check RiemannBoundary.principalRoot_three_reverse_of_wedge
 #print axioms RiemannBoundary.principalRoot_three_reverse_of_wedge
+#check RiemannBoundary.rotatedPrincipalRootFour_reverse_of_wedge
+#print axioms RiemannBoundary.rotatedPrincipalRootFour_reverse_of_wedge
+
+/-! ## `Center.Proof.AlgebraicTopology.Hurewicz.SphereGenerator` -/
+
+#check SixthHurewicz.exists_sphereMap_of_homologySixEquiv
+#print axioms SixthHurewicz.exists_sphereMap_of_homologySixEquiv
