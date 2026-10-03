@@ -1,0 +1,37 @@
+# integration 7c replay log (source pin H=91485e800aeadfa43cbf1f009516197a4a1da533, base 41dde59940aa95a5e524382fc5049578641fb227)
+[1] 7f5543561e33b8105596aa8883b20614d5febf99 -> 5f4dfa87cc06e3d1c887aa75bebb3cfe13a5411e | cherry-pick
+[2] 127c7d33b388bcd24f81236bf77ff47b2bc066cd -> 94f47191f159493e66a2d46bd93fc011bac57078 | cherry-pick
+[3] 91485e800aeadfa43cbf1f009516197a4a1da533 -> fae88d317f1360088ecbe8d3b5cebc22d8060078 | cherry-pick
+b1 (after [1]): lake build Lib.Geometry.Hyperbolic.Models Lib.AxiomAudit -> Build completed successfully (9429 jobs).
+b2 (after [2]): same -> Build completed successfully (9429 jobs).
+b3 (after [3]): same -> Build completed successfully (9429 jobs).
+lake: /home/goblin/.elan/toolchains/leanprover--lean4---v4.33.0/bin/lake, taskset -c 0-7
+## final.sh output
+2026-10-03T20:15:13+02:00
+fae88d31 feat(Lib): realize hyperbolic reflections in polar coordinates
+lib 0
+Build completed successfully (9429 jobs).
+chain 0
+Build completed successfully (9489 jobs).
+info: Solution.lean:61:0: 'Mathoverflow1973.mathoverflow_1973' depends on axioms: [propext, Classical.choice, Quot.sound]
+sharedcenter 0
+Build completed successfully (8877 jobs).
+axioms 0
+Build completed successfully (9443 jobs).
+census 0
+  extracted (no longer under Hopf/): SphereCone
+ratchet PASS: 123 <= baseline 1648
+importgrep lines 4 (4 = all empty)
+dump 0
+39180
+2026-10-03T20:31:05+02:00
+done 0
+## base.sh output (worktree /home/goblin/hopf-int7c-base, detached 41dde599)
+2026-10-03T20:15:13+02:00
+41dde599 docs: NEXT_STEPS for the four-tree layout (Lib / Shared/Proof / Hopf/Proof / Center/Proof)
+basebuild 0
+Build completed successfully (9491 jobs).
+dump 0
+39159
+2026-10-03T20:31:36+02:00
+done 0
