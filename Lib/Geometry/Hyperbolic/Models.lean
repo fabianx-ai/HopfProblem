@@ -7678,6 +7678,190 @@ theorem hyperboloidAxis_tangent_reflection
     obtain ⟨_, he, hnval⟩ := hyperboloidAxis_reflection_values n hn p hpn e hen
     simp only [map_add, map_smul, he, hnval, smul_neg, sub_eq_add_neg]
 
+/-- Polar directions in the axis frame are unit tangent vectors.
+
+Textbook source: G06 P02, lines 144–146. -/
+theorem hyperboloidAxis_polarDirection_unit (n : Fin 3 → ℝ) (hn : lorentzBilinear n n = 1)
+    (p : Hyperboloid) (hpn : lorentzBilinear p.val n = 0)
+    (e : Fin 3 → ℝ) (hep : lorentzBilinear e p.val = 0)
+    (hen : lorentzBilinear e n = 0) (hee : lorentzBilinear e e = 1) (θ : ℝ) :
+  lorentzBilinear (Real.cos θ • e + Real.sin θ • n) p.val = 0 ∧
+  lorentzBilinear (Real.cos θ • e + Real.sin θ • n)
+    (Real.cos θ • e + Real.sin θ • n) = 1 := by
+  constructor
+  · have hnp : lorentzBilinear n p.val = 0 := (lorentzBilinear_symm n p.val).trans hpn
+    simp only [map_add, map_smul, ContinuousLinearMap.add_apply,
+      ContinuousLinearMap.smul_apply, smul_eq_mul, hep, hnp, mul_zero, add_zero]
+  · obtain ⟨b, hb0, hb1, hg⟩ :=
+      (hyperboloidAxis_tangent_basis n hn p hpn e hep hen hee).2.2.2
+    have h (a c : ℝ) : lorentzBilinear (a • (b 0).val + c • (b 1).val)
+        (a • (b 0).val + c • (b 1).val) = a ^ 2 + c ^ 2 := by
+      simp only [map_add, map_smul, ContinuousLinearMap.add_apply,
+        ContinuousLinearMap.smul_apply, smul_eq_mul, hg]
+      simp <;> ring
+    rw [← hb0, ← hb1, h]
+    exact Real.cos_sq_add_sin_sq θ
+
+/-- Every unit tangent direction has a polar angle in either axis frame.
+
+Textbook source: G06 P02, lines 144–146. -/
+theorem hyperboloidAxis_polarDirection_exists (n : Fin 3 → ℝ) (hn : lorentzBilinear n n = 1)
+    (p : Hyperboloid) (hpn : lorentzBilinear p.val n = 0)
+    (e : Fin 3 → ℝ) (hep : lorentzBilinear e p.val = 0)
+    (hen : lorentzBilinear e n = 0) (hee : lorentzBilinear e e = 1) (v : Fin 3 → ℝ)
+    (hvp : lorentzBilinear v p.val = 0) (hvv : lorentzBilinear v v = 1) :
+  ∃ θ : ℝ, v = Real.cos θ • e + Real.sin θ • n := by
+  obtain ⟨b, hb0, hb1, hg⟩ :=
+    (hyperboloidAxis_tangent_basis n hn p hpn e hep hen hee).2.2.2
+  have hv : v ∈ (lorentzFunctional p.val).ker := by
+    change lorentzFunctional p.val v = 0
+    rw [← lorentzBilinear_eq_functional, lorentzBilinear_symm]
+    exact hvp
+  let w : (lorentzFunctional p.val).ker := ⟨v, hv⟩
+  have hr : (b.repr w) 0 • (b 0).val + (b.repr w) 1 • (b 1).val = v := by
+    simpa only [Fin.sum_univ_two, Submodule.coe_add, Submodule.coe_smul] using
+      congrArg Subtype.val (b.sum_repr w)
+  have hg' : lorentzBilinear v v = (b.repr w) 0 ^ 2 + (b.repr w) 1 ^ 2 := by
+    conv_lhs => rw [← hr]
+    simp only [map_add, map_smul, ContinuousLinearMap.add_apply,
+      ContinuousLinearMap.smul_apply, smul_eq_mul, hg]
+    simp <;> ring
+  have hc := hg'.symm.trans hvv
+  let z : ℂ := ⟨(b.repr w) 0, (b.repr w) 1⟩
+  have hz : ‖z‖ = 1 := by
+    rw [Complex.norm_def, Complex.normSq_apply]
+    simpa only [z, ← pow_two, hc] using Real.sqrt_one
+  have hcos : Real.cos (Complex.arg z) = (b.repr w) 0 := by
+    simpa only [hz, one_mul] using Complex.norm_mul_cos_arg z
+  have hsin : Real.sin (Complex.arg z) = (b.repr w) 1 := by
+    simpa only [hz, one_mul] using Complex.norm_mul_sin_arg z
+  exact ⟨Complex.arg z, by simpa only [hcos, hsin, hb0, hb1] using hr.symm⟩
+
+/-- Polar directions agree exactly when their angles agree modulo two pi.
+
+Textbook source: G06 P02, line 146. -/
+theorem hyperboloidAxis_polarDirection_eq_iff (n : Fin 3 → ℝ) (hn : lorentzBilinear n n = 1)
+    (p : Hyperboloid) (hpn : lorentzBilinear p.val n = 0)
+    (e : Fin 3 → ℝ) (hep : lorentzBilinear e p.val = 0)
+    (hen : lorentzBilinear e n = 0) (hee : lorentzBilinear e e = 1) (θ φ : ℝ) :
+  Real.cos θ • e + Real.sin θ • n = Real.cos φ • e + Real.sin φ • n ↔
+    (θ : Real.Angle) = (φ : Real.Angle) := by
+  constructor
+  · intro h
+    obtain ⟨b, hb0, hb1, _⟩ :=
+      (hyperboloidAxis_tangent_basis n hn p hpn e hep hen hee).2.2.2
+    have hk : Real.cos θ • b 0 + Real.sin θ • b 1 =
+        Real.cos φ • b 0 + Real.sin φ • b 1 := by
+      apply Subtype.ext
+      simpa only [Submodule.coe_add, Submodule.coe_smul, hb0, hb1] using h
+    have hr := congrArg b.repr hk
+    apply Real.Angle.cos_sin_inj
+    · simpa using congrArg (fun x => x 0) hr
+    · simpa using congrArg (fun x => x 1) hr
+  · intro h
+    have hc : Real.cos θ = Real.cos φ := congrArg Real.Angle.cos h
+    have hs : Real.sin θ = Real.sin φ := congrArg Real.Angle.sin h
+    rw [hc, hs]
+
+/-- Reflection fixes the radial axis coefficient and negates the normal coefficient.
+
+Textbook source: G06 P02, lines 32–33 and 147–149. -/
+theorem hyperboloidAxis_polar_reflection_formula (n : Fin 3 → ℝ) (hn : lorentzBilinear n n = 1)
+    (p : Hyperboloid) (hpn : lorentzBilinear p.val n = 0)
+    (e : Fin 3 → ℝ) (hep : lorentzBilinear e p.val = 0)
+    (hen : lorentzBilinear e n = 0) (hee : lorentzBilinear e e = 1) (t θ : ℝ) (ht : 0 ≤ t) :
+  lorentzReflection n hn (hyperboloidGeodesicCoords p
+    (Real.cos θ • e + Real.sin θ • n) t) =
+    Real.cosh t • p.val + Real.sinh t • (Real.cos θ • e - Real.sin θ • n) := by
+  obtain ⟨hp, he, hn'⟩ := hyperboloidAxis_reflection_values n hn p hpn e hen
+  have hp' : lorentzReflection n hn p.val = p.val := by
+    simpa only [hyperboloidReflection_val] using congrArg Subtype.val hp
+  simp only [hyperboloidGeodesicCoords, map_add, map_smul, hp', he, hn',
+    smul_neg, sub_eq_add_neg]
+
+/-- The full restricted polar action reverses the angle at every nonnegative radius.
+
+Textbook source: G06 P02, lines 147–150. -/
+theorem hyperboloidAxis_polar_reflection (n : Fin 3 → ℝ) (hn : lorentzBilinear n n = 1)
+    (p : Hyperboloid) (hpn : lorentzBilinear p.val n = 0)
+    (e : Fin 3 → ℝ) (hep : lorentzBilinear e p.val = 0)
+    (hen : lorentzBilinear e n = 0) (hee : lorentzBilinear e e = 1) (t θ : ℝ) (ht : 0 ≤ t) :
+  ∀ q : Hyperboloid,
+  q.val = hyperboloidGeodesicCoords p (Real.cos θ • e + Real.sin θ • n) t →
+  (hyperboloidReflection n hn q).val =
+    hyperboloidGeodesicCoords p (Real.cos (-θ) • e + Real.sin (-θ) • n) t := by
+  intro q hq
+  rw [hyperboloidReflection_val, hq,
+    hyperboloidAxis_polar_reflection_formula n hn p hpn e hep hen hee t θ ht]
+  simp only [hyperboloidGeodesicCoords, Real.cos_neg, Real.sin_neg, neg_smul,
+    sub_eq_add_neg]
+
+/-- Positive polar coordinates have the original distance radius and unique angle, reversed by reflection.
+
+Textbook source: G06 P02, lines 149–150. -/
+theorem hyperboloidAxis_polar_positive_coordinates (n : Fin 3 → ℝ) (hn : lorentzBilinear n n = 1)
+    (p : Hyperboloid) (hpn : lorentzBilinear p.val n = 0)
+    (e : Fin 3 → ℝ) (hep : lorentzBilinear e p.val = 0)
+    (hen : lorentzBilinear e n = 0) (hee : lorentzBilinear e e = 1) (t s θ φ : ℝ) (ht : 0 < t) (hs : 0 < s) :
+  (hyperboloidGeodesicCoords p (Real.cos θ • e + Real.sin θ • n) t =
+    hyperboloidGeodesicCoords p (Real.cos φ • e + Real.sin φ • n) s ↔
+      t = s ∧ (θ : Real.Angle) = (φ : Real.Angle)) ∧
+  ∀ q : Hyperboloid,
+    q.val = hyperboloidGeodesicCoords p (Real.cos θ • e + Real.sin θ • n) t →
+    hyperboloidLengthDist p q = t ∧ q ≠ p ∧
+    ((hyperboloidReflection n hn q).val =
+      hyperboloidGeodesicCoords p (Real.cos φ • e + Real.sin φ • n) s ↔
+        t = s ∧ ((-θ : ℝ) : Real.Angle) = (φ : Real.Angle)) := by
+  have radial (r α : ℝ) (hr : 0 < r) (q : Hyperboloid)
+      (hq : q.val = hyperboloidGeodesicCoords p (Real.cos α • e + Real.sin α • n) r) :
+      hyperboloidLengthDist p q = r ∧ p ≠ q ∧
+        Real.cos α • e + Real.sin α • n = hyperboloidSegmentInitial p q := by
+    obtain ⟨hv, hu⟩ := hyperboloidAxis_polarDirection_unit n hn p hpn e hep hen hee α
+    have hq' : q = hyperboloidGeodesic p (Real.cos α • e + Real.sin α • n) hv hu r :=
+      Subtype.ext hq
+    have hd : hyperboloidLengthDist p q = r := by
+      rw [hq']
+      have h := hyperboloidGeodesic_lengthDist p (Real.cos α • e + Real.sin α • n) hv hu 0 r
+      rw [(hyperboloidGeodesic_properties p _ hv hu).2.1, sub_zero, abs_of_pos hr] at h
+      exact h
+    have hpq : p ≠ q := (hyperboloidLengthDist_nonneg_eq_zero p q).2.2.mp (hd ▸ hr)
+    refine ⟨hd, hpq, (hyperboloidSegmentInitial_endpoint p q hpq).2.2 _ ?_⟩
+    simpa only [hd, hyperboloidGeodesicCoords] using hq
+  have coords (α β : ℝ) :
+      (hyperboloidGeodesicCoords p (Real.cos α • e + Real.sin α • n) t =
+        hyperboloidGeodesicCoords p (Real.cos β • e + Real.sin β • n) s ↔
+          t = s ∧ (α : Real.Angle) = (β : Real.Angle)) := by
+    constructor
+    · intro h
+      obtain ⟨hv, hu⟩ := hyperboloidAxis_polarDirection_unit n hn p hpn e hep hen hee α
+      let q := hyperboloidGeodesic p (Real.cos α • e + Real.sin α • n) hv hu t
+      obtain ⟨hd, _, hv'⟩ := radial t α ht q rfl
+      obtain ⟨hd', _, hu'⟩ := radial s β hs q h
+      exact ⟨hd.symm.trans hd',
+        (hyperboloidAxis_polarDirection_eq_iff n hn p hpn e hep hen hee α β).mp
+          (hv'.trans hu'.symm)⟩
+    · rintro ⟨hr, ha⟩
+      rw [hr, (hyperboloidAxis_polarDirection_eq_iff n hn p hpn e hep hen hee α β).mpr ha]
+  refine ⟨coords θ φ, ?_⟩
+  intro q hq
+  obtain ⟨hd, hpq, _⟩ := radial t θ ht q hq
+  refine ⟨hd, Ne.symm hpq, ?_⟩
+  rw [hyperboloidAxis_polar_reflection n hn p hpn e hep hen hee t θ ht.le q hq]
+  exact coords (-θ) φ
+
+/-- At radius zero every angle gives the same fixed center, without choosing an angle.
+
+Textbook source: G06 P02, lines 151–156. -/
+theorem hyperboloidAxis_polar_zero_coordinates (n : Fin 3 → ℝ) (hn : lorentzBilinear n n = 1)
+    (p : Hyperboloid) (hpn : lorentzBilinear p.val n = 0)
+    (e : Fin 3 → ℝ) (hep : lorentzBilinear e p.val = 0)
+    (hen : lorentzBilinear e n = 0) (hee : lorentzBilinear e e = 1) (θ : ℝ) :
+  hyperboloidGeodesicCoords p (Real.cos θ • e + Real.sin θ • n) 0 = p.val ∧
+  hyperboloidReflection n hn p = p := by
+  refine ⟨?_, (hyperboloidAxis_reflection_values n hn p hpn e hen).1⟩
+  simp only [hyperboloidGeodesicCoords, Real.cosh_zero, Real.sinh_zero,
+    one_smul, zero_smul, add_zero]
+
 /-- The restricted reflection preserves both real and extended speeds in the existing tangent metric.
 
 Textbook source: reviewed Lorentz reflection proof, M02, lines 124–126. -/

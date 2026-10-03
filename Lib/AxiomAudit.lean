@@ -8695,6 +8695,21 @@ is an evidence command rather than library content.
 #check Hyperbolic.hyperboloidAxis_tangent_reflection
 #print axioms Hyperbolic.hyperboloidAxis_tangent_reflection
 
+#check Hyperbolic.hyperboloidAxis_polarDirection_unit
+#print axioms Hyperbolic.hyperboloidAxis_polarDirection_unit
+#check Hyperbolic.hyperboloidAxis_polarDirection_exists
+#print axioms Hyperbolic.hyperboloidAxis_polarDirection_exists
+#check Hyperbolic.hyperboloidAxis_polarDirection_eq_iff
+#print axioms Hyperbolic.hyperboloidAxis_polarDirection_eq_iff
+#check Hyperbolic.hyperboloidAxis_polar_reflection_formula
+#print axioms Hyperbolic.hyperboloidAxis_polar_reflection_formula
+#check Hyperbolic.hyperboloidAxis_polar_reflection
+#print axioms Hyperbolic.hyperboloidAxis_polar_reflection
+#check Hyperbolic.hyperboloidAxis_polar_positive_coordinates
+#print axioms Hyperbolic.hyperboloidAxis_polar_positive_coordinates
+#check Hyperbolic.hyperboloidAxis_polar_zero_coordinates
+#print axioms Hyperbolic.hyperboloidAxis_polar_zero_coordinates
+
 #check Hyperbolic.hyperboloidReflection_speed
 #print axioms Hyperbolic.hyperboloidReflection_speed
 #check Hyperbolic.hyperboloidReflection_speedWithin
