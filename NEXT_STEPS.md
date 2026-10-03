@@ -1,21 +1,28 @@
-# Next steps (after integration 7b and the first `Unused/` move, 2026-10-02)
+# Next steps (after the Shared/Proof and Center/Proof split, 2026-10-03)
 
 State: all 24 monoliths split behind facades (`Lib/reports/wave-1/MERGE.md`, `wave-2/MERGE.md`); both waves
 reviewed by Fable reviewers (`Lib/reviews/REVIEW-WAVES.md`: nothing unsound) and the findings fixed
-(§5 there); integration 7 replayed the 51 `Lib` commits of `center-solution` up to `8ea19482` per commit
-(`Lib/reviews/INTEGRATION-7.md`). Merged head `17ba7739`: chain green (9,489 jobs), 3,741 probes standard,
-census 123, source pins 268. Open, in order:
+(§5 there); `center-solution` replayed per commit up to `d4db0d1a` (`Lib/reviews/INTEGRATION-7.md`,
+`Lib/reports/integration-7/REPLAY-7b.md`). Merged head `8f532681`: chain green (9,489 jobs), 3,857 probes
+standard (Lib 3,762, Shared 54, Center 7, Unused 34), census 123.
+**Layout (owner decision 2026-10-03, receipt `Lib/reports/center-proof/RECEIPT.md`): four trees.** `Lib/` =
+generic textbook (imports Mathlib and `Lib` only); `Shared/Proof/` = used by both proofs (imports `Lib` only);
+`Hopf/Proof/` = the old proof, finished and frozen, nothing new goes there (imports `Lib`, `Shared`);
+`Center/Proof/` = the center construction only (imports `Lib`, `Shared`; the construction itself is `W4W1/` on
+`center-solution`). `Hopf` and `Center` never import each other. Classification is by git history (introducing
+commit, moving commit), usage as a cross-check; a declaration used by the old proof on either branch and by
+`W4W1` is "both". The receipt's import map lists, per moved declaration, its module on `center-solution` and
+its module here, so that `center-solution` can be rebased onto this branch with import-line edits only.
+`Hopf/Proof/AxiomAudit.lean` is gone; the audits are `Lib.AxiomAudit`, `Shared.Proof.AxiomAudit`,
+`Center.Proof.AxiomAudit`, `Unused`. Isolation greps (all must be empty): `Lib` imports no `Shared`/`Hopf`/`Center`;
+`Shared` imports no `Hopf`/`Center`; `Hopf`, `S6` and the root files import no `Center`; `Center` imports no `Hopf`.
+Open, in order:
 (1) **`Unused/`** exists (owner decision 2026-10-02; `Unused/README.md`, receipt `Lib/reports/unused/cube3.md`):
-proved declarations that nothing uses move verbatim to the top-level `Unused/` tree (own Lake lib, may
-`import all` a `Lib` module, imported by nothing, built by `lake build Unused` in the check chain). Done: the
-36 cube-boundary cell lemmas; the four declarations widened only for them are private again. Next: a
-dead-code closure over all of `Lib` from the dump (`Lib/reports/unused/cube3/deadset.py` generalised) to list
-what else nothing uses; known candidates: the two consumer-less `TubularBigon.*Chart` structures
-(`wave-2/rank3.md`), the seven `Connection/BeltArc` meridian constructions (`wave-1/connection.md`);
-(2) **integration 7b done** (`Lib/reports/integration-7/REPLAY-7b.md`): `center-solution` replayed up to
-`d4db0d1a` (two clean cherry-picks, new module `Geometry/Hyperbolic/ConformalCoordinates`); the cube-root lemma
-moved to `Hopf/Proof/…/SectorRoots`. The next replay starts at `d4db0d1a`; the source worktree had uncommitted
-edits to `Models.lean` when 7b finished, so more is coming;
+only what the owner names moves there, verbatim. No dead-code sweeps over `Lib`: what is part of the textbook
+is not dead code, and explanation outweighs tidiness (owner, 2026-10-02);
+(2) **replays** continue from `d4db0d1a` of `center-solution` (the source worktree had uncommitted edits to
+`Models.lean` when 7b finished). Rule: a replayed commit whose material is not generic goes to `Center/Proof`
+(or `Shared/Proof` if the old proof uses it too), never to `Hopf/Proof`;
 (3) **owner's word needed** (INTEGRATION-7 §Left): split `Hyperbolic/Models.lean` (7,870 lines) and
 `CurveTransport.lean`, sweep their manuscript labels, add the comparison with Mathlib's `UpperHalfPlane`
 metric — now, or after the source branch stops appending to those files (recommended: after; replays stay
@@ -36,7 +43,8 @@ the lines a split did not move as well (`set_option`, `… in` prefixes, `open`)
 identical text is a finding; a textbook is cited for a proof step only when its proof has that step; counts
 come from one stated unit and one command; consumer counts allow `public import`; per-branch `envdiff.json`
 committed; a "Left" list carries a reproducing command per bullet; Lake 5.0.0 has no `-j`, use `taskset`.
-`w4-w1-solution` must reroute its `SphereTwo` import to the `Hopf.Proof` path when it meets this branch.
+`w4-w1-solution` / `W4W1` must reroute its imports per the import map in `Lib/reports/center-proof/RECEIPT.md`
+when it meets this branch (`SphereTwo` is `Center.Proof.Topology.Sheaves.Cohomology.SphereTwo`).
 
 The reviewer pass (`Lib/reviews/REVIEW-7-8.md`, twenty-one Fable reviewers) accepted all receipts with
 findings and found nothing unsound; the fix round (§5 there, eleven Opus agents) closed the whole §3 list;
