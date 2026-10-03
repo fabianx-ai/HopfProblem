@@ -8682,6 +8682,47 @@ is an evidence command rather than library content.
 #check Hyperbolic.hyperboloidReflection_preserves_metric
 #print axioms Hyperbolic.hyperboloidReflection_preserves_metric
 
+#check Hyperbolic.hyperboloidAxis_velocity_constraints
+#print axioms Hyperbolic.hyperboloidAxis_velocity_constraints
+#check Hyperbolic.hyperboloidAxis_radial_tangent
+#print axioms Hyperbolic.hyperboloidAxis_radial_tangent
+#check Hyperbolic.hyperboloidAxis_tangent_basis
+#print axioms Hyperbolic.hyperboloidAxis_tangent_basis
+#check Hyperbolic.hyperboloidAxis_velocity_iff
+#print axioms Hyperbolic.hyperboloidAxis_velocity_iff
+#check Hyperbolic.hyperboloidAxis_reflection_values
+#print axioms Hyperbolic.hyperboloidAxis_reflection_values
+#check Hyperbolic.hyperboloidAxis_tangent_reflection
+#print axioms Hyperbolic.hyperboloidAxis_tangent_reflection
+
+#check Hyperbolic.hyperboloidAxis_polarDirection_unit
+#print axioms Hyperbolic.hyperboloidAxis_polarDirection_unit
+#check Hyperbolic.hyperboloidAxis_polarDirection_exists
+#print axioms Hyperbolic.hyperboloidAxis_polarDirection_exists
+#check Hyperbolic.hyperboloidAxis_polarDirection_eq_iff
+#print axioms Hyperbolic.hyperboloidAxis_polarDirection_eq_iff
+#check Hyperbolic.hyperboloidAxis_polar_reflection_formula
+#print axioms Hyperbolic.hyperboloidAxis_polar_reflection_formula
+#check Hyperbolic.hyperboloidAxis_polar_reflection
+#print axioms Hyperbolic.hyperboloidAxis_polar_reflection
+#check Hyperbolic.hyperboloidAxis_polar_positive_coordinates
+#print axioms Hyperbolic.hyperboloidAxis_polar_positive_coordinates
+#check Hyperbolic.hyperboloidAxis_polar_zero_coordinates
+#print axioms Hyperbolic.hyperboloidAxis_polar_zero_coordinates
+
+#check Hyperbolic.hyperboloidReflection_speed
+#print axioms Hyperbolic.hyperboloidReflection_speed
+#check Hyperbolic.hyperboloidReflection_speedWithin
+#print axioms Hyperbolic.hyperboloidReflection_speedWithin
+#check Hyperbolic.hyperboloidReflection_length
+#print axioms Hyperbolic.hyperboloidReflection_length
+#check Hyperbolic.hyperboloidReflection_piecewiseC1EDist_le
+#print axioms Hyperbolic.hyperboloidReflection_piecewiseC1EDist_le
+#check Hyperbolic.hyperboloidReflection_piecewiseC1EDist
+#print axioms Hyperbolic.hyperboloidReflection_piecewiseC1EDist
+#check Hyperbolic.hyperboloidReflection_lengthDist
+#print axioms Hyperbolic.hyperboloidReflection_lengthDist
+
 #check Hyperbolic.hyperboloidAdaptedTime
 #print axioms Hyperbolic.hyperboloidAdaptedTime
 #check Hyperbolic.hyperboloidAdaptedProjection
