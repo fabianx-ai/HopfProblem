@@ -1,3 +1,4 @@
+import Shared.Proof.Algebra.Group.LatticeImageCollapse
 import Shared.Proof.AlgebraicTopology.Hurewicz.DegreeSix
 import Shared.Proof.AlgebraicTopology.Hurewicz.SphereGenerator
 import Shared.Proof.Analysis.Complex.RiemannMapping.SectorRoots

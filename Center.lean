@@ -1,4 +1,3 @@
-import Center.Proof.Algebra.Group.LatticeImageCollapse
 import Center.Proof.Algebra.Group.ResidualRelations
 import Center.Proof.AlgebraicTopology.FundamentalGroup.VanKampen.FiniteStarCharacter
 import Center.Proof.AlgebraicTopology.Hurewicz.SphereGenerator
