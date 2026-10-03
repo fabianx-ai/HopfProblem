@@ -1,10 +1,11 @@
-# Next steps (after the Shared/Proof and Center/Proof split, 2026-10-03)
+# Next steps (after the Shared/Proof and Center/Proof split and integration 7c, 2026-10-03)
 
 State: all 24 monoliths split behind facades (`Lib/reports/wave-1/MERGE.md`, `wave-2/MERGE.md`); both waves
 reviewed by Fable reviewers (`Lib/reviews/REVIEW-WAVES.md`: nothing unsound) and the findings fixed
 (§5 there); `center-solution` replayed per commit up to `d4db0d1a` (`Lib/reviews/INTEGRATION-7.md`,
-`Lib/reports/integration-7/REPLAY-7b.md`). Merged head `8f532681`: chain green (9,489 jobs), 3,857 probes
-standard (Lib 3,762, Shared 54, Center 7, Unused 34), census 123.
+`Lib/reports/integration-7/REPLAY-7b.md`). Integration 7c replayed `center-solution` up to `91485e80`
+(`Lib/reports/integration-7/REPLAY-7c.md`, three clean cherry-picks). Chain green (9,489 jobs), 3,880 probes
+standard (Lib 3,785 counted with primes allowed in names, Shared 54, Center 7, Unused 34), census 123.
 **Layout (owner decision 2026-10-03, receipt `Lib/reports/center-proof/RECEIPT.md`): four trees.** `Lib/` =
 generic textbook (imports Mathlib and `Lib` only); `Shared/Proof/` = used by both proofs (imports `Lib` only);
 `Hopf/Proof/` = the old proof, finished and frozen, nothing new goes there (imports `Lib`, `Shared`);
@@ -20,8 +21,8 @@ Open, in order:
 (1) **`Unused/`** exists (owner decision 2026-10-02; `Unused/README.md`, receipt `Lib/reports/unused/cube3.md`):
 only what the owner names moves there, verbatim. No dead-code sweeps over `Lib`: what is part of the textbook
 is not dead code, and explanation outweighs tidiness (owner, 2026-10-02);
-(2) **replays** continue from `d4db0d1a` of `center-solution` (the source worktree had uncommitted edits to
-`Models.lean` when 7b finished). Rule: a replayed commit whose material is not generic goes to `Center/Proof`
+(2) **replays** continue from `91485e80` of `center-solution` (`Models.lean` is now 8,428 lines; the source
+worktree had two untracked `G07AngularOrigin_*Check.lean` files when 7c finished). Rule: a replayed commit whose material is not generic goes to `Center/Proof`
 (or `Shared/Proof` if the old proof uses it too), never to `Hopf/Proof`;
 (3) **owner's word needed** (INTEGRATION-7 §Left): split `Hyperbolic/Models.lean` (7,870 lines) and
 `CurveTransport.lean`, sweep their manuscript labels, add the comparison with Mathlib's `UpperHalfPlane`
