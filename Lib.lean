@@ -314,7 +314,6 @@ import Lib.CategoryTheory.Sites.Leray.SheafificationStalkCompatibility
 import Lib.CategoryTheory.Sites.Leray.SheafificationNeighborhoodGerm
 import Lib.CategoryTheory.Sites.Leray.CanonicalPositiveNeighborhoodSection
 import Lib.CategoryTheory.Sites.Leray.ResolutionCohomologyPresheaf
-import Lib.CategoryTheory.Sites.Leray.FibreStalkEvaluation
 import Lib.CategoryTheory.Sites.Leray.StalkLocalCriterion
 import Lib.Geometry.Manifold.RestrictScalars
 import Lib.Geometry.Manifold.ChartedSpace.LocallyContractible
