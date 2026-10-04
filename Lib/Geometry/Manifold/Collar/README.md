@@ -1,20 +1,3 @@
-/-
-Copyright (c) 2026 Fabian Franz. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-Authors: Fabian Franz
--/
-module
-
-public import Lib.Geometry.Manifold.Collar.Tubular
-public import Lib.Geometry.Manifold.Collar.RangeTransport
-public import Lib.Geometry.Manifold.Collar.DiskTubular
-public import Lib.Geometry.Manifold.Collar.HeightCollar
-public import Lib.Geometry.Manifold.Collar.SmallPerturbation
-public import Lib.Geometry.Manifold.Collar.SupportedDiffeomorph
-public import Lib.Geometry.Manifold.Collar.LevelTransport
-public import Lib.Geometry.Manifold.Collar.SphereCoordinates
-
-/-!
 # Tubular neighbourhoods, collars and level transport
 
 Facade module: it imports the pieces below and declares nothing itself.
@@ -47,4 +30,17 @@ Facade module: it imports the pieces below and declares nothing itself.
 ## Tags
 
 collar, tubular neighbourhood, supported diffeomorphism, level transport
--/
+
+## Modules
+
+This directory replaces the former facade module `Lib.Geometry.Manifold.Collar` (deleted; its module docstring is the text
+above, verbatim). Import the pieces directly:
+
+* `Lib.Geometry.Manifold.Collar.DiskTubular`
+* `Lib.Geometry.Manifold.Collar.HeightCollar`
+* `Lib.Geometry.Manifold.Collar.LevelTransport`
+* `Lib.Geometry.Manifold.Collar.RangeTransport`
+* `Lib.Geometry.Manifold.Collar.SmallPerturbation`
+* `Lib.Geometry.Manifold.Collar.SphereCoordinates`
+* `Lib.Geometry.Manifold.Collar.SupportedDiffeomorph`
+* `Lib.Geometry.Manifold.Collar.Tubular`

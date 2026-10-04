@@ -124,7 +124,14 @@ import Lib.Geometry.Manifold.Whitney.EmbeddedArcs
 import Lib.Geometry.Manifold.Whitney.RankThreeModel
 import Lib.Geometry.Manifold.Morse.BeltCancellation
 import Lib.Geometry.Manifold.VectorBundle.ProjectionBundle
-import Lib.Geometry.Manifold.Collar
+import Lib.Geometry.Manifold.Collar.DiskTubular
+import Lib.Geometry.Manifold.Collar.HeightCollar
+import Lib.Geometry.Manifold.Collar.LevelTransport
+import Lib.Geometry.Manifold.Collar.RangeTransport
+import Lib.Geometry.Manifold.Collar.SmallPerturbation
+import Lib.Geometry.Manifold.Collar.SphereCoordinates
+import Lib.Geometry.Manifold.Collar.SupportedDiffeomorph
+import Lib.Geometry.Manifold.Collar.Tubular
 import Lib.Geometry.Manifold.Morse.SurgeryWindows
 import Lib.Geometry.Manifold.Quotient.Atlas
 import Lib.Geometry.Manifold.Quotient.LocalOrbit

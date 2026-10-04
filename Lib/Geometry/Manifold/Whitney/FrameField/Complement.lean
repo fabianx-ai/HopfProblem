@@ -5,7 +5,7 @@ Authors: Fabian Franz
 -/
 
 import Mathlib
-import Lib.Geometry.Manifold.Collar
+import Lib.Geometry.Manifold.Collar.RangeTransport
 
 /-!
 # Smooth orthogonal complements of a family of injective maps

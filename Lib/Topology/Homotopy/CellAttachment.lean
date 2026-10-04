@@ -8,7 +8,6 @@ Authors: Fabian Franz
 import Lib.Geometry.Manifold.Morse.Handle
 import Lib.Geometry.Manifold.Morse.SublevelSets
 import Lib.Geometry.Manifold.Morse.Index
-import Lib.Geometry.Manifold.Collar
 import Lib.Geometry.Manifold.WhitneyEmbedding
 import Lib.AlgebraicTopology.SingularHomology.Chains
 import Lib.AlgebraicTopology.SingularHomology.HomotopyInvariance
