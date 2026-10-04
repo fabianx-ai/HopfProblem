@@ -1,24 +1,3 @@
-/-
-Copyright (c) 2026 Fabian Franz. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-Authors: Fabian Franz
--/
-module
-
-public import Lib.Geometry.Manifold.Immersion.Relative.PointMoving
-public import Lib.Geometry.Manifold.Immersion.Relative.ImmersionLocus
-public import Lib.Geometry.Manifold.Immersion.Relative.ChartPerturbation
-public import Lib.Geometry.Manifold.Immersion.Relative.Embedding
-public import Lib.Geometry.Manifold.Immersion.Relative.AffinePerturbation
-public import Lib.Geometry.Manifold.Immersion.Relative.Plane
-public import Lib.Geometry.Manifold.Immersion.Relative.Curve
-public import Lib.Geometry.Manifold.Immersion.Relative.Arc
-public import Lib.Geometry.Manifold.Immersion.Relative.TubularNeighborhood
-public import Lib.Geometry.Manifold.Immersion.Relative.TwoSheetArc
-public import Lib.Geometry.Manifold.Immersion.Relative.FrameField
-public import Lib.Geometry.Manifold.Immersion.Relative.AxisChart
-
-/-!
 # The immersion chain: plane, curve and manifold immersions in charts
 
 Existence of immersions and embeddings in relative form, for maps of a plane or of a line into a
@@ -62,4 +41,21 @@ facade: it imports the pieces below and declares nothing.
 ## Tags
 
 immersion, whitney, tubular-neighborhood, relative-form
--/
+
+## Modules
+
+This directory replaces the former facade module `Lib.Geometry.Manifold.Immersion.Relative` (deleted; its module docstring is the text
+above, verbatim). Import the pieces directly:
+
+* `Lib.Geometry.Manifold.Immersion.Relative.AffinePerturbation`
+* `Lib.Geometry.Manifold.Immersion.Relative.Arc`
+* `Lib.Geometry.Manifold.Immersion.Relative.AxisChart`
+* `Lib.Geometry.Manifold.Immersion.Relative.ChartPerturbation`
+* `Lib.Geometry.Manifold.Immersion.Relative.Curve`
+* `Lib.Geometry.Manifold.Immersion.Relative.Embedding`
+* `Lib.Geometry.Manifold.Immersion.Relative.FrameField`
+* `Lib.Geometry.Manifold.Immersion.Relative.ImmersionLocus`
+* `Lib.Geometry.Manifold.Immersion.Relative.Plane`
+* `Lib.Geometry.Manifold.Immersion.Relative.PointMoving`
+* `Lib.Geometry.Manifold.Immersion.Relative.TubularNeighborhood`
+* `Lib.Geometry.Manifold.Immersion.Relative.TwoSheetArc`

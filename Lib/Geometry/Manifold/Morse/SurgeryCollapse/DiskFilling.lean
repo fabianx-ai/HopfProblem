@@ -5,7 +5,6 @@ Authors: Fabian Franz
 -/
 import Mathlib
 import Lib.AlgebraicTopology.SingularHomology.Sphere
-import Lib.Geometry.Manifold.Immersion.Relative
 import Lib.Geometry.Manifold.Morse.Existence
 import Lib.Geometry.Manifold.Morse.RadialFilling
 import Lib.Geometry.Manifold.Morse.Reeb

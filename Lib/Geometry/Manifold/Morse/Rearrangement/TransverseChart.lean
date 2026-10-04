@@ -12,7 +12,7 @@ public import Lib.Geometry.Manifold.WhitneyEmbedding
 public import Lib.Geometry.Manifold.Morse.SurgeryWindows
 public import Lib.Geometry.Manifold.Morse.CubicFlow
 public import Lib.Geometry.Manifold.Transversality.Basic
-public import Lib.Geometry.Manifold.Immersion.Relative
+public import Lib.Geometry.Manifold.Immersion.Relative.FrameField
 public import Lib.Geometry.Manifold.LocalDiffeomorph
 /-!
 # Linear transverse corrections of tube charts

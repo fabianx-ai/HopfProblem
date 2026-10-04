@@ -12,7 +12,6 @@ public import Lib.Geometry.Manifold.WhitneyEmbedding
 public import Lib.Geometry.Manifold.Morse.SurgeryWindows
 public import Lib.Geometry.Manifold.Morse.CubicFlow
 public import Lib.Geometry.Manifold.Transversality.Basic
-public import Lib.Geometry.Manifold.Immersion.Relative
 public import Lib.Geometry.Manifold.LocalDiffeomorph
 /-!
 # Transversality by an ambient diffeomorphism

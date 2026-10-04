@@ -12,7 +12,6 @@ public import Lib.Geometry.Manifold.WhitneyEmbedding
 public import Lib.Geometry.Manifold.Morse.SurgeryWindows
 public import Lib.Geometry.Manifold.Morse.CubicFlow
 public import Lib.Geometry.Manifold.Transversality.Basic
-public import Lib.Geometry.Manifold.Immersion.Relative
 public import Lib.Geometry.Manifold.LocalDiffeomorph
 public import Lib.Geometry.Manifold.Morse.Rearrangement.HeightCoordinates
 public import Lib.Geometry.Manifold.Morse.Rearrangement.IntervalTranslation
