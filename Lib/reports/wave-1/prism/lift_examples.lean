@@ -1,4 +1,5 @@
-import Lib.AlgebraicTopology.Hurewicz.PrismOperator
+import Lib.AlgebraicTopology.Hurewicz.PrismOperator.ComposeHomotopies
+import Lib.AlgebraicTopology.Hurewicz.PrismOperator.SubdivisionTriangleClass
 
 -- each lifted constant instantiated at universe 0 (the old statement)
 example := @Hurewicz.DegreeTwo.SimplyConnected.squareTriangles_diagonal.{0}

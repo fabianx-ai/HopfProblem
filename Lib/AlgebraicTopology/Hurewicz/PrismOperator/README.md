@@ -1,25 +1,3 @@
-/-
-Copyright (c) 2026 Fabian Franz. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-Authors: Fabian Franz
--/
-import Lib.AlgebraicTopology.Hurewicz.PrismOperator.CrossProductPoint
-import Lib.AlgebraicTopology.Hurewicz.PrismOperator.HurewiczMap
-import Lib.AlgebraicTopology.Hurewicz.PrismOperator.MapGenLoop
-import Lib.AlgebraicTopology.Hurewicz.PrismOperator.Basic
-import Lib.AlgebraicTopology.Hurewicz.PrismOperator.VertexEdgeStraightening
-import Lib.AlgebraicTopology.Hurewicz.PrismOperator.BasedTriangle
-import Lib.AlgebraicTopology.Hurewicz.PrismOperator.BasedTetrahedron
-import Lib.AlgebraicTopology.Hurewicz.PrismOperator.SquareRotation
-import Lib.AlgebraicTopology.Hurewicz.PrismOperator.SquareSubdivision
-import Lib.AlgebraicTopology.Hurewicz.PrismOperator.TetrahedronRelation
-import Lib.AlgebraicTopology.Hurewicz.PrismOperator.TwoTriangles
-import Lib.AlgebraicTopology.Hurewicz.PrismOperator.HurewiczInverse
-import Lib.AlgebraicTopology.Hurewicz.PrismOperator.NormalizedSquare
-import Lib.AlgebraicTopology.Hurewicz.PrismOperator.SubdivisionTriangleClass
-import Lib.AlgebraicTopology.Hurewicz.PrismOperator.DegreeTwo
-import Lib.AlgebraicTopology.Hurewicz.PrismOperator.ComposeHomotopies
-/-!
 # The prism operator and the degree-two Hurewicz theorem
 
 This module re-exports the pieces of the former monolithic file, which are now the modules of
@@ -57,4 +35,25 @@ This module re-exports the pieces of the former monolithic file, which are now t
 ## Tags
 
 Hurewicz, prism operator, simplex, homotopy, simply connected
--/
+
+## Modules
+
+This directory replaces the former facade module `Lib.AlgebraicTopology.Hurewicz.PrismOperator` (deleted; its module docstring is the text
+above, verbatim). Import the pieces directly:
+
+* `Lib.AlgebraicTopology.Hurewicz.PrismOperator.BasedTetrahedron`
+* `Lib.AlgebraicTopology.Hurewicz.PrismOperator.BasedTriangle`
+* `Lib.AlgebraicTopology.Hurewicz.PrismOperator.Basic`
+* `Lib.AlgebraicTopology.Hurewicz.PrismOperator.ComposeHomotopies`
+* `Lib.AlgebraicTopology.Hurewicz.PrismOperator.CrossProductPoint`
+* `Lib.AlgebraicTopology.Hurewicz.PrismOperator.DegreeTwo`
+* `Lib.AlgebraicTopology.Hurewicz.PrismOperator.HurewiczInverse`
+* `Lib.AlgebraicTopology.Hurewicz.PrismOperator.HurewiczMap`
+* `Lib.AlgebraicTopology.Hurewicz.PrismOperator.MapGenLoop`
+* `Lib.AlgebraicTopology.Hurewicz.PrismOperator.NormalizedSquare`
+* `Lib.AlgebraicTopology.Hurewicz.PrismOperator.SquareRotation`
+* `Lib.AlgebraicTopology.Hurewicz.PrismOperator.SquareSubdivision`
+* `Lib.AlgebraicTopology.Hurewicz.PrismOperator.SubdivisionTriangleClass`
+* `Lib.AlgebraicTopology.Hurewicz.PrismOperator.TetrahedronRelation`
+* `Lib.AlgebraicTopology.Hurewicz.PrismOperator.TwoTriangles`
+* `Lib.AlgebraicTopology.Hurewicz.PrismOperator.VertexEdgeStraightening`
