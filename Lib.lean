@@ -481,7 +481,13 @@ import Lib.LinearAlgebra.RankOneInt
 import Lib.Topology.ClosedRefinement
 import Lib.Topology.Dimension.Covering
 import Lib.Topology.Dimension.CubeBoundaryThree
-import Lib.Topology.Dimension.CubeBoundaryThreeCells
+import Lib.Topology.Dimension.CubeBoundaryThreeCells.Cells
+import Lib.Topology.Dimension.CubeBoundaryThreeCells.Coverage
+import Lib.Topology.Dimension.CubeBoundaryThreeCells.Faces
+import Lib.Topology.Dimension.CubeBoundaryThreeCells.Lattice
+import Lib.Topology.Dimension.CubeBoundaryThreeCells.RelInterior
+import Lib.Topology.Dimension.CubeBoundaryThreeCells.Separation
+import Lib.Topology.Dimension.CubeBoundaryThreeCells.SquareBoundary
 import Lib.Topology.Dimension.CubeBoundaryThreeBricks
 import Lib.Topology.Dimension.CubeBoundaryThreeDimension
 import Lib.Topology.Dimension.SphereTwo

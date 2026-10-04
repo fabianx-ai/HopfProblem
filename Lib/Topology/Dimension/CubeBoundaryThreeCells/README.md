@@ -1,14 +1,3 @@
-module
-
-public import Lib.Topology.Dimension.CubeBoundaryThreeCells.Lattice
-public import Lib.Topology.Dimension.CubeBoundaryThreeCells.Cells
-public import Lib.Topology.Dimension.CubeBoundaryThreeCells.Faces
-public import Lib.Topology.Dimension.CubeBoundaryThreeCells.Coverage
-public import Lib.Topology.Dimension.CubeBoundaryThreeCells.RelInterior
-public import Lib.Topology.Dimension.CubeBoundaryThreeCells.SquareBoundary
-public import Lib.Topology.Dimension.CubeBoundaryThreeCells.Separation
-
-/-!
 # Cells of the subdivided boundary of the three-cube
 
 The mesh-`h` subdivision of `∂[-1,1]³` (`h = 2 / N`) has three kinds of cells: the vertices (boundary
@@ -33,4 +22,16 @@ cells of a fine subdivision.
 
 * R. Engelking, *Dimension Theory*, §1.8
 * W. Hurewicz and H. Wallman, *Dimension Theory*, Chapter IV
--/
+
+## Modules
+
+This directory replaces the former facade module `Lib.Topology.Dimension.CubeBoundaryThreeCells` (deleted; its module docstring is the text
+above, verbatim). Import the pieces directly:
+
+* `Lib.Topology.Dimension.CubeBoundaryThreeCells.Cells`
+* `Lib.Topology.Dimension.CubeBoundaryThreeCells.Coverage`
+* `Lib.Topology.Dimension.CubeBoundaryThreeCells.Faces`
+* `Lib.Topology.Dimension.CubeBoundaryThreeCells.Lattice`
+* `Lib.Topology.Dimension.CubeBoundaryThreeCells.RelInterior`
+* `Lib.Topology.Dimension.CubeBoundaryThreeCells.Separation`
+* `Lib.Topology.Dimension.CubeBoundaryThreeCells.SquareBoundary`
