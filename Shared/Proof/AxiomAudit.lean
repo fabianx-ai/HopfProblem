@@ -24,8 +24,6 @@ the tree regardless.
 
 /-! ## `Shared.Proof.AlgebraicTopology.Hurewicz.DegreeSix` -/
 
-#check @SixthHurewicz.cubeHomologyClass
-#print axioms SixthHurewicz.cubeHomologyClass
 #check @SixthHurewicz.homotopyMap
 #print axioms SixthHurewicz.homotopyMap
 #check @SixthHurewicz.hurewiczLinearEquiv

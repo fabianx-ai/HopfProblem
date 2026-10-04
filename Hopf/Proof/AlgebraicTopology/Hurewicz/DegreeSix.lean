@@ -53,6 +53,10 @@ theorem SixthHurewicz.cubeCycle_val {X : Type} [TopologicalSpace X] {x : X}
     (p : GenLoop (Fin 6) X x) : (cubeCycle p).1 = cubeChain p :=
   rfl
 
+def SixthHurewicz.cubeHomologyClass {X : Type} [TopologicalSpace X] {x : X}
+    (p : GenLoop (Fin 6) X x) : SingularMayerVietoris.SingularHomology X 6 :=
+  Hurewicz.cubeHomologyClass p
+
 theorem SixthHurewicz.cubeHomologyClass_homotopic {X : Type} [TopologicalSpace X] {x : X}
     {p q : GenLoop (Fin 6) X x} (h : GenLoop.Homotopic p q) :
     cubeHomologyClass p = cubeHomologyClass q :=

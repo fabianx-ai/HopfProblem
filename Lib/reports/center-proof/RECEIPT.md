@@ -215,6 +215,84 @@ After the LatticeImageCollapse move to Shared, at `457b3861` (Lake pinned with `
 3. Remaining module docstrings of the cut Hopf files still describe the whole former file (e.g.
    `Hopf/Proof/…/SectorRoots.lean` still names `rotatedPrincipalRootFour`); left verbatim.
 
+## Corrections (review 2026-10-04)
+
+Review: `/home/goblin/.claude/jobs/06995e68/tmp/review-center/REVIEW.md` (Fable seat, findings F1–F7,
+R1). Fixes on branch `fix/center-review` (Claude Opus 5.5, model ID `claude-opus-5-5`), base
+`b25f3507`. The text above is left as written; these paragraphs supersede it where they disagree.
+
+Correction (review 2026-10-04): F1. The appendix row "| 58 | `SixthHurewicz.cubeHomologyClass` | old
+| … | both | SixSphereCube.factor_cubeHomologyClass @ Hopf.Recognition | W4W1/WorldCircuitCoreB.lean:45 |
+**Shared** …" is wrong: `WorldCircuitCoreB.lean:45` mentions `Hurewicz.cubeHomologyClass` of `Lib`, not the
+`SixthHurewicz` wrapper, and no `W4W1` file mentions the wrapper. The row is "old-only", final tree **Hopf**
+`Hopf/Proof/AlgebraicTopology/Hurewicz/DegreeSix.lean`; moved back verbatim to its original position (before
+`cubeHomologyClass_homotopic`) by `db37bd77`, its probe dropped from `Shared/Proof/AxiomAudit.lean`
+(`Hopf/Proof` has no audit file; the Hopf `DegreeSix` declarations are probed nowhere). Counts: the table row
+"`AlgebraicTopology/Hurewicz/DegreeSix.lean` | 21 | 0 | 4 | 17" is 21 | 0 | 3 | 18, and "**total** | 233 | 9 |
+54 | 170" is 233 | 9 | **53** | **171**; "Shared now holds 54, Center 9" is Shared 53, Center 9. In the import
+map, the row "`SixthHurewicz.{cubeHomologyClass, homotopyMap, hurewiczLinearEquiv,
+hurewiczLinearEquiv_natural}`" loses `cubeHomologyClass` (it is an old-proof declaration in
+`Hopf.Proof.AlgebraicTopology.Hurewicz.DegreeSix` here, in `Lib.AlgebraicTopology.Hurewicz.DegreeSix` on CS).
+
+Correction (review 2026-10-04): F2. "Names are unchanged; only module paths differ." is false for one name:
+`Int.signed_residual_coordinate_zero` on `center-solution` (`Lib/Data/Int/SignedResidual.lean`,
+`namespace Int`) is `ThreefoldHomology.signed_residual_coordinate_zero` here (renamed by the round-8 commit
+`cd893c55`). The rebase therefore needs one identifier edit, not only an import edit:
+`W4W1/CenterChargedAssembly.lean:1060` `exact Int.signed_residual_coordinate_zero k` →
+`exact ThreefoldHomology.signed_residual_coordinate_zero k` (CS's
+`Hopf/Proof/LCP/IntegralHomology.lean:23052` uses the `Int.` name too). All other moved names are
+unchanged.
+
+Correction (review 2026-10-04): F3. The row "| 71 | `SixthHurewicz.hurewiczFunction` | … | W4W1-only | — |
+W4W1/CenterResidualCharacter.lean:245 | **Hopf** …" rests on a misresolved hit: that line uses
+`SingularChains.hurewiczFunction` of `Lib`. The usage is "neither" (tree **Hopf** unchanged), and
+disagreement item 4 ("`SixthHurewicz.hurewiczFunction` … usage W4W1 only") is withdrawn.
+
+Correction (review 2026-10-04): F4. "The two anonymous `local instance`s of `SphereTwo.lean` get
+auto-generated names from the module root (`…_hopf` before, `…_center` now); local and unreferenced." The
+instances are referenced in the *types* of three of the four SphereTwo theorems, whose type hashes therefore
+changed with identical text: `TopCat.Sheaf.derivedGlobalSections_isZero_of_homeomorph_sphereTwo`,
+`TopCat.Sheaf.higherDirectImage_derivedGlobalSections_isZero_of_homeomorph_sphereTwo`,
+`TopCat.Sheaf.higherDirectImage_one_derivedGlobalSections_three_four_isZero_of_homeomorph_sphereTwo`. The
+cause is only the module-root suffix of the instance names (`_hopf` → `_center`; on `center-solution` they
+end in `_lib`); the instances are the same terms. The rebase is not affected.
+
+Correction (review 2026-10-04): F5. The importer paragraph ("W4W1 importers on CS that change: …") is
+incomplete. Explicit import lines in `W4W1` on `center-solution` that name a mapped module (verified with
+`git -C /home/goblin/hopf grep -nE '^(public )?import Lib…' center-solution -- W4W1`):
+`CenterNativeFundamentalGroup.lean` l. 9 (`…VanKampen.FiniteStarCharacter`), 11
+(`…LatticeImageCollapse`), 13 (`…ResidualRelations`); `CenterBaseCohomologicalDimension.lean` l. 1
+(`…SphereTwo`); `NativeCornerThree.lean` l. 1 (`Lib.Analysis.Complex.RiemannMapping`); and
+`WorldCircuitCoreB.lean` l. 10 `import Lib.AlgebraicTopology.Hurewicz.SphereGenerator` — a module that does
+not exist here (hard import error, not a transitive reach), to be replaced by
+`Shared.Proof.AlgebraicTopology.Hurewicz.SphereGenerator` and
+`Center.Proof.AlgebraicTopology.Hurewicz.SphereGenerator`. (`W4-W1-Solution.lean:8` `import Lib` compiles
+and the file uses no moved name.) Files that reach moved names only transitively and need an added import
+or inherit one: `NativeCornerFour` (through `NativeCornerThree`; uses `rotatedPrincipalRootFour*`),
+`NativeMarkedNormalization` and `NativeHalfFord` (Shared `TriangleNormalization`), `CenterChargedAssembly`
+(Shared `SignedResidual`, reached through `Hopf.Proof.LCP.IntegralHomology`; only F2's rename remains).
+`CenterResidualCharacter` needs no import edit on account of this split (F3).
+
+Correction (review 2026-10-04): F7. "probes Lib 3762, Shared 54, Center 7, Unused 34, total 3857, every one
+exactly `[propext, Classical.choice, Quot.sound]`": the axiom lists are all ⊆ {propext, Classical.choice,
+Quot.sound} (of the 61 Shared/Center probes, 55 are the full list, 4 `[propext]`, 2 `[propext,
+Quot.sound]`), not all exactly that list. After these fixes the counts are Shared 53, Center 9 (the two
+missing Center probes, F6, added by `28d5127e`). Also "Each new file cut out of a Hopf file copies the
+Hopf file's header … and appends one sentence": `Center/Proof/Analysis/Complex/RiemannMapping/SectorRoots.lean`
+has a rewritten module docstring; it now names both wedge reversals it holds (`87c166b8`, which also
+rejoins the broken appended sentence of `Center/Proof/AlgebraicTopology/Hurewicz/SphereGenerator.lean`).
+
+Note (review 2026-10-04, R1, outside this receipt's scope): on `center-solution`, 21 files under `W4W1/`
+plus `W4-W1-Solution.lean` (22 in all) import `Hopf.Proof.*` / `Hopf.*`, so `W4W1` as `Center/Proof` cannot
+meet "`Center` never imports `Hopf`" by import-line edits alone; that is the owner's call. The files
+(`git -C /home/goblin/hopf grep -lE '^(public )?import Hopf' center-solution -- W4W1 W4-W1-Solution.lean`):
+`W4-W1-Solution.lean`, `W4W1/{CenterChargedAssembly, CenterCuspBase, CenterCuspGamma,
+CenterCuspRadiusPreimage, CenterFamily, CenterFinitePatchBridge, CenterFiniteRadiusRetraction,
+CenterH1CuspSpecialization, CenterHigherFiniteCoordinates, CenterPeriodicLoop, CenterR0H2Coordinate,
+CenterRegularH1LocalSystem, CenterRegularH1Monodromy, CenterRegularHigherMonodromy, CenterResidualCharacter,
+CenterSphereCohomology, ConcreteGammaConsumer, CoreAH1LocalSystem/DiagonalQuotientFibreMarking,
+FreeCoverLift, UnitVanKampenConsumer, WorldCircuitCoreB}.lean`.
+
 ## Appendix: per-declaration classification and final tree
 
 Lines refer to `b210042f`. "CS" hash = original commit on `center-solution`, the second hash its
