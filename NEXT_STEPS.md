@@ -1,11 +1,17 @@
-# Next steps (after the Shared/Proof and Center/Proof split and integration 7c, 2026-10-03)
+# Next steps (after the four-tree split, integration 7c and the facade dissolution, 2026-10-04)
 
 State: all 24 monoliths split behind facades (`Lib/reports/wave-1/MERGE.md`, `wave-2/MERGE.md`); both waves
 reviewed by Fable reviewers (`Lib/reviews/REVIEW-WAVES.md`: nothing unsound) and the findings fixed
 (§5 there); `center-solution` replayed per commit up to `d4db0d1a` (`Lib/reviews/INTEGRATION-7.md`,
 `Lib/reports/integration-7/REPLAY-7b.md`). Integration 7c replayed `center-solution` up to `91485e80`
-(`Lib/reports/integration-7/REPLAY-7c.md`, three clean cherry-picks). Chain green (9,489 jobs), 3,880 probes
-standard (Lib 3,785 counted with primes allowed in names, Shared 54, Center 7, Unused 34), census 123.
+(`Lib/reports/integration-7/REPLAY-7c.md`, three clean cherry-picks). The 24 facades are dissolved (`Lib/reports/facades/RECEIPT.md`: 205 consumers
+rerouted to the pieces from the dump's `uses`, facade docstrings kept as directory `README.md`s, envdiff 0/0/0; the 24
+per-facade commits were verified as a whole and at the head, not one by one). The Shared/Center split was reviewed
+(`/home/goblin/.claude/jobs/06995e68/tmp/review-center/REVIEW.md`, findings fixed in merge of `fix/center-review`;
+corrections section in the center-proof receipt). Chain green (9,465 jobs), 3,881 probes within the three standard
+axioms (Lib 3,785, Shared 53, Center 9, Unused 34; the Hopf DegreeSix declarations are probed nowhere), census 123.
+Known for the rebase: 21 `W4W1` files and `W4-W1-Solution.lean` import `Hopf.Proof.*` on `center-solution`
+(receipt R1 note); `W4W1/CenterChargedAssembly.lean` needs an identifier edit (`Int.` → `ThreefoldHomology.`).
 **Layout (owner decision 2026-10-03, receipt `Lib/reports/center-proof/RECEIPT.md`): four trees.** `Lib/` =
 generic textbook (imports Mathlib and `Lib` only); `Shared/Proof/` = used by both proofs (imports `Lib` only);
 `Hopf/Proof/` = the old proof, finished and frozen, nothing new goes there (imports `Lib`, `Shared`);
@@ -28,8 +34,7 @@ worktree had two untracked `G07AngularOrigin_*Check.lean` files when 7c finished
 `CurveTransport.lean`, sweep their manuscript labels, add the comparison with Mathlib's `UpperHalfPlane`
 metric — now, or after the source branch stops appending to those files (recommended: after; replays stay
 clean cherry-picks);
-(4) **dissolve the facades**: reroute consumers to the pieces, delete the 24 facade modules, fix `Lib.lean`,
-take the "better homes" of both MERGE receipts, then the `native*`/`Native*`/`MorseCancellation.*`/
+(4) facades done; next: the "better homes" of both MERGE receipts, then the `native*`/`Native*`/`MorseCancellation.*`/
 `FlowConstruction` rename wave; the misnamed groups of REVIEW-WAVES §2 finding 6;
 (5) the owner decisions: chain-interface coefficients (new polymorphic `chains` beside the pinned one plus a
 `u = 0` comparison, an addition), the pre-PR chain tower;
