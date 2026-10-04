@@ -9,7 +9,6 @@ import Lib.AlgebraicTopology.SingularHomology.Sphere
 import Lib.Analysis.Calculus.MorseLemma
 import Lib.Combinatorics.IndexDisorder
 import Lib.Geometry.Manifold.Morse.AdaptedWindows
-import Lib.Geometry.Manifold.Morse.Cancellation
 import Lib.Geometry.Manifold.Morse.CircleGluing
 import Lib.Geometry.Manifold.Morse.Connection
 import Lib.Geometry.Manifold.Morse.Cubic

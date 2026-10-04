@@ -13,7 +13,7 @@ import Lib.Geometry.Manifold.Immersion.Relative
 import Lib.Geometry.Manifold.Transversality.Basic
 import Lib.Geometry.Manifold.Morse.HandleAttachment
 import Lib.Geometry.Manifold.Morse.SurgeryWindows
-import Lib.Geometry.Manifold.Morse.Cancellation
+import Lib.Geometry.Manifold.Morse.Cancellation.CriticalGerms
 import Lib.Geometry.Manifold.Morse.Rearrangement
 import Hopf.Proof.Geometry.Manifold.Morse.Rearrangement.SheetArc
 import Lib.Geometry.Manifold.Morse.Connection

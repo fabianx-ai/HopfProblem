@@ -5,7 +5,7 @@ Authors: Fabian Franz
 -/
 import Mathlib
 import Lib.Analysis.Calculus.MorseLemma
-import Lib.Geometry.Manifold.Morse.Cancellation
+import Lib.Geometry.Manifold.Morse.Cancellation.CriticalGerms
 import Lib.Geometry.Manifold.Morse.CubicFlow
 import Lib.Geometry.Manifold.Morse.SublevelSets
 import Lib.Geometry.Manifold.RegularLevel

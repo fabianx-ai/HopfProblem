@@ -1,25 +1,3 @@
-/-
-Copyright (c) 2026 Fabian Franz. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-Authors: Fabian Franz
--/
-import Mathlib
-import Lib.Geometry.Manifold.Morse.Rearrangement
-import Lib.Geometry.Manifold.Morse.Connection
-import Lib.Geometry.Manifold.Morse.Cancellation.CubicModel
-import Lib.Geometry.Manifold.Morse.Cancellation.LyapunovResidence
-import Lib.Geometry.Manifold.Morse.Cancellation.LevelExit
-import Lib.Geometry.Manifold.Morse.Cancellation.CriticalGerms
-import Lib.Geometry.Manifold.Morse.Cancellation.LogarithmicCutoff
-import Lib.Geometry.Manifold.Morse.Cancellation.TransverseGerms
-import Lib.Geometry.Manifold.Morse.Cancellation.BandHeight
-import Lib.Geometry.Manifold.Morse.Cancellation.BandReplacement
-import Lib.Geometry.Manifold.Morse.Cancellation.CubicConnection
-import Lib.Geometry.Manifold.Morse.Cancellation.ConnectionData
-import Lib.Geometry.Manifold.Morse.Cancellation.BasinSheets
-import Lib.Geometry.Manifold.Morse.Cancellation.LevelIsotopy
-
-/-!
 # Cancellation along a transverse connection
 
 The cancellation theorems of Morse theory (Milnor, *Lectures on the
@@ -58,4 +36,21 @@ h-cobordism theorem*, Theorem 5.4). This module re-exports the pieces:
 ## Tags
 
 morse-theory, cancellation, gradient-like-flow, h-cobordism
--/
+
+## Modules
+
+This directory replaces the former facade module `Lib.Geometry.Manifold.Morse.Cancellation` (deleted; its module docstring is the text
+above, verbatim). Import the pieces directly:
+
+* `Lib.Geometry.Manifold.Morse.Cancellation.BandHeight`
+* `Lib.Geometry.Manifold.Morse.Cancellation.BandReplacement`
+* `Lib.Geometry.Manifold.Morse.Cancellation.BasinSheets`
+* `Lib.Geometry.Manifold.Morse.Cancellation.ConnectionData`
+* `Lib.Geometry.Manifold.Morse.Cancellation.CriticalGerms`
+* `Lib.Geometry.Manifold.Morse.Cancellation.CubicConnection`
+* `Lib.Geometry.Manifold.Morse.Cancellation.CubicModel`
+* `Lib.Geometry.Manifold.Morse.Cancellation.LevelExit`
+* `Lib.Geometry.Manifold.Morse.Cancellation.LevelIsotopy`
+* `Lib.Geometry.Manifold.Morse.Cancellation.LogarithmicCutoff`
+* `Lib.Geometry.Manifold.Morse.Cancellation.LyapunovResidence`
+* `Lib.Geometry.Manifold.Morse.Cancellation.TransverseGerms`
