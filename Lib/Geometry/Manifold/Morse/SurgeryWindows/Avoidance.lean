@@ -8,7 +8,7 @@ module
 public import Mathlib
 public import Lib.Geometry.Manifold.Morse.SurgeryWindows.HausdorffDimension
 public import Lib.Geometry.Manifold.Morse.Existence.LevelSurgery
-public import Lib.Geometry.Manifold.Morse.Existence.SmoothApproximation
+public import Lib.Geometry.Manifold.SmoothApproximation
 
 /-!
 # Avoiding a lower-dimensional image by a small perturbation

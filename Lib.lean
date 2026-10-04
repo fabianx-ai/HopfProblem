@@ -143,7 +143,7 @@ import Lib.Geometry.Manifold.Morse.Existence.HomotopyCollars
 import Lib.Geometry.Manifold.Morse.Existence.LevelSurgery
 import Lib.Geometry.Manifold.Morse.Existence.PartialChart
 import Lib.Geometry.Manifold.Morse.Existence.RegularLocus
-import Lib.Geometry.Manifold.Morse.Existence.SmoothApproximation
+import Lib.Geometry.Manifold.SmoothApproximation
 import Lib.Analysis.ODE.SmoothFlow
 import Lib.Geometry.Manifold.ChartedSpace.Transport
 import Lib.Topology.Homotopy.CylinderHEP
