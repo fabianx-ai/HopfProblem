@@ -92,7 +92,7 @@ import Lib.Geometry.Manifold.Morse.Rearrangement.IntervalTranslation
 import Lib.Geometry.Manifold.Morse.Rearrangement.LevelConnectedness
 import Lib.Geometry.Manifold.Morse.Rearrangement.LevelTime
 import Lib.Geometry.Manifold.Morse.Rearrangement.LongitudinalBlend
-import Lib.Geometry.Manifold.Morse.Rearrangement.SmoothTransition
+import Lib.Analysis.SpecialFunctions.SmoothTransition
 import Lib.Geometry.Manifold.Morse.Rearrangement.TransverseChart
 import Lib.Geometry.Manifold.Morse.Rearrangement.TubeMotion
 import Lib.Geometry.Manifold.Morse.Connection.BeltArc

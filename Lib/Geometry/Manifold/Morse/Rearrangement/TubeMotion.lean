@@ -14,7 +14,7 @@ public import Lib.Geometry.Manifold.LocalDiffeomorph
 public import Lib.Geometry.Manifold.Morse.Rearrangement.TransverseChart
 public import Lib.Geometry.Manifold.Morse.Rearrangement.IntervalTranslation
 public import Lib.Geometry.Manifold.Morse.Rearrangement.LongitudinalBlend
-public import Lib.Geometry.Manifold.Morse.Rearrangement.SmoothTransition
+public import Lib.Analysis.SpecialFunctions.SmoothTransition
 /-!
 # Longitudinal motions of a tube and sheet crossings
 
