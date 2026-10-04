@@ -5,7 +5,7 @@ Authors: Fabian Franz
 -/
 
 import Mathlib
-import Lib.Geometry.Manifold.Whitney.EmbeddedArcs
+import Lib.Geometry.Manifold.Whitney.FrameField.BoundaryArcs
 
 /-!
 # Recognising a sheet in a chart
