@@ -11,7 +11,7 @@ public import Lib.Geometry.Manifold.Morse.HandleAttachment
 public import Lib.Geometry.Manifold.Flow.HeightTranslating.EntryTime
 public import Lib.Geometry.Manifold.Flow.HeightTranslating.DescentFlow
 public import Lib.Geometry.Manifold.Flow.HeightTranslating.AbsorbingSublevel
-public import Lib.Geometry.Manifold.Flow.HeightTranslating.DescentModel
+public import Lib.Geometry.Manifold.Morse.HandleAttachment.DescentModel
 
 /-!
 # A sublevel with a handle attached is a deformation retract of the next sublevel

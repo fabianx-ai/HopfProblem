@@ -128,12 +128,12 @@ import Lib.Geometry.Manifold.Morse.Cancellation.TransverseGerms
 import Lib.Geometry.Manifold.Morse.RearrangementTheorem
 import Lib.Geometry.Manifold.Morse.Birth
 import Lib.Geometry.Manifold.Flow.HeightTranslating.AbsorbingSublevel
-import Lib.Geometry.Manifold.Flow.HeightTranslating.AttachingUnion
+import Lib.Geometry.Manifold.Morse.HandleAttachment.AttachingUnion
 import Lib.Geometry.Manifold.Flow.HeightTranslating.DescentFlow
-import Lib.Geometry.Manifold.Flow.HeightTranslating.DescentModel
+import Lib.Geometry.Manifold.Morse.HandleAttachment.DescentModel
 import Lib.Geometry.Manifold.Flow.HeightTranslating.EntryTime
 import Lib.Geometry.Manifold.Flow.HeightTranslating.FlowCollar
-import Lib.Geometry.Manifold.Flow.HeightTranslating.HandleCoordinates
+import Lib.Geometry.Manifold.Morse.HandleAttachment.HandleCoordinates
 import Lib.Geometry.Manifold.Morse.Existence.AttachingUnion
 import Lib.Geometry.Manifold.Morse.Existence.BeltCore
 import Lib.Geometry.Manifold.Morse.Existence.ChartPerturbation
