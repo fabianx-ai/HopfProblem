@@ -6,7 +6,7 @@ Authors: Fabian Franz
 module
 
 public import Mathlib
-public import Lib.Geometry.Manifold.Morse.Existence
+public import Lib.Geometry.Manifold.Flow.Compact
 public import Lib.Geometry.Manifold.Morse.Cubic.Model
 import all Mathlib.Geometry.Manifold.LocalDiffeomorph
 

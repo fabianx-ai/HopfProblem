@@ -6,7 +6,7 @@ Authors: Fabian Franz
 module
 
 public import Mathlib
-public import Lib.Geometry.Manifold.Morse.Existence
+public import Lib.Geometry.Manifold.Flow.Compact
 
 /-!
 # The immersion locus and local injectivity

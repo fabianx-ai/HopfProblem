@@ -125,7 +125,16 @@ import Lib.Geometry.Manifold.Flow.HeightTranslating.DescentModel
 import Lib.Geometry.Manifold.Flow.HeightTranslating.EntryTime
 import Lib.Geometry.Manifold.Flow.HeightTranslating.FlowCollar
 import Lib.Geometry.Manifold.Flow.HeightTranslating.HandleCoordinates
-import Lib.Geometry.Manifold.Morse.Existence
+import Lib.Geometry.Manifold.Morse.Existence.AttachingUnion
+import Lib.Geometry.Manifold.Morse.Existence.BeltCore
+import Lib.Geometry.Manifold.Morse.Existence.ChartPerturbation
+import Lib.Geometry.Manifold.Morse.Existence.DistinctCriticalValues
+import Lib.Geometry.Manifold.Morse.Existence.HomotopicRelWithin
+import Lib.Geometry.Manifold.Morse.Existence.HomotopyCollars
+import Lib.Geometry.Manifold.Morse.Existence.LevelSurgery
+import Lib.Geometry.Manifold.Morse.Existence.PartialChart
+import Lib.Geometry.Manifold.Morse.Existence.RegularLocus
+import Lib.Geometry.Manifold.Morse.Existence.SmoothApproximation
 import Lib.Analysis.ODE.SmoothFlow
 import Lib.Geometry.Manifold.ChartedSpace.Transport
 import Lib.Topology.Homotopy.CylinderHEP

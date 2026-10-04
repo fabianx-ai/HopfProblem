@@ -7,7 +7,6 @@ import Mathlib
 import Lib.Algebra.BigOperators.SignedCancellation
 import Lib.Geometry.Manifold.Morse.BeltCancellation
 import Lib.Geometry.Manifold.Morse.CubicFlow
-import Lib.Geometry.Manifold.Morse.Existence
 import Lib.Geometry.Manifold.Morse.HandleAttachment
 import Lib.Geometry.Manifold.Morse.Reeb
 import Lib.Geometry.Manifold.Morse.SurgeryHomology

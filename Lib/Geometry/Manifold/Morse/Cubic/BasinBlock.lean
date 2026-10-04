@@ -6,7 +6,7 @@ Authors: Fabian Franz
 module
 
 public import Mathlib
-public import Lib.Geometry.Manifold.Morse.Existence
+public import Lib.Geometry.Manifold.Morse.Existence.BeltCore
 public import Lib.Geometry.Manifold.RegularLevel
 public import Lib.Geometry.Manifold.WhitneyEmbedding
 public import Lib.Geometry.Manifold.Morse.SurgeryWindows

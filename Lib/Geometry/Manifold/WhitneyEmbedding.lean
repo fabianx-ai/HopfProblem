@@ -10,7 +10,8 @@ public import Lib.Geometry.Manifold.Morse.Handle
 public import Lib.Geometry.Manifold.Flow.Compact
 public import Lib.Geometry.Manifold.RegularLevel
 public import Lib.Geometry.Manifold.Morse.HandleAttachment
-public import Lib.Geometry.Manifold.Morse.Existence
+public import Lib.Geometry.Manifold.Morse.Existence.AttachingUnion
+public import Lib.Geometry.Manifold.Morse.Existence.PartialChart
 public import Lib.Analysis.ODE.SmoothFlow
 public import Lib.Geometry.Manifold.ChartedSpace.Transport
 public import Lib.Topology.Homotopy.CylinderHEP

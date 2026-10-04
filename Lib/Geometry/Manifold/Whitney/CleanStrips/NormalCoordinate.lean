@@ -5,7 +5,7 @@ Authors: Fabian Franz
 -/
 
 import Mathlib
-import Lib.Geometry.Manifold.Morse.Existence
+import Lib.Geometry.Manifold.Morse.Existence.PartialChart
 
 /-!
 # The normal coordinate of a product chart

@@ -5,7 +5,6 @@ Authors: Fabian Franz
 -/
 
 import Mathlib
-import Lib.Geometry.Manifold.Morse.Existence
 import Lib.Geometry.Manifold.Transversality.Basic
 import Lib.Geometry.Manifold.WhitneyEmbedding
 

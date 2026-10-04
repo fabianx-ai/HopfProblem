@@ -6,7 +6,6 @@ Authors: Fabian Franz
 module
 
 public import Mathlib
-public import Lib.Geometry.Manifold.Morse.Existence
 public import Lib.Geometry.Manifold.Transversality.RegularValues
 /-!
 # Transversality of two maps at a pair of points
