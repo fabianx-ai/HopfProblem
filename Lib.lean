@@ -110,7 +110,14 @@ import Lib.AlgebraicTopology.Hurewicz.PrismOperator
 import Lib.AlgebraicTopology.Hurewicz.Subdivision
 import Lib.AlgebraicTopology.Hurewicz.CubeGluing
 import Lib.AlgebraicTopology.Hurewicz.Degree
-import Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition
+import Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition.Concatenation
+import Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition.CubeChain
+import Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition.Cycle
+import Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition.IntervalSplit
+import Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition.KuhnDecomposition
+import Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition.PermutationInsertion
+import Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition.PrismRealization
+import Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition.StandardPrism
 import Lib.AlgebraicTopology.Hurewicz.Straightening
 import Lib.AlgebraicTopology.Hurewicz.CubeSphere
 import Lib.AlgebraicTopology.Hurewicz.HopfDegree
