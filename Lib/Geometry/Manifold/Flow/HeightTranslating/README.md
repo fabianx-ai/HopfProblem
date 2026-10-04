@@ -1,25 +1,3 @@
-/-
-Copyright (c) 2026 Fabian Franz. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-Authors: Fabian Franz
--/
-module
-
-public import Mathlib
-public import Lib.Analysis.Calculus.MorseLemma
-public import Lib.Geometry.Manifold.Morse.Handle
-public import Lib.Geometry.Manifold.Flow.Compact
-public import Lib.Geometry.Manifold.RegularLevel
-public import Lib.Geometry.Manifold.Morse.HandleAttachment
-public import Lib.Geometry.Manifold.Flow.HeightTranslating.EntryTime
-public import Lib.Geometry.Manifold.Flow.HeightTranslating.FlowCollar
-public import Lib.Geometry.Manifold.Flow.HeightTranslating.DescentFlow
-public import Lib.Geometry.Manifold.Flow.HeightTranslating.AbsorbingSublevel
-public import Lib.Geometry.Manifold.Flow.HeightTranslating.HandleCoordinates
-public import Lib.Geometry.Manifold.Flow.HeightTranslating.DescentModel
-public import Lib.Geometry.Manifold.Flow.HeightTranslating.AttachingUnion
-
-/-!
 # Flows across regular and critical levels: entry times, collars, handles
 
 This module re-exports the pieces of the flow argument of Milnor, *Morse Theory*, §3
@@ -54,4 +32,16 @@ This module re-exports the pieces of the flow argument of Milnor, *Morse Theory*
 ## Tags
 
 flow, entry time, collar, sublevel set, handle attachment
--/
+
+## Modules
+
+This directory replaces the former facade module `Lib.Geometry.Manifold.Flow.HeightTranslating` (deleted; its module docstring is the text
+above, verbatim). Import the pieces directly:
+
+* `Lib.Geometry.Manifold.Flow.HeightTranslating.AbsorbingSublevel`
+* `Lib.Geometry.Manifold.Flow.HeightTranslating.AttachingUnion`
+* `Lib.Geometry.Manifold.Flow.HeightTranslating.DescentFlow`
+* `Lib.Geometry.Manifold.Flow.HeightTranslating.DescentModel`
+* `Lib.Geometry.Manifold.Flow.HeightTranslating.EntryTime`
+* `Lib.Geometry.Manifold.Flow.HeightTranslating.FlowCollar`
+* `Lib.Geometry.Manifold.Flow.HeightTranslating.HandleCoordinates`

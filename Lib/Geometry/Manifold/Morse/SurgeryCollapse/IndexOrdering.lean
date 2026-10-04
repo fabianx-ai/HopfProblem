@@ -8,7 +8,6 @@ import Lib.AlgebraicTopology.FundamentalGroupoid.SimplyConnectedSphere
 import Lib.AlgebraicTopology.SingularHomology.Sphere
 import Lib.Analysis.Calculus.MorseLemma
 import Lib.Combinatorics.IndexDisorder
-import Lib.Geometry.Manifold.Flow.HeightTranslating
 import Lib.Geometry.Manifold.Morse.AdaptedWindows
 import Lib.Geometry.Manifold.Morse.Cancellation
 import Lib.Geometry.Manifold.Morse.CircleGluing

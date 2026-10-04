@@ -8,7 +8,6 @@ module
 public import Mathlib
 public import Lib.Geometry.Manifold.Collar.Tubular
 public import Lib.Geometry.Manifold.RegularLevel
-public import Lib.Geometry.Manifold.Flow.HeightTranslating
 
 /-!
 # Collars of a regular level

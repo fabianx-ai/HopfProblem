@@ -39,7 +39,13 @@ import Lib.Geometry.Manifold.Morse.Connection
 import Lib.Geometry.Manifold.Morse.Cancellation
 import Lib.Geometry.Manifold.Morse.RearrangementTheorem
 import Lib.Geometry.Manifold.Morse.Birth
-import Lib.Geometry.Manifold.Flow.HeightTranslating
+import Lib.Geometry.Manifold.Flow.HeightTranslating.AbsorbingSublevel
+import Lib.Geometry.Manifold.Flow.HeightTranslating.AttachingUnion
+import Lib.Geometry.Manifold.Flow.HeightTranslating.DescentFlow
+import Lib.Geometry.Manifold.Flow.HeightTranslating.DescentModel
+import Lib.Geometry.Manifold.Flow.HeightTranslating.EntryTime
+import Lib.Geometry.Manifold.Flow.HeightTranslating.FlowCollar
+import Lib.Geometry.Manifold.Flow.HeightTranslating.HandleCoordinates
 import Lib.Geometry.Manifold.Morse.Existence
 import Lib.Analysis.ODE.SmoothFlow
 import Lib.Geometry.Manifold.ChartedSpace.Transport

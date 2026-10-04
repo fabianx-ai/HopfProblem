@@ -8,7 +8,6 @@ import Lib.AlgebraicTopology.SingularHomology.LinearSphereAction
 import Lib.AlgebraicTopology.SingularHomology.LocalDegree
 import Lib.AlgebraicTopology.SingularHomology.LocalDegreeNeighborhoods
 import Lib.Analysis.Calculus.MorseLemma
-import Lib.Geometry.Manifold.Flow.HeightTranslating
 import Lib.Geometry.Manifold.Morse.BeltCancellation
 import Lib.Geometry.Manifold.Morse.Handle
 import Lib.Geometry.Manifold.Morse.HandleAttachment

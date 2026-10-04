@@ -5,7 +5,6 @@ Authors: Fabian Franz
 -/
 import Mathlib
 import Lib.Analysis.Calculus.MorseLemma
-import Lib.Geometry.Manifold.Flow.HeightTranslating
 import Lib.Geometry.Manifold.Morse.Existence
 import Lib.Geometry.Manifold.Morse.Handle
 import Lib.Geometry.Manifold.Morse.HandleAttachment

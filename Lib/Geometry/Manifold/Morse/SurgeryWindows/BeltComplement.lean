@@ -11,7 +11,6 @@ public import Lib.Geometry.Manifold.Morse.SurgeryWindows.NewInterior
 public import Lib.Geometry.Manifold.Morse.SurgeryWindows.OpenHomotopyExtension
 public import Lib.Geometry.Manifold.Morse.SurgeryWindows.ZeroAvoidanceCutoff
 public import Lib.Analysis.Calculus.MorseLemma
-public import Lib.Geometry.Manifold.Flow.HeightTranslating
 public import Lib.Geometry.Manifold.RegularLevel
 
 /-!
