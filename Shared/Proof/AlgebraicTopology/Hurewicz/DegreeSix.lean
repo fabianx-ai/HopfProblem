@@ -35,10 +35,6 @@ open Set Function Filter Manifold Topology
 
 noncomputable section
 
-def SixthHurewicz.cubeHomologyClass {X : Type} [TopologicalSpace X] {x : X}
-    (p : GenLoop (Fin 6) X x) : SingularMayerVietoris.SingularHomology X 6 :=
-  Hurewicz.cubeHomologyClass p
-
 def SixthHurewicz.homotopyMap {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y] (f : C(X, Y))
     (x : X) : π_ 6 X x →* π_ 6 Y (f x) :=
   Hurewicz.homotopyMap f x
