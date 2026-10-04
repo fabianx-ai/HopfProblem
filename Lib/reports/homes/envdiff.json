@@ -1,0 +1,177 @@
+{
+ "before": "/home/goblin/.claude/jobs/06995e68/tmp/homes/dump_base.jsonl",
+ "after": "/home/goblin/.claude/jobs/06995e68/tmp/homes/dump_final.jsonl",
+ "prefix": "",
+ "constants": [
+  39476,
+  39475
+ ],
+ "lost": [
+  [
+   "SingularHomology.homologyBoundaries._proof_1",
+   1635492264,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct.HomologyDescent": 1
+   }
+  ],
+  [
+   "SingularHomology.homologyDesc._proof_1",
+   2484712976,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct.HomologyDescent": 1
+   }
+  ]
+ ],
+ "added": [
+  [
+   "SingularHomology.homologyDesc._proof_1",
+   2348602549,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.ModuleHomology": 1
+   }
+  ]
+ ],
+ "changed_type_source": [],
+ "changed_type_proof_naming": [],
+ "changed_type_accepted": [],
+ "added_accepted": [],
+ "accept_without_effect": [],
+ "changed_type_all": [
+  "SingularHomology.homologyDesc._proof_1"
+ ],
+ "moves": [
+  [
+   "Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition.Concatenation",
+   "Lib.AlgebraicTopology.SingularHomology.Chains",
+   1
+  ],
+  [
+   "Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition.Concatenation",
+   "Lib.AlgebraicTopology.SingularHomology.CrossProduct.Chain",
+   2
+  ],
+  [
+   "Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition.Concatenation",
+   "Lib.AlgebraicTopology.SingularHomology.MayerVietoris.SmallChains",
+   2
+  ],
+  [
+   "Lib.AlgebraicTopology.SingularHomology.CrossProduct.HomologyDescent",
+   "Lib.AlgebraicTopology.SingularHomology.ModuleHomology",
+   5
+  ],
+  [
+   "Lib.Analysis.Calculus.MorseLemma.AdaptedDescentField",
+   "Lib.Geometry.Manifold.Morse.AdaptedDescentField",
+   8
+  ],
+  [
+   "Lib.Analysis.Calculus.MorseLemma.CriticalPoints",
+   "Lib.Geometry.Manifold.Morse.CriticalPoints",
+   15
+  ],
+  [
+   "Lib.Analysis.Calculus.MorseLemma.DescentField",
+   "Lib.Geometry.Manifold.Morse.DescentField",
+   10
+  ],
+  [
+   "Lib.Analysis.Calculus.MorseLemma.Existence",
+   "Lib.Geometry.Manifold.Morse.Existence.MorseFunction",
+   10
+  ],
+  [
+   "Lib.Analysis.Calculus.MorseLemma.LinearPerturbation",
+   "Lib.Geometry.Manifold.Morse.LinearPerturbation",
+   18
+  ],
+  [
+   "Lib.Analysis.Calculus.MorseLemma.SignedMorseChart",
+   "Lib.Geometry.Manifold.Morse.SignedMorseChart",
+   10
+  ],
+  [
+   "Lib.Analysis.Calculus.MorseLemma.SplitChart",
+   "Lib.Geometry.Manifold.Morse.SplitChart",
+   22
+  ],
+  [
+   "Lib.Analysis.Complex.RiemannMapping.ModulusOneReflection",
+   "Lib.Analysis.Complex.ModulusOneReflection",
+   12
+  ],
+  [
+   "Lib.Geometry.Manifold.Collar.SphereCoordinates",
+   "Lib.Geometry.Manifold.Morse.SurgeryWindows.SurgeryData",
+   1
+  ],
+  [
+   "Lib.Geometry.Manifold.Flow.HeightTranslating.AttachingUnion",
+   "Lib.Geometry.Manifold.Morse.HandleAttachment.AttachingUnion",
+   4
+  ],
+  [
+   "Lib.Geometry.Manifold.Flow.HeightTranslating.DescentModel",
+   "Lib.Geometry.Manifold.Morse.HandleAttachment.DescentModel",
+   7
+  ],
+  [
+   "Lib.Geometry.Manifold.Flow.HeightTranslating.HandleCoordinates",
+   "Lib.Geometry.Manifold.Morse.HandleAttachment.HandleCoordinates",
+   9
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.Cubic.LocalReplacement",
+   "Lib.Geometry.Manifold.LocalReplacement",
+   10
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.Cubic.SublevelFlow",
+   "Lib.Dynamics.Flow.Sublevel",
+   6
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.Existence.SmoothApproximation",
+   "Lib.Geometry.Manifold.SmoothApproximation",
+   24
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.OrderedCancellation.PathComponents",
+   "Lib.AlgebraicTopology.SingularHomology.PathComponents",
+   12
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.Rearrangement.AmbientTransversality",
+   "Lib.Geometry.Manifold.Transversality.AmbientIsotopy",
+   23
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.Rearrangement.SmoothTransition",
+   "Lib.Analysis.SpecialFunctions.SmoothTransition",
+   4
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.SurgeryCollapse.OnePointCover",
+   "Lib.AlgebraicTopology.SingularHomology.OnePointCover",
+   14
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.SurgeryCollapse.PuncturedBall",
+   "Lib.AlgebraicTopology.SingularHomology.PuncturedBall",
+   3
+  ],
+  [
+   "Lib.Geometry.Manifold.Transversality.MorseBelt",
+   "Lib.Geometry.Manifold.Morse.MorseBelt",
+   28
+  ],
+  [
+   "Lib.Geometry.Manifold.Whitney.CleanStrips.BeltIntersection",
+   "Lib.Geometry.Manifold.Morse.BeltIntersection",
+   9
+  ]
+ ],
+ "ambiguous": [],
+ "auxiliary_moved": 199,
+ "verdict": "PASS"
+}

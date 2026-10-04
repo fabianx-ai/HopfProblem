@@ -18,11 +18,14 @@ This module re-exports the pieces of the flow argument of Milnor, *Morse Theory*
 * `Flow.HeightTranslating.HandleCoordinates` : ball coordinates, boundary data and the core
   attaching map of the handle of a signed Morse chart
   (`ManifoldMorse.SignedMorseChart.attachingCoreMap`).
+  (moved: now `Lib.Geometry.Manifold.Morse.HandleAttachment.HandleCoordinates`)
 * `Flow.HeightTranslating.DescentModel` : a flow that agrees with the model descent field in a
   Morse chart is the model flow (`ManifoldMorse.SignedMorseChart.flow_eqOn_descentModel`).
+  (moved: now `Lib.Geometry.Manifold.Morse.HandleAttachment.DescentModel`)
 * `Flow.HeightTranslating.AttachingUnion` : the sublevel with the handle attached is a
   deformation retract of the next sublevel
   (`ManifoldMorse.SignedMorseChart.exists_attachingUnionHomotopyEquiv`).
+  (moved: now `Lib.Geometry.Manifold.Morse.HandleAttachment.AttachingUnion`)
 
 ## References
 
@@ -39,9 +42,6 @@ This directory replaces the former facade module `Lib.Geometry.Manifold.Flow.Hei
 above, verbatim). Import the pieces directly:
 
 * `Lib.Geometry.Manifold.Flow.HeightTranslating.AbsorbingSublevel`
-* `Lib.Geometry.Manifold.Flow.HeightTranslating.AttachingUnion`
 * `Lib.Geometry.Manifold.Flow.HeightTranslating.DescentFlow`
-* `Lib.Geometry.Manifold.Flow.HeightTranslating.DescentModel`
 * `Lib.Geometry.Manifold.Flow.HeightTranslating.EntryTime`
 * `Lib.Geometry.Manifold.Flow.HeightTranslating.FlowCollar`
-* `Lib.Geometry.Manifold.Flow.HeightTranslating.HandleCoordinates`

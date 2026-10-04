@@ -9,6 +9,7 @@ Facade module: it imports the pieces of the former monolith and declares nothing
 * `OrderedCancellation.ValueExchange` — exchanging consecutive critical values (Milnor 4.1);
 * `OrderedCancellation.PairCancellation` — the first cancellation theorem (Milnor 5.4);
 * `OrderedCancellation.PathComponents` — `H₀` detects path components (Hatcher 2.7);
+  (moved: now `Lib.AlgebraicTopology.SingularHomology.PathComponents`)
 * `OrderedCancellation.Negation` — the Morse function `-f` and its indices;
 * `OrderedCancellation.MinimalSystem` — Morse functions with the least number of critical points;
 * `OrderedCancellation.IndexCounts` — counting critical points by index;
@@ -29,7 +30,6 @@ above, verbatim). Import the pieces directly:
 * `Lib.Geometry.Manifold.Morse.OrderedCancellation.MinimalSystem`
 * `Lib.Geometry.Manifold.Morse.OrderedCancellation.Negation`
 * `Lib.Geometry.Manifold.Morse.OrderedCancellation.PairCancellation`
-* `Lib.Geometry.Manifold.Morse.OrderedCancellation.PathComponents`
 * `Lib.Geometry.Manifold.Morse.OrderedCancellation.PrescribedFlow`
 * `Lib.Geometry.Manifold.Morse.OrderedCancellation.TwoSphereDegree`
 * `Lib.Geometry.Manifold.Morse.OrderedCancellation.ValueExchange`

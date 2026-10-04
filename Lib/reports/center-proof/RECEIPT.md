@@ -176,6 +176,47 @@ environment as through the facade here. Caveat: CS's own `Lib.Analysis.Complex.R
 monolith there) also imports `Mathlib`, `SchwarzReflection`, `Mobius` and `Instances.RiemannSphere`; the
 facade here did not, independently of this dissolution.
 
+### Better homes (`work/homes`, receipt `Lib/reports/homes/RECEIPT.md`)
+
+Module paths only; declaration names unchanged. Command:
+`git grep -nE '^(public )?import Lib\.' center-solution -- W4W1 W4W1.lean W4-W1-Solution.lean` (141 lines).
+
+**No import line of `W4W1/`, `W4W1.lean` or `W4-W1-Solution.lean` names a moved module.** One entry of
+the facade table above changes: in the replacement list for `W4W1/NativeCornerThree.lean:1`
+(`import Lib.Analysis.Complex.RiemannMapping`), `Lib.Analysis.Complex.RiemannMapping.ModulusOneReflection`
+is now `Lib.Analysis.Complex.ModulusOneReflection`.
+
+For future replays: none of the old module paths below exists on CS (they are pieces of this branch's
+splits). The material lives on CS in the monolith of the second column; a replayed CS commit that edits
+it, or a CS file that needs it, goes to the new module.
+
+| moved here (old → new) | on CS inside |
+|---|---|
+| `Lib.AlgebraicTopology.SingularHomology.CrossProduct.HomologyDescent` (5 decls) → `Lib.AlgebraicTopology.SingularHomology.ModuleHomology` | `Lib.AlgebraicTopology.SingularHomology.CrossProduct` |
+| `SingularMayerVietoris.inducedChain_mem_supported_of_mapsTo`, `SingularChains.pointChain_mem_supported`: `…Hurewicz.CubeChainDecomposition.Concatenation` → `Lib.AlgebraicTopology.SingularHomology.MayerVietoris.SmallChains` | `Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition` |
+| `SingularHomology.zeroSimplexValue_const`, `SingularHomology.crossProductZeroLeft_pointChain`: same → `Lib.AlgebraicTopology.SingularHomology.CrossProduct.Chain` | same |
+| `SingularChains.inducedChain_pointChain`: same → `Lib.AlgebraicTopology.SingularHomology.Chains` | same |
+| `Lib.Geometry.Manifold.Morse.OrderedCancellation.PathComponents` → `Lib.AlgebraicTopology.SingularHomology.PathComponents` | `Lib.Geometry.Manifold.Morse.OrderedCancellation` |
+| `Lib.Geometry.Manifold.Morse.SurgeryCollapse.PuncturedBall` → `Lib.AlgebraicTopology.SingularHomology.PuncturedBall` | `Lib.Geometry.Manifold.Morse.SurgeryCollapse` |
+| `Lib.Geometry.Manifold.Morse.SurgeryCollapse.OnePointCover` (14 decls) → `Lib.AlgebraicTopology.SingularHomology.OnePointCover` | `Lib.Geometry.Manifold.Morse.SurgeryCollapse` |
+| `Lib.Geometry.Manifold.Morse.Rearrangement.SmoothTransition` → `Lib.Analysis.SpecialFunctions.SmoothTransition` | `Lib.Geometry.Manifold.Morse.Rearrangement` |
+| `Lib.Geometry.Manifold.Morse.Rearrangement.AmbientTransversality` → `Lib.Geometry.Manifold.Transversality.AmbientIsotopy` | `Lib.Geometry.Manifold.Morse.Rearrangement` |
+| `Lib.Geometry.Manifold.Transversality.MorseBelt` → `Lib.Geometry.Manifold.Morse.MorseBelt` | `Lib.Geometry.Manifold.Transversality.Basic` |
+| `Lib.Geometry.Manifold.Whitney.CleanStrips.BeltIntersection` → `Lib.Geometry.Manifold.Morse.BeltIntersection` | `Lib.Geometry.Manifold.Whitney.CleanStrips` |
+| `Lib.Geometry.Manifold.Flow.HeightTranslating.{HandleCoordinates, DescentModel, AttachingUnion}` → `Lib.Geometry.Manifold.Morse.HandleAttachment.{HandleCoordinates, DescentModel, AttachingUnion}` | `Lib.Geometry.Manifold.Flow.HeightTranslating` |
+| `Lib.Analysis.Calculus.MorseLemma.{LinearPerturbation, CriticalPoints, SignedMorseChart, SplitChart, DescentField, AdaptedDescentField}` → `Lib.Geometry.Manifold.Morse.<same>` | `Lib.Analysis.Calculus.MorseLemma` |
+| `Lib.Analysis.Calculus.MorseLemma.Existence` → `Lib.Geometry.Manifold.Morse.Existence.MorseFunction` | `Lib.Analysis.Calculus.MorseLemma` |
+| `Lib.Analysis.Complex.RiemannMapping.ModulusOneReflection` → `Lib.Analysis.Complex.ModulusOneReflection` | `Lib.Analysis.Complex.RiemannMapping` |
+| `Lib.Geometry.Manifold.Morse.Cubic.SublevelFlow` → `Lib.Dynamics.Flow.Sublevel` | `Lib.Geometry.Manifold.Morse.Cubic` |
+| `Lib.Geometry.Manifold.Morse.Cubic.LocalReplacement` → `Lib.Geometry.Manifold.LocalReplacement` | `Lib.Geometry.Manifold.Morse.Cubic` |
+| `Lib.Geometry.Manifold.Morse.Existence.SmoothApproximation` → `Lib.Geometry.Manifold.SmoothApproximation` | `Lib.Geometry.Manifold.Morse.Existence` |
+| `Lib.Geometry.Manifold.Collar.SphereCoordinates` (`SphereCoordinates.ofLinearIsometry`) → `Lib.Geometry.Manifold.Morse.SurgeryWindows.SurgeryData` | `Lib.Geometry.Manifold.Collar` |
+
+New module names here that did not exist before and do not exist on CS: the right-hand sides above except
+`ModuleHomology`, `SmallChains`, `CrossProduct.Chain`, `Chains`, `SingularHomology.OnePointCover`,
+`SurgeryData` (existing targets). `Lib.Geometry.Manifold.Morse.Existence` (a CS monolith, a dissolved
+facade here) was deliberately not reused.
+
 ## Checks (head `457b3861` before this receipt)
 
 Baseline before any edit, `b210042f`: `lake build Lib Unused Hopf.Proof.AxiomAudit` →

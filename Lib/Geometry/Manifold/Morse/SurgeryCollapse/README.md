@@ -3,6 +3,7 @@
 Facade module: it imports the pieces of the former monolith and declares nothing.
 
 * `SurgeryCollapse.PuncturedBall` — the punctured ball retracts onto a sphere;
+  (moved: now `Lib.AlgebraicTopology.SingularHomology.PuncturedBall`)
 * `SurgeryCollapse.BeltTubeMeridian` — loops in the belt tube are homotopic to meridians;
 * `SurgeryCollapse.LevelTransport` — transport of embedded spheres between regular levels;
 * `SurgeryCollapse.CellExactSequence` — the long exact sequence of an attached cell;
@@ -12,6 +13,7 @@ Facade module: it imports the pieces of the former monolith and declares nothing
 * `SurgeryCollapse.DiskFilling` — filling a null-homotopic circle by an embedded disk;
 * `SurgeryCollapse.LevelIsotopy` — realising an isotopy of a regular level by a flow;
 * `SurgeryCollapse.OnePointCover` — the two-patch cover of `OnePoint N` and its suspension isomorphism;
+  (moved: now in `Lib.AlgebraicTopology.SingularHomology.OnePointCover`)
 * `SurgeryCollapse.DiskCollapse` — collapsing the complement of an attached cell to a point;
 * `SurgeryCollapse.LocalDegreeConnecting` — the point connecting map and its naturality;
 * `SurgeryCollapse.SphereOrientation` — the orientation sign of the point connecting map;
@@ -37,6 +39,4 @@ above, verbatim). Import the pieces directly:
 * `Lib.Geometry.Manifold.Morse.SurgeryCollapse.LevelTransport`
 * `Lib.Geometry.Manifold.Morse.SurgeryCollapse.LocalDegreeConnecting`
 * `Lib.Geometry.Manifold.Morse.SurgeryCollapse.MinimumReduction`
-* `Lib.Geometry.Manifold.Morse.SurgeryCollapse.OnePointCover`
-* `Lib.Geometry.Manifold.Morse.SurgeryCollapse.PuncturedBall`
 * `Lib.Geometry.Manifold.Morse.SurgeryCollapse.SphereOrientation`

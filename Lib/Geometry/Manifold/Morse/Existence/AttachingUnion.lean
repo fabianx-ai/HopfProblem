@@ -8,7 +8,7 @@ module
 public import Mathlib
 public import Lib.Geometry.Manifold.Morse.Handle
 public import Lib.Geometry.Manifold.Morse.HandleAttachment
-public import Lib.Geometry.Manifold.Flow.HeightTranslating.AttachingUnion
+public import Lib.Geometry.Manifold.Morse.HandleAttachment.AttachingUnion
 
 /-!
 # Attaching a handle across an isolated critical level

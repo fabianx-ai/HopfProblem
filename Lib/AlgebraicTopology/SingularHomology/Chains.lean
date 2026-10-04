@@ -1374,3 +1374,10 @@ theorem SingularChains.boundaryTwo_loopHomotopy {X : Type} [TopologicalSpace X] 
     boundaryTwo X (homotopyChain H) = pathChain p - pathChain q := by
   rw [boundaryTwo_homotopyChain]
   abel
+
+/-- The pushforward of the point chain at `x` along `f` is the point chain at `f x`. -/
+theorem SingularChains.inducedChain_pointChain {X Y : Type} [TopologicalSpace X]
+    [TopologicalSpace Y] (f : C(X, Y)) (x : X) :
+    SingularChains.inducedChain f 0 (SingularChains.pointChain x) =
+      SingularChains.pointChain (f x) := by
+  simp [SingularChains.pointChain, SingularChains.inducedChain_simplex, ContinuousMap.const_comp]

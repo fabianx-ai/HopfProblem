@@ -13,6 +13,7 @@ This module only imports its pieces:
 * `RiemannMapping/RectanglePrimitive` — primitives of holomorphic functions on open rectangles;
 * `RiemannMapping/ModulusOneReflection` — analytic continuation across a boundary arc on which
   `‖f‖ → 1` (Schwarz reflection in the circle);
+  (moved: now `Lib.Analysis.Complex.ModulusOneReflection`)
 * `RiemannMapping/BoundaryDerivative` — nonvanishing derivative at a boundary point of the upper
   half-plane;
 * `RiemannMapping/ConformalExtension` — conformal extension of a disc map across analytic
@@ -35,7 +36,6 @@ above, verbatim). Import the pieces directly:
 * `Lib.Analysis.Complex.RiemannMapping.DiscCompactification`
 * `Lib.Analysis.Complex.RiemannMapping.Existence`
 * `Lib.Analysis.Complex.RiemannMapping.HalfStripChart`
-* `Lib.Analysis.Complex.RiemannMapping.ModulusOneReflection`
 * `Lib.Analysis.Complex.RiemannMapping.PrincipalRoot`
 * `Lib.Analysis.Complex.RiemannMapping.RectanglePrimitive`
 * `Lib.Analysis.Complex.RiemannMapping.Steps`

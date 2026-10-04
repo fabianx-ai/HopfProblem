@@ -681,3 +681,22 @@ theorem SingularHomology.crossProductEdge_boundary_of_left_cycle {X Y : Type}
         (SingularHomology.crossProductEdge X Y (n + 1) a b) =
       -SingularHomology.crossProductEdge X Y n a (((SingularChains.singularComplex Y).d (n + 1) n).hom b) := by
   simp only [SingularHomology.crossProductEdge_boundary, ha, map_zero, LinearMap.zero_apply, zero_sub]
+
+/-- The zero-simplex value of the constant `0`-simplex at `x` is `x`. -/
+theorem SingularHomology.zeroSimplexValue_const {X : Type} [TopologicalSpace X]
+    (x : X) :
+    SingularHomology.zeroSimplexValue
+      (ContinuousMap.const (SingularChains.Simplex 0) x) = x :=
+  rfl
+
+attribute [local instance] SingularHomology.integerLinearMapModule
+    SingularHomology.integerTensorModule in
+/-- The degree-`0`-left cross product of the point chain at `x` with `b` is the
+`x`-insertion pushforward of `b`. -/
+theorem SingularHomology.crossProductZeroLeft_pointChain {X Y : Type}
+    [TopologicalSpace X] [TopologicalSpace Y] (n : ℕ) (x : X)
+    (b : SingularChains.Chains Y n) :
+    SingularHomology.crossProductZeroLeft X Y n (SingularChains.pointChain x) b =
+      SingularChains.inducedChain (SingularHomology.crossInsertLeft x) n b := by
+  rw [SingularChains.pointChain, SingularHomology.crossProductZeroLeft_simplex_left,
+    SingularHomology.zeroSimplexValue_const]

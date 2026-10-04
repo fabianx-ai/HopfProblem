@@ -15,6 +15,7 @@ This module only re-exports its pieces, which treat three subjects.
   `Existence.HomotopyCollars` and `Existence.SmoothApproximation` (every continuous map from a
   compact manifold to a boundaryless manifold is homotopic to a smooth one; Hirsch,
   *Differential Topology*, §2.2; Lee, *Introduction to Smooth Manifolds*, Ch. 6).
+  (`Existence.SmoothApproximation` moved: now `Lib.Geometry.Manifold.SmoothApproximation`)
 
 ## References
 
@@ -32,6 +33,7 @@ above, verbatim). Import the pieces directly:
 * `Lib.Geometry.Manifold.Morse.Existence.HomotopicRelWithin`
 * `Lib.Geometry.Manifold.Morse.Existence.HomotopyCollars`
 * `Lib.Geometry.Manifold.Morse.Existence.LevelSurgery`
+* `Lib.Geometry.Manifold.Morse.Existence.MorseFunction` (moved here from
+  `Lib.Analysis.Calculus.MorseLemma.Existence`: existence of Morse functions on compact manifolds)
 * `Lib.Geometry.Manifold.Morse.Existence.PartialChart`
 * `Lib.Geometry.Manifold.Morse.Existence.RegularLocus`
-* `Lib.Geometry.Manifold.Morse.Existence.SmoothApproximation`

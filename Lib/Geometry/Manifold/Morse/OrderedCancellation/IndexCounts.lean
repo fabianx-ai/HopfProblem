@@ -9,7 +9,7 @@ import Lib.Geometry.Manifold.Morse.CubicFlow
 import Lib.Geometry.Manifold.Morse.HandleAttachment
 import Lib.Geometry.Manifold.Morse.SurgeryHomology
 import Lib.Topology.Homotopy.HandleRetraction
-import Lib.Geometry.Manifold.Morse.OrderedCancellation.PathComponents
+import Lib.AlgebraicTopology.SingularHomology.PathComponents
 
 /-!
 # Counting critical points by index

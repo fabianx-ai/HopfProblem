@@ -18,6 +18,7 @@ Whitney trick (§6) and the general-position lemmas both use.
   `ℝ × V` pushing along the axis, every slice a diffeomorphism.
 * `Rearrangement.SmoothTransition` — positive derivative and strict monotonicity of
   `Real.smoothTransition`.
+  (moved: now `Lib.Analysis.SpecialFunctions.SmoothTransition`)
 * `Rearrangement.TransverseChart` — linear transverse corrections of tube charts and the
   restriction of a tube to a clean neighbourhood of an axis segment.
 * `Rearrangement.TubeMotion` — `MorseCancellation.LongitudinalTubeMotion`: the supported isotopy
@@ -36,6 +37,7 @@ Whitney trick (§6) and the general-position lemmas both use.
   diffeomorphism making a map transverse to, or disjoint from, another
   (`NativeTransversality.exists_ambient_transverse_diffeomorph`,
   `MorseRearrangement.exists_ambient_disjoint_diffeomorph_of_dimension`).
+  (moved: now `Lib.Geometry.Manifold.Transversality.AmbientIsotopy`)
 
 ## References
 
@@ -50,13 +52,11 @@ morse-theory, rearrangement, h-cobordism
 This directory replaces the former facade module `Lib.Geometry.Manifold.Morse.Rearrangement` (deleted; its module docstring is the text
 above, verbatim). Import the pieces directly:
 
-* `Lib.Geometry.Manifold.Morse.Rearrangement.AmbientTransversality`
 * `Lib.Geometry.Manifold.Morse.Rearrangement.BasinImages`
 * `Lib.Geometry.Manifold.Morse.Rearrangement.HeightCoordinates`
 * `Lib.Geometry.Manifold.Morse.Rearrangement.IntervalTranslation`
 * `Lib.Geometry.Manifold.Morse.Rearrangement.LevelConnectedness`
 * `Lib.Geometry.Manifold.Morse.Rearrangement.LevelTime`
 * `Lib.Geometry.Manifold.Morse.Rearrangement.LongitudinalBlend`
-* `Lib.Geometry.Manifold.Morse.Rearrangement.SmoothTransition`
 * `Lib.Geometry.Manifold.Morse.Rearrangement.TransverseChart`
 * `Lib.Geometry.Manifold.Morse.Rearrangement.TubeMotion`

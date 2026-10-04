@@ -9,7 +9,7 @@ import Lib.AlgebraicTopology.SingularHomology.HomotopyInvariance
 import Lib.AlgebraicTopology.SingularHomology.OnePointCover
 import Lib.AlgebraicTopology.SingularHomology.SphereHomology
 import Lib.Topology.Homotopy.CellAttachment
-import Lib.Geometry.Manifold.Morse.OrderedCancellation.PathComponents
+import Lib.AlgebraicTopology.SingularHomology.PathComponents
 
 /-!
 # The long exact sequence of an attached cell

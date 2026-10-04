@@ -14,7 +14,7 @@ import Lib.AlgebraicTopology.SingularHomology.Suspension
 import Lib.Geometry.Manifold.Morse.SublevelSets
 import Lib.Geometry.Manifold.Transversality.Basic
 import Lib.Geometry.Manifold.Morse.SurgeryCollapse.CellExactSequence
-import Lib.Geometry.Manifold.Morse.SurgeryCollapse.PuncturedBall
+import Lib.AlgebraicTopology.SingularHomology.PuncturedBall
 
 /-!
 # The connecting homomorphism at a point of a manifold and its naturality

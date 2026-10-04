@@ -6,7 +6,7 @@ Authors: Fabian Franz
 import Mathlib
 import Lib.Analysis.Complex.RiemannMapping.DiscBoundaryEscape
 import Lib.Analysis.Complex.RiemannMapping.HalfStripChart
-import Lib.Analysis.Complex.RiemannMapping.ModulusOneReflection
+import Lib.Analysis.Complex.ModulusOneReflection
 import Lib.Analysis.Complex.RiemannMapping.BoundaryDerivative
 
 /-!

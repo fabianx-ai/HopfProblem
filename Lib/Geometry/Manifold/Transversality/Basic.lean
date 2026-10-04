@@ -9,7 +9,7 @@ public import Lib.Geometry.Manifold.Transversality.Diffeomorph
 public import Lib.Geometry.Manifold.Transversality.RegularValues
 public import Lib.Geometry.Manifold.Transversality.Transverse
 public import Lib.Geometry.Manifold.Transversality.Parametric
-public import Lib.Geometry.Manifold.Transversality.MorseBelt
+public import Lib.Geometry.Manifold.Morse.MorseBelt
 public import Lib.Geometry.Manifold.Transversality.CenteredChart
 public import Lib.Geometry.Manifold.Transversality.SupportedIsotopy
 public import Lib.Geometry.Manifold.Transversality.LinearFramePaths

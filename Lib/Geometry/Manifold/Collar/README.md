@@ -21,6 +21,7 @@ Facade module: it imports the pieces below and declares nothing itself.
   another across a band without critical values
   (`RegularLevel.exists_ambient_regularBand_transport`; Milnor, *Morse Theory*, Thm 3.1).
 * `Collar.SphereCoordinates` — the diffeomorphism of unit spheres induced by a linear isometry.
+  (moved: now `Lib.Geometry.Manifold.Morse.SurgeryWindows.SurgeryData`)
 
 ## References
 
@@ -41,6 +42,5 @@ above, verbatim). Import the pieces directly:
 * `Lib.Geometry.Manifold.Collar.LevelTransport`
 * `Lib.Geometry.Manifold.Collar.RangeTransport`
 * `Lib.Geometry.Manifold.Collar.SmallPerturbation`
-* `Lib.Geometry.Manifold.Collar.SphereCoordinates`
 * `Lib.Geometry.Manifold.Collar.SupportedDiffeomorph`
 * `Lib.Geometry.Manifold.Collar.Tubular`

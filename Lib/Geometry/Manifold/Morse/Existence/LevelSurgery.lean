@@ -8,7 +8,7 @@ module
 public import Mathlib
 public import Lib.Geometry.Manifold.Morse.Handle
 public import Lib.Geometry.Manifold.Morse.HandleAttachment
-public import Lib.Geometry.Manifold.Flow.HeightTranslating.HandleCoordinates
+public import Lib.Geometry.Manifold.Morse.HandleAttachment.HandleCoordinates
 
 /-!
 # Level sets across a handle as surgery boundary pairs
