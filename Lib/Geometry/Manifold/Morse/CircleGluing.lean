@@ -16,7 +16,6 @@ import Lib.Geometry.Manifold.VectorBundle.ProjectionBundle
 import Lib.Geometry.Manifold.Morse.SurgeryWindows
 import Lib.Geometry.Manifold.Transversality.Basic
 import Lib.Geometry.Manifold.Immersion.Relative.Plane
-import Lib.Geometry.Manifold.Morse.Rearrangement
 import Lib.AlgebraicTopology.SingularHomology.Sphere
 import Lib.Topology.Homotopy.CellAttachment
 import Lib.Topology.Homotopy.HandleRetraction

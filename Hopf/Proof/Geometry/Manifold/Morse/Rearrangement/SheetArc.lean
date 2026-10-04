@@ -6,7 +6,9 @@ Authors: Fabian Franz
 module
 
 public import Mathlib
-public import Lib.Geometry.Manifold.Morse.Rearrangement
+public import Lib.Geometry.Manifold.Immersion.Relative.AxisChart
+public import Lib.Geometry.Manifold.Immersion.Relative.TwoSheetArc
+public import Lib.Geometry.Manifold.Morse.Rearrangement.TransverseChart
 /-!
 # Sheet arcs in a five-dimensional level (proof-specific)
 

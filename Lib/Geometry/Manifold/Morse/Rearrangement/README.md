@@ -1,22 +1,3 @@
-/-
-Copyright (c) 2026 Fabian Franz. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-Authors: Fabian Franz
--/
-module
-
-public import Lib.Geometry.Manifold.Morse.Rearrangement.TransverseChart
-public import Lib.Geometry.Manifold.Morse.Rearrangement.HeightCoordinates
-public import Lib.Geometry.Manifold.Morse.Rearrangement.IntervalTranslation
-public import Lib.Geometry.Manifold.Morse.Rearrangement.LongitudinalBlend
-public import Lib.Geometry.Manifold.Morse.Rearrangement.SmoothTransition
-public import Lib.Geometry.Manifold.Morse.Rearrangement.TubeMotion
-public import Lib.Geometry.Manifold.Morse.Rearrangement.LevelTime
-public import Lib.Geometry.Manifold.Morse.Rearrangement.BasinImages
-public import Lib.Geometry.Manifold.Morse.Rearrangement.LevelConnectedness
-public import Lib.Geometry.Manifold.Morse.Rearrangement.AmbientTransversality
-
-/-!
 # Rearrangement of Morse functions: the toolbox
 
 Facade module: it imports the pieces below and declares nothing itself. The pieces are the
@@ -63,4 +44,19 @@ Whitney trick (§6) and the general-position lemmas both use.
 ## Tags
 
 morse-theory, rearrangement, h-cobordism
--/
+
+## Modules
+
+This directory replaces the former facade module `Lib.Geometry.Manifold.Morse.Rearrangement` (deleted; its module docstring is the text
+above, verbatim). Import the pieces directly:
+
+* `Lib.Geometry.Manifold.Morse.Rearrangement.AmbientTransversality`
+* `Lib.Geometry.Manifold.Morse.Rearrangement.BasinImages`
+* `Lib.Geometry.Manifold.Morse.Rearrangement.HeightCoordinates`
+* `Lib.Geometry.Manifold.Morse.Rearrangement.IntervalTranslation`
+* `Lib.Geometry.Manifold.Morse.Rearrangement.LevelConnectedness`
+* `Lib.Geometry.Manifold.Morse.Rearrangement.LevelTime`
+* `Lib.Geometry.Manifold.Morse.Rearrangement.LongitudinalBlend`
+* `Lib.Geometry.Manifold.Morse.Rearrangement.SmoothTransition`
+* `Lib.Geometry.Manifold.Morse.Rearrangement.TransverseChart`
+* `Lib.Geometry.Manifold.Morse.Rearrangement.TubeMotion`

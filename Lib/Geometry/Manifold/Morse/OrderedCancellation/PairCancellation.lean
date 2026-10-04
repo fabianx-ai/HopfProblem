@@ -6,7 +6,7 @@ Authors: Fabian Franz
 import Mathlib
 import Lib.Geometry.Manifold.Morse.Cancellation.LevelIsotopy
 import Lib.Geometry.Manifold.Morse.CubicFlow
-import Lib.Geometry.Manifold.Morse.Rearrangement
+import Lib.Geometry.Manifold.Morse.Rearrangement.LevelConnectedness
 import Lib.Geometry.Manifold.Morse.SurgeryWindows
 import Lib.Geometry.Manifold.Transversality.Basic
 import Lib.Geometry.Manifold.Morse.OrderedCancellation.ValueExchange

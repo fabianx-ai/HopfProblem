@@ -10,7 +10,6 @@ import Lib.Geometry.Manifold.Morse.CircleGluing
 import Lib.Geometry.Manifold.Morse.Connection.TransverseTimeLifts
 import Lib.Geometry.Manifold.Morse.CubicFlow
 import Lib.Geometry.Manifold.Morse.HandleAttachment
-import Lib.Geometry.Manifold.Morse.Rearrangement
 import Lib.Geometry.Manifold.Morse.SurgeryWindows
 import Lib.Geometry.Manifold.RegularLevel
 import Lib.Geometry.Manifold.Transversality.Basic

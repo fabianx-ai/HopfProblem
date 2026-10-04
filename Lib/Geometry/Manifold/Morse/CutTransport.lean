@@ -10,7 +10,6 @@ import Lib.AlgebraicTopology.SingularHomology.SphereHomology
 import Lib.Geometry.Manifold.Transversality.Basic
 import Lib.Geometry.Manifold.Morse.HandleAttachment
 import Lib.Geometry.Manifold.Morse.SurgeryWindows
-import Lib.Geometry.Manifold.Morse.Rearrangement
 import Lib.Geometry.Manifold.Morse.CellStructure
 import Lib.LinearAlgebra.Matrix.TransvectionReduction
 

@@ -85,7 +85,16 @@ import Lib.Geometry.Manifold.Immersion.Relative.Plane
 import Lib.Geometry.Manifold.Immersion.Relative.PointMoving
 import Lib.Geometry.Manifold.Immersion.Relative.TubularNeighborhood
 import Lib.Geometry.Manifold.Immersion.Relative.TwoSheetArc
-import Lib.Geometry.Manifold.Morse.Rearrangement
+import Lib.Geometry.Manifold.Morse.Rearrangement.AmbientTransversality
+import Lib.Geometry.Manifold.Morse.Rearrangement.BasinImages
+import Lib.Geometry.Manifold.Morse.Rearrangement.HeightCoordinates
+import Lib.Geometry.Manifold.Morse.Rearrangement.IntervalTranslation
+import Lib.Geometry.Manifold.Morse.Rearrangement.LevelConnectedness
+import Lib.Geometry.Manifold.Morse.Rearrangement.LevelTime
+import Lib.Geometry.Manifold.Morse.Rearrangement.LongitudinalBlend
+import Lib.Geometry.Manifold.Morse.Rearrangement.SmoothTransition
+import Lib.Geometry.Manifold.Morse.Rearrangement.TransverseChart
+import Lib.Geometry.Manifold.Morse.Rearrangement.TubeMotion
 import Lib.Geometry.Manifold.Morse.Connection.BeltArc
 import Lib.Geometry.Manifold.Morse.Connection.CubicEndpoints
 import Lib.Geometry.Manifold.Morse.Connection.CubicFieldChart
