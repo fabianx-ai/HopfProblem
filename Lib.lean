@@ -175,7 +175,7 @@ import Lib.Geometry.Manifold.Complex.Biholomorph
 import Lib.Geometry.Manifold.WhitneyEmbedding
 import Lib.Geometry.Manifold.Whitney.BigonModel
 import Lib.Geometry.Manifold.Morse.CircleGluing
-import Lib.Geometry.Manifold.Whitney.CleanStrips.BeltIntersection
+import Lib.Geometry.Manifold.Morse.BeltIntersection
 import Lib.Geometry.Manifold.Whitney.CleanStrips.BigonBoundary
 import Lib.Geometry.Manifold.Whitney.CleanStrips.BigonStripCoordinates
 import Lib.Geometry.Manifold.Whitney.CleanStrips.CornerPatch

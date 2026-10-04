@@ -10,6 +10,7 @@ imports its pieces:
   and the normal Jacobian.
 * `CleanStrips.BeltIntersection` : local signs and intersection numbers of a sphere with the belt
   sphere of a Morse surgery (Milnor, *Lectures on the h-cobordism theorem*, §6).
+  (moved: now `Lib.Geometry.Manifold.Morse.BeltIntersection`)
 * `CleanStrips.NormalCoordinate` : the normal coordinate of a product chart.
 * `CleanStrips.StripModel` : the linear model `(ℝ × A) × B` of a strip chart, blending and the
   detector map.
@@ -25,7 +26,6 @@ imports its pieces:
 This directory replaces the former facade module `Lib.Geometry.Manifold.Whitney.CleanStrips` (deleted; its module docstring is the text
 above, verbatim). Import the pieces directly:
 
-* `Lib.Geometry.Manifold.Whitney.CleanStrips.BeltIntersection`
 * `Lib.Geometry.Manifold.Whitney.CleanStrips.BigonBoundary`
 * `Lib.Geometry.Manifold.Whitney.CleanStrips.BigonStripCoordinates`
 * `Lib.Geometry.Manifold.Whitney.CleanStrips.CornerPatch`
