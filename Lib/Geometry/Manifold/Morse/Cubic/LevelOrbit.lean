@@ -8,7 +8,7 @@ module
 public import Mathlib
 public import Lib.Geometry.Manifold.RegularLevel
 public import Lib.Geometry.Manifold.WhitneyEmbedding
-public import Lib.Geometry.Manifold.Morse.Cubic.SublevelFlow
+public import Lib.Dynamics.Flow.Sublevel
 import all Mathlib.Geometry.Manifold.LocalDiffeomorph
 
 /-!

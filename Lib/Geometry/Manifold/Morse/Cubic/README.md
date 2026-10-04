@@ -7,6 +7,7 @@ h-cobordism theorem*, §5) together with the local flow lemmas it is used with.
 * `Cubic.SurgeryWindowsExistence` — existence of adapted surgery windows;
 * `Cubic.BasinBlock` — the Morse block of a gradient-like flow near a critical point;
 * `Cubic.SublevelFlow` — flows crossing a level set strictly downwards;
+  (moved: now `Lib.Dynamics.Flow.Sublevel`)
 * `Cubic.LevelOrbit` — orbits of a vector field crossing a level set;
 * `Cubic.Model` — the cubic family `x³/3 + t x + ∑ σᵢ yᵢ²` and its critical points;
 * `Cubic.EndpointChart` — Morse charts at the two critical points of the model;
@@ -42,6 +43,5 @@ above, verbatim). Import the pieces directly:
 * `Lib.Geometry.Manifold.Morse.Cubic.LocalReplacement`
 * `Lib.Geometry.Manifold.Morse.Cubic.Model`
 * `Lib.Geometry.Manifold.Morse.Cubic.SplitCoordinates`
-* `Lib.Geometry.Manifold.Morse.Cubic.SublevelFlow`
 * `Lib.Geometry.Manifold.Morse.Cubic.SurgeryWindowsExistence`
 * `Lib.Geometry.Manifold.Morse.Cubic.Tanh`

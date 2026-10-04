@@ -68,7 +68,7 @@ import Lib.Geometry.Manifold.Morse.Cubic.LevelOrbit
 import Lib.Geometry.Manifold.Morse.Cubic.LocalReplacement
 import Lib.Geometry.Manifold.Morse.Cubic.Model
 import Lib.Geometry.Manifold.Morse.Cubic.SplitCoordinates
-import Lib.Geometry.Manifold.Morse.Cubic.SublevelFlow
+import Lib.Dynamics.Flow.Sublevel
 import Lib.Geometry.Manifold.Morse.Cubic.SurgeryWindowsExistence
 import Lib.Geometry.Manifold.Morse.Cubic.Tanh
 import Lib.Geometry.Manifold.Morse.CubicFlow
