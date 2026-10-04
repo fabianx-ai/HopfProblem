@@ -43,7 +43,10 @@ import Lib.Geometry.Manifold.Morse.RearrangementTheorem
 import Lib.Geometry.Manifold.Morse.Birth
 import Lib.Geometry.Manifold.Morse.CellStructure
 import Lib.Geometry.Manifold.Morse.Reeb
-import Lib.Geometry.Manifold.Morse.OrderedCancellation
+import Lib.Geometry.Manifold.Morse.OrderedCancellation.BirthPreservation
+import Lib.Geometry.Manifold.Morse.OrderedCancellation.IndexCounts
+import Lib.Geometry.Manifold.Morse.OrderedCancellation.TwoSphereDegree
+import Lib.Geometry.Manifold.Morse.OrderedCancellation.ValueExchange
 
 /-!
 # Adapted windows of a Morse surgery system

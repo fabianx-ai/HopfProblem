@@ -280,7 +280,17 @@ import Lib.AlgebraicTopology.SingularHomology.OnePointCover
 import Lib.Geometry.Manifold.Morse.SurgeryHomology
 import Lib.Algebra.BigOperators.SignedCancellation
 import Lib.Geometry.Manifold.Morse.RadialFilling
-import Lib.Geometry.Manifold.Morse.OrderedCancellation
+import Lib.Geometry.Manifold.Morse.OrderedCancellation.BeltTube
+import Lib.Geometry.Manifold.Morse.OrderedCancellation.BirthPreservation
+import Lib.Geometry.Manifold.Morse.OrderedCancellation.CircleParametrization
+import Lib.Geometry.Manifold.Morse.OrderedCancellation.IndexCounts
+import Lib.Geometry.Manifold.Morse.OrderedCancellation.MinimalSystem
+import Lib.Geometry.Manifold.Morse.OrderedCancellation.Negation
+import Lib.Geometry.Manifold.Morse.OrderedCancellation.PairCancellation
+import Lib.Geometry.Manifold.Morse.OrderedCancellation.PathComponents
+import Lib.Geometry.Manifold.Morse.OrderedCancellation.PrescribedFlow
+import Lib.Geometry.Manifold.Morse.OrderedCancellation.TwoSphereDegree
+import Lib.Geometry.Manifold.Morse.OrderedCancellation.ValueExchange
 import Lib.Geometry.Manifold.Morse.AdaptedWindows
 import Lib.Geometry.Manifold.Morse.SurgeryCollapse
 
