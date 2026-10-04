@@ -110,7 +110,8 @@ import Lib.Geometry.Manifold.Morse.SurgeryHomology
 import Hopf.Proof.Geometry.Manifold.Morse.SurgeryHomology
 import Hopf.Proof.Geometry.Manifold.Morse.OrderedCancellation.MiddleIndexBlocks
 import Lib.Geometry.Manifold.Morse.AdaptedWindows
-import Lib.Geometry.Manifold.Morse.SurgeryCollapse
+import Lib.Geometry.Manifold.Morse.SurgeryCollapse.BeltTubeMeridian
+import Lib.Geometry.Manifold.Morse.SurgeryCollapse.LevelIsotopy
 import Hopf.Proof.Geometry.Manifold.Morse.SurgeryCollapse.BeltIntersections
 import Hopf.Proof.Geometry.Manifold.Morse.SurgeryCollapse.MiddlePresentation
 import Hopf.Proof.Geometry.Manifold.Morse.SurgeryCollapse.OuterIndexMinimal

@@ -301,7 +301,20 @@ import Lib.Geometry.Manifold.Morse.OrderedCancellation.PrescribedFlow
 import Lib.Geometry.Manifold.Morse.OrderedCancellation.TwoSphereDegree
 import Lib.Geometry.Manifold.Morse.OrderedCancellation.ValueExchange
 import Lib.Geometry.Manifold.Morse.AdaptedWindows
-import Lib.Geometry.Manifold.Morse.SurgeryCollapse
+import Lib.Geometry.Manifold.Morse.SurgeryCollapse.BeltTubeMeridian
+import Lib.Geometry.Manifold.Morse.SurgeryCollapse.CellExactSequence
+import Lib.Geometry.Manifold.Morse.SurgeryCollapse.DiskCollapse
+import Lib.Geometry.Manifold.Morse.SurgeryCollapse.DiskFilling
+import Lib.Geometry.Manifold.Morse.SurgeryCollapse.HandleCollapse
+import Lib.Geometry.Manifold.Morse.SurgeryCollapse.HandleExactSequence
+import Lib.Geometry.Manifold.Morse.SurgeryCollapse.IndexOrdering
+import Lib.Geometry.Manifold.Morse.SurgeryCollapse.LevelIsotopy
+import Lib.Geometry.Manifold.Morse.SurgeryCollapse.LevelTransport
+import Lib.Geometry.Manifold.Morse.SurgeryCollapse.LocalDegreeConnecting
+import Lib.Geometry.Manifold.Morse.SurgeryCollapse.MinimumReduction
+import Lib.Geometry.Manifold.Morse.SurgeryCollapse.OnePointCover
+import Lib.Geometry.Manifold.Morse.SurgeryCollapse.PuncturedBall
+import Lib.Geometry.Manifold.Morse.SurgeryCollapse.SphereOrientation
 
 import Lib.AlgebraicTopology.FundamentalGroup.HomotopyEquiv
 import Lib.AlgebraicTopology.FundamentalGroup.VanKampen.Pushout
