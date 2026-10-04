@@ -1,4 +1,4 @@
-# Next steps (after the four-tree split, integration 7c and the facade dissolution, 2026-10-04)
+# Next steps (after the four-tree split, integration 7c, the facade dissolution and the better homes, 2026-10-05)
 
 State: all 24 monoliths split behind facades (`Lib/reports/wave-1/MERGE.md`, `wave-2/MERGE.md`); both waves
 reviewed by Fable reviewers (`Lib/reviews/REVIEW-WAVES.md`: nothing unsound) and the findings fixed
@@ -35,7 +35,11 @@ worktree had two untracked `G07AngularOrigin_*Check.lean` files when 7c finished
 `CurveTransport.lean`, sweep their manuscript labels, add the comparison with Mathlib's `UpperHalfPlane`
 metric — now, or after the source branch stops appending to those files (recommended: after; replays stay
 clean cherry-picks);
-(4) facades done; next: the "better homes" of both MERGE receipts, then the `native*`/`Native*`/`MorseCancellation.*`/
+(4) facades done; better homes done (`Lib/reports/homes/RECEIPT.md`: 16 moves, 269 declarations relocated, names
+unchanged, envdiff 0/0/0; skipped with reasons: `formalMap_*`, `inducedChain_const`, `Negation` (import cycles),
+tube lemmas (no topology module yet), `Tanh` (Mathlib replacement), `LogarithmicCutoff` (no home); import-trimming
+of the moved modules is a later pass). **Rename wave held back** (2026-10-04): renames change identifiers `W4W1`
+uses and work against the rebase-with-import-edits goal; do it after the rebase or with an agreed rename map. Then the `native*`/`Native*`/`MorseCancellation.*`/
 `FlowConstruction` rename wave; the misnamed groups of REVIEW-WAVES §2 finding 6;
 (5) the owner decisions: chain-interface coefficients (new polymorphic `chains` beside the pinned one plus a
 `u = 0` comparison, an addition), the pre-PR chain tower;
