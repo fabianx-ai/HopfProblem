@@ -165,7 +165,7 @@ import Lib.Analysis.Complex.RiemannMapping.DiscBoundaryEscape
 import Lib.Analysis.Complex.RiemannMapping.DiscCompactification
 import Lib.Analysis.Complex.RiemannMapping.Existence
 import Lib.Analysis.Complex.RiemannMapping.HalfStripChart
-import Lib.Analysis.Complex.RiemannMapping.ModulusOneReflection
+import Lib.Analysis.Complex.ModulusOneReflection
 import Lib.Analysis.Complex.RiemannMapping.PrincipalRoot
 import Lib.Analysis.Complex.RiemannMapping.RectanglePrimitive
 import Lib.Analysis.Complex.RiemannMapping.Steps
