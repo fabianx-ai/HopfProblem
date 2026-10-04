@@ -6,7 +6,7 @@ Authors: Fabian Franz
 module
 
 public import Mathlib
-public import Lib.Geometry.Manifold.Morse.SurgeryWindows
+public import Lib.Geometry.Manifold.Morse.SurgeryWindows.SurgeryData
 /-!
 # Belt-sphere neighbourhood coordinates of a Morse chart
 

@@ -8,7 +8,7 @@ module
 public import Mathlib
 public import Lib.Geometry.Manifold.RegularLevel
 public import Lib.Geometry.Manifold.WhitneyEmbedding
-public import Lib.Geometry.Manifold.Morse.SurgeryWindows
+public import Lib.Geometry.Manifold.Morse.SurgeryWindows.Windows
 public import Lib.Geometry.Manifold.Morse.Cubic.AxisParameter
 public import Lib.Geometry.Manifold.Morse.Cubic.CoreBasins
 import all Mathlib.Geometry.Manifold.LocalDiffeomorph

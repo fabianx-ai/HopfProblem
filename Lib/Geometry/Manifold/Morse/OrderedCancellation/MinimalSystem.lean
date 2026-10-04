@@ -6,7 +6,6 @@ Authors: Fabian Franz
 import Mathlib
 import Lib.Geometry.Manifold.Morse.Existence.DistinctCriticalValues
 import Lib.Geometry.Manifold.Morse.Index
-import Lib.Geometry.Manifold.Morse.SurgeryWindows
 import Lib.Geometry.Manifold.Morse.OrderedCancellation.Negation
 
 /-!

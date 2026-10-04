@@ -14,7 +14,6 @@ import Lib.Geometry.Manifold.Morse.CircleGluing
 import Lib.Geometry.Manifold.Morse.Handle
 import Lib.Geometry.Manifold.Morse.HandleAttachment
 import Lib.Geometry.Manifold.Morse.SurgeryHomology
-import Lib.Geometry.Manifold.Morse.SurgeryWindows
 import Lib.Geometry.Manifold.RegularLevel
 import Lib.Geometry.Manifold.Transversality.Basic
 import Lib.Geometry.Manifold.Whitney.CleanStrips

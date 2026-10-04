@@ -6,7 +6,7 @@ Authors: Fabian Franz
 module
 
 public import Mathlib
-public import Lib.Geometry.Manifold.Morse.SurgeryWindows
+public import Lib.Geometry.Manifold.Morse.SurgeryWindows.Avoidance
 public import Lib.Geometry.Manifold.Immersion.Relative.ImmersionLocus
 public import Lib.Geometry.Manifold.Immersion.Relative.ChartPerturbation
 

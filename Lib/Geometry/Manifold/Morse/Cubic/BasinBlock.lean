@@ -9,7 +9,6 @@ public import Mathlib
 public import Lib.Geometry.Manifold.Morse.Existence.BeltCore
 public import Lib.Geometry.Manifold.RegularLevel
 public import Lib.Geometry.Manifold.WhitneyEmbedding
-public import Lib.Geometry.Manifold.Morse.SurgeryWindows
 import all Mathlib.Geometry.Manifold.LocalDiffeomorph
 
 /-!

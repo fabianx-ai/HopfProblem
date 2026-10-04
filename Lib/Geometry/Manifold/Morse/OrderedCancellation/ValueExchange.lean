@@ -7,7 +7,6 @@ import Mathlib
 import Lib.Combinatorics.IndexDisorder
 import Lib.Geometry.Manifold.Morse.CubicFlow
 import Lib.Geometry.Manifold.Morse.RearrangementTheorem
-import Lib.Geometry.Manifold.Morse.SurgeryWindows
 import Lib.Geometry.Manifold.Morse.OrderedCancellation.PrescribedFlow
 
 /-!

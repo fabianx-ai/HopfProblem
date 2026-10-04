@@ -6,7 +6,8 @@ Authors: Fabian Franz
 module
 
 public import Mathlib
-public import Lib.Geometry.Manifold.Morse.SurgeryWindows
+public import Lib.Geometry.Manifold.Morse.Existence.ChartPerturbation
+public import Lib.Geometry.Manifold.Morse.SurgeryWindows.HausdorffDimension
 public import Lib.Geometry.Manifold.Immersion.Relative.ImmersionLocus
 
 /-!

@@ -8,7 +8,6 @@ import Lib.Geometry.Manifold.Morse.CubicFlow
 import Lib.Geometry.Manifold.Morse.HandleAttachment
 import Lib.Geometry.Manifold.Morse.Index
 import Lib.Geometry.Manifold.Morse.SurgeryHomology
-import Lib.Geometry.Manifold.Morse.SurgeryWindows
 import Lib.Geometry.Manifold.RegularLevel
 import Lib.Geometry.Manifold.Morse.OrderedCancellation.IndexCounts
 import Lib.Geometry.Manifold.Morse.OrderedCancellation.Negation

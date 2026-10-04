@@ -7,7 +7,6 @@ import Mathlib
 import Lib.Geometry.Manifold.Morse.Handle
 import Lib.Geometry.Manifold.Morse.HandleAttachment
 import Lib.Geometry.Manifold.Morse.RearrangementTheorem
-import Lib.Geometry.Manifold.Morse.SurgeryWindows
 import Lib.Geometry.Manifold.WhitneyEmbedding
 
 /-!
