@@ -230,7 +230,6 @@ import Lib.Geometry.Manifold.Collar.HeightCollar
 import Lib.Geometry.Manifold.Collar.LevelTransport
 import Lib.Geometry.Manifold.Collar.RangeTransport
 import Lib.Geometry.Manifold.Collar.SmallPerturbation
-import Lib.Geometry.Manifold.Collar.SphereCoordinates
 import Lib.Geometry.Manifold.Collar.SupportedDiffeomorph
 import Lib.Geometry.Manifold.Collar.Tubular
 import Lib.Geometry.Manifold.Morse.SurgeryWindows.Avoidance
