@@ -122,7 +122,14 @@ import Lib.AlgebraicTopology.Hurewicz.PrismOperator.SubdivisionTriangleClass
 import Lib.AlgebraicTopology.Hurewicz.PrismOperator.TetrahedronRelation
 import Lib.AlgebraicTopology.Hurewicz.PrismOperator.TwoTriangles
 import Lib.AlgebraicTopology.Hurewicz.PrismOperator.VertexEdgeStraightening
-import Lib.AlgebraicTopology.Hurewicz.Subdivision
+import Lib.AlgebraicTopology.Hurewicz.Subdivision.ChamberChart
+import Lib.AlgebraicTopology.Hurewicz.Subdivision.CubeClass
+import Lib.AlgebraicTopology.Hurewicz.Subdivision.DuffyMap
+import Lib.AlgebraicTopology.Hurewicz.Subdivision.ExtendedChamber
+import Lib.AlgebraicTopology.Hurewicz.Subdivision.InsertPermutation
+import Lib.AlgebraicTopology.Hurewicz.Subdivision.SimplexQuotient
+import Lib.AlgebraicTopology.Hurewicz.Subdivision.Slicing
+import Lib.AlgebraicTopology.Hurewicz.Subdivision.SubdivisionClass
 import Lib.AlgebraicTopology.Hurewicz.CubeGluing
 import Lib.AlgebraicTopology.Hurewicz.Degree
 import Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition.Concatenation

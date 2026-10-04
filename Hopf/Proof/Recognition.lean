@@ -114,7 +114,6 @@ import Lib.AlgebraicTopology.SingularHomology.CrossProduct
 import Lib.AlgebraicTopology.Hurewicz.SimplexCube
 import Lib.AlgebraicTopology.Hurewicz.HomotopyExtension
 import Lib.AlgebraicTopology.Hurewicz.CubeTriangulation
-import Lib.AlgebraicTopology.Hurewicz.Subdivision
 import Lib.AlgebraicTopology.Hurewicz.CubeGluing
 import Lib.AlgebraicTopology.Hurewicz.Degree
 import Lib.AlgebraicTopology.Hurewicz.HopfDegree

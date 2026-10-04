@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Fabian Franz
 -/
 import Lib.AlgebraicTopology.Hurewicz.CubeTriangulation
-import Lib.AlgebraicTopology.Hurewicz.Subdivision
+import Lib.AlgebraicTopology.Hurewicz.PrismOperator.ComposeHomotopies
+import Lib.AlgebraicTopology.Hurewicz.PrismOperator.HurewiczInverse
+import Lib.AlgebraicTopology.Hurewicz.Subdivision.SubdivisionClass
 /-!
 # Coherent cubical gluing and the signed boundary relation
 
