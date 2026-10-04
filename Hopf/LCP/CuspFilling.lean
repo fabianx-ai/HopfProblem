@@ -128,7 +128,6 @@ import Lib.Topology.Homotopy.LocalCollapse
 import Lib.Topology.Covering.InvariantSubset
 import Lib.AlgebraicTopology.SingularHomology.CircleProduct
 import Lib.Topology.Covering.Quotient
-import Lib.AlgebraicTopology.SingularHomology.CrossProduct
 import Lib.AlgebraicTopology.SingularHomology.FirstHurewicz
 import Lib.AlgebraicTopology.SingularHomology.TorusCoordinates
 

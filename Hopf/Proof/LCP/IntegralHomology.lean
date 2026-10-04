@@ -151,7 +151,6 @@ import Lib.GroupTheory.SplitExtension
 import Lib.Topology.FiberBundle.TwoOpenTransition
 import S6.TwoExceptionalGluing
 import Lib.Topology.Covering.DiagonalQuotient
-import Lib.AlgebraicTopology.SingularHomology.CrossProduct
 import S6Shortcuts
 
 /-! Proof-specific part of `Hopf.LCP.IntegralHomology` (split by lean-agent-ide `split_module`); the stock part that is

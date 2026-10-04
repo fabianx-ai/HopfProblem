@@ -148,7 +148,6 @@ import Lib.GroupTheory.SplitExtension
 import Lib.Topology.FiberBundle.TwoOpenTransition
 import S6.TwoExceptionalGluing
 import Lib.Topology.Covering.DiagonalQuotient
-import Lib.AlgebraicTopology.SingularHomology.CrossProduct
 import S6Shortcuts
 
 set_option maxSynthPendingDepth 3

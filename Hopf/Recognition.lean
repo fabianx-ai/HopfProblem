@@ -112,7 +112,6 @@ import Lib.Geometry.Manifold.Morse.Index
 import Lib.Geometry.Manifold.Morse.RearrangementTheorem
 import Lib.Geometry.Manifold.Morse.Birth
 import Lib.AlgebraicTopology.SingularHomology.CrossInsert
-import Lib.AlgebraicTopology.SingularHomology.CrossProduct
 import Lib.AlgebraicTopology.Hurewicz.SimplexCube
 import Lib.AlgebraicTopology.Hurewicz.HomotopyExtension
 import Lib.AlgebraicTopology.Hurewicz.CubeTriangulation

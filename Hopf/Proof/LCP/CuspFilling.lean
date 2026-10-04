@@ -129,7 +129,6 @@ import Lib.Topology.Homotopy.LocalCollapse
 import Lib.Topology.Covering.InvariantSubset
 import Lib.AlgebraicTopology.SingularHomology.CircleProduct
 import Lib.Topology.Covering.Quotient
-import Lib.AlgebraicTopology.SingularHomology.CrossProduct
 
 /-! Proof-specific part of `Hopf.LCP.CuspFilling` (split by lean-agent-ide `split_module`); the stock part that is
 still to be moved into `Lib/` stays in `Hopf/LCP/CuspFilling.lean`. Declarations, names and namespaces are unchanged. -/

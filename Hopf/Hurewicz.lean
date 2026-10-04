@@ -63,7 +63,6 @@ Original source lines 81183--104759; see PROVENANCE.md.
 
 import Hopf.LibShims
 import Lib.AlgebraicTopology.SingularHomology.CrossInsert
-import Lib.AlgebraicTopology.SingularHomology.CrossProduct
 import Lib.AlgebraicTopology.Hurewicz.SimplexCube
 import Lib.AlgebraicTopology.Hurewicz.HomotopyExtension
 import Lib.AlgebraicTopology.Hurewicz.CubeTriangulation

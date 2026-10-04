@@ -1,20 +1,3 @@
-/-
-Copyright (c) 2026 Fabian Franz. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-Authors: Fabian Franz
--/
-module
-public import Lib.AlgebraicTopology.SingularHomology.CrossProduct.Multilinear
-public import Lib.AlgebraicTopology.SingularHomology.CrossProduct.Formal
-public import Lib.AlgebraicTopology.SingularHomology.CrossProduct.Affine
-public import Lib.AlgebraicTopology.SingularHomology.CrossProduct.Chain
-public import Lib.AlgebraicTopology.SingularHomology.CrossProduct.HomologyDescent
-public import Lib.AlgebraicTopology.SingularHomology.CrossProduct.Homology
-public import Lib.AlgebraicTopology.SingularHomology.CrossProduct.Swap
-public import Lib.AlgebraicTopology.SingularHomology.CrossProduct.Associator
-public import Lib.AlgebraicTopology.SingularHomology.CrossProduct.Naturality
-
-/-!
 # The singular cross product
 
 For topological spaces `X` and `Y` (in `Type`), the cross product of singular chains over `ℤ` and
@@ -54,4 +37,18 @@ This module only imports the pieces of the construction:
 ## Tags
 
 singular homology, cross product, Künneth
--/
+
+## Modules
+
+This directory replaces the former facade module `Lib.AlgebraicTopology.SingularHomology.CrossProduct` (deleted; its module docstring is the text
+above, verbatim). Import the pieces directly:
+
+* `Lib.AlgebraicTopology.SingularHomology.CrossProduct.Affine`
+* `Lib.AlgebraicTopology.SingularHomology.CrossProduct.Associator`
+* `Lib.AlgebraicTopology.SingularHomology.CrossProduct.Chain`
+* `Lib.AlgebraicTopology.SingularHomology.CrossProduct.Formal`
+* `Lib.AlgebraicTopology.SingularHomology.CrossProduct.Homology`
+* `Lib.AlgebraicTopology.SingularHomology.CrossProduct.HomologyDescent`
+* `Lib.AlgebraicTopology.SingularHomology.CrossProduct.Multilinear`
+* `Lib.AlgebraicTopology.SingularHomology.CrossProduct.Naturality`
+* `Lib.AlgebraicTopology.SingularHomology.CrossProduct.Swap`

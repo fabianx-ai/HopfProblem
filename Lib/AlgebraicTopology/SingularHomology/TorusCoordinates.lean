@@ -8,7 +8,6 @@ import Lib.AlgebraicTopology.SingularHomology.Chains
 import Lib.AlgebraicTopology.SingularHomology.MayerVietoris
 import Lib.AlgebraicTopology.SingularHomology.HomotopyInvariance
 import Lib.AlgebraicTopology.SingularHomology.CircleProduct
-import Lib.AlgebraicTopology.SingularHomology.CrossProduct
 import Lib.AlgebraicTopology.SingularHomology.Torus
 import Lib.AlgebraicTopology.SingularHomology.PathClass
 import Lib.AlgebraicTopology.SingularHomology.CirclePaths

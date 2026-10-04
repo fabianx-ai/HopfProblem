@@ -4,7 +4,6 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Fabian Franz
 -/
 import Lib.AlgebraicTopology.Hurewicz.SimplexCube
-import Lib.AlgebraicTopology.SingularHomology.CrossProduct
 /-!
 # Homotopy extension for simplices
 
