@@ -7,7 +7,7 @@ module
 
 public import Mathlib
 public import Lib.AlgebraicTopology.SingularHomology.Chains
-public import Lib.AlgebraicTopology.SingularHomology.MayerVietoris
+public import Lib.AlgebraicTopology.SingularHomology.MayerVietoris.Sequence
 public import Lib.AlgebraicTopology.SingularHomology.HomotopyInvariance
 public import Lib.Topology.Homotopy.Suspension
 public import Lib.AlgebraicTopology.SingularHomology.Sphere

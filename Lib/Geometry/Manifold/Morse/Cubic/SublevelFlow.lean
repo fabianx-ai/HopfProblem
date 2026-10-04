@@ -6,7 +6,7 @@ Authors: Fabian Franz
 module
 
 public import Mathlib
-public import Lib.Geometry.Manifold.Flow.HeightTranslating
+public import Lib.Geometry.Manifold.Flow.HeightTranslating.EntryTime
 
 /-!
 # Flows that cross a level set strictly downwards

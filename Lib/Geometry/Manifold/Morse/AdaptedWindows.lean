@@ -5,27 +5,18 @@ Authors: Fabian Franz
 -/
 import Mathlib
 import Lib.Geometry.Manifold.Morse.Handle
-import Lib.Analysis.Calculus.MorseLemma
 import Lib.Geometry.Manifold.Flow.Compact
 import Lib.Geometry.Manifold.RegularLevel
 import Lib.Geometry.Manifold.Morse.HandleAttachment
-import Lib.Geometry.Manifold.Flow.HeightTranslating
-import Lib.Geometry.Manifold.Morse.Existence
 import Lib.Analysis.ODE.SmoothFlow
 import Lib.Geometry.Manifold.WhitneyEmbedding
 import Lib.Geometry.Manifold.VectorBundle.ProjectionBundle
-import Lib.Geometry.Manifold.Collar
-import Lib.Geometry.Manifold.Morse.SurgeryWindows
-import Lib.Geometry.Manifold.Morse.Cancellation
 import Lib.Geometry.Manifold.Transversality.Basic
-import Lib.Geometry.Manifold.Immersion.Relative
-import Lib.Geometry.Manifold.Morse.Rearrangement
-import Lib.Geometry.Manifold.Morse.Connection
+import Lib.Geometry.Manifold.Morse.Connection.LevelHolonomy
 import Lib.Topology.Homotopy.HandleRetraction
 import Lib.Algebra.Homology.MayerVietorisShortExact
 import Lib.AlgebraicTopology.SingularHomology.Chains
 import Lib.AlgebraicTopology.SingularHomology.ModuleHomology
-import Lib.AlgebraicTopology.SingularHomology.MayerVietoris
 import Lib.AlgebraicTopology.SingularHomology.HomotopyInvariance
 import Lib.AlgebraicTopology.SingularHomology.LocalDegree
 import Lib.Topology.Homotopy.LoopSubdivision
@@ -50,7 +41,10 @@ import Lib.Geometry.Manifold.Morse.RearrangementTheorem
 import Lib.Geometry.Manifold.Morse.Birth
 import Lib.Geometry.Manifold.Morse.CellStructure
 import Lib.Geometry.Manifold.Morse.Reeb
-import Lib.Geometry.Manifold.Morse.OrderedCancellation
+import Lib.Geometry.Manifold.Morse.OrderedCancellation.BirthPreservation
+import Lib.Geometry.Manifold.Morse.OrderedCancellation.IndexCounts
+import Lib.Geometry.Manifold.Morse.OrderedCancellation.TwoSphereDegree
+import Lib.Geometry.Manifold.Morse.OrderedCancellation.ValueExchange
 
 /-!
 # Adapted windows of a Morse surgery system

@@ -1,19 +1,3 @@
-/-
-Copyright (c) 2026 Fabian Franz. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-Authors: Fabian Franz
--/
-import Lib.Analysis.Complex.RiemannMapping.Existence
-import Lib.Analysis.Complex.RiemannMapping.DiscBoundaryEscape
-import Lib.Analysis.Complex.RiemannMapping.HalfStripChart
-import Lib.Analysis.Complex.RiemannMapping.RectanglePrimitive
-import Lib.Analysis.Complex.RiemannMapping.ModulusOneReflection
-import Lib.Analysis.Complex.RiemannMapping.BoundaryDerivative
-import Lib.Analysis.Complex.RiemannMapping.ConformalExtension
-import Lib.Analysis.Complex.RiemannMapping.PrincipalRoot
-import Lib.Analysis.Complex.RiemannMapping.DiscCompactification
-
-/-!
 # The Riemann mapping theorem and boundary behaviour of conformal maps (facade)
 
 This module only imports its pieces:
@@ -39,4 +23,19 @@ This module only imports its pieces:
 
 The triangle normalization and the exponent-specific sector roots used by the project live in
 `Hopf/Proof/Analysis/Complex/RiemannMapping/`.
--/
+
+## Modules
+
+This directory replaces the former facade module `Lib.Analysis.Complex.RiemannMapping` (deleted; its module docstring is the text
+above, verbatim). Import the pieces directly:
+
+* `Lib.Analysis.Complex.RiemannMapping.BoundaryDerivative`
+* `Lib.Analysis.Complex.RiemannMapping.ConformalExtension`
+* `Lib.Analysis.Complex.RiemannMapping.DiscBoundaryEscape`
+* `Lib.Analysis.Complex.RiemannMapping.DiscCompactification`
+* `Lib.Analysis.Complex.RiemannMapping.Existence`
+* `Lib.Analysis.Complex.RiemannMapping.HalfStripChart`
+* `Lib.Analysis.Complex.RiemannMapping.ModulusOneReflection`
+* `Lib.Analysis.Complex.RiemannMapping.PrincipalRoot`
+* `Lib.Analysis.Complex.RiemannMapping.RectanglePrimitive`
+* `Lib.Analysis.Complex.RiemannMapping.Steps`

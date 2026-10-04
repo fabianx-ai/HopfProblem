@@ -5,10 +5,9 @@ Authors: Fabian Franz
 -/
 import Mathlib
 import Lib.AlgebraicTopology.SingularHomology.HomotopyInvariance
-import Lib.AlgebraicTopology.SingularHomology.MayerVietoris
 import Lib.AlgebraicTopology.SingularHomology.Sphere
 import Lib.AlgebraicTopology.SingularHomology.SphereHomology
-import Lib.Geometry.Manifold.Morse.SurgeryWindows
+import Lib.Geometry.Manifold.Morse.SurgeryWindows.Hemisphere
 
 /-!
 # Self-maps of the two-sphere with bijective `H₂` act by a unit

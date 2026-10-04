@@ -4,7 +4,8 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Fabian Franz
 -/
 import Lib.AlgebraicTopology.Hurewicz.CubeTriangulation
-import Lib.AlgebraicTopology.Hurewicz.PrismOperator
+import Lib.AlgebraicTopology.Hurewicz.PrismOperator.HurewiczInverse
+import Lib.AlgebraicTopology.Hurewicz.PrismOperator.MapGenLoop
 
 /-!
 # The prism realization of a based cube

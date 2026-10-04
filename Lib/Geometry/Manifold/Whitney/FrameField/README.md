@@ -1,23 +1,3 @@
-/-
-Copyright (c) 2026 Fabian Franz. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-Authors: Fabian Franz
--/
-
-import Lib.Geometry.Manifold.Whitney.FrameField.BlockDeterminant
-import Lib.Geometry.Manifold.Whitney.FrameField.Complement
-import Lib.Geometry.Manifold.Whitney.FrameField.FrameExtension
-import Lib.Geometry.Manifold.Whitney.FrameField.PlanarFrame
-import Lib.Geometry.Manifold.Whitney.FrameField.InvertibleJoin
-import Lib.Geometry.Manifold.Whitney.FrameField.IntersectionCoordinates
-import Lib.Geometry.Manifold.Whitney.FrameField.BoundaryArcs
-import Lib.Geometry.Manifold.Whitney.FrameField.BoundaryField
-import Lib.Geometry.Manifold.Whitney.FrameField.RankThreeFrame
-import Lib.Geometry.Manifold.Whitney.FrameField.SheetNormal
-import Lib.Geometry.Manifold.Whitney.FrameField.RankThreeCorners
-import Lib.Geometry.Manifold.Whitney.FrameField.SheetCoordinates
-
-/-!
 # Frame fields along tubular bigons
 
 The Whitney trick needs a field of frames over the Whitney disc restricting on the two boundary
@@ -57,4 +37,21 @@ have opposite signs. This module re-exports the pieces:
 ## Tags
 
 Morse theory, Whitney trick, handle cancellation
--/
+
+## Modules
+
+This directory replaces the former facade module `Lib.Geometry.Manifold.Whitney.FrameField` (deleted; its module docstring is the text
+above, verbatim). Import the pieces directly:
+
+* `Lib.Geometry.Manifold.Whitney.FrameField.BlockDeterminant`
+* `Lib.Geometry.Manifold.Whitney.FrameField.BoundaryArcs`
+* `Lib.Geometry.Manifold.Whitney.FrameField.BoundaryField`
+* `Lib.Geometry.Manifold.Whitney.FrameField.Complement`
+* `Lib.Geometry.Manifold.Whitney.FrameField.FrameExtension`
+* `Lib.Geometry.Manifold.Whitney.FrameField.IntersectionCoordinates`
+* `Lib.Geometry.Manifold.Whitney.FrameField.InvertibleJoin`
+* `Lib.Geometry.Manifold.Whitney.FrameField.PlanarFrame`
+* `Lib.Geometry.Manifold.Whitney.FrameField.RankThreeCorners`
+* `Lib.Geometry.Manifold.Whitney.FrameField.RankThreeFrame`
+* `Lib.Geometry.Manifold.Whitney.FrameField.SheetCoordinates`
+* `Lib.Geometry.Manifold.Whitney.FrameField.SheetNormal`

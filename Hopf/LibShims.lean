@@ -12,7 +12,6 @@ with the shims' consumers once the renames are absorbed.
 import Lib.Algebra.Homology.MayerVietorisShortExact
 import Lib.AlgebraicTopology.SingularHomology.ModuleHomology
 import Lib.AlgebraicTopology.SingularHomology.Chains
-import Lib.AlgebraicTopology.SingularHomology.MayerVietoris
 import Lib.AlgebraicTopology.SingularHomology.HomotopyInvariance
 import Lib.AlgebraicTopology.Hurewicz.HopfDegree
 import Lib.Topology.Homotopy.Suspension

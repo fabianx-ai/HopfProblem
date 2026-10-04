@@ -6,7 +6,7 @@ Authors: Fabian Franz
 module
 
 public import Mathlib
-public import Lib.Analysis.Calculus.MorseLemma
+public import Lib.Analysis.Calculus.MorseLemma.CriticalPoints
 
 /-!
 # Openness of the regular locus of a smooth family

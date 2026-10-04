@@ -65,20 +65,13 @@ import Hopf.LibShims
 import Hopf.SingularHomology
 import Hopf.Proof.DifferentialTopology
 import Lib.Geometry.Manifold.Morse.Handle
-import Lib.Analysis.Calculus.MorseLemma
 import Lib.Geometry.Manifold.Flow.Compact
 import Lib.Geometry.Manifold.RegularLevel
 import Lib.Geometry.Manifold.Morse.HandleAttachment
-import Lib.Geometry.Manifold.Flow.HeightTranslating
-import Lib.Geometry.Manifold.Morse.Existence
 import Lib.Analysis.ODE.SmoothFlow
 import Lib.Geometry.Manifold.WhitneyEmbedding
 import Lib.Geometry.Manifold.VectorBundle.ProjectionBundle
-import Lib.Geometry.Manifold.Collar
-import Lib.Geometry.Manifold.Morse.SurgeryWindows
 import Lib.Geometry.Manifold.Transversality.Basic
-import Lib.Geometry.Manifold.Immersion.Relative
-import Lib.Geometry.Manifold.Morse.Rearrangement
 import Mathlib
 import Lib.AlgebraicTopology.SingularHomology.Sphere
 import Lib.Topology.Homotopy.CellAttachment
@@ -86,7 +79,6 @@ import Lib.Topology.Homotopy.HandleRetraction
 import Lib.Algebra.Homology.MayerVietorisShortExact
 import Lib.AlgebraicTopology.SingularHomology.Chains
 import Lib.AlgebraicTopology.SingularHomology.ModuleHomology
-import Lib.AlgebraicTopology.SingularHomology.MayerVietoris
 import Lib.AlgebraicTopology.SingularHomology.HomotopyInvariance
 import Lib.AlgebraicTopology.SingularHomology.LocalDegree
 import Lib.AlgebraicTopology.SingularHomology.LinearSphereAction
@@ -94,8 +86,6 @@ import Lib.Topology.Homotopy.LoopSubdivision
 import Lib.AlgebraicTopology.FundamentalGroupoid.SimplyConnectedSphere
 import Lib.Geometry.Manifold.Whitney.BigonModel
 import Hopf.Proof.Geometry.Manifold.Morse.MinimalSystem
-import Lib.Geometry.Manifold.Morse.Cancellation
-import Lib.Geometry.Manifold.Morse.Connection
 
 /-! Proof-specific part of `Hopf.SingularHomology` (split by lean-agent-ide `split_module`); the stock part that is
 still to be moved into `Lib/` stays in `Hopf/SingularHomology.lean`. Declarations, names and namespaces are unchanged. -/

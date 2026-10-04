@@ -5,7 +5,7 @@ Authors: Fabian Franz
 -/
 
 import Mathlib
-import Lib.Geometry.Manifold.Collar
+import Lib.Geometry.Manifold.Collar.SmallPerturbation
 
 /-!
 # Small weighted translations and finite composites

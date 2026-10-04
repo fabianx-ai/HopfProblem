@@ -3,7 +3,7 @@ Copyright (c) 2026 Fabian Franz. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Fabian Franz
 -/
-import Lib.AlgebraicTopology.Hurewicz.PrismOperator
+import Lib.AlgebraicTopology.Hurewicz.PrismOperator.SquareRotation
 
 /-!
 # The homotopy class of a based cube and its reparametrisations

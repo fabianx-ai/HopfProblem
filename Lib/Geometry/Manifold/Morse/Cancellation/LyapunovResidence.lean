@@ -4,8 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Fabian Franz
 -/
 import Mathlib
-import Lib.Geometry.Manifold.Morse.Rearrangement
-import Lib.Geometry.Manifold.Morse.Connection
+import Lib.Geometry.Manifold.Morse.Connection.NoReturn
 
 /-!
 # Lyapunov residence bounds and uniform band crossings

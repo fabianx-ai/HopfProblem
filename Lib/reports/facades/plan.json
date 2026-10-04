@@ -1,0 +1,4981 @@
+{
+ "Hopf.DifferentialTopology": {
+  "old": [
+   [
+    "Lib.Analysis.Calculus.MorseLemma",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Flow.HeightTranslating",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Existence",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Collar",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.SurgeryWindows",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Cancellation",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Immersion.Relative",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Rearrangement",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Connection",
+    false
+   ]
+  ],
+  "new": []
+ },
+ "Hopf.Hurewicz": {
+  "old": [
+   [
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct",
+    false
+   ],
+   [
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator",
+    false
+   ],
+   [
+    "Lib.AlgebraicTopology.Hurewicz.Subdivision",
+    false
+   ],
+   [
+    "Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition",
+    false
+   ],
+   [
+    "Lib.Analysis.Calculus.MorseLemma",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Flow.HeightTranslating",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Existence",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Collar",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.SurgeryWindows",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Cancellation",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Immersion.Relative",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Rearrangement",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Connection",
+    false
+   ],
+   [
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris",
+    false
+   ]
+  ],
+  "new": []
+ },
+ "Hopf.LCP.BoundaryTopology": {
+  "old": [
+   [
+    "Lib.Analysis.Calculus.MorseLemma",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Flow.HeightTranslating",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Existence",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Collar",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.SurgeryWindows",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Cancellation",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Immersion.Relative",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Rearrangement",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Connection",
+    false
+   ],
+   [
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris",
+    false
+   ],
+   [
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct",
+    false
+   ],
+   [
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator",
+    false
+   ],
+   [
+    "Lib.AlgebraicTopology.Hurewicz.Subdivision",
+    false
+   ],
+   [
+    "Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition",
+    false
+   ],
+   [
+    "Lib.Analysis.Complex.RiemannMapping",
+    false
+   ]
+  ],
+  "new": []
+ },
+ "Hopf.LCP.CuspFilling": {
+  "old": [
+   [
+    "Lib.Analysis.Calculus.MorseLemma",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Flow.HeightTranslating",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Existence",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Collar",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.SurgeryWindows",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Cancellation",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Immersion.Relative",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Rearrangement",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Connection",
+    false
+   ],
+   [
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris",
+    false
+   ],
+   [
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator",
+    false
+   ],
+   [
+    "Lib.AlgebraicTopology.Hurewicz.Subdivision",
+    false
+   ],
+   [
+    "Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition",
+    false
+   ],
+   [
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct",
+    false
+   ]
+  ],
+  "new": []
+ },
+ "Hopf.LCP.IntegralHomology": {
+  "old": [
+   [
+    "Lib.Analysis.Calculus.MorseLemma",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Flow.HeightTranslating",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Existence",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Collar",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.SurgeryWindows",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Cancellation",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Immersion.Relative",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Rearrangement",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Connection",
+    false
+   ],
+   [
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris",
+    false
+   ],
+   [
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator",
+    false
+   ],
+   [
+    "Lib.AlgebraicTopology.Hurewicz.Subdivision",
+    false
+   ],
+   [
+    "Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition",
+    false
+   ],
+   [
+    "Lib.Analysis.Complex.RiemannMapping",
+    false
+   ],
+   [
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct",
+    false
+   ]
+  ],
+  "new": []
+ },
+ "Hopf.LCP.PeriodConstruction": {
+  "old": [
+   [
+    "Lib.Analysis.Calculus.MorseLemma",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Flow.HeightTranslating",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Existence",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Collar",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.SurgeryWindows",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Cancellation",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Immersion.Relative",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Rearrangement",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Connection",
+    false
+   ],
+   [
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris",
+    false
+   ],
+   [
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct",
+    false
+   ],
+   [
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator",
+    false
+   ],
+   [
+    "Lib.AlgebraicTopology.Hurewicz.Subdivision",
+    false
+   ],
+   [
+    "Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition",
+    false
+   ]
+  ],
+  "new": []
+ },
+ "Hopf.LCP.Specialization": {
+  "old": [
+   [
+    "Lib.Analysis.Calculus.MorseLemma",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Flow.HeightTranslating",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Existence",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Collar",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.SurgeryWindows",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Cancellation",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Immersion.Relative",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Rearrangement",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Connection",
+    false
+   ],
+   [
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris",
+    false
+   ],
+   [
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct",
+    false
+   ],
+   [
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator",
+    false
+   ],
+   [
+    "Lib.AlgebraicTopology.Hurewicz.Subdivision",
+    false
+   ],
+   [
+    "Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition",
+    false
+   ]
+  ],
+  "new": []
+ },
+ "Hopf.LibShims": {
+  "old": [
+   [
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris",
+    false
+   ]
+  ],
+  "new": []
+ },
+ "Hopf.Proof.AlgebraicTopology.Hurewicz.DegreeSix": {
+  "old": [
+   [
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris",
+    false
+   ],
+   [
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator",
+    false
+   ],
+   [
+    "Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition",
+    false
+   ]
+  ],
+  "new": []
+ },
+ "Hopf.Proof.DifferentialTopology": {
+  "old": [
+   [
+    "Lib.Analysis.Calculus.MorseLemma",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Flow.HeightTranslating",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Existence",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Collar",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.SurgeryWindows",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Cancellation",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Immersion.Relative",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Rearrangement",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Connection",
+    false
+   ]
+  ],
+  "new": []
+ },
+ "Hopf.Proof.Final": {
+  "old": [
+   [
+    "Lib.Analysis.Calculus.MorseLemma",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Flow.HeightTranslating",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Existence",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Collar",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.SurgeryWindows",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Cancellation",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Immersion.Relative",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Rearrangement",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Connection",
+    false
+   ],
+   [
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris",
+    false
+   ],
+   [
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct",
+    false
+   ],
+   [
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator",
+    false
+   ],
+   [
+    "Lib.AlgebraicTopology.Hurewicz.Subdivision",
+    false
+   ],
+   [
+    "Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition",
+    false
+   ],
+   [
+    "Lib.Analysis.Complex.RiemannMapping",
+    false
+   ]
+  ],
+  "new": []
+ },
+ "Hopf.Proof.FiniteCore": {
+  "old": [
+   [
+    "Lib.Analysis.Calculus.MorseLemma",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Flow.HeightTranslating",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Existence",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Collar",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.SurgeryWindows",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Cancellation",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Immersion.Relative",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Rearrangement",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Connection",
+    false
+   ],
+   [
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris",
+    false
+   ],
+   [
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct",
+    false
+   ],
+   [
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator",
+    false
+   ],
+   [
+    "Lib.AlgebraicTopology.Hurewicz.Subdivision",
+    false
+   ],
+   [
+    "Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition",
+    false
+   ]
+  ],
+  "new": []
+ },
+ "Hopf.Proof.Geometry.Manifold.Morse.BeltCancellation": {
+  "old": [
+   [
+    "Lib.Geometry.Manifold.Whitney.RankThreeModel",
+    false
+   ]
+  ],
+  "new": [
+   [
+    "Lib.Geometry.Manifold.Morse.Cancellation.LevelIsotopy",
+    true,
+    "reexport:Hopf.Proof.Geometry.Manifold.Morse.MiddleBlocks"
+   ]
+  ]
+ },
+ "Hopf.Proof.Geometry.Manifold.Morse.CutTransport": {
+  "old": [
+   [
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris",
+    false
+   ],
+   [
+    "Lib.Analysis.Calculus.MorseLemma",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Flow.HeightTranslating",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Immersion.Relative",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.SurgeryWindows",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Cancellation",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Rearrangement",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Connection",
+    false
+   ]
+  ],
+  "new": [
+   [
+    "Lib.Geometry.Manifold.Morse.Cancellation.CriticalGerms",
+    true,
+    "use"
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Connection.TimeChange",
+    true,
+    "use"
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Rearrangement.LevelTime",
+    true,
+    "use"
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Rearrangement.TubeMotion",
+    true,
+    "use"
+   ]
+  ]
+ },
+ "Hopf.Proof.Geometry.Manifold.Morse.OrderedCancellation.MiddleIndexBlocks": {
+  "old": [
+   [
+    "Lib.Analysis.Calculus.MorseLemma",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Flow.HeightTranslating",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Cancellation",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.SurgeryWindows",
+    false
+   ]
+  ],
+  "new": []
+ },
+ "Hopf.Proof.Geometry.Manifold.Morse.Rearrangement.MiddleLevel": {
+  "old": [
+   [
+    "Lib.Geometry.Manifold.Morse.Rearrangement",
+    true
+   ]
+  ],
+  "new": [
+   [
+    "Lib.Geometry.Manifold.Morse.Rearrangement.LevelConnectedness",
+    true,
+    "use"
+   ]
+  ]
+ },
+ "Hopf.Proof.Geometry.Manifold.Morse.Rearrangement.SheetArc": {
+  "old": [
+   [
+    "Lib.Geometry.Manifold.Morse.Rearrangement",
+    true
+   ]
+  ],
+  "new": [
+   [
+    "Lib.Geometry.Manifold.Immersion.Relative.AxisChart",
+    true,
+    "use"
+   ],
+   [
+    "Lib.Geometry.Manifold.Immersion.Relative.TwoSheetArc",
+    true,
+    "use"
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Rearrangement.TransverseChart",
+    true,
+    "use"
+   ]
+  ]
+ },
+ "Hopf.Proof.Geometry.Manifold.Morse.SurgeryCollapse.BeltIntersections": {
+  "old": [
+   [
+    "Lib.Analysis.Calculus.MorseLemma",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Flow.HeightTranslating",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Cancellation",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Existence",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.SurgeryWindows",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Whitney.CleanStrips",
+    false
+   ]
+  ],
+  "new": []
+ },
+ "Hopf.Proof.Geometry.Manifold.Morse.SurgeryCollapse.MiddleFamilies": {
+  "old": [
+   [
+    "Lib.Analysis.Calculus.MorseLemma",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Flow.HeightTranslating",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.SurgeryWindows",
+    false
+   ]
+  ],
+  "new": []
+ },
+ "Hopf.Proof.Geometry.Manifold.Morse.SurgeryCollapse.MiddlePresentation": {
+  "old": [
+   [
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris",
+    false
+   ],
+   [
+    "Lib.Analysis.Calculus.MorseLemma",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.SurgeryWindows",
+    false
+   ]
+  ],
+  "new": []
+ },
+ "Hopf.Proof.Geometry.Manifold.Morse.SurgeryCollapse.OuterIndexMinimal": {
+  "old": [
+   [
+    "Lib.Analysis.Calculus.MorseLemma",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Cancellation",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Cubic",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.SurgeryWindows",
+    false
+   ]
+  ],
+  "new": []
+ },
+ "Hopf.Proof.Geometry.Manifold.Morse.SurgeryHomology": {
+  "old": [
+   [
+    "Lib.Analysis.Calculus.MorseLemma",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Flow.HeightTranslating",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Existence",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Collar",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.SurgeryWindows",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Cancellation",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Immersion.Relative",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Rearrangement",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Connection",
+    false
+   ],
+   [
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris",
+    false
+   ]
+  ],
+  "new": []
+ },
+ "Hopf.Proof.Hurewicz": {
+  "old": [
+   [
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct",
+    false
+   ],
+   [
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator",
+    false
+   ],
+   [
+    "Lib.AlgebraicTopology.Hurewicz.Subdivision",
+    false
+   ],
+   [
+    "Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition",
+    false
+   ],
+   [
+    "Lib.Analysis.Calculus.MorseLemma",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Flow.HeightTranslating",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Existence",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Collar",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.SurgeryWindows",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Cancellation",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Immersion.Relative",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Rearrangement",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Connection",
+    false
+   ],
+   [
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris",
+    false
+   ]
+  ],
+  "new": []
+ },
+ "Hopf.Proof.LCP.AnalyticFillings": {
+  "old": [
+   [
+    "Lib.Analysis.Calculus.MorseLemma",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Flow.HeightTranslating",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Existence",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Collar",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.SurgeryWindows",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Cancellation",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Immersion.Relative",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Rearrangement",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Connection",
+    false
+   ],
+   [
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris",
+    false
+   ],
+   [
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct",
+    false
+   ],
+   [
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator",
+    false
+   ],
+   [
+    "Lib.AlgebraicTopology.Hurewicz.Subdivision",
+    false
+   ],
+   [
+    "Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition",
+    false
+   ],
+   [
+    "Lib.Analysis.Complex.RiemannMapping",
+    false
+   ]
+  ],
+  "new": [
+   [
+    "Lib.Analysis.Complex.RiemannMapping.ConformalExtension",
+    true,
+    "use"
+   ],
+   [
+    "Lib.Analysis.Complex.RiemannMapping.DiscCompactification",
+    true,
+    "use"
+   ],
+   [
+    "Lib.Analysis.Complex.RiemannMapping.Existence",
+    true,
+    "use"
+   ]
+  ]
+ },
+ "Hopf.Proof.LCP.BoundaryTopology": {
+  "old": [
+   [
+    "Lib.Analysis.Calculus.MorseLemma",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Flow.HeightTranslating",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Existence",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Collar",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.SurgeryWindows",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Cancellation",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Immersion.Relative",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Rearrangement",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Connection",
+    false
+   ],
+   [
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris",
+    false
+   ],
+   [
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct",
+    false
+   ],
+   [
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator",
+    false
+   ],
+   [
+    "Lib.AlgebraicTopology.Hurewicz.Subdivision",
+    false
+   ],
+   [
+    "Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition",
+    false
+   ],
+   [
+    "Lib.Analysis.Complex.RiemannMapping",
+    false
+   ]
+  ],
+  "new": []
+ },
+ "Hopf.Proof.LCP.CuspFilling": {
+  "old": [
+   [
+    "Lib.Analysis.Calculus.MorseLemma",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Flow.HeightTranslating",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Existence",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Collar",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.SurgeryWindows",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Cancellation",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Immersion.Relative",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Rearrangement",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Connection",
+    false
+   ],
+   [
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris",
+    false
+   ],
+   [
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator",
+    false
+   ],
+   [
+    "Lib.AlgebraicTopology.Hurewicz.Subdivision",
+    false
+   ],
+   [
+    "Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition",
+    false
+   ],
+   [
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct",
+    false
+   ]
+  ],
+  "new": []
+ },
+ "Hopf.Proof.LCP.GlobalAssembly": {
+  "old": [
+   [
+    "Lib.Analysis.Calculus.MorseLemma",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Flow.HeightTranslating",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Existence",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Collar",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.SurgeryWindows",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Cancellation",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Immersion.Relative",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Rearrangement",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Connection",
+    false
+   ],
+   [
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris",
+    false
+   ],
+   [
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct",
+    false
+   ],
+   [
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator",
+    false
+   ],
+   [
+    "Lib.AlgebraicTopology.Hurewicz.Subdivision",
+    false
+   ],
+   [
+    "Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition",
+    false
+   ],
+   [
+    "Lib.Analysis.Complex.RiemannMapping",
+    false
+   ]
+  ],
+  "new": []
+ },
+ "Hopf.Proof.LCP.IntegralHomology": {
+  "old": [
+   [
+    "Lib.Analysis.Calculus.MorseLemma",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Flow.HeightTranslating",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Existence",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Collar",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.SurgeryWindows",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Cancellation",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Immersion.Relative",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Rearrangement",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Connection",
+    false
+   ],
+   [
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris",
+    false
+   ],
+   [
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator",
+    false
+   ],
+   [
+    "Lib.AlgebraicTopology.Hurewicz.Subdivision",
+    false
+   ],
+   [
+    "Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition",
+    false
+   ],
+   [
+    "Lib.Analysis.Complex.RiemannMapping",
+    false
+   ],
+   [
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct",
+    false
+   ]
+  ],
+  "new": []
+ },
+ "Hopf.Proof.LCP.LocalModels": {
+  "old": [
+   [
+    "Lib.Analysis.Calculus.MorseLemma",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Flow.HeightTranslating",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Existence",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Collar",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.SurgeryWindows",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Cancellation",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Immersion.Relative",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Rearrangement",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Connection",
+    false
+   ],
+   [
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris",
+    false
+   ],
+   [
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct",
+    false
+   ],
+   [
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator",
+    false
+   ],
+   [
+    "Lib.AlgebraicTopology.Hurewicz.Subdivision",
+    false
+   ],
+   [
+    "Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition",
+    false
+   ]
+  ],
+  "new": []
+ },
+ "Hopf.Proof.LCP.PeriodConstruction": {
+  "old": [
+   [
+    "Lib.Analysis.Calculus.MorseLemma",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Flow.HeightTranslating",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Existence",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Collar",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.SurgeryWindows",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Cancellation",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Immersion.Relative",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Rearrangement",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Connection",
+    false
+   ],
+   [
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris",
+    false
+   ],
+   [
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct",
+    false
+   ],
+   [
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator",
+    false
+   ],
+   [
+    "Lib.AlgebraicTopology.Hurewicz.Subdivision",
+    false
+   ],
+   [
+    "Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition",
+    false
+   ]
+  ],
+  "new": []
+ },
+ "Hopf.Proof.LCP.Specialization": {
+  "old": [
+   [
+    "Lib.Analysis.Calculus.MorseLemma",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Flow.HeightTranslating",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Existence",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Collar",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.SurgeryWindows",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Cancellation",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Immersion.Relative",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Rearrangement",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Connection",
+    false
+   ],
+   [
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris",
+    false
+   ],
+   [
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct",
+    false
+   ],
+   [
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator",
+    false
+   ],
+   [
+    "Lib.AlgebraicTopology.Hurewicz.Subdivision",
+    false
+   ],
+   [
+    "Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition",
+    false
+   ]
+  ],
+  "new": []
+ },
+ "Hopf.Proof.Recognition": {
+  "old": [
+   [
+    "Lib.Analysis.Calculus.MorseLemma",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Flow.HeightTranslating",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Existence",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Collar",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.SurgeryWindows",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Cancellation",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Immersion.Relative",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Rearrangement",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Connection",
+    false
+   ],
+   [
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris",
+    false
+   ],
+   [
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct",
+    false
+   ],
+   [
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator",
+    false
+   ],
+   [
+    "Lib.AlgebraicTopology.Hurewicz.Subdivision",
+    false
+   ],
+   [
+    "Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition",
+    false
+   ],
+   [
+    "Lib.Analysis.Complex.RiemannMapping",
+    false
+   ]
+  ],
+  "new": []
+ },
+ "Hopf.Proof.Shortcuts": {
+  "old": [
+   [
+    "Lib.Analysis.Calculus.MorseLemma",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Flow.HeightTranslating",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Existence",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Collar",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.SurgeryWindows",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Cancellation",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Immersion.Relative",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Rearrangement",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Connection",
+    false
+   ],
+   [
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris",
+    false
+   ],
+   [
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct",
+    false
+   ],
+   [
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator",
+    false
+   ],
+   [
+    "Lib.AlgebraicTopology.Hurewicz.Subdivision",
+    false
+   ],
+   [
+    "Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition",
+    false
+   ]
+  ],
+  "new": []
+ },
+ "Hopf.Proof.SingularHomology": {
+  "old": [
+   [
+    "Lib.Analysis.Calculus.MorseLemma",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Flow.HeightTranslating",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Existence",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Collar",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.SurgeryWindows",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Immersion.Relative",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Rearrangement",
+    false
+   ],
+   [
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Cancellation",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Connection",
+    false
+   ]
+  ],
+  "new": []
+ },
+ "Hopf.Proof.SphereTopology": {
+  "old": [
+   [
+    "Lib.Analysis.Calculus.MorseLemma",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Flow.HeightTranslating",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Existence",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Collar",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.SurgeryWindows",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Cancellation",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Immersion.Relative",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Rearrangement",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Connection",
+    false
+   ],
+   [
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris",
+    false
+   ]
+  ],
+  "new": []
+ },
+ "Hopf.Recognition": {
+  "old": [
+   [
+    "Lib.Analysis.Calculus.MorseLemma",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Flow.HeightTranslating",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Existence",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Collar",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.SurgeryWindows",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Cancellation",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Immersion.Relative",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Rearrangement",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Connection",
+    false
+   ],
+   [
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris",
+    false
+   ],
+   [
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct",
+    false
+   ],
+   [
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator",
+    false
+   ],
+   [
+    "Lib.AlgebraicTopology.Hurewicz.Subdivision",
+    false
+   ],
+   [
+    "Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition",
+    false
+   ],
+   [
+    "Lib.Analysis.Complex.RiemannMapping",
+    false
+   ]
+  ],
+  "new": []
+ },
+ "Hopf.SingularHomology": {
+  "old": [
+   [
+    "Lib.Analysis.Calculus.MorseLemma",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Flow.HeightTranslating",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Existence",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Collar",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.SurgeryWindows",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Immersion.Relative",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Rearrangement",
+    false
+   ],
+   [
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Cancellation",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Connection",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Whitney.CleanStrips",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Whitney.FrameField",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Whitney.EmbeddedArcs",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Whitney.RankThreeModel",
+    false
+   ]
+  ],
+  "new": []
+ },
+ "Hopf.SphereTopology": {
+  "old": [
+   [
+    "Lib.Analysis.Calculus.MorseLemma",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Flow.HeightTranslating",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Existence",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Collar",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.SurgeryWindows",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Cancellation",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Immersion.Relative",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Rearrangement",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Connection",
+    false
+   ],
+   [
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.OrderedCancellation",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.SurgeryCollapse",
+    false
+   ]
+  ],
+  "new": [
+   [
+    "Lib.Geometry.Manifold.Morse.SurgeryCollapse.BeltTubeMeridian",
+    true,
+    "reexport:Hopf.Recognition"
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.SurgeryCollapse.LevelIsotopy",
+    true,
+    "use"
+   ]
+  ]
+ },
+ "Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition.PrismRealization": {
+  "old": [
+   [
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator",
+    false
+   ]
+  ],
+  "new": [
+   [
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator.HurewiczInverse",
+    true,
+    "reexport:Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition.Concatenation"
+   ],
+   [
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator.MapGenLoop",
+    true,
+    "reexport:Lib.AlgebraicTopology.Hurewicz.Naturality"
+   ]
+  ]
+ },
+ "Lib.AlgebraicTopology.Hurewicz.CubeGluing": {
+  "old": [
+   [
+    "Lib.AlgebraicTopology.Hurewicz.Subdivision",
+    false
+   ]
+  ],
+  "new": [
+   [
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator.ComposeHomotopies",
+    true,
+    "reexport:Lib.AlgebraicTopology.Hurewicz.Straightening"
+   ],
+   [
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator.HurewiczInverse",
+    true,
+    "reexport:Lib.AlgebraicTopology.Hurewicz.Degree"
+   ],
+   [
+    "Lib.AlgebraicTopology.Hurewicz.Subdivision.SubdivisionClass",
+    true,
+    "reexport:Lib.AlgebraicTopology.Hurewicz.CubeSphere"
+   ]
+  ]
+ },
+ "Lib.AlgebraicTopology.Hurewicz.CubeSphere": {
+  "old": [
+   [
+    "Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition",
+    false
+   ]
+  ],
+  "new": [
+   [
+    "Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition.Concatenation",
+    true,
+    "use"
+   ],
+   [
+    "Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition.Cycle",
+    true,
+    "use"
+   ],
+   [
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator.DegreeTwo",
+    true,
+    "use"
+   ]
+  ]
+ },
+ "Lib.AlgebraicTopology.Hurewicz.CubeTriangulation": {
+  "old": [
+   [
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct",
+    false
+   ]
+  ],
+  "new": [
+   [
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris.AffineSimplex",
+    true,
+    "use"
+   ]
+  ]
+ },
+ "Lib.AlgebraicTopology.Hurewicz.HomotopyExtension": {
+  "old": [
+   [
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct",
+    false
+   ]
+  ],
+  "new": []
+ },
+ "Lib.AlgebraicTopology.Hurewicz.PrismOperator.Basic": {
+  "old": [
+   [
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct",
+    false
+   ]
+  ],
+  "new": []
+ },
+ "Lib.AlgebraicTopology.Hurewicz.PrismOperator.CrossProductPoint": {
+  "old": [
+   [
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct",
+    false
+   ]
+  ],
+  "new": [
+   [
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct.Homology",
+    true,
+    "use"
+   ]
+  ]
+ },
+ "Lib.AlgebraicTopology.Hurewicz.PrismOperator.HurewiczInverse": {
+  "old": [
+   [
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct",
+    false
+   ]
+  ],
+  "new": []
+ },
+ "Lib.AlgebraicTopology.Hurewicz.PrismOperator.HurewiczMap": {
+  "old": [
+   [
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct",
+    false
+   ]
+  ],
+  "new": []
+ },
+ "Lib.AlgebraicTopology.Hurewicz.PrismOperator.TwoTriangles": {
+  "old": [
+   [
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct",
+    false
+   ]
+  ],
+  "new": []
+ },
+ "Lib.AlgebraicTopology.Hurewicz.Subdivision.CubeClass": {
+  "old": [
+   [
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator",
+    false
+   ]
+  ],
+  "new": [
+   [
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator.SquareRotation",
+    true,
+    "use"
+   ]
+  ]
+ },
+ "Lib.AlgebraicTopology.SingularHomology.CirclePaths": {
+  "old": [
+   [
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct",
+    true
+   ],
+   [
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris",
+    true
+   ]
+  ],
+  "new": [
+   [
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct.Naturality",
+    true,
+    "use"
+   ]
+  ]
+ },
+ "Lib.AlgebraicTopology.SingularHomology.CircleProduct": {
+  "old": [
+   [
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris",
+    true
+   ]
+  ],
+  "new": []
+ },
+ "Lib.AlgebraicTopology.SingularHomology.Coproduct": {
+  "old": [
+   [
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris",
+    true
+   ]
+  ],
+  "new": [
+   [
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris.SingularHomology",
+    true,
+    "use"
+   ]
+  ]
+ },
+ "Lib.AlgebraicTopology.SingularHomology.HomotopyInvariance": {
+  "old": [
+   [
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris",
+    true
+   ]
+  ],
+  "new": [
+   [
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris.SingularHomology",
+    true,
+    "use"
+   ]
+  ]
+ },
+ "Lib.AlgebraicTopology.SingularHomology.LinearSphereAction": {
+  "old": [
+   [
+    "Lib.Geometry.Manifold.Immersion.Relative",
+    false
+   ]
+  ],
+  "new": [
+   [
+    "Lib.Geometry.Manifold.Immersion.Relative.AxisChart",
+    true,
+    "use"
+   ]
+  ]
+ },
+ "Lib.AlgebraicTopology.SingularHomology.LocalContributions": {
+  "old": [
+   [
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris",
+    true
+   ]
+  ],
+  "new": []
+ },
+ "Lib.AlgebraicTopology.SingularHomology.LocalContributionsNaturality": {
+  "old": [
+   [
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris",
+    false
+   ]
+  ],
+  "new": []
+ },
+ "Lib.AlgebraicTopology.SingularHomology.LocalDegree": {
+  "old": [
+   [
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris",
+    true
+   ]
+  ],
+  "new": [
+   [
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris.Sequence",
+    true,
+    "use"
+   ]
+  ]
+ },
+ "Lib.AlgebraicTopology.SingularHomology.LocalDegreeNeighborhoods": {
+  "old": [
+   [
+    "Lib.Analysis.Calculus.MorseLemma",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Flow.HeightTranslating",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Existence",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Collar",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.SurgeryWindows",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Cancellation",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Immersion.Relative",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Rearrangement",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Connection",
+    false
+   ],
+   [
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris",
+    false
+   ]
+  ],
+  "new": []
+ },
+ "Lib.AlgebraicTopology.SingularHomology.Naturality": {
+  "old": [
+   [
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris",
+    true
+   ]
+  ],
+  "new": [
+   [
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris.Sequence",
+    true,
+    "use"
+   ]
+  ]
+ },
+ "Lib.AlgebraicTopology.SingularHomology.OnePointCover": {
+  "old": [
+   [
+    "Lib.Analysis.Calculus.MorseLemma",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Flow.HeightTranslating",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Existence",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Collar",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.SurgeryWindows",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Cancellation",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Immersion.Relative",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Rearrangement",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Connection",
+    false
+   ],
+   [
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris",
+    false
+   ]
+  ],
+  "new": []
+ },
+ "Lib.AlgebraicTopology.SingularHomology.PathClass": {
+  "old": [
+   [
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris",
+    true
+   ]
+  ],
+  "new": []
+ },
+ "Lib.AlgebraicTopology.SingularHomology.Pontryagin": {
+  "old": [
+   [
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris",
+    true
+   ],
+   [
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct",
+    true
+   ]
+  ],
+  "new": [
+   [
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct.Associator",
+    true,
+    "use"
+   ],
+   [
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct.Naturality",
+    true,
+    "use"
+   ]
+  ]
+ },
+ "Lib.AlgebraicTopology.SingularHomology.SphereHomology": {
+  "old": [
+   [
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris",
+    true
+   ]
+  ],
+  "new": []
+ },
+ "Lib.AlgebraicTopology.SingularHomology.Suspension": {
+  "old": [
+   [
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris",
+    true
+   ]
+  ],
+  "new": [
+   [
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris.Sequence",
+    true,
+    "use"
+   ]
+  ]
+ },
+ "Lib.AlgebraicTopology.SingularHomology.Torus": {
+  "old": [
+   [
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris",
+    true
+   ]
+  ],
+  "new": []
+ },
+ "Lib.AlgebraicTopology.SingularHomology.TorusCoordinates": {
+  "old": [
+   [
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris",
+    false
+   ],
+   [
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct",
+    false
+   ]
+  ],
+  "new": []
+ },
+ "Lib.Analysis.Complex.Cousin": {
+  "old": [
+   [
+    "Lib.Analysis.Complex.RiemannMapping",
+    false
+   ],
+   [
+    "Lib.Analysis.Calculus.MorseLemma",
+    false
+   ]
+  ],
+  "new": [
+   [
+    "Lib.Analysis.Calculus.MorseLemma.PartitionOfUnity",
+    true,
+    "use"
+   ]
+  ]
+ },
+ "Lib.Analysis.Complex.SquareRoot": {
+  "old": [
+   [
+    "Lib.Analysis.Complex.RiemannMapping",
+    false
+   ],
+   [
+    "Lib.Analysis.Calculus.MorseLemma",
+    false
+   ]
+  ],
+  "new": []
+ },
+ "Lib.Analysis.ODE.SmoothFlow": {
+  "old": [
+   [
+    "Lib.Analysis.Calculus.MorseLemma",
+    true
+   ],
+   [
+    "Lib.Geometry.Manifold.Flow.HeightTranslating",
+    true
+   ]
+  ],
+  "new": []
+ },
+ "Lib.AxiomAudit": {
+  "old": [
+   [
+    "Lib.Topology.Dimension.CubeBoundaryThreeCells",
+    false
+   ]
+  ],
+  "new": []
+ },
+ "Lib.Geometry.Manifold.Collar.HeightCollar": {
+  "old": [
+   [
+    "Lib.Geometry.Manifold.Flow.HeightTranslating",
+    true
+   ]
+  ],
+  "new": []
+ },
+ "Lib.Geometry.Manifold.Flow.Compact": {
+  "old": [
+   [
+    "Lib.Analysis.Calculus.MorseLemma",
+    true
+   ]
+  ],
+  "new": [
+   [
+    "Lib.Analysis.Calculus.MorseLemma.AdaptedDescentField",
+    true,
+    "use"
+   ]
+  ]
+ },
+ "Lib.Geometry.Manifold.Flow.HeightTranslating": {
+  "old": [
+   [
+    "Lib.Analysis.Calculus.MorseLemma",
+    true
+   ]
+  ],
+  "new": []
+ },
+ "Lib.Geometry.Manifold.Flow.HeightTranslating.AbsorbingSublevel": {
+  "old": [
+   [
+    "Lib.Analysis.Calculus.MorseLemma",
+    true
+   ]
+  ],
+  "new": []
+ },
+ "Lib.Geometry.Manifold.Flow.HeightTranslating.AttachingUnion": {
+  "old": [
+   [
+    "Lib.Analysis.Calculus.MorseLemma",
+    true
+   ]
+  ],
+  "new": []
+ },
+ "Lib.Geometry.Manifold.Flow.HeightTranslating.DescentFlow": {
+  "old": [
+   [
+    "Lib.Analysis.Calculus.MorseLemma",
+    true
+   ]
+  ],
+  "new": []
+ },
+ "Lib.Geometry.Manifold.Flow.HeightTranslating.DescentModel": {
+  "old": [
+   [
+    "Lib.Analysis.Calculus.MorseLemma",
+    true
+   ]
+  ],
+  "new": [
+   [
+    "Lib.Analysis.Calculus.MorseLemma.AdaptedDescentField",
+    true,
+    "use"
+   ]
+  ]
+ },
+ "Lib.Geometry.Manifold.Flow.HeightTranslating.HandleCoordinates": {
+  "old": [
+   [
+    "Lib.Analysis.Calculus.MorseLemma",
+    true
+   ]
+  ],
+  "new": []
+ },
+ "Lib.Geometry.Manifold.Immersion.Relative.AffinePerturbation": {
+  "old": [
+   [
+    "Lib.Geometry.Manifold.Morse.SurgeryWindows",
+    true
+   ]
+  ],
+  "new": [
+   [
+    "Lib.Geometry.Manifold.Morse.SurgeryWindows.HausdorffDimension",
+    true,
+    "use"
+   ]
+  ]
+ },
+ "Lib.Geometry.Manifold.Immersion.Relative.ChartPerturbation": {
+  "old": [
+   [
+    "Lib.Geometry.Manifold.Morse.SurgeryWindows",
+    true
+   ]
+  ],
+  "new": [
+   [
+    "Lib.Geometry.Manifold.Morse.Existence.ChartPerturbation",
+    true,
+    "use"
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.SurgeryWindows.HausdorffDimension",
+    true,
+    "use"
+   ]
+  ]
+ },
+ "Lib.Geometry.Manifold.Immersion.Relative.Embedding": {
+  "old": [
+   [
+    "Lib.Geometry.Manifold.Morse.SurgeryWindows",
+    true
+   ]
+  ],
+  "new": [
+   [
+    "Lib.Geometry.Manifold.Morse.SurgeryWindows.Avoidance",
+    true,
+    "use"
+   ]
+  ]
+ },
+ "Lib.Geometry.Manifold.Immersion.Relative.ImmersionLocus": {
+  "old": [
+   [
+    "Lib.Geometry.Manifold.Morse.Existence",
+    true
+   ]
+  ],
+  "new": [
+   [
+    "Lib.Geometry.Manifold.Flow.Compact",
+    true,
+    "use"
+   ]
+  ]
+ },
+ "Lib.Geometry.Manifold.Morse.AdaptedWindows": {
+  "old": [
+   [
+    "Lib.Analysis.Calculus.MorseLemma",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Flow.HeightTranslating",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Existence",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Collar",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.SurgeryWindows",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Cancellation",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Immersion.Relative",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Rearrangement",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Connection",
+    false
+   ],
+   [
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.OrderedCancellation",
+    false
+   ]
+  ],
+  "new": [
+   [
+    "Lib.Geometry.Manifold.Morse.Connection.LevelHolonomy",
+    true,
+    "use"
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.OrderedCancellation.BirthPreservation",
+    true,
+    "reexport:Hopf.Proof.Geometry.Manifold.Morse.MiddleBlocks"
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.OrderedCancellation.IndexCounts",
+    true,
+    "use"
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.OrderedCancellation.TwoSphereDegree",
+    true,
+    "reexport:Lib.Geometry.Manifold.Morse.EqualRangeHomology"
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.OrderedCancellation.ValueExchange",
+    true,
+    "reexport:Hopf.Proof.Geometry.Manifold.Morse.MiddleBlocks"
+   ]
+  ]
+ },
+ "Lib.Geometry.Manifold.Morse.BeltCancellation": {
+  "old": [
+   [
+    "Lib.Geometry.Manifold.Whitney.RankThreeModel",
+    false
+   ]
+  ],
+  "new": [
+   [
+    "Lib.Geometry.Manifold.Morse.Connection.BeltArc",
+    true,
+    "use"
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Rearrangement.LevelConnectedness",
+    true,
+    "use"
+   ],
+   [
+    "Lib.Geometry.Manifold.Whitney.EmbeddedArcs.BeltBigon",
+    true,
+    "use"
+   ],
+   [
+    "Lib.Geometry.Manifold.Whitney.RankThreeModel.Cancellation",
+    true,
+    "use"
+   ]
+  ]
+ },
+ "Lib.Geometry.Manifold.Morse.Birth": {
+  "old": [
+   [
+    "Lib.Geometry.Manifold.Morse.Cancellation",
+    false
+   ]
+  ],
+  "new": [
+   [
+    "Lib.Geometry.Manifold.Morse.Cancellation.CriticalGerms",
+    true,
+    "use"
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Cancellation.CubicModel",
+    true,
+    "use"
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Cubic.LocalReplacement",
+    true,
+    "use"
+   ]
+  ]
+ },
+ "Lib.Geometry.Manifold.Morse.Cancellation": {
+  "old": [
+   [
+    "Lib.Geometry.Manifold.Morse.Rearrangement",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Connection",
+    false
+   ]
+  ],
+  "new": []
+ },
+ "Lib.Geometry.Manifold.Morse.Cancellation.BandHeight": {
+  "old": [
+   [
+    "Lib.Geometry.Manifold.Morse.Rearrangement",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Connection",
+    false
+   ]
+  ],
+  "new": [
+   [
+    "Lib.Geometry.Manifold.Morse.Rearrangement.LevelTime",
+    true,
+    "use"
+   ]
+  ]
+ },
+ "Lib.Geometry.Manifold.Morse.Cancellation.BandReplacement": {
+  "old": [
+   [
+    "Lib.Geometry.Manifold.Morse.Rearrangement",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Connection",
+    false
+   ]
+  ],
+  "new": []
+ },
+ "Lib.Geometry.Manifold.Morse.Cancellation.BasinSheets": {
+  "old": [
+   [
+    "Lib.Geometry.Manifold.Morse.Rearrangement",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Connection",
+    false
+   ]
+  ],
+  "new": []
+ },
+ "Lib.Geometry.Manifold.Morse.Cancellation.ConnectionData": {
+  "old": [
+   [
+    "Lib.Geometry.Manifold.Morse.Rearrangement",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Connection",
+    false
+   ]
+  ],
+  "new": [
+   [
+    "Lib.Geometry.Manifold.Morse.Connection.CubicFieldChart",
+    true,
+    "use"
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Connection.EndpointBasins",
+    true,
+    "use"
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Connection.PhaseFlow",
+    true,
+    "use"
+   ]
+  ]
+ },
+ "Lib.Geometry.Manifold.Morse.Cancellation.CriticalGerms": {
+  "old": [
+   [
+    "Lib.Geometry.Manifold.Morse.Rearrangement",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Connection",
+    false
+   ]
+  ],
+  "new": [
+   [
+    "Lib.Geometry.Manifold.Morse.Cubic.SurgeryWindowsExistence",
+    true,
+    "use"
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.CubicFlow",
+    true,
+    "use"
+   ]
+  ]
+ },
+ "Lib.Geometry.Manifold.Morse.Cancellation.CubicConnection": {
+  "old": [
+   [
+    "Lib.Geometry.Manifold.Morse.Rearrangement",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Connection",
+    false
+   ]
+  ],
+  "new": [
+   [
+    "Lib.Geometry.Manifold.Morse.Connection.CubicEndpoints",
+    true,
+    "use"
+   ]
+  ]
+ },
+ "Lib.Geometry.Manifold.Morse.Cancellation.CubicModel": {
+  "old": [
+   [
+    "Lib.Geometry.Manifold.Morse.Rearrangement",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Connection",
+    false
+   ]
+  ],
+  "new": [
+   [
+    "Lib.Geometry.Manifold.Morse.CubicFlow",
+    true,
+    "use"
+   ]
+  ]
+ },
+ "Lib.Geometry.Manifold.Morse.Cancellation.LevelExit": {
+  "old": [
+   [
+    "Lib.Geometry.Manifold.Morse.Rearrangement",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Connection",
+    false
+   ]
+  ],
+  "new": [
+   [
+    "Lib.Geometry.Manifold.Morse.CubicFlow",
+    true,
+    "use"
+   ]
+  ]
+ },
+ "Lib.Geometry.Manifold.Morse.Cancellation.LevelIsotopy": {
+  "old": [
+   [
+    "Lib.Geometry.Manifold.Morse.Rearrangement",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Connection",
+    false
+   ]
+  ],
+  "new": []
+ },
+ "Lib.Geometry.Manifold.Morse.Cancellation.LogarithmicCutoff": {
+  "old": [
+   [
+    "Lib.Geometry.Manifold.Morse.Rearrangement",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Connection",
+    false
+   ]
+  ],
+  "new": [
+   [
+    "Lib.Geometry.Manifold.Morse.CubicFlow",
+    true,
+    "use"
+   ]
+  ]
+ },
+ "Lib.Geometry.Manifold.Morse.Cancellation.LyapunovResidence": {
+  "old": [
+   [
+    "Lib.Geometry.Manifold.Morse.Rearrangement",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Connection",
+    false
+   ]
+  ],
+  "new": [
+   [
+    "Lib.Geometry.Manifold.Morse.Connection.NoReturn",
+    true,
+    "use"
+   ]
+  ]
+ },
+ "Lib.Geometry.Manifold.Morse.Cancellation.TransverseGerms": {
+  "old": [
+   [
+    "Lib.Geometry.Manifold.Morse.Rearrangement",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Connection",
+    false
+   ]
+  ],
+  "new": [
+   [
+    "Lib.Geometry.Manifold.Transversality.Transverse",
+    true,
+    "use"
+   ]
+  ]
+ },
+ "Lib.Geometry.Manifold.Morse.CellStructure": {
+  "old": [
+   [
+    "Lib.Geometry.Manifold.Collar",
+    false
+   ],
+   [
+    "Lib.Analysis.Calculus.MorseLemma",
+    false
+   ],
+   [
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris",
+    false
+   ]
+  ],
+  "new": [
+   [
+    "Lib.Geometry.Manifold.Morse.Existence.DistinctCriticalValues",
+    true,
+    "use"
+   ]
+  ]
+ },
+ "Lib.Geometry.Manifold.Morse.CircleGluing": {
+  "old": [
+   [
+    "Lib.Analysis.Calculus.MorseLemma",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Flow.HeightTranslating",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Existence",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Collar",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.SurgeryWindows",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Immersion.Relative",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Rearrangement",
+    false
+   ],
+   [
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Cancellation",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Connection",
+    false
+   ]
+  ],
+  "new": [
+   [
+    "Lib.Geometry.Manifold.Immersion.Relative.Plane",
+    true,
+    "use"
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Connection.LevelHolonomy",
+    true,
+    "use"
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Connection.MinimumBasins",
+    true,
+    "use"
+   ]
+  ]
+ },
+ "Lib.Geometry.Manifold.Morse.Connection.BeltArc": {
+  "old": [
+   [
+    "Lib.Geometry.Manifold.Morse.Rearrangement",
+    false
+   ]
+  ],
+  "new": []
+ },
+ "Lib.Geometry.Manifold.Morse.Connection.CubicEndpoints": {
+  "old": [
+   [
+    "Lib.Geometry.Manifold.Morse.Rearrangement",
+    false
+   ]
+  ],
+  "new": [
+   [
+    "Lib.Geometry.Manifold.Morse.CubicFlow",
+    true,
+    "use"
+   ]
+  ]
+ },
+ "Lib.Geometry.Manifold.Morse.Connection.CubicFieldChart": {
+  "old": [
+   [
+    "Lib.Geometry.Manifold.Morse.Rearrangement",
+    false
+   ]
+  ],
+  "new": []
+ },
+ "Lib.Geometry.Manifold.Morse.Connection.CylinderHolonomy": {
+  "old": [
+   [
+    "Lib.Geometry.Manifold.Morse.Rearrangement",
+    false
+   ]
+  ],
+  "new": []
+ },
+ "Lib.Geometry.Manifold.Morse.Connection.EndpointBasins": {
+  "old": [
+   [
+    "Lib.Geometry.Manifold.Morse.Rearrangement",
+    false
+   ]
+  ],
+  "new": []
+ },
+ "Lib.Geometry.Manifold.Morse.Connection.FieldChartGluing": {
+  "old": [
+   [
+    "Lib.Geometry.Manifold.Morse.Rearrangement",
+    false
+   ]
+  ],
+  "new": [
+   [
+    "Lib.Geometry.Manifold.WhitneyEmbedding",
+    true,
+    "use"
+   ]
+  ]
+ },
+ "Lib.Geometry.Manifold.Morse.Connection.LevelHolonomy": {
+  "old": [
+   [
+    "Lib.Geometry.Manifold.Morse.Rearrangement",
+    false
+   ]
+  ],
+  "new": []
+ },
+ "Lib.Geometry.Manifold.Morse.Connection.MinimumBasins": {
+  "old": [
+   [
+    "Lib.Geometry.Manifold.Morse.Rearrangement",
+    false
+   ]
+  ],
+  "new": [
+   [
+    "Lib.Geometry.Manifold.Morse.CubicFlow",
+    true,
+    "use"
+   ]
+  ]
+ },
+ "Lib.Geometry.Manifold.Morse.Connection.NoReturn": {
+  "old": [
+   [
+    "Lib.Geometry.Manifold.Morse.Rearrangement",
+    false
+   ]
+  ],
+  "new": [
+   [
+    "Lib.Geometry.Manifold.Morse.CubicFlow",
+    true,
+    "use"
+   ]
+  ]
+ },
+ "Lib.Geometry.Manifold.Morse.Connection.PhaseCylinder": {
+  "old": [
+   [
+    "Lib.Geometry.Manifold.Morse.Rearrangement",
+    false
+   ]
+  ],
+  "new": []
+ },
+ "Lib.Geometry.Manifold.Morse.Connection.PhaseFlow": {
+  "old": [
+   [
+    "Lib.Geometry.Manifold.Morse.Rearrangement",
+    false
+   ]
+  ],
+  "new": [
+   [
+    "Lib.Geometry.Manifold.Morse.Cubic.LocalReplacement",
+    true,
+    "use"
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Rearrangement.HeightCoordinates",
+    true,
+    "use"
+   ]
+  ]
+ },
+ "Lib.Geometry.Manifold.Morse.Connection.SignEnumerations": {
+  "old": [
+   [
+    "Lib.Geometry.Manifold.Morse.Rearrangement",
+    false
+   ]
+  ],
+  "new": [
+   [
+    "Lib.Analysis.Calculus.MorseLemma.SplitChart",
+    true,
+    "use"
+   ]
+  ]
+ },
+ "Lib.Geometry.Manifold.Morse.Connection.Suspension": {
+  "old": [
+   [
+    "Lib.Geometry.Manifold.Morse.Rearrangement",
+    false
+   ]
+  ],
+  "new": [
+   [
+    "Lib.Geometry.Manifold.Morse.Rearrangement.LevelTime",
+    true,
+    "use"
+   ]
+  ]
+ },
+ "Lib.Geometry.Manifold.Morse.Connection.TimeChange": {
+  "old": [
+   [
+    "Lib.Geometry.Manifold.Morse.Rearrangement",
+    false
+   ]
+  ],
+  "new": []
+ },
+ "Lib.Geometry.Manifold.Morse.Connection.TransitionPhase": {
+  "old": [
+   [
+    "Lib.Geometry.Manifold.Morse.Rearrangement",
+    false
+   ]
+  ],
+  "new": [
+   [
+    "Lib.Geometry.Manifold.Immersion.Relative.FrameField",
+    true,
+    "use"
+   ]
+  ]
+ },
+ "Lib.Geometry.Manifold.Morse.Connection.TransportedCorrections": {
+  "old": [
+   [
+    "Lib.Geometry.Manifold.Morse.Rearrangement",
+    false
+   ]
+  ],
+  "new": [
+   [
+    "Lib.Geometry.Manifold.Transversality.SupportedIsotopy",
+    true,
+    "use"
+   ]
+  ]
+ },
+ "Lib.Geometry.Manifold.Morse.Connection.TransverseBlocks": {
+  "old": [
+   [
+    "Lib.Geometry.Manifold.Morse.Rearrangement",
+    false
+   ]
+  ],
+  "new": [
+   [
+    "Lib.Geometry.Manifold.Immersion.Relative.FrameField",
+    true,
+    "use"
+   ]
+  ]
+ },
+ "Lib.Geometry.Manifold.Morse.Connection.TransverseTimeLifts": {
+  "old": [
+   [
+    "Lib.Geometry.Manifold.Morse.Rearrangement",
+    false
+   ]
+  ],
+  "new": []
+ },
+ "Lib.Geometry.Manifold.Morse.Cubic.AlignedRays": {
+  "old": [
+   [
+    "Lib.Geometry.Manifold.Morse.Existence",
+    true
+   ],
+   [
+    "Lib.Geometry.Manifold.Collar",
+    true
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.SurgeryWindows",
+    true
+   ]
+  ],
+  "new": [
+   [
+    "Lib.Geometry.Manifold.Collar.DiskTubular",
+    true,
+    "reexport:Lib.Geometry.Manifold.Transversality.DiscTheorem"
+   ]
+  ]
+ },
+ "Lib.Geometry.Manifold.Morse.Cubic.BasinBlock": {
+  "old": [
+   [
+    "Lib.Geometry.Manifold.Morse.Existence",
+    true
+   ],
+   [
+    "Lib.Geometry.Manifold.Collar",
+    true
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.SurgeryWindows",
+    true
+   ]
+  ],
+  "new": [
+   [
+    "Lib.Geometry.Manifold.Morse.Existence.BeltCore",
+    true,
+    "use"
+   ]
+  ]
+ },
+ "Lib.Geometry.Manifold.Morse.Cubic.CoreBasins": {
+  "old": [
+   [
+    "Lib.Geometry.Manifold.Morse.Existence",
+    true
+   ],
+   [
+    "Lib.Geometry.Manifold.Collar",
+    true
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.SurgeryWindows",
+    true
+   ]
+  ],
+  "new": []
+ },
+ "Lib.Geometry.Manifold.Morse.Cubic.DescentField": {
+  "old": [
+   [
+    "Lib.Geometry.Manifold.Morse.Existence",
+    true
+   ],
+   [
+    "Lib.Geometry.Manifold.Collar",
+    true
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.SurgeryWindows",
+    true
+   ]
+  ],
+  "new": []
+ },
+ "Lib.Geometry.Manifold.Morse.Cubic.EndpointChart": {
+  "old": [
+   [
+    "Lib.Geometry.Manifold.Morse.Existence",
+    true
+   ]
+  ],
+  "new": [
+   [
+    "Lib.Geometry.Manifold.Flow.Compact",
+    true,
+    "use"
+   ]
+  ]
+ },
+ "Lib.Geometry.Manifold.Morse.Cubic.LevelOrbit": {
+  "old": [
+   [
+    "Lib.Geometry.Manifold.Morse.Existence",
+    true
+   ],
+   [
+    "Lib.Geometry.Manifold.Collar",
+    true
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.SurgeryWindows",
+    true
+   ]
+  ],
+  "new": []
+ },
+ "Lib.Geometry.Manifold.Morse.Cubic.SplitCoordinates": {
+  "old": [
+   [
+    "Lib.Geometry.Manifold.Morse.Existence",
+    true
+   ],
+   [
+    "Lib.Geometry.Manifold.Collar",
+    true
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.SurgeryWindows",
+    true
+   ]
+  ],
+  "new": []
+ },
+ "Lib.Geometry.Manifold.Morse.Cubic.SublevelFlow": {
+  "old": [
+   [
+    "Lib.Geometry.Manifold.Flow.HeightTranslating",
+    true
+   ]
+  ],
+  "new": [
+   [
+    "Lib.Geometry.Manifold.Flow.HeightTranslating.EntryTime",
+    true,
+    "use"
+   ]
+  ]
+ },
+ "Lib.Geometry.Manifold.Morse.Cubic.SurgeryWindowsExistence": {
+  "old": [
+   [
+    "Lib.Geometry.Manifold.Morse.Existence",
+    true
+   ],
+   [
+    "Lib.Geometry.Manifold.Collar",
+    true
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.SurgeryWindows",
+    true
+   ]
+  ],
+  "new": [
+   [
+    "Lib.Geometry.Manifold.Morse.SurgeryWindows.Windows",
+    true,
+    "use"
+   ]
+  ]
+ },
+ "Lib.Geometry.Manifold.Morse.CubicFlow": {
+  "old": [
+   [
+    "Lib.Geometry.Manifold.Morse.Existence",
+    true
+   ],
+   [
+    "Lib.Geometry.Manifold.Collar",
+    true
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.SurgeryWindows",
+    true
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Cubic",
+    true
+   ]
+  ],
+  "new": [
+   [
+    "Lib.Geometry.Manifold.Morse.Cubic.AxisParameter",
+    true,
+    "use"
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Cubic.CoreBasins",
+    true,
+    "use"
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.SurgeryWindows.Windows",
+    true,
+    "use"
+   ]
+  ]
+ },
+ "Lib.Geometry.Manifold.Morse.CutTransport": {
+  "old": [
+   [
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris",
+    false
+   ],
+   [
+    "Lib.Analysis.Calculus.MorseLemma",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Flow.HeightTranslating",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Immersion.Relative",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.SurgeryWindows",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Cancellation",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Rearrangement",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Connection",
+    false
+   ]
+  ],
+  "new": []
+ },
+ "Lib.Geometry.Manifold.Morse.Existence.AttachingUnion": {
+  "old": [
+   [
+    "Lib.Analysis.Calculus.MorseLemma",
+    true
+   ],
+   [
+    "Lib.Geometry.Manifold.Flow.HeightTranslating",
+    true
+   ]
+  ],
+  "new": [
+   [
+    "Lib.Geometry.Manifold.Flow.HeightTranslating.AttachingUnion",
+    true,
+    "use"
+   ]
+  ]
+ },
+ "Lib.Geometry.Manifold.Morse.Existence.BeltCore": {
+  "old": [
+   [
+    "Lib.Analysis.Calculus.MorseLemma",
+    true
+   ],
+   [
+    "Lib.Geometry.Manifold.Flow.HeightTranslating",
+    true
+   ]
+  ],
+  "new": []
+ },
+ "Lib.Geometry.Manifold.Morse.Existence.DistinctCriticalValues": {
+  "old": [
+   [
+    "Lib.Analysis.Calculus.MorseLemma",
+    true
+   ]
+  ],
+  "new": [
+   [
+    "Lib.Analysis.Calculus.MorseLemma.Existence",
+    true,
+    "use"
+   ]
+  ]
+ },
+ "Lib.Geometry.Manifold.Morse.Existence.LevelSurgery": {
+  "old": [
+   [
+    "Lib.Analysis.Calculus.MorseLemma",
+    true
+   ],
+   [
+    "Lib.Geometry.Manifold.Flow.HeightTranslating",
+    true
+   ]
+  ],
+  "new": [
+   [
+    "Lib.Geometry.Manifold.Flow.HeightTranslating.HandleCoordinates",
+    true,
+    "use"
+   ]
+  ]
+ },
+ "Lib.Geometry.Manifold.Morse.Existence.RegularLocus": {
+  "old": [
+   [
+    "Lib.Analysis.Calculus.MorseLemma",
+    true
+   ]
+  ],
+  "new": [
+   [
+    "Lib.Analysis.Calculus.MorseLemma.CriticalPoints",
+    true,
+    "use"
+   ]
+  ]
+ },
+ "Lib.Geometry.Manifold.Morse.HandleAttachment": {
+  "old": [
+   [
+    "Lib.Analysis.Calculus.MorseLemma",
+    true
+   ]
+  ],
+  "new": []
+ },
+ "Lib.Geometry.Manifold.Morse.Index": {
+  "old": [
+   [
+    "Lib.Analysis.Calculus.MorseLemma",
+    true
+   ],
+   [
+    "Lib.Geometry.Manifold.Flow.HeightTranslating",
+    true
+   ],
+   [
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris",
+    true
+   ]
+  ],
+  "new": []
+ },
+ "Lib.Geometry.Manifold.Morse.OrderedCancellation.BeltTube": {
+  "old": [
+   [
+    "Lib.Analysis.Calculus.MorseLemma",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Flow.HeightTranslating",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.SurgeryWindows",
+    false
+   ]
+  ],
+  "new": []
+ },
+ "Lib.Geometry.Manifold.Morse.OrderedCancellation.BirthPreservation": {
+  "old": [
+   [
+    "Lib.Analysis.Calculus.MorseLemma",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Cancellation",
+    false
+   ]
+  ],
+  "new": [
+   [
+    "Lib.Geometry.Manifold.Morse.Cancellation.CriticalGerms",
+    true,
+    "use"
+   ]
+  ]
+ },
+ "Lib.Geometry.Manifold.Morse.OrderedCancellation.CircleParametrization": {
+  "old": [
+   [
+    "Lib.Geometry.Manifold.Morse.SurgeryWindows",
+    false
+   ]
+  ],
+  "new": [
+   [
+    "Lib.Geometry.Manifold.Morse.SurgeryWindows.SurgeryData",
+    true,
+    "use"
+   ]
+  ]
+ },
+ "Lib.Geometry.Manifold.Morse.OrderedCancellation.IndexCounts": {
+  "old": [
+   [
+    "Lib.Analysis.Calculus.MorseLemma",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Cancellation",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.SurgeryWindows",
+    false
+   ]
+  ],
+  "new": []
+ },
+ "Lib.Geometry.Manifold.Morse.OrderedCancellation.MinimalSystem": {
+  "old": [
+   [
+    "Lib.Analysis.Calculus.MorseLemma",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Cubic",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Existence",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.SurgeryWindows",
+    false
+   ]
+  ],
+  "new": [
+   [
+    "Lib.Geometry.Manifold.Morse.Existence.DistinctCriticalValues",
+    true,
+    "use"
+   ]
+  ]
+ },
+ "Lib.Geometry.Manifold.Morse.OrderedCancellation.Negation": {
+  "old": [
+   [
+    "Lib.Analysis.Calculus.MorseLemma",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Cancellation",
+    false
+   ]
+  ],
+  "new": [
+   [
+    "Lib.Geometry.Manifold.Morse.Cancellation.CriticalGerms",
+    true,
+    "use"
+   ]
+  ]
+ },
+ "Lib.Geometry.Manifold.Morse.OrderedCancellation.PairCancellation": {
+  "old": [
+   [
+    "Lib.Analysis.Calculus.MorseLemma",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Immersion.Relative",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Cancellation",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Cubic",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Rearrangement",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.SurgeryWindows",
+    false
+   ]
+  ],
+  "new": [
+   [
+    "Lib.Geometry.Manifold.Morse.Cancellation.LevelIsotopy",
+    true,
+    "use"
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Rearrangement.LevelConnectedness",
+    true,
+    "use"
+   ]
+  ]
+ },
+ "Lib.Geometry.Manifold.Morse.OrderedCancellation.PathComponents": {
+  "old": [
+   [
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris",
+    false
+   ]
+  ],
+  "new": []
+ },
+ "Lib.Geometry.Manifold.Morse.OrderedCancellation.PrescribedFlow": {
+  "old": [
+   [
+    "Lib.Analysis.Calculus.MorseLemma",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Flow.HeightTranslating",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Existence",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.SurgeryWindows",
+    false
+   ]
+  ],
+  "new": []
+ },
+ "Lib.Geometry.Manifold.Morse.OrderedCancellation.TwoSphereDegree": {
+  "old": [
+   [
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.SurgeryWindows",
+    false
+   ]
+  ],
+  "new": [
+   [
+    "Lib.Geometry.Manifold.Morse.SurgeryWindows.Hemisphere",
+    true,
+    "use"
+   ]
+  ]
+ },
+ "Lib.Geometry.Manifold.Morse.OrderedCancellation.ValueExchange": {
+  "old": [
+   [
+    "Lib.Analysis.Calculus.MorseLemma",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Cancellation",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Cubic",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.SurgeryWindows",
+    false
+   ]
+  ],
+  "new": []
+ },
+ "Lib.Geometry.Manifold.Morse.RadialFilling": {
+  "old": [
+   [
+    "Lib.Geometry.Manifold.Morse.SurgeryWindows",
+    false
+   ]
+  ],
+  "new": [
+   [
+    "Lib.Geometry.Manifold.Morse.SurgeryWindows.Hemisphere",
+    true,
+    "use"
+   ]
+  ]
+ },
+ "Lib.Geometry.Manifold.Morse.Rearrangement.AmbientTransversality": {
+  "old": [
+   [
+    "Lib.Geometry.Manifold.Morse.Existence",
+    true
+   ],
+   [
+    "Lib.Geometry.Manifold.Collar",
+    true
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.SurgeryWindows",
+    true
+   ],
+   [
+    "Lib.Geometry.Manifold.Immersion.Relative",
+    true
+   ]
+  ],
+  "new": []
+ },
+ "Lib.Geometry.Manifold.Morse.Rearrangement.BasinImages": {
+  "old": [
+   [
+    "Lib.Geometry.Manifold.Morse.Existence",
+    true
+   ],
+   [
+    "Lib.Geometry.Manifold.Collar",
+    true
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.SurgeryWindows",
+    true
+   ],
+   [
+    "Lib.Geometry.Manifold.Immersion.Relative",
+    true
+   ]
+  ],
+  "new": []
+ },
+ "Lib.Geometry.Manifold.Morse.Rearrangement.HeightCoordinates": {
+  "old": [
+   [
+    "Lib.Geometry.Manifold.Morse.Existence",
+    true
+   ],
+   [
+    "Lib.Geometry.Manifold.Collar",
+    true
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.SurgeryWindows",
+    true
+   ],
+   [
+    "Lib.Geometry.Manifold.Immersion.Relative",
+    true
+   ]
+  ],
+  "new": []
+ },
+ "Lib.Geometry.Manifold.Morse.Rearrangement.IntervalTranslation": {
+  "old": [
+   [
+    "Lib.Geometry.Manifold.Morse.Existence",
+    true
+   ],
+   [
+    "Lib.Geometry.Manifold.Collar",
+    true
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.SurgeryWindows",
+    true
+   ],
+   [
+    "Lib.Geometry.Manifold.Immersion.Relative",
+    true
+   ]
+  ],
+  "new": []
+ },
+ "Lib.Geometry.Manifold.Morse.Rearrangement.LevelConnectedness": {
+  "old": [
+   [
+    "Lib.Geometry.Manifold.Morse.Existence",
+    true
+   ],
+   [
+    "Lib.Geometry.Manifold.Collar",
+    true
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.SurgeryWindows",
+    true
+   ],
+   [
+    "Lib.Geometry.Manifold.Immersion.Relative",
+    true
+   ]
+  ],
+  "new": [
+   [
+    "Lib.Geometry.Manifold.Immersion.Relative.Arc",
+    true,
+    "use"
+   ]
+  ]
+ },
+ "Lib.Geometry.Manifold.Morse.Rearrangement.LevelTime": {
+  "old": [
+   [
+    "Lib.Geometry.Manifold.Morse.Existence",
+    true
+   ],
+   [
+    "Lib.Geometry.Manifold.Collar",
+    true
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.SurgeryWindows",
+    true
+   ],
+   [
+    "Lib.Geometry.Manifold.Immersion.Relative",
+    true
+   ]
+  ],
+  "new": []
+ },
+ "Lib.Geometry.Manifold.Morse.Rearrangement.LongitudinalBlend": {
+  "old": [
+   [
+    "Lib.Geometry.Manifold.Morse.Existence",
+    true
+   ],
+   [
+    "Lib.Geometry.Manifold.Collar",
+    true
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.SurgeryWindows",
+    true
+   ],
+   [
+    "Lib.Geometry.Manifold.Immersion.Relative",
+    true
+   ]
+  ],
+  "new": []
+ },
+ "Lib.Geometry.Manifold.Morse.Rearrangement.SmoothTransition": {
+  "old": [
+   [
+    "Lib.Geometry.Manifold.Morse.Existence",
+    true
+   ],
+   [
+    "Lib.Geometry.Manifold.Collar",
+    true
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.SurgeryWindows",
+    true
+   ],
+   [
+    "Lib.Geometry.Manifold.Immersion.Relative",
+    true
+   ]
+  ],
+  "new": []
+ },
+ "Lib.Geometry.Manifold.Morse.Rearrangement.TransverseChart": {
+  "old": [
+   [
+    "Lib.Geometry.Manifold.Morse.Existence",
+    true
+   ],
+   [
+    "Lib.Geometry.Manifold.Collar",
+    true
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.SurgeryWindows",
+    true
+   ],
+   [
+    "Lib.Geometry.Manifold.Immersion.Relative",
+    true
+   ]
+  ],
+  "new": [
+   [
+    "Lib.Geometry.Manifold.Immersion.Relative.FrameField",
+    true,
+    "use"
+   ]
+  ]
+ },
+ "Lib.Geometry.Manifold.Morse.Rearrangement.TubeMotion": {
+  "old": [
+   [
+    "Lib.Geometry.Manifold.Morse.Existence",
+    true
+   ],
+   [
+    "Lib.Geometry.Manifold.Collar",
+    true
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.SurgeryWindows",
+    true
+   ],
+   [
+    "Lib.Geometry.Manifold.Immersion.Relative",
+    true
+   ]
+  ],
+  "new": []
+ },
+ "Lib.Geometry.Manifold.Morse.RearrangementAmbient": {
+  "old": [
+   [
+    "Lib.Analysis.Calculus.MorseLemma",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Flow.HeightTranslating",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Existence",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Collar",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.SurgeryWindows",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Cancellation",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Immersion.Relative",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Rearrangement",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Connection",
+    false
+   ],
+   [
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris",
+    false
+   ]
+  ],
+  "new": [
+   [
+    "Lib.Geometry.Manifold.Morse.Rearrangement.AmbientTransversality",
+    true,
+    "use"
+   ]
+  ]
+ },
+ "Lib.Geometry.Manifold.Morse.RearrangementTheorem": {
+  "old": [
+   [
+    "Lib.Geometry.Manifold.Morse.Cancellation",
+    false
+   ]
+  ],
+  "new": [
+   [
+    "Lib.Geometry.Manifold.Morse.Cancellation.BandReplacement",
+    true,
+    "use"
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Cancellation.LevelExit",
+    true,
+    "use"
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Connection.TimeChange",
+    true,
+    "use"
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Rearrangement.IntervalTranslation",
+    true,
+    "use"
+   ]
+  ]
+ },
+ "Lib.Geometry.Manifold.Morse.SublevelSets": {
+  "old": [
+   [
+    "Lib.Analysis.Calculus.MorseLemma",
+    true
+   ],
+   [
+    "Lib.Geometry.Manifold.Flow.HeightTranslating",
+    true
+   ],
+   [
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris",
+    true
+   ]
+  ],
+  "new": []
+ },
+ "Lib.Geometry.Manifold.Morse.SurgeryCollapse.BeltTubeMeridian": {
+  "old": [
+   [
+    "Lib.Analysis.Calculus.MorseLemma",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Flow.HeightTranslating",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.SurgeryWindows",
+    false
+   ]
+  ],
+  "new": []
+ },
+ "Lib.Geometry.Manifold.Morse.SurgeryCollapse.CellExactSequence": {
+  "old": [
+   [
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris",
+    false
+   ]
+  ],
+  "new": []
+ },
+ "Lib.Geometry.Manifold.Morse.SurgeryCollapse.DiskCollapse": {
+  "old": [
+   [
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris",
+    false
+   ]
+  ],
+  "new": []
+ },
+ "Lib.Geometry.Manifold.Morse.SurgeryCollapse.DiskFilling": {
+  "old": [
+   [
+    "Lib.Geometry.Manifold.Immersion.Relative",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Existence",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.SurgeryWindows",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Whitney.CleanStrips",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Whitney.EmbeddedArcs",
+    false
+   ]
+  ],
+  "new": [
+   [
+    "Lib.Geometry.Manifold.Whitney.EmbeddedArcs.ImmersionRepair",
+    true,
+    "use"
+   ]
+  ]
+ },
+ "Lib.Geometry.Manifold.Morse.SurgeryCollapse.HandleCollapse": {
+  "old": [
+   [
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris",
+    false
+   ],
+   [
+    "Lib.Analysis.Calculus.MorseLemma",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Flow.HeightTranslating",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.SurgeryWindows",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Whitney.CleanStrips",
+    false
+   ]
+  ],
+  "new": []
+ },
+ "Lib.Geometry.Manifold.Morse.SurgeryCollapse.HandleExactSequence": {
+  "old": [
+   [
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris",
+    false
+   ],
+   [
+    "Lib.Analysis.Calculus.MorseLemma",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.SurgeryWindows",
+    false
+   ]
+  ],
+  "new": []
+ },
+ "Lib.Geometry.Manifold.Morse.SurgeryCollapse.IndexOrdering": {
+  "old": [
+   [
+    "Lib.Analysis.Calculus.MorseLemma",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Flow.HeightTranslating",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Cancellation",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Connection",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Cubic",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Rearrangement",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.SurgeryWindows",
+    false
+   ]
+  ],
+  "new": []
+ },
+ "Lib.Geometry.Manifold.Morse.SurgeryCollapse.LevelIsotopy": {
+  "old": [
+   [
+    "Lib.Analysis.Calculus.MorseLemma",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Flow.HeightTranslating",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Immersion.Relative",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Connection",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Rearrangement",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.SurgeryWindows",
+    false
+   ]
+  ],
+  "new": [
+   [
+    "Lib.Geometry.Manifold.Morse.Connection.TransverseTimeLifts",
+    true,
+    "use"
+   ]
+  ]
+ },
+ "Lib.Geometry.Manifold.Morse.SurgeryCollapse.LevelTransport": {
+  "old": [
+   [
+    "Lib.Analysis.Calculus.MorseLemma",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Flow.HeightTranslating",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Connection",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Existence",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Rearrangement",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.SurgeryWindows",
+    false
+   ]
+  ],
+  "new": []
+ },
+ "Lib.Geometry.Manifold.Morse.SurgeryCollapse.LocalDegreeConnecting": {
+  "old": [
+   [
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris",
+    false
+   ]
+  ],
+  "new": []
+ },
+ "Lib.Geometry.Manifold.Morse.SurgeryCollapse.MinimumReduction": {
+  "old": [
+   [
+    "Lib.Analysis.Calculus.MorseLemma",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Flow.HeightTranslating",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Cancellation",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Cubic",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.SurgeryWindows",
+    false
+   ]
+  ],
+  "new": []
+ },
+ "Lib.Geometry.Manifold.Morse.SurgeryCollapse.OnePointCover": {
+  "old": [
+   [
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris",
+    false
+   ]
+  ],
+  "new": []
+ },
+ "Lib.Geometry.Manifold.Morse.SurgeryCollapse.SphereOrientation": {
+  "old": [
+   [
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Whitney.CleanStrips",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Whitney.EmbeddedArcs",
+    false
+   ]
+  ],
+  "new": [
+   [
+    "Lib.Geometry.Manifold.Whitney.EmbeddedArcs.SphereNormalCoordinates",
+    true,
+    "use"
+   ]
+  ]
+ },
+ "Lib.Geometry.Manifold.Morse.SurgeryHomology": {
+  "old": [
+   [
+    "Lib.Analysis.Calculus.MorseLemma",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Flow.HeightTranslating",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Existence",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Collar",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.SurgeryWindows",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Cancellation",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Immersion.Relative",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Rearrangement",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Connection",
+    false
+   ],
+   [
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris",
+    false
+   ]
+  ],
+  "new": []
+ },
+ "Lib.Geometry.Manifold.Morse.SurgeryWindows.Avoidance": {
+  "old": [
+   [
+    "Lib.Geometry.Manifold.Morse.Existence",
+    true
+   ]
+  ],
+  "new": [
+   [
+    "Lib.Geometry.Manifold.Morse.Existence.LevelSurgery",
+    true,
+    "reexport:Lib.Geometry.Manifold.Morse.SurgeryWindows.BeltComplement"
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Existence.SmoothApproximation",
+    true,
+    "reexport:Lib.Geometry.Manifold.Morse.SurgeryWindows.ImageComplement"
+   ]
+  ]
+ },
+ "Lib.Geometry.Manifold.Morse.SurgeryWindows.BeltComplement": {
+  "old": [
+   [
+    "Lib.Analysis.Calculus.MorseLemma",
+    true
+   ],
+   [
+    "Lib.Geometry.Manifold.Flow.HeightTranslating",
+    true
+   ]
+  ],
+  "new": []
+ },
+ "Lib.Geometry.Manifold.Morse.SurgeryWindows.SurgeryData": {
+  "old": [
+   [
+    "Lib.Geometry.Manifold.Collar",
+    true
+   ]
+  ],
+  "new": [
+   [
+    "Lib.Geometry.Manifold.Collar.LevelTransport",
+    true,
+    "use"
+   ],
+   [
+    "Lib.Geometry.Manifold.Collar.SphereCoordinates",
+    true,
+    "use"
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Existence.BeltCore",
+    true,
+    "use"
+   ]
+  ]
+ },
+ "Lib.Geometry.Manifold.RegularLevel": {
+  "old": [
+   [
+    "Lib.Analysis.Calculus.MorseLemma",
+    true
+   ]
+  ],
+  "new": []
+ },
+ "Lib.Geometry.Manifold.Transversality.CenteredChart": {
+  "old": [
+   [
+    "Lib.Geometry.Manifold.Morse.Existence",
+    true
+   ]
+  ],
+  "new": [
+   [
+    "Lib.Geometry.Manifold.Flow.Compact",
+    true,
+    "use"
+   ]
+  ]
+ },
+ "Lib.Geometry.Manifold.Transversality.MorseBelt": {
+  "old": [
+   [
+    "Lib.Geometry.Manifold.Morse.SurgeryWindows",
+    true
+   ]
+  ],
+  "new": [
+   [
+    "Lib.Geometry.Manifold.Morse.SurgeryWindows.SurgeryData",
+    true,
+    "use"
+   ]
+  ]
+ },
+ "Lib.Geometry.Manifold.Transversality.RegularValues": {
+  "old": [
+   [
+    "Lib.Geometry.Manifold.Morse.Existence",
+    true
+   ]
+  ],
+  "new": [
+   [
+    "Lib.Geometry.Manifold.Flow.Compact",
+    true,
+    "use"
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Existence.PartialChart",
+    true,
+    "use"
+   ]
+  ]
+ },
+ "Lib.Geometry.Manifold.Transversality.Transverse": {
+  "old": [
+   [
+    "Lib.Geometry.Manifold.Morse.Existence",
+    true
+   ]
+  ],
+  "new": []
+ },
+ "Lib.Geometry.Manifold.VectorBundle.ProjectionBundle": {
+  "old": [
+   [
+    "Lib.Analysis.Calculus.MorseLemma",
+    true
+   ],
+   [
+    "Lib.Geometry.Manifold.Flow.HeightTranslating",
+    true
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Existence",
+    true
+   ]
+  ],
+  "new": []
+ },
+ "Lib.Geometry.Manifold.Whitney.AnnularExtension": {
+  "old": [
+   [
+    "Lib.Geometry.Manifold.Whitney.CleanStrips",
+    false
+   ]
+  ],
+  "new": [
+   [
+    "Lib.Geometry.Manifold.Immersion.Relative.TubularNeighborhood",
+    true,
+    "reexport:Lib.Geometry.Manifold.Whitney.EmbeddedArcs.WhitneyDisc"
+   ],
+   [
+    "Lib.Geometry.Manifold.Whitney.CleanStrips.BeltIntersection",
+    true,
+    "reexport:Lib.Geometry.Manifold.Whitney.EmbeddedArcs.BeltBigon"
+   ],
+   [
+    "Lib.Geometry.Manifold.Whitney.CleanStrips.BigonBoundary",
+    true,
+    "reexport:Lib.Geometry.Manifold.Whitney.EmbeddedArcs.WhitneyDisc"
+   ],
+   [
+    "Lib.Geometry.Manifold.Whitney.CleanStrips.StripNormalData",
+    true,
+    "reexport:Lib.Geometry.Manifold.Whitney.FrameField.RankThreeFrame"
+   ]
+  ]
+ },
+ "Lib.Geometry.Manifold.Whitney.CleanStrips.CrossingChart": {
+  "old": [
+   [
+    "Lib.Geometry.Manifold.Collar",
+    false
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Existence",
+    false
+   ]
+  ],
+  "new": []
+ },
+ "Lib.Geometry.Manifold.Whitney.CleanStrips.NormalCoordinate": {
+  "old": [
+   [
+    "Lib.Geometry.Manifold.Morse.Existence",
+    false
+   ]
+  ],
+  "new": [
+   [
+    "Lib.Geometry.Manifold.Morse.Existence.PartialChart",
+    true,
+    "use"
+   ]
+  ]
+ },
+ "Lib.Geometry.Manifold.Whitney.EmbeddedArcs.CornerCharts": {
+  "old": [
+   [
+    "Lib.Geometry.Manifold.Whitney.CleanStrips",
+    false
+   ]
+  ],
+  "new": [
+   [
+    "Lib.Geometry.Manifold.Immersion.Relative.TubularNeighborhood",
+    true,
+    "use"
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Connection.TimeChange",
+    true,
+    "reexport:Lib.Geometry.Manifold.Whitney.EmbeddedArcs.StripPair"
+   ],
+   [
+    "Lib.Geometry.Manifold.Whitney.CleanStrips.BigonBoundary",
+    true,
+    "reexport:Lib.Geometry.Manifold.Whitney.EmbeddedArcs.StripPair"
+   ],
+   [
+    "Lib.Geometry.Manifold.Whitney.CleanStrips.StripNormalData",
+    true,
+    "reexport:Lib.Geometry.Manifold.Whitney.EmbeddedArcs.StripAlongArc"
+   ]
+  ]
+ },
+ "Lib.Geometry.Manifold.Whitney.EmbeddedArcs.SmallPerturbation": {
+  "old": [
+   [
+    "Lib.Geometry.Manifold.Collar",
+    false
+   ]
+  ],
+  "new": [
+   [
+    "Lib.Geometry.Manifold.Collar.SmallPerturbation",
+    true,
+    "use"
+   ]
+  ]
+ },
+ "Lib.Geometry.Manifold.Whitney.EmbeddedArcs.SphereNormalCoordinates": {
+  "old": [
+   [
+    "Lib.Geometry.Manifold.Whitney.CleanStrips",
+    false
+   ]
+  ],
+  "new": [
+   [
+    "Lib.Geometry.Manifold.Whitney.CleanStrips.SphereNormal",
+    true,
+    "use"
+   ]
+  ]
+ },
+ "Lib.Geometry.Manifold.Whitney.EmbeddedArcs.StripInterpolation": {
+  "old": [
+   [
+    "Lib.Geometry.Manifold.Whitney.CleanStrips",
+    false
+   ]
+  ],
+  "new": [
+   [
+    "Lib.Geometry.Manifold.Whitney.CleanStrips.NormalCoordinate",
+    true,
+    "use"
+   ],
+   [
+    "Lib.Geometry.Manifold.Whitney.CleanStrips.StripModel",
+    true,
+    "use"
+   ]
+  ]
+ },
+ "Lib.Geometry.Manifold.Whitney.EmbeddedArcs.TransverseCoordinates": {
+  "old": [
+   [
+    "Lib.Geometry.Manifold.Whitney.CleanStrips",
+    false
+   ]
+  ],
+  "new": [
+   [
+    "Lib.Geometry.Manifold.Immersion.Relative.FrameField",
+    true,
+    "use"
+   ],
+   [
+    "Lib.Geometry.Manifold.Whitney.CleanStrips.NormalCoordinate",
+    true,
+    "use"
+   ]
+  ]
+ },
+ "Lib.Geometry.Manifold.Whitney.FrameField.BoundaryField": {
+  "old": [
+   [
+    "Lib.Geometry.Manifold.Whitney.CleanStrips",
+    false
+   ]
+  ],
+  "new": [
+   [
+    "Lib.Geometry.Manifold.Whitney.CleanStrips.BigonBoundary",
+    true,
+    "use"
+   ]
+  ]
+ },
+ "Lib.Geometry.Manifold.Whitney.FrameField.Complement": {
+  "old": [
+   [
+    "Lib.Geometry.Manifold.Collar",
+    false
+   ]
+  ],
+  "new": [
+   [
+    "Lib.Geometry.Manifold.Collar.RangeTransport",
+    true,
+    "use"
+   ]
+  ]
+ },
+ "Lib.Geometry.Manifold.Whitney.FrameField.SheetNormal": {
+  "old": [
+   [
+    "Lib.Geometry.Manifold.Whitney.CleanStrips",
+    false
+   ]
+  ],
+  "new": [
+   [
+    "Lib.Geometry.Manifold.Whitney.CleanStrips.StripNormalData",
+    true,
+    "use"
+   ]
+  ]
+ },
+ "Lib.Geometry.Manifold.Whitney.RankThreeModel.GraphMotion": {
+  "old": [
+   [
+    "Lib.Geometry.Manifold.Whitney.EmbeddedArcs",
+    false
+   ]
+  ],
+  "new": [
+   [
+    "Lib.Geometry.Manifold.Whitney.EmbeddedArcs.FiberRestriction",
+    true,
+    "reexport:Lib.Geometry.Manifold.Whitney.RankThreeModel.ModelGraphMotion"
+   ],
+   [
+    "Lib.Geometry.Manifold.Whitney.EmbeddedArcs.SmallPerturbation",
+    true,
+    "use"
+   ],
+   [
+    "Lib.Geometry.Manifold.Whitney.FrameField.RankThreeFrame",
+    true,
+    "reexport:Lib.Geometry.Manifold.Whitney.RankThreeModel.CompatibleChart"
+   ],
+   [
+    "Lib.Geometry.Manifold.Whitney.FrameField.SheetNormal",
+    true,
+    "reexport:Lib.Geometry.Manifold.Whitney.RankThreeModel.TangentAdaptedChart"
+   ]
+  ]
+ },
+ "Lib.Geometry.Manifold.Whitney.RankThreeModel.SheetRecognition": {
+  "old": [
+   [
+    "Lib.Geometry.Manifold.Whitney.EmbeddedArcs",
+    false
+   ]
+  ],
+  "new": [
+   [
+    "Lib.Geometry.Manifold.Whitney.FrameField.BoundaryArcs",
+    true,
+    "use"
+   ]
+  ]
+ },
+ "Lib.Geometry.Manifold.Whitney.RankThreeModel.SheetRetiming": {
+  "old": [
+   [
+    "Lib.Geometry.Manifold.Whitney.EmbeddedArcs",
+    false
+   ]
+  ],
+  "new": [
+   [
+    "Lib.Geometry.Manifold.Whitney.CleanStrips.StripNormalData",
+    true,
+    "use"
+   ]
+  ]
+ },
+ "Lib.Geometry.Manifold.WhitneyEmbedding": {
+  "old": [
+   [
+    "Lib.Analysis.Calculus.MorseLemma",
+    true
+   ],
+   [
+    "Lib.Geometry.Manifold.Flow.HeightTranslating",
+    true
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Existence",
+    true
+   ]
+  ],
+  "new": [
+   [
+    "Lib.Geometry.Manifold.Morse.Existence.AttachingUnion",
+    true,
+    "use"
+   ],
+   [
+    "Lib.Geometry.Manifold.Morse.Existence.PartialChart",
+    true,
+    "reexport:Lib.Geometry.Manifold.Whitney.FrameField.SheetCoordinates"
+   ]
+  ]
+ },
+ "Lib.Topology.Dimension.CubeBoundaryThreeBricks": {
+  "old": [
+   [
+    "Lib.Topology.Dimension.CubeBoundaryThreeCells",
+    true
+   ]
+  ],
+  "new": [
+   [
+    "Lib.Topology.Dimension.CubeBoundaryThreeCells.Coverage",
+    true,
+    "use"
+   ],
+   [
+    "Lib.Topology.Dimension.CubeBoundaryThreeCells.RelInterior",
+    true,
+    "reexport:Lib.Topology.Dimension.CubeBoundaryThreeDimension"
+   ],
+   [
+    "Lib.Topology.Dimension.CubeBoundaryThreeCells.Separation",
+    true,
+    "reexport:Lib.Topology.Dimension.CubeBoundaryThreeDimension"
+   ],
+   [
+    "Lib.Topology.Dimension.CubeBoundaryThreeCells.SquareBoundary",
+    true,
+    "use"
+   ]
+  ]
+ },
+ "Lib.Topology.Homotopy.CellAttachment": {
+  "old": [
+   [
+    "Lib.Geometry.Manifold.Collar",
+    false
+   ],
+   [
+    "Lib.Analysis.Calculus.MorseLemma",
+    false
+   ],
+   [
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris",
+    false
+   ]
+  ],
+  "new": []
+ },
+ "Lib.Topology.Homotopy.CylinderHEP": {
+  "old": [
+   [
+    "Lib.Analysis.Calculus.MorseLemma",
+    true
+   ],
+   [
+    "Lib.Geometry.Manifold.Flow.HeightTranslating",
+    true
+   ],
+   [
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris",
+    true
+   ]
+  ],
+  "new": []
+ },
+ "Lib.Topology.MappingTorus.Basic": {
+  "old": [
+   [
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris",
+    true
+   ]
+  ],
+  "new": []
+ },
+ "Lib.Topology.MappingTorus.HomologyCover": {
+  "old": [
+   [
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris",
+    false
+   ]
+  ],
+  "new": []
+ },
+ "Lib.Topology.MappingTorus.Wang": {
+  "old": [
+   [
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris",
+    false
+   ],
+   [
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct",
+    false
+   ]
+  ],
+  "new": []
+ },
+ "Lib.reports.wave-1.prism.lift_examples": {
+  "old": [
+   [
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator",
+    false
+   ]
+  ],
+  "new": [
+   [
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator.ComposeHomotopies",
+    true,
+    "use"
+   ],
+   [
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator.SubdivisionTriangleClass",
+    true,
+    "use"
+   ]
+  ]
+ },
+ "Shared.Proof.AlgebraicTopology.Hurewicz.DegreeSix": {
+  "old": [
+   [
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris",
+    false
+   ],
+   [
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator",
+    false
+   ],
+   [
+    "Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition",
+    false
+   ]
+  ],
+  "new": []
+ }
+}

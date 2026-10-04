@@ -7,12 +7,9 @@ module
 
 public import Mathlib
 public import Lib.Geometry.Manifold.Morse.Handle
-public import Lib.Analysis.Calculus.MorseLemma
 public import Lib.Geometry.Manifold.Morse.SublevelSets
 public import Lib.Geometry.Manifold.Morse.Index
-public import Lib.Geometry.Manifold.Flow.HeightTranslating
 public import Lib.AlgebraicTopology.SingularHomology.Chains
-public import Lib.AlgebraicTopology.SingularHomology.MayerVietoris
 public import Lib.AlgebraicTopology.SingularHomology.HomotopyInvariance
 public import Lib.Topology.Homotopy.HandleRetraction
 public import Lib.AlgebraicTopology.SingularHomology.SphereHomology

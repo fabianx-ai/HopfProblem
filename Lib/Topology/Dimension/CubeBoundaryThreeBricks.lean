@@ -6,7 +6,10 @@ public import Lib.Topology.Dimension.Covering
 public import Lib.Topology.Dimension.CubeBoundaryThreeLebesgue
 public import Mathlib.Analysis.Normed.Module.Convex
 
-public import Lib.Topology.Dimension.CubeBoundaryThreeCells
+public import Lib.Topology.Dimension.CubeBoundaryThreeCells.Coverage
+public import Lib.Topology.Dimension.CubeBoundaryThreeCells.RelInterior
+public import Lib.Topology.Dimension.CubeBoundaryThreeCells.Separation
+public import Lib.Topology.Dimension.CubeBoundaryThreeCells.SquareBoundary
 public import Mathlib.Data.Finite.Sum
 public import Mathlib.Topology.MetricSpace.HausdorffDistance
 

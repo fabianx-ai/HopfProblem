@@ -65,28 +65,18 @@ import Hopf.LibShims
 import Hopf.LCP.BoundaryTopology
 import Lib.AlgebraicTopology.SingularHomology.CirclePaths
 import Lib.Geometry.Manifold.Morse.Handle
-import Lib.Analysis.Calculus.MorseLemma
 import Lib.Geometry.Manifold.Flow.Compact
 import Lib.Geometry.Manifold.RegularLevel
 import Lib.Geometry.Manifold.Morse.HandleAttachment
-import Lib.Geometry.Manifold.Flow.HeightTranslating
-import Lib.Geometry.Manifold.Morse.Existence
 import Lib.Analysis.ODE.SmoothFlow
 import Lib.Geometry.Manifold.WhitneyEmbedding
 import Lib.Geometry.Manifold.VectorBundle.ProjectionBundle
-import Lib.Geometry.Manifold.Collar
-import Lib.Geometry.Manifold.Morse.SurgeryWindows
-import Lib.Geometry.Manifold.Morse.Cancellation
 import Lib.Geometry.Manifold.Transversality.Basic
-import Lib.Geometry.Manifold.Immersion.Relative
-import Lib.Geometry.Manifold.Morse.Rearrangement
-import Lib.Geometry.Manifold.Morse.Connection
 import Mathlib
 import Lib.Topology.Homotopy.HandleRetraction
 import Lib.Algebra.Homology.MayerVietorisShortExact
 import Lib.AlgebraicTopology.SingularHomology.Chains
 import Lib.AlgebraicTopology.SingularHomology.ModuleHomology
-import Lib.AlgebraicTopology.SingularHomology.MayerVietoris
 import Lib.AlgebraicTopology.SingularHomology.HomotopyInvariance
 import Lib.AlgebraicTopology.SingularHomology.LocalDegree
 import Lib.AlgebraicTopology.SingularHomology.LinearSphereAction
@@ -115,11 +105,8 @@ import Lib.AlgebraicTopology.SingularHomology.CrossInsert
 import Lib.AlgebraicTopology.Hurewicz.SimplexCube
 import Lib.AlgebraicTopology.Hurewicz.HomotopyExtension
 import Lib.AlgebraicTopology.Hurewicz.CubeTriangulation
-import Lib.AlgebraicTopology.Hurewicz.PrismOperator
-import Lib.AlgebraicTopology.Hurewicz.Subdivision
 import Lib.AlgebraicTopology.Hurewicz.CubeGluing
 import Lib.AlgebraicTopology.Hurewicz.Degree
-import Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition
 import Lib.AlgebraicTopology.Hurewicz.HopfDegree
 import Lib.AlgebraicTopology.FundamentalGroup.SimplyConnectedCover
 import Lib.AlgebraicTopology.FundamentalGroup.TwoSimplyConnectedCover
@@ -143,7 +130,6 @@ import Lib.Analysis.Complex.Cousin
 import Lib.Analysis.Complex.SquareRoot
 import Lib.Analysis.Complex.Mobius
 import Lib.Analysis.Complex.SchwarzReflection
-import Lib.Analysis.Complex.RiemannMapping
 import Lib.Analysis.Complex.RiemannMapping.Steps
 import Lib.Geometry.Manifold.Complex.Biholomorph
 import Lib.GroupTheory.Abelianization.SemidirectProduct
@@ -153,7 +139,6 @@ import Lib.GroupTheory.SplitExtension
 import Lib.Topology.FiberBundle.TwoOpenTransition
 import S6.TwoExceptionalGluing
 import Lib.Topology.Covering.DiagonalQuotient
-import Lib.AlgebraicTopology.SingularHomology.CrossProduct
 import S6Shortcuts
 
 set_option maxSynthPendingDepth 3

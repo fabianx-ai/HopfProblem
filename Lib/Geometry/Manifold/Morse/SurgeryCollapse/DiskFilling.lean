@@ -5,14 +5,10 @@ Authors: Fabian Franz
 -/
 import Mathlib
 import Lib.AlgebraicTopology.SingularHomology.Sphere
-import Lib.Geometry.Manifold.Immersion.Relative
-import Lib.Geometry.Manifold.Morse.Existence
 import Lib.Geometry.Manifold.Morse.RadialFilling
 import Lib.Geometry.Manifold.Morse.Reeb
-import Lib.Geometry.Manifold.Morse.SurgeryWindows
 import Lib.Geometry.Manifold.Whitney.AnnularExtension
-import Lib.Geometry.Manifold.Whitney.CleanStrips
-import Lib.Geometry.Manifold.Whitney.EmbeddedArcs
+import Lib.Geometry.Manifold.Whitney.EmbeddedArcs.ImmersionRepair
 
 /-!
 # Filling a null-homotopic embedded circle by a smoothly embedded disk

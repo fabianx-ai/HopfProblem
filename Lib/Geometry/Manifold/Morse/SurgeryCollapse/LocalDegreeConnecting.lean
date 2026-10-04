@@ -8,7 +8,6 @@ import Lib.AlgebraicTopology.SingularHomology.HomotopyInvariance
 import Lib.AlgebraicTopology.SingularHomology.LinearSphereAction
 import Lib.AlgebraicTopology.SingularHomology.LocalDegree
 import Lib.AlgebraicTopology.SingularHomology.LocalDegreeNeighborhoods
-import Lib.AlgebraicTopology.SingularHomology.MayerVietoris
 import Lib.AlgebraicTopology.SingularHomology.Naturality
 import Lib.AlgebraicTopology.SingularHomology.Sphere
 import Lib.AlgebraicTopology.SingularHomology.Suspension

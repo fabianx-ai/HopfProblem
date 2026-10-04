@@ -1,18 +1,3 @@
-/-
-Copyright (c) 2026 Fabian Franz. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-Authors: Fabian Franz
--/
-import Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition.PrismRealization
-import Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition.StandardPrism
-import Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition.PermutationInsertion
-import Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition.CubeChain
-import Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition.IntervalSplit
-import Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition.Concatenation
-import Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition.KuhnDecomposition
-import Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition.Cycle
-
-/-!
 # The fundamental cube chain and its Kuhn decomposition
 
 This module re-exports the singular chain of a based `n`-cube and its decomposition into
@@ -42,4 +27,17 @@ The development lives in the following modules, in dependency order.
   `cubeChain p = ∑ e, cubeOrientation e • simplexChain (p ∘ cubeSimplex e)`.
 * `Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition.Cycle`: the cube chain is a cycle;
   the cube cycle and the cube homology class.
--/
+
+## Modules
+
+This directory replaces the former facade module `Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition` (deleted; its module docstring is the text
+above, verbatim). Import the pieces directly:
+
+* `Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition.Concatenation`
+* `Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition.CubeChain`
+* `Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition.Cycle`
+* `Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition.IntervalSplit`
+* `Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition.KuhnDecomposition`
+* `Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition.PermutationInsertion`
+* `Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition.PrismRealization`
+* `Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition.StandardPrism`

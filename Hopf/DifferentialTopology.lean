@@ -63,22 +63,13 @@ Original source lines 80--31127; see PROVENANCE.md.
 
 import Hopf.LibShims
 import Lib.Geometry.Manifold.Morse.Handle
-import Lib.Analysis.Calculus.MorseLemma
 import Lib.Geometry.Manifold.Flow.Compact
 import Lib.Geometry.Manifold.RegularLevel
 import Lib.Geometry.Manifold.Morse.HandleAttachment
-import Lib.Geometry.Manifold.Flow.HeightTranslating
-import Lib.Geometry.Manifold.Morse.Existence
 import Lib.Analysis.ODE.SmoothFlow
 import Lib.Geometry.Manifold.WhitneyEmbedding
 import Lib.Geometry.Manifold.VectorBundle.ProjectionBundle
-import Lib.Geometry.Manifold.Collar
-import Lib.Geometry.Manifold.Morse.SurgeryWindows
-import Lib.Geometry.Manifold.Morse.Cancellation
 import Lib.Geometry.Manifold.Transversality.Basic
-import Lib.Geometry.Manifold.Immersion.Relative
-import Lib.Geometry.Manifold.Morse.Rearrangement
-import Lib.Geometry.Manifold.Morse.Connection
 import Mathlib
 
 set_option maxSynthPendingDepth 3

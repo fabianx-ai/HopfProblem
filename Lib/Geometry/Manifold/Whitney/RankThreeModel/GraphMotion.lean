@@ -5,7 +5,10 @@ Authors: Fabian Franz
 -/
 
 import Mathlib
-import Lib.Geometry.Manifold.Whitney.EmbeddedArcs
+import Lib.Geometry.Manifold.Whitney.EmbeddedArcs.FiberRestriction
+import Lib.Geometry.Manifold.Whitney.EmbeddedArcs.SmallPerturbation
+import Lib.Geometry.Manifold.Whitney.FrameField.RankThreeFrame
+import Lib.Geometry.Manifold.Whitney.FrameField.SheetNormal
 
 /-!
 # Graph motions of the Whitney pair model

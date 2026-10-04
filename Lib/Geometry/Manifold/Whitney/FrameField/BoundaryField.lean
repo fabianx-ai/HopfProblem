@@ -5,7 +5,7 @@ Authors: Fabian Franz
 -/
 
 import Mathlib
-import Lib.Geometry.Manifold.Whitney.CleanStrips
+import Lib.Geometry.Manifold.Whitney.CleanStrips.BigonBoundary
 
 /-!
 # Fields on a neighbourhood of the boundary of the bigon

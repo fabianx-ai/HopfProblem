@@ -7,7 +7,6 @@ import Mathlib
 import Lib.AlgebraicTopology.SingularHomology.Chains
 import Lib.AlgebraicTopology.SingularHomology.CircleProduct
 import Lib.AlgebraicTopology.SingularHomology.HomotopyInvariance
-import Lib.AlgebraicTopology.SingularHomology.MayerVietoris
 import Lib.AlgebraicTopology.SingularHomology.ModuleHomology
 import Lib.Geometry.Manifold.Morse.Handle
 import Lib.Topology.Homotopy.CellAttachment

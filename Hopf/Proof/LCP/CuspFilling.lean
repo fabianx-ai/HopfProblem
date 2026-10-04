@@ -66,28 +66,18 @@ import Hopf.LCP.CuspFilling
 import Hopf.Proof.LCP.LocalModels
 import Lib.AlgebraicTopology.SingularHomology.CirclePaths
 import Lib.Geometry.Manifold.Morse.Handle
-import Lib.Analysis.Calculus.MorseLemma
 import Lib.Geometry.Manifold.Flow.Compact
 import Lib.Geometry.Manifold.RegularLevel
 import Lib.Geometry.Manifold.Morse.HandleAttachment
-import Lib.Geometry.Manifold.Flow.HeightTranslating
-import Lib.Geometry.Manifold.Morse.Existence
 import Lib.Analysis.ODE.SmoothFlow
 import Lib.Geometry.Manifold.WhitneyEmbedding
 import Lib.Geometry.Manifold.VectorBundle.ProjectionBundle
-import Lib.Geometry.Manifold.Collar
-import Lib.Geometry.Manifold.Morse.SurgeryWindows
-import Lib.Geometry.Manifold.Morse.Cancellation
 import Lib.Geometry.Manifold.Transversality.Basic
-import Lib.Geometry.Manifold.Immersion.Relative
-import Lib.Geometry.Manifold.Morse.Rearrangement
-import Lib.Geometry.Manifold.Morse.Connection
 import Mathlib
 import Lib.Topology.Homotopy.HandleRetraction
 import Lib.Algebra.Homology.MayerVietorisShortExact
 import Lib.AlgebraicTopology.SingularHomology.Chains
 import Lib.AlgebraicTopology.SingularHomology.ModuleHomology
-import Lib.AlgebraicTopology.SingularHomology.MayerVietoris
 import Lib.AlgebraicTopology.SingularHomology.HomotopyInvariance
 import Lib.AlgebraicTopology.SingularHomology.LocalDegree
 import Lib.AlgebraicTopology.SingularHomology.LinearSphereAction
@@ -114,11 +104,8 @@ import Lib.AlgebraicTopology.SingularHomology.CrossInsert
 import Lib.AlgebraicTopology.Hurewicz.SimplexCube
 import Lib.AlgebraicTopology.Hurewicz.HomotopyExtension
 import Lib.AlgebraicTopology.Hurewicz.CubeTriangulation
-import Lib.AlgebraicTopology.Hurewicz.PrismOperator
-import Lib.AlgebraicTopology.Hurewicz.Subdivision
 import Lib.AlgebraicTopology.Hurewicz.CubeGluing
 import Lib.AlgebraicTopology.Hurewicz.Degree
-import Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition
 import Lib.AlgebraicTopology.Hurewicz.HopfDegree
 import Lib.AlgebraicTopology.FundamentalGroup.SimplyConnectedCover
 import Lib.AlgebraicTopology.FundamentalGroup.TwoSimplyConnectedCover
@@ -134,7 +121,6 @@ import Lib.Topology.Homotopy.LocalCollapse
 import Lib.Topology.Covering.InvariantSubset
 import Lib.AlgebraicTopology.SingularHomology.CircleProduct
 import Lib.Topology.Covering.Quotient
-import Lib.AlgebraicTopology.SingularHomology.CrossProduct
 
 /-! Proof-specific part of `Hopf.LCP.CuspFilling` (split by lean-agent-ide `split_module`); the stock part that is
 still to be moved into `Lib/` stays in `Hopf/LCP/CuspFilling.lean`. Declarations, names and namespaces are unchanged. -/

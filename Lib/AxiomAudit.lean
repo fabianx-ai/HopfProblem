@@ -2,7 +2,6 @@ import Lib
 import Lib.Topology.Homotopy.BasedDiskLifting
 import Lib.Topology.Homotopy.RelativeDiskLifting
 import Lib.Topology.Dimension.CubeBoundaryThree
-import Lib.Topology.Dimension.CubeBoundaryThreeCells
 import Lib.Topology.Dimension.CubeBoundaryThreeLebesgue
 
 /-!

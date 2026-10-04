@@ -4,20 +4,16 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Fabian Franz
 -/
 import Mathlib
-import Lib.AlgebraicTopology.SingularHomology.MayerVietoris
 import Lib.AlgebraicTopology.SingularHomology.HomotopyInvariance
 import Lib.AlgebraicTopology.SingularHomology.Sphere
 import Lib.AlgebraicTopology.SingularHomology.SphereHomology
-import Lib.Analysis.Calculus.MorseLemma
-import Lib.Geometry.Manifold.Flow.HeightTranslating
-import Lib.Geometry.Manifold.Immersion.Relative
 import Lib.Geometry.Manifold.Transversality.Basic
 import Lib.Geometry.Manifold.Morse.HandleAttachment
-import Lib.Geometry.Manifold.Morse.SurgeryWindows
-import Lib.Geometry.Manifold.Morse.Cancellation
-import Lib.Geometry.Manifold.Morse.Rearrangement
+import Lib.Geometry.Manifold.Morse.Cancellation.CriticalGerms
+import Lib.Geometry.Manifold.Morse.Rearrangement.LevelTime
+import Lib.Geometry.Manifold.Morse.Rearrangement.TubeMotion
 import Hopf.Proof.Geometry.Manifold.Morse.Rearrangement.SheetArc
-import Lib.Geometry.Manifold.Morse.Connection
+import Lib.Geometry.Manifold.Morse.Connection.TimeChange
 import Lib.Geometry.Manifold.Morse.CellStructure
 import Lib.LinearAlgebra.Matrix.TransvectionReduction
 import Lib.Geometry.Manifold.Morse.CutTransport

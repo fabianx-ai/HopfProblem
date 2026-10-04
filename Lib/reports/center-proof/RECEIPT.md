@@ -156,6 +156,26 @@ CS's `Hopf/Proof/FiniteCore.lean:65` import of `Lib.Algebra.Group.LatticeImageCo
 The two anonymous `local instance`s of `SphereTwo.lean` get auto-generated names from the module
 root (`…_hopf` before, `…_center` now); local and unreferenced.
 
+### Facade dissolution (`work/facades`, receipt `Lib/reports/facades/RECEIPT.md`)
+
+The import-only facade modules are deleted on this branch. Of the six facade names that `W4W1/` imports on
+CS (7 import lines), two are deleted here; the other four are not facades on this branch (they carry
+declarations next to their directory) and stay valid import targets.
+
+| CS import line(s) | here | replace by |
+|---|---|---|
+| `W4W1/NativeCornerThree.lean:1` `import Lib.Analysis.Complex.RiemannMapping` | deleted | `Lib.Analysis.Complex.RiemannMapping.{Existence, DiscBoundaryEscape, HalfStripChart, RectanglePrimitive, ModulusOneReflection, BoundaryDerivative, ConformalExtension, PrincipalRoot, DiscCompactification}` (the nine imports of the deleted facade; the tenth piece, `.Steps`, comes in through `.Existence`) — plus the `Shared`/`Center` modules of the table above |
+| `W4W1/CenterHigherNearbyComparison.lean:7`, `W4W1/CenterR1ZeroStalkCriterion.lean:1` `import Lib.CategoryTheory.Sites.Leray.FibreStalkEvaluation` | deleted | `Lib.CategoryTheory.Sites.Leray.FibreStalkEvaluation.CanonicalPositive` (the facade's only import; all ten pieces of the directory are an acceptable superset) |
+| `W4W1/Worlds.lean:8` `public import Lib.Algebra.Homology.ThreeColumnPage` | module with declarations | unchanged |
+| `W4W1/CenterConstantPushforward.lean:8` `import Lib.Topology.Sheaves.ConstantPushforward` | module with declarations | unchanged |
+| `W4W1/CenterCuspRegularCoordinateDisc.lean:8` `import Lib.Topology.Sheaves.OpenRestriction` | module with declarations | unchanged |
+| `W4W1/CenterRegularH1LocalSystem.lean:8` `import Lib.Topology.Sheaves.PrincipalCoverLocalSystem` | module with declarations | unchanged |
+
+The replacement lists are exactly the deleted facades' import lines, so a rebased W4W1 file sees the same
+environment as through the facade here. Caveat: CS's own `Lib.Analysis.Complex.RiemannMapping` (the
+monolith there) also imports `Mathlib`, `SchwarzReflection`, `Mobius` and `Instances.RiemannSphere`; the
+facade here did not, independently of this dissolution.
+
 ## Checks (head `457b3861` before this receipt)
 
 Baseline before any edit, `b210042f`: `lake build Lib Unused Hopf.Proof.AxiomAudit` →

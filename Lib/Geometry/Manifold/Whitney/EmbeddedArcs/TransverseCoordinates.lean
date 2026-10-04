@@ -5,7 +5,8 @@ Authors: Fabian Franz
 -/
 
 import Mathlib
-import Lib.Geometry.Manifold.Whitney.CleanStrips
+import Lib.Geometry.Manifold.Immersion.Relative.FrameField
+import Lib.Geometry.Manifold.Whitney.CleanStrips.NormalCoordinate
 
 /-!
 # The normal derivative at a transverse intersection

@@ -1,28 +1,3 @@
-/-
-Copyright (c) 2026 Fabian Franz. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-Authors: Fabian Franz
--/
-module
-
-public import Lib.Analysis.Calculus.MorseLemma.PartialDiffeomorph
-public import Lib.Analysis.Calculus.MorseLemma.PartitionOfUnity
-public import Lib.Analysis.Calculus.MorseLemma.Cutoff
-public import Lib.Analysis.Calculus.MorseLemma.SymmetricForm
-public import Lib.Analysis.Calculus.MorseLemma.SignedCoordinates
-public import Lib.Analysis.Calculus.MorseLemma.ParametricIntegral
-public import Lib.Analysis.Calculus.MorseLemma.TaylorFactor
-public import Lib.Analysis.Calculus.MorseLemma.Congruence
-public import Lib.Analysis.Calculus.MorseLemma.MorseChart
-public import Lib.Analysis.Calculus.MorseLemma.LinearPerturbation
-public import Lib.Analysis.Calculus.MorseLemma.CriticalPoints
-public import Lib.Analysis.Calculus.MorseLemma.SignedMorseChart
-public import Lib.Analysis.Calculus.MorseLemma.SplitChart
-public import Lib.Analysis.Calculus.MorseLemma.DescentField
-public import Lib.Analysis.Calculus.MorseLemma.AdaptedDescentField
-public import Lib.Analysis.Calculus.MorseLemma.Existence
-
-/-!
 # The Morse lemma and existence of Morse functions (facade)
 
 This module only re-exports its pieces under `Lib/Analysis/Calculus/MorseLemma/`:
@@ -48,4 +23,25 @@ This module only re-exports its pieces under `Lib/Analysis/Calculus/MorseLemma/`
 * `Existence` — existence of Morse functions on compact manifolds
   (Milnor, *Lectures on the h-cobordism theorem*, Theorem 2.5),
   headline `ManifoldMorse.exists_morse_function`.
--/
+
+## Modules
+
+This directory replaces the former facade module `Lib.Analysis.Calculus.MorseLemma` (deleted; its module docstring is the text
+above, verbatim). Import the pieces directly:
+
+* `Lib.Analysis.Calculus.MorseLemma.AdaptedDescentField`
+* `Lib.Analysis.Calculus.MorseLemma.Congruence`
+* `Lib.Analysis.Calculus.MorseLemma.CriticalPoints`
+* `Lib.Analysis.Calculus.MorseLemma.Cutoff`
+* `Lib.Analysis.Calculus.MorseLemma.DescentField`
+* `Lib.Analysis.Calculus.MorseLemma.Existence`
+* `Lib.Analysis.Calculus.MorseLemma.LinearPerturbation`
+* `Lib.Analysis.Calculus.MorseLemma.MorseChart`
+* `Lib.Analysis.Calculus.MorseLemma.ParametricIntegral`
+* `Lib.Analysis.Calculus.MorseLemma.PartialDiffeomorph`
+* `Lib.Analysis.Calculus.MorseLemma.PartitionOfUnity`
+* `Lib.Analysis.Calculus.MorseLemma.SignedCoordinates`
+* `Lib.Analysis.Calculus.MorseLemma.SignedMorseChart`
+* `Lib.Analysis.Calculus.MorseLemma.SplitChart`
+* `Lib.Analysis.Calculus.MorseLemma.SymmetricForm`
+* `Lib.Analysis.Calculus.MorseLemma.TaylorFactor`

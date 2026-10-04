@@ -7,7 +7,7 @@ import Mathlib
 import Lib.AlgebraicTopology.SingularHomology.LocalDegree
 import Lib.AlgebraicTopology.SingularHomology.Naturality
 import Lib.AlgebraicTopology.SingularHomology.SphereHomology
-import Lib.Geometry.Manifold.Immersion.Relative
+import Lib.Geometry.Manifold.Immersion.Relative.AxisChart
 
 /-!
 # Linear actions on sphere homology

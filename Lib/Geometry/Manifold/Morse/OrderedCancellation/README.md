@@ -1,21 +1,3 @@
-/-
-Copyright (c) 2026 Fabian Franz. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-Authors: Fabian Franz
--/
-import Lib.Geometry.Manifold.Morse.OrderedCancellation.TwoSphereDegree
-import Lib.Geometry.Manifold.Morse.OrderedCancellation.BeltTube
-import Lib.Geometry.Manifold.Morse.OrderedCancellation.PrescribedFlow
-import Lib.Geometry.Manifold.Morse.OrderedCancellation.CircleParametrization
-import Lib.Geometry.Manifold.Morse.OrderedCancellation.ValueExchange
-import Lib.Geometry.Manifold.Morse.OrderedCancellation.PairCancellation
-import Lib.Geometry.Manifold.Morse.OrderedCancellation.PathComponents
-import Lib.Geometry.Manifold.Morse.OrderedCancellation.Negation
-import Lib.Geometry.Manifold.Morse.OrderedCancellation.MinimalSystem
-import Lib.Geometry.Manifold.Morse.OrderedCancellation.IndexCounts
-import Lib.Geometry.Manifold.Morse.OrderedCancellation.BirthPreservation
-
-/-!
 # Ordered Morse systems and cancellation steps
 
 Facade module: it imports the pieces of the former monolith and declares nothing.
@@ -34,4 +16,20 @@ Facade module: it imports the pieces of the former monolith and declares nothing
 
 The dimension-`6` and index-`2`/`3` statements of the former file live in
 `Hopf/Proof/Geometry/Manifold/Morse/OrderedCancellation/MiddleIndexBlocks.lean`.
--/
+
+## Modules
+
+This directory replaces the former facade module `Lib.Geometry.Manifold.Morse.OrderedCancellation` (deleted; its module docstring is the text
+above, verbatim). Import the pieces directly:
+
+* `Lib.Geometry.Manifold.Morse.OrderedCancellation.BeltTube`
+* `Lib.Geometry.Manifold.Morse.OrderedCancellation.BirthPreservation`
+* `Lib.Geometry.Manifold.Morse.OrderedCancellation.CircleParametrization`
+* `Lib.Geometry.Manifold.Morse.OrderedCancellation.IndexCounts`
+* `Lib.Geometry.Manifold.Morse.OrderedCancellation.MinimalSystem`
+* `Lib.Geometry.Manifold.Morse.OrderedCancellation.Negation`
+* `Lib.Geometry.Manifold.Morse.OrderedCancellation.PairCancellation`
+* `Lib.Geometry.Manifold.Morse.OrderedCancellation.PathComponents`
+* `Lib.Geometry.Manifold.Morse.OrderedCancellation.PrescribedFlow`
+* `Lib.Geometry.Manifold.Morse.OrderedCancellation.TwoSphereDegree`
+* `Lib.Geometry.Manifold.Morse.OrderedCancellation.ValueExchange`

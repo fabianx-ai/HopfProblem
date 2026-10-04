@@ -7,11 +7,8 @@ module
 
 public import Mathlib
 public import Lib.Geometry.Manifold.Morse.SublevelSets
-public import Lib.Analysis.Calculus.MorseLemma
 public import Lib.Geometry.Manifold.Morse.Handle
 public import Lib.Geometry.Manifold.Flow.Compact
-public import Lib.Geometry.Manifold.Flow.HeightTranslating
-public import Lib.AlgebraicTopology.SingularHomology.MayerVietoris
 /-!
 # The index of a nondegenerate critical point
 

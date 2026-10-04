@@ -5,19 +5,13 @@ Authors: Fabian Franz
 -/
 import Mathlib
 import Lib.Algebra.BigOperators.SignedCancellation
-import Lib.Analysis.Calculus.MorseLemma
-import Lib.Geometry.Manifold.Flow.HeightTranslating
 import Lib.Geometry.Manifold.Morse.BeltCancellation
-import Lib.Geometry.Manifold.Morse.Cancellation
 import Lib.Geometry.Manifold.Morse.CubicFlow
-import Lib.Geometry.Manifold.Morse.Existence
 import Lib.Geometry.Manifold.Morse.HandleAttachment
 import Lib.Geometry.Manifold.Morse.Reeb
 import Lib.Geometry.Manifold.Morse.SurgeryHomology
-import Lib.Geometry.Manifold.Morse.SurgeryWindows
 import Lib.Geometry.Manifold.RegularLevel
 import Lib.Geometry.Manifold.Transversality.Basic
-import Lib.Geometry.Manifold.Whitney.CleanStrips
 import Lib.Geometry.Manifold.Morse.OrderedCancellation.CircleParametrization
 import Lib.Geometry.Manifold.Morse.OrderedCancellation.IndexCounts
 import Lib.Geometry.Manifold.Morse.SurgeryCollapse.DiskFilling

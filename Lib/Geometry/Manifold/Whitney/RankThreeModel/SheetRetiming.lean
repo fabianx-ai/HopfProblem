@@ -5,7 +5,7 @@ Authors: Fabian Franz
 -/
 
 import Mathlib
-import Lib.Geometry.Manifold.Whitney.EmbeddedArcs
+import Lib.Geometry.Manifold.Whitney.CleanStrips.StripNormalData
 
 /-!
 # Retiming the sheet transitions of a strip

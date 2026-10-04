@@ -1,18 +1,3 @@
-/-
-Copyright (c) 2026 Fabian Franz. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-Authors: Fabian Franz
--/
-import Lib.AlgebraicTopology.Hurewicz.Subdivision.SimplexQuotient
-import Lib.AlgebraicTopology.Hurewicz.Subdivision.CubeClass
-import Lib.AlgebraicTopology.Hurewicz.Subdivision.InsertPermutation
-import Lib.AlgebraicTopology.Hurewicz.Subdivision.ChamberChart
-import Lib.AlgebraicTopology.Hurewicz.Subdivision.Slicing
-import Lib.AlgebraicTopology.Hurewicz.Subdivision.ExtendedChamber
-import Lib.AlgebraicTopology.Hurewicz.Subdivision.DuffyMap
-import Lib.AlgebraicTopology.Hurewicz.Subdivision.SubdivisionClass
-
-/-!
 # Subdivision of based cubes into simplex classes
 
 This module re-exports the subdivision of a based `n`-cube into the based simplices of
@@ -42,4 +27,17 @@ The development lives in the following modules, in dependency order.
   Duffy chart of a chamber.
 * `Lib.AlgebraicTopology.Hurewicz.Subdivision.SubdivisionClass`: the Kuhn cells of a based
   cube as based simplices and the subdivision identity.
--/
+
+## Modules
+
+This directory replaces the former facade module `Lib.AlgebraicTopology.Hurewicz.Subdivision` (deleted; its module docstring is the text
+above, verbatim). Import the pieces directly:
+
+* `Lib.AlgebraicTopology.Hurewicz.Subdivision.ChamberChart`
+* `Lib.AlgebraicTopology.Hurewicz.Subdivision.CubeClass`
+* `Lib.AlgebraicTopology.Hurewicz.Subdivision.DuffyMap`
+* `Lib.AlgebraicTopology.Hurewicz.Subdivision.ExtendedChamber`
+* `Lib.AlgebraicTopology.Hurewicz.Subdivision.InsertPermutation`
+* `Lib.AlgebraicTopology.Hurewicz.Subdivision.SimplexQuotient`
+* `Lib.AlgebraicTopology.Hurewicz.Subdivision.Slicing`
+* `Lib.AlgebraicTopology.Hurewicz.Subdivision.SubdivisionClass`

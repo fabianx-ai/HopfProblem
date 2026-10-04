@@ -6,12 +6,11 @@ Authors: Fabian Franz
 module
 
 public import Mathlib
-public import Lib.Geometry.Manifold.Morse.Existence
 public import Lib.Geometry.Manifold.RegularLevel
 public import Lib.Geometry.Manifold.WhitneyEmbedding
-public import Lib.Geometry.Manifold.Collar
-public import Lib.Geometry.Manifold.Morse.SurgeryWindows
-public import Lib.Geometry.Manifold.Morse.Cubic
+public import Lib.Geometry.Manifold.Morse.SurgeryWindows.Windows
+public import Lib.Geometry.Manifold.Morse.Cubic.AxisParameter
+public import Lib.Geometry.Manifold.Morse.Cubic.CoreBasins
 import all Mathlib.Geometry.Manifold.LocalDiffeomorph
 /-!
 # Flows of the cubic model

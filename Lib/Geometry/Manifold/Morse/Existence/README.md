@@ -1,22 +1,3 @@
-/-
-Copyright (c) 2026 Fabian Franz. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-Authors: Fabian Franz
--/
-module
-
-public import Lib.Geometry.Manifold.Morse.Existence.AttachingUnion
-public import Lib.Geometry.Manifold.Morse.Existence.RegularLocus
-public import Lib.Geometry.Manifold.Morse.Existence.DistinctCriticalValues
-public import Lib.Geometry.Manifold.Morse.Existence.LevelSurgery
-public import Lib.Geometry.Manifold.Morse.Existence.PartialChart
-public import Lib.Geometry.Manifold.Morse.Existence.BeltCore
-public import Lib.Geometry.Manifold.Morse.Existence.HomotopyCollars
-public import Lib.Geometry.Manifold.Morse.Existence.HomotopicRelWithin
-public import Lib.Geometry.Manifold.Morse.Existence.ChartPerturbation
-public import Lib.Geometry.Manifold.Morse.Existence.SmoothApproximation
-
-/-!
 # Morse functions with distinct critical values, handle attachment, and smoothing
 
 This module only re-exports its pieces, which treat three subjects.
@@ -38,4 +19,19 @@ This module only re-exports its pieces, which treat three subjects.
 ## References
 
 * [John Milnor, *Lectures on the h-cobordism theorem*][milnor65]
--/
+
+## Modules
+
+This directory replaces the former facade module `Lib.Geometry.Manifold.Morse.Existence` (deleted; its module docstring is the text
+above, verbatim). Import the pieces directly:
+
+* `Lib.Geometry.Manifold.Morse.Existence.AttachingUnion`
+* `Lib.Geometry.Manifold.Morse.Existence.BeltCore`
+* `Lib.Geometry.Manifold.Morse.Existence.ChartPerturbation`
+* `Lib.Geometry.Manifold.Morse.Existence.DistinctCriticalValues`
+* `Lib.Geometry.Manifold.Morse.Existence.HomotopicRelWithin`
+* `Lib.Geometry.Manifold.Morse.Existence.HomotopyCollars`
+* `Lib.Geometry.Manifold.Morse.Existence.LevelSurgery`
+* `Lib.Geometry.Manifold.Morse.Existence.PartialChart`
+* `Lib.Geometry.Manifold.Morse.Existence.RegularLocus`
+* `Lib.Geometry.Manifold.Morse.Existence.SmoothApproximation`

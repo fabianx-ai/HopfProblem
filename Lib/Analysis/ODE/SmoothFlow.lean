@@ -6,9 +6,7 @@ Authors: Fabian Franz
 module
 
 public import Mathlib
-public import Lib.Analysis.Calculus.MorseLemma
 public import Lib.Geometry.Manifold.Flow.Compact
-public import Lib.Geometry.Manifold.Flow.HeightTranslating
 import all Mathlib.Geometry.Manifold.LocalDiffeomorph
 
 /-!

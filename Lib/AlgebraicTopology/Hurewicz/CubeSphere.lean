@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Fabian Franz
 -/
 import Lib.AlgebraicTopology.Hurewicz.Degree
-import Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition
+import Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition.Concatenation
+import Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition.Cycle
+import Lib.AlgebraicTopology.Hurewicz.PrismOperator.DegreeTwo
 import Lib.AlgebraicTopology.SingularHomology.HomotopyInvariance
 import Lib.AlgebraicTopology.Hurewicz.Straightening
 import Lib.Topology.OnePointCollapse

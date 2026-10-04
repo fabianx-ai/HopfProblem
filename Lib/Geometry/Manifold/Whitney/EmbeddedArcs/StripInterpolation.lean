@@ -5,7 +5,8 @@ Authors: Fabian Franz
 -/
 
 import Mathlib
-import Lib.Geometry.Manifold.Whitney.CleanStrips
+import Lib.Geometry.Manifold.Whitney.CleanStrips.NormalCoordinate
+import Lib.Geometry.Manifold.Whitney.CleanStrips.StripModel
 import Lib.Geometry.Manifold.Whitney.FrameField.FrameExtension
 
 /-!

@@ -1,24 +1,3 @@
-/-
-Copyright (c) 2026 Fabian Franz. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-Authors: Fabian Franz
--/
-import Lib.Geometry.Manifold.Morse.SurgeryCollapse.PuncturedBall
-import Lib.Geometry.Manifold.Morse.SurgeryCollapse.BeltTubeMeridian
-import Lib.Geometry.Manifold.Morse.SurgeryCollapse.LevelTransport
-import Lib.Geometry.Manifold.Morse.SurgeryCollapse.CellExactSequence
-import Lib.Geometry.Manifold.Morse.SurgeryCollapse.HandleExactSequence
-import Lib.Geometry.Manifold.Morse.SurgeryCollapse.MinimumReduction
-import Lib.Geometry.Manifold.Morse.SurgeryCollapse.IndexOrdering
-import Lib.Geometry.Manifold.Morse.SurgeryCollapse.DiskFilling
-import Lib.Geometry.Manifold.Morse.SurgeryCollapse.LevelIsotopy
-import Lib.Geometry.Manifold.Morse.SurgeryCollapse.OnePointCover
-import Lib.Geometry.Manifold.Morse.SurgeryCollapse.DiskCollapse
-import Lib.Geometry.Manifold.Morse.SurgeryCollapse.LocalDegreeConnecting
-import Lib.Geometry.Manifold.Morse.SurgeryCollapse.SphereOrientation
-import Lib.Geometry.Manifold.Morse.SurgeryCollapse.HandleCollapse
-
-/-!
 # Surgery collapse
 
 Facade module: it imports the pieces of the former monolith and declares nothing.
@@ -41,4 +20,23 @@ Facade module: it imports the pieces of the former monolith and declares nothing
 The dimension-`6`, `Hemisphere.Sphere 2` and index-`2`/`3` statements of the former file live
 under `Hopf/Proof/Geometry/Manifold/Morse/SurgeryCollapse/` (`MiddleFamilies`,
 `BeltIntersections`, `OuterIndexMinimal`, `MiddlePresentation`).
--/
+
+## Modules
+
+This directory replaces the former facade module `Lib.Geometry.Manifold.Morse.SurgeryCollapse` (deleted; its module docstring is the text
+above, verbatim). Import the pieces directly:
+
+* `Lib.Geometry.Manifold.Morse.SurgeryCollapse.BeltTubeMeridian`
+* `Lib.Geometry.Manifold.Morse.SurgeryCollapse.CellExactSequence`
+* `Lib.Geometry.Manifold.Morse.SurgeryCollapse.DiskCollapse`
+* `Lib.Geometry.Manifold.Morse.SurgeryCollapse.DiskFilling`
+* `Lib.Geometry.Manifold.Morse.SurgeryCollapse.HandleCollapse`
+* `Lib.Geometry.Manifold.Morse.SurgeryCollapse.HandleExactSequence`
+* `Lib.Geometry.Manifold.Morse.SurgeryCollapse.IndexOrdering`
+* `Lib.Geometry.Manifold.Morse.SurgeryCollapse.LevelIsotopy`
+* `Lib.Geometry.Manifold.Morse.SurgeryCollapse.LevelTransport`
+* `Lib.Geometry.Manifold.Morse.SurgeryCollapse.LocalDegreeConnecting`
+* `Lib.Geometry.Manifold.Morse.SurgeryCollapse.MinimumReduction`
+* `Lib.Geometry.Manifold.Morse.SurgeryCollapse.OnePointCover`
+* `Lib.Geometry.Manifold.Morse.SurgeryCollapse.PuncturedBall`
+* `Lib.Geometry.Manifold.Morse.SurgeryCollapse.SphereOrientation`

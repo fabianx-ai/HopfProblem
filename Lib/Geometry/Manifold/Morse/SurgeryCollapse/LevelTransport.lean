@@ -5,17 +5,11 @@ Authors: Fabian Franz
 -/
 import Mathlib
 import Lib.AlgebraicTopology.SingularHomology.Sphere
-import Lib.Analysis.Calculus.MorseLemma
-import Lib.Geometry.Manifold.Flow.HeightTranslating
 import Lib.Geometry.Manifold.Morse.AdaptedWindows
 import Lib.Geometry.Manifold.Morse.BeltCancellation
 import Lib.Geometry.Manifold.Morse.CircleGluing
-import Lib.Geometry.Manifold.Morse.Connection
 import Lib.Geometry.Manifold.Morse.CubicFlow
-import Lib.Geometry.Manifold.Morse.Existence
 import Lib.Geometry.Manifold.Morse.HandleAttachment
-import Lib.Geometry.Manifold.Morse.Rearrangement
-import Lib.Geometry.Manifold.Morse.SurgeryWindows
 import Lib.Geometry.Manifold.RegularLevel
 import Lib.Geometry.Manifold.Transversality.Basic
 import Lib.Geometry.Manifold.Morse.OrderedCancellation.CircleParametrization

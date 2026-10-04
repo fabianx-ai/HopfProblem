@@ -4,11 +4,8 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Fabian Franz
 -/
 import Mathlib
-import Lib.Analysis.Calculus.MorseLemma
-import Lib.Geometry.Manifold.Morse.Cubic
-import Lib.Geometry.Manifold.Morse.Existence
+import Lib.Geometry.Manifold.Morse.Existence.DistinctCriticalValues
 import Lib.Geometry.Manifold.Morse.Index
-import Lib.Geometry.Manifold.Morse.SurgeryWindows
 import Lib.Geometry.Manifold.Morse.OrderedCancellation.Negation
 
 /-!

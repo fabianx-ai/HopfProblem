@@ -4,11 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Fabian Franz
 -/
 import Mathlib
-import Lib.Analysis.Calculus.MorseLemma
-import Lib.Geometry.Manifold.Morse.Cancellation
-import Lib.Geometry.Manifold.Morse.Cubic
 import Lib.Geometry.Manifold.Morse.CubicFlow
-import Lib.Geometry.Manifold.Morse.SurgeryWindows
 import Lib.Geometry.Manifold.Morse.OrderedCancellation.MinimalSystem
 import Lib.Geometry.Manifold.Morse.SurgeryCollapse.IndexOrdering
 import Lib.Geometry.Manifold.Morse.SurgeryCollapse.MinimumReduction

@@ -1,24 +1,3 @@
-/-
-Copyright (c) 2026 Fabian Franz. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-Authors: Fabian Franz
--/
-
-import Lib.Geometry.Manifold.Whitney.EmbeddedArcs.SphereNormalCoordinates
-import Lib.Geometry.Manifold.Whitney.EmbeddedArcs.InnerBigon
-import Lib.Geometry.Manifold.Whitney.EmbeddedArcs.WhitneyDisc
-import Lib.Geometry.Manifold.Whitney.EmbeddedArcs.ImmersionRepair
-import Lib.Geometry.Manifold.Whitney.EmbeddedArcs.Arcs
-import Lib.Geometry.Manifold.Whitney.EmbeddedArcs.CornerCharts
-import Lib.Geometry.Manifold.Whitney.EmbeddedArcs.TransverseCoordinates
-import Lib.Geometry.Manifold.Whitney.EmbeddedArcs.StripInterpolation
-import Lib.Geometry.Manifold.Whitney.EmbeddedArcs.StripAlongArc
-import Lib.Geometry.Manifold.Whitney.EmbeddedArcs.StripPair
-import Lib.Geometry.Manifold.Whitney.EmbeddedArcs.BeltBigon
-import Lib.Geometry.Manifold.Whitney.EmbeddedArcs.FiberRestriction
-import Lib.Geometry.Manifold.Whitney.EmbeddedArcs.SmallPerturbation
-
-/-!
 # Embedded arcs and clean strip pairs
 
 The geometric preparation of the Whitney trick: embedded arcs joining two intersection points of
@@ -55,4 +34,22 @@ an embedded Whitney disc with a tubular neighbourhood. This module re-exports th
 ## Tags
 
 Morse theory, Whitney trick, handle cancellation
--/
+
+## Modules
+
+This directory replaces the former facade module `Lib.Geometry.Manifold.Whitney.EmbeddedArcs` (deleted; its module docstring is the text
+above, verbatim). Import the pieces directly:
+
+* `Lib.Geometry.Manifold.Whitney.EmbeddedArcs.Arcs`
+* `Lib.Geometry.Manifold.Whitney.EmbeddedArcs.BeltBigon`
+* `Lib.Geometry.Manifold.Whitney.EmbeddedArcs.CornerCharts`
+* `Lib.Geometry.Manifold.Whitney.EmbeddedArcs.FiberRestriction`
+* `Lib.Geometry.Manifold.Whitney.EmbeddedArcs.ImmersionRepair`
+* `Lib.Geometry.Manifold.Whitney.EmbeddedArcs.InnerBigon`
+* `Lib.Geometry.Manifold.Whitney.EmbeddedArcs.SmallPerturbation`
+* `Lib.Geometry.Manifold.Whitney.EmbeddedArcs.SphereNormalCoordinates`
+* `Lib.Geometry.Manifold.Whitney.EmbeddedArcs.StripAlongArc`
+* `Lib.Geometry.Manifold.Whitney.EmbeddedArcs.StripInterpolation`
+* `Lib.Geometry.Manifold.Whitney.EmbeddedArcs.StripPair`
+* `Lib.Geometry.Manifold.Whitney.EmbeddedArcs.TransverseCoordinates`
+* `Lib.Geometry.Manifold.Whitney.EmbeddedArcs.WhitneyDisc`

@@ -4,13 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Fabian Franz
 -/
 import Mathlib
-import Lib.Analysis.Calculus.MorseLemma
-import Lib.Geometry.Manifold.Flow.HeightTranslating
-import Lib.Geometry.Manifold.Morse.Existence
 import Lib.Geometry.Manifold.Morse.Handle
 import Lib.Geometry.Manifold.Morse.HandleAttachment
 import Lib.Geometry.Manifold.Morse.RearrangementTheorem
-import Lib.Geometry.Manifold.Morse.SurgeryWindows
 import Lib.Geometry.Manifold.WhitneyEmbedding
 
 /-!

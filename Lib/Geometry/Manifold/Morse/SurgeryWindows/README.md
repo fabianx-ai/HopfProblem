@@ -1,23 +1,3 @@
-/-
-Copyright (c) 2026 Fabian Franz. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-Authors: Fabian Franz
--/
-module
-
-public import Lib.Geometry.Manifold.Morse.SurgeryWindows.HausdorffDimension
-public import Lib.Geometry.Manifold.Morse.SurgeryWindows.Avoidance
-public import Lib.Geometry.Manifold.Morse.SurgeryWindows.DiskDouble
-public import Lib.Geometry.Manifold.Morse.SurgeryWindows.Hemisphere
-public import Lib.Geometry.Manifold.Morse.SurgeryWindows.ImageComplement
-public import Lib.Geometry.Manifold.Morse.SurgeryWindows.NewInterior
-public import Lib.Geometry.Manifold.Morse.SurgeryWindows.OpenHomotopyExtension
-public import Lib.Geometry.Manifold.Morse.SurgeryWindows.ZeroAvoidanceCutoff
-public import Lib.Geometry.Manifold.Morse.SurgeryWindows.BeltComplement
-public import Lib.Geometry.Manifold.Morse.SurgeryWindows.SurgeryData
-public import Lib.Geometry.Manifold.Morse.SurgeryWindows.Windows
-
-/-!
 # Morse surgery windows
 
 The data structures for the surgeries of a Morse function and the general-position and
@@ -49,4 +29,20 @@ homotopy tools they use (Milnor, *Lectures on the h-cobordism theorem*, §3-4; M
 ## Tags
 
 morse-theory, surgery, h-cobordism, handle-decomposition
--/
+
+## Modules
+
+This directory replaces the former facade module `Lib.Geometry.Manifold.Morse.SurgeryWindows` (deleted; its module docstring is the text
+above, verbatim). Import the pieces directly:
+
+* `Lib.Geometry.Manifold.Morse.SurgeryWindows.Avoidance`
+* `Lib.Geometry.Manifold.Morse.SurgeryWindows.BeltComplement`
+* `Lib.Geometry.Manifold.Morse.SurgeryWindows.DiskDouble`
+* `Lib.Geometry.Manifold.Morse.SurgeryWindows.HausdorffDimension`
+* `Lib.Geometry.Manifold.Morse.SurgeryWindows.Hemisphere`
+* `Lib.Geometry.Manifold.Morse.SurgeryWindows.ImageComplement`
+* `Lib.Geometry.Manifold.Morse.SurgeryWindows.NewInterior`
+* `Lib.Geometry.Manifold.Morse.SurgeryWindows.OpenHomotopyExtension`
+* `Lib.Geometry.Manifold.Morse.SurgeryWindows.SurgeryData`
+* `Lib.Geometry.Manifold.Morse.SurgeryWindows.Windows`
+* `Lib.Geometry.Manifold.Morse.SurgeryWindows.ZeroAvoidanceCutoff`

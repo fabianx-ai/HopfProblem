@@ -6,8 +6,8 @@ Authors: Fabian Franz
 module
 
 public import Mathlib
-public import Lib.AlgebraicTopology.SingularHomology.MayerVietoris
-public import Lib.AlgebraicTopology.SingularHomology.CrossProduct
+public import Lib.AlgebraicTopology.SingularHomology.CrossProduct.Associator
+public import Lib.AlgebraicTopology.SingularHomology.CrossProduct.Naturality
 
 /-!
 # The Pontryagin product on `H₁` of a topological abelian group

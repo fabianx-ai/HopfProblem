@@ -6,7 +6,6 @@ Authors: Fabian Franz
 module
 
 public import Mathlib
-public import Lib.Analysis.Calculus.MorseLemma
 public import Lib.Geometry.Manifold.Flow.HeightTranslating.EntryTime
 public import Lib.Geometry.Manifold.Flow.HeightTranslating.FlowCollar
 public import Lib.Geometry.Manifold.Flow.HeightTranslating.DescentFlow

@@ -6,7 +6,8 @@ Authors: Fabian Franz
 module
 
 public import Mathlib
-public import Lib.Geometry.Manifold.Morse.Existence
+public import Lib.Geometry.Manifold.Flow.Compact
+public import Lib.Geometry.Manifold.Morse.Existence.PartialChart
 /-!
 # Submersions and regular values in equal dimension
 

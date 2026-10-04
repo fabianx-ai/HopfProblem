@@ -6,7 +6,7 @@ Authors: Fabian Franz
 module
 
 public import Mathlib
-public import Lib.AlgebraicTopology.SingularHomology.MayerVietoris
+public import Lib.AlgebraicTopology.SingularHomology.MayerVietoris.Sequence
 public import Lib.AlgebraicTopology.SingularHomology.HomotopyInvariance
 
 /-!
