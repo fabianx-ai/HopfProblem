@@ -5,8 +5,9 @@ reviewed by Fable reviewers (`Lib/reviews/REVIEW-WAVES.md`: nothing unsound) and
 (§5 there); `center-solution` replayed per commit up to `d4db0d1a` (`Lib/reviews/INTEGRATION-7.md`,
 `Lib/reports/integration-7/REPLAY-7b.md`). Integration 7c replayed `center-solution` up to `91485e80`
 (`Lib/reports/integration-7/REPLAY-7c.md`, three clean cherry-picks). The 24 facades are dissolved (`Lib/reports/facades/RECEIPT.md`: 205 consumers
-rerouted to the pieces from the dump's `uses`, facade docstrings kept as directory `README.md`s, envdiff 0/0/0; the 24
-per-facade commits were verified as a whole and at the head, not one by one). The Shared/Center split was reviewed
+rerouted to the pieces from the dump's `uses`, facade docstrings kept as directory `README.md`s, envdiff 0/0/0; reviewed:
+`Lib/reports/facades/RECEIPT.md` §8 correction — the merge `b25f3507` is the verified unit, 12 of the 24 per-facade
+commits do not build on their own). The Shared/Center split was reviewed
 (`/home/goblin/.claude/jobs/06995e68/tmp/review-center/REVIEW.md`, findings fixed in merge of `fix/center-review`;
 corrections section in the center-proof receipt). Chain green (9,465 jobs), 3,881 probes within the three standard
 axioms (Lib 3,785, Shared 53, Center 9, Unused 34; the Hopf DegreeSix declarations are probed nowhere), census 123.

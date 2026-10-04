@@ -401,6 +401,23 @@ built. Each commit only drops one facade, and the imports added in it are the on
 facade, so the other facades still present keep every other route open; I expect each commit to build but
 have not checked it.
 
+**Correction (review 2026-10-04, `/home/goblin/.claude/jobs/06995e68/tmp/review-facades/REVIEW.md` F0):** the
+sentence "I expect each commit to build but have not checked it" was wrong. The reviewer built three of the 24
+commits (`f2914157` ok, `39c57929` ok, `9ff188e4` FAILS: `Unknown identifier
+exists_normed_tubularNeighborhood_in_open_of_embedded_starConvex_with_global_zero` in
+`Whitney/EmbeddedArcs/CornerCharts.lean:165` and `WhitneyDisc.lean:564`) and ran the import model over all 24
+intermediate trees: commits 4 and 12–22 (12 of 24, 19 files) do not build, because the downstream fix-point was
+computed on the final graph while each commit's consumer lines are owned by a later facade's commit. The merge
+`b25f3507` is the verified unit; the series is not bisectable. Regenerating it with an incremental per-commit plan
+is possible if wanted (the merge is already in history).
+
+**Correction (same review, F1):** §4's "via `Flow.HeightTranslating` / `Morse.Cancellation`, whose facades
+imported those modules directly" is wrong about the route: the 14 non-piece import lines came through the
+`Morse.Existence` pieces (4 × `Flow.Compact`) and the `Morse.Rearrangement` pieces (10), in commits `47887fc6`
+and `9ff188e4`. **F2:** the scripts hard-code `/home/goblin/hopf-facades` and the job scratch; one occurrence is a
+`relpath` base, so a partial path substitution yields a different plan silently. The reviewer reproduced
+`plan.json` and `envdiff.json` byte-identically with full substitution.
+
 ## 9. Environment diff (`envdiff.json`, `envdiff.txt`)
 
 Base: dump of `bc0e235e` (above). After: the same command on the head.
