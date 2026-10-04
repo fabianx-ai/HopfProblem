@@ -3,6 +3,7 @@
 Facade module: it imports the pieces of the former monolith and declares nothing.
 
 * `SurgeryCollapse.PuncturedBall` — the punctured ball retracts onto a sphere;
+  (moved: now `Lib.AlgebraicTopology.SingularHomology.PuncturedBall`)
 * `SurgeryCollapse.BeltTubeMeridian` — loops in the belt tube are homotopic to meridians;
 * `SurgeryCollapse.LevelTransport` — transport of embedded spheres between regular levels;
 * `SurgeryCollapse.CellExactSequence` — the long exact sequence of an attached cell;
@@ -38,5 +39,4 @@ above, verbatim). Import the pieces directly:
 * `Lib.Geometry.Manifold.Morse.SurgeryCollapse.LocalDegreeConnecting`
 * `Lib.Geometry.Manifold.Morse.SurgeryCollapse.MinimumReduction`
 * `Lib.Geometry.Manifold.Morse.SurgeryCollapse.OnePointCover`
-* `Lib.Geometry.Manifold.Morse.SurgeryCollapse.PuncturedBall`
 * `Lib.Geometry.Manifold.Morse.SurgeryCollapse.SphereOrientation`

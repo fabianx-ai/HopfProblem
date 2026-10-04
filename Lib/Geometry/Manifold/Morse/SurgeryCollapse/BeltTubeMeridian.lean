@@ -13,7 +13,7 @@ import Lib.Geometry.Manifold.Morse.HandleAttachment
 import Lib.Geometry.Manifold.Morse.SublevelSets
 import Lib.Geometry.Manifold.Transversality.Basic
 import Lib.Geometry.Manifold.Morse.OrderedCancellation.BeltTube
-import Lib.Geometry.Manifold.Morse.SurgeryCollapse.PuncturedBall
+import Lib.AlgebraicTopology.SingularHomology.PuncturedBall
 
 /-!
 # Loops in the belt tube are homotopic to meridians

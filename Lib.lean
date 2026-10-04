@@ -365,7 +365,7 @@ import Lib.Geometry.Manifold.Morse.SurgeryCollapse.LevelTransport
 import Lib.Geometry.Manifold.Morse.SurgeryCollapse.LocalDegreeConnecting
 import Lib.Geometry.Manifold.Morse.SurgeryCollapse.MinimumReduction
 import Lib.Geometry.Manifold.Morse.SurgeryCollapse.OnePointCover
-import Lib.Geometry.Manifold.Morse.SurgeryCollapse.PuncturedBall
+import Lib.AlgebraicTopology.SingularHomology.PuncturedBall
 import Lib.Geometry.Manifold.Morse.SurgeryCollapse.SphereOrientation
 
 import Lib.AlgebraicTopology.FundamentalGroup.HomotopyEquiv
