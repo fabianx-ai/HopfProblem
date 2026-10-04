@@ -85,7 +85,7 @@ import Lib.Geometry.Manifold.Immersion.Relative.Plane
 import Lib.Geometry.Manifold.Immersion.Relative.PointMoving
 import Lib.Geometry.Manifold.Immersion.Relative.TubularNeighborhood
 import Lib.Geometry.Manifold.Immersion.Relative.TwoSheetArc
-import Lib.Geometry.Manifold.Morse.Rearrangement.AmbientTransversality
+import Lib.Geometry.Manifold.Transversality.AmbientIsotopy
 import Lib.Geometry.Manifold.Morse.Rearrangement.BasinImages
 import Lib.Geometry.Manifold.Morse.Rearrangement.HeightCoordinates
 import Lib.Geometry.Manifold.Morse.Rearrangement.IntervalTranslation
