@@ -8,7 +8,6 @@ import Lib.AlgebraicTopology.SingularHomology.Sphere
 import Lib.Geometry.Manifold.Morse.RadialFilling
 import Lib.Geometry.Manifold.Morse.Reeb
 import Lib.Geometry.Manifold.Whitney.AnnularExtension
-import Lib.Geometry.Manifold.Whitney.CleanStrips
 import Lib.Geometry.Manifold.Whitney.EmbeddedArcs
 
 /-!

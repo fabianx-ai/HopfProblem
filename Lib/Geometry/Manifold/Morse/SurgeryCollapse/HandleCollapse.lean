@@ -16,7 +16,6 @@ import Lib.Geometry.Manifold.Morse.HandleAttachment
 import Lib.Geometry.Manifold.Morse.SurgeryHomology
 import Lib.Geometry.Manifold.RegularLevel
 import Lib.Geometry.Manifold.Transversality.Basic
-import Lib.Geometry.Manifold.Whitney.CleanStrips
 import Lib.Topology.Homotopy.CellAttachment
 import Lib.Geometry.Manifold.Morse.SurgeryCollapse.CellExactSequence
 import Lib.Geometry.Manifold.Morse.SurgeryCollapse.DiskCollapse

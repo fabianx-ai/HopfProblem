@@ -12,7 +12,6 @@ import Lib.Geometry.Manifold.Morse.Reeb
 import Lib.Geometry.Manifold.Morse.SurgeryHomology
 import Lib.Geometry.Manifold.RegularLevel
 import Lib.Geometry.Manifold.Transversality.Basic
-import Lib.Geometry.Manifold.Whitney.CleanStrips
 import Lib.Geometry.Manifold.Morse.OrderedCancellation.CircleParametrization
 import Lib.Geometry.Manifold.Morse.OrderedCancellation.IndexCounts
 import Lib.Geometry.Manifold.Morse.SurgeryCollapse.DiskFilling

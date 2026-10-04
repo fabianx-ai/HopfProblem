@@ -12,7 +12,6 @@ import Lib.AlgebraicTopology.SingularHomology.SphereHomology
 import Lib.AlgebraicTopology.SingularHomology.SpherePointTransport
 import Lib.Geometry.Manifold.Morse.Handle
 import Lib.Geometry.Manifold.Transversality.Basic
-import Lib.Geometry.Manifold.Whitney.CleanStrips
 import Lib.Geometry.Manifold.Whitney.EmbeddedArcs
 import Lib.Geometry.Manifold.Morse.SurgeryCollapse.CellExactSequence
 import Lib.Geometry.Manifold.Morse.SurgeryCollapse.LocalDegreeConnecting

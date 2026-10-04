@@ -5,7 +5,7 @@ Authors: Fabian Franz
 -/
 
 import Mathlib
-import Lib.Geometry.Manifold.Whitney.CleanStrips
+import Lib.Geometry.Manifold.Whitney.CleanStrips.SphereNormal
 import Lib.Geometry.Manifold.Whitney.FrameField.BlockDeterminant
 import Lib.Geometry.Manifold.Whitney.FrameField.SheetCoordinates
 

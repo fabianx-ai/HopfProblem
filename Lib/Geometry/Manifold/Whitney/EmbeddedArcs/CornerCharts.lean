@@ -5,7 +5,10 @@ Authors: Fabian Franz
 -/
 
 import Mathlib
-import Lib.Geometry.Manifold.Whitney.CleanStrips
+import Lib.Geometry.Manifold.Immersion.Relative.TubularNeighborhood
+import Lib.Geometry.Manifold.Morse.Connection.TimeChange
+import Lib.Geometry.Manifold.Whitney.CleanStrips.BigonBoundary
+import Lib.Geometry.Manifold.Whitney.CleanStrips.StripNormalData
 
 /-!
 # Clean corner charts and clean charts along an arc

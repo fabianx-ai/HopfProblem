@@ -1,21 +1,3 @@
-/-
-Copyright (c) 2026 Fabian Franz. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-Authors: Fabian Franz
--/
-
-import Lib.Geometry.Manifold.Whitney.CleanStrips.CrossingChart
-import Lib.Geometry.Manifold.Whitney.CleanStrips.SphereNormal
-import Lib.Geometry.Manifold.Whitney.CleanStrips.BeltIntersection
-import Lib.Geometry.Manifold.Whitney.CleanStrips.NormalCoordinate
-import Lib.Geometry.Manifold.Whitney.CleanStrips.StripModel
-import Lib.Geometry.Manifold.Whitney.CleanStrips.StripNormalData
-import Lib.Geometry.Manifold.Whitney.CleanStrips.CornerPatch
-import Lib.Geometry.Manifold.Whitney.CleanStrips.BigonStripCoordinates
-import Lib.Geometry.Manifold.Whitney.CleanStrips.StripPatch
-import Lib.Geometry.Manifold.Whitney.CleanStrips.BigonBoundary
-
-/-!
 # Clean crossing charts and strip patches
 
 Local normal forms along the two sheets of a Whitney pair, in general dimension. The module only
@@ -37,4 +19,19 @@ imports its pieces:
 * `CleanStrips.StripPatch` : clean strip patches along an arc.
 * `CleanStrips.BigonBoundary` : a clean embedded neighbourhood of the boundary of the Whitney bigon
   (Milnor, *Lectures on the h-cobordism theorem*, §§5–6).
--/
+
+## Modules
+
+This directory replaces the former facade module `Lib.Geometry.Manifold.Whitney.CleanStrips` (deleted; its module docstring is the text
+above, verbatim). Import the pieces directly:
+
+* `Lib.Geometry.Manifold.Whitney.CleanStrips.BeltIntersection`
+* `Lib.Geometry.Manifold.Whitney.CleanStrips.BigonBoundary`
+* `Lib.Geometry.Manifold.Whitney.CleanStrips.BigonStripCoordinates`
+* `Lib.Geometry.Manifold.Whitney.CleanStrips.CornerPatch`
+* `Lib.Geometry.Manifold.Whitney.CleanStrips.CrossingChart`
+* `Lib.Geometry.Manifold.Whitney.CleanStrips.NormalCoordinate`
+* `Lib.Geometry.Manifold.Whitney.CleanStrips.SphereNormal`
+* `Lib.Geometry.Manifold.Whitney.CleanStrips.StripModel`
+* `Lib.Geometry.Manifold.Whitney.CleanStrips.StripNormalData`
+* `Lib.Geometry.Manifold.Whitney.CleanStrips.StripPatch`
