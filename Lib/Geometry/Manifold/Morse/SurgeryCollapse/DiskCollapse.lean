@@ -11,7 +11,6 @@ import Lib.Geometry.Manifold.Morse.Handle
 import Lib.Topology.Homotopy.CellAttachment
 import Lib.Topology.OnePointCollapse
 import Lib.Geometry.Manifold.Morse.SurgeryCollapse.CellExactSequence
-import Lib.Geometry.Manifold.Morse.SurgeryCollapse.OnePointCover
 
 /-!
 # Collapsing the complement of an attached cell to a point

@@ -15,7 +15,6 @@ import Lib.Geometry.Manifold.Transversality.Basic
 import Lib.Geometry.Manifold.Whitney.EmbeddedArcs.SphereNormalCoordinates
 import Lib.Geometry.Manifold.Morse.SurgeryCollapse.CellExactSequence
 import Lib.Geometry.Manifold.Morse.SurgeryCollapse.LocalDegreeConnecting
-import Lib.Geometry.Manifold.Morse.SurgeryCollapse.OnePointCover
 
 /-!
 # Orientation of the point connecting map on a sphere

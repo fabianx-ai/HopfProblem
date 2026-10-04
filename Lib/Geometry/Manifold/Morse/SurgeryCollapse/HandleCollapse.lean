@@ -21,7 +21,6 @@ import Lib.Geometry.Manifold.Morse.SurgeryCollapse.CellExactSequence
 import Lib.Geometry.Manifold.Morse.SurgeryCollapse.DiskCollapse
 import Lib.Geometry.Manifold.Morse.SurgeryCollapse.HandleExactSequence
 import Lib.Geometry.Manifold.Morse.SurgeryCollapse.LocalDegreeConnecting
-import Lib.Geometry.Manifold.Morse.SurgeryCollapse.OnePointCover
 import Lib.Geometry.Manifold.Morse.SurgeryCollapse.SphereOrientation
 
 /-!
