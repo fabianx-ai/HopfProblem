@@ -327,7 +327,6 @@ import Lib.AlgebraicTopology.SingularHomology.CrossProduct.Associator
 import Lib.AlgebraicTopology.SingularHomology.CrossProduct.Chain
 import Lib.AlgebraicTopology.SingularHomology.CrossProduct.Formal
 import Lib.AlgebraicTopology.SingularHomology.CrossProduct.Homology
-import Lib.AlgebraicTopology.SingularHomology.CrossProduct.HomologyDescent
 import Lib.AlgebraicTopology.SingularHomology.CrossProduct.Multilinear
 import Lib.AlgebraicTopology.SingularHomology.CrossProduct.Naturality
 import Lib.AlgebraicTopology.SingularHomology.CrossProduct.Swap

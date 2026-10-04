@@ -23,7 +23,8 @@ This module only imports the pieces of the construction:
   `Δᵖ × (Δ^q × Δʳ)` of standard simplices.
 * `CrossProduct.Chain` — the chain-level cross products in left degrees `0`, `1`, `2`
   (`SingularHomology.crossProductEdge`, `.crossProductTriangle`) and the Leibniz rule.
-* `CrossProduct.HomologyDescent` — descending a map on cycles to homology.
+* `CrossProduct.HomologyDescent` — descending a map on cycles to homology (moved:
+  now in `Lib.AlgebraicTopology.SingularHomology.ModuleHomology`).
 * `CrossProduct.Homology` — `SingularHomology.crossProductHomology` and its degenerations at `n = 0`.
 * `CrossProduct.Swap` — graded commutativity, and the left-degree-two product
   `SingularHomology.crossProductHomologyTwoOne`.
@@ -48,7 +49,6 @@ above, verbatim). Import the pieces directly:
 * `Lib.AlgebraicTopology.SingularHomology.CrossProduct.Chain`
 * `Lib.AlgebraicTopology.SingularHomology.CrossProduct.Formal`
 * `Lib.AlgebraicTopology.SingularHomology.CrossProduct.Homology`
-* `Lib.AlgebraicTopology.SingularHomology.CrossProduct.HomologyDescent`
 * `Lib.AlgebraicTopology.SingularHomology.CrossProduct.Multilinear`
 * `Lib.AlgebraicTopology.SingularHomology.CrossProduct.Naturality`
 * `Lib.AlgebraicTopology.SingularHomology.CrossProduct.Swap`

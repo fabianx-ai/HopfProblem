@@ -6,7 +6,7 @@ Authors: Fabian Franz
 module
 
 public import Lib.AlgebraicTopology.SingularHomology.CrossProduct.Chain
-public import Lib.AlgebraicTopology.SingularHomology.CrossProduct.HomologyDescent
+public import Lib.AlgebraicTopology.SingularHomology.ModuleHomology
 
 open Set Function Filter Manifold Topology
 
