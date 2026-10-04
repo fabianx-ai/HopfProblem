@@ -26,9 +26,8 @@ Noetherian target) bijective, hence bijective on `π₆`.
 Moved out of `Lib/AlgebraicTopology/Hurewicz/SphereGenerator.lean` by the round-8 D-file pass
 (`Lib/reports/round-7/judgement/d-files.md`).
 
-Center/Proof keeps `exists_sphereMap_of_homologySixEquiv`, used only by the center construction; it
-was moved
-verbatim from `Hopf/Proof/AlgebraicTopology/Hurewicz/SphereGenerator.lean`.
+Center/Proof keeps `exists_sphereMap_of_homologySixEquiv`, used only by the center construction;
+it was moved verbatim from `Hopf/Proof/AlgebraicTopology/Hurewicz/SphereGenerator.lean`.
 -/
 
 set_option warningAsError true

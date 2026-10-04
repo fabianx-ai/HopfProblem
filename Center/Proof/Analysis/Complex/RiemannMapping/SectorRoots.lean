@@ -8,10 +8,12 @@ import Lib.Analysis.Complex.RiemannMapping.PrincipalRoot
 import Shared.Proof.Analysis.Complex.RiemannMapping.SectorRoots
 
 /-!
-# Cube-root wedge reversal for the center construction's corners
+# Wedge reversals of the sector roots for the center construction's corners
 
 Center-construction material: the reversal of `principalRoot 3` on the open wedge
-`0 < arg u < π / 3`, consumed by the corner-three analysis of the center construction.
+`0 < arg u < π / 3`, consumed by the corner-three analysis of the center construction, and the
+reversal of the rotated principal fourth root `rotatedPrincipalRootFour` on the open wedge below
+the positive real axis, consumed by the corner-four analysis.
 Moved verbatim from `Hopf/Proof/Analysis/Complex/RiemannMapping/SectorRoots.lean`.
 -/
 
