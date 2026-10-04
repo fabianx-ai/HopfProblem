@@ -311,60 +311,6 @@ theorem Hurewicz.cubeChain_transAt_zero_extra_zero {X : Type} [TopologicalSpace 
   simp only [map_sub, ← LinearMap.comp_apply, ← SingularChains.inducedChain_comp]
   rw [hx 1 h1, hx 0 h0, sub_self]
 
-/-- Pushforward along a map whose image lies in `V` lands in the `V`-supported chains. -/
-theorem SingularMayerVietoris.inducedChain_mem_supported_of_mapsTo {X Y : Type}
-    [TopologicalSpace X] [TopologicalSpace Y] (f : C(X, Y)) (V : Set Y)
-    (hf : ∀ x, f x ∈ V) (n : ℕ) (a : SingularChains.Chains X n) :
-    SingularChains.inducedChain f n a ∈
-      SingularMayerVietoris.supportedChainSubmodule V n := by
-  have hle : (⊤ : Submodule ℤ (SingularChains.Chains X n)) ≤
-      (SingularMayerVietoris.supportedChainSubmodule V n).comap
-        (SingularChains.inducedChain f n) := by
-    rw [← SingularChains.simplexChain_span X n]
-    apply Submodule.span_le.mpr
-    rintro _ ⟨σ, rfl⟩
-    change SingularChains.inducedChain f n (SingularChains.simplexChain X n σ) ∈
-      SingularMayerVietoris.supportedChainSubmodule V n
-    rw [SingularChains.inducedChain_simplex]
-    apply SingularMayerVietoris.simplexChain_mem_supported
-    rintro y ⟨s, rfl⟩
-    exact hf (σ s)
-  exact hle (Submodule.mem_top)
-
-/-- The zero-simplex value of the constant `0`-simplex at `x` is `x`. -/
-theorem SingularHomology.zeroSimplexValue_const {X : Type} [TopologicalSpace X]
-    (x : X) :
-    SingularHomology.zeroSimplexValue
-      (ContinuousMap.const (SingularChains.Simplex 0) x) = x :=
-  rfl
-
-attribute [local instance] SingularHomology.integerLinearMapModule
-    SingularHomology.integerTensorModule in
-/-- The degree-`0`-left cross product of the point chain at `x` with `b` is the
-`x`-insertion pushforward of `b`. -/
-theorem SingularHomology.crossProductZeroLeft_pointChain {X Y : Type}
-    [TopologicalSpace X] [TopologicalSpace Y] (n : ℕ) (x : X)
-    (b : SingularChains.Chains Y n) :
-    SingularHomology.crossProductZeroLeft X Y n (SingularChains.pointChain x) b =
-      SingularChains.inducedChain (SingularHomology.crossInsertLeft x) n b := by
-  rw [SingularChains.pointChain, SingularHomology.crossProductZeroLeft_simplex_left,
-    SingularHomology.zeroSimplexValue_const]
-
-/-- The pushforward of the point chain at `x` along `f` is the point chain at `f x`. -/
-theorem SingularChains.inducedChain_pointChain {X Y : Type} [TopologicalSpace X]
-    [TopologicalSpace Y] (f : C(X, Y)) (x : X) :
-    SingularChains.inducedChain f 0 (SingularChains.pointChain x) =
-      SingularChains.pointChain (f x) := by
-  simp [SingularChains.pointChain, SingularChains.inducedChain_simplex, ContinuousMap.const_comp]
-
-/-- The point chain at `x ∈ U` is supported on `U`. -/
-theorem SingularChains.pointChain_mem_supported {X : Type} [TopologicalSpace X]
-    (U : Set X) (x : X) (hx : x ∈ U) :
-    SingularChains.pointChain x ∈ SingularMayerVietoris.supportedChainSubmodule U 0 := by
-  apply SingularMayerVietoris.simplexChain_mem_supported
-  rintro y ⟨s, rfl⟩
-  simpa [ContinuousMap.const_apply] using hx
-
 attribute [local instance] SingularHomology.integerLinearMapModule
     SingularHomology.integerTensorModule in
 /-- The boundary of the fundamental `(n+1)`-cube is supported on the cube boundary. -/

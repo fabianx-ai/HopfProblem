@@ -326,3 +326,31 @@ theorem SingularMayerVietoris.subtypeInclusion_chain_mem {X : Type} [Topological
     SingularChains.inducedChain (subtypeInclusion U) n c ∈ supportedChainSubmodule U n := by
   rw [← subtypeInclusion_chain_range U n]
   exact ⟨c, rfl⟩
+
+/-- Pushforward along a map whose image lies in `V` lands in the `V`-supported chains. -/
+theorem SingularMayerVietoris.inducedChain_mem_supported_of_mapsTo {X Y : Type}
+    [TopologicalSpace X] [TopologicalSpace Y] (f : C(X, Y)) (V : Set Y)
+    (hf : ∀ x, f x ∈ V) (n : ℕ) (a : SingularChains.Chains X n) :
+    SingularChains.inducedChain f n a ∈
+      SingularMayerVietoris.supportedChainSubmodule V n := by
+  have hle : (⊤ : Submodule ℤ (SingularChains.Chains X n)) ≤
+      (SingularMayerVietoris.supportedChainSubmodule V n).comap
+        (SingularChains.inducedChain f n) := by
+    rw [← SingularChains.simplexChain_span X n]
+    apply Submodule.span_le.mpr
+    rintro _ ⟨σ, rfl⟩
+    change SingularChains.inducedChain f n (SingularChains.simplexChain X n σ) ∈
+      SingularMayerVietoris.supportedChainSubmodule V n
+    rw [SingularChains.inducedChain_simplex]
+    apply SingularMayerVietoris.simplexChain_mem_supported
+    rintro y ⟨s, rfl⟩
+    exact hf (σ s)
+  exact hle (Submodule.mem_top)
+
+/-- The point chain at `x ∈ U` is supported on `U`. -/
+theorem SingularChains.pointChain_mem_supported {X : Type} [TopologicalSpace X]
+    (U : Set X) (x : X) (hx : x ∈ U) :
+    SingularChains.pointChain x ∈ SingularMayerVietoris.supportedChainSubmodule U 0 := by
+  apply SingularMayerVietoris.simplexChain_mem_supported
+  rintro y ⟨s, rfl⟩
+  simpa [ContinuousMap.const_apply] using hx
