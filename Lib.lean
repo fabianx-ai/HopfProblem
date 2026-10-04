@@ -101,7 +101,15 @@ import Lib.Geometry.Manifold.Morse.Index
 import Lib.Analysis.Complex.Mobius
 import Lib.Geometry.Manifold.Instances.RiemannSphere
 import Lib.Analysis.Complex.SchwarzReflection
-import Lib.Analysis.Complex.RiemannMapping
+import Lib.Analysis.Complex.RiemannMapping.BoundaryDerivative
+import Lib.Analysis.Complex.RiemannMapping.ConformalExtension
+import Lib.Analysis.Complex.RiemannMapping.DiscBoundaryEscape
+import Lib.Analysis.Complex.RiemannMapping.DiscCompactification
+import Lib.Analysis.Complex.RiemannMapping.Existence
+import Lib.Analysis.Complex.RiemannMapping.HalfStripChart
+import Lib.Analysis.Complex.RiemannMapping.ModulusOneReflection
+import Lib.Analysis.Complex.RiemannMapping.PrincipalRoot
+import Lib.Analysis.Complex.RiemannMapping.RectanglePrimitive
 import Lib.Analysis.Complex.RiemannMapping.Steps
 import Lib.Analysis.Complex.Cousin
 import Lib.Analysis.Complex.SquareRoot

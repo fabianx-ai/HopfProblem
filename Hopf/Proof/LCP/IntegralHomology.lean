@@ -140,7 +140,6 @@ import Lib.Analysis.Complex.Cousin
 import Lib.Analysis.Complex.SquareRoot
 import Lib.Analysis.Complex.Mobius
 import Lib.Analysis.Complex.SchwarzReflection
-import Lib.Analysis.Complex.RiemannMapping
 import Lib.Analysis.Complex.RiemannMapping.Steps
 import Lib.Geometry.Manifold.Complex.Biholomorph
 import Lib.GroupTheory.Abelianization.SemidirectProduct

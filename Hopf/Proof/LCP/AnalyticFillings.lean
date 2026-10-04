@@ -135,7 +135,9 @@ import Lib.Analysis.Complex.SquareRoot
 import Lib.Geometry.Manifold.Instances.RiemannSphere
 import Lib.Analysis.Complex.Mobius
 import Lib.Analysis.Complex.SchwarzReflection
-import Lib.Analysis.Complex.RiemannMapping
+import Lib.Analysis.Complex.RiemannMapping.ConformalExtension
+import Lib.Analysis.Complex.RiemannMapping.DiscCompactification
+import Lib.Analysis.Complex.RiemannMapping.Existence
 import Hopf.Proof.Analysis.Complex.RiemannMapping.TriangleNormalization
 import Hopf.Proof.Analysis.Complex.RiemannMapping.SectorRoots
 import Lib.Analysis.Complex.RiemannMapping.Steps
