@@ -5,7 +5,6 @@ Authors: Fabian Franz
 -/
 import Mathlib
 import Lib.Geometry.Manifold.Morse.Rearrangement
-import Lib.Geometry.Manifold.Morse.Connection
 
 /-!
 # Cutoffs with small weighted derivative

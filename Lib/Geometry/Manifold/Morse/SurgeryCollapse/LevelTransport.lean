@@ -8,7 +8,6 @@ import Lib.AlgebraicTopology.SingularHomology.Sphere
 import Lib.Geometry.Manifold.Morse.AdaptedWindows
 import Lib.Geometry.Manifold.Morse.BeltCancellation
 import Lib.Geometry.Manifold.Morse.CircleGluing
-import Lib.Geometry.Manifold.Morse.Connection
 import Lib.Geometry.Manifold.Morse.CubicFlow
 import Lib.Geometry.Manifold.Morse.Existence
 import Lib.Geometry.Manifold.Morse.HandleAttachment

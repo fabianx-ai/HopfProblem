@@ -88,7 +88,6 @@ import Lib.Topology.Homotopy.LoopSubdivision
 import Lib.AlgebraicTopology.FundamentalGroupoid.SimplyConnectedSphere
 import Lib.Geometry.Manifold.Whitney.BigonModel
 import Hopf.Proof.Geometry.Manifold.Morse.MinimalSystem
-import Lib.Geometry.Manifold.Morse.Connection
 import Lib.Topology.MappingTorus.Wang
 import Lib.Geometry.Manifold.Morse.CircleGluing
 import Lib.Geometry.Manifold.Whitney.CleanStrips

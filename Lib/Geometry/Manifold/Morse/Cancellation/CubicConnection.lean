@@ -5,7 +5,7 @@ Authors: Fabian Franz
 -/
 import Mathlib
 import Lib.Geometry.Manifold.Morse.Rearrangement
-import Lib.Geometry.Manifold.Morse.Connection
+import Lib.Geometry.Manifold.Morse.Connection.CubicEndpoints
 import Lib.Geometry.Manifold.Morse.Cancellation.CubicModel
 import Lib.Geometry.Manifold.Morse.Cancellation.LyapunovResidence
 import Lib.Geometry.Manifold.Morse.Cancellation.BandReplacement

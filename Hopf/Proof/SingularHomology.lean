@@ -89,7 +89,6 @@ import Lib.Topology.Homotopy.LoopSubdivision
 import Lib.AlgebraicTopology.FundamentalGroupoid.SimplyConnectedSphere
 import Lib.Geometry.Manifold.Whitney.BigonModel
 import Hopf.Proof.Geometry.Manifold.Morse.MinimalSystem
-import Lib.Geometry.Manifold.Morse.Connection
 
 /-! Proof-specific part of `Hopf.SingularHomology` (split by lean-agent-ide `split_module`); the stock part that is
 still to be moved into `Lib/` stays in `Hopf/SingularHomology.lean`. Declarations, names and namespaces are unchanged. -/

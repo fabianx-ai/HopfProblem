@@ -30,7 +30,8 @@ import Lib.AlgebraicTopology.SingularHomology.LinearSphereAction
 import Lib.Topology.Homotopy.LoopSubdivision
 import Lib.AlgebraicTopology.FundamentalGroupoid.SimplyConnectedSphere
 import Lib.Geometry.Manifold.Whitney.BigonModel
-import Lib.Geometry.Manifold.Morse.Connection
+import Lib.Geometry.Manifold.Morse.Connection.LevelHolonomy
+import Lib.Geometry.Manifold.Morse.Connection.MinimumBasins
 import Lib.Topology.MappingTorus.Wang
 
 /-!

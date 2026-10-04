@@ -13,7 +13,7 @@ import Lib.Geometry.Manifold.Morse.SurgeryWindows
 import Lib.Geometry.Manifold.Morse.Cancellation.CriticalGerms
 import Lib.Geometry.Manifold.Morse.Rearrangement
 import Hopf.Proof.Geometry.Manifold.Morse.Rearrangement.SheetArc
-import Lib.Geometry.Manifold.Morse.Connection
+import Lib.Geometry.Manifold.Morse.Connection.TimeChange
 import Lib.Geometry.Manifold.Morse.CellStructure
 import Lib.LinearAlgebra.Matrix.TransvectionReduction
 import Lib.Geometry.Manifold.Morse.CutTransport

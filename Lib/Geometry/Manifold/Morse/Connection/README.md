@@ -1,28 +1,3 @@
-/-
-Copyright (c) 2026 Fabian Franz. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-Authors: Fabian Franz
--/
-import Lib.Geometry.Manifold.Morse.Connection.CubicEndpoints
-import Lib.Geometry.Manifold.Morse.Connection.MinimumBasins
-import Lib.Geometry.Manifold.Morse.Connection.NoReturn
-import Lib.Geometry.Manifold.Morse.Connection.BeltArc
-import Lib.Geometry.Manifold.Morse.Connection.TimeChange
-import Lib.Geometry.Manifold.Morse.Connection.Suspension
-import Lib.Geometry.Manifold.Morse.Connection.LevelHolonomy
-import Lib.Geometry.Manifold.Morse.Connection.TransverseTimeLifts
-import Lib.Geometry.Manifold.Morse.Connection.PhaseCylinder
-import Lib.Geometry.Manifold.Morse.Connection.TransitionPhase
-import Lib.Geometry.Manifold.Morse.Connection.TransportedCorrections
-import Lib.Geometry.Manifold.Morse.Connection.SignEnumerations
-import Lib.Geometry.Manifold.Morse.Connection.EndpointBasins
-import Lib.Geometry.Manifold.Morse.Connection.TransverseBlocks
-import Lib.Geometry.Manifold.Morse.Connection.CylinderHolonomy
-import Lib.Geometry.Manifold.Morse.Connection.PhaseFlow
-import Lib.Geometry.Manifold.Morse.Connection.FieldChartGluing
-import Lib.Geometry.Manifold.Morse.Connection.CubicFieldChart
-
-/-!
 # The transverse connection of a cancelling pair
 
 Facade module: it imports the pieces below and declares nothing itself, so that every consumer
@@ -61,4 +36,27 @@ h-cobordism theorem*, Theorem 5.4). The pieces, in dependency order:
 ## Tags
 
 morse-theory, cancellation, gradient-like-flow, h-cobordism
--/
+
+## Modules
+
+This directory replaces the former facade module `Lib.Geometry.Manifold.Morse.Connection` (deleted; its module docstring is the text
+above, verbatim). Import the pieces directly:
+
+* `Lib.Geometry.Manifold.Morse.Connection.BeltArc`
+* `Lib.Geometry.Manifold.Morse.Connection.CubicEndpoints`
+* `Lib.Geometry.Manifold.Morse.Connection.CubicFieldChart`
+* `Lib.Geometry.Manifold.Morse.Connection.CylinderHolonomy`
+* `Lib.Geometry.Manifold.Morse.Connection.EndpointBasins`
+* `Lib.Geometry.Manifold.Morse.Connection.FieldChartGluing`
+* `Lib.Geometry.Manifold.Morse.Connection.LevelHolonomy`
+* `Lib.Geometry.Manifold.Morse.Connection.MinimumBasins`
+* `Lib.Geometry.Manifold.Morse.Connection.NoReturn`
+* `Lib.Geometry.Manifold.Morse.Connection.PhaseCylinder`
+* `Lib.Geometry.Manifold.Morse.Connection.PhaseFlow`
+* `Lib.Geometry.Manifold.Morse.Connection.SignEnumerations`
+* `Lib.Geometry.Manifold.Morse.Connection.Suspension`
+* `Lib.Geometry.Manifold.Morse.Connection.TimeChange`
+* `Lib.Geometry.Manifold.Morse.Connection.TransitionPhase`
+* `Lib.Geometry.Manifold.Morse.Connection.TransportedCorrections`
+* `Lib.Geometry.Manifold.Morse.Connection.TransverseBlocks`
+* `Lib.Geometry.Manifold.Morse.Connection.TransverseTimeLifts`

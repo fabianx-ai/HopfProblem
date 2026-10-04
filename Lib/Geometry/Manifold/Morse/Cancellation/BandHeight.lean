@@ -5,7 +5,6 @@ Authors: Fabian Franz
 -/
 import Mathlib
 import Lib.Geometry.Manifold.Morse.Rearrangement
-import Lib.Geometry.Manifold.Morse.Connection
 import Lib.Geometry.Manifold.Morse.Cancellation.LogarithmicCutoff
 
 /-!

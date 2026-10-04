@@ -5,7 +5,9 @@ Authors: Fabian Franz
 -/
 import Mathlib
 import Lib.Geometry.Manifold.Morse.Rearrangement
-import Lib.Geometry.Manifold.Morse.Connection
+import Lib.Geometry.Manifold.Morse.Connection.CubicFieldChart
+import Lib.Geometry.Manifold.Morse.Connection.EndpointBasins
+import Lib.Geometry.Manifold.Morse.Connection.PhaseFlow
 import Lib.Geometry.Manifold.Morse.Cancellation.CubicConnection
 
 /-!
