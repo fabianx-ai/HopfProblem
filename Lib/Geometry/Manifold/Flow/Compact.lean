@@ -6,7 +6,7 @@ Authors: Fabian Franz
 module
 
 public import Mathlib
-public import Lib.Analysis.Calculus.MorseLemma.AdaptedDescentField
+public import Lib.Geometry.Manifold.Morse.AdaptedDescentField
 public import Lib.Geometry.Manifold.Morse.Handle
 public import Lib.Geometry.Manifold.LocalDiffeomorph
 public import Mathlib.Geometry.Manifold.LocalDiffeomorph

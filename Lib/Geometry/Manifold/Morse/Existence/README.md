@@ -32,6 +32,8 @@ above, verbatim). Import the pieces directly:
 * `Lib.Geometry.Manifold.Morse.Existence.HomotopicRelWithin`
 * `Lib.Geometry.Manifold.Morse.Existence.HomotopyCollars`
 * `Lib.Geometry.Manifold.Morse.Existence.LevelSurgery`
+* `Lib.Geometry.Manifold.Morse.Existence.MorseFunction` (moved here from
+  `Lib.Analysis.Calculus.MorseLemma.Existence`: existence of Morse functions on compact manifolds)
 * `Lib.Geometry.Manifold.Morse.Existence.PartialChart`
 * `Lib.Geometry.Manifold.Morse.Existence.RegularLocus`
 * `Lib.Geometry.Manifold.Morse.Existence.SmoothApproximation`

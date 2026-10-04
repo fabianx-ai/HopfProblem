@@ -4,7 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Fabian Franz
 -/
 import Mathlib
-import Lib.Analysis.Calculus.MorseLemma.SplitChart
+import Lib.Geometry.Manifold.Morse.SplitChart
 
 /-!
 # Sign vectors, coordinate enumerations and split coordinates

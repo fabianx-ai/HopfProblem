@@ -7,10 +7,10 @@ module
 
 public import Mathlib
 public import Lib.Geometry.Manifold.Morse.Handle
-public import Lib.Analysis.Calculus.MorseLemma.CriticalPoints
-public import Lib.Analysis.Calculus.MorseLemma.DescentField
-public import Lib.Analysis.Calculus.MorseLemma.SignedMorseChart
-public import Lib.Analysis.Calculus.MorseLemma.SplitChart
+public import Lib.Geometry.Manifold.Morse.CriticalPoints
+public import Lib.Geometry.Manifold.Morse.DescentField
+public import Lib.Geometry.Manifold.Morse.SignedMorseChart
+public import Lib.Geometry.Manifold.Morse.SplitChart
 
 /-!
 # Descent fields adapted to Morse charts

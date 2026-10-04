@@ -6,7 +6,7 @@ Authors: Fabian Franz
 module
 
 public import Mathlib
-public import Lib.Analysis.Calculus.MorseLemma.CriticalPoints
+public import Lib.Geometry.Manifold.Morse.CriticalPoints
 
 /-!
 # Descent vector fields and prescribed derivatives

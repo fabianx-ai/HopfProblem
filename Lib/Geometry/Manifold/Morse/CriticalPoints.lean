@@ -6,7 +6,7 @@ Authors: Fabian Franz
 module
 
 public import Mathlib
-public import Lib.Analysis.Calculus.MorseLemma.LinearPerturbation
+public import Lib.Geometry.Manifold.Morse.LinearPerturbation
 
 /-!
 # Nondegenerate critical points on a manifold
