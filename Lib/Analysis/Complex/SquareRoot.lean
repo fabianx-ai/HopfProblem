@@ -8,7 +8,6 @@ Authors: Fabian Franz
 
 import Lib.Analysis.Complex.RiemannMapping
 import Lib.Analysis.Complex.RiemannMapping.Steps
-import Lib.Analysis.Calculus.MorseLemma
 import Lib.Geometry.Manifold.Instances.RiemannSphere
 import Mathlib
 

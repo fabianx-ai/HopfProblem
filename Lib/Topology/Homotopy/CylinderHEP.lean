@@ -7,7 +7,6 @@ module
 
 public import Mathlib
 public import Lib.Geometry.Manifold.Morse.Handle
-public import Lib.Analysis.Calculus.MorseLemma
 public import Lib.Geometry.Manifold.Morse.SublevelSets
 public import Lib.Geometry.Manifold.Morse.Index
 public import Lib.AlgebraicTopology.SingularHomology.Chains

@@ -5,7 +5,6 @@ Authors: Fabian Franz
 -/
 import Mathlib
 import Lib.Algebra.Module.IntegerPresentation
-import Lib.Analysis.Calculus.MorseLemma
 import Lib.Geometry.Manifold.Morse.SurgeryHomology
 import Lib.Geometry.Manifold.Morse.SurgeryWindows
 import Lib.Geometry.Manifold.Morse.SurgeryCollapse.CellExactSequence

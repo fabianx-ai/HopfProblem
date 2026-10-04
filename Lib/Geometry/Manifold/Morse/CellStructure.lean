@@ -14,7 +14,6 @@ import Lib.Geometry.Manifold.WhitneyEmbedding
 import Lib.Topology.Homotopy.CellAttachment
 import Lib.Topology.Homotopy.HandleRetraction
 import Lib.Topology.Homotopy.CylinderHEP
-import Lib.Analysis.Calculus.MorseLemma
 import Lib.AlgebraicTopology.SingularHomology.Chains
 import Lib.AlgebraicTopology.SingularHomology.HomotopyInvariance
 import Lib.AlgebraicTopology.SingularHomology.SphereHomology

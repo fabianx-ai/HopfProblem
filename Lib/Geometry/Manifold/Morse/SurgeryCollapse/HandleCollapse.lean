@@ -9,7 +9,6 @@ import Lib.AlgebraicTopology.SingularHomology.LocalDegree
 import Lib.AlgebraicTopology.SingularHomology.LocalDegreeNeighborhoods
 import Lib.AlgebraicTopology.SingularHomology.Naturality
 import Lib.AlgebraicTopology.SingularHomology.OnePointCover
-import Lib.Analysis.Calculus.MorseLemma
 import Lib.Geometry.Manifold.Morse.BeltCancellation
 import Lib.Geometry.Manifold.Morse.CircleGluing
 import Lib.Geometry.Manifold.Morse.Handle

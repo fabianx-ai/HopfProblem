@@ -6,7 +6,6 @@ Authors: Fabian Franz
 import Mathlib
 import Lib.AlgebraicTopology.FundamentalGroupoid.SimplyConnectedSphere
 import Lib.AlgebraicTopology.SingularHomology.Sphere
-import Lib.Analysis.Calculus.MorseLemma
 import Lib.Combinatorics.IndexDisorder
 import Lib.Geometry.Manifold.Morse.AdaptedWindows
 import Lib.Geometry.Manifold.Morse.CircleGluing

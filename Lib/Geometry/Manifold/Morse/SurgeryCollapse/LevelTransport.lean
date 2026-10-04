@@ -5,7 +5,6 @@ Authors: Fabian Franz
 -/
 import Mathlib
 import Lib.AlgebraicTopology.SingularHomology.Sphere
-import Lib.Analysis.Calculus.MorseLemma
 import Lib.Geometry.Manifold.Morse.AdaptedWindows
 import Lib.Geometry.Manifold.Morse.BeltCancellation
 import Lib.Geometry.Manifold.Morse.CircleGluing

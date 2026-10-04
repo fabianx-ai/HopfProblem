@@ -4,7 +4,6 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Fabian Franz
 -/
 import Mathlib
-import Lib.Analysis.Calculus.MorseLemma
 import Lib.Combinatorics.IndexDisorder
 import Lib.Geometry.Manifold.Morse.Cubic
 import Lib.Geometry.Manifold.Morse.CubicFlow

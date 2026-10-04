@@ -6,7 +6,7 @@ Authors: Fabian Franz
 module
 
 public import Mathlib
-public import Lib.Analysis.Calculus.MorseLemma
+public import Lib.Analysis.Calculus.MorseLemma.Existence
 public import Lib.Geometry.Manifold.Morse.Existence.RegularLocus
 
 /-!

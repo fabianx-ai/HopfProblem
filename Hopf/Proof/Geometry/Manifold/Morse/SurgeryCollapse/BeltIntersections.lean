@@ -5,7 +5,6 @@ Authors: Fabian Franz
 -/
 import Mathlib
 import Lib.Algebra.BigOperators.SignedCancellation
-import Lib.Analysis.Calculus.MorseLemma
 import Lib.Geometry.Manifold.Morse.BeltCancellation
 import Lib.Geometry.Manifold.Morse.CubicFlow
 import Lib.Geometry.Manifold.Morse.Existence

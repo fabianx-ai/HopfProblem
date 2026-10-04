@@ -69,7 +69,6 @@ import Hopf.LCP.IntegralHomology
 import Hopf.Proof.LCP.BoundaryTopology
 import Lib.AlgebraicTopology.SingularHomology.CirclePaths
 import Lib.Geometry.Manifold.Morse.Handle
-import Lib.Analysis.Calculus.MorseLemma
 import Lib.Geometry.Manifold.Flow.Compact
 import Lib.Geometry.Manifold.RegularLevel
 import Lib.Geometry.Manifold.Morse.HandleAttachment

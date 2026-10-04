@@ -64,7 +64,6 @@ Original source lines 105222--115134; see PROVENANCE.md.
 import Hopf.LibShims
 import Hopf.Proof.Shortcuts
 import Lib.Geometry.Manifold.Morse.Handle
-import Lib.Analysis.Calculus.MorseLemma
 import Lib.Geometry.Manifold.Flow.Compact
 import Lib.Geometry.Manifold.RegularLevel
 import Lib.Geometry.Manifold.Morse.HandleAttachment

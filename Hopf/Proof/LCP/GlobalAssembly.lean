@@ -65,7 +65,6 @@ import Hopf.LibShims
 import Hopf.Proof.LCP.AnalyticFillings
 import Lib.Geometry.Manifold.Gluing.OverBase
 import Lib.Geometry.Manifold.Morse.Handle
-import Lib.Analysis.Calculus.MorseLemma
 import Lib.Geometry.Manifold.Flow.Compact
 import Lib.Geometry.Manifold.RegularLevel
 import Lib.Geometry.Manifold.Morse.HandleAttachment

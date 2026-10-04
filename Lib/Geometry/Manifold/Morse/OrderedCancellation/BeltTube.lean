@@ -5,7 +5,6 @@ Authors: Fabian Franz
 -/
 import Mathlib
 import Lib.AlgebraicTopology.SingularHomology.LocalDegreeNeighborhoods
-import Lib.Analysis.Calculus.MorseLemma
 import Lib.Geometry.Manifold.Morse.HandleAttachment
 import Lib.Geometry.Manifold.Morse.SublevelSets
 import Lib.Geometry.Manifold.Morse.SurgeryWindows

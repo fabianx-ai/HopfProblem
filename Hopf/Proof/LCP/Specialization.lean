@@ -66,7 +66,6 @@ import Hopf.LCP.Specialization
 import Hopf.Proof.LCP.CuspFilling
 import Lib.AlgebraicTopology.SingularHomology.CirclePaths
 import Lib.Geometry.Manifold.Morse.Handle
-import Lib.Analysis.Calculus.MorseLemma
 import Lib.Geometry.Manifold.Flow.Compact
 import Lib.Geometry.Manifold.RegularLevel
 import Lib.Geometry.Manifold.Morse.HandleAttachment

@@ -7,7 +7,6 @@ import Mathlib
 import Lib.AlgebraicTopology.SingularHomology.HomotopyInvariance
 import Lib.AlgebraicTopology.SingularHomology.Sphere
 import Lib.AlgebraicTopology.SingularHomology.SphereHomology
-import Lib.Analysis.Calculus.MorseLemma
 import Lib.Geometry.Manifold.Immersion.Relative
 import Lib.Geometry.Manifold.Transversality.Basic
 import Lib.Geometry.Manifold.Morse.HandleAttachment
