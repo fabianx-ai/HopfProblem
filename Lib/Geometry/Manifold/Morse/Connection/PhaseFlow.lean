@@ -4,7 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Fabian Franz
 -/
 import Mathlib
-import Lib.Geometry.Manifold.Morse.Cubic.LocalReplacement
+import Lib.Geometry.Manifold.LocalReplacement
 import Lib.Geometry.Manifold.Morse.Rearrangement.HeightCoordinates
 import Lib.Geometry.Manifold.Morse.Connection.CylinderHolonomy
 import Lib.Geometry.Manifold.Morse.Connection.PhaseCylinder

@@ -12,6 +12,7 @@ h-cobordism theorem*, §5) together with the local flow lemmas it is used with.
 * `Cubic.Model` — the cubic family `x³/3 + t x + ∑ σᵢ yᵢ²` and its critical points;
 * `Cubic.EndpointChart` — Morse charts at the two critical points of the model;
 * `Cubic.LocalReplacement` — replacing a function inside a chart;
+  (moved: now `Lib.Geometry.Manifold.LocalReplacement`)
 * `Cubic.DescentField` — the descent field of the model and its linearisation;
 * `Cubic.SplitCoordinates` — aligning the model with a Morse chart;
 * `Cubic.AlignedRays` — orbits converging to a critical point, on the cubic axis;
@@ -40,7 +41,6 @@ above, verbatim). Import the pieces directly:
 * `Lib.Geometry.Manifold.Morse.Cubic.DescentField`
 * `Lib.Geometry.Manifold.Morse.Cubic.EndpointChart`
 * `Lib.Geometry.Manifold.Morse.Cubic.LevelOrbit`
-* `Lib.Geometry.Manifold.Morse.Cubic.LocalReplacement`
 * `Lib.Geometry.Manifold.Morse.Cubic.Model`
 * `Lib.Geometry.Manifold.Morse.Cubic.SplitCoordinates`
 * `Lib.Geometry.Manifold.Morse.Cubic.SurgeryWindowsExistence`

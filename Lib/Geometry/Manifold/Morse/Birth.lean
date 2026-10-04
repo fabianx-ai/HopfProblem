@@ -5,7 +5,7 @@ Authors: Fabian Franz
 -/
 import Lib.Geometry.Manifold.Morse.Cancellation.CriticalGerms
 import Lib.Geometry.Manifold.Morse.Cancellation.CubicModel
-import Lib.Geometry.Manifold.Morse.Cubic.LocalReplacement
+import Lib.Geometry.Manifold.LocalReplacement
 
 /-!
 # Birth of a pair of Morse critical points

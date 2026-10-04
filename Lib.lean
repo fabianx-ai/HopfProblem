@@ -65,7 +65,7 @@ import Lib.Geometry.Manifold.Morse.Cubic.CoreBasins
 import Lib.Geometry.Manifold.Morse.Cubic.DescentField
 import Lib.Geometry.Manifold.Morse.Cubic.EndpointChart
 import Lib.Geometry.Manifold.Morse.Cubic.LevelOrbit
-import Lib.Geometry.Manifold.Morse.Cubic.LocalReplacement
+import Lib.Geometry.Manifold.LocalReplacement
 import Lib.Geometry.Manifold.Morse.Cubic.Model
 import Lib.Geometry.Manifold.Morse.Cubic.SplitCoordinates
 import Lib.Dynamics.Flow.Sublevel
