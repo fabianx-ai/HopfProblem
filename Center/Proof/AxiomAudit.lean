@@ -6,6 +6,8 @@ SPDX-License-Identifier: Apache-2.0
 import Center.Proof.Topology.Sheaves.Cohomology.SphereTwo
 import Center.Proof.Analysis.Complex.RiemannMapping.SectorRoots
 import Center.Proof.AlgebraicTopology.Hurewicz.SphereGenerator
+import Center.Proof.Algebra.Group.ResidualRelations
+import Center.Proof.AlgebraicTopology.FundamentalGroup.VanKampen.FiniteStarCharacter
 
 /-!
 # Axiom probes for the center construction's declarations under `Center/Proof`
@@ -26,7 +28,10 @@ library; neither covers `Center/Proof`.  The probes below moved here verbatim fr
 
 `SixthHurewicz.exists_sphereMap_of_homologySixEquiv` of
 `Center/Proof/AlgebraicTopology/Hurewicz/SphereGenerator.lean` had no probe before; it gets one
-here.
+here.  So do `ResidualRelations.eq_one_of_mul_eq_one_cube_fourth` and
+`FundamentalGroup.VanKampen.exists_stageCharacter`, whose `Lib/AxiomAudit.lean` probes were dropped
+when their files went to `Hopf/Proof` (review of 2026-10-04, F6); with them every declaration of
+`Center/Proof` is probed.
 -/
 
 /-! ## `Center.Proof.Topology.Sheaves.Cohomology.SphereTwo` -/
@@ -51,3 +56,13 @@ here.
 
 #check SixthHurewicz.exists_sphereMap_of_homologySixEquiv
 #print axioms SixthHurewicz.exists_sphereMap_of_homologySixEquiv
+
+/-! ## `Center.Proof.Algebra.Group.ResidualRelations` -/
+
+#check ResidualRelations.eq_one_of_mul_eq_one_cube_fourth
+#print axioms ResidualRelations.eq_one_of_mul_eq_one_cube_fourth
+
+/-! ## `Center.Proof.AlgebraicTopology.FundamentalGroup.VanKampen.FiniteStarCharacter` -/
+
+#check FundamentalGroup.VanKampen.exists_stageCharacter
+#print axioms FundamentalGroup.VanKampen.exists_stageCharacter
