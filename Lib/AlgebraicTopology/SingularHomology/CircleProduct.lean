@@ -8,7 +8,6 @@ module
 public import Mathlib
 public import Lib.AlgebraicTopology.SingularHomology.Suspension
 public import Lib.AlgebraicTopology.SingularHomology.Sum
-public import Lib.AlgebraicTopology.SingularHomology.MayerVietoris
 public import Lib.AlgebraicTopology.SingularHomology.ModuleHomology
 public import Lib.AlgebraicTopology.SingularHomology.Naturality
 

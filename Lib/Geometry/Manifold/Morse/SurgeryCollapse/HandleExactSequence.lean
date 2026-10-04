@@ -5,7 +5,6 @@ Authors: Fabian Franz
 -/
 import Mathlib
 import Lib.AlgebraicTopology.SingularHomology.HomotopyInvariance
-import Lib.AlgebraicTopology.SingularHomology.MayerVietoris
 import Lib.AlgebraicTopology.SingularHomology.OnePointCover
 import Lib.Analysis.Calculus.MorseLemma
 import Lib.Geometry.Manifold.Morse.BeltCancellation

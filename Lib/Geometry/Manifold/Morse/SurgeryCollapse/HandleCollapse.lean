@@ -7,7 +7,6 @@ import Mathlib
 import Lib.AlgebraicTopology.SingularHomology.HomotopyInvariance
 import Lib.AlgebraicTopology.SingularHomology.LocalDegree
 import Lib.AlgebraicTopology.SingularHomology.LocalDegreeNeighborhoods
-import Lib.AlgebraicTopology.SingularHomology.MayerVietoris
 import Lib.AlgebraicTopology.SingularHomology.Naturality
 import Lib.AlgebraicTopology.SingularHomology.OnePointCover
 import Lib.Analysis.Calculus.MorseLemma

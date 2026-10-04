@@ -5,7 +5,6 @@ Authors: Fabian Franz
 -/
 import Mathlib
 import Lib.AlgebraicTopology.SingularHomology.Chains
-import Lib.AlgebraicTopology.SingularHomology.MayerVietoris
 import Lib.AlgebraicTopology.SingularHomology.HomotopyInvariance
 import Lib.AlgebraicTopology.SingularHomology.CircleProduct
 import Lib.AlgebraicTopology.SingularHomology.Torus

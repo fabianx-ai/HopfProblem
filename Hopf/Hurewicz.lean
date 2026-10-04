@@ -94,7 +94,6 @@ import Lib.Topology.Homotopy.HandleRetraction
 import Lib.Algebra.Homology.MayerVietorisShortExact
 import Lib.AlgebraicTopology.SingularHomology.Chains
 import Lib.AlgebraicTopology.SingularHomology.ModuleHomology
-import Lib.AlgebraicTopology.SingularHomology.MayerVietoris
 import Lib.AlgebraicTopology.SingularHomology.HomotopyInvariance
 import Lib.AlgebraicTopology.SingularHomology.LocalDegree
 import Lib.AlgebraicTopology.SingularHomology.LinearSphereAction

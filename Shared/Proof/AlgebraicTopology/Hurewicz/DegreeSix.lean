@@ -6,7 +6,6 @@ SPDX-License-Identifier: Apache-2.0
 import Mathlib
 import Lib.AlgebraicTopology.SingularHomology.Chains
 import Lib.AlgebraicTopology.SingularHomology.ModuleHomology
-import Lib.AlgebraicTopology.SingularHomology.MayerVietoris
 import Lib.AlgebraicTopology.SingularHomology.HomotopyInvariance
 import Lib.AlgebraicTopology.Hurewicz.Straightening
 import Lib.AlgebraicTopology.Hurewicz.CubeSphere

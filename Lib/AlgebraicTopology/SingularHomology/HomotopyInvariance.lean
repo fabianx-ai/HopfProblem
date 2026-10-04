@@ -7,7 +7,7 @@ module
 
 public import Mathlib
 public import Lib.AlgebraicTopology.SingularHomology.Chains
-public import Lib.AlgebraicTopology.SingularHomology.MayerVietoris
+public import Lib.AlgebraicTopology.SingularHomology.MayerVietoris.SingularHomology
 
 /-!
 # Homotopy invariance of singular homology

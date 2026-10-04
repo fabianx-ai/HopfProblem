@@ -8,7 +8,6 @@ import Lib.Topology.MappingTorus.Basic
 import Lib.Topology.MappingTorus.HomologyCover
 import Lib.AlgebraicTopology.SingularHomology.Chains
 import Lib.AlgebraicTopology.SingularHomology.ModuleHomology
-import Lib.AlgebraicTopology.SingularHomology.MayerVietoris
 import Lib.AlgebraicTopology.SingularHomology.HomotopyInvariance
 import Lib.AlgebraicTopology.SingularHomology.Sum
 import Lib.AlgebraicTopology.SingularHomology.CircleProduct

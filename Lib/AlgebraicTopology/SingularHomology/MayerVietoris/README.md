@@ -1,26 +1,3 @@
-/-
-Copyright (c) 2026 Fabian Franz. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-Authors: Fabian Franz
--/
-module
-
-public import Lib.AlgebraicTopology.SingularHomology.MayerVietoris.SingularHomology
-public import Lib.AlgebraicTopology.SingularHomology.MayerVietoris.HomologyLongExact
-public import Lib.AlgebraicTopology.SingularHomology.MayerVietoris.BiprodSequence
-public import Lib.AlgebraicTopology.SingularHomology.MayerVietoris.SmallChains
-public import Lib.AlgebraicTopology.SingularHomology.MayerVietoris.ChainSequence
-public import Lib.AlgebraicTopology.SingularHomology.MayerVietoris.SmallHomology
-public import Lib.AlgebraicTopology.SingularHomology.MayerVietoris.AffineSimplex
-public import Lib.AlgebraicTopology.SingularHomology.MayerVietoris.FormalChains
-public import Lib.AlgebraicTopology.SingularHomology.MayerVietoris.FormalSubdivision
-public import Lib.AlgebraicTopology.SingularHomology.MayerVietoris.Subdivision
-public import Lib.AlgebraicTopology.SingularHomology.MayerVietoris.Support
-public import Lib.AlgebraicTopology.SingularHomology.MayerVietoris.Mesh
-public import Lib.AlgebraicTopology.SingularHomology.MayerVietoris.SmallSimplices
-public import Lib.AlgebraicTopology.SingularHomology.MayerVietoris.Sequence
-
-/-!
 # The Mayer–Vietoris theorem for singular homology
 
 For two open sets `U`, `V` covering `X`, the singular chain complexes fit into a short exact
@@ -58,4 +35,23 @@ All declarations live in the namespace `SingularMayerVietoris`.
 ## Tags
 
 Mayer–Vietoris, barycentric subdivision, small simplices, long exact sequence
--/
+
+## Modules
+
+This directory replaces the former facade module `Lib.AlgebraicTopology.SingularHomology.MayerVietoris` (deleted; its module docstring is the text
+above, verbatim). Import the pieces directly:
+
+* `Lib.AlgebraicTopology.SingularHomology.MayerVietoris.AffineSimplex`
+* `Lib.AlgebraicTopology.SingularHomology.MayerVietoris.BiprodSequence`
+* `Lib.AlgebraicTopology.SingularHomology.MayerVietoris.ChainSequence`
+* `Lib.AlgebraicTopology.SingularHomology.MayerVietoris.FormalChains`
+* `Lib.AlgebraicTopology.SingularHomology.MayerVietoris.FormalSubdivision`
+* `Lib.AlgebraicTopology.SingularHomology.MayerVietoris.HomologyLongExact`
+* `Lib.AlgebraicTopology.SingularHomology.MayerVietoris.Mesh`
+* `Lib.AlgebraicTopology.SingularHomology.MayerVietoris.Sequence`
+* `Lib.AlgebraicTopology.SingularHomology.MayerVietoris.SingularHomology`
+* `Lib.AlgebraicTopology.SingularHomology.MayerVietoris.SmallChains`
+* `Lib.AlgebraicTopology.SingularHomology.MayerVietoris.SmallHomology`
+* `Lib.AlgebraicTopology.SingularHomology.MayerVietoris.SmallSimplices`
+* `Lib.AlgebraicTopology.SingularHomology.MayerVietoris.Subdivision`
+* `Lib.AlgebraicTopology.SingularHomology.MayerVietoris.Support`

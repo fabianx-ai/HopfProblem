@@ -7,7 +7,6 @@ import Mathlib
 import Lib.AlgebraicTopology.SingularHomology.HomotopyInvariance
 import Lib.AlgebraicTopology.SingularHomology.LinearSphereAction
 import Lib.AlgebraicTopology.SingularHomology.LocalDegree
-import Lib.AlgebraicTopology.SingularHomology.MayerVietoris
 import Lib.AlgebraicTopology.SingularHomology.OnePointCover
 import Lib.AlgebraicTopology.SingularHomology.Suspension
 import Lib.Geometry.Manifold.Morse.SurgeryCollapse.CellExactSequence

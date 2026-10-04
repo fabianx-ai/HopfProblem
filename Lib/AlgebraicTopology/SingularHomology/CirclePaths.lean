@@ -10,7 +10,6 @@ public import Lib.AlgebraicTopology.SingularHomology.Chains
 public import Lib.AlgebraicTopology.SingularHomology.CircleProduct
 public import Lib.AlgebraicTopology.SingularHomology.CrossProduct.Naturality
 public import Lib.AlgebraicTopology.SingularHomology.HomotopyInvariance
-public import Lib.AlgebraicTopology.SingularHomology.MayerVietoris
 public import Lib.AlgebraicTopology.SingularHomology.ModuleHomology
 public import Lib.AlgebraicTopology.SingularHomology.PathClass
 public import Lib.AlgebraicTopology.SingularHomology.Sum

@@ -12,7 +12,6 @@ import Lib.Geometry.Manifold.Collar
 import Lib.Geometry.Manifold.WhitneyEmbedding
 import Lib.Analysis.Calculus.MorseLemma
 import Lib.AlgebraicTopology.SingularHomology.Chains
-import Lib.AlgebraicTopology.SingularHomology.MayerVietoris
 import Lib.AlgebraicTopology.SingularHomology.HomotopyInvariance
 import Lib.Topology.Homotopy.HandleRetraction
 import Lib.AlgebraicTopology.SingularHomology.SphereHomology

@@ -16,7 +16,6 @@ import Lib.Topology.Homotopy.HandleRetraction
 import Lib.Topology.Homotopy.CylinderHEP
 import Lib.Analysis.Calculus.MorseLemma
 import Lib.AlgebraicTopology.SingularHomology.Chains
-import Lib.AlgebraicTopology.SingularHomology.MayerVietoris
 import Lib.AlgebraicTopology.SingularHomology.HomotopyInvariance
 import Lib.AlgebraicTopology.SingularHomology.SphereHomology
 import Lib.Geometry.Manifold.ChartedSpace.Transport

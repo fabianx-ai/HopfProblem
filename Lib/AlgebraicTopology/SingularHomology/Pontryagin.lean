@@ -6,7 +6,6 @@ Authors: Fabian Franz
 module
 
 public import Mathlib
-public import Lib.AlgebraicTopology.SingularHomology.MayerVietoris
 public import Lib.AlgebraicTopology.SingularHomology.CrossProduct.Associator
 public import Lib.AlgebraicTopology.SingularHomology.CrossProduct.Naturality
 
