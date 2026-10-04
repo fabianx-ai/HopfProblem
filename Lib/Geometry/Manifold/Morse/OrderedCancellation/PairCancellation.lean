@@ -5,7 +5,6 @@ Authors: Fabian Franz
 -/
 import Mathlib
 import Lib.Geometry.Manifold.Morse.Cancellation.LevelIsotopy
-import Lib.Geometry.Manifold.Morse.Cubic
 import Lib.Geometry.Manifold.Morse.CubicFlow
 import Lib.Geometry.Manifold.Morse.Rearrangement
 import Lib.Geometry.Manifold.Morse.SurgeryWindows

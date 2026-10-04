@@ -1,25 +1,3 @@
-/-
-Copyright (c) 2026 Fabian Franz. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-Authors: Fabian Franz
--/
-module
-
-public import Lib.Geometry.Manifold.Morse.Cubic.SurgeryWindowsExistence
-public import Lib.Geometry.Manifold.Morse.Cubic.BasinBlock
-public import Lib.Geometry.Manifold.Morse.Cubic.SublevelFlow
-public import Lib.Geometry.Manifold.Morse.Cubic.LevelOrbit
-public import Lib.Geometry.Manifold.Morse.Cubic.Model
-public import Lib.Geometry.Manifold.Morse.Cubic.EndpointChart
-public import Lib.Geometry.Manifold.Morse.Cubic.LocalReplacement
-public import Lib.Geometry.Manifold.Morse.Cubic.DescentField
-public import Lib.Geometry.Manifold.Morse.Cubic.SplitCoordinates
-public import Lib.Geometry.Manifold.Morse.Cubic.AlignedRays
-public import Lib.Geometry.Manifold.Morse.Cubic.CoreBasins
-public import Lib.Geometry.Manifold.Morse.Cubic.Tanh
-public import Lib.Geometry.Manifold.Morse.Cubic.AxisParameter
-
-/-!
 # The cubic model of a cancelling pair
 
 Facade module: it imports the pieces of the former monolith and declares nothing.  The subject is
@@ -48,4 +26,22 @@ h-cobordism theorem*, §5) together with the local flow lemmas it is used with.
 ## Tags
 
 morse-theory, cancellation, cubic-model, h-cobordism
--/
+
+## Modules
+
+This directory replaces the former facade module `Lib.Geometry.Manifold.Morse.Cubic` (deleted; its module docstring is the text
+above, verbatim). Import the pieces directly:
+
+* `Lib.Geometry.Manifold.Morse.Cubic.AlignedRays`
+* `Lib.Geometry.Manifold.Morse.Cubic.AxisParameter`
+* `Lib.Geometry.Manifold.Morse.Cubic.BasinBlock`
+* `Lib.Geometry.Manifold.Morse.Cubic.CoreBasins`
+* `Lib.Geometry.Manifold.Morse.Cubic.DescentField`
+* `Lib.Geometry.Manifold.Morse.Cubic.EndpointChart`
+* `Lib.Geometry.Manifold.Morse.Cubic.LevelOrbit`
+* `Lib.Geometry.Manifold.Morse.Cubic.LocalReplacement`
+* `Lib.Geometry.Manifold.Morse.Cubic.Model`
+* `Lib.Geometry.Manifold.Morse.Cubic.SplitCoordinates`
+* `Lib.Geometry.Manifold.Morse.Cubic.SublevelFlow`
+* `Lib.Geometry.Manifold.Morse.Cubic.SurgeryWindowsExistence`
+* `Lib.Geometry.Manifold.Morse.Cubic.Tanh`
