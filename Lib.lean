@@ -348,7 +348,7 @@ import Lib.Geometry.Manifold.Morse.OrderedCancellation.IndexCounts
 import Lib.Geometry.Manifold.Morse.OrderedCancellation.MinimalSystem
 import Lib.Geometry.Manifold.Morse.OrderedCancellation.Negation
 import Lib.Geometry.Manifold.Morse.OrderedCancellation.PairCancellation
-import Lib.Geometry.Manifold.Morse.OrderedCancellation.PathComponents
+import Lib.AlgebraicTopology.SingularHomology.PathComponents
 import Lib.Geometry.Manifold.Morse.OrderedCancellation.PrescribedFlow
 import Lib.Geometry.Manifold.Morse.OrderedCancellation.TwoSphereDegree
 import Lib.Geometry.Manifold.Morse.OrderedCancellation.ValueExchange

@@ -13,7 +13,7 @@ import Lib.Geometry.Manifold.Morse.SublevelSets
 import Lib.Geometry.Manifold.Morse.SurgeryHomology
 import Lib.Geometry.Manifold.RegularLevel
 import Lib.Topology.Homotopy.CellAttachment
-import Lib.Geometry.Manifold.Morse.OrderedCancellation.PathComponents
+import Lib.AlgebraicTopology.SingularHomology.PathComponents
 import Lib.Geometry.Manifold.Morse.SurgeryCollapse.CellExactSequence
 
 /-!
