@@ -5,7 +5,10 @@ Authors: Fabian Franz
 -/
 
 import Mathlib
-import Lib.Geometry.Manifold.Whitney.RankThreeModel
+import Lib.Geometry.Manifold.Morse.Connection.BeltArc
+import Lib.Geometry.Manifold.Morse.Rearrangement.LevelConnectedness
+import Lib.Geometry.Manifold.Whitney.EmbeddedArcs.BeltBigon
+import Lib.Geometry.Manifold.Whitney.RankThreeModel.Cancellation
 
 /-!
 # Belt-sphere cancellation for Morse surgery data

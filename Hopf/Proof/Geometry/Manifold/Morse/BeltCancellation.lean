@@ -5,7 +5,7 @@ Authors: Fabian Franz
 -/
 
 import Mathlib
-import Lib.Geometry.Manifold.Whitney.RankThreeModel
+import Lib.Geometry.Manifold.Morse.Cancellation.LevelIsotopy
 import Lib.Geometry.Manifold.Morse.BeltCancellation
 
 /-!

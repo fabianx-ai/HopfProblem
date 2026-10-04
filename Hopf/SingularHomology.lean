@@ -88,7 +88,6 @@ import Hopf.Proof.Geometry.Manifold.Morse.MinimalSystem
 import Lib.Topology.MappingTorus.Wang
 import Lib.Geometry.Manifold.Morse.CircleGluing
 import Lib.Geometry.Manifold.Whitney.AnnularExtension
-import Lib.Geometry.Manifold.Whitney.RankThreeModel
 import Lib.Geometry.Manifold.Morse.BeltCancellation
 
 set_option maxSynthPendingDepth 3

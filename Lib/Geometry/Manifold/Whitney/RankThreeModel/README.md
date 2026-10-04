@@ -1,23 +1,3 @@
-/-
-Copyright (c) 2026 Fabian Franz. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-Authors: Fabian Franz
--/
-
-import Lib.Geometry.Manifold.Whitney.RankThreeModel.GraphMotion
-import Lib.Geometry.Manifold.Whitney.RankThreeModel.Model
-import Lib.Geometry.Manifold.Whitney.RankThreeModel.SheetRetiming
-import Lib.Geometry.Manifold.Whitney.RankThreeModel.SheetCorrection
-import Lib.Geometry.Manifold.Whitney.RankThreeModel.TangentAdaptedChart
-import Lib.Geometry.Manifold.Whitney.RankThreeModel.CorrectedCoordinates
-import Lib.Geometry.Manifold.Whitney.RankThreeModel.SheetRecognition
-import Lib.Geometry.Manifold.Whitney.RankThreeModel.SheetParametrizedChart
-import Lib.Geometry.Manifold.Whitney.RankThreeModel.CompatibleChart
-import Lib.Geometry.Manifold.Whitney.RankThreeModel.ModelGraphMotion
-import Lib.Geometry.Manifold.Whitney.RankThreeModel.IntersectionRemoval
-import Lib.Geometry.Manifold.Whitney.RankThreeModel.Cancellation
-
-/-!
 # The rank-three Whitney model
 
 Whitney's lemma in the rank-three model (`TubularBigon.exists_rankThree_relative_cancellation`):
@@ -51,4 +31,21 @@ No Mathlib counterpart exists.
 ## Tags
 
 Morse theory, Whitney trick, handle cancellation
--/
+
+## Modules
+
+This directory replaces the former facade module `Lib.Geometry.Manifold.Whitney.RankThreeModel` (deleted; its module docstring is the text
+above, verbatim). Import the pieces directly:
+
+* `Lib.Geometry.Manifold.Whitney.RankThreeModel.Cancellation`
+* `Lib.Geometry.Manifold.Whitney.RankThreeModel.CompatibleChart`
+* `Lib.Geometry.Manifold.Whitney.RankThreeModel.CorrectedCoordinates`
+* `Lib.Geometry.Manifold.Whitney.RankThreeModel.GraphMotion`
+* `Lib.Geometry.Manifold.Whitney.RankThreeModel.IntersectionRemoval`
+* `Lib.Geometry.Manifold.Whitney.RankThreeModel.Model`
+* `Lib.Geometry.Manifold.Whitney.RankThreeModel.ModelGraphMotion`
+* `Lib.Geometry.Manifold.Whitney.RankThreeModel.SheetCorrection`
+* `Lib.Geometry.Manifold.Whitney.RankThreeModel.SheetParametrizedChart`
+* `Lib.Geometry.Manifold.Whitney.RankThreeModel.SheetRecognition`
+* `Lib.Geometry.Manifold.Whitney.RankThreeModel.SheetRetiming`
+* `Lib.Geometry.Manifold.Whitney.RankThreeModel.TangentAdaptedChart`
