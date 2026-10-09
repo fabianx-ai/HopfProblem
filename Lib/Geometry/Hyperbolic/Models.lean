@@ -7982,6 +7982,159 @@ theorem hyperboloidReflection_lengthDist
   exact congrArg ENNReal.toReal
     (hyperboloidReflection_piecewiseC1EDist n hn p q)
 
+/-- Rotating a Lorentz tangent frame preserves its Gram form and polar coordinates.
+Textbook source: G07, lines 23–25 and 39–45. -/
+theorem hyperboloidPolar_rotated_frame
+    (p : Hyperboloid) (e f : Fin 3 → ℝ)
+    (hep : lorentzBilinear e p.val = 0) (hpf : lorentzBilinear p.val f = 0)
+    (hee : lorentzBilinear e e = 1) (hff : lorentzBilinear f f = 1)
+    (hef : lorentzBilinear e f = 0) (β : ℝ) :
+  let a := Real.cos β • e + Real.sin β • f
+  let b := -Real.sin β • e + Real.cos β • f
+  lorentzBilinear a p.val = 0 ∧ lorentzBilinear p.val b = 0 ∧
+  lorentzBilinear a a = 1 ∧ lorentzBilinear b b = 1 ∧
+  lorentzBilinear a b = 0 ∧
+  (∀ θ : ℝ, Real.cos (θ - β) • a + Real.sin (θ - β) • b =
+    Real.cos θ • e + Real.sin θ • f) ∧
+  (∀ θ : ℝ, Real.cos (-(θ - β)) • a + Real.sin (-(θ - β)) • b =
+    Real.cos (2 * β - θ) • e + Real.sin (2 * β - θ) • f) := by
+  dsimp only
+  obtain ⟨ha, haa⟩ := hyperboloidAxis_polarDirection_unit f hff p hpf e hep hef hee β
+  have hpe : lorentzBilinear p.val e = 0 := (lorentzBilinear_symm _ _).trans hep
+  have hfe : lorentzBilinear f e = 0 := (lorentzBilinear_symm _ _).trans hef
+  have hg : lorentzBilinear p.val (-Real.sin β • e + Real.cos β • f) = 0 ∧
+      lorentzBilinear (-Real.sin β • e + Real.cos β • f)
+        (-Real.sin β • e + Real.cos β • f) = 1 ∧
+      lorentzBilinear (Real.cos β • e + Real.sin β • f)
+        (-Real.sin β • e + Real.cos β • f) = 0 := by
+    simp only [map_add, map_smul, ContinuousLinearMap.add_apply,
+      ContinuousLinearMap.smul_apply, smul_eq_mul, hpe, hpf, hee, hff, hef, hfe]
+    constructor
+    · ring
+    constructor
+    · nlinarith [Real.cos_sq_add_sin_sq β]
+    · ring
+  have hc : ∀ θ : ℝ,
+      Real.cos (θ - β) • (Real.cos β • e + Real.sin β • f) +
+      Real.sin (θ - β) • (-Real.sin β • e + Real.cos β • f) =
+      Real.cos θ • e + Real.sin θ • f := by
+    intro θ
+    ext i
+    simp only [Pi.add_apply, Pi.smul_apply, smul_eq_mul, Real.cos_sub, Real.sin_sub]
+    linear_combination (Real.cos θ * e i + Real.sin θ * f i) * Real.cos_sq_add_sin_sq β
+  refine ⟨ha, hg.1, haa, hg.2.1, hg.2.2, hc, ?_⟩
+  intro θ
+  have hangle : -(θ - β) = (2 * β - θ) - β := by ring
+  rw [hangle]
+  exact hc (2 * β - θ)
+
+/-- The axis through a prescribed center is independent of ray and unit-normal sign.
+Textbook source: G07, lines 39–42. -/
+theorem hyperboloidPolar_axis_comparison
+    (p : Hyperboloid) (e f : Fin 3 → ℝ)
+    (hep : lorentzBilinear e p.val = 0) (hpf : lorentzBilinear p.val f = 0)
+    (hee : lorentzBilinear e e = 1) (hff : lorentzBilinear f f = 1)
+    (hef : lorentzBilinear e f = 0) (β : ℝ) :
+  let a := Real.cos β • e + Real.sin β • f
+  let b := -Real.sin β • e + Real.cos β • f
+  let W := Submodule.span ℝ ({p.val, a} : Set (Fin 3 → ℝ))
+  W = (lorentzFunctional b).ker ∧
+  Submodule.span ℝ ({p.val, -a} : Set (Fin 3 → ℝ)) = W ∧
+  ∀ (n : Fin 3 → ℝ) (hn : lorentzBilinear n n = 1),
+    W = (lorentzFunctional n).ker →
+    (n = b ∨ n = -b) ∧ lorentzBilinear p.val n = 0 ∧
+    (∀ hb : lorentzBilinear b b = 1,
+      hyperboloidReflection n hn = hyperboloidReflection b hb) ∧
+    (∀ q : Hyperboloid, hyperboloidReflection n hn q = q ↔ q.val ∈ W) := by
+  dsimp only
+  obtain ⟨ha, hb, haa, hbb, hab, hc, hr⟩ :=
+    hyperboloidPolar_rotated_frame p e f hep hpf hee hff hef β
+  have hk := lorentzAxis_span_ker _ hbb p hb _ ha hab haa
+  have hna : lorentzBilinear (-(Real.cos β • e + Real.sin β • f)) p.val = 0 := by
+    simpa using congrArg Neg.neg ha
+  have hnb : lorentzBilinear (-(Real.cos β • e + Real.sin β • f))
+      (-Real.sin β • e + Real.cos β • f) = 0 := by
+    simpa using congrArg Neg.neg hab
+  have hnn : lorentzBilinear (-(Real.cos β • e + Real.sin β • f))
+      (-(Real.cos β • e + Real.sin β • f)) = 1 := by
+    simpa only [map_neg, ContinuousLinearMap.neg_apply, neg_neg] using haa
+  have hkr := lorentzAxis_span_ker _ hbb p hb _ hna hnb hnn
+  refine ⟨hk, hkr.trans hk.symm, ?_⟩
+  intro n hn hW
+  have hs := (lorentzPlane_unitNormals_iff _ p _ _ ha haa rfl hbb hk n).mp ⟨hn, hW⟩
+  have hp : lorentzBilinear p.val n = 0 := by
+    rcases hs with rfl | rfl
+    · exact hb
+    · simpa only [map_neg, neg_zero] using congrArg Neg.neg hb
+  refine ⟨hs, hp, ?_, ?_⟩
+  · intro hu
+    rcases hs with rfl | rfl
+    · rfl
+    · funext q
+      apply Subtype.ext
+      rw [hyperboloidReflection_val, hyperboloidReflection_val, lorentzReflection_neg_normal]
+  · intro q
+    rw [hW, hyperboloidReflection_fixed_iff]
+    change lorentzBilinear q.val n = 0 ↔ lorentzFunctional n q.val = 0
+    rw [← lorentzBilinear_eq_functional, lorentzBilinear_symm q.val n]
+
+/-- Reflection at angular origin β sends θ to 2β−θ at the same original radius.
+Textbook source: G07, lines 20–32 and 39–46. -/
+theorem hyperboloidPolar_angular_reflection
+    (p : Hyperboloid) (e f : Fin 3 → ℝ)
+    (hep : lorentzBilinear e p.val = 0) (hpf : lorentzBilinear p.val f = 0)
+    (hee : lorentzBilinear e e = 1) (hff : lorentzBilinear f f = 1)
+    (hef : lorentzBilinear e f = 0) (β : ℝ)
+    (n : Fin 3 → ℝ) (hn : lorentzBilinear n n = 1)
+    (haxis : Submodule.span ℝ
+      ({p.val, Real.cos β • e + Real.sin β • f} : Set (Fin 3 → ℝ)) =
+      (lorentzFunctional n).ker) :
+  hyperboloidReflection n hn p = p ∧
+  (∀ x y : Hyperboloid,
+    hyperboloidLengthDist (hyperboloidReflection n hn x) (hyperboloidReflection n hn y) =
+      hyperboloidLengthDist x y) ∧
+  (∀ q : Hyperboloid,
+    hyperboloidLengthDist p (hyperboloidReflection n hn q) = hyperboloidLengthDist p q) ∧
+  (∀ (t θ : ℝ), 0 ≤ t → ∀ q : Hyperboloid,
+    q.val = hyperboloidGeodesicCoords p (Real.cos θ • e + Real.sin θ • f) t →
+    (hyperboloidReflection n hn q).val =
+      hyperboloidGeodesicCoords p
+        (Real.cos (2 * β - θ) • e + Real.sin (2 * β - θ) • f) t) ∧
+  (∀ (t s θ φ : ℝ), 0 < t → 0 < s → ∀ q : Hyperboloid,
+    q.val = hyperboloidGeodesicCoords p (Real.cos θ • e + Real.sin θ • f) t →
+    hyperboloidLengthDist p q = t ∧ q ≠ p ∧
+    ((hyperboloidReflection n hn q).val =
+      hyperboloidGeodesicCoords p (Real.cos φ • e + Real.sin φ • f) s ↔
+      t = s ∧ ((2 * β - θ : ℝ) : Real.Angle) = (φ : Real.Angle))) ∧
+  (∀ θ : ℝ, hyperboloidGeodesicCoords p (Real.cos θ • e + Real.sin θ • f) 0 = p.val) := by
+  obtain ⟨ha, hb, haa, hbb, hab, hc, hr⟩ :=
+    hyperboloidPolar_rotated_frame p e f hep hpf hee hff hef β
+  obtain ⟨_, hpn, heq, _⟩ :=
+    (hyperboloidPolar_axis_comparison p e f hep hpf hee hff hef β).2.2 n hn haxis
+  have hp := (hyperboloidReflection_fixed_iff n hn p).mpr hpn
+  have haction : ∀ (t θ : ℝ), 0 ≤ t → ∀ q : Hyperboloid,
+      q.val = hyperboloidGeodesicCoords p (Real.cos θ • e + Real.sin θ • f) t →
+      (hyperboloidReflection n hn q).val = hyperboloidGeodesicCoords p
+        (Real.cos (2 * β - θ) • e + Real.sin (2 * β - θ) • f) t := by
+    intro t θ ht q hq
+    rw [← hc θ] at hq
+    have h := hyperboloidAxis_polar_reflection _ hbb p hb _ ha hab haa t (θ - β) ht q hq
+    rw [hr θ, ← heq hbb] at h
+    exact h
+  refine ⟨hp, hyperboloidReflection_lengthDist n hn, ?_, haction, ?_, ?_⟩
+  · intro q
+    have h := hyperboloidReflection_lengthDist n hn p q
+    rwa [hp] at h
+  · intro t s θ φ ht hs q hq
+    obtain ⟨hd, hne, _⟩ :=
+      (hyperboloidAxis_polar_positive_coordinates f hff p hpf e hep hef hee t s θ φ ht hs).2 q hq
+    refine ⟨hd, hne, ?_⟩
+    rw [haction t θ (le_of_lt ht) q hq]
+    exact (hyperboloidAxis_polar_positive_coordinates f hff p hpf e hep hef hee
+      t s (2 * β - θ) φ ht hs).1
+  · intro θ
+    exact (hyperboloidAxis_polar_zero_coordinates f hff p hpf e hep hef hee θ).1
+
 /-- The timelike coefficient of a vector in an adapted Lorentz frame.
 
 Textbook source: reviewed Lorentz reflection proof, S03, lines 105–107. -/
