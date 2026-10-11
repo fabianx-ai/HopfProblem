@@ -7,7 +7,6 @@ module
 
 public import Mathlib
 public import Lib.Geometry.Manifold.Morse.SurgeryWindows.BeltComplement
-public import Lib.Geometry.Manifold.Morse.Handle
 public import Lib.Geometry.Manifold.Collar.LevelTransport
 public import Lib.Geometry.Manifold.Morse.Existence.BeltCore
 
