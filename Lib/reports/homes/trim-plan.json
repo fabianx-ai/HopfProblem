@@ -1,0 +1,592 @@
+{
+ "Lib.AlgebraicTopology.SingularHomology.Chains": {
+  "module": true,
+  "before": [],
+  "after": [],
+  "why": {},
+  "U": []
+ },
+ "Lib.AlgebraicTopology.SingularHomology.CrossProduct.Chain": {
+  "module": true,
+  "before": [
+   "Lib.AlgebraicTopology.SingularHomology.CrossInsert",
+   "Lib.AlgebraicTopology.SingularHomology.CrossProduct.Multilinear",
+   "Lib.AlgebraicTopology.SingularHomology.CrossProduct.Formal",
+   "Lib.AlgebraicTopology.SingularHomology.CrossProduct.Affine"
+  ],
+  "after": [
+   "Lib.AlgebraicTopology.SingularHomology.CrossInsert",
+   "Lib.AlgebraicTopology.SingularHomology.CrossProduct.Affine",
+   "Lib.AlgebraicTopology.SingularHomology.CrossProduct.Formal"
+  ],
+  "why": {
+   "Lib.AlgebraicTopology.SingularHomology.CrossInsert": "use",
+   "Lib.AlgebraicTopology.SingularHomology.CrossProduct.Affine": "use",
+   "Lib.AlgebraicTopology.SingularHomology.CrossProduct.Formal": "use"
+  },
+  "U": [
+   "Lib.AlgebraicTopology.SingularHomology.Chains",
+   "Lib.AlgebraicTopology.SingularHomology.CrossInsert",
+   "Lib.AlgebraicTopology.SingularHomology.CrossProduct.Affine",
+   "Lib.AlgebraicTopology.SingularHomology.CrossProduct.Formal",
+   "Lib.AlgebraicTopology.SingularHomology.CrossProduct.Multilinear",
+   "Lib.AlgebraicTopology.SingularHomology.MayerVietoris.AffineSimplex",
+   "Lib.AlgebraicTopology.SingularHomology.MayerVietoris.FormalChains",
+   "Lib.AlgebraicTopology.SingularHomology.MayerVietoris.Subdivision"
+  ]
+ },
+ "Lib.AlgebraicTopology.SingularHomology.MayerVietoris.SmallChains": {
+  "module": true,
+  "before": [
+   "Lib.AlgebraicTopology.SingularHomology.Chains"
+  ],
+  "after": [
+   "Lib.AlgebraicTopology.SingularHomology.Chains"
+  ],
+  "why": {
+   "Lib.AlgebraicTopology.SingularHomology.Chains": "use"
+  },
+  "U": [
+   "Lib.AlgebraicTopology.SingularHomology.Chains"
+  ]
+ },
+ "Lib.AlgebraicTopology.SingularHomology.ModuleHomology": {
+  "module": true,
+  "before": [
+   "Lib.AlgebraicTopology.SingularHomology.Chains"
+  ],
+  "after": [
+   "Lib.AlgebraicTopology.SingularHomology.Chains"
+  ],
+  "why": {
+   "Lib.AlgebraicTopology.SingularHomology.Chains": "use"
+  },
+  "U": [
+   "Lib.AlgebraicTopology.SingularHomology.Chains"
+  ]
+ },
+ "Lib.AlgebraicTopology.SingularHomology.OnePointCover": {
+  "module": false,
+  "before": [
+   "Lib.Geometry.Manifold.Morse.Handle",
+   "Lib.Geometry.Manifold.Flow.Compact",
+   "Lib.Geometry.Manifold.RegularLevel",
+   "Lib.Geometry.Manifold.Morse.HandleAttachment",
+   "Lib.Analysis.ODE.SmoothFlow",
+   "Lib.Geometry.Manifold.WhitneyEmbedding",
+   "Lib.Geometry.Manifold.VectorBundle.ProjectionBundle",
+   "Lib.Geometry.Manifold.Transversality.Basic",
+   "Lib.Topology.Homotopy.HandleRetraction",
+   "Lib.Algebra.Homology.MayerVietorisShortExact",
+   "Lib.AlgebraicTopology.SingularHomology.Chains",
+   "Lib.AlgebraicTopology.SingularHomology.ModuleHomology",
+   "Lib.AlgebraicTopology.SingularHomology.HomotopyInvariance",
+   "Lib.AlgebraicTopology.SingularHomology.LocalDegree",
+   "Lib.Topology.Homotopy.LoopSubdivision",
+   "Lib.AlgebraicTopology.FundamentalGroupoid.SimplyConnectedSphere",
+   "Lib.Geometry.Manifold.Whitney.BigonModel",
+   "Lib.Topology.Homotopy.CellAttachment",
+   "Lib.Topology.Homotopy.Suspension",
+   "Lib.AlgebraicTopology.SingularHomology.Sphere",
+   "Lib.AlgebraicTopology.SingularHomology.Suspension",
+   "Lib.AlgebraicTopology.SingularHomology.Sum",
+   "Lib.AlgebraicTopology.SingularHomology.CircleProduct",
+   "Lib.AlgebraicTopology.SingularHomology.SphereHomology",
+   "Lib.AlgebraicTopology.SingularHomology.Coproduct",
+   "Lib.Algebra.Module.IntegerPresentation",
+   "Lib.AlgebraicTopology.SingularHomology.LocalContributions",
+   "Lib.Topology.OnePointCollapse",
+   "Lib.AlgebraicTopology.SingularHomology.Naturality",
+   "Lib.AlgebraicTopology.SingularHomology.LinearSphereAction",
+   "Lib.AlgebraicTopology.SingularHomology.SpherePointTransport",
+   "Lib.Geometry.Manifold.Morse.SublevelSets",
+   "Lib.Geometry.Manifold.Morse.Index",
+   "Lib.Geometry.Manifold.Morse.RearrangementTheorem",
+   "Lib.Geometry.Manifold.Morse.Birth",
+   "Lib.Geometry.Manifold.Morse.CellStructure",
+   "Lib.Geometry.Manifold.Morse.Reeb",
+   "Lib.Geometry.Manifold.Morse.RearrangementAmbient"
+  ],
+  "after": [
+   "Lib.AlgebraicTopology.SingularHomology.LocalDegreeNeighborhoods",
+   "Lib.AlgebraicTopology.SingularHomology.SpherePointTransport",
+   "Lib.Geometry.Manifold.Transversality.AmbientIsotopy"
+  ],
+  "why": {
+   "Lib.AlgebraicTopology.SingularHomology.LocalDegreeNeighborhoods": "use",
+   "Lib.AlgebraicTopology.SingularHomology.SpherePointTransport": "use",
+   "Lib.Geometry.Manifold.Transversality.AmbientIsotopy": "reexport:Hopf.Proof.Geometry.Manifold.Morse.MiddleBlocks"
+  },
+  "U": [
+   "Lib.AlgebraicTopology.SingularHomology.HomotopyInvariance",
+   "Lib.AlgebraicTopology.SingularHomology.LinearSphereAction",
+   "Lib.AlgebraicTopology.SingularHomology.LocalContributions",
+   "Lib.AlgebraicTopology.SingularHomology.LocalDegree",
+   "Lib.AlgebraicTopology.SingularHomology.LocalDegreeNeighborhoods",
+   "Lib.AlgebraicTopology.SingularHomology.MayerVietoris.Sequence",
+   "Lib.AlgebraicTopology.SingularHomology.MayerVietoris.SingularHomology",
+   "Lib.AlgebraicTopology.SingularHomology.MayerVietoris.SmallChains",
+   "Lib.AlgebraicTopology.SingularHomology.Naturality",
+   "Lib.AlgebraicTopology.SingularHomology.Sphere",
+   "Lib.AlgebraicTopology.SingularHomology.SpherePointTransport",
+   "Lib.AlgebraicTopology.SingularHomology.Suspension",
+   "Lib.Geometry.Manifold.Immersion.Relative.PointMoving",
+   "Lib.Geometry.Manifold.Morse.CubicFlow",
+   "Lib.Geometry.Manifold.Morse.Existence.PartialChart",
+   "Lib.Geometry.Manifold.Morse.Handle",
+   "Lib.Geometry.Manifold.Transversality.CenteredChart",
+   "Lib.Geometry.Manifold.Transversality.DiscTheorem",
+   "Lib.Topology.Homotopy.CellAttachment"
+  ]
+ },
+ "Lib.AlgebraicTopology.SingularHomology.PathComponents": {
+  "module": false,
+  "before": [
+   "Lib.AlgebraicTopology.SingularHomology.Chains",
+   "Lib.AlgebraicTopology.SingularHomology.CircleProduct",
+   "Lib.AlgebraicTopology.SingularHomology.HomotopyInvariance",
+   "Lib.AlgebraicTopology.SingularHomology.ModuleHomology",
+   "Lib.Geometry.Manifold.Morse.Handle",
+   "Lib.Topology.Homotopy.CellAttachment"
+  ],
+  "after": [
+   "Lib.Topology.Homotopy.CellAttachment"
+  ],
+  "why": {
+   "Lib.Topology.Homotopy.CellAttachment": "use"
+  },
+  "U": [
+   "Lib.AlgebraicTopology.SingularHomology.Chains",
+   "Lib.AlgebraicTopology.SingularHomology.CircleProduct",
+   "Lib.AlgebraicTopology.SingularHomology.HomotopyInvariance",
+   "Lib.AlgebraicTopology.SingularHomology.MayerVietoris.SingularHomology",
+   "Lib.AlgebraicTopology.SingularHomology.ModuleHomology",
+   "Lib.Geometry.Manifold.Morse.Handle",
+   "Lib.Topology.Homotopy.CellAttachment"
+  ]
+ },
+ "Lib.AlgebraicTopology.SingularHomology.PuncturedBall": {
+  "module": false,
+  "before": [
+   "Lib.AlgebraicTopology.SingularHomology.LinearSphereAction",
+   "Lib.AlgebraicTopology.SingularHomology.LocalDegreeNeighborhoods",
+   "Lib.Geometry.Manifold.Morse.SublevelSets"
+  ],
+  "after": [
+   "Lib.AlgebraicTopology.SingularHomology.LocalDegreeNeighborhoods"
+  ],
+  "why": {
+   "Lib.AlgebraicTopology.SingularHomology.LocalDegreeNeighborhoods": "use"
+  },
+  "U": [
+   "Lib.AlgebraicTopology.SingularHomology.LinearSphereAction",
+   "Lib.AlgebraicTopology.SingularHomology.LocalDegree",
+   "Lib.AlgebraicTopology.SingularHomology.LocalDegreeNeighborhoods",
+   "Lib.Geometry.Manifold.Morse.HandleAttachment",
+   "Lib.Geometry.Manifold.Morse.SublevelSets"
+  ]
+ },
+ "Lib.Analysis.Complex.ModulusOneReflection": {
+  "module": false,
+  "before": [
+   "Lib.Analysis.Complex.SchwarzReflection",
+   "Lib.Analysis.Complex.RiemannMapping.RectanglePrimitive"
+  ],
+  "after": [
+   "Lib.Analysis.Complex.RiemannMapping.RectanglePrimitive",
+   "Lib.Analysis.Complex.SchwarzReflection"
+  ],
+  "why": {
+   "Lib.Analysis.Complex.RiemannMapping.RectanglePrimitive": "use",
+   "Lib.Analysis.Complex.SchwarzReflection": "use"
+  },
+  "U": [
+   "Lib.Analysis.Complex.RiemannMapping.RectanglePrimitive",
+   "Lib.Analysis.Complex.SchwarzReflection"
+  ]
+ },
+ "Lib.Analysis.SpecialFunctions.SmoothTransition": {
+  "module": true,
+  "before": [
+   "Lib.Geometry.Manifold.RegularLevel",
+   "Lib.Geometry.Manifold.WhitneyEmbedding",
+   "Lib.Geometry.Manifold.Morse.CubicFlow",
+   "Lib.Geometry.Manifold.Transversality.Basic",
+   "Lib.Geometry.Manifold.LocalDiffeomorph"
+  ],
+  "after": [],
+  "why": {},
+  "U": []
+ },
+ "Lib.Dynamics.Flow.Sublevel": {
+  "module": true,
+  "before": [
+   "Lib.Geometry.Manifold.Flow.HeightTranslating.EntryTime"
+  ],
+  "after": [
+   "Lib.Geometry.Manifold.Flow.HeightTranslating.EntryTime"
+  ],
+  "why": {
+   "Lib.Geometry.Manifold.Flow.HeightTranslating.EntryTime": "use"
+  },
+  "U": [
+   "Lib.Geometry.Manifold.Flow.HeightTranslating.EntryTime"
+  ]
+ },
+ "Lib.Geometry.Manifold.LocalReplacement": {
+  "module": true,
+  "before": [],
+  "after": [],
+  "why": {},
+  "U": []
+ },
+ "Lib.Geometry.Manifold.Morse.AdaptedDescentField": {
+  "module": true,
+  "before": [
+   "Lib.Geometry.Manifold.Morse.Handle",
+   "Lib.Geometry.Manifold.Morse.CriticalPoints",
+   "Lib.Geometry.Manifold.Morse.DescentField",
+   "Lib.Geometry.Manifold.Morse.SignedMorseChart",
+   "Lib.Geometry.Manifold.Morse.SplitChart"
+  ],
+  "after": [
+   "Lib.Geometry.Manifold.Morse.DescentField",
+   "Lib.Geometry.Manifold.Morse.SplitChart"
+  ],
+  "why": {
+   "Lib.Geometry.Manifold.Morse.DescentField": "use",
+   "Lib.Geometry.Manifold.Morse.SplitChart": "use"
+  },
+  "U": [
+   "Lib.Geometry.Manifold.Morse.CriticalPoints",
+   "Lib.Geometry.Manifold.Morse.DescentField",
+   "Lib.Geometry.Manifold.Morse.Handle",
+   "Lib.Geometry.Manifold.Morse.SignedMorseChart",
+   "Lib.Geometry.Manifold.Morse.SplitChart"
+  ]
+ },
+ "Lib.Geometry.Manifold.Morse.BeltIntersection": {
+  "module": false,
+  "before": [
+   "Lib.Geometry.Manifold.Morse.CircleGluing",
+   "Lib.Geometry.Manifold.Whitney.CleanStrips.CrossingChart",
+   "Lib.Geometry.Manifold.Whitney.CleanStrips.SphereNormal"
+  ],
+  "after": [
+   "Lib.Geometry.Manifold.Morse.CircleGluing",
+   "Lib.Geometry.Manifold.Whitney.CleanStrips.CrossingChart",
+   "Lib.Geometry.Manifold.Whitney.CleanStrips.SphereNormal"
+  ],
+  "why": {
+   "Lib.Geometry.Manifold.Morse.CircleGluing": "use",
+   "Lib.Geometry.Manifold.Whitney.CleanStrips.CrossingChart": "use",
+   "Lib.Geometry.Manifold.Whitney.CleanStrips.SphereNormal": "use"
+  },
+  "U": [
+   "Lib.AlgebraicTopology.SingularHomology.Sphere",
+   "Lib.Geometry.Manifold.Morse.CircleGluing",
+   "Lib.Geometry.Manifold.Morse.HandleAttachment",
+   "Lib.Geometry.Manifold.Morse.HandleAttachment.HandleCoordinates",
+   "Lib.Geometry.Manifold.Morse.MorseBelt",
+   "Lib.Geometry.Manifold.Morse.SignedMorseChart",
+   "Lib.Geometry.Manifold.Morse.SplitChart",
+   "Lib.Geometry.Manifold.Morse.SurgeryWindows.Hemisphere",
+   "Lib.Geometry.Manifold.Morse.SurgeryWindows.SurgeryData",
+   "Lib.Geometry.Manifold.RegularLevel",
+   "Lib.Geometry.Manifold.Transversality.Transverse",
+   "Lib.Geometry.Manifold.Whitney.CleanStrips.CrossingChart",
+   "Lib.Geometry.Manifold.Whitney.CleanStrips.SphereNormal"
+  ]
+ },
+ "Lib.Geometry.Manifold.Morse.CriticalPoints": {
+  "module": true,
+  "before": [
+   "Lib.Geometry.Manifold.Morse.LinearPerturbation"
+  ],
+  "after": [
+   "Lib.Geometry.Manifold.Morse.LinearPerturbation"
+  ],
+  "why": {
+   "Lib.Geometry.Manifold.Morse.LinearPerturbation": "use"
+  },
+  "U": [
+   "Lib.Geometry.Manifold.Morse.LinearPerturbation"
+  ]
+ },
+ "Lib.Geometry.Manifold.Morse.DescentField": {
+  "module": true,
+  "before": [
+   "Lib.Geometry.Manifold.Morse.CriticalPoints"
+  ],
+  "after": [
+   "Lib.Geometry.Manifold.Morse.CriticalPoints"
+  ],
+  "why": {
+   "Lib.Geometry.Manifold.Morse.CriticalPoints": "use"
+  },
+  "U": [
+   "Lib.Geometry.Manifold.Morse.CriticalPoints"
+  ]
+ },
+ "Lib.Geometry.Manifold.Morse.Existence.MorseFunction": {
+  "module": true,
+  "before": [
+   "Lib.Geometry.Manifold.Morse.Handle",
+   "Lib.Geometry.Manifold.Morse.LinearPerturbation",
+   "Lib.Geometry.Manifold.Morse.CriticalPoints",
+   "Lib.Analysis.Calculus.MorseLemma.Cutoff"
+  ],
+  "after": [
+   "Lib.Analysis.Calculus.MorseLemma.Cutoff",
+   "Lib.Geometry.Manifold.Morse.CriticalPoints"
+  ],
+  "why": {
+   "Lib.Analysis.Calculus.MorseLemma.Cutoff": "use",
+   "Lib.Geometry.Manifold.Morse.CriticalPoints": "use"
+  },
+  "U": [
+   "Lib.Analysis.Calculus.MorseLemma.Cutoff",
+   "Lib.Geometry.Manifold.Morse.CriticalPoints",
+   "Lib.Geometry.Manifold.Morse.Handle",
+   "Lib.Geometry.Manifold.Morse.LinearPerturbation"
+  ]
+ },
+ "Lib.Geometry.Manifold.Morse.HandleAttachment.AttachingUnion": {
+  "module": true,
+  "before": [
+   "Lib.Geometry.Manifold.Morse.Handle",
+   "Lib.Geometry.Manifold.Morse.HandleAttachment",
+   "Lib.Geometry.Manifold.Flow.HeightTranslating.EntryTime",
+   "Lib.Geometry.Manifold.Flow.HeightTranslating.DescentFlow",
+   "Lib.Geometry.Manifold.Flow.HeightTranslating.AbsorbingSublevel",
+   "Lib.Geometry.Manifold.Morse.HandleAttachment.DescentModel"
+  ],
+  "after": [
+   "Lib.Geometry.Manifold.Flow.HeightTranslating.AbsorbingSublevel",
+   "Lib.Geometry.Manifold.Morse.HandleAttachment",
+   "Lib.Geometry.Manifold.Morse.HandleAttachment.DescentModel"
+  ],
+  "why": {
+   "Lib.Geometry.Manifold.Flow.HeightTranslating.AbsorbingSublevel": "use",
+   "Lib.Geometry.Manifold.Morse.HandleAttachment": "use",
+   "Lib.Geometry.Manifold.Morse.HandleAttachment.DescentModel": "use"
+  },
+  "U": [
+   "Lib.Geometry.Manifold.Flow.HeightTranslating.AbsorbingSublevel",
+   "Lib.Geometry.Manifold.Flow.HeightTranslating.DescentFlow",
+   "Lib.Geometry.Manifold.Flow.HeightTranslating.EntryTime",
+   "Lib.Geometry.Manifold.Morse.AdaptedDescentField",
+   "Lib.Geometry.Manifold.Morse.CriticalPoints",
+   "Lib.Geometry.Manifold.Morse.Handle",
+   "Lib.Geometry.Manifold.Morse.HandleAttachment",
+   "Lib.Geometry.Manifold.Morse.HandleAttachment.DescentModel",
+   "Lib.Geometry.Manifold.Morse.SignedMorseChart",
+   "Lib.Geometry.Manifold.Morse.SplitChart"
+  ]
+ },
+ "Lib.Geometry.Manifold.Morse.HandleAttachment.DescentModel": {
+  "module": true,
+  "before": [
+   "Lib.Geometry.Manifold.Morse.AdaptedDescentField",
+   "Lib.Geometry.Manifold.Morse.Handle"
+  ],
+  "after": [
+   "Lib.Geometry.Manifold.Morse.AdaptedDescentField"
+  ],
+  "why": {
+   "Lib.Geometry.Manifold.Morse.AdaptedDescentField": "use"
+  },
+  "U": [
+   "Lib.Geometry.Manifold.Morse.AdaptedDescentField",
+   "Lib.Geometry.Manifold.Morse.DescentField",
+   "Lib.Geometry.Manifold.Morse.Handle",
+   "Lib.Geometry.Manifold.Morse.SignedMorseChart",
+   "Lib.Geometry.Manifold.Morse.SplitChart"
+  ]
+ },
+ "Lib.Geometry.Manifold.Morse.HandleAttachment.HandleCoordinates": {
+  "module": true,
+  "before": [
+   "Lib.Geometry.Manifold.Morse.Handle",
+   "Lib.Geometry.Manifold.RegularLevel",
+   "Lib.Geometry.Manifold.Morse.HandleAttachment"
+  ],
+  "after": [
+   "Lib.Geometry.Manifold.Morse.HandleAttachment"
+  ],
+  "why": {
+   "Lib.Geometry.Manifold.Morse.HandleAttachment": "use"
+  },
+  "U": [
+   "Lib.Geometry.Manifold.Morse.CriticalPoints",
+   "Lib.Geometry.Manifold.Morse.Handle",
+   "Lib.Geometry.Manifold.Morse.HandleAttachment",
+   "Lib.Geometry.Manifold.Morse.SignedMorseChart",
+   "Lib.Geometry.Manifold.Morse.SplitChart",
+   "Lib.Geometry.Manifold.RegularLevel"
+  ]
+ },
+ "Lib.Geometry.Manifold.Morse.LinearPerturbation": {
+  "module": true,
+  "before": [
+   "Lib.Geometry.Manifold.Morse.Handle"
+  ],
+  "after": [
+   "Lib.Geometry.Manifold.Morse.Handle"
+  ],
+  "why": {
+   "Lib.Geometry.Manifold.Morse.Handle": "use"
+  },
+  "U": [
+   "Lib.Geometry.Manifold.Morse.Handle"
+  ]
+ },
+ "Lib.Geometry.Manifold.Morse.MorseBelt": {
+  "module": true,
+  "before": [
+   "Lib.Geometry.Manifold.Morse.SurgeryWindows.SurgeryData"
+  ],
+  "after": [
+   "Lib.Geometry.Manifold.Morse.SurgeryWindows.SurgeryData"
+  ],
+  "why": {
+   "Lib.Geometry.Manifold.Morse.SurgeryWindows.SurgeryData": "use"
+  },
+  "U": [
+   "Lib.Geometry.Manifold.Morse.Existence.BeltCore",
+   "Lib.Geometry.Manifold.Morse.Handle",
+   "Lib.Geometry.Manifold.Morse.HandleAttachment",
+   "Lib.Geometry.Manifold.Morse.HandleAttachment.HandleCoordinates",
+   "Lib.Geometry.Manifold.Morse.SignedMorseChart",
+   "Lib.Geometry.Manifold.Morse.SplitChart",
+   "Lib.Geometry.Manifold.Morse.SurgeryWindows.SurgeryData",
+   "Lib.Geometry.Manifold.RegularLevel"
+  ]
+ },
+ "Lib.Geometry.Manifold.Morse.SignedMorseChart": {
+  "module": true,
+  "before": [
+   "Lib.Analysis.Calculus.MorseLemma.PartialDiffeomorph",
+   "Lib.Geometry.Manifold.Morse.CriticalPoints",
+   "Lib.Analysis.Calculus.MorseLemma.MorseChart"
+  ],
+  "after": [
+   "Lib.Analysis.Calculus.MorseLemma.MorseChart",
+   "Lib.Geometry.Manifold.Morse.CriticalPoints"
+  ],
+  "why": {
+   "Lib.Analysis.Calculus.MorseLemma.MorseChart": "use",
+   "Lib.Geometry.Manifold.Morse.CriticalPoints": "use"
+  },
+  "U": [
+   "Lib.Analysis.Calculus.MorseLemma.MorseChart",
+   "Lib.Analysis.Calculus.MorseLemma.PartialDiffeomorph",
+   "Lib.Geometry.Manifold.Morse.CriticalPoints"
+  ]
+ },
+ "Lib.Geometry.Manifold.Morse.SplitChart": {
+  "module": true,
+  "before": [
+   "Lib.Geometry.Manifold.Morse.SignedMorseChart"
+  ],
+  "after": [
+   "Lib.Geometry.Manifold.Morse.SignedMorseChart"
+  ],
+  "why": {
+   "Lib.Geometry.Manifold.Morse.SignedMorseChart": "use"
+  },
+  "U": [
+   "Lib.Geometry.Manifold.Morse.SignedMorseChart"
+  ]
+ },
+ "Lib.Geometry.Manifold.Morse.SurgeryWindows.SurgeryData": {
+  "module": true,
+  "before": [
+   "Lib.Geometry.Manifold.Morse.SurgeryWindows.BeltComplement",
+   "Lib.Geometry.Manifold.Morse.Handle",
+   "Lib.Geometry.Manifold.Collar.LevelTransport",
+   "Lib.Geometry.Manifold.Morse.Existence.BeltCore"
+  ],
+  "after": [
+   "Lib.Geometry.Manifold.Collar.LevelTransport",
+   "Lib.Geometry.Manifold.Morse.Existence.BeltCore",
+   "Lib.Geometry.Manifold.Morse.SurgeryWindows.BeltComplement"
+  ],
+  "why": {
+   "Lib.Geometry.Manifold.Collar.LevelTransport": "use",
+   "Lib.Geometry.Manifold.Morse.Existence.BeltCore": "use",
+   "Lib.Geometry.Manifold.Morse.SurgeryWindows.BeltComplement": "use"
+  },
+  "U": [
+   "Lib.Geometry.Manifold.Collar.LevelTransport",
+   "Lib.Geometry.Manifold.Morse.CriticalPoints",
+   "Lib.Geometry.Manifold.Morse.Existence.AttachingUnion",
+   "Lib.Geometry.Manifold.Morse.Existence.BeltCore",
+   "Lib.Geometry.Manifold.Morse.Existence.LevelSurgery",
+   "Lib.Geometry.Manifold.Morse.Handle",
+   "Lib.Geometry.Manifold.Morse.HandleAttachment",
+   "Lib.Geometry.Manifold.Morse.HandleAttachment.HandleCoordinates",
+   "Lib.Geometry.Manifold.Morse.SignedMorseChart",
+   "Lib.Geometry.Manifold.Morse.SplitChart",
+   "Lib.Geometry.Manifold.Morse.SurgeryWindows.BeltComplement",
+   "Lib.Geometry.Manifold.Morse.SurgeryWindows.Hemisphere",
+   "Lib.Geometry.Manifold.RegularLevel"
+  ]
+ },
+ "Lib.Geometry.Manifold.SmoothApproximation": {
+  "module": true,
+  "before": [
+   "Lib.Geometry.Manifold.Flow.Compact",
+   "Lib.Geometry.Manifold.Morse.Existence.HomotopicRelWithin",
+   "Lib.Geometry.Manifold.Morse.Existence.PartialChart",
+   "Lib.Geometry.Manifold.Morse.Existence.HomotopyCollars",
+   "Lib.Geometry.Manifold.Morse.Existence.ChartPerturbation"
+  ],
+  "after": [
+   "Lib.Geometry.Manifold.Flow.Compact",
+   "Lib.Geometry.Manifold.Morse.Existence.ChartPerturbation",
+   "Lib.Geometry.Manifold.Morse.Existence.HomotopyCollars",
+   "Lib.Geometry.Manifold.Morse.Existence.PartialChart"
+  ],
+  "why": {
+   "Lib.Geometry.Manifold.Flow.Compact": "use",
+   "Lib.Geometry.Manifold.Morse.Existence.ChartPerturbation": "use",
+   "Lib.Geometry.Manifold.Morse.Existence.HomotopyCollars": "use",
+   "Lib.Geometry.Manifold.Morse.Existence.PartialChart": "use"
+  },
+  "U": [
+   "Lib.Geometry.Manifold.Flow.Compact",
+   "Lib.Geometry.Manifold.Morse.Existence.ChartPerturbation",
+   "Lib.Geometry.Manifold.Morse.Existence.HomotopicRelWithin",
+   "Lib.Geometry.Manifold.Morse.Existence.HomotopyCollars",
+   "Lib.Geometry.Manifold.Morse.Existence.PartialChart"
+  ]
+ },
+ "Lib.Geometry.Manifold.Transversality.AmbientIsotopy": {
+  "module": true,
+  "before": [
+   "Lib.Geometry.Manifold.RegularLevel",
+   "Lib.Geometry.Manifold.WhitneyEmbedding",
+   "Lib.Geometry.Manifold.Morse.CubicFlow",
+   "Lib.Geometry.Manifold.Transversality.Basic",
+   "Lib.Geometry.Manifold.LocalDiffeomorph"
+  ],
+  "after": [
+   "Lib.Geometry.Manifold.Morse.CubicFlow",
+   "Lib.Geometry.Manifold.Transversality.Parametric"
+  ],
+  "why": {
+   "Lib.Geometry.Manifold.Morse.CubicFlow": "use",
+   "Lib.Geometry.Manifold.Transversality.Parametric": "use"
+  },
+  "U": [
+   "Lib.AlgebraicTopology.SingularHomology.Sphere",
+   "Lib.Analysis.Calculus.MorseLemma.Cutoff",
+   "Lib.Geometry.Manifold.Flow.Compact",
+   "Lib.Geometry.Manifold.Morse.CubicFlow",
+   "Lib.Geometry.Manifold.Morse.SurgeryWindows.Hemisphere",
+   "Lib.Geometry.Manifold.Transversality.Parametric",
+   "Lib.Geometry.Manifold.Transversality.Transverse"
+  ]
+ }
+}
