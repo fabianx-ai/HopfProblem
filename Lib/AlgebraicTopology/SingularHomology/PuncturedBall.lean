@@ -4,9 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Fabian Franz
 -/
 import Mathlib
-import Lib.AlgebraicTopology.SingularHomology.LinearSphereAction
 import Lib.AlgebraicTopology.SingularHomology.LocalDegreeNeighborhoods
-import Lib.Geometry.Manifold.Morse.SublevelSets
 
 /-!
 # The punctured ball deformation retracts onto a sphere
