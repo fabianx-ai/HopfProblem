@@ -8708,6 +8708,36 @@ is an evidence command rather than library content.
 #print axioms Hyperbolic.hyperboloidAxis_polar_positive_coordinates
 #check Hyperbolic.hyperboloidAxis_polar_zero_coordinates
 #print axioms Hyperbolic.hyperboloidAxis_polar_zero_coordinates
+#check Hyperbolic.hyperboloidFramePolar
+#print axioms Hyperbolic.hyperboloidFramePolar
+#check Hyperbolic.hyperboloidFrameDirectionComplex
+#print axioms Hyperbolic.hyperboloidFrameDirectionComplex
+#check Hyperbolic.hyperboloidFrameDirection
+#print axioms Hyperbolic.hyperboloidFrameDirection
+#check Hyperbolic.hyperboloidFrameAngleDomain
+#print axioms Hyperbolic.hyperboloidFrameAngleDomain
+#check Hyperbolic.hyperboloidFrameAngle
+#print axioms Hyperbolic.hyperboloidFrameAngle
+#check Hyperbolic.hyperboloidFramePolar_coefficients
+#print axioms Hyperbolic.hyperboloidFramePolar_coefficients
+#check Hyperbolic.hyperboloidFrameDirectionComplex_normalization
+#print axioms Hyperbolic.hyperboloidFrameDirectionComplex_normalization
+#check Hyperbolic.continuous_hyperboloidFrameDirectionComplex
+#print axioms Hyperbolic.continuous_hyperboloidFrameDirectionComplex
+#check Hyperbolic.continuous_hyperboloidFrameDirection
+#print axioms Hyperbolic.continuous_hyperboloidFrameDirection
+#check Hyperbolic.hyperboloidFramePolar_reconstruct
+#print axioms Hyperbolic.hyperboloidFramePolar_reconstruct
+#check Hyperbolic.hyperboloidFramePolar_direction
+#print axioms Hyperbolic.hyperboloidFramePolar_direction
+#check Hyperbolic.hyperboloidFrameAngle_chart
+#print axioms Hyperbolic.hyperboloidFrameAngle_chart
+#check Hyperbolic.hyperboloidFrameAngle_forward_inverse
+#print axioms Hyperbolic.hyperboloidFrameAngle_forward_inverse
+#check Hyperbolic.hyperboloidFrameAngle_prescribed_lift
+#print axioms Hyperbolic.hyperboloidFrameAngle_prescribed_lift
+#check Hyperbolic.continuous_hyperboloidFramePolar
+#print axioms Hyperbolic.continuous_hyperboloidFramePolar
 
 #check Hyperbolic.hyperboloidReflection_speed
 #print axioms Hyperbolic.hyperboloidReflection_speed
