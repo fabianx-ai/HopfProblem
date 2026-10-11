@@ -6,10 +6,7 @@ Authors: Fabian Franz
 module
 
 public import Mathlib
-public import Lib.Geometry.Manifold.Morse.Handle
 public import Lib.Geometry.Manifold.Morse.HandleAttachment
-public import Lib.Geometry.Manifold.Flow.HeightTranslating.EntryTime
-public import Lib.Geometry.Manifold.Flow.HeightTranslating.DescentFlow
 public import Lib.Geometry.Manifold.Flow.HeightTranslating.AbsorbingSublevel
 public import Lib.Geometry.Manifold.Morse.HandleAttachment.DescentModel
 
