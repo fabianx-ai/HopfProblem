@@ -8721,6 +8721,12 @@ is an evidence command rather than library content.
 #print axioms Hyperbolic.hyperboloidReflection_piecewiseC1EDist
 #check Hyperbolic.hyperboloidReflection_lengthDist
 #print axioms Hyperbolic.hyperboloidReflection_lengthDist
+#check Hyperbolic.hyperboloidPolar_rotated_frame
+#print axioms Hyperbolic.hyperboloidPolar_rotated_frame
+#check Hyperbolic.hyperboloidPolar_axis_comparison
+#print axioms Hyperbolic.hyperboloidPolar_axis_comparison
+#check Hyperbolic.hyperboloidPolar_angular_reflection
+#print axioms Hyperbolic.hyperboloidPolar_angular_reflection
 
 #check Hyperbolic.hyperboloidAdaptedTime
 #print axioms Hyperbolic.hyperboloidAdaptedTime

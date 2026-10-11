@@ -1,0 +1,43 @@
+{
+ "before": "dump_base.jsonl",
+ "after": "dump_after.jsonl",
+ "prefix": "",
+ "constants": [
+  39475,
+  39478
+ ],
+ "lost": [],
+ "added": [
+  [
+   "Hyperbolic.hyperboloidPolar_angular_reflection",
+   4105166442,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidPolar_axis_comparison",
+   4251996490,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidPolar_rotated_frame",
+   4222100030,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ]
+ ],
+ "changed_type_source": [],
+ "changed_type_proof_naming": [],
+ "changed_type_accepted": [],
+ "added_accepted": [],
+ "accept_without_effect": [],
+ "changed_type_all": [],
+ "moves": [],
+ "ambiguous": [],
+ "auxiliary_moved": 0,
+ "verdict": "FAIL"
+}
