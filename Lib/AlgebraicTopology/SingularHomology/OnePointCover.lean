@@ -4,44 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Fabian Franz
 -/
 import Mathlib
-import Lib.Geometry.Manifold.Morse.Handle
-import Lib.Geometry.Manifold.Flow.Compact
-import Lib.Geometry.Manifold.RegularLevel
-import Lib.Geometry.Manifold.Morse.HandleAttachment
-import Lib.Analysis.ODE.SmoothFlow
-import Lib.Geometry.Manifold.WhitneyEmbedding
-import Lib.Geometry.Manifold.VectorBundle.ProjectionBundle
-import Lib.Geometry.Manifold.Transversality.Basic
-import Lib.Topology.Homotopy.HandleRetraction
-import Lib.Algebra.Homology.MayerVietorisShortExact
-import Lib.AlgebraicTopology.SingularHomology.Chains
-import Lib.AlgebraicTopology.SingularHomology.ModuleHomology
-import Lib.AlgebraicTopology.SingularHomology.HomotopyInvariance
-import Lib.AlgebraicTopology.SingularHomology.LocalDegree
-import Lib.Topology.Homotopy.LoopSubdivision
-import Lib.AlgebraicTopology.FundamentalGroupoid.SimplyConnectedSphere
-import Lib.Geometry.Manifold.Whitney.BigonModel
-import Lib.Topology.Homotopy.CellAttachment
-import Lib.Topology.Homotopy.Suspension
-import Lib.AlgebraicTopology.SingularHomology.Sphere
-import Lib.AlgebraicTopology.SingularHomology.Suspension
-import Lib.AlgebraicTopology.SingularHomology.Sum
-import Lib.AlgebraicTopology.SingularHomology.CircleProduct
-import Lib.AlgebraicTopology.SingularHomology.SphereHomology
-import Lib.AlgebraicTopology.SingularHomology.Coproduct
-import Lib.Algebra.Module.IntegerPresentation
-import Lib.AlgebraicTopology.SingularHomology.LocalContributions
-import Lib.Topology.OnePointCollapse
-import Lib.AlgebraicTopology.SingularHomology.Naturality
-import Lib.AlgebraicTopology.SingularHomology.LinearSphereAction
 import Lib.AlgebraicTopology.SingularHomology.SpherePointTransport
-import Lib.Geometry.Manifold.Morse.SublevelSets
-import Lib.Geometry.Manifold.Morse.Index
-import Lib.Geometry.Manifold.Morse.RearrangementTheorem
-import Lib.Geometry.Manifold.Morse.Birth
-import Lib.Geometry.Manifold.Morse.CellStructure
-import Lib.Geometry.Manifold.Morse.Reeb
-import Lib.Geometry.Manifold.Morse.RearrangementAmbient
+import Lib.AlgebraicTopology.SingularHomology.LocalDegreeNeighborhoods
+import Lib.Geometry.Manifold.Transversality.AmbientIsotopy
 
 /-!
 # One-point covers and embedded cell attachments
