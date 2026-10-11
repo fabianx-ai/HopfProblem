@@ -6,8 +6,6 @@ Authors: Fabian Franz
 module
 
 public import Mathlib
-public import Lib.Geometry.Manifold.Morse.Handle
-public import Lib.Geometry.Manifold.Morse.LinearPerturbation
 public import Lib.Geometry.Manifold.Morse.CriticalPoints
 public import Lib.Analysis.Calculus.MorseLemma.Cutoff
 
