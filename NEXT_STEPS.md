@@ -1,10 +1,10 @@
-# Next steps (after the four-tree split, integration 7c, the facade dissolution and the better homes, 2026-10-05)
+# Next steps (after integration 7d and the import trim of the relocated modules, 2026-10-11)
 
 State: all 24 monoliths split behind facades (`Lib/reports/wave-1/MERGE.md`, `wave-2/MERGE.md`); both waves
 reviewed by Fable reviewers (`Lib/reviews/REVIEW-WAVES.md`: nothing unsound) and the findings fixed
 (§5 there); `center-solution` replayed per commit up to `d4db0d1a` (`Lib/reviews/INTEGRATION-7.md`,
-`Lib/reports/integration-7/REPLAY-7b.md`). Integration 7c replayed `center-solution` up to `91485e80`
-(`Lib/reports/integration-7/REPLAY-7c.md`, three clean cherry-picks). The 24 facades are dissolved (`Lib/reports/facades/RECEIPT.md`: 205 consumers
+`Lib/reports/integration-7/REPLAY-7b.md`). Integrations 7c and 7d replayed `center-solution` up to `0870a3da`
+(`Lib/reports/integration-7/REPLAY-7c.md`, `REPLAY-7d.md`, four clean cherry-picks in all). The 24 facades are dissolved (`Lib/reports/facades/RECEIPT.md`: 205 consumers
 rerouted to the pieces from the dump's `uses`, facade docstrings kept as directory `README.md`s, envdiff 0/0/0; reviewed:
 `Lib/reports/facades/RECEIPT.md` §8 correction — the merge `b25f3507` is the verified unit, 12 of the 24 per-facade
 commits do not build on their own). The Shared/Center split was reviewed
@@ -28,8 +28,8 @@ Open, in order:
 (1) **`Unused/`** exists (owner decision 2026-10-02; `Unused/README.md`, receipt `Lib/reports/unused/cube3.md`):
 only what the owner names moves there, verbatim. No dead-code sweeps over `Lib`: what is part of the textbook
 is not dead code, and explanation outweighs tidiness (owner, 2026-10-02);
-(2) **replays** continue from `91485e80` of `center-solution` (`Models.lean` is now 8,428 lines; the source
-worktree had two untracked `G07AngularOrigin_*Check.lean` files when 7c finished). Rule: a replayed commit whose material is not generic goes to `Center/Proof`
+(2) **replays** continue from `0870a3da` of `center-solution` (`Models.lean` is now 8,581 lines; the source
+worktree had uncommitted edits to it and to `Lib/AxiomAudit.lean` when 7d finished). Rule: a replayed commit whose material is not generic goes to `Center/Proof`
 (or `Shared/Proof` if the old proof uses it too), never to `Hopf/Proof`;
 (3) **owner's word needed** (INTEGRATION-7 §Left): split `Hyperbolic/Models.lean` (7,870 lines) and
 `CurveTransport.lean`, sweep their manuscript labels, add the comparison with Mathlib's `UpperHalfPlane`
@@ -37,8 +37,10 @@ metric — now, or after the source branch stops appending to those files (recom
 clean cherry-picks);
 (4) facades done; better homes done (`Lib/reports/homes/RECEIPT.md`: 16 moves, 269 declarations relocated, names
 unchanged, envdiff 0/0/0; skipped with reasons: `formalMap_*`, `inducedChain_const`, `Negation` (import cycles),
-tube lemmas (no topology module yet), `Tanh` (Mathlib replacement), `LogarithmicCutoff` (no home); import-trimming
-of the moved modules is a later pass). **Rename wave held back** (2026-10-04): renames change identifiers `W4W1`
+tube lemmas (no topology module yet), `Tanh` (Mathlib replacement), `LogarithmicCutoff` (no home); import trim done
+(`Lib/reports/homes/TRIM.md`: 132 → 67 import lines in 14 of the 26 modules, envdiff 0/0/0, but import closures
+barely shrink — the heavy reach comes from constants the modules use through `SingularHomology.LocalDegreeNeighborhoods`
+and `CellAttachment`; shrinking it means moving declarations, not trimming imports). **Rename wave held back** (2026-10-04): renames change identifiers `W4W1`
 uses and work against the rebase-with-import-edits goal; do it after the rebase or with an agreed rename map. Then the `native*`/`Native*`/`MorseCancellation.*`/
 `FlowConstruction` rename wave; the misnamed groups of REVIEW-WAVES §2 finding 6;
 (5) the owner decisions: chain-interface coefficients (new polymorphic `chains` beside the pinned one plus a
