@@ -6,11 +6,6 @@ Authors: Fabian Franz
 module
 
 public import Mathlib
-public import Lib.Geometry.Manifold.RegularLevel
-public import Lib.Geometry.Manifold.WhitneyEmbedding
-public import Lib.Geometry.Manifold.Morse.CubicFlow
-public import Lib.Geometry.Manifold.Transversality.Basic
-public import Lib.Geometry.Manifold.LocalDiffeomorph
 /-!
 # Positivity of the derivative of `Real.smoothTransition`
 

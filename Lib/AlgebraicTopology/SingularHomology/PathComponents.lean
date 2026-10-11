@@ -4,11 +4,6 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Fabian Franz
 -/
 import Mathlib
-import Lib.AlgebraicTopology.SingularHomology.Chains
-import Lib.AlgebraicTopology.SingularHomology.CircleProduct
-import Lib.AlgebraicTopology.SingularHomology.HomotopyInvariance
-import Lib.AlgebraicTopology.SingularHomology.ModuleHomology
-import Lib.Geometry.Manifold.Morse.Handle
 import Lib.Topology.Homotopy.CellAttachment
 
 /-!

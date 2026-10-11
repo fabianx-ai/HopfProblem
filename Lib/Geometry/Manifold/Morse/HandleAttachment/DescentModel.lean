@@ -7,7 +7,6 @@ module
 
 public import Mathlib
 public import Lib.Geometry.Manifold.Morse.AdaptedDescentField
-public import Lib.Geometry.Manifold.Morse.Handle
 
 /-!
 # The model descent flow in a Morse chart

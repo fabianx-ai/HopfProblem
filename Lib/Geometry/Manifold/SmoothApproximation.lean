@@ -7,7 +7,6 @@ module
 
 public import Mathlib
 public import Lib.Geometry.Manifold.Flow.Compact
-public import Lib.Geometry.Manifold.Morse.Existence.HomotopicRelWithin
 public import Lib.Geometry.Manifold.Morse.Existence.PartialChart
 public import Lib.Geometry.Manifold.Morse.Existence.HomotopyCollars
 public import Lib.Geometry.Manifold.Morse.Existence.ChartPerturbation
