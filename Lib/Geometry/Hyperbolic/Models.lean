@@ -7862,6 +7862,277 @@ theorem hyperboloidAxis_polar_zero_coordinates (n : Fin 3 → ℝ) (hn : lorentz
   simp only [hyperboloidGeodesicCoords, Real.cosh_zero, Real.sinh_zero,
     one_smul, zero_smul, add_zero]
 
+/-- Polar points in a prescribed orthonormal tangent frame (G07, line 25). -/
+def hyperboloidFramePolar (p : Hyperboloid) (e f : Fin 3 → ℝ)
+    (hff : lorentzBilinear f f = 1) (hpf : lorentzBilinear p.val f = 0)
+    (hep : lorentzBilinear e p.val = 0) (hef : lorentzBilinear e f = 0)
+    (hee : lorentzBilinear e e = 1) (t θ : ℝ) : Hyperboloid :=
+  hyperboloidGeodesic p (Real.cos θ • e + Real.sin θ • f)
+    (hyperboloidAxis_polarDirection_unit f hff p hpf e hep hef hee θ).1
+    (hyperboloidAxis_polarDirection_unit f hff p hpf e hep hef hee θ).2 t
+
+/-- Normalized tangent coefficients as a complex direction (G07, lines 35–36). -/
+def hyperboloidFrameDirectionComplex (p : Hyperboloid) (e f : Fin 3 → ℝ)
+    (q : {q : Hyperboloid // q ≠ p}) : ℂ :=
+  ⟨lorentzFunctional e q.val.val / Real.sinh (hyperboloidLengthDist p q.val),
+   lorentzFunctional f q.val.val / Real.sinh (hyperboloidLengthDist p q.val)⟩
+
+/-- The circle-valued direction away from the center (G07, lines 36–37). -/
+def hyperboloidFrameDirection (p : Hyperboloid) (e f : Fin 3 → ℝ)
+    (q : {q : Hyperboloid // q ≠ p}) : Real.Angle :=
+  (Complex.arg (hyperboloidFrameDirectionComplex p e f q) : Real.Angle)
+
+/-- The noncentral domain avoiding a prescribed angular cut (G07, lines 34–37). -/
+def hyperboloidFrameAngleDomain (p : Hyperboloid) (e f : Fin 3 → ℝ) (a : ℝ) : Set Hyperboloid :=
+  {q | ∃ h : q ≠ p, hyperboloidFrameDirection p e f ⟨q, h⟩ ≠ (a : Real.Angle)}
+
+/-- A real representative of direction on a cut domain (G07, lines 36–37). -/
+def hyperboloidFrameAngle (p : Hyperboloid) (e f : Fin 3 → ℝ) (a : ℝ)
+    (q : hyperboloidFrameAngleDomain p e f a) : ℝ :=
+  letI : Fact (0 < (2 * Real.pi : ℝ)) := ⟨mul_pos (by norm_num) Real.pi_pos⟩
+  (AddCircle.equivIco (2 * Real.pi) a
+    (hyperboloidFrameDirection p e f ⟨q.val, q.property.choose⟩)).val
+
+/-- Polar tangent coefficients are scaled cosine and sine (G07, lines 25, 35). -/
+theorem hyperboloidFramePolar_coefficients (p : Hyperboloid) (e f : Fin 3 → ℝ)
+    (hff : lorentzBilinear f f = 1) (hpf : lorentzBilinear p.val f = 0)
+    (hep : lorentzBilinear e p.val = 0) (hef : lorentzBilinear e f = 0)
+    (hee : lorentzBilinear e e = 1) (t θ : ℝ) :
+  lorentzFunctional e (hyperboloidFramePolar p e f hff hpf hep hef hee t θ).val = Real.sinh t * Real.cos θ ∧
+  lorentzFunctional f (hyperboloidFramePolar p e f hff hpf hep hef hee t θ).val = Real.sinh t * Real.sin θ := by
+  have hfp : lorentzBilinear f p.val = 0 := (lorentzBilinear_symm f p.val).trans hpf
+  have hfe : lorentzBilinear f e = 0 := (lorentzBilinear_symm f e).trans hef
+  change lorentzFunctional e (Real.cosh t • p.val + Real.sinh t • (Real.cos θ • e + Real.sin θ • f)) = _ ∧
+    lorentzFunctional f (Real.cosh t • p.val + Real.sinh t • (Real.cos θ • e + Real.sin θ • f)) = _
+  simp only [map_add, map_smul, smul_eq_mul, ← lorentzBilinear_eq_functional,
+    hep, hef, hee, hfp, hfe, hff, mul_zero, mul_one, zero_add, add_zero]
+  exact ⟨trivial, trivial⟩
+
+/-- Dividing by positive hyperbolic sine recovers the unit tangent (G07, lines 27–36). -/
+theorem hyperboloidFrameDirectionComplex_normalization (p : Hyperboloid) (e f : Fin 3 → ℝ)
+    (hff : lorentzBilinear f f = 1) (hpf : lorentzBilinear p.val f = 0)
+    (hep : lorentzBilinear e p.val = 0) (hef : lorentzBilinear e f = 0)
+    (hee : lorentzBilinear e e = 1) (q : {q : Hyperboloid // q ≠ p}) :
+  0 < hyperboloidLengthDist p q.val ∧
+  0 < Real.sinh (hyperboloidLengthDist p q.val) ∧
+  ‖hyperboloidFrameDirectionComplex p e f q‖ = 1 ∧
+  hyperboloidFrameDirectionComplex p e f q ≠ 0 ∧
+  hyperboloidSegmentInitial p q.val =
+    (hyperboloidFrameDirectionComplex p e f q).re • e +
+    (hyperboloidFrameDirectionComplex p e f q).im • f := by
+  have hi := hyperboloidSegment_initial_formula p q.val q.property.symm
+  obtain ⟨θ, hθ⟩ := hyperboloidAxis_polarDirection_exists f hff p hpf e hep hef hee _ hi.1 hi.2.1
+  have hE : hyperboloidFramePolar p e f hff hpf hep hef hee (hyperboloidLengthDist p q.val) θ = q.val := by
+    apply Subtype.ext
+    change Real.cosh (hyperboloidLengthDist p q.val) • p.val +
+      Real.sinh (hyperboloidLengthDist p q.val) • (Real.cos θ • e + Real.sin θ • f) = q.val.val
+    rw [← hθ]
+    exact ((congrArg Subtype.val (hyperboloidSegment_properties p q.val).2.2.1).symm.trans
+      (hi.2.2.2 _)).symm
+  have hc := hyperboloidFramePolar_coefficients p e f hff hpf hep hef hee (hyperboloidLengthDist p q.val) θ
+  rw [hE] at hc
+  have hs := (hyperboloidSegmentInitial_endpoint p q.val q.property.symm).1
+  have hz : hyperboloidFrameDirectionComplex p e f q = (⟨Real.cos θ, Real.sin θ⟩ : ℂ) := by
+    apply Complex.ext <;> simp [hyperboloidFrameDirectionComplex, hc.1, hc.2, ne_of_gt hs]
+  have hn : ‖hyperboloidFrameDirectionComplex p e f q‖ = 1 := by
+    rw [hz, Complex.norm_def, Complex.normSq_apply]
+    change Real.sqrt (Real.cos θ * Real.cos θ + Real.sin θ * Real.sin θ) = 1
+    rw [← sq, ← sq, Real.cos_sq_add_sin_sq, Real.sqrt_one]
+  have hne : hyperboloidFrameDirectionComplex p e f q ≠ 0 := by
+    intro hzero
+    simpa only [hzero, norm_zero, zero_ne_one] using hn
+  refine ⟨(hyperboloidLengthDist_nonneg_eq_zero p q.val).2.2.mpr q.property.symm,
+    hs, hn, hne, ?_⟩
+  rw [hz]
+  exact hθ
+
+set_option backward.isDefEq.respectTransparency false in
+/-- Normalized tangent coefficients vary continuously off the center (G07, lines 35–36). -/
+theorem continuous_hyperboloidFrameDirectionComplex (p : Hyperboloid) (e f : Fin 3 → ℝ)
+    (hff : lorentzBilinear f f = 1) (hpf : lorentzBilinear p.val f = 0)
+    (hep : lorentzBilinear e p.val = 0) (hef : lorentzBilinear e f = 0)
+    (hee : lorentzBilinear e e = 1) : Continuous (hyperboloidFrameDirectionComplex p e f) := by
+  have hr : Continuous (fun q : {q : Hyperboloid // q ≠ p} => hyperboloidLengthDist p q.val) :=
+    Continuous.comp (g := fun x : Hyperboloid × Hyperboloid => hyperboloidLengthDist x.1 x.2)
+      (f := fun q : {q : Hyperboloid // q ≠ p} => (p, q.val)) continuous_hyperboloidLengthDist
+      (continuous_const.prodMk continuous_subtype_val)
+  have hs : ∀ q : {q : Hyperboloid // q ≠ p}, Real.sinh (hyperboloidLengthDist p q.val) ≠ 0 :=
+    fun q => ne_of_gt (hyperboloidFrameDirectionComplex_normalization p e f hff hpf hep hef hee q).2.1
+  have hb : Continuous (fun q : {q : Hyperboloid // q ≠ p} =>
+      lorentzFunctional e q.val.val / Real.sinh (hyperboloidLengthDist p q.val)) :=
+    ((lorentzFunctional e).continuous.comp (continuous_subtype_val.comp continuous_subtype_val)).div
+      (Real.continuous_sinh.comp hr) hs
+  have hc : Continuous (fun q : {q : Hyperboloid // q ≠ p} =>
+      lorentzFunctional f q.val.val / Real.sinh (hyperboloidLengthDist p q.val)) :=
+    ((lorentzFunctional f).continuous.comp (continuous_subtype_val.comp continuous_subtype_val)).div
+      (Real.continuous_sinh.comp hr) hs
+  have h := (Complex.continuous_ofReal.comp hb).add
+    ((Complex.continuous_ofReal.comp hc).mul_const Complex.I)
+  convert h using 1
+  funext q
+  apply Complex.ext <;> simp only [hyperboloidFrameDirectionComplex, Pi.add_apply,
+    Function.comp_apply, Complex.add_re, Complex.add_im, Complex.mul_re, Complex.mul_im,
+    Complex.ofReal_re, Complex.ofReal_im, Complex.I_re, Complex.I_im,
+    mul_zero, mul_one, sub_zero, zero_add, add_zero]
+
+/-- The nonzero normalized direction gives a continuous circle angle (G07, lines 36–37). -/
+theorem continuous_hyperboloidFrameDirection (p : Hyperboloid) (e f : Fin 3 → ℝ)
+    (hff : lorentzBilinear f f = 1) (hpf : lorentzBilinear p.val f = 0)
+    (hep : lorentzBilinear e p.val = 0) (hef : lorentzBilinear e f = 0)
+    (hee : lorentzBilinear e e = 1) : Continuous (hyperboloidFrameDirection p e f) := by
+  rw [continuous_iff_continuousAt]
+  intro q
+  exact (Complex.continuousAt_arg_coe_angle
+    (hyperboloidFrameDirectionComplex_normalization p e f hff hpf hep hef hee q).2.2.2.1).comp
+    (continuous_hyperboloidFrameDirectionComplex p e f hff hpf hep hef hee).continuousAt
+
+/-- Original radius and any lift of direction reconstruct the point (G07, lines 27–37). -/
+theorem hyperboloidFramePolar_reconstruct (p : Hyperboloid) (e f : Fin 3 → ℝ)
+    (hff : lorentzBilinear f f = 1) (hpf : lorentzBilinear p.val f = 0)
+    (hep : lorentzBilinear e p.val = 0) (hef : lorentzBilinear e f = 0)
+    (hee : lorentzBilinear e e = 1) (q : {q : Hyperboloid // q ≠ p})
+    (θ : ℝ) (hθ : (θ : Real.Angle) = hyperboloidFrameDirection p e f q) :
+  hyperboloidFramePolar p e f hff hpf hep hef hee (hyperboloidLengthDist p q.val) θ = q.val := by
+  have hn := hyperboloidFrameDirectionComplex_normalization p e f hff hpf hep hef hee q
+  have hc : Real.cos θ = (hyperboloidFrameDirectionComplex p e f q).re := by
+    have hh : Real.cos θ = Real.cos (Complex.arg (hyperboloidFrameDirectionComplex p e f q)) := by
+      simpa only [hyperboloidFrameDirection, Real.Angle.cos_coe] using congrArg Real.Angle.cos hθ
+    exact hh.trans (by simpa only [hn.2.2.1, one_mul] using
+      Complex.norm_mul_cos_arg (hyperboloidFrameDirectionComplex p e f q))
+  have hs : Real.sin θ = (hyperboloidFrameDirectionComplex p e f q).im := by
+    have hh : Real.sin θ = Real.sin (Complex.arg (hyperboloidFrameDirectionComplex p e f q)) := by
+      simpa only [hyperboloidFrameDirection, Real.Angle.sin_coe] using congrArg Real.Angle.sin hθ
+    exact hh.trans (by simpa only [hn.2.2.1, one_mul] using
+      Complex.norm_mul_sin_arg (hyperboloidFrameDirectionComplex p e f q))
+  apply Subtype.ext
+  change Real.cosh (hyperboloidLengthDist p q.val) • p.val +
+    Real.sinh (hyperboloidLengthDist p q.val) • (Real.cos θ • e + Real.sin θ • f) = q.val.val
+  rw [hc, hs, ← hn.2.2.2.2]
+  exact ((congrArg Subtype.val (hyperboloidSegment_properties p q.val).2.2.1).symm.trans
+    ((hyperboloidSegment_initial_formula p q.val q.property.symm).2.2.2 _)).symm
+
+/-- The direction of a positive-radius polar point is its circle angle (G07, lines 25–36). -/
+theorem hyperboloidFramePolar_direction (p : Hyperboloid) (e f : Fin 3 → ℝ)
+    (hff : lorentzBilinear f f = 1) (hpf : lorentzBilinear p.val f = 0)
+    (hep : lorentzBilinear e p.val = 0) (hef : lorentzBilinear e f = 0)
+    (hee : lorentzBilinear e e = 1) (t θ : ℝ) (ht : 0 < t)
+    (hq : hyperboloidFramePolar p e f hff hpf hep hef hee t θ ≠ p) :
+  hyperboloidFrameDirection p e f ⟨hyperboloidFramePolar p e f hff hpf hep hef hee t θ, hq⟩ = (θ : Real.Angle) := by
+  have hr := ((hyperboloidAxis_polar_positive_coordinates f hff p hpf e hep hef hee
+    t t θ θ ht ht).2 (hyperboloidFramePolar p e f hff hpf hep hef hee t θ) rfl).1
+  have hc := hyperboloidFramePolar_coefficients p e f hff hpf hep hef hee t θ
+  have hs : Real.sinh t ≠ 0 := ne_of_gt (Real.sinh_pos_iff.mpr ht)
+  have hz : hyperboloidFrameDirectionComplex p e f ⟨hyperboloidFramePolar p e f hff hpf hep hef hee t θ, hq⟩ =
+      (⟨Real.cos θ, Real.sin θ⟩ : ℂ) := by
+    apply Complex.ext <;> simp [hyperboloidFrameDirectionComplex, hr, hc.1, hc.2, hs]
+  have hn : ‖(⟨Real.cos θ, Real.sin θ⟩ : ℂ)‖ = 1 := by
+    rw [Complex.norm_def, Complex.normSq_apply]
+    change Real.sqrt (Real.cos θ * Real.cos θ + Real.sin θ * Real.sin θ) = 1
+    rw [← sq, ← sq, Real.cos_sq_add_sin_sq, Real.sqrt_one]
+  unfold hyperboloidFrameDirection
+  rw [hz]
+  apply Real.Angle.cos_sin_inj
+  · simpa only [hn, one_mul] using Complex.norm_mul_cos_arg (⟨Real.cos θ, Real.sin θ⟩ : ℂ)
+  · simpa only [hn, one_mul] using Complex.norm_mul_sin_arg (⟨Real.cos θ, Real.sin θ⟩ : ℂ)
+
+/-- Cutting one direction gives an open continuous real inverse chart (G07, lines 34–37). -/
+theorem hyperboloidFrameAngle_chart (p : Hyperboloid) (e f : Fin 3 → ℝ)
+    (hff : lorentzBilinear f f = 1) (hpf : lorentzBilinear p.val f = 0)
+    (hep : lorentzBilinear e p.val = 0) (hef : lorentzBilinear e f = 0)
+    (hee : lorentzBilinear e e = 1) (a : ℝ) :
+  IsOpen (hyperboloidFrameAngleDomain p e f a) ∧
+  Continuous (hyperboloidFrameAngle p e f a) ∧
+  ∀ q : hyperboloidFrameAngleDomain p e f a,
+    0 < hyperboloidLengthDist p q.val ∧
+    hyperboloidFrameAngle p e f a q ∈ Set.Ioo a (a + 2 * Real.pi) ∧
+    (hyperboloidFrameAngle p e f a q : Real.Angle) =
+      hyperboloidFrameDirection p e f ⟨q.val, q.property.choose⟩ ∧
+    hyperboloidFramePolar p e f hff hpf hep hef hee (hyperboloidLengthDist p q.val)
+      (hyperboloidFrameAngle p e f a q) = q.val := by
+  letI : Fact (0 < (2 * Real.pi : ℝ)) := ⟨mul_pos (by norm_num) Real.pi_pos⟩
+  let c := AddCircle.openPartialHomeomorphCoe (2 * Real.pi) a
+  have hdom : hyperboloidFrameAngleDomain p e f a =
+      Subtype.val '' {q : {q : Hyperboloid // q ≠ p} |
+        hyperboloidFrameDirection p e f q ≠ (a : Real.Angle)} := by
+    ext q
+    constructor
+    · rintro ⟨hq, ha⟩
+      exact ⟨⟨q, hq⟩, ha, rfl⟩
+    · rintro ⟨⟨q, hq⟩, ha, rfl⟩
+      exact ⟨hq, ha⟩
+  refine ⟨?_, ?_, ?_⟩
+  · rw [hdom]
+    have hx : IsOpen {q : Hyperboloid | q ≠ p} := isOpen_compl_singleton
+    exact hx.isOpenMap_subtype_val _ (isOpen_compl_singleton.preimage
+      (continuous_hyperboloidFrameDirection p e f hff hpf hep hef hee))
+  · have hu : Continuous (fun q : hyperboloidFrameAngleDomain p e f a =>
+        (⟨q.val, q.property.choose⟩ : {q : Hyperboloid // q ≠ p})) :=
+      continuous_subtype_val.subtype_mk _
+    have ha := (continuous_hyperboloidFrameDirection p e f hff hpf hep hef hee).comp hu
+    exact c.continuousOn_invFun.comp_continuous ha (fun q => q.property.choose_spec)
+  · intro q
+    have hcoe : (hyperboloidFrameAngle p e f a q : Real.Angle) =
+        hyperboloidFrameDirection p e f ⟨q.val, q.property.choose⟩ :=
+      c.right_inv q.property.choose_spec
+    exact ⟨(hyperboloidFrameDirectionComplex_normalization p e f hff hpf hep hef hee
+      ⟨q.val, q.property.choose⟩).1, c.map_target q.property.choose_spec, hcoe,
+      hyperboloidFramePolar_reconstruct p e f hff hpf hep hef hee
+        ⟨q.val, q.property.choose⟩ _ hcoe⟩
+
+/-- The open angular strip has the exact forward real inverse (G07, lines 27–37). -/
+theorem hyperboloidFrameAngle_forward_inverse (p : Hyperboloid) (e f : Fin 3 → ℝ)
+    (hff : lorentzBilinear f f = 1) (hpf : lorentzBilinear p.val f = 0)
+    (hep : lorentzBilinear e p.val = 0) (hef : lorentzBilinear e f = 0)
+    (hee : lorentzBilinear e e = 1) (a t θ : ℝ) (ht : 0 < t)
+    (hθ : θ ∈ Set.Ioo a (a + 2 * Real.pi)) :
+  ∃ h : hyperboloidFramePolar p e f hff hpf hep hef hee t θ ∈ hyperboloidFrameAngleDomain p e f a,
+    hyperboloidLengthDist p (hyperboloidFramePolar p e f hff hpf hep hef hee t θ) = t ∧
+    hyperboloidFrameAngle p e f a ⟨hyperboloidFramePolar p e f hff hpf hep hef hee t θ, h⟩ = θ := by
+  letI : Fact (0 < (2 * Real.pi : ℝ)) := ⟨mul_pos (by norm_num) Real.pi_pos⟩
+  let c := AddCircle.openPartialHomeomorphCoe (2 * Real.pi) a
+  have hr := (hyperboloidAxis_polar_positive_coordinates f hff p hpf e hep hef hee
+    t t θ θ ht ht).2 (hyperboloidFramePolar p e f hff hpf hep hef hee t θ) rfl
+  have ha := hyperboloidFramePolar_direction p e f hff hpf hep hef hee t θ ht hr.2.1
+  have hu : hyperboloidFramePolar p e f hff hpf hep hef hee t θ ∈ hyperboloidFrameAngleDomain p e f a :=
+    ⟨hr.2.1, by rw [ha]; exact c.map_source hθ⟩
+  refine ⟨hu, hr.1, ?_⟩
+  change (AddCircle.equivIco (2 * Real.pi) a
+    (hyperboloidFrameDirection p e f ⟨_, hu.choose⟩)).val = θ
+  rw [ha]
+  exact c.left_inv hθ
+
+/-- Any prescribed real lift is recovered by a centered branch cut (G07, lines 34–37). -/
+theorem hyperboloidFrameAngle_prescribed_lift (p : Hyperboloid) (e f : Fin 3 → ℝ)
+    (hff : lorentzBilinear f f = 1) (hpf : lorentzBilinear p.val f = 0)
+    (hep : lorentzBilinear e p.val = 0) (hef : lorentzBilinear e f = 0)
+    (hee : lorentzBilinear e e = 1) (q : {q : Hyperboloid // q ≠ p})
+    (θ : ℝ) (hθ : (θ : Real.Angle) = hyperboloidFrameDirection p e f q) :
+  ∃ h : q.val ∈ hyperboloidFrameAngleDomain p e f (θ - Real.pi),
+    hyperboloidFrameAngle p e f (θ - Real.pi) ⟨q.val, h⟩ = θ := by
+  letI : Fact (0 < (2 * Real.pi : ℝ)) := ⟨mul_pos (by norm_num) Real.pi_pos⟩
+  let c := AddCircle.openPartialHomeomorphCoe (2 * Real.pi) (θ - Real.pi)
+  have hmem : θ ∈ Set.Ioo (θ - Real.pi) (θ - Real.pi + 2 * Real.pi) := by
+    constructor <;> linarith [Real.pi_pos]
+  have hu : q.val ∈ hyperboloidFrameAngleDomain p e f (θ - Real.pi) :=
+    ⟨q.property, by rw [← hθ]; exact c.map_source hmem⟩
+  refine ⟨hu, ?_⟩
+  change (AddCircle.equivIco (2 * Real.pi) (θ - Real.pi)
+    (hyperboloidFrameDirection p e f ⟨q.val, hu.choose⟩)).val = θ
+  rw [← hθ]
+  exact c.left_inv hmem
+
+/-- Polar points depend jointly continuously on radius and angle (G07, lines 25, 34–37). -/
+theorem continuous_hyperboloidFramePolar (p : Hyperboloid) (e f : Fin 3 → ℝ)
+    (hff : lorentzBilinear f f = 1) (hpf : lorentzBilinear p.val f = 0)
+    (hep : lorentzBilinear e p.val = 0) (hef : lorentzBilinear e f = 0)
+    (hee : lorentzBilinear e e = 1) :
+  Continuous (fun x : ℝ × ℝ => hyperboloidFramePolar p e f hff hpf hep hef hee x.1 x.2) := by
+  apply Continuous.subtype_mk
+  exact ((Real.continuous_cosh.comp continuous_fst).smul continuous_const).add
+    ((Real.continuous_sinh.comp continuous_fst).smul
+      (((Real.continuous_cos.comp continuous_snd).smul continuous_const).add
+        ((Real.continuous_sin.comp continuous_snd).smul continuous_const)))
+
 /-- The restricted reflection preserves both real and extended speeds in the existing tangent metric.
 
 Textbook source: reviewed Lorentz reflection proof, M02, lines 124–126. -/

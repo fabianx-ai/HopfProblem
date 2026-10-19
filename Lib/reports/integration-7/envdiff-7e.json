@@ -1,0 +1,197 @@
+{
+ "before": "dump_base.jsonl",
+ "after": "dump_after.jsonl",
+ "prefix": "",
+ "constants": [
+  39478,
+  39503
+ ],
+ "lost": [],
+ "added": [
+  [
+   "Hyperbolic.continuous_hyperboloidFrameDirection",
+   1307348944,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.continuous_hyperboloidFrameDirectionComplex",
+   1630800615,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.continuous_hyperboloidFramePolar",
+   3617718628,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidFrameAngle",
+   634681142,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidFrameAngle._proof_1",
+   1322904075,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidFrameAngle._proof_2",
+   4175106724,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidFrameAngle._proof_3",
+   3630812239,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidFrameAngleDomain",
+   3779053404,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidFrameAngle_chart",
+   611301499,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidFrameAngle_forward_inverse",
+   1890290447,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidFrameAngle_prescribed_lift",
+   1585413832,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidFrameDirection",
+   635828157,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidFrameDirection.eq_1",
+   2367299780,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidFrameDirectionComplex",
+   2458219920,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidFrameDirectionComplex.eq_1",
+   2952290127,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidFrameDirectionComplex_normalization",
+   2688472940,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidFrameDirectionComplex_normalization._simp_1_2",
+   3151351032,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidFramePolar",
+   2561013134,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidFramePolar._proof_1",
+   3152483103,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidFramePolar._proof_2",
+   3443361436,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidFramePolar.congr_simp",
+   956591360,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidFramePolar_coefficients",
+   3434372344,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidFramePolar_coefficients._simp_1_1",
+   3302045774,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidFramePolar_direction",
+   3631253347,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidFramePolar_reconstruct",
+   377793672,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ]
+ ],
+ "changed_type_source": [],
+ "changed_type_proof_naming": [],
+ "changed_type_accepted": [],
+ "added_accepted": [],
+ "accept_without_effect": [],
+ "changed_type_all": [],
+ "moves": [],
+ "ambiguous": [],
+ "auxiliary_moved": 0,
+ "verdict": "FAIL"
+}

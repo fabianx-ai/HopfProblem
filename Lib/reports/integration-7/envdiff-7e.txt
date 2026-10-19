@@ -1,0 +1,22 @@
+constants before 39478 after 39503 (keys 39371 39396 )
+lost 0 added 25 of which source declarations: 0 15 ; names with changed type 0 of which source: 0
+  ADDED Hyperbolic.continuous_hyperboloidFrameDirection {'Lib.Geometry.Hyperbolic.Models': 1}
+  ADDED Hyperbolic.continuous_hyperboloidFrameDirectionComplex {'Lib.Geometry.Hyperbolic.Models': 1}
+  ADDED Hyperbolic.continuous_hyperboloidFramePolar {'Lib.Geometry.Hyperbolic.Models': 1}
+  ADDED Hyperbolic.hyperboloidFrameAngle {'Lib.Geometry.Hyperbolic.Models': 1}
+  ADDED Hyperbolic.hyperboloidFrameAngleDomain {'Lib.Geometry.Hyperbolic.Models': 1}
+  ADDED Hyperbolic.hyperboloidFrameAngle_chart {'Lib.Geometry.Hyperbolic.Models': 1}
+  ADDED Hyperbolic.hyperboloidFrameAngle_forward_inverse {'Lib.Geometry.Hyperbolic.Models': 1}
+  ADDED Hyperbolic.hyperboloidFrameAngle_prescribed_lift {'Lib.Geometry.Hyperbolic.Models': 1}
+  ADDED Hyperbolic.hyperboloidFrameDirection {'Lib.Geometry.Hyperbolic.Models': 1}
+  ADDED Hyperbolic.hyperboloidFrameDirectionComplex {'Lib.Geometry.Hyperbolic.Models': 1}
+  ADDED Hyperbolic.hyperboloidFrameDirectionComplex_normalization {'Lib.Geometry.Hyperbolic.Models': 1}
+  ADDED Hyperbolic.hyperboloidFramePolar {'Lib.Geometry.Hyperbolic.Models': 1}
+  ADDED Hyperbolic.hyperboloidFramePolar_coefficients {'Lib.Geometry.Hyperbolic.Models': 1}
+  ADDED Hyperbolic.hyperboloidFramePolar_direction {'Lib.Geometry.Hyperbolic.Models': 1}
+  ADDED Hyperbolic.hyperboloidFramePolar_reconstruct {'Lib.Geometry.Hyperbolic.Models': 1}
+auxiliary lost/added/changed (not judged): 0 10 0
+module moves (source declarations, 1-to-1):
+ambiguous module changes: 0
+auxiliary constants that changed module: 0
+VERDICT FAIL
