@@ -3,8 +3,8 @@
 State: all 24 monoliths split behind facades (`Lib/reports/wave-1/MERGE.md`, `wave-2/MERGE.md`); both waves
 reviewed by Fable reviewers (`Lib/reviews/REVIEW-WAVES.md`: nothing unsound) and the findings fixed
 (§5 there); `center-solution` replayed per commit up to `d4db0d1a` (`Lib/reviews/INTEGRATION-7.md`,
-`Lib/reports/integration-7/REPLAY-7b.md`). Integrations 7c and 7d replayed `center-solution` up to `0870a3da`
-(`Lib/reports/integration-7/REPLAY-7c.md`, `REPLAY-7d.md`, four clean cherry-picks in all). The 24 facades are dissolved (`Lib/reports/facades/RECEIPT.md`: 205 consumers
+`Lib/reports/integration-7/REPLAY-7b.md`). Integrations 7c–7e replayed `center-solution` up to `84a62a02`
+(`Lib/reports/integration-7/REPLAY-7c.md`, `REPLAY-7d.md`, `REPLAY-7e.md`, five clean cherry-picks in all). The 24 facades are dissolved (`Lib/reports/facades/RECEIPT.md`: 205 consumers
 rerouted to the pieces from the dump's `uses`, facade docstrings kept as directory `README.md`s, envdiff 0/0/0; reviewed:
 `Lib/reports/facades/RECEIPT.md` §8 correction — the merge `b25f3507` is the verified unit, 12 of the 24 per-facade
 commits do not build on their own). The Shared/Center split was reviewed
@@ -28,7 +28,7 @@ Open, in order:
 (1) **`Unused/`** exists (owner decision 2026-10-02; `Unused/README.md`, receipt `Lib/reports/unused/cube3.md`):
 only what the owner names moves there, verbatim. No dead-code sweeps over `Lib`: what is part of the textbook
 is not dead code, and explanation outweighs tidiness (owner, 2026-10-02);
-(2) **replays** continue from `0870a3da` of `center-solution` (`Models.lean` is now 8,581 lines; the source
+(2) **replays** continue from `84a62a02` of `center-solution` (`Models.lean` is now 8,852 lines; the source
 worktree had uncommitted edits to it and to `Lib/AxiomAudit.lean` when 7d finished). Rule: a replayed commit whose material is not generic goes to `Center/Proof`
 (or `Shared/Proof` if the old proof uses it too), never to `Hopf/Proof`;
 (3) **owner's word needed** (INTEGRATION-7 §Left): split `Hyperbolic/Models.lean` (7,870 lines) and
