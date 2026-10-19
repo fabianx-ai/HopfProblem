@@ -8772,3 +8772,31 @@ is an evidence command rather than library content.
 #print axioms Hyperbolic.hyperboloid_normal_sign_on_preconnected
 #check Hyperbolic.hyperboloid_normal_components
 #print axioms Hyperbolic.hyperboloid_normal_components
+
+/-! ## `Lib.Algebra.Homology.ChainSubmodule` -/
+
+#check ChainSubmodule.quotientSequence_shortExact
+#print axioms ChainSubmodule.quotientSequence_shortExact
+#check ChainSubmodule.relativeSequence_shortExact
+#print axioms ChainSubmodule.relativeSequence_shortExact
+#check ChainSubmodule.relativeSupIso
+#print axioms ChainSubmodule.relativeSupIso
+#check ChainSubmodule.relativeTopIso
+#print axioms ChainSubmodule.relativeTopIso
+
+/-! ## `Lib.AlgebraicTopology.SingularHomology.Relative.Chains` -/
+
+#check RelativeSingularHomology.pairSequence_shortExact
+#print axioms RelativeSingularHomology.pairSequence_shortExact
+#check RelativeSingularHomology.pair_exact_at_subspace
+#print axioms RelativeSingularHomology.pair_exact_at_subspace
+#check RelativeSingularHomology.pair_exact_at_space
+#print axioms RelativeSingularHomology.pair_exact_at_space
+#check RelativeSingularHomology.pair_exact_at_pair
+#print axioms RelativeSingularHomology.pair_exact_at_pair
+#check RelativeSingularHomology.relativeHomologyEquivOfEmpty
+#print axioms RelativeSingularHomology.relativeHomologyEquivOfEmpty
+#check RelativeSingularHomology.relativeHomology_subsingleton_of_univ
+#print axioms RelativeSingularHomology.relativeHomology_subsingleton_of_univ
+#check RelativeSingularHomology.supportedComplexIso
+#print axioms RelativeSingularHomology.supportedComplexIso

@@ -2,6 +2,7 @@ import Lib.Algebra.Group.Prod
 import Lib.Algebra.Group.DeterminingFamily
 import Lib.Algebra.Group.Ker
 import Lib.Algebra.Homology.MayerVietorisShortExact
+import Lib.Algebra.Homology.ChainSubmodule
 import Lib.Topology.Homotopy.Suspension
 import Lib.Topology.Algebra.FreeActionLocus
 import Lib.Topology.OnePointCollapse
@@ -30,6 +31,7 @@ import Lib.AlgebraicTopology.SingularHomology.CircleProduct
 import Lib.AlgebraicTopology.SingularHomology.Pontryagin
 import Lib.AlgebraicTopology.SingularHomology.Sphere
 import Lib.AlgebraicTopology.SingularHomology.SphereHomology
+import Lib.AlgebraicTopology.SingularHomology.Relative.Chains
 import Lib.AlgebraicTopology.SingularHomology.SuspensionCover
 import Lib.AlgebraicTopology.SingularHomology.Coproduct
 import Lib.AlgebraicTopology.SingularHomology.LocalContributions
