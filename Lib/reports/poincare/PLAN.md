@@ -210,6 +210,13 @@ proof but has no open design question); M3 complete if the face combinatorics co
 If a milestone cannot be finished, the register carries the exact missing statement as a hypothesis
 structure, never an axiom.
 
+**Outcome (2026-10-20, end of session).** M0, M1, M2 complete; M3 complete at the chain level (the
+homology-level descent of the cap product was done in M4b, the cup product's is open); M4a and M4b
+complete (relative cohomology, excision, Mayer–Vietoris, the relative cap product, the duality maps,
+the Euclidean base case); M4c (the Mayer–Vietoris/union induction) **not done** — Poincaré duality
+for closed oriented manifolds is the single placeholder P-1; M4d done conditionally on P-1
+(consumer (a) in generic form; (b) open). See `PROGRESS.md`, `M0.md`–`M4.md`, `PLACEHOLDERS.md`.
+
 ## 5. Checks (per commit / before finishing)
 
 `lake build Lib Lib.AxiomAudit` green, probes ⊆ `propext, Classical.choice, Quot.sound`; before

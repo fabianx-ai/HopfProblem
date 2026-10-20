@@ -28,8 +28,29 @@ Seat: Claude Fable 5.1 (`claude-fable-5-1`). Branch `lib/poincare`, worktree `/h
   **excision in cohomology** for open covers (via the cochain small-simplices theorem and
   `quasiIso_τ₁`), the relative Mayer–Vietoris sequence in cohomology. 1,057 lines.
   `lake build Lib Lib.AxiomAudit` green (9,423 jobs), 3,840 probes within the three standard axioms.
-* M4b next: homology-level relative cap product, duality maps `D_K`, the Euclidean base case.
+* **M4b done** (`99061bf6`, `f3010739`, `641a45f7`, `df4b6e9b`; receipt `M4.md` §M4b): cocycle
+  classes and descent for cochain complexes, the **relative cap product**
+  `H^k(X, A) × H_m(X, A) → H_l(X)` with restriction compatibility and the top-degree Kronecker
+  formula, the relative fundamental classes `μ_K`, the **duality maps** `D_K` (compatible with
+  restriction) and the absolute duality map `φ ↦ [M] ⌢ φ`, relative chains free, **UCT for
+  pairs**, and the **Euclidean base case** `D_K` bijective for closed balls in `ℝ^{m+2}`.
+  1,050 lines. `lake build Lib Lib.AxiomAudit` green (9,427 jobs), 3,853 probes.
+* **M4c not done**: the Mayer–Vietoris/union induction (Hatcher 3.35/3.36). Poincaré duality for
+  closed oriented manifolds is the hypothesis structure `PoincareDuality.IsPoincareDuality`
+  (placeholder **P-1**, `PLACEHOLDERS.md`, with the exact missing list).
+* **M4d done** (`3f96a02a`; receipt `M4.md` §M4d): unconditional UCT consequences
+  (`H^0` torsion-free, `H^{q+1}` torsion-free for projective `H_q`, `H^k(M) = 0` for `k > n`),
+  and under P-1: `H^k(M) ≃ H_{n−k}(M)`, `H^n(M) ≅ ℤ`, the **torsion dictionary in dimension 4**
+  (consumer (a) in generic form: closed connected oriented 4-manifold, f.g. homology,
+  torsion-free `H_1` ⇒ every `H^q(M; ℤ)` torsion-free). 235 lines.
+  `lake build Lib Lib.AxiomAudit` green (9,428 jobs), 3,858 probes within the three standard axioms.
+* Consumer (b) (intersection form) not done: needs the cohomology-level cup product and the Ext
+  half of the UCT (register, open items).
+* Final checks (before the hand-back): `lake build Solution S6Shortcuts S6 Challenge`,
+  `lake build Shared Center`, `python3 scripts/lib_stock_census.py --check` → 123 (ratchet PASS),
+  isolation greps empty on `.lean` files, `git diff --check` clean. Results in `M4.md`.
 
 ## Register
 
-`PLACEHOLDERS.md`: empty.
+`PLACEHOLDERS.md`: one entry, **P-1** `PoincareDuality.IsPoincareDuality hn μ` (Poincaré duality for
+closed oriented manifolds; the Mayer–Vietoris induction of Hatcher 3.35/3.36).
