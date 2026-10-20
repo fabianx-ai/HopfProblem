@@ -36,6 +36,11 @@ import Lib.AlgebraicTopology.SingularHomology.Relative.Functoriality
 import Lib.AlgebraicTopology.SingularHomology.Relative.Support
 import Lib.AlgebraicTopology.SingularHomology.Relative.Excision
 import Lib.AlgebraicTopology.SingularHomology.Relative.MayerVietoris
+import Lib.AlgebraicTopology.SingularHomology.Orientation.ConvexComplement
+import Lib.AlgebraicTopology.SingularHomology.Orientation.LocalHomology
+import Lib.AlgebraicTopology.SingularHomology.Orientation.HomologyBall
+import Lib.AlgebraicTopology.SingularHomology.Orientation.OrientationCover
+import Lib.AlgebraicTopology.SingularHomology.Orientation.Orientation
 import Lib.AlgebraicTopology.SingularHomology.SuspensionCover
 import Lib.AlgebraicTopology.SingularHomology.Coproduct
 import Lib.AlgebraicTopology.SingularHomology.LocalContributions

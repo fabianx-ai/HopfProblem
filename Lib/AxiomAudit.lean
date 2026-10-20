@@ -8836,3 +8836,46 @@ is an evidence command rather than library content.
 #print axioms RelativeSingularHomology.relative_exact_at_pair
 #check RelativeSingularHomology.relative_exact_at_union
 #print axioms RelativeSingularHomology.relative_exact_at_union
+
+/-! ## `Lib.AlgebraicTopology.SingularHomology.Orientation.ConvexComplement` -/
+
+#check ConvexComplement.homotopyEquiv
+#print axioms ConvexComplement.homotopyEquiv
+#check ConvexComplement.sphereHomotopyEquiv
+#print axioms ConvexComplement.sphereHomotopyEquiv
+#check ConvexComplement.singularHomologyMap_inclusion_bijective
+#print axioms ConvexComplement.singularHomologyMap_inclusion_bijective
+
+/-! ## `Lib.AlgebraicTopology.SingularHomology.Orientation.LocalHomology` -/
+
+#check ManifoldOrientation.isHomologyBall_of_convex
+#print axioms ManifoldOrientation.isHomologyBall_of_convex
+#check ManifoldOrientation.localHomologyEuclideanEquiv
+#print axioms ManifoldOrientation.localHomologyEuclideanEquiv
+#check ManifoldOrientation.localHomologyEuclidean_subsingleton
+#print axioms ManifoldOrientation.localHomologyEuclidean_subsingleton
+
+/-! ## `Lib.AlgebraicTopology.SingularHomology.Orientation.HomologyBall` -/
+
+#check ManifoldOrientation.isHomologyBall_trace_iff
+#print axioms ManifoldOrientation.isHomologyBall_trace_iff
+#check ManifoldOrientation.exists_isHomologyBall
+#print axioms ManifoldOrientation.exists_isHomologyBall
+#check ManifoldOrientation.localHomology_equiv_int
+#print axioms ManifoldOrientation.localHomology_equiv_int
+#check ManifoldOrientation.localHomology_subsingleton
+#print axioms ManifoldOrientation.localHomology_subsingleton
+
+/-! ## `Lib.AlgebraicTopology.SingularHomology.Orientation.OrientationCover` -/
+
+#check ManifoldOrientation.isOpen_agreementSet
+#print axioms ManifoldOrientation.isOpen_agreementSet
+#check ManifoldOrientation.isCoveringMap_proj
+#print axioms ManifoldOrientation.isCoveringMap_proj
+
+/-! ## `Lib.AlgebraicTopology.SingularHomology.Orientation.Orientation` -/
+
+#check ManifoldOrientation.isLocallyConsistent_sectionClass
+#print axioms ManifoldOrientation.isLocallyConsistent_sectionClass
+#check ManifoldOrientation.isOrientable_of_simplyConnectedSpace
+#print axioms ManifoldOrientation.isOrientable_of_simplyConnectedSpace
