@@ -52,6 +52,7 @@ import Lib.AlgebraicTopology.SingularHomology.Orientation.DualityMap
 import Lib.AlgebraicTopology.SingularHomology.Orientation.EuclideanDuality
 import Lib.AlgebraicTopology.SingularHomology.Orientation.DualityConsequences
 import Lib.AlgebraicTopology.SingularHomology.Orientation.CompactSupport
+import Lib.AlgebraicTopology.SingularHomology.Orientation.IntersectionForm
 import Lib.AlgebraicTopology.SingularHomology.SuspensionCover
 import Lib.AlgebraicTopology.SingularHomology.Coproduct
 import Lib.AlgebraicTopology.SingularHomology.LocalContributions
@@ -676,6 +677,7 @@ import Lib.AlgebraicTopology.SingularCochains.CapProduct.Chain
 import Lib.AlgebraicTopology.SingularCochains.Relative
 import Lib.AlgebraicTopology.SingularCochains.RelativeMayerVietoris
 import Lib.AlgebraicTopology.SingularCochains.CapProduct.Relative
+import Lib.AlgebraicTopology.SingularCochains.CapProduct.Cup
 import Lib.Topology.Sheaves.SingularCochainSheaf.LocalExactPositive
 import Lib.Topology.Sheaves.SingularCochainSheaf.OpenRestriction
 import Lib.Topology.Sheaves.SingularCochainSheaf.ResolutionPositive

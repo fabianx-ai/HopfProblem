@@ -9024,3 +9024,17 @@ is an evidence command rather than library content.
 #print axioms PoincareDuality.limitDualityMap_ofCompact
 #check PoincareDuality.limitDualityMap_of_univ
 #print axioms PoincareDuality.limitDualityMap_of_univ
+
+/-! ## `Lib.AlgebraicTopology.SingularCochains.CapProduct.Cup` -/
+
+#check SingularCapProduct.cupProduct_cocycleClass
+#print axioms SingularCapProduct.cupProduct_cocycleClass
+#check SingularCapProduct.cocycleClass_cupCocycle_coboundary_right
+#print axioms SingularCapProduct.cocycleClass_cupCocycle_coboundary_right
+
+/-! ## `Lib.AlgebraicTopology.SingularHomology.Orientation.IntersectionForm` -/
+
+#check PoincareDuality.cohomologyEquivOfEmpty_cocycleClass
+#print axioms PoincareDuality.cohomologyEquivOfEmpty_cocycleClass
+#check PoincareDuality.cohomologyEvaluation_cupProduct_fundamentalClass
+#print axioms PoincareDuality.cohomologyEvaluation_cupProduct_fundamentalClass
