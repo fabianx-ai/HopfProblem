@@ -525,4 +525,3 @@ theorem pullback_cupChain (f : C(X, Y)) (k l m : ℕ) (h : k + l = m) (φ : Coch
   rw [inducedChain_capChain]
 
 end SingularCapProduct
-
