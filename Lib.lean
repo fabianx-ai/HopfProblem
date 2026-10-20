@@ -41,6 +41,9 @@ import Lib.AlgebraicTopology.SingularHomology.Orientation.LocalHomology
 import Lib.AlgebraicTopology.SingularHomology.Orientation.HomologyBall
 import Lib.AlgebraicTopology.SingularHomology.Orientation.OrientationCover
 import Lib.AlgebraicTopology.SingularHomology.Orientation.Orientation
+import Lib.AlgebraicTopology.SingularHomology.Orientation.LocalToGlobal
+import Lib.AlgebraicTopology.SingularHomology.Orientation.ChartConvex
+import Lib.AlgebraicTopology.SingularHomology.Orientation.FundamentalClass
 import Lib.AlgebraicTopology.SingularHomology.SuspensionCover
 import Lib.AlgebraicTopology.SingularHomology.Coproduct
 import Lib.AlgebraicTopology.SingularHomology.LocalContributions

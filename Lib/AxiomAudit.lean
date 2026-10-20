@@ -8879,3 +8879,34 @@ is an evidence command rather than library content.
 #print axioms ManifoldOrientation.isLocallyConsistent_sectionClass
 #check ManifoldOrientation.isOrientable_of_simplyConnectedSpace
 #print axioms ManifoldOrientation.isOrientable_of_simplyConnectedSpace
+
+/-! ## `Lib.AlgebraicTopology.SingularHomology.Orientation.LocalToGlobal` -/
+
+#check ManifoldOrientation.LocalToGlobal.inter
+#print axioms ManifoldOrientation.LocalToGlobal.inter
+#check ManifoldOrientation.eqOn_of_agree
+#print axioms ManifoldOrientation.eqOn_of_agree
+
+/-! ## `Lib.AlgebraicTopology.SingularHomology.Orientation.ChartConvex` -/
+
+#check ManifoldOrientation.LocalToGlobal.of_isChartConvex
+#print axioms ManifoldOrientation.LocalToGlobal.of_isChartConvex
+#check ManifoldOrientation.LocalToGlobal.of_list
+#print axioms ManifoldOrientation.LocalToGlobal.of_list
+
+/-! ## `Lib.AlgebraicTopology.SingularHomology.Orientation.FundamentalClass` -/
+
+#check ManifoldOrientation.LocalToGlobal.of_isCompact
+#print axioms ManifoldOrientation.LocalToGlobal.of_isCompact
+#check ManifoldOrientation.homology_subsingleton_of_lt
+#print axioms ManifoldOrientation.homology_subsingleton_of_lt
+#check ManifoldOrientation.absoluteRestriction_fundamentalClass
+#print axioms ManifoldOrientation.absoluteRestriction_fundamentalClass
+#check ManifoldOrientation.fundamentalClass_unique
+#print axioms ManifoldOrientation.fundamentalClass_unique
+#check ManifoldOrientation.restrictionEquiv
+#print axioms ManifoldOrientation.restrictionEquiv
+#check ManifoldOrientation.exists_homology_equiv_int
+#print axioms ManifoldOrientation.exists_homology_equiv_int
+#check ManifoldOrientation.exists_homology_equiv_int_of_simplyConnectedSpace
+#print axioms ManifoldOrientation.exists_homology_equiv_int_of_simplyConnectedSpace
