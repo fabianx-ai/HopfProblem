@@ -468,6 +468,65 @@ theorem relativeSubmodule_inf (T S : ChainSubmodule K) (n : ℕ) :
   ext c
   exact ⟨fun h => h.1, fun h => ⟨h, c.2⟩⟩
 
+/-- For `S ≤ T`, the inclusion `S.subComplex → T.subComplex` and the projection
+`K/S → K/T` form a morphism of quotient sequences (with `𝟙 K` in the middle). -/
+def quotientSequenceMap {S T : ChainSubmodule K} (h : S ≤ T) :
+    S.quotientSequence ⟶ T.quotientSequence where
+  τ₁ := subMap h
+  τ₂ := 𝟙 K
+  τ₃ := quotientMap h
+  comm₁₂ := by
+    change subMap h ≫ T.ι = S.ι ≫ 𝟙 K
+    rw [subMap_ι, Category.comp_id]
+  comm₂₃ := by
+    change 𝟙 K ≫ T.π = S.π ≫ quotientMap h
+    rw [Category.id_comp, π_quotientMap]
+
+/-- If the inclusion of subcomplexes `S ≤ T` is a quasi-isomorphism, so is `K/S → K/T` (the five
+lemma on the two long exact sequences). -/
+theorem quotientMap_quasiIso {S T : ChainSubmodule K} (h : S ≤ T) [QuasiIso (subMap h)] :
+    QuasiIso (quotientMap h) :=
+  HomologicalComplex.HomologySequence.quasiIso_τ₃ (quotientSequenceMap h)
+    S.quotientSequence_shortExact T.quotientSequence_shortExact
+    (show QuasiIso (subMap h) from inferInstance) (show QuasiIso (𝟙 K) from inferInstance)
+
+/-! ### From the relative complex to the quotient complex -/
+
+/-- The map `T/(S ⊓ T) ⟶ K/S` induced by the inclusion of `T`. -/
+def relativeToQuotient (T S : ChainSubmodule K) : relativeComplex T S ⟶ S.quotientComplex where
+  f n := ModuleCat.ofHom (Submodule.mapQ _ _ (T.carrier n).subtype (fun _ hc => hc))
+  comm' _ _ _ := relative_hom_ext fun _ => rfl
+
+@[simp]
+theorem relativeToQuotient_f_mk (T S : ChainSubmodule K) (n : ℕ) (c : T.carrier n) :
+    ((relativeToQuotient T S).f n).hom (Submodule.Quotient.mk c) = Submodule.Quotient.mk (c : K.X n) :=
+  rfl
+
+@[simp]
+theorem relativeProjection_relativeToQuotient (T S : ChainSubmodule K) :
+    relativeProjection T S ≫ relativeToQuotient T S = T.ι ≫ S.π :=
+  HomologicalComplex.hom_ext _ _ fun _ => sub_hom_ext fun _ => rfl
+
+/-- The inclusion of `T` as a morphism from the relative sequence of `S ≤ T` to the quotient
+sequence of `S`. -/
+def relativeSequenceToQuotientSequence {T S : ChainSubmodule K} (h : S ≤ T) :
+    relativeSequence h ⟶ S.quotientSequence where
+  τ₁ := 𝟙 _
+  τ₂ := T.ι
+  τ₃ := relativeToQuotient T S
+  comm₁₂ := by
+    change 𝟙 _ ≫ S.ι = subMap h ≫ T.ι
+    rw [Category.id_comp, subMap_ι]
+  comm₂₃ := (relativeProjection_relativeToQuotient T S).symm
+
+/-- If the inclusion of `T` is a quasi-isomorphism, so is `T/(S ⊓ T) ⟶ K/S` for `S ≤ T` (the five
+lemma on the two long exact sequences). -/
+theorem relativeToQuotient_quasiIso {T S : ChainSubmodule K} (h : S ≤ T) [QuasiIso T.ι] :
+    QuasiIso (relativeToQuotient T S) :=
+  HomologicalComplex.HomologySequence.quasiIso_τ₃ (relativeSequenceToQuotientSequence h)
+    (relativeSequence_shortExact h) S.quotientSequence_shortExact
+    (show QuasiIso (𝟙 S.subComplex) from inferInstance) (show QuasiIso T.ι from inferInstance)
+
 /-! ### The second isomorphism theorem -/
 
 /-- The natural map `T/(S ⊓ T) → (S ⊔ T)/S` in degree `n`. -/

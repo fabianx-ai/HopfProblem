@@ -308,3 +308,56 @@ theorem SmallChainBiprod.shortExactOfComplexes {K L J T : ChainComplex (ModuleCa
       (shortComplexOfComplexesEvalIso a b u v w n).symm
       (shortExact (a.f n) (b.f n) (u.f n) (v.f n) (square_f a b u v w n) (ha n) (hjoint n)
         (hoverlap n))
+
+/-! ### The jointly injective variant
+
+When neither `a` nor `b` is injective on its own but `(a, b)` is — the case of the relative
+Mayer–Vietoris sequence `C(X)/C(A ∩ B) → C(X)/C(A) ⊞ C(X)/C(B)` — the same conclusions hold with
+joint injectivity in place of injectivity of `a`. -/
+
+/-- Joint injectivity of `a` and `b` makes the lifted map into the biprod injective. -/
+theorem SmallChainBiprod.left_injective_of_jointly_injective {A B I : ModuleCat.{v} ℤ} (a : I ⟶ A)
+    (b : I ⟶ B) (hab : ∀ z : I, a.hom z = 0 → b.hom z = 0 → z = 0) :
+    Function.Injective (CategoryTheory.Limits.biprod.lift a (-b)).hom := by
+  intro z z' h
+  rw [← sub_eq_zero]
+  apply hab
+  · have hf := congrArg (CategoryTheory.Limits.biprod.fst : A ⊞ B ⟶ A).hom h
+    simp only [fst_lift_apply] at hf
+    rw [map_sub, hf, sub_self]
+  · have hs := congrArg (CategoryTheory.Limits.biprod.snd : A ⊞ B ⟶ B).hom h
+    simp only [snd_lift_apply] at hs
+    change -b.hom z = -b.hom z' at hs
+    rw [map_sub, neg_inj.mp hs, sub_self]
+
+/-- The biprod short complex is short exact under joint injectivity, joint surjectivity, and the
+overlap condition. -/
+theorem SmallChainBiprod.shortExact_of_jointly_injective {A B I S : ModuleCat.{v} ℤ} (a : I ⟶ A)
+    (b : I ⟶ B) (u : A ⟶ S) (v : B ⟶ S) (w : a ≫ u = b ≫ v)
+    (hab : ∀ z : I, a.hom z = 0 → b.hom z = 0 → z = 0)
+    (hjoint : ∀ s : S, ∃ x : A, ∃ y : B, u.hom x + v.hom y = s)
+    (hoverlap : ∀ (x : A) (y : B), u.hom x = v.hom y → ∃ z : I, a.hom z = x ∧ b.hom z = y) :
+    (shortComplex a b u v w).ShortExact
+    where
+  exact := exact a b u v w hoverlap
+  mono_f := (ModuleCat.mono_iff_injective _).mpr (left_injective_of_jointly_injective a b hab)
+  epi_g := (ModuleCat.epi_iff_surjective _).mpr (right_surjective u v hjoint)
+
+/-- Degreewise joint injectivity, joint surjectivity, and overlap make a square of chain maps short
+exact. -/
+theorem SmallChainBiprod.shortExactOfComplexes_of_jointly_injective
+    {K L J T : ChainComplex (ModuleCat.{v} ℤ) ℕ}
+    (a : J ⟶ K) (b : J ⟶ L) (u : K ⟶ T) (v : L ⟶ T) (w : a ≫ u = b ≫ v)
+    (hab : ∀ (n : ℕ) (z : J.X n), (a.f n).hom z = 0 → (b.f n).hom z = 0 → z = 0)
+    (hjoint : ∀ (n : ℕ) (s : T.X n), ∃ x : K.X n, ∃ y : L.X n, (u.f n).hom x + (v.f n).hom y = s)
+    (hoverlap :
+      ∀ (n : ℕ) (x : K.X n) (y : L.X n),
+        (u.f n).hom x = (v.f n).hom y → ∃ z : J.X n, (a.f n).hom z = x ∧ (b.f n).hom z = y) :
+    (shortComplexOfComplexes a b u v w).ShortExact := by
+  apply HomologicalComplex.shortExact_of_degreewise_shortExact
+  intro n
+  exact
+    CategoryTheory.ShortComplex.shortExact_of_iso
+      (shortComplexOfComplexesEvalIso a b u v w n).symm
+      (shortExact_of_jointly_injective (a.f n) (b.f n) (u.f n) (v.f n) (square_f a b u v w n)
+        (hab n) (hjoint n) (hoverlap n))

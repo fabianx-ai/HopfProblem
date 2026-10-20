@@ -8800,3 +8800,39 @@ is an evidence command rather than library content.
 #print axioms RelativeSingularHomology.relativeHomology_subsingleton_of_univ
 #check RelativeSingularHomology.supportedComplexIso
 #print axioms RelativeSingularHomology.supportedComplexIso
+
+/-! ## `Lib.AlgebraicTopology.SingularHomology.Relative.Functoriality` -/
+
+#check RelativeSingularHomology.pairConnecting_naturality
+#print axioms RelativeSingularHomology.pairConnecting_naturality
+#check RelativeSingularHomology.relativeHomologyMap_bijective_of_bijective
+#print axioms RelativeSingularHomology.relativeHomologyMap_bijective_of_bijective
+#check RelativeSingularHomology.relativeHomologyEquivOfHomeomorph
+#print axioms RelativeSingularHomology.relativeHomologyEquivOfHomeomorph
+
+/-! ## `Lib.AlgebraicTopology.SingularHomology.Relative.Support` -/
+
+#check RelativeSingularHomology.isCompact_chainSupport
+#print axioms RelativeSingularHomology.isCompact_chainSupport
+#check RelativeSingularHomology.mem_supportedChainSubmodule_iff
+#print axioms RelativeSingularHomology.mem_supportedChainSubmodule_iff
+#check RelativeSingularHomology.restriction_relativeHomologyClass
+#print axioms RelativeSingularHomology.restriction_relativeHomologyClass
+
+/-! ## `Lib.AlgebraicTopology.SingularHomology.Relative.Excision` -/
+
+#check RelativeSingularHomology.excision_quasiIso
+#print axioms RelativeSingularHomology.excision_quasiIso
+#check RelativeSingularHomology.excisionEquiv
+#print axioms RelativeSingularHomology.excisionEquiv
+
+/-! ## `Lib.AlgebraicTopology.SingularHomology.Relative.MayerVietoris` -/
+
+#check RelativeSingularHomology.relativeChainSequence_shortExact
+#print axioms RelativeSingularHomology.relativeChainSequence_shortExact
+#check RelativeSingularHomology.relative_exact_at_inter
+#print axioms RelativeSingularHomology.relative_exact_at_inter
+#check RelativeSingularHomology.relative_exact_at_pair
+#print axioms RelativeSingularHomology.relative_exact_at_pair
+#check RelativeSingularHomology.relative_exact_at_union
+#print axioms RelativeSingularHomology.relative_exact_at_union

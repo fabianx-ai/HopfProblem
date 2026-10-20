@@ -32,6 +32,10 @@ import Lib.AlgebraicTopology.SingularHomology.Pontryagin
 import Lib.AlgebraicTopology.SingularHomology.Sphere
 import Lib.AlgebraicTopology.SingularHomology.SphereHomology
 import Lib.AlgebraicTopology.SingularHomology.Relative.Chains
+import Lib.AlgebraicTopology.SingularHomology.Relative.Functoriality
+import Lib.AlgebraicTopology.SingularHomology.Relative.Support
+import Lib.AlgebraicTopology.SingularHomology.Relative.Excision
+import Lib.AlgebraicTopology.SingularHomology.Relative.MayerVietoris
 import Lib.AlgebraicTopology.SingularHomology.SuspensionCover
 import Lib.AlgebraicTopology.SingularHomology.Coproduct
 import Lib.AlgebraicTopology.SingularHomology.LocalContributions
