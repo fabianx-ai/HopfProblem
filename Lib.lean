@@ -50,6 +50,7 @@ import Lib.AlgebraicTopology.SingularHomology.Orientation.ChartConvex
 import Lib.AlgebraicTopology.SingularHomology.Orientation.FundamentalClass
 import Lib.AlgebraicTopology.SingularHomology.Orientation.DualityMap
 import Lib.AlgebraicTopology.SingularHomology.Orientation.EuclideanDuality
+import Lib.AlgebraicTopology.SingularHomology.Orientation.DualityConsequences
 import Lib.AlgebraicTopology.SingularHomology.SuspensionCover
 import Lib.AlgebraicTopology.SingularHomology.Coproduct
 import Lib.AlgebraicTopology.SingularHomology.LocalContributions

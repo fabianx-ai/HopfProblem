@@ -9002,3 +9002,16 @@ is an evidence command rather than library content.
 #print axioms PoincareDuality.augmentation_dualityMap
 #check PoincareDuality.dualityMap_closedBall_bijective
 #print axioms PoincareDuality.dualityMap_closedBall_bijective
+
+/-! ## `Lib.AlgebraicTopology.SingularHomology.Orientation.DualityConsequences` -/
+
+#check PoincareDuality.cohomology_zero_isTorsionFree
+#print axioms PoincareDuality.cohomology_zero_isTorsionFree
+#check PoincareDuality.cohomology_succ_isTorsionFree
+#print axioms PoincareDuality.cohomology_succ_isTorsionFree
+#check PoincareDuality.cohomology_subsingleton_of_lt
+#print axioms PoincareDuality.cohomology_subsingleton_of_lt
+#check PoincareDuality.IsPoincareDuality.cohomology_top_equiv_int
+#print axioms PoincareDuality.IsPoincareDuality.cohomology_top_equiv_int
+#check PoincareDuality.IsPoincareDuality.cohomology_isTorsionFree_of_dim_four
+#print axioms PoincareDuality.IsPoincareDuality.cohomology_isTorsionFree_of_dim_four
