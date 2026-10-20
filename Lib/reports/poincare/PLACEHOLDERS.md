@@ -47,9 +47,11 @@ hypothesis, where it is consumed, what it says, and what is missing to discharge
 
 * Dimensions `n = 0, 1` of the orientation theory (M1/M2 assume `2 ≤ n`).
 * Non-orientable half of Theorem 3.26.
-* Consumer (b), the intersection form: the descent of the chain-level cup product
-  (`cupChain`, `coboundary_cupChain`, `pullback_cupChain`, M3) to cohomology and the identity
-  `⟨φ ∪ ψ, [M]⟩ = ⟨φ, ψ ∩ [M]⟩`, and unimodularity (Prop. 3.38, needs the Ext half of the UCT,
-  which is not on this branch).
+* Consumer (b), unimodularity of the intersection form (Prop. 3.38): the cup product on
+  cohomology and the identity `⟨φ ∪ ψ, [M]⟩ = ⟨ψ, [M] ⌢ φ⟩` are proved
+  (`CapProduct/Cup.lean`, `Orientation/IntersectionForm.lean`); that the adjoint
+  `H^k(M) → Hom(H^{n-k}(M), ℤ)` is an isomorphism on the free parts needs P-1 (duality) together
+  with the universal coefficient isomorphism `H^{n-k} ≅ Hom(H_{n-k}, ℤ)` (proved when `H_{n-k-1}`
+  is projective) and the reflexivity of finitely generated free `ℤ`-modules.
 * The Ext half of the universal coefficient theorem (torsion of `H^q` ≅ torsion of `H_{q-1}`); the
   torsion dictionary of consumer (a) is proved without it, from the free half and finite generation.

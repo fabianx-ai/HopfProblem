@@ -35,20 +35,28 @@ Seat: Claude Fable 5.1 (`claude-fable-5-1`). Branch `lib/poincare`, worktree `/h
   restriction) and the absolute duality map `φ ↦ [M] ⌢ φ`, relative chains free, **UCT for
   pairs**, and the **Euclidean base case** `D_K` bijective for closed balls in `ℝ^{m+2}`.
   1,050 lines. `lake build Lib Lib.AxiomAudit` green (9,427 jobs), 3,853 probes.
-* **M4c not done**: the Mayer–Vietoris/union induction (Hatcher 3.35/3.36). Poincaré duality for
-  closed oriented manifolds is the hypothesis structure `PoincareDuality.IsPoincareDuality`
-  (placeholder **P-1**, `PLACEHOLDERS.md`, with the exact missing list).
+* **M4c begun** (`5db10bc6`): compactly supported cohomology as a direct limit and the limit
+  duality map `H^k_c(M) → H_{n−k}(M)` (160 lines). The Mayer–Vietoris/union induction (Hatcher
+  3.35/3.36) is **not done**: Poincaré duality for closed oriented manifolds is the hypothesis
+  structure `PoincareDuality.IsPoincareDuality` (placeholder **P-1**, `PLACEHOLDERS.md`, with the
+  exact missing list).
 * **M4d done** (`3f96a02a`; receipt `M4.md` §M4d): unconditional UCT consequences
   (`H^0` torsion-free, `H^{q+1}` torsion-free for projective `H_q`, `H^k(M) = 0` for `k > n`),
   and under P-1: `H^k(M) ≃ H_{n−k}(M)`, `H^n(M) ≅ ℤ`, the **torsion dictionary in dimension 4**
   (consumer (a) in generic form: closed connected oriented 4-manifold, f.g. homology,
   torsion-free `H_1` ⇒ every `H^q(M; ℤ)` torsion-free). 235 lines.
   `lake build Lib Lib.AxiomAudit` green (9,428 jobs), 3,858 probes within the three standard axioms.
-* Consumer (b) (intersection form) not done: needs the cohomology-level cup product and the Ext
-  half of the UCT (register, open items).
-* Final checks (before the hand-back): `lake build Solution S6Shortcuts S6 Challenge`,
-  `lake build Shared Center`, `python3 scripts/lib_stock_census.py --check` → 123 (ratchet PASS),
-  isolation greps empty on `.lean` files, `git diff --check` clean. Results in `M4.md`.
+* **Consumer (b), the intersection pairing, done in its cup/cap+duality form** (`6387b68b`): the
+  cup product on cohomology (`CapProduct/Cup.lean`, 278 lines) and
+  `⟨φ ∪ ψ, [M]⟩ = ⟨ψ, [M] ⌢ φ⟩` for closed oriented `M` (`Orientation/IntersectionForm.lean`,
+  153 lines). Unimodularity (Prop. 3.38) is open (needs P-1 and double duals of f.g. free modules).
+* **Final checks at `6387b68b`**: `lake build Lib Lib.AxiomAudit` → `Build completed successfully
+  (9431 jobs)`, 3,865 probes all within `[propext, Classical.choice, Quot.sound]`;
+  `lake build Solution S6Shortcuts S6 Challenge` → green (9,490 jobs); `lake build Shared Center`
+  → green (8,867 jobs); `python3 scripts/lib_stock_census.py --check` → 123 (ratchet PASS);
+  isolation greps empty on `.lean` files; `git diff --check` clean.
+* Totals since `bf6688c0`: 27 commits, 39 files, ~9,100 lines added under `Lib/` (code and
+  reports). Never pushed, never merged.
 
 ## Register
 
