@@ -1,0 +1,2658 @@
+{
+ "before": "/home/goblin/.claude/jobs/06995e68/tmp/r8-dup-hom/dump_base.jsonl",
+ "after": "/home/goblin/.claude/jobs/06995e68/tmp/r8-dup-hom/dump_after.jsonl",
+ "prefix": "",
+ "constants": [
+  38593,
+  38295
+ ],
+ "lost": [
+  [
+   "AlgebraicTopology.SingularCochains.homotopy_on_cocycle_succ",
+   4020601983,
+   {
+    "Lib.AlgebraicTopology.SingularCochains.PositivePrimitives": 1
+   }
+  ],
+  [
+   "CategoryTheory.HomologicalComplex.shortCycleClass",
+   824855767,
+   {
+    "Lib.Algebra.Homology.HomologicalComplex.CycleLift": 1
+   }
+  ],
+  [
+   "CategoryTheory.HomologicalComplex.shortCycleClass._proof_1",
+   4138409883,
+   {
+    "Lib.Algebra.Homology.HomologicalComplex.CycleLift": 1
+   }
+  ],
+  [
+   "CategoryTheory.HomologicalComplex.shortCycleClass._proof_2",
+   1623422396,
+   {
+    "Lib.Algebra.Homology.HomologicalComplex.CycleLift": 1
+   }
+  ],
+  [
+   "CategoryTheory.HomologicalComplex.shortCycleClass._proof_3",
+   656008884,
+   {
+    "Lib.Algebra.Homology.HomologicalComplex.CycleLift": 1
+   }
+  ],
+  [
+   "CategoryTheory.HomologicalComplex.shortCycleClass_eq_zero_iff",
+   868359975,
+   {
+    "Lib.Algebra.Homology.HomologicalComplex.CycleLift": 1
+   }
+  ],
+  [
+   "CategoryTheory.HomologicalComplex.shortCycleClass_quotient",
+   2818369356,
+   {
+    "Lib.Algebra.Homology.HomologicalComplex.CycleLift": 1
+   }
+  ],
+  [
+   "CategoryTheory.HomologicalComplex.shortCycleClass_surjective",
+   2854428451,
+   {
+    "Lib.Algebra.Homology.HomologicalComplex.CycleLift": 1
+   }
+  ],
+  [
+   "CategoryTheory.HomologicalComplex.shortHomologyMap_cycleClass",
+   3557118776,
+   {
+    "Lib.Algebra.Homology.HomologicalComplex.CycleLift": 1
+   }
+  ],
+  [
+   "CoverNaturality.chainSequenceMap",
+   536901224,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.Naturality": 1
+   }
+  ],
+  [
+   "CoverNaturality.chainSequenceMap._proof_2",
+   2224949467,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.Naturality": 1
+   }
+  ],
+  [
+   "CoverNaturality.chainSequenceMap._proof_4",
+   2740659817,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.Naturality": 1
+   }
+  ],
+  [
+   "CoverNaturality.comparison_naturality",
+   1410201624,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.Naturality": 1
+   }
+  ],
+  [
+   "CoverNaturality.connecting_naturality",
+   4205317805,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.Naturality": 1
+   }
+  ],
+  [
+   "CoverNaturality.connecting_naturality_apply",
+   2445665763,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.Naturality": 1
+   }
+  ],
+  [
+   "CoverNaturality.inducedChain_mem_small",
+   594860500,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.Naturality": 1
+   }
+  ],
+  [
+   "CoverNaturality.intersection_left",
+   1813238780,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.Naturality": 1
+   }
+  ],
+  [
+   "CoverNaturality.intersection_right",
+   1073386717,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.Naturality": 1
+   }
+  ],
+  [
+   "CoverNaturality.mapOn",
+   2127320866,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.Naturality": 1
+   }
+  ],
+  [
+   "CoverNaturality.mapOn._proof_1",
+   1492457781,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.Naturality": 1
+   }
+  ],
+  [
+   "CoverNaturality.mapOn._proof_2",
+   3638718080,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.Naturality": 1
+   }
+  ],
+  [
+   "CoverNaturality.mapOn._proof_3",
+   689028697,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.Naturality": 1
+   }
+  ],
+  [
+   "CoverNaturality.mapOn.congr_simp",
+   3317302272,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.Naturality": 1
+   }
+  ],
+  [
+   "CoverNaturality.smallConnecting_naturality",
+   3395147534,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.Naturality": 1
+   }
+  ],
+  [
+   "CoverNaturality.smallMap",
+   4269563253,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.Naturality": 1
+   }
+  ],
+  [
+   "CoverNaturality.smallMap._proof_1",
+   1635492264,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.Naturality": 1
+   }
+  ],
+  [
+   "CoverNaturality.smallMap._proof_2",
+   3033066039,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.Naturality": 1
+   }
+  ],
+  [
+   "CoverNaturality.smallMap.congr_simp",
+   1093373916,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.Naturality": 1
+   }
+  ],
+  [
+   "CoverNaturality.smallMap_inclusion",
+   851783979,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.Naturality": 1
+   }
+  ],
+  [
+   "CoverNaturality.smallMap_left",
+   2784047166,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.Naturality": 1
+   }
+  ],
+  [
+   "CoverNaturality.smallMap_right",
+   121391115,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.Naturality": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.LocalPathValue",
+   420136251,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.LocalPathValue.HomotopyInvariant",
+   2910007344,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.LocalPathValue.IsPrimitive",
+   2668802960,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.LocalPathValue.IsPrimitiveUpTo",
+   4026789998,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.LocalPathValue._sizeOf_1",
+   1429598000,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.LocalPathValue._sizeOf_inst",
+   1857523879,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.LocalPathValue.casesOn",
+   218505765,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.LocalPathValue.compatible",
+   2080403409,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.LocalPathValue.ctorIdx",
+   2073046648,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.LocalPathValue.exists_primitive",
+   3900984059,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.LocalPathValue.exists_primitiveUpTo_step",
+   2027782,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.LocalPathValue.extension",
+   1398857826,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.LocalPathValue.extension_extends",
+   2201527482,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.LocalPathValue.isPrimitiveUpTo_zero",
+   2299127593,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.LocalPathValue.isPrimitive_subpath",
+   1560667119,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.LocalPathValue.mk",
+   467094739,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.LocalPathValue.mk._flat_ctor",
+   467094739,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.LocalPathValue.mk.inj",
+   3072105318,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.LocalPathValue.mk.injEq",
+   313741086,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.LocalPathValue.mk.noConfusion",
+   3902502573,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.LocalPathValue.mk.sizeOf_spec",
+   3340321038,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.LocalPathValue.noConfusion",
+   2539128994,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.LocalPathValue.noConfusionType",
+   4070358097,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.LocalPathValue.primitive_unique",
+   3902022967,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.LocalPathValue.rawValue",
+   1385531706,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.LocalPathValue.rawValue.eq_1",
+   143384802,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.LocalPathValue.rawValue_cast",
+   3213510347,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.LocalPathValue.rawValue_local",
+   628710851,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.LocalPathValue.rawValue_refl",
+   885856211,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.LocalPathValue.rawValue_subpath",
+   3224537446,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.LocalPathValue.rawValue_subpath_mul",
+   813002800,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.LocalPathValue.rawValue_subpath_zero_one",
+   2963027311,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.LocalPathValue.rawValue_trans",
+   931398239,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.LocalPathValue.rec",
+   3819639172,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.LocalPathValue.recOn",
+   218505765,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.LocalPathValue.refl",
+   244326702,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.LocalPathValue.subpath_mul",
+   2434934225,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.LocalPathValue.trans",
+   3574441292,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.LocalPathValue.transport",
+   471771185,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.LocalPathValue.transport.congr_simp",
+   2742285665,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.LocalPathValue.transport_isPrimitive",
+   3057714716,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.LocalPathValue.transport_subpath",
+   1926080303,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.LocalPathValue.transport_zero",
+   354691257,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.LocalPathValue.value",
+   3648509348,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.LocalPathValue.value.congr_simp",
+   2238270513,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.LocalPathValue.value_cast",
+   3329462699,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.LocalPathValue.value_eq_of_path_eq",
+   3741322276,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.PathValue",
+   798815069,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.PathValue.Extends",
+   1216781285,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.PathValue.HomotopyInvariant",
+   3374181919,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.PathValue._sizeOf_1",
+   2770259971,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.PathValue._sizeOf_inst",
+   1499660100,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.PathValue.casesOn",
+   2396819652,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.PathValue.ctorIdx",
+   1021426578,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.PathValue.fundamentalGroupHom",
+   3226341991,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.PathValue.fundamentalGroupHom._proof_1",
+   412589502,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.PathValue.fundamentalGroupHom._proof_2",
+   1271521976,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.PathValue.fundamentalGroupHom._proof_3",
+   691125779,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.PathValue.homotopyInvariant_of_open_cover",
+   3239172491,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.PathValue.mk",
+   2614307579,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.PathValue.mk._flat_ctor",
+   2614307579,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.PathValue.mk.inj",
+   2846033968,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.PathValue.mk.injEq",
+   2674878586,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.PathValue.mk.noConfusion",
+   2633915186,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.PathValue.mk.sizeOf_spec",
+   1071603237,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.PathValue.noConfusion",
+   1588166557,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.PathValue.noConfusionType",
+   3174998869,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.PathValue.rec",
+   1266578449,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.PathValue.recOn",
+   2396819652,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.PathValue.refl",
+   3225965515,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.PathValue.square_cell_of_local",
+   1914373631,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.PathValue.square_strip",
+   2385311504,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.PathValue.subpath_mul",
+   930883357,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.PathValue.trans",
+   998058907,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.PathValue.value",
+   4233958012,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.PathValue.value_cast",
+   4286433672,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.PathValue.value_eq_of_homotopy_of_open_cover",
+   1638629447,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.PathValue.value_eq_one_of_constant",
+   2241955587,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.PathValue.value_squareHorizontal_homotopy",
+   3649329674,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.PathValue.value_squareVertical_homotopy_one",
+   1454130037,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.PathValue.value_squareVertical_homotopy_zero",
+   926264981,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.PathValue.value_subpath_zero_one",
+   3420045608,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.TwoOpenCover",
+   702146400,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.TwoOpenCover.ChartGroup",
+   27859551,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.TwoOpenCover.Compatible",
+   1438690014,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.TwoOpenCover.OverlapGroup",
+   3740706782,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.TwoOpenCover.Pushout",
+   3740706782,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.TwoOpenCover.U",
+   2457228813,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.TwoOpenCover.UGroup",
+   3740706782,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.TwoOpenCover.V",
+   2457228813,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.TwoOpenCover.VGroup",
+   3740706782,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.TwoOpenCover._sizeOf_1",
+   1011151421,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.TwoOpenCover._sizeOf_inst",
+   4175585154,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.TwoOpenCover.base",
+   1886137569,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.TwoOpenCover.baseChart",
+   607459697,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.TwoOpenCover.baseOverlapPoint",
+   228008466,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.TwoOpenCover.baseOverlapPoint._proof_1",
+   3643101498,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.TwoOpenCover.baseU",
+   1719947018,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.TwoOpenCover.baseUPoint",
+   382106909,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.TwoOpenCover.baseV",
+   1926268942,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.TwoOpenCover.baseVPoint",
+   1136433116,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.TwoOpenCover.base_mem_chart",
+   281605502,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.TwoOpenCover.casesOn",
+   2763667772,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.TwoOpenCover.chart",
+   719462793,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.TwoOpenCover.chart.match_1",
+   2561012691,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.TwoOpenCover.chartHom",
+   3329776360,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.TwoOpenCover.chartPath",
+   3611111895,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.TwoOpenCover.chartPath._proof_1",
+   1027887317,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.TwoOpenCover.chartPath._proof_2",
+   2692352859,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.TwoOpenCover.chartPath.eq_1",
+   1891413828,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.TwoOpenCover.chartPathClass",
+   3510775734,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.TwoOpenCover.chartPathClass.eq_1",
+   3166338301,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.TwoOpenCover.chartPathClass_base",
+   2925974445,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.TwoOpenCover.chartPath_base",
+   2284413767,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.TwoOpenCover.chart_cover",
+   147686850,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.TwoOpenCover.chart_open",
+   2496415770,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.TwoOpenCover.closePath",
+   2770296892,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.TwoOpenCover.closePath.eq_1",
+   448394757,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.TwoOpenCover.closePath_homotopic",
+   1843448301,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.TwoOpenCover.closePath_loop",
+   1764324173,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.TwoOpenCover.closePath_refl",
+   154912990,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.TwoOpenCover.closePath_trans",
+   3444455642,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.TwoOpenCover.cover",
+   604156214,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.TwoOpenCover.ctorIdx",
+   1652739290,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.TwoOpenCover.fundamentalGroupToPushout",
+   2935680524,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.TwoOpenCover.fundamentalGroupToPushout_comp_inclusionU",
+   2827267612,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.TwoOpenCover.fundamentalGroupToPushout_comp_inclusionV",
+   1299689341,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.TwoOpenCover.fundamentalGroupToPushout_comp_pushoutToFundamentalGroup",
+   3229921960,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.TwoOpenCover.globalPathValue",
+   2506677087,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.TwoOpenCover.globalPathValue_extends",
+   2289291452,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.TwoOpenCover.globalPathValue_homotopyInvariant",
+   1940031383,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.TwoOpenCover.hom_ext",
+   2910477991,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.TwoOpenCover.inclusionHom",
+   3921238957,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.TwoOpenCover.inclusionHomU",
+   3996337761,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.TwoOpenCover.inclusionHomU_surjective_of_overlapHomV_surjective",
+   156291037,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.TwoOpenCover.inclusionHomV",
+   4018682338,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.TwoOpenCover.inclusionHom_comp_overlapHom",
+   3410242565,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.TwoOpenCover.inclusionHom_compatible",
+   2270367701,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.TwoOpenCover.inclusionU",
+   3907634263,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.TwoOpenCover.inclusionU._proof_1",
+   369679494,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.TwoOpenCover.inclusionV",
+   204708774,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.TwoOpenCover.inclusionV._proof_1",
+   2644386986,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.TwoOpenCover.lift",
+   1454731773,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.TwoOpenCover.lift_comp_inclusionU",
+   822710288,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.TwoOpenCover.lift_comp_inclusionV",
+   2708705004,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.TwoOpenCover.lift_mk_of_mem",
+   2014842468,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.TwoOpenCover.localPathValue",
+   596235607,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.TwoOpenCover.localPathValue_homotopyInvariant",
+   1277716109,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.TwoOpenCover.localValue",
+   315774280,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.TwoOpenCover.localValue._proof_1",
+   3553594400,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.TwoOpenCover.localValue._proof_2",
+   996012229,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.TwoOpenCover.localValue.eq_1",
+   1324756033,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.TwoOpenCover.localValue_compatible",
+   230663465,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.TwoOpenCover.localValue_compatible_UV",
+   4136749759,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.TwoOpenCover.localValue_homotopy",
+   1414244116,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.TwoOpenCover.localValue_map_loop",
+   3875861584,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.TwoOpenCover.localValue_refl",
+   132717377,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.TwoOpenCover.localValue_subpath_mul",
+   892232613,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.TwoOpenCover.localValue_trans",
+   2299577971,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.TwoOpenCover.mem_U_or_V",
+   2367499657,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.TwoOpenCover.mk",
+   2160468112,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.TwoOpenCover.mk._flat_ctor",
+   2160468112,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.TwoOpenCover.mk.inj",
+   3266265135,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.TwoOpenCover.mk.injEq",
+   2273619925,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.TwoOpenCover.mk.noConfusion",
+   358810342,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.TwoOpenCover.mk.sizeOf_spec",
+   3073644965,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.TwoOpenCover.noConfusion",
+   2368805670,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.TwoOpenCover.noConfusionType",
+   4012247669,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.TwoOpenCover.overlap",
+   2457228813,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.TwoOpenCover.overlapClose",
+   3097372582,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.TwoOpenCover.overlapHom",
+   1217898917,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.TwoOpenCover.overlapHomU",
+   2162082958,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.TwoOpenCover.overlapHomU_close",
+   2319791907,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.TwoOpenCover.overlapHomV",
+   2913833884,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.TwoOpenCover.overlapHomV_close",
+   2687143207,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.TwoOpenCover.overlapPath",
+   3076622959,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.TwoOpenCover.overlapPath._proof_1",
+   819720198,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.TwoOpenCover.overlapPath._proof_2",
+   2492324343,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.TwoOpenCover.overlapPath_map_U",
+   1700051707,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.TwoOpenCover.overlapPath_map_V",
+   3128356764,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.TwoOpenCover.overlapToU",
+   19210409,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.TwoOpenCover.overlapToU._proof_1",
+   3828706571,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.TwoOpenCover.overlapToU._proof_2",
+   914543306,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.TwoOpenCover.overlapToV",
+   2457090183,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.TwoOpenCover.overlapToV._proof_1",
+   1433904673,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.TwoOpenCover.overlapToV._proof_2",
+   1746080252,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.TwoOpenCover.pathConnectedIntersection",
+   2207519913,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.TwoOpenCover.pathConnectedU",
+   933499973,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.TwoOpenCover.pathConnectedV",
+   3013049508,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.TwoOpenCover.pathTo",
+   943451277,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.TwoOpenCover.pathTo._proof_1",
+   2206802442,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.TwoOpenCover.pathTo.eq_1",
+   1084456808,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.TwoOpenCover.pathTo_base",
+   795408428,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.TwoOpenCover.pathTo_mem",
+   771456753,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.TwoOpenCover.pushoutBase",
+   2425608588,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.TwoOpenCover.pushoutEquiv",
+   1856535073,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.TwoOpenCover.pushoutEquiv._proof_1",
+   3773595233,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.TwoOpenCover.pushoutEquiv._proof_2",
+   2456852660,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.TwoOpenCover.pushoutEquiv._proof_3",
+   3186763868,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.TwoOpenCover.pushoutEquiv_of",
+   2251663349,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.TwoOpenCover.pushoutOfU",
+   3660899631,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.TwoOpenCover.pushoutOfU_comp_overlapHomU",
+   1183952271,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.TwoOpenCover.pushoutOfV",
+   1734286068,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.TwoOpenCover.pushoutOfV_comp_overlapHomV",
+   2978878264,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.TwoOpenCover.pushoutOf_compatible",
+   3235463257,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.TwoOpenCover.pushoutToFundamentalGroup",
+   1174075449,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.TwoOpenCover.pushoutToFundamentalGroup_comp_fundamentalGroupToPushout",
+   4069681427,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.TwoOpenCover.pushoutToFundamentalGroup_comp_of",
+   2713306958,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.TwoOpenCover.pushoutToFundamentalGroup_comp_ofU",
+   2336484563,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.TwoOpenCover.pushoutToFundamentalGroup_comp_ofV",
+   1570691039,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.TwoOpenCover.pushoutToFundamentalGroup_of",
+   1573167910,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.TwoOpenCover.rawPathTo",
+   943451277,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.TwoOpenCover.rawPathTo._proof_1",
+   3004591249,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.TwoOpenCover.rawPathTo._proof_2",
+   2599941756,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.TwoOpenCover.rawPathTo._proof_3",
+   1004106381,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.TwoOpenCover.rawPathTo_mem",
+   1953982505,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.TwoOpenCover.rec",
+   930087055,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.TwoOpenCover.recOn",
+   2763667772,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.convexComb_comp",
+   802761815,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.convexComb_mem_Icc",
+   3295515953,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.convexComb_monotone",
+   3467298713,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.exists_path_subdivision",
+   274160814,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.homotopyIn",
+   3337255478,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.homotopyIn._proof_1",
+   1033939727,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.homotopyIn._proof_2",
+   888350318,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.homotopyIn._proof_3",
+   453588249,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.homotopyIn._proof_4",
+   353624308,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.homotopyIn._proof_5",
+   1538767957,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.homotopyIn._proof_6",
+   1546185780,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.homotopyIn._proof_7",
+   1683370079,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.homotopyIn._proof_8",
+   3435333462,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.homotopy_subpathTransSubpathRefl_mem",
+   3428030153,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.homotopy_subpathTransSubpath_mem",
+   761805705,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.homotopy_transRefl_mem",
+   3195662389,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.homotopy_trans_mem",
+   2322599117,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.intervalHalf",
+   1528559698,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.intervalHalf._proof_1",
+   2547959801,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.intervalHalf._proof_2",
+   1121231301,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.mem_Icc_of_subpath_mem",
+   1393415370,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.mem_of_subpath_mem",
+   3330114442,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.pathIn",
+   181987616,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.pathIn._proof_1",
+   3338176390,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.pathIn._proof_2",
+   3628782564,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.pathIn._proof_3",
+   2463866538,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.pathIn._proof_4",
+   538956455,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.pathIn._proof_5",
+   2624784141,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.pathIn.congr_simp",
+   889502772,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.pathIn_apply",
+   4261939448,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.pathIn_map",
+   2978731657,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.pathIn_refl",
+   1299383322,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.pathIn_trans",
+   1592244041,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.rectangleBoundaryHomotopy",
+   779040586,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.rectangleBoundaryHomotopy._proof_1",
+   3869429226,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.rectangleBoundaryHomotopy_apply",
+   2779688566,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.rectangleBoundaryHomotopy_mem",
+   1919785005,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.rectangleHorizontalVertical",
+   72598692,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.rectangleHorizontalVertical_map",
+   1080228523,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.rectangleHorizontalVertical_mem",
+   3813417792,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.rectangleVerticalHorizontal",
+   72598692,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.rectangleVerticalHorizontal_map",
+   906060887,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.rectangleVerticalHorizontal_mem",
+   2310353743,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.squareHorizontal",
+   735834707,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.squareHorizontal._proof_1",
+   307969081,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.squareHorizontal._proof_2",
+   3892778484,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.squareHorizontal._proof_3",
+   1528603754,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.squarePathHomotopy",
+   1791345000,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.squarePathHomotopy._proof_1",
+   3768309242,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.squarePathHomotopy._proof_2",
+   2783056154,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.squarePathHomotopy._proof_3",
+   966155735,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.squarePathHomotopy._proof_4",
+   3086526846,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.squarePathHomotopy._proof_5",
+   3903291270,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.squarePathHomotopy_mem_rectangle",
+   2830696700,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.squareVertical",
+   2843029845,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.squareVertical._proof_1",
+   582547386,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.squareVertical._proof_2",
+   177780260,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.squareVertical._proof_3",
+   3021246438,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.subpathTransSubpathIn",
+   740987745,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.subpathTransSubpathIn._proof_1",
+   3542083265,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.subpathTransSubpathIn._proof_2",
+   3727854449,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.subpathTransSubpathIn._proof_3",
+   2172635747,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.subpathTransSubpathIn._proof_4",
+   2383395903,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.subpath_mem_mono",
+   3010025190,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.subpath_mem_of_mem_Icc",
+   514625469,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.subpath_subpath",
+   3353570745,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.trans_apply_intervalHalf",
+   244771125,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.trans_convexComb_first_half",
+   4195053492,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.trans_convexComb_second_half",
+   3970740324,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.trans_subpath_first_half",
+   3271428038,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.trans_subpath_second_half",
+   816569784,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "SingularMayerVietoris.smallMapOfMapsTo._proof_1",
+   1463537836,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.Naturality": 1
+   }
+  ],
+  [
+   "SpecialPeriods.Threefold.attachmentCover",
+   3661680915,
+   {
+    "Hopf.Proof.LCP.BoundaryTopology": 1
+   }
+  ],
+  [
+   "SpecialPeriods.Threefold.attachmentLeftGroupEquiv",
+   1257946113,
+   {
+    "Hopf.Proof.LCP.BoundaryTopology": 1
+   }
+  ],
+  [
+   "SpecialPeriods.Threefold.attachmentLeftGroupEquiv_inclusion",
+   4284284139,
+   {
+    "Hopf.Proof.LCP.BoundaryTopology": 1
+   }
+  ],
+  [
+   "SpecialPeriods.Threefold.attachmentLeftHomeomorph",
+   3374816270,
+   {
+    "Hopf.Proof.LCP.BoundaryTopology": 1
+   }
+  ],
+  [
+   "SpecialPeriods.Threefold.attachmentOverlapGroupEquiv",
+   289638907,
+   {
+    "Hopf.Proof.LCP.BoundaryTopology": 1
+   }
+  ],
+  [
+   "SpecialPeriods.Threefold.attachmentOverlapHomeomorph",
+   682403535,
+   {
+    "Hopf.Proof.LCP.BoundaryTopology": 1
+   }
+  ],
+  [
+   "SpecialPeriods.Threefold.attachmentRightGroupEquiv",
+   4145377137,
+   {
+    "Hopf.Proof.LCP.BoundaryTopology": 1
+   }
+  ],
+  [
+   "SpecialPeriods.Threefold.attachmentRightGroupEquiv_overlap",
+   3011834747,
+   {
+    "Hopf.Proof.LCP.BoundaryTopology": 1
+   }
+  ],
+  [
+   "SpecialPeriods.Threefold.attachmentRightHomeomorph",
+   1910019084,
+   {
+    "Hopf.Proof.LCP.BoundaryTopology": 1
+   }
+  ],
+  [
+   "SphereHomology.suspensionConeCover",
+   1309935218,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.SuspensionCover": 1
+   }
+  ],
+  [
+   "SphereHomology.twoOpenCover_fundamentalGroup_eq_one",
+   784925873,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "SphereHomology.twoOpenCover_pathConnectedSpace",
+   3296577061,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1
+   }
+  ],
+  [
+   "SphereHomology.twoOpenCover_simplyConnectedSpace",
+   771563123,
+   {
+    "Hopf.Proof.Hurewicz": 1
+   }
+  ],
+  [
+   "TopCat.SingularSmallChains.homotopy_on_cocycle_succ",
+   4020601983,
+   {
+    "Lib.AlgebraicTopology.SingularSmallChains.CochainHomotopy": 1
+   }
+  ]
+ ],
+ "added": [
+  [
+   "CategoryTheory.ShortComplex.shortCycleClass_eq_zero_iff",
+   2366207172,
+   {
+    "Lib.Algebra.Homology.ShortComplex.AbCycleClass": 1
+   }
+  ],
+  [
+   "CategoryTheory.ShortComplex.shortCycleClass_quotient",
+   2256147530,
+   {
+    "Lib.Algebra.Homology.ShortComplex.AbCycleClass": 1
+   }
+  ],
+  [
+   "CategoryTheory.ShortComplex.shortCycleClass_surjective",
+   209707100,
+   {
+    "Lib.Algebra.Homology.ShortComplex.AbCycleClass": 1
+   }
+  ],
+  [
+   "CochainComplex.homotopy_on_cocycle_succ",
+   4020601983,
+   {
+    "Lib.Algebra.Homology.Homotopy.CocycleEvaluation": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.Cocone.TwoOpenCover.fundamentalGroupToPushout",
+   3574548983,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen.Pushout": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.Cocone.TwoOpenCover.fundamentalGroupToPushout_comp_inclusionU",
+   4246633726,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen.Pushout": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.Cocone.TwoOpenCover.fundamentalGroupToPushout_comp_inclusionV",
+   220762601,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen.Pushout": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.Cocone.TwoOpenCover.fundamentalGroupToPushout_comp_pushoutToFundamentalGroup",
+   3991825066,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen.Pushout": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.Cocone.TwoOpenCover.fundamentalGroup_eq_one",
+   1265353547,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen.Surjectivity": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.Cocone.TwoOpenCover.pushoutBase",
+   996163831,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen.Pushout": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.Cocone.TwoOpenCover.pushoutOfU",
+   487890126,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen.Pushout": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.Cocone.TwoOpenCover.pushoutOfU_comp_overlapHomU",
+   3053246737,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen.Pushout": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.Cocone.TwoOpenCover.pushoutOfV",
+   1982892400,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen.Pushout": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.Cocone.TwoOpenCover.pushoutOfV_comp_overlapHomV",
+   229612606,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen.Pushout": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.Cocone.TwoOpenCover.pushoutOf_compatible",
+   257787153,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen.Pushout": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.Cocone.TwoOpenCover.pushoutToFundamentalGroup",
+   3352345752,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen.Pushout": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.Cocone.TwoOpenCover.pushoutToFundamentalGroup_comp_fundamentalGroupToPushout",
+   105647389,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen.Pushout": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.Cocone.TwoOpenCover.pushoutToFundamentalGroup_comp_of",
+   2437904536,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen.Pushout": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.Cocone.TwoOpenCover.pushoutToFundamentalGroup_comp_ofU",
+   3554828408,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen.Pushout": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.Cocone.TwoOpenCover.pushoutToFundamentalGroup_comp_ofV",
+   3177042584,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen.Pushout": 1
+   }
+  ],
+  [
+   "FundamentalGroup.VanKampen.Cocone.TwoOpenCover.pushoutToFundamentalGroup_of",
+   2922953452,
+   {
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen.Pushout": 1
+   }
+  ],
+  [
+   "SingularMayerVietoris.coverRestriction._proof_1",
+   1492457781,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.Naturality": 1
+   }
+  ],
+  [
+   "SingularMayerVietoris.coverRestriction._proof_2",
+   3638718080,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.Naturality": 1
+   }
+  ],
+  [
+   "SingularMayerVietoris.coverRestriction._proof_3",
+   2877534929,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.Naturality": 1
+   }
+  ],
+  [
+   "SingularMayerVietoris.smallMapOfMapsTo._proof_1",
+   1635492264,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.Naturality": 1
+   }
+  ],
+  [
+   "SingularMayerVietoris.smallMapOfMapsTo._proof_2",
+   437725280,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.Naturality": 1
+   }
+  ],
+  [
+   "SpecialPeriods.Threefold.attachmentCover",
+   2504316019,
+   {
+    "Hopf.Proof.LCP.BoundaryTopology": 1
+   }
+  ],
+  [
+   "SpecialPeriods.Threefold.attachmentLeftGroupEquiv",
+   1882323438,
+   {
+    "Hopf.Proof.LCP.BoundaryTopology": 1
+   }
+  ],
+  [
+   "SpecialPeriods.Threefold.attachmentLeftGroupEquiv_inclusion",
+   2285788837,
+   {
+    "Hopf.Proof.LCP.BoundaryTopology": 1
+   }
+  ],
+  [
+   "SpecialPeriods.Threefold.attachmentLeftHomeomorph",
+   2940128461,
+   {
+    "Hopf.Proof.LCP.BoundaryTopology": 1
+   }
+  ],
+  [
+   "SpecialPeriods.Threefold.attachmentOverlapGroupEquiv",
+   3804581705,
+   {
+    "Hopf.Proof.LCP.BoundaryTopology": 1
+   }
+  ],
+  [
+   "SpecialPeriods.Threefold.attachmentOverlapHomeomorph",
+   128180872,
+   {
+    "Hopf.Proof.LCP.BoundaryTopology": 1
+   }
+  ],
+  [
+   "SpecialPeriods.Threefold.attachmentRightGroupEquiv",
+   1453497717,
+   {
+    "Hopf.Proof.LCP.BoundaryTopology": 1
+   }
+  ],
+  [
+   "SpecialPeriods.Threefold.attachmentRightGroupEquiv_overlap",
+   317315316,
+   {
+    "Hopf.Proof.LCP.BoundaryTopology": 1
+   }
+  ],
+  [
+   "SpecialPeriods.Threefold.attachmentRightHomeomorph",
+   1057260158,
+   {
+    "Hopf.Proof.LCP.BoundaryTopology": 1
+   }
+  ],
+  [
+   "SphereHomology.suspensionConeCover",
+   2742555225,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.SuspensionCover": 1
+   }
+  ],
+  [
+   "SphereHomology.twoOpenCover_simplyConnectedSpace",
+   1264624718,
+   {
+    "Hopf.Proof.Hurewicz": 1
+   }
+  ]
+ ],
+ "changed_type_source": [
+  "SpecialPeriods.Threefold.attachmentCover",
+  "SpecialPeriods.Threefold.attachmentLeftGroupEquiv",
+  "SpecialPeriods.Threefold.attachmentLeftGroupEquiv_inclusion",
+  "SpecialPeriods.Threefold.attachmentLeftHomeomorph",
+  "SpecialPeriods.Threefold.attachmentOverlapGroupEquiv",
+  "SpecialPeriods.Threefold.attachmentOverlapHomeomorph",
+  "SpecialPeriods.Threefold.attachmentRightGroupEquiv",
+  "SpecialPeriods.Threefold.attachmentRightGroupEquiv_overlap",
+  "SpecialPeriods.Threefold.attachmentRightHomeomorph",
+  "SphereHomology.suspensionConeCover",
+  "SphereHomology.twoOpenCover_simplyConnectedSpace"
+ ],
+ "changed_type_proof_naming": [],
+ "changed_type_accepted": [],
+ "added_accepted": [],
+ "accept_without_effect": [],
+ "changed_type_all": [
+  "SingularMayerVietoris.smallMapOfMapsTo._proof_1",
+  "SpecialPeriods.Threefold.attachmentCover",
+  "SpecialPeriods.Threefold.attachmentLeftGroupEquiv",
+  "SpecialPeriods.Threefold.attachmentLeftGroupEquiv_inclusion",
+  "SpecialPeriods.Threefold.attachmentLeftHomeomorph",
+  "SpecialPeriods.Threefold.attachmentOverlapGroupEquiv",
+  "SpecialPeriods.Threefold.attachmentOverlapHomeomorph",
+  "SpecialPeriods.Threefold.attachmentRightGroupEquiv",
+  "SpecialPeriods.Threefold.attachmentRightGroupEquiv_overlap",
+  "SpecialPeriods.Threefold.attachmentRightHomeomorph",
+  "SphereHomology.suspensionConeCover",
+  "SphereHomology.twoOpenCover_simplyConnectedSpace"
+ ],
+ "moves": [
+  [
+   "Lib.Algebra.Homology.DerivedCategory.Ext.InjectiveResolutionHomology",
+   "Lib.Algebra.Homology.ShortComplex.AbCycleClass",
+   3
+  ]
+ ],
+ "ambiguous": [],
+ "auxiliary_moved": 3,
+ "verdict": "FAIL"
+}

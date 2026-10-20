@@ -1,0 +1,7 @@
+constants before 39476 after 39476 (keys 39369 39369 )
+lost 0 added 0 of which source declarations: 0 0 ; names with changed type 0 of which source: 0
+auxiliary lost/added/changed (not judged): 0 0 0
+module moves (source declarations, 1-to-1):
+ambiguous module changes: 0
+auxiliary constants that changed module: 1
+VERDICT PASS

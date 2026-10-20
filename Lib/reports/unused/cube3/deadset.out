@@ -1,0 +1,40 @@
+constants 407 ranged 213 orphan auxiliaries 0
+live ranged 177 dead ranged 36
+Lattice theorem card_lattice 69 88
+Lattice theorem mesh_two_of_one 131 132
+Cells def coordinateNonconstant 74 76
+Cells theorem edge_coordinate_minima_attained 152 155
+Cells theorem square_coordinate_minima_attained 156 159
+Cells theorem edge_presentation_unique 192 199
+Cells theorem edge_nonconstant_coordinates 200 213
+Cells theorem square_presentation_unique 243 250
+Cells theorem square_nonconstant_coordinates 251 271
+Cells theorem coordinate_variation_of_set_eq 272 274
+Cells theorem coordinate_constant_value_transport 275 277
+Cells theorem increasing_pair_eq_of_direction_set_eq 278 285
+Cells theorem edge_endpoints_distinct 291 301
+Cells theorem square_remaining_index_cases 325 343
+Cells theorem square_remaining_intrinsic 349 361
+Cells theorem zero_mesh_images 362 380
+Cells theorem zero_mesh_edge_nonunique 381 383
+Cells theorem zero_mesh_square_nonunique 384 388
+Cells theorem square_parameter_swap 389 400
+Cells theorem swapped_ordered_pair_ne 401 404
+Cells theorem square_order_suffices 405 409
+Cells theorem shared_edge_presentation_identity 410 415
+Faces theorem face_sign_eq_of_mem 118 122
+Faces theorem square_intrinsic_face 123 148
+Faces theorem square_unit_mesh_endpoint_case 149 170
+Faces theorem edge_saturated_coordinate_suffices 172 194
+Faces theorem edge_no_other_saturated_forces_moving_neg_one 196 218
+Faces def edgeMidpoint 220 222
+Faces theorem edgeMidpoint_mem 224 230
+Faces theorem edge_midpoint_all_abs_lt 232 245
+Faces theorem all_abs_lt_not_boundary 247 253
+Faces theorem edge_subset_boundary_iff 255 273
+Coverage theorem ambientOfThreeCoordinates_apply_i 50 52
+Coverage theorem ambientOfThreeCoordinates_apply_j 53 55
+Coverage theorem ambientOfThreeCoordinates_apply_k 56 59
+SquareBoundary theorem shifted_corner_commutes 81 86
+--- live declarations with other-piece users, where all other-piece users are dead:
+  square_zero_mem Cells used by dead ['square_intrinsic_face']

@@ -1,0 +1,67 @@
+# replay-7b.log — integration 7b, source pinned at d4db0d1ab4d1913e7de9a3be99bf74ffb8f9d209
+## replay.py 1 2 (replay-methods.log)
+[1] 75a6f9a95b16d94a4a1ebf6b27e5165c7d3c6650 -> c46194b6fa0abad2b8bc825f49a5e4a70498b48a | cherry-pick
+[2] d4db0d1ab4d1913e7de9a3be99bf74ffb8f9d209 -> 745bacc9fcea75b7ddb1d9c1bfa70ee1e8cef30b | cherry-pick
+## build b1
+2026-10-02T00:37:58+02:00
+c46194b6 feat(Lib): construct coefficient-plane frames and full geodesic sections
+info: Lib/AxiomAudit.lean:8719:0: Hyperbolic.hyperboloid_normal_components (p : Hyperbolic.Hyperboloid) (e n : Fin 3 → ℝ)
+  (hn : (Hyperbolic.lorentzBilinear n) n = 1) (hpn : (Hyperbolic.lorentzBilinear ↑p) n = 0)
+  (hep : (Hyperbolic.lorentzBilinear e) ↑p = 0) (hen : (Hyperbolic.lorentzBilinear e) n = 0)
+  (hee : (Hyperbolic.lorentzBilinear e) e = 1) :
+  (∀ (q : Hyperbolic.Hyperboloid),
+      0 < (Hyperbolic.lorentzBilinear ↑q) n →
+        connectedComponentIn {q | (Hyperbolic.lorentzBilinear ↑q) n ≠ 0} q =
+          {q | 0 < (Hyperbolic.lorentzBilinear ↑q) n}) ∧
+    (∀ (q : Hyperbolic.Hyperboloid),
+        (Hyperbolic.lorentzBilinear ↑q) n < 0 →
+          connectedComponentIn {q | (Hyperbolic.lorentzBilinear ↑q) n ≠ 0} q =
+            {q | (Hyperbolic.lorentzBilinear ↑q) n < 0}) ∧
+      {C |
+            ∃ q,
+              (Hyperbolic.lorentzBilinear ↑q) n ≠ 0 ∧
+                C = connectedComponentIn {q | (Hyperbolic.lorentzBilinear ↑q) n ≠ 0} q} =
+          {{q | 0 < (Hyperbolic.lorentzBilinear ↑q) n}, {q | (Hyperbolic.lorentzBilinear ↑q) n < 0}} ∧
+        Disjoint {q | 0 < (Hyperbolic.lorentzBilinear ↑q) n} {q | (Hyperbolic.lorentzBilinear ↑q) n < 0} ∧
+          {q | 0 < (Hyperbolic.lorentzBilinear ↑q) n} ≠ {q | (Hyperbolic.lorentzBilinear ↑q) n < 0}
+Build completed successfully (9428 jobs).
+2026-10-02T00:38:18+02:00
+done 0
+## build b2
+2026-10-02T00:38:37+02:00
+745bacc9 feat(Lib): identify hyperbolic metric angles with coordinate angles
+Build completed successfully (9430 jobs).
+2026-10-02T00:38:58+02:00
+done 0
+## build b3
+2026-10-02T00:39:48+02:00
+745bacc9 feat(Lib): identify hyperbolic metric angles with coordinate angles
+ M Hopf/Proof/Analysis/Complex/RiemannMapping/SectorRoots.lean
+ M Hopf/Proof/AxiomAudit.lean
+ M Lib/Analysis/Complex/RiemannMapping/PrincipalRoot.lean
+ M Lib/AxiomAudit.lean
+Build completed successfully (9432 jobs).
+2026-10-02T00:40:23+02:00
+done 0
+## Part 2
+35d116de13cc736408d6e51363602c86681a4d01 docs: say what Hopf/Proof/AxiomAudit.lean probes now
+ff9dfc007147d721c17d59d124fc4e2cafd6cc56 refactor: move the cube-root wedge reversal beside the exponent-3 lemmas
+## final checks (final.sh)
+2026-10-02T00:41:01+02:00
+35d116de docs: say what Hopf/Proof/AxiomAudit.lean probes now
+lib 0
+Build completed successfully (9429 jobs).
+chain 0
+Build completed successfully (9490 jobs).
+axioms 0
+Build completed successfully (9432 jobs).
+census 0
+  extracted (no longer under Hopf/): SphereCone
+ratchet PASS: 123 <= baseline 1648
+importgrep 1
+0
+dump 0
+39199
+envdiff 1
+2026-10-02T00:56:54+02:00
+done 0

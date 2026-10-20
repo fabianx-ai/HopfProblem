@@ -1,0 +1,26 @@
+constants before 39159 after 39180 (keys 39055 39076 )
+lost 0 added 21 of which source declarations: 0 19 ; names with changed type 0 of which source: 0
+  ADDED Hyperbolic.hyperboloidAxis_polarDirection_eq_iff {'Lib.Geometry.Hyperbolic.Models': 1}
+  ADDED Hyperbolic.hyperboloidAxis_polarDirection_exists {'Lib.Geometry.Hyperbolic.Models': 1}
+  ADDED Hyperbolic.hyperboloidAxis_polarDirection_unit {'Lib.Geometry.Hyperbolic.Models': 1}
+  ADDED Hyperbolic.hyperboloidAxis_polar_positive_coordinates {'Lib.Geometry.Hyperbolic.Models': 1}
+  ADDED Hyperbolic.hyperboloidAxis_polar_reflection {'Lib.Geometry.Hyperbolic.Models': 1}
+  ADDED Hyperbolic.hyperboloidAxis_polar_reflection_formula {'Lib.Geometry.Hyperbolic.Models': 1}
+  ADDED Hyperbolic.hyperboloidAxis_polar_zero_coordinates {'Lib.Geometry.Hyperbolic.Models': 1}
+  ADDED Hyperbolic.hyperboloidAxis_radial_tangent {'Lib.Geometry.Hyperbolic.Models': 1}
+  ADDED Hyperbolic.hyperboloidAxis_reflection_values {'Lib.Geometry.Hyperbolic.Models': 1}
+  ADDED Hyperbolic.hyperboloidAxis_tangent_basis {'Lib.Geometry.Hyperbolic.Models': 1}
+  ADDED Hyperbolic.hyperboloidAxis_tangent_reflection {'Lib.Geometry.Hyperbolic.Models': 1}
+  ADDED Hyperbolic.hyperboloidAxis_velocity_constraints {'Lib.Geometry.Hyperbolic.Models': 1}
+  ADDED Hyperbolic.hyperboloidAxis_velocity_iff {'Lib.Geometry.Hyperbolic.Models': 1}
+  ADDED Hyperbolic.hyperboloidReflection_length {'Lib.Geometry.Hyperbolic.Models': 1}
+  ADDED Hyperbolic.hyperboloidReflection_lengthDist {'Lib.Geometry.Hyperbolic.Models': 1}
+  ADDED Hyperbolic.hyperboloidReflection_piecewiseC1EDist {'Lib.Geometry.Hyperbolic.Models': 1}
+  ADDED Hyperbolic.hyperboloidReflection_piecewiseC1EDist_le {'Lib.Geometry.Hyperbolic.Models': 1}
+  ADDED Hyperbolic.hyperboloidReflection_speed {'Lib.Geometry.Hyperbolic.Models': 1}
+  ADDED Hyperbolic.hyperboloidReflection_speedWithin {'Lib.Geometry.Hyperbolic.Models': 1}
+auxiliary lost/added/changed (not judged): 0 2 0
+module moves (source declarations, 1-to-1):
+ambiguous module changes: 0
+auxiliary constants that changed module: 0
+VERDICT FAIL

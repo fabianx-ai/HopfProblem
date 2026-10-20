@@ -1,0 +1,6 @@
+Lib/Analysis/Calculus/MorseLemma.lean:1690:0: error: Not a definitional equality: the left-hand side
+  ↑(translateChart a e).toPartialEquiv x
+is not definitionally equal to the right-hand side
+  ↑e.toPartialEquiv (x - a)
+
+Note: This theorem is exported from the current module. This requires that all definitions that need to be unfolded to prove this theorem must be exposed.

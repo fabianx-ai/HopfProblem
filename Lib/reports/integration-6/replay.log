@@ -1,0 +1,565 @@
+=== replay start at index 0, HEAD=22d23761f41c4a173926c9afed2a728591caaf63
+[1/359] 4e6d6187 MIXED -> 96f0844f
+[2/359] 24e8649b MIXED -> 5114f25d
+[3/359] 0fc1729e MIXED -> 8113213b
+[4/359] 78ebd42a MIXED -> 83a9415e
+[5/359] 913d8c3d MIXED -> 1380c194 append-rule: Lib.lean(+1 -0 dup0) Lib/AxiomAudit.lean(+89 -0 dup0)
+[6/359] 75e83329 MIXED -> dc59dfcc append-rule: Lib/AxiomAudit.lean(+7 -0 dup0)
+[7/359] b522663a MIXED -> 69e703f0 append-rule: Lib.lean(+1 -0 dup0)
+[8/359] e90c644e MIXED -> 047536e0
+[9/359] 59209c3d MIXED -> 34ff4856 append-rule: Lib.lean(+1 -0 dup0) Lib/AxiomAudit.lean(+363 -0 dup0)
+[10/359] 380ddd11 CONFLICT outside append files or apply failure; unmerged=['Lib.lean', 'Lib/Topology/MappingTorus/Basic.lean']
+git apply stderr:
+Applied patch to 'Lib.lean' with conflicts.
+Applied patch to 'Lib/AxiomAudit.lean' cleanly.
+Performing three-way merge...
+Applied patch to 'Lib/Topology/MappingTorus/Basic.lean' with conflicts.
+Falling back to direct application...
+Falling back to direct application...
+U Lib.lean
+U Lib/Topology/MappingTorus/Basic.lean
+
+--- conflict markers in Lib.lean ---
+114:<<<<<<< ours
+115-import Lib.LinearAlgebra.ExteriorPower.MinorCoordinates
+116-import Lib.GroupTheory.SplitExtension
+117-import Lib.GroupTheory.PresentedGroup.CentralTwist
+--
+143:=======
+144-import Lib.Topology.MappingTorus.Basic
+145-import Lib.Topology.MappingTorus.TranslationCocycle
+146-import Lib.Topology.MappingTorus.SquareZeroWinding
+147:>>>>>>> theirs
+148-
+149-/-!
+150-# Reusable extracted library
+
+--- conflict markers in Lib/Topology/MappingTorus/Basic.lean ---
+6:<<<<<<< ours
+7-import Mathlib
+8-import Lib.Algebra.Homology.MayerVietorisShortExact
+9-import Lib.AlgebraicTopology.SingularHomology.Chains
+--
+58:=======
+59-module
+60-
+61-public import Mathlib.Topology.Instances.AddCircle.Real
+--
+82:>>>>>>> theirs
+83-@[simp]
+84-theorem MappingTorus.deck_zero {X : Type*} [TopologicalSpace X] (f : X ≃ₜ X) (p : ℝ × X) :
+85-    deck f 0 p = p := by simp [deck]
+--
+87:<<<<<<< ours
+88-/-- Deck transformations compose additively. -/
+89:=======
+90:>>>>>>> theirs
+91-theorem MappingTorus.deck_add {X : Type*} [TopologicalSpace X] (f : X ≃ₜ X) (m n : ℤ)
+92-    (p : ℝ × X) : deck f (m + n) p = deck f m (deck f n p) := by
+93-  apply Prod.ext
+--
+98:<<<<<<< ours
+99-/-- Each deck transformation is continuous. -/
+100:=======
+101:>>>>>>> theirs
+102-theorem MappingTorus.deck_continuous {X : Type*} [TopologicalSpace X] (f : X ≃ₜ X) (n : ℤ) :
+103-    Continuous (deck f n) :=
+104-  (continuous_fst.add continuous_const).prodMk ((f ^ (-n)).continuous.comp continuous_snd)
+--
+106:<<<<<<< ours
+107-/-- Each deck transformation is a homeomorphism. -/
+108:=======
+109:>>>>>>> theirs
+110-def MappingTorus.deckHomeomorph {X : Type*} [TopologicalSpace X] (f : X ≃ₜ X) (n : ℤ) :
+111-    (ℝ × X) ≃ₜ (ℝ × X) where
+112-  toFun := deck f n
+--
+119:<<<<<<< ours
+120-/-- The orbit relation of the deck action. -/
+121:=======
+122:>>>>>>> theirs
+123-def MappingTorus.orbitSetoid {X : Type*} [TopologicalSpace X] (f : X ≃ₜ X) : Setoid (ℝ × X)
+124-    where
+125-  r p q := ∃ n : ℤ, deck f n p = q
+--
+135:<<<<<<< ours
+136-/-- The mapping torus: `ℝ × X` modulo the deck action. -/
+137-def MappingTorus.Torus {X : Type*} [TopologicalSpace X] (f : X ≃ₜ X) :=
+138-  Quotient (orbitSetoid f)
+--
+141:=======
+142-def MappingTorus.Torus {X : Type*} [TopologicalSpace X] (f : X ≃ₜ X) :=
+143-  Quotient (orbitSetoid f)
+144-
+145:>>>>>>> theirs
+146-instance MappingTorus.instLocal1 {X : Type*} [TopologicalSpace X] (f : X ≃ₜ X) :
+147-    TopologicalSpace (Torus f) :=
+148-  inferInstanceAs (TopologicalSpace (Quotient (orbitSetoid f)))
+--
+150:<<<<<<< ours
+151-/-- The class of a cylinder point in the mapping torus. -/
+152-def MappingTorus.mk {X : Type*} [TopologicalSpace X] (f : X ≃ₜ X) (p : ℝ × X) : Torus f :=
+153-  Quotient.mk (orbitSetoid f) p
+--
+156:=======
+157-def MappingTorus.mk {X : Type*} [TopologicalSpace X] (f : X ≃ₜ X) (p : ℝ × X) : Torus f :=
+158-  Quotient.mk (orbitSetoid f) p
+159-
+160:>>>>>>> theirs
+161-theorem MappingTorus.mk_continuous {X : Type*} [TopologicalSpace X] (f : X ≃ₜ X) :
+162-    Continuous (MappingTorus.mk f) :=
+163-  continuous_quotient_mk'
+--
+165:<<<<<<< ours
+166-/-- The torus quotient map is surjective. -/
+167:=======
+168:>>>>>>> theirs
+169-theorem MappingTorus.mk_surjective {X : Type*} [TopologicalSpace X] (f : X ≃ₜ X) :
+170-    Function.Surjective (MappingTorus.mk f) :=
+171-  Quotient.mk_surjective
+--
+173:<<<<<<< ours
+174-/-- Two classes are equal exactly when a deck transformation relates them. -/
+175:=======
+176:>>>>>>> theirs
+177-theorem MappingTorus.mk_eq_mk_iff {X : Type*} [TopologicalSpace X] (f : X ≃ₜ X) (p q : ℝ × X) :
+178-    MappingTorus.mk f p = MappingTorus.mk f q ↔
+179-      ∃ n : ℤ, q.1 = p.1 + (n : ℝ) ∧ q.2 = (f ^ (-n)) p.2 := by
+--
+189:<<<<<<< ours
+190-/-- Deck-equivalent points have the same class. -/
+191:=======
+192:>>>>>>> theirs
+193-@[simp]
+194-theorem MappingTorus.mk_deck {X : Type*} [TopologicalSpace X] (f : X ≃ₜ X) (n : ℤ) (p : ℝ × X) :
+195-    MappingTorus.mk f (deck f n p) = MappingTorus.mk f p :=
+--
+198:<<<<<<< ours
+199-/-- `mk (t − 1, f x) = mk (t, x)`. -/
+200:=======
+201:>>>>>>> theirs
+202-@[simp]
+203-theorem MappingTorus.mk_sub_one {X : Type*} [TopologicalSpace X] (f : X ≃ₜ X) (t : ℝ) (x : X) :
+204-    MappingTorus.mk f (t - 1, f x) = MappingTorus.mk f (t, x) := by
+--
+207:<<<<<<< ours
+208-/-- `mk (t + 1, x) = mk (t, f x)`. -/
+209:=======
+210:>>>>>>> theirs
+211-theorem MappingTorus.mk_add_one {X : Type*} [TopologicalSpace X] (f : X ≃ₜ X) (t : ℝ) (x : X) :
+212-    MappingTorus.mk f (t + 1, x) = MappingTorus.mk f (t, f x) := by
+213-  simpa using (mk_sub_one f (t + 1) x).symm
+--
+215:<<<<<<< ours
+216-/-- The preimage of an image is the union of all deck translates. -/
+217:=======
+218:>>>>>>> theirs
+219-theorem MappingTorus.mk_preimage_image {X : Type*} [TopologicalSpace X] (f : X ≃ₜ X)
+220-    (s : Set (ℝ × X)) : MappingTorus.mk f ⁻¹' (MappingTorus.mk f '' s) = ⋃ n : ℤ, deck f n '' s :=
+221-  by
+--
+231:<<<<<<< ours
+232-/-- The torus quotient map is open. -/
+233:=======
+234:>>>>>>> theirs
+235-theorem MappingTorus.mk_open {X : Type*} [TopologicalSpace X] (f : X ≃ₜ X) :
+236-    IsOpenMap (MappingTorus.mk f) := by
+237-  intro s hs
+--
+243:<<<<<<< ours
+244-/-- Integers map to zero on the circle. -/
+245:=======
+246:>>>>>>> theirs
+247-@[simp]
+248-theorem MappingTorus.circle_intCast (n : ℤ) : ((n : ℝ) : MappingTorus.Circle) = 0 := by
+249-  apply (AddCircle.coe_eq_zero_iff (1 : ℝ)).mpr
+--
+252:<<<<<<< ours
+253-/-- Two reals agree on the circle exactly when they differ by an integer. -/
+254:=======
+255:>>>>>>> theirs
+256-theorem MappingTorus.circle_coe_eq_iff (t s : ℝ) :
+257-    (t : MappingTorus.Circle) = (s : MappingTorus.Circle) ↔ ∃ n : ℤ, s = t + (n : ℝ) := by
+258-  constructor
+--
+268:<<<<<<< ours
+269-/-! ### The base circle projection -/
+270-
+271-/-- The projection of the mapping torus onto the base circle. -/
+272:=======
+273:>>>>>>> theirs
+274-def MappingTorus.base {X : Type*} [TopologicalSpace X] (f : X ≃ₜ X) :
+275-    C(Torus f, MappingTorus.Circle)
+276-    where
+--
+284:<<<<<<< ours
+285-/-- The base map reads off the time coordinate. -/
+286:=======
+287:>>>>>>> theirs
+288-@[simp]
+289-theorem MappingTorus.base_mk {X : Type*} [TopologicalSpace X] (f : X ≃ₜ X) (p : ℝ × X) :
+290-    base f (MappingTorus.mk f p) = (p.1 : MappingTorus.Circle) :=
+--
+293:<<<<<<< ours
+294-/-- Points over the open interval avoid the endpoint on the circle. -/
+295-theorem MappingTorus.base_mk_ne_of_mem_Ioo {X : Type*} [TopologicalSpace X] (f : X ≃ₜ X) (a : ℝ)
+296-    (t : Set.Ioo a (a + 1)) (x : X) :
+--
+763:=======
+764-end Mathoverflow1973
+765:>>>>>>> theirs
+
+STOPPED; tree left in conflicted state
+=== replay start at index 9, HEAD=34ff4856d86b02676658fc49ff37255c618982c9
+[10/359] 380ddd11 MIXED -> c94d7a1d append-rule: Lib.lean(+2 -0 dup1) AA-rule: ['Lib/Topology/MappingTorus/Basic.lean kept as on 22d23761 (added/added: the 22d23761 file is the superset the merge b1179031 itself kept)']
+[11/359] ceb2c502 MIXED -> 2da93d1d
+[12/359] c9e9f099 MIXED -> 8abaaabe append-rule: Lib.lean(+1 -0 dup0)
+[13/359] 91e439f1 MIXED -> 2639a489 append-rule: Lib.lean(+2 -0 dup0)
+[14/359] 287b3859 MIXED -> 665b4f08 append-rule: Lib.lean(+2 -0 dup0)
+[15/359] 74160764 MIXED -> 024f88d0 append-rule: Lib.lean(+1 -0 dup0)
+[16/359] 680c4747 MIXED -> f24d6811 append-rule: Lib.lean(+1 -0 dup0)
+[17/359] 3903c27c MIXED -> e65322cb append-rule: Lib.lean(+1 -0 dup0)
+[18/359] 02ba874a MIXED -> ad9af81d
+[19/359] 3be37a89 MIXED -> 6ecdede0 append-rule: Lib.lean(+1 -0 dup0)
+[20/359] b9fdf164 MIXED -> 21065179 append-rule: Lib.lean(+1 -0 dup0)
+[21/359] aeb1c6b4 MIXED -> d5fea7ac append-rule: Lib.lean(+1 -0 dup0)
+[22/359] b1fb6cfa MIXED -> 670d8c92 append-rule: Lib.lean(+1 -0 dup0)
+[23/359] b13d902f MIXED -> 605c67f5 append-rule: Lib.lean(+1 -0 dup0)
+[24/359] 67a557ac MIXED -> 4136e713 append-rule: Lib.lean(+1 -1 dup0)
+[25/359] 6efdcf8f MIXED -> 22f3d412 append-rule: Lib.lean(+1 -1 dup0)
+[26/359] bbaacdeb MIXED -> 7d93cdf9 append-rule: Lib.lean(+1 -0 dup0)
+[27/359] 37d529ac MIXED -> d83fb8fb append-rule: Lib.lean(+1 -0 dup0)
+[28/359] 94977fb3 MIXED -> d997827b append-rule: Lib.lean(+2 -0 dup0)
+[29/359] afdf83dd MIXED -> 4f6c277a append-rule: Lib.lean(+2 -0 dup0)
+[30/359] 4aaf8f9e MIXED -> 747510fa append-rule: Lib.lean(+1 -0 dup0)
+[31/359] 0a8ea100 MIXED -> d8be7342 append-rule: Lib.lean(+1 -0 dup0)
+[32/359] 73cadef7 MIXED -> 7c329628 append-rule: Lib.lean(+1 -0 dup0)
+[33/359] 68ea500a MIXED -> 2719a0ec append-rule: Lib.lean(+3 -0 dup0)
+[34/359] 5fd296a7 MIXED -> 646288d4 append-rule: Lib.lean(+1 -0 dup0)
+[35/359] cbfee12c MIXED -> 6f5d5b17
+[36/359] 2637a7e1 MIXED -> 038da991 append-rule: Lib.lean(+1 -0 dup0)
+[37/359] 306b26f5 MIXED -> f92f4183 append-rule: Lib.lean(+1 -0 dup0)
+[38/359] 1a10a4b4 MIXED -> 4e297eb5 append-rule: Lib.lean(+1 -0 dup0)
+[39/359] 6cd74e23 MIXED -> cbff937f append-rule: Lib.lean(+1 -0 dup0)
+[40/359] b1973fd4 MIXED -> de4f235c append-rule: Lib.lean(+1 -3 dup0)
+[41/359] 6bcc04e1 MIXED -> 5f719d15 append-rule: Lib.lean(+1 -0 dup0)
+[42/359] 53a08923 MIXED -> e6efbbc5
+[43/359] 66b2f81a MIXED -> 0b6f635a
+[44/359] a39000b6 MIXED -> 0e3e53c2 append-rule: Lib.lean(+4 -0 dup0)
+[45/359] 52e7d6e4 MIXED -> c36372ab append-rule: Lib.lean(+9 -0 dup0)
+[46/359] 68171c87 MIXED -> 8799aa78 append-rule: Lib.lean(+21 -0 dup0)
+[47/359] 465b7946 MIXED -> b2a33be8 append-rule: Lib.lean(+3 -0 dup0)
+[48/359] fc18c5af MIXED -> ffb5ae13
+[49/359] 8757193f MIXED -> 3bd36f0d
+[50/359] 43eb6668 MIXED -> c6c199bf
+[51/359] 14a856fe MIXED -> 4cdd60d6
+[52/359] 79478230 MIXED -> 8ea61c7b
+[53/359] 87a11479 MIXED -> ec8d13fc
+[54/359] 1fc45376 MIXED -> c02b8b54 append-rule: Lib.lean(+2 -0 dup0)
+[55/359] 133f25ab MIXED -> 1775829d append-rule: Lib.lean(+2 -0 dup0)
+[56/359] 0e2da93b MIXED -> ece134fd append-rule: Lib.lean(+1 -0 dup0)
+[57/359] f16ee0cc MIXED -> 1bb4414c append-rule: Lib.lean(+6 -0 dup0)
+[58/359] ffc28d7e MIXED -> 93f022d0
+[59/359] 05932884 MIXED -> a9bb99bd
+[60/359] 446a4322 MIXED -> dc044081
+[61/359] db8cb93a MIXED -> 9d9ec646
+[62/359] 9626881b MIXED -> 8ce02f8e
+[63/359] 3f6f984a MIXED -> ae2d47c5
+[64/359] 0c2e662c MIXED -> e1b5a2cb
+[65/359] a79c5160 MIXED -> 02138a09
+[66/359] 3207353d MIXED -> e5fbec18
+[67/359] 25898914 MIXED -> 5503f282 append-rule: Lib.lean(+1 -0 dup0)
+[68/359] 78224d72 MIXED -> 8ff71c09
+[69/359] 8efacce8 MIXED -> ec2e26da
+[70/359] ba522d50 MIXED -> 235728bc
+[71/359] 83a4bec4 MIXED -> 05fbdff7 append-rule: Lib.lean(+1 -0 dup0)
+[72/359] 4566417b MIXED -> 199285fa
+[73/359] 51423228 MIXED -> cb858dc3
+[74/359] ac30145e MIXED -> 19ede648 append-rule: Lib.lean(+1 -0 dup0)
+[75/359] 71f7823a MIXED -> 531d96f1
+[76/359] 09cf82b8 MIXED -> defc1ae8
+[77/359] c9d8bb8c MIXED -> acf20b5d
+[78/359] 53672039 MIXED -> e9b474b0 append-rule: Lib.lean(+1 -0 dup0)
+[79/359] ffbe315a MIXED -> 829d01aa
+[80/359] 11c765df MIXED -> 5729db8e
+[81/359] 476b4b0d MIXED -> 48938dcc
+[82/359] b5411bf9 MIXED -> 42f517ae
+[83/359] b1d9d7d7 MIXED -> b44c3c37
+[84/359] 5e5e01df MIXED -> ed21c7f5
+[85/359] 07c658bc MIXED -> 08156913
+[86/359] 9aefb3d0 MIXED -> ce95dab0 append-rule: Lib.lean(+1 -0 dup0)
+[87/359] 8b551c9f MIXED -> b03bcf40
+[88/359] 670b730f MIXED -> 5f0e2298
+[89/359] 5e310163 MIXED -> c9666e59
+[90/359] 4c4ba5a4 MIXED -> 04fc58fd append-rule: Lib.lean(+1 -0 dup0)
+[91/359] 75ceb2c5 MIXED -> a383899d append-rule: Lib.lean(+1 -0 dup0)
+[92/359] 637321f8 MIXED -> c7c100f2
+[93/359] 1e0aefc5 MIXED -> 6d1613d8 append-rule: Lib.lean(+1 -0 dup0)
+[94/359] 3c90726a MIXED -> c21f6917
+[95/359] b9ce5291 MIXED -> 056acabf append-rule: Lib.lean(+1 -0 dup0)
+[96/359] 69b7a5a1 MIXED -> c4ad9804 append-rule: Lib.lean(+1 -0 dup0)
+[97/359] c74accdd MIXED -> 038b1706 append-rule: Lib.lean(+1 -0 dup0)
+[98/359] f0e4b6c0 MIXED -> 2c0fc5be append-rule: Lib.lean(+1 -0 dup0)
+[99/359] 49a08382 MIXED -> f041a570 append-rule: Lib.lean(+1 -0 dup0)
+[100/359] 4c80aca8 MIXED -> 2e72cbe7
+[101/359] 0d494d12 MIXED -> d2b74e1d append-rule: Lib.lean(+1 -0 dup0)
+[102/359] 01044458 MIXED -> 3b3ccf3b
+[103/359] 17208958 MIXED -> 894bac76 append-rule: Lib.lean(+1 -0 dup0)
+[104/359] e955a4a7 MIXED -> aa1ab9c0
+[105/359] e4a6f28b MIXED -> 2cbf5de4 append-rule: Lib.lean(+1 -0 dup0)
+[106/359] 2e79fd20 MIXED -> 836d0c6f append-rule: Lib.lean(+1 -0 dup0)
+[107/359] d330161a MIXED -> b4feccf5
+[108/359] 693a25d7 MIXED -> 9d53496d append-rule: Lib.lean(+1 -0 dup0)
+[109/359] 0f2a9c40 MIXED -> aa55e23f
+[110/359] 70ae0e00 MIXED -> 518195c8 append-rule: Lib.lean(+1 -0 dup0)
+[111/359] ff8deeb8 MIXED -> 5653dc3b
+[112/359] f1ec4b92 MIXED -> 05e1b195 append-rule: Lib.lean(+1 -0 dup0)
+[113/359] 745ab69d MIXED -> 643f2476 append-rule: Lib.lean(+1 -0 dup0)
+[114/359] e62d99bc MIXED -> 74dfb041 append-rule: Lib.lean(+1 -0 dup0)
+[115/359] af61bbca MIXED -> e6fde24c append-rule: Lib.lean(+1 -0 dup0)
+[116/359] aa2eefd2 MIXED -> 003d3f47
+[117/359] cd158737 MIXED -> 35a044d6 append-rule: Lib.lean(+1 -0 dup0)
+[118/359] daceecf0 MIXED -> 982e5c3c append-rule: Lib.lean(+1 -0 dup0)
+[119/359] 054bdabe MIXED -> 84777497
+[120/359] 24c85960 MIXED -> 68a39883 append-rule: Lib.lean(+1 -0 dup0)
+[121/359] e3127d76 MIXED -> 6449455d append-rule: Lib.lean(+1 -0 dup0)
+[122/359] 780a32cf MIXED -> 1b90d3dc append-rule: Lib.lean(+1 -0 dup0)
+[123/359] 40a22494 MIXED -> 486f4953 append-rule: Lib.lean(+1 -0 dup0)
+[124/359] c50ac5e0 MIXED -> c1c849f4
+[125/359] 02edb161 MIXED -> b8de2a64 append-rule: Lib.lean(+1 -0 dup0)
+[126/359] fccf8cf8 MIXED -> 4e3c041c append-rule: Lib.lean(+1 -0 dup0)
+[127/359] ffeadbc2 MIXED -> ddf0d284
+[128/359] f71ad28e MIXED -> 0b32103c append-rule: Lib.lean(+1 -0 dup0)
+[129/359] 77721aec LIBONLY -> 856ff070 append-rule: Lib.lean(+1 -0 dup0)
+[130/359] 50d7091d MIXED -> 1ab6ba67 append-rule: Lib.lean(+1 -0 dup0)
+[131/359] bc1acd74 MIXED -> 12e27fb2 append-rule: Lib.lean(+1 -0 dup0)
+[132/359] 580cbb8b MIXED -> 55faa76f
+[133/359] 23123917 MIXED -> cb7c46a4 append-rule: Lib.lean(+1 -0 dup0)
+[134/359] 514a60c8 MIXED -> 074eaac9
+[135/359] 8609e7b4 MIXED -> a52b28d1
+[136/359] 32866d9d MIXED -> e1364382 append-rule: Lib.lean(+1 -0 dup0)
+[137/359] f2c8ebd5 MIXED -> ea7f1ada append-rule: Lib.lean(+1 -0 dup0)
+[138/359] 5ba15163 MIXED -> f85c2baf
+[139/359] 3642926e MIXED -> b98ef934 append-rule: Lib.lean(+1 -0 dup0)
+[140/359] 08cf7e26 MIXED -> b351f8c2
+[141/359] 54dc901c MIXED -> abfca6c6 append-rule: Lib.lean(+1 -0 dup0)
+[142/359] f5fec17f MIXED -> 52222de3
+[143/359] c2349413 MIXED -> ced085e9 append-rule: Lib.lean(+1 -0 dup0)
+[144/359] c965e6fa MIXED -> 46b07c9d
+[145/359] 518c967a MIXED -> 00aaa065
+[146/359] eb9a826c MIXED -> 4e295ec6
+[147/359] b912783b MIXED -> 26c69c59
+[148/359] 3b442f0c MIXED -> b7652d11 append-rule: Lib.lean(+1 -0 dup0)
+[149/359] 47916e40 MIXED -> d7af17ab append-rule: Lib.lean(+1 -0 dup0)
+[150/359] f0acec5f MIXED -> 3a74c5b5
+[151/359] ccf3dba5 MIXED -> 54ee1796 append-rule: Lib.lean(+1 -0 dup0)
+[152/359] eb091354 MIXED -> e6d7afa4 append-rule: Lib.lean(+1 -0 dup0)
+[153/359] 2a25704d MIXED -> 9ddd3480 append-rule: Lib.lean(+1 -0 dup0)
+[154/359] 0746988a MIXED -> 36cadf8e append-rule: Lib.lean(+1 -0 dup0)
+[155/359] 3b81f083 MIXED -> a54dc6a9 append-rule: Lib.lean(+1 -0 dup0)
+[156/359] f891db73 MIXED -> 421efcab append-rule: Lib.lean(+1 -0 dup0)
+[157/359] f4628a72 MIXED -> bb42d93e
+[158/359] c894704a MIXED -> 1425de7e
+[159/359] 284942ea MIXED -> 9e4c10ed
+[160/359] 45a37b4e MIXED -> 26c0d9e5 append-rule: Lib.lean(+1 -0 dup0)
+[161/359] 263409b6 MIXED -> 49225997 append-rule: Lib.lean(+1 -0 dup0)
+[162/359] 975a0074 MIXED -> d10f4c79 append-rule: Lib.lean(+1 -0 dup0)
+[163/359] 42ea52c9 MIXED -> 80f20173 append-rule: Lib.lean(+1 -0 dup0)
+[164/359] ffc34bae MIXED -> 40c7190d append-rule: Lib.lean(+1 -0 dup0)
+[165/359] a7ad7e2c MIXED -> 638af71f
+[166/359] cc48ce8d MIXED -> 023fda2f
+[167/359] 760fe151 MIXED -> 8e91b2a2
+[168/359] 3ccb42f4 MIXED -> 5caab0eb append-rule: Lib.lean(+1 -0 dup0)
+[169/359] a422649f MIXED -> 51f08714
+[170/359] 6b63f428 MIXED -> fcafcf8b
+[171/359] 5ee8fa0b MIXED -> 993e33d3
+[172/359] d723c494 MIXED -> 8f550e5a
+[173/359] 9f5f30cd MIXED -> dee3978f append-rule: Lib.lean(+1 -0 dup0)
+[174/359] 9ae08fe5 MIXED -> b64039ac
+[175/359] 173ceebf MIXED -> ebf94f08
+[176/359] a0b33a81 MIXED -> 8be5d84e append-rule: Lib.lean(+1 -0 dup0)
+[177/359] cb5c4725 MIXED -> 7c641ba7
+[178/359] f3c9c406 MIXED -> 32c84cb1
+[179/359] a71a1673 MIXED -> c20a36d3
+[180/359] cdaa8c57 MIXED -> 3d7cb1d2
+[181/359] 75158df9 MIXED -> efd5c429 append-rule: Lib.lean(+1 -0 dup0)
+[182/359] c8736d9e MIXED -> 182c961e append-rule: Lib.lean(+1 -0 dup0)
+[183/359] 568a6909 MIXED -> a268a891 append-rule: Lib.lean(+1 -0 dup0)
+[184/359] b39059c8 MIXED -> b2196286 append-rule: Lib.lean(+1 -0 dup0)
+[185/359] 98572965 MIXED -> 91e716b0
+[186/359] d0b16cd0 MIXED -> b34d6a3c append-rule: Lib.lean(+1 -0 dup0)
+[187/359] cca26760 MIXED -> c8b1fbca
+[188/359] 2ef30f77 LIBONLY -> 2cdff88f
+[189/359] 7be15239 MIXED -> 374c832a append-rule: Lib.lean(+1 -0 dup0)
+[190/359] a658ba98 MIXED -> e004c6c1
+[191/359] 78f39f01 MIXED -> be8dc2ed
+[192/359] 6e85e1c6 MIXED -> c154dfea
+[193/359] 919fbd87 MIXED -> 2fa6e9e2
+[194/359] 251b5144 MIXED -> 085621a4
+[195/359] df76cfd1 MIXED -> b792f3ab
+[196/359] e77bb8bb MIXED -> 4072cf08
+[197/359] 0c2d365b MIXED -> 34a6a96b
+[198/359] a9d100c0 MIXED -> acd6c29e
+[199/359] 9ecd3e79 LIBONLY -> 525716b5 append-rule: Lib.lean(+1 -0 dup0)
+[200/359] f4cb9c41 MIXED -> a53a4f8f append-rule: Lib.lean(+1 -0 dup0)
+[201/359] 55ccd2f2 MIXED -> ae93327b
+[202/359] dc99c288 MIXED -> 7e8b73db append-rule: Lib.lean(+1 -0 dup0)
+[203/359] 70b57b73 MIXED -> 0a4e0013
+[204/359] f91405b8 MIXED -> 5dac0be6
+[205/359] cdd7b066 MIXED -> 27c3ce8d
+[206/359] c7b7ddff MIXED -> 22238b45
+[207/359] a21dcb3d MIXED -> 1b67556e
+[208/359] d7387f0c MIXED -> 93fbb0ae
+[209/359] e31ba036 MIXED -> 4425470c
+[210/359] 52aa17a5 MIXED -> d9b94168
+[211/359] bdfb9dd2 LIBONLY -> 43434b42
+[212/359] d61230c8 LIBONLY -> bf4a5309
+[213/359] acc89d41 LIBONLY -> 93e8a323
+[214/359] 49e5e6c5 MIXED -> 16d1fe86
+[215/359] ce1fbc72 LIBONLY -> dbd22ede
+[216/359] 1ba8ade9 LIBONLY -> 2377e1ed append-rule: Lib.lean(+1 -0 dup0)
+[217/359] 3d50a2c9 LIBONLY -> e56e168c append-rule: Lib.lean(+1 -0 dup0)
+[218/359] d4cf291d LIBONLY -> 0bb8d399
+[219/359] 6051d0de MIXED -> c96fe3d7 append-rule: Lib.lean(+1 -0 dup0)
+[220/359] ffc92323 LIBONLY -> 858861be
+[221/359] 7424d99d LIBONLY -> 4d2645f5
+[222/359] c3f69d2c LIBONLY -> 979e71a6 append-rule: Lib.lean(+1 -0 dup0)
+[223/359] 51f07e9d LIBONLY -> c80fe6e7 append-rule: Lib.lean(+2 -0 dup0)
+[224/359] cb72e957 LIBONLY -> 63c9f0da
+[225/359] 56e30adf LIBONLY -> ffd4a538
+[226/359] 57cd2474 LIBONLY -> 293f97f5 append-rule: Lib.lean(+1 -0 dup0)
+[227/359] 1772044c LIBONLY -> e37d9584 append-rule: Lib.lean(+1 -0 dup0)
+[228/359] ce55be4d LIBONLY -> 9b3b34b2
+[229/359] 3e1ab23a LIBONLY -> a38dc277 append-rule: Lib.lean(+1 -0 dup0)
+[230/359] 4c7bb2d6 LIBONLY -> d855f268 append-rule: Lib.lean(+1 -0 dup0)
+[231/359] 2ddfaea7 LIBONLY -> a2914491 append-rule: Lib.lean(+1 -0 dup0)
+[232/359] 662de273 LIBONLY -> 81045b6d append-rule: Lib.lean(+1 -0 dup0)
+[233/359] 65bbd3b5 LIBONLY -> ceef0a45
+[234/359] b0a673bc LIBONLY -> 5c562cdf append-rule: Lib.lean(+1 -0 dup0)
+[235/359] 192223f0 LIBONLY -> 72a11242
+[236/359] 3cdf71e1 LIBONLY -> 493ee66e append-rule: Lib.lean(+1 -0 dup0)
+[237/359] 6e4e6f1d LIBONLY -> 248fa1d3 append-rule: Lib.lean(+1 -0 dup0)
+[238/359] d2804770 LIBONLY -> d707139c append-rule: Lib.lean(+1 -0 dup0)
+[239/359] 70c404cb LIBONLY -> 1bf0e9ac append-rule: Lib.lean(+1 -0 dup0)
+[240/359] 97c79bf4 LIBONLY -> b14f7972 append-rule: Lib.lean(+1 -0 dup0)
+[241/359] ca80a7b4 LIBONLY -> e5aed49c append-rule: Lib.lean(+1 -0 dup0)
+[242/359] 10c9b11a LIBONLY -> f38384f3 append-rule: Lib.lean(+1 -0 dup0)
+[243/359] 7bb4a9ca LIBONLY -> 2d5c3a3a append-rule: Lib.lean(+1 -0 dup0)
+[244/359] 2a5cfcee LIBONLY -> 727b67d3 append-rule: Lib.lean(+1 -0 dup0)
+[245/359] 0a17a833 LIBONLY -> b1f0d5c3 append-rule: Lib.lean(+1 -0 dup0)
+[246/359] 5540c054 LIBONLY -> 544f3b23 append-rule: Lib.lean(+1 -0 dup0)
+[247/359] b5cb1581 LIBONLY -> 5e27f260 append-rule: Lib.lean(+1 -0 dup0)
+[248/359] 63826061 LIBONLY -> 013b1b36
+[249/359] 547c8b69 LIBONLY -> 7f2e50cc append-rule: Lib.lean(+1 -0 dup0)
+[250/359] ff1646a0 LIBONLY -> 02b0aa15 append-rule: Lib.lean(+1 -0 dup0)
+[251/359] 67be67df LIBONLY -> 994e1473 append-rule: Lib.lean(+1 -0 dup0)
+[252/359] e79d84ac LIBONLY -> 077fdc80 append-rule: Lib.lean(+1 -0 dup0)
+[253/359] fe410fb8 LIBONLY -> 2c3fb37a append-rule: Lib.lean(+1 -0 dup0)
+[254/359] da089fa1 LIBONLY -> 84941a8f
+[255/359] 8b185429 LIBONLY -> e4f79bf0
+[256/359] 919dc5b7 LIBONLY -> ca4a1e88 append-rule: Lib.lean(+1 -0 dup0)
+[257/359] 191074dc LIBONLY -> 07207a17
+[258/359] 6d75686b LIBONLY -> bbf64a6b
+[259/359] fdac622c LIBONLY -> 3eb8c904
+[260/359] 34b8e039 LIBONLY -> cb550cb6
+[261/359] 9da5c92c LIBONLY -> 77c4bbc0
+[262/359] c30df91e LIBONLY -> 97b6e3e0 append-rule: Lib.lean(+1 -0 dup0)
+[263/359] a9ab89d5 LIBONLY -> be7a5e2a
+[264/359] 1148379c LIBONLY -> 724acdb6 append-rule: Lib.lean(+1 -0 dup0)
+[265/359] 41980986 LIBONLY -> dcb756af
+[266/359] 747a407e LIBONLY -> 67314ccc append-rule: Lib.lean(+1 -0 dup0)
+[267/359] fba8163a LIBONLY -> a40b737b
+[268/359] 78adba63 LIBONLY -> 424156d6
+[269/359] 8b30bc32 LIBONLY -> 9b072ed3
+[270/359] b84550ce LIBONLY -> 7bfa6b38
+[271/359] c82f0ac1 LIBONLY -> 2d7c83dd append-rule: Lib.lean(+1 -0 dup0)
+[272/359] db4ea999 LIBONLY -> f1761bb2
+[273/359] 699cc52e LIBONLY -> 0e74ce7d append-rule: Lib.lean(+1 -0 dup0)
+[274/359] 52310335 LIBONLY -> d8238621
+[275/359] 31feec96 LIBONLY -> 80490b0d append-rule: Lib.lean(+1 -0 dup0)
+[276/359] 61fb9de3 LIBONLY -> 53504b92 append-rule: Lib.lean(+1 -0 dup0)
+[277/359] f7065911 LIBONLY -> 3e143b7e append-rule: Lib.lean(+1 -0 dup0)
+[278/359] a8d18cbf LIBONLY -> 5c3c3141
+[279/359] 42536200 LIBONLY -> 0906d03a
+[280/359] e7cb9fea LIBONLY -> 595d556a
+[281/359] 5f08aac1 LIBONLY -> bce83c91
+[282/359] 6a7625f5 LIBONLY -> f80908a8
+[283/359] 193fb452 LIBONLY -> 269ad4b0
+[284/359] 3af86f22 LIBONLY -> 7e87b8f7
+[285/359] c59add77 LIBONLY -> 6774e5c0
+[286/359] 51256713 LIBONLY -> fdd1dfec
+[287/359] fbc6c377 LIBONLY -> e6f0e492
+[288/359] 9f09d84b LIBONLY -> c6b0700d
+[289/359] 20a1079b LIBONLY -> 79a562e8 append-rule: Lib.lean(+1 -0 dup0)
+[290/359] 9257225d LIBONLY -> 16406b62 append-rule: Lib.lean(+1 -1 dup0)
+[291/359] 32c77145 LIBONLY -> 512347fe
+[292/359] a2c7bed7 LIBONLY -> 0d0a8dd5
+[293/359] 05723624 LIBONLY -> 8eb59064
+[294/359] c0008d1e LIBONLY -> 0b03435c
+[295/359] 18034296 LIBONLY -> 7d826aad
+[296/359] 520d814c LIBONLY -> 59e3fd01 append-rule: Lib.lean(+1 -0 dup0)
+[297/359] d2b71c43 LIBONLY -> 5ba3a2f7 append-rule: Lib.lean(+1 -0 dup0)
+[298/359] c33d6390 LIBONLY -> a3a72e15
+[299/359] d25ed5ed LIBONLY -> e36d90b8
+[300/359] 654ae1aa LIBONLY -> d8636fff append-rule: Lib.lean(+1 -0 dup0)
+[301/359] da493d84 LIBONLY -> 834028d5 append-rule: Lib.lean(+1 -0 dup0)
+[302/359] 1b7325e3 LIBONLY -> dc58a5a0
+[303/359] 3e7d18e7 LIBONLY -> 2becce6b
+[304/359] 1de611e9 LIBONLY -> 488d3743 append-rule: Lib.lean(+1 -0 dup0)
+[305/359] ffae5bea LIBONLY -> ff772cfc
+[306/359] 5e570bb8 LIBONLY -> c6a20d07
+[307/359] 0a5d9f37 LIBONLY -> 8aad49d7
+[308/359] 009c8c03 LIBONLY -> 28da4c2b
+[309/359] 8810189f LIBONLY -> efda65f7
+[310/359] f78537a2 LIBONLY -> e0043a7b append-rule: Lib.lean(+1 -0 dup0)
+[311/359] c20889c8 LIBONLY -> b75bbdf3
+[312/359] ba879824 LIBONLY -> 8d219278
+[313/359] f507d200 LIBONLY -> 2f42a022 append-rule: Lib.lean(+1 -0 dup0)
+[314/359] 77afb068 LIBONLY -> 17fd9530
+[315/359] c8478855 LIBONLY -> bfe27c20 append-rule: Lib.lean(+1 -0 dup0)
+[316/359] 81d2d8cc LIBONLY -> 17b88bd4 append-rule: Lib.lean(+1 -0 dup0)
+[317/359] 5ad034eb LIBONLY -> 3a158f4c
+[318/359] 8aec78c4 LIBONLY -> c5674a2a
+[319/359] 8e1c064c LIBONLY -> 56fd24c0
+[320/359] 66127621 LIBONLY -> c7472373
+[321/359] a5c0c856 LIBONLY -> 019319ec
+[322/359] 2e0efba0 LIBONLY -> a779096e
+[323/359] 0b4ce1de LIBONLY -> 4891ccec
+[324/359] 4daa08d8 LIBONLY -> bbaad367
+[325/359] a64a1c27 LIBONLY -> 5b38f036 append-rule: Lib.lean(+1 -0 dup0)
+[326/359] 6cc91869 LIBONLY -> afb66575
+[327/359] a646b8df LIBONLY -> f6cac485
+[328/359] 51dc5d81 LIBONLY -> 83686888
+[329/359] 27f51903 LIBONLY -> 985933e1
+[330/359] 5c5ae996 LIBONLY -> 5c190a7c
+[331/359] 760c1ff1 LIBONLY -> e00a9a68
+[332/359] 0742d09e LIBONLY -> eb166c65
+[333/359] 7b6b3423 LIBONLY -> 590cb36f
+[334/359] 9adc7d59 LIBONLY -> 6ff55c06
+[335/359] baf68adb LIBONLY -> 31fcd691
+[336/359] f0d7f306 LIBONLY -> ed45fbcc
+[337/359] 416577eb LIBONLY -> 59aee5f8
+[338/359] 61de5232 LIBONLY -> cf943cab
+[339/359] c0786d53 LIBONLY -> f778d0e3
+[340/359] 03f30fb5 LIBONLY -> 27eb3fac
+[341/359] b1179031 MERGE skipped
+[342/359] f6882173 LIBONLY -> db79b756 append-rule: Lib.lean(+10 -7 dup0)
+[343/359] 6206e6ac MIXED -> 22196dab
+[344/359] 068ab07c MIXED -> 3a4dcd2e
+[345/359] 0a09c935 MIXED -> 10840881
+[346/359] abcb24db MIXED -> 5d43e3d5
+[347/359] ea3aa7d4 MIXED -> 35a7942e
+[348/359] 060c1144 LIBONLY -> bf1389ab
+[349/359] 240fe7dd MIXED -> 884b91c3 append-rule: Lib/AxiomAudit.lean(+14 -0 dup0)
+[350/359] c187d5e4 LIBONLY -> f34a8655
+[351/359] 3ade4538 MIXED -> bbe1880b append-rule: Lib.lean(+1 -0 dup0)
+[352/359] 988ae7b7 MIXED -> 29c8a7c2
+[353/359] ae7b4611 LIBONLY -> 321dcc2d
+[354/359] f79b9dc2 MIXED -> 9b5610fe
+[355/359] cdeb00ff MIXED -> 757522b7
+[356/359] cda27def LIBONLY -> bdbc620f append-rule: Lib/AxiomAudit.lean(+7 -0 dup0)
+[357/359] 74eae34b LIBONLY -> 49179556
+[358/359] 86d28060 LIBONLY -> 27e0ddd7
+[359/359] 98594552 LIBONLY -> 24513987
+=== done: {'replayed': 349, 'merge': 1, 'empty': 0, 'noop': 0, 'append': {'Lib.lean': 155, 'Lib/AxiomAudit.lean': 2}, 'dedup': {'Lib.lean': 1, 'Lib/AxiomAudit.lean': 0}, 'aa': ['380ddd11:Lib/Topology/MappingTorus/Basic.lean']}
+HEAD=2451398758530191a5837480c29381cff6b13647

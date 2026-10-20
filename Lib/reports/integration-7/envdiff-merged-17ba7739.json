@@ -1,0 +1,5671 @@
+{
+ "before": "/home/goblin/.claude/jobs/06995e68/tmp/wave2/final/dump_head3.jsonl",
+ "after": "dump_head.jsonl",
+ "prefix": "",
+ "constants": [
+  38373,
+  39175
+ ],
+ "lost": [
+  [
+   "DiskFraming.exists_smooth_frame_near_starConvex",
+   3622023359,
+   {
+    "Lib.Geometry.Manifold.Collar.RangeTransport": 1
+   }
+  ],
+  [
+   "DiskFraming.exists_smooth_frame_on_neighborhood_closedBall",
+   3798691450,
+   {
+    "Lib.Geometry.Manifold.Collar.RangeTransport": 1
+   }
+  ]
+ ],
+ "added": [
+  [
+   "AbsolutelyContinuousOnInterval.const_of_monotone_subdivision_of_ae_hasDerivAt_zero",
+   3563121450,
+   {
+    "Lib.Analysis.Calculus.CurveVariation": 1
+   }
+  ],
+  [
+   "AbsolutelyContinuousOnInterval.const_of_monotone_subdivision_of_ae_hasDerivAt_zero._proof_1_1",
+   2588882536,
+   {
+    "Lib.Analysis.Calculus.CurveVariation": 1
+   }
+  ],
+  [
+   "AbsolutelyContinuousOnInterval.const_of_monotone_subdivision_of_ae_hasDerivAt_zero._proof_1_2",
+   1128980098,
+   {
+    "Lib.Analysis.Calculus.CurveVariation": 1
+   }
+  ],
+  [
+   "AbsolutelyContinuousOnInterval.const_of_monotone_subdivision_of_ae_hasDerivAt_zero._proof_1_3",
+   2863430497,
+   {
+    "Lib.Analysis.Calculus.CurveVariation": 1
+   }
+  ],
+  [
+   "AbsolutelyContinuousOnInterval.eVariationOn_le_ofReal_integral_abs_deriv",
+   2985690509,
+   {
+    "Lib.Analysis.Calculus.CurveVariation": 1
+   }
+  ],
+  [
+   "AbsolutelyContinuousOnInterval.monotoneOn_of_integral_abs_deriv_eq_sub",
+   1267715306,
+   {
+    "Lib.Analysis.Calculus.CurveVariation": 1
+   }
+  ],
+  [
+   "AbsolutelyContinuousOnInterval.of_monotone_subdivision",
+   1483282015,
+   {
+    "Lib.Analysis.Calculus.CurveVariation": 1
+   }
+  ],
+  [
+   "AbsolutelyContinuousOnInterval.of_monotone_subdivision._proof_1_2",
+   4154903769,
+   {
+    "Lib.Analysis.Calculus.CurveVariation": 1
+   }
+  ],
+  [
+   "AbsolutelyContinuousOnInterval.of_monotone_subdivision._proof_1_3",
+   2756591142,
+   {
+    "Lib.Analysis.Calculus.CurveVariation": 1
+   }
+  ],
+  [
+   "AbsolutelyContinuousOnInterval.of_monotone_subdivision._proof_1_4",
+   282860851,
+   {
+    "Lib.Analysis.Calculus.CurveVariation": 1
+   }
+  ],
+  [
+   "AbsolutelyContinuousOnInterval.of_monotone_subdivision._proof_1_5",
+   3731047858,
+   {
+    "Lib.Analysis.Calculus.CurveVariation": 1
+   }
+  ],
+  [
+   "AbsolutelyContinuousOnInterval.of_monotone_subdivision._proof_1_6",
+   1017104366,
+   {
+    "Lib.Analysis.Calculus.CurveVariation": 1
+   }
+  ],
+  [
+   "AbsolutelyContinuousOnInterval.of_monotone_subdivision._proof_1_7",
+   403417082,
+   {
+    "Lib.Analysis.Calculus.CurveVariation": 1
+   }
+  ],
+  [
+   "AbsolutelyContinuousOnInterval.of_monotone_subdivision._simp_1_1",
+   2525783790,
+   {
+    "Lib.Analysis.Calculus.CurveVariation": 1
+   }
+  ],
+  [
+   "AbsolutelyContinuousOnInterval.sum_abs_sub_le_integral_abs_deriv",
+   2756081870,
+   {
+    "Lib.Analysis.Calculus.CurveVariation": 1
+   }
+  ],
+  [
+   "AbsolutelyContinuousOnInterval.trans_of_le",
+   3813385821,
+   {
+    "Lib.Analysis.Calculus.CurveVariation": 1
+   }
+  ],
+  [
+   "AbsolutelyContinuousOnInterval.trans_of_le._proof_1_2",
+   172691822,
+   {
+    "Lib.Analysis.Calculus.CurveVariation": 1
+   }
+  ],
+  [
+   "AbsolutelyContinuousOnInterval.trans_of_le._proof_1_3",
+   2476303295,
+   {
+    "Lib.Analysis.Calculus.CurveVariation": 1
+   }
+  ],
+  [
+   "AbsolutelyContinuousOnInterval.trans_of_le._proof_1_5",
+   101464962,
+   {
+    "Lib.Analysis.Calculus.CurveVariation": 1
+   }
+  ],
+  [
+   "AbsolutelyContinuousOnInterval.trans_of_le._proof_1_6",
+   1690834132,
+   {
+    "Lib.Analysis.Calculus.CurveVariation": 1
+   }
+  ],
+  [
+   "AbsolutelyContinuousOnInterval.trans_of_le._simp_1_1",
+   227197645,
+   {
+    "Lib.Analysis.Calculus.CurveVariation": 1
+   }
+  ],
+  [
+   "AbsolutelyContinuousOnInterval.trans_of_le._simp_1_4",
+   1911706618,
+   {
+    "Lib.Analysis.Calculus.CurveVariation": 1
+   }
+  ],
+  [
+   "AbsolutelyContinuousOnInterval.variation_bounds_integral_abs_deriv",
+   2455821357,
+   {
+    "Lib.Analysis.Calculus.CurveVariation": 1
+   }
+  ],
+  [
+   "AddMonoidHom.restrict_left_eq_zero_iff_of_signed_exact",
+   2081911785,
+   {
+    "Lib.Algebra.Group.Prod": 1
+   }
+  ],
+  [
+   "AddMonoidHom.surjective_restrict_left_of_signed_zero",
+   312094490,
+   {
+    "Lib.Algebra.Group.Prod": 1
+   }
+  ],
+  [
+   "Bundle.ContMDiffRiemannianMetric.congr_simp",
+   2638893389,
+   {
+    "Lib.Geometry.Manifold.Riemannian.CurveTransport": 1
+   }
+  ],
+  [
+   "Bundle.smoothMetricOfPositive",
+   2320504352,
+   {
+    "Lib.Geometry.Manifold.VectorBundle.Riemannian": 1
+   }
+  ],
+  [
+   "Bundle.smoothMetricOfPositive._proof_1",
+   213455248,
+   {
+    "Lib.Geometry.Manifold.VectorBundle.Riemannian": 1
+   }
+  ],
+  [
+   "Bundle.smoothMetricOfPositive._proof_10",
+   3933667711,
+   {
+    "Lib.Geometry.Manifold.VectorBundle.Riemannian": 1
+   }
+  ],
+  [
+   "Bundle.smoothMetricOfPositive._proof_11",
+   391570875,
+   {
+    "Lib.Geometry.Manifold.VectorBundle.Riemannian": 1
+   }
+  ],
+  [
+   "Bundle.smoothMetricOfPositive._proof_12",
+   1081445628,
+   {
+    "Lib.Geometry.Manifold.VectorBundle.Riemannian": 1
+   }
+  ],
+  [
+   "Bundle.smoothMetricOfPositive._proof_13",
+   3356443254,
+   {
+    "Lib.Geometry.Manifold.VectorBundle.Riemannian": 1
+   }
+  ],
+  [
+   "Bundle.smoothMetricOfPositive._proof_14",
+   2180179179,
+   {
+    "Lib.Geometry.Manifold.VectorBundle.Riemannian": 1
+   }
+  ],
+  [
+   "Bundle.smoothMetricOfPositive._proof_15",
+   2705862426,
+   {
+    "Lib.Geometry.Manifold.VectorBundle.Riemannian": 1
+   }
+  ],
+  [
+   "Bundle.smoothMetricOfPositive._proof_16",
+   3478777530,
+   {
+    "Lib.Geometry.Manifold.VectorBundle.Riemannian": 1
+   }
+  ],
+  [
+   "Bundle.smoothMetricOfPositive._proof_17",
+   1114390869,
+   {
+    "Lib.Geometry.Manifold.VectorBundle.Riemannian": 1
+   }
+  ],
+  [
+   "Bundle.smoothMetricOfPositive._proof_18",
+   3006552814,
+   {
+    "Lib.Geometry.Manifold.VectorBundle.Riemannian": 1
+   }
+  ],
+  [
+   "Bundle.smoothMetricOfPositive._proof_19",
+   2093931100,
+   {
+    "Lib.Geometry.Manifold.VectorBundle.Riemannian": 1
+   }
+  ],
+  [
+   "Bundle.smoothMetricOfPositive._proof_2",
+   1751206130,
+   {
+    "Lib.Geometry.Manifold.VectorBundle.Riemannian": 1
+   }
+  ],
+  [
+   "Bundle.smoothMetricOfPositive._proof_20",
+   4015501974,
+   {
+    "Lib.Geometry.Manifold.VectorBundle.Riemannian": 1
+   }
+  ],
+  [
+   "Bundle.smoothMetricOfPositive._proof_21",
+   3751402279,
+   {
+    "Lib.Geometry.Manifold.VectorBundle.Riemannian": 1
+   }
+  ],
+  [
+   "Bundle.smoothMetricOfPositive._proof_3",
+   1289510895,
+   {
+    "Lib.Geometry.Manifold.VectorBundle.Riemannian": 1
+   }
+  ],
+  [
+   "Bundle.smoothMetricOfPositive._proof_4",
+   1398103295,
+   {
+    "Lib.Geometry.Manifold.VectorBundle.Riemannian": 1
+   }
+  ],
+  [
+   "Bundle.smoothMetricOfPositive._proof_5",
+   3914977166,
+   {
+    "Lib.Geometry.Manifold.VectorBundle.Riemannian": 1
+   }
+  ],
+  [
+   "Bundle.smoothMetricOfPositive._proof_6",
+   3593702283,
+   {
+    "Lib.Geometry.Manifold.VectorBundle.Riemannian": 1
+   }
+  ],
+  [
+   "Bundle.smoothMetricOfPositive._proof_7",
+   2549507894,
+   {
+    "Lib.Geometry.Manifold.VectorBundle.Riemannian": 1
+   }
+  ],
+  [
+   "Bundle.smoothMetricOfPositive._proof_8",
+   2953470236,
+   {
+    "Lib.Geometry.Manifold.VectorBundle.Riemannian": 1
+   }
+  ],
+  [
+   "Bundle.smoothMetricOfPositive._proof_9",
+   2990349206,
+   {
+    "Lib.Geometry.Manifold.VectorBundle.Riemannian": 1
+   }
+  ],
+  [
+   "Bundle.smoothMetricOfPositive_inner",
+   1814364937,
+   {
+    "Lib.Geometry.Manifold.VectorBundle.Riemannian": 1
+   }
+  ],
+  [
+   "Compactification.exists_homeomorph_of_paired_limits",
+   2563307153,
+   {
+    "Lib.Topology.Compactification.BoundaryLimits": 1
+   }
+  ],
+  [
+   "Complex.fractionalLinear_reverse_local",
+   1944563894,
+   {
+    "Lib.Analysis.Complex.Mobius": 1
+   }
+  ],
+  [
+   "Complex.fractionalLinear_reverse_local._simp_1_1",
+   3288593392,
+   {
+    "Lib.Analysis.Complex.Mobius": 1
+   }
+  ],
+  [
+   "Complex.fractionalLinear_reverse_local._simp_1_2",
+   4033513777,
+   {
+    "Lib.Analysis.Complex.Mobius": 1
+   }
+  ],
+  [
+   "Complex.fractionalLinear_reverse_local._simp_1_3",
+   1623334871,
+   {
+    "Lib.Analysis.Complex.Mobius": 1
+   }
+  ],
+  [
+   "Complex.fractionalLinear_reverse_local._simp_1_4",
+   1092673916,
+   {
+    "Lib.Analysis.Complex.Mobius": 1
+   }
+  ],
+  [
+   "Complex.fractionalLinear_reverse_local._simp_1_5",
+   2195956633,
+   {
+    "Lib.Analysis.Complex.Mobius": 1
+   }
+  ],
+  [
+   "Complex.fractionalLinear_reverse_local._simp_1_6",
+   1459115028,
+   {
+    "Lib.Analysis.Complex.Mobius": 1
+   }
+  ],
+  [
+   "Complex.fractionalLinear_reverse_local._simp_1_7",
+   3730275133,
+   {
+    "Lib.Analysis.Complex.Mobius": 1
+   }
+  ],
+  [
+   "ContinuousLinearMap.isVonNBounded_positiveBilinear_unitBall",
+   236626606,
+   {
+    "Lib.Analysis.InnerProductSpace.FiniteDimensional": 1
+   }
+  ],
+  [
+   "ContinuousLinearMap.isVonNBounded_positiveBilinear_unitBall._simp_1_1",
+   2885592547,
+   {
+    "Lib.Analysis.InnerProductSpace.FiniteDimensional": 1
+   }
+  ],
+  [
+   "DiskFraming.exists_smooth_frame_near_starConvex",
+   3226562774,
+   {
+    "Lib.Geometry.Manifold.Collar.RangeTransport": 1
+   }
+  ],
+  [
+   "DiskFraming.exists_smooth_frame_on_neighborhood_closedBall",
+   995586449,
+   {
+    "Lib.Geometry.Manifold.Collar.RangeTransport": 1
+   }
+  ],
+  [
+   "Fin.commonCut",
+   724644557,
+   {
+    "Lib.Order.Fin.Refinement": 1
+   }
+  ],
+  [
+   "Fin.commonCutCount",
+   2514955636,
+   {
+    "Lib.Order.Fin.Refinement": 1
+   }
+  ],
+  [
+   "Fin.commonCutCount.eq_1",
+   3539034396,
+   {
+    "Lib.Order.Fin.Refinement": 1
+   }
+  ],
+  [
+   "Fin.commonCutCount_eq_zero",
+   1864089959,
+   {
+    "Lib.Order.Fin.Refinement": 1
+   }
+  ],
+  [
+   "Fin.commonCutCount_eq_zero._simp_1_1",
+   3472596325,
+   {
+    "Lib.Order.Fin.Refinement": 1
+   }
+  ],
+  [
+   "Fin.commonCutRankLeft",
+   547580243,
+   {
+    "Lib.Order.Fin.Refinement": 1
+   }
+  ],
+  [
+   "Fin.commonCutRankLeft._proof_2",
+   882126548,
+   {
+    "Lib.Order.Fin.Refinement": 1
+   }
+  ],
+  [
+   "Fin.commonCutRankRight",
+   61903164,
+   {
+    "Lib.Order.Fin.Refinement": 1
+   }
+  ],
+  [
+   "Fin.commonCutRankRight._proof_1",
+   2342384104,
+   {
+    "Lib.Order.Fin.Refinement": 1
+   }
+  ],
+  [
+   "Fin.commonCutValues",
+   844135807,
+   {
+    "Lib.Order.Fin.Refinement": 1
+   }
+  ],
+  [
+   "Fin.commonCutValues.eq_1",
+   3540420645,
+   {
+    "Lib.Order.Fin.Refinement": 1
+   }
+  ],
+  [
+   "Fin.commonCutValues_card",
+   2501703496,
+   {
+    "Lib.Order.Fin.Refinement": 1
+   }
+  ],
+  [
+   "Fin.commonCutValues_card._proof_1_1",
+   1700006921,
+   {
+    "Lib.Order.Fin.Refinement": 1
+   }
+  ],
+  [
+   "Fin.commonCutValues_nonempty",
+   3024936354,
+   {
+    "Lib.Order.Fin.Refinement": 1
+   }
+  ],
+  [
+   "Fin.commonCut_order_endpoints",
+   553169767,
+   {
+    "Lib.Order.Fin.Refinement": 1
+   }
+  ],
+  [
+   "Fin.commonCut_order_endpoints._simp_1_1",
+   960308239,
+   {
+    "Lib.Order.Fin.Refinement": 1
+   }
+  ],
+  [
+   "Fin.commonCut_order_endpoints._simp_1_2",
+   2883912216,
+   {
+    "Lib.Order.Fin.Refinement": 1
+   }
+  ],
+  [
+   "Fin.commonCut_order_endpoints._simp_1_3",
+   3818362915,
+   {
+    "Lib.Order.Fin.Refinement": 1
+   }
+  ],
+  [
+   "Fin.commonCut_properties",
+   592336791,
+   {
+    "Lib.Order.Fin.Refinement": 1
+   }
+  ],
+  [
+   "Fin.exists_strict_piece_containing_of_range_subset",
+   137520738,
+   {
+    "Lib.Order.Fin.Refinement": 1
+   }
+  ],
+  [
+   "Fin.exists_strict_piece_containing_of_range_subset._proof_1_2",
+   376449148,
+   {
+    "Lib.Order.Fin.Refinement": 1
+   }
+  ],
+  [
+   "Fin.exists_strict_piece_containing_of_range_subset._simp_1_1",
+   3762036200,
+   {
+    "Lib.Order.Fin.Refinement": 1
+   }
+  ],
+  [
+   "Fin.rankBlock",
+   467127926,
+   {
+    "Lib.Order.Fin.Refinement": 1
+   }
+  ],
+  [
+   "Fin.rankBlock.eq_1",
+   3883546938,
+   {
+    "Lib.Order.Fin.Refinement": 1
+   }
+  ],
+  [
+   "Fin.rankBlockCut_bound",
+   1563948703,
+   {
+    "Lib.Order.Fin.Refinement": 1
+   }
+  ],
+  [
+   "Fin.rankBlockCut_bound._proof_1_1",
+   1727150920,
+   {
+    "Lib.Order.Fin.Refinement": 1
+   }
+  ],
+  [
+   "Fin.rankBlockCuts",
+   2954223873,
+   {
+    "Lib.Order.Fin.Refinement": 1
+   }
+  ],
+  [
+   "Fin.rankBlockCuts.congr_simp",
+   1790440385,
+   {
+    "Lib.Geometry.Manifold.Riemannian.CurveTransport": 1
+   }
+  ],
+  [
+   "Fin.rankBlockCuts.eq_1",
+   549296549,
+   {
+    "Lib.Order.Fin.Refinement": 1
+   }
+  ],
+  [
+   "Fin.rankBlockCuts_adjacent",
+   2608808330,
+   {
+    "Lib.Order.Fin.Refinement": 1
+   }
+  ],
+  [
+   "Fin.rankBlockCuts_adjacent._proof_1_3",
+   4284223951,
+   {
+    "Lib.Order.Fin.Refinement": 1
+   }
+  ],
+  [
+   "Fin.rankBlockCuts_endpoints",
+   1561451744,
+   {
+    "Lib.Order.Fin.Refinement": 1
+   }
+  ],
+  [
+   "Fin.rankBlockCuts_endpoints._proof_1_3",
+   1448902029,
+   {
+    "Lib.Order.Fin.Refinement": 1
+   }
+  ],
+  [
+   "Fin.rankBlockCuts_monotone",
+   3191317281,
+   {
+    "Lib.Order.Fin.Refinement": 1
+   }
+  ],
+  [
+   "Fin.rankBlockEquiv",
+   3110979798,
+   {
+    "Lib.Order.Fin.Refinement": 1
+   }
+  ],
+  [
+   "Fin.rankBlockEquiv._proof_1",
+   4154903769,
+   {
+    "Lib.Order.Fin.Refinement": 1
+   }
+  ],
+  [
+   "Fin.rankBlockEquiv._proof_10",
+   2851895039,
+   {
+    "Lib.Order.Fin.Refinement": 1
+   }
+  ],
+  [
+   "Fin.rankBlockEquiv._proof_11",
+   1862353808,
+   {
+    "Lib.Order.Fin.Refinement": 1
+   }
+  ],
+  [
+   "Fin.rankBlockEquiv._proof_12",
+   321795565,
+   {
+    "Lib.Order.Fin.Refinement": 1
+   }
+  ],
+  [
+   "Fin.rankBlockEquiv._proof_13",
+   3050080957,
+   {
+    "Lib.Order.Fin.Refinement": 1
+   }
+  ],
+  [
+   "Fin.rankBlockEquiv._proof_2",
+   77460004,
+   {
+    "Lib.Order.Fin.Refinement": 1
+   }
+  ],
+  [
+   "Fin.rankBlockEquiv._proof_3",
+   959640539,
+   {
+    "Lib.Order.Fin.Refinement": 1
+   }
+  ],
+  [
+   "Fin.rankBlockEquiv._proof_7",
+   2813295194,
+   {
+    "Lib.Order.Fin.Refinement": 1
+   }
+  ],
+  [
+   "Fin.rankBlockEquiv._proof_8",
+   3612151758,
+   {
+    "Lib.Order.Fin.Refinement": 1
+   }
+  ],
+  [
+   "Fin.rankBlockEquiv._proof_9",
+   2010890417,
+   {
+    "Lib.Order.Fin.Refinement": 1
+   }
+  ],
+  [
+   "Fin.rankBlockEquiv._simp_5",
+   1253103447,
+   {
+    "Lib.Order.Fin.Refinement": 1
+   }
+  ],
+  [
+   "Fin.rankBlockEquiv._simp_6",
+   3818362915,
+   {
+    "Lib.Order.Fin.Refinement": 1
+   }
+  ],
+  [
+   "Fin.rankBlockEquiv.congr_simp",
+   3463293539,
+   {
+    "Lib.Order.Fin.Refinement": 1
+   }
+  ],
+  [
+   "Fin.rankBlockEquiv_val",
+   2615942744,
+   {
+    "Lib.Order.Fin.Refinement": 1
+   }
+  ],
+  [
+   "Fin.rankBlockSize",
+   3964955751,
+   {
+    "Lib.Order.Fin.Refinement": 1
+   }
+  ],
+  [
+   "Fin.rankBlockSize.eq_1",
+   2001385029,
+   {
+    "Lib.Order.Fin.Refinement": 1
+   }
+  ],
+  [
+   "Fin.rankBlock_cover",
+   587810583,
+   {
+    "Lib.Order.Fin.Refinement": 1
+   }
+  ],
+  [
+   "Fin.rankBlock_cover._simp_1_1",
+   3818362915,
+   {
+    "Lib.Order.Fin.Refinement": 1
+   }
+  ],
+  [
+   "Fin.rankBlock_cover._simp_1_3",
+   1253103447,
+   {
+    "Lib.Order.Fin.Refinement": 1
+   }
+  ],
+  [
+   "Fin.rankBlock_cover._simp_1_4",
+   3762036200,
+   {
+    "Lib.Order.Fin.Refinement": 1
+   }
+  ],
+  [
+   "Fin.rankBlock_disjoint",
+   4046204457,
+   {
+    "Lib.Order.Fin.Refinement": 1
+   }
+  ],
+  [
+   "Fin.rankBlock_disjoint._proof_1_4",
+   3394196832,
+   {
+    "Lib.Order.Fin.Refinement": 1
+   }
+  ],
+  [
+   "Fin.rankBlock_disjoint._proof_1_5",
+   823833838,
+   {
+    "Lib.Order.Fin.Refinement": 1
+   }
+  ],
+  [
+   "Fin.rankBlock_disjoint._proof_1_6",
+   3700763339,
+   {
+    "Lib.Order.Fin.Refinement": 1
+   }
+  ],
+  [
+   "Fin.rankBlock_disjoint._proof_1_7",
+   2045228243,
+   {
+    "Lib.Order.Fin.Refinement": 1
+   }
+  ],
+  [
+   "Fin.rankBlock_disjoint._simp_1_2",
+   1253103447,
+   {
+    "Lib.Order.Fin.Refinement": 1
+   }
+  ],
+  [
+   "Fin.rankBlock_disjoint._simp_1_3",
+   3818362915,
+   {
+    "Lib.Order.Fin.Refinement": 1
+   }
+  ],
+  [
+   "Fin.rankBlock_empty",
+   305142537,
+   {
+    "Lib.Order.Fin.Refinement": 1
+   }
+  ],
+  [
+   "Fin.rankBlock_interval_subset",
+   1474894787,
+   {
+    "Lib.Order.Fin.Refinement": 1
+   }
+  ],
+  [
+   "Fin.rankBlock_interval_subset._proof_1_1",
+   1104661081,
+   {
+    "Lib.Order.Fin.Refinement": 1
+   }
+  ],
+  [
+   "Fin.rankBlock_strict",
+   1173918064,
+   {
+    "Lib.Order.Fin.Refinement": 1
+   }
+  ],
+  [
+   "Fin.rankBlock_strict._proof_1_4",
+   1672773512,
+   {
+    "Lib.Order.Fin.Refinement": 1
+   }
+  ],
+  [
+   "Fin.rankBlock_strict._simp_1_2",
+   1253103447,
+   {
+    "Lib.Order.Fin.Refinement": 1
+   }
+  ],
+  [
+   "Fin.rankBlock_strict._simp_1_3",
+   3818362915,
+   {
+    "Lib.Order.Fin.Refinement": 1
+   }
+  ],
+  [
+   "Fin.rankBlock_strict_interval",
+   1248453,
+   {
+    "Lib.Order.Fin.Refinement": 1
+   }
+  ],
+  [
+   "Fin.rankBlock_unique_owner",
+   1602927920,
+   {
+    "Lib.Order.Fin.Refinement": 1
+   }
+  ],
+  [
+   "Fin.rankTarget_zero_of_source_zero",
+   2499203412,
+   {
+    "Lib.Order.Fin.Refinement": 1
+   }
+  ],
+  [
+   "Hyperbolic.Hyperboloid",
+   3931117990,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.Hyperboloid._proof_1",
+   518125532,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.IsLocallyArclengthMinimizingHyperboloid",
+   588450822,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.IsLorentzTimelikePlane",
+   1794537505,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.IsLorentzTimelikePlane.exists_hyperboloidGeodesic",
+   952946818,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.IsLorentzTimelikePlane.exists_unitNormal",
+   296084542,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic._aux_<M>___macroRules__private_<M>_0_Hyperbolic_termB_1",
+   407006920,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic._aux_<M>___macroRules__private_<M>_0_Hyperbolic_termF_1",
+   407006920,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic._aux_<M>___macroRules__private_<M>_0_Hyperbolic_termI_1",
+   407006920,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic._aux_<M>___macroRules__private_<M>_0_Hyperbolic_termJ_1",
+   407006920,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic._aux_<M>___macroRules__private_<M>_0_Hyperbolic_termK_1",
+   407006920,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic._aux_<M>___macroRules__private_<M>_0_Hyperbolic_termK_1_1",
+   407006920,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic._aux_<M>___macroRules__private_<M>_0_Hyperbolic_termV_1",
+   407006920,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic._aux_<M>___unexpand_Hyperbolic_hyperboloidToUpperHalfPlaneCoords_1",
+   4242366553,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic._aux_<M>___unexpand_Hyperbolic_upperHalfPlaneToHyperboloidCoords_1",
+   4242366553,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.actual_chain",
+   3698250443,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.auxiliary_fderiv_quadratic",
+   1975051006,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.cauchySeq_tendsto_hyperboloidLengthMetricSpace",
+   59092217,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.cauchySeq_tendsto_upperHalfPlaneLengthMetricSpace",
+   3307587919,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.centerHyperboloid",
+   2934093408,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.centerHyperboloidDiffeomorph",
+   3568221525,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.centerHyperboloidEquiv",
+   2610669481,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.centerHyperboloidEquiv._proof_1",
+   1000212755,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.centerHyperboloidEquiv._proof_2",
+   3012256420,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.centerHyperboloid_curveFamily_length",
+   2013306506,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.centerHyperboloid_kernel_transport",
+   1139193131,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.centerHyperboloid_length",
+   1156805807,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.centerHyperboloid_mfderiv_inverse",
+   2168760204,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.centerHyperboloid_norm_enorm",
+   308675559,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.centerHyperboloid_preserves_metric",
+   771382217,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.centerHyperboloid_preserves_tangentTensor",
+   3426265228,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.centerHyperboloid_properties",
+   2584044001,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.centerHyperboloid_properties._proof_1",
+   3098706097,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.centerHyperboloid_properties._proof_2",
+   1980449846,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.centerHyperboloid_speed",
+   1199824048,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.centerHyperboloid_speedWithin",
+   3105376926,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.completeSpace_hyperboloidLengthMetricSpace",
+   3999198538,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.completeSpace_upperHalfPlaneLengthMetricSpace",
+   1297296824,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.connectedSpace_hyperboloidGraph",
+   3627384549,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.contDiffOn_hyperboloidToUpperHalfPlaneCoords",
+   3594340747,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.contDiffOn_upperHalfPlaneToHyperboloidCoords",
+   2174102917,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.contMDiffAt_hyperboloidRadius",
+   452806444,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.contMDiff_centerHyperboloid",
+   513724695,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.contMDiff_fromHyperboloid",
+   1486004627,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.contMDiff_hyperboloidPolar",
+   3249430388,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.contMDiff_hyperboloidReflection",
+   1965049817,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.contMDiff_hyperboloidSpatial",
+   2050829261,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.contMDiff_hyperboloidTangentTensor",
+   4097455854,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.contMDiff_hyperboloid_val",
+   403557289,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.contMDiff_toHyperboloid",
+   3751915150,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.contMDiff_uncenterHyperboloid",
+   1550072632,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.contMDiff_upperHalfPlaneCoordinateTensor",
+   4088912681,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.contMDiff_upperHalfPlaneTangentTensor",
+   35205699,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.continuous_fromHyperboloid",
+   974145618,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.continuous_hyperboloidAdaptedGraph",
+   794834728,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.continuous_hyperboloidGraph",
+   64101681,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.continuous_hyperboloidLengthDist",
+   3491242325,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.continuous_hyperboloidLengthDist._simp_1_1",
+   2108872808,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.continuous_hyperboloidNormalizedSegment",
+   3867344194,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.continuous_lorentzReflection_time",
+   2782603352,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.continuous_toHyperboloid",
+   4050504719,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.exists_lorentzAxisDirection",
+   3804862767,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.exists_lorentzNormal_of_unitTangent",
+   2659849213,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.exists_planeCoefficientNormal",
+   1190093697,
+   {
+    "Lib.Geometry.Hyperbolic.GeodesicEquations": 1
+   }
+  ],
+  [
+   "Hyperbolic.exists_planeCoefficientNormal._proof_1_1",
+   2375785246,
+   {
+    "Lib.Geometry.Hyperbolic.GeodesicEquations": 1
+   }
+  ],
+  [
+   "Hyperbolic.fderiv_hyperboloidToUpperHalfPlaneCoords",
+   3843339258,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.fderiv_hyperboloid_left_inv",
+   610866808,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.fderiv_hyperboloid_left_inv._simp_1_2",
+   3288593392,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.fderiv_hyperboloid_left_inv._simp_1_3",
+   4033513777,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.fderiv_hyperboloid_left_inv._simp_1_4",
+   1623334871,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.fderiv_hyperboloid_left_inv._simp_1_5",
+   1092673916,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.fderiv_hyperboloid_left_inv._simp_1_6",
+   2195956633,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.fderiv_hyperboloid_left_inv._simp_1_7",
+   1459115028,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.fderiv_hyperboloid_left_inv._simp_1_8",
+   3730275133,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.fderiv_hyperboloid_right_inv",
+   292546917,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.fderiv_toHyperboloid_mem_ker",
+   517565163,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.fderiv_upperHalfPlaneToHyperboloidCoords",
+   2454455304,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.fderiv_upperHalfPlaneToHyperboloidCoords_add",
+   2231070512,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.fderiv_upperHalfPlaneToHyperboloidCoords_sub",
+   208471350,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.fderiv_upperHalfPlaneToHyperboloidCoords_x",
+   3731460832,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.finrank_lorentzKer",
+   1734476211,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.finrank_lorentzKer._proof_1_1",
+   30661210,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.fromHyperboloid",
+   323791480,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.fromHyperboloid.eq_1",
+   1474864444,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.fromHyperboloid_coe",
+   3466257603,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.fromHyperboloid_intrinsicEDist",
+   73736673,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.fromHyperboloid_length",
+   2713155691,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.fromHyperboloid_norm_angle",
+   3915247287,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.fromHyperboloid_piecewiseC1EDist_le",
+   644402633,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.fromHyperboloid_preserves_metric",
+   409218559,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.fromHyperboloid_speed",
+   1129725155,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.fromHyperboloid_speedWithin",
+   2989186488,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.fromHyperboloid_toHyperboloid",
+   490487678,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidAdaptedGraph",
+   856346430,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidAdaptedGraphCoords",
+   2601017253,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidAdaptedGraphCoords.eq_1",
+   1596182927,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidAdaptedGraphCoords_mem",
+   3069379975,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidAdaptedGraphCoords_spec",
+   1225992374,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidAdaptedGraphCoords_time_pos",
+   1680076659,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidAdaptedGraphCoords_zero",
+   2597660425,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidAdaptedGraph_inverse",
+   1622340255,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidAdaptedGraph_normal",
+   2430424802,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidAdaptedGraph_sides",
+   3261254221,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidAdaptedHomeomorph",
+   1260417176,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidAdaptedHomeomorph._proof_1",
+   2312000323,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidAdaptedHomeomorph._proof_2",
+   3492590188,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidAdaptedHomeomorph._proof_3",
+   3754038261,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidAdaptedProjection",
+   3704951064,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidAdaptedTime",
+   401937701,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidAdaptedTime.eq_1",
+   1494702136,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidAdaptedTime_ne_zero",
+   1465144177,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidAdaptedTime_pos",
+   1162380654,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidAdaptedTime_self",
+   4290690887,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidAdaptedTime_sqrt",
+   2743935210,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidAdaptedTime_square",
+   3214143862,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidChartedSpace",
+   1427183456,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidCoords_left_inv",
+   3325028001,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidCoords_left_inv._simp_1_1",
+   3288593392,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidCoords_left_inv._simp_1_2",
+   4033513777,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidCoords_left_inv._simp_1_3",
+   1623334871,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidCoords_left_inv._simp_1_4",
+   1092673916,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidCoords_left_inv._simp_1_5",
+   2195956633,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidCoords_left_inv._simp_1_6",
+   1459115028,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidCoords_left_inv._simp_1_7",
+   3730275133,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidCoords_right_inv",
+   1199519616,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidCoords_right_inv._proof_1_1",
+   3988909624,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidCoords_right_inv._simp_1_2",
+   3288593392,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidCoords_right_inv._simp_1_3",
+   4033513777,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidCoords_right_inv._simp_1_4",
+   1623334871,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidCoords_right_inv._simp_1_5",
+   1092673916,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidCoords_right_inv._simp_1_6",
+   2195956633,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidCoords_right_inv._simp_1_7",
+   1459115028,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidCoords_right_inv._simp_1_8",
+   3730275133,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidGeodesic",
+   1265771942,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidGeodesic.congr_simp",
+   4061329357,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidGeodesic.eq_1",
+   3816113798,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidGeodesicCoords",
+   3274420776,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidGeodesicCoords.eq_1",
+   1145412064,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidGeodesicCoords_mem",
+   968028633,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidGeodesic_lengthDist",
+   4196178067,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidGeodesic_normal_coordinate",
+   4126944324,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidGeodesic_plane",
+   1033916244,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidGeodesic_plane._simp_1_1",
+   1010447953,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidGeodesic_plane._simp_1_2",
+   4173162993,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidGeodesic_plane._simp_1_3",
+   2525783790,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidGeodesic_properties",
+   1135180640,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidGeodesic_subsegment",
+   324186274,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidGraph",
+   3982091522,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidGraphCoords",
+   183591799,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidGraphCoords_mem",
+   1490446223,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidGraphHomeomorph",
+   2463673838,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidGraphHomeomorph._proof_1",
+   4171604011,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidGraphHomeomorph._proof_2",
+   3835081424,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidGraphProjection",
+   2837116165,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidGraph_right_inv",
+   2959457110,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidIsManifoldReal",
+   518837925,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidLengthDist",
+   3359929922,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidLengthDist.eq_1",
+   3060056534,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidLengthDist_arcosh",
+   2944288832,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidLengthDist_center",
+   4292731830,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidLengthDist_center_bounds",
+   1569384947,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidLengthDist_center_le_iff",
+   4263146598,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidLengthDist_center_sublevel_neg",
+   1177236069,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidLengthDist_center_sublevel_zero",
+   1093272863,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidLengthDist_cosh",
+   749687863,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidLengthDist_nhds",
+   3296954159,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidLengthDist_nonneg_eq_zero",
+   179621214,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidLengthDist_symm",
+   2380074118,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidLengthMetricSpace",
+   3112778696,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidLengthMetricSpace._proof_1",
+   364956627,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidLengthMetricSpace._proof_2",
+   590790125,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidLengthMetricSpace._proof_3",
+   1656970153,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidLengthMetricSpace._proof_4",
+   2558417637,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidLengthMetricSpace._proof_5",
+   1470986698,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidLengthMetricSpace._proof_6",
+   3279855352,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidLengthMetricSpace_coherence",
+   2974587302,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidMetric",
+   1978971235,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidMetric._proof_1",
+   474396667,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidMetric._proof_2",
+   3987800408,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidMetric._proof_3",
+   95362420,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidMetric._proof_4",
+   1266482558,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidMetric._proof_5",
+   2497247771,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidMetric_inner",
+   2738329496,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidNonempty",
+   2676257274,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidNormalizedSegment",
+   2753633431,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidNormalizedSegment.eq_1",
+   2157077998,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidNormalizedSegment_properties",
+   2619564845,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidNormalizedSegment_properties._simp_1_1",
+   3288593392,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidNormalizedSegment_properties._simp_1_2",
+   4033513777,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidNormalizedSegment_properties._simp_1_3",
+   1623334871,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidNormalizedSegment_properties._simp_1_4",
+   1092673916,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidNormalizedSegment_properties._simp_1_5",
+   2195956633,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidNormalizedSegment_properties._simp_1_6",
+   1459115028,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidNormalizedSegment_properties._simp_1_7",
+   3730275133,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidPolar",
+   2408844181,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidPolar.eq_1",
+   3293970606,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidPolarCoords",
+   953044781,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidPolarCoords.eq_1",
+   3361629356,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidPolarCoords_mem",
+   391732411,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidPolar_arg",
+   1185859443,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidPolar_center_direction",
+   3630646200,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidPolar_center_direction._simp_1_3",
+   557169699,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidPolar_center_direction._simp_1_4",
+   1711543404,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidPolar_curve_speed",
+   754385398,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidPolar_eq_iff",
+   3002412935,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidPolar_local_coordinates",
+   2639580790,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidPolar_metric",
+   2611391016,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidPolar_norm",
+   1406805216,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidPolar_radius",
+   633802247,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidPolar_radius._simp_1_4",
+   557169699,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidPolar_radius._simp_1_5",
+   1711543404,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidPolar_tangentTensor",
+   151683647,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidRadialCurve",
+   1675633462,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidRadialCurve.eq_1",
+   1108213264,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidRadialCurve_length",
+   505464881,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidRadialCurve_properties",
+   3476904583,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidRadius",
+   2651990110,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidRadius.eq_1",
+   1794595657,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidRadius_absolutelyContinuous",
+   3746368984,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidRadius_ae_deriv_le_pieceSpeed",
+   1444600590,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidRadius_deriv_le_pieceSpeed",
+   108608716,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidRadius_lipschitzOn_piece",
+   593020185,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidRadius_piece_variation",
+   140316442,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidRadius_properties",
+   3950028818,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidRadius_variation_le_length",
+   2749111674,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidRadius_variation_le_length._proof_1_1",
+   3805010967,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidRadius_variation_le_length._proof_1_2",
+   4154903769,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidReflection",
+   2448855211,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidReflectionDiffeomorph",
+   1240378836,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidReflectionEquiv",
+   816311144,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidReflection_closed_side_images",
+   887389069,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidReflection_fixed_geodesic",
+   1278684415,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidReflection_fixed_iff",
+   3260114713,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidReflection_involutive",
+   292269298,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidReflection_normal",
+   503360320,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidReflection_open_side_bijOn",
+   1938218310,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidReflection_open_side_images",
+   140041052,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidReflection_preserves_metric",
+   1973446263,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidReflection_preserves_tangentTensor",
+   408890155,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidReflection_sides_open_nonempty",
+   3676567552,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidReflection_sides_open_nonempty._simp_1_1",
+   3302045774,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidReflection_tangentEquivKer",
+   342308362,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidReflection_val",
+   2538992415,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidSegment",
+   2753633431,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidSegmentInitial",
+   118036667,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidSegmentInitial.eq_1",
+   803799323,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidSegmentInitial_endpoint",
+   1426326139,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidSegment_endpoint",
+   1502802887,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidSegment_endpoint._simp_1_1",
+   3288593392,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidSegment_endpoint._simp_1_2",
+   4033513777,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidSegment_endpoint._simp_1_3",
+   1623334871,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidSegment_endpoint._simp_1_4",
+   1092673916,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidSegment_endpoint._simp_1_5",
+   2195956633,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidSegment_endpoint._simp_1_6",
+   1459115028,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidSegment_endpoint._simp_1_7",
+   3730275133,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidSegment_initial_formula",
+   2542635152,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidSegment_length",
+   1554884928,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidSegment_properties",
+   2456857425,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidSegment_reverse",
+   510739710,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidSpatial",
+   2214781262,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidSpatial.eq_1",
+   1773175114,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidTangentEquivKer",
+   890320754,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidTangentEquivKer._proof_1",
+   4068821357,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidTangentEquivKer._proof_2",
+   3328506717,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidTangentEquivKer._proof_3",
+   1466991258,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidTangentEquivKer._proof_4",
+   2810709645,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidTangentEquivKer._proof_5",
+   2226900939,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidTangentEquivKer_apply",
+   287836357,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidTangentEquivKer_symm_apply",
+   610631709,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidTangentTensor",
+   4155215601,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidTangentTensor._proof_1",
+   479082078,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidTangentTensor._proof_2",
+   2037323028,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidTangentTensor._proof_3",
+   457347729,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidTangentTensor._proof_4",
+   3745955133,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidTangentTensor_apply",
+   2532895707,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidTangentTensor_inCoordinates",
+   1608304853,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidTangentTensor_pos",
+   901506727,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidTangentTensor_symm",
+   872610345,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidToUpperHalfPlaneCoords",
+   1872889274,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidToUpperHalfPlaneCoords.eq_1",
+   3217493038,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidToUpperHalfPlaneCoords_im_pos",
+   1550208044,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloid_abs_y_lt_t",
+   2174587168,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloid_centered_loss_data",
+   2921451044,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloid_centered_loss_data._proof_1_1",
+   4154903769,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloid_centered_loss_data._proof_1_2",
+   3805010967,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloid_centered_loss_data._proof_1_3",
+   992365541,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloid_centered_minimizer_direction",
+   3649929394,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloid_centered_minimizer_direction._proof_1_1",
+   4154903769,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloid_centered_minimizer_direction._proof_1_3",
+   1374387624,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloid_centered_minimizer_direction._proof_1_4",
+   514912864,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloid_centered_minimizer_direction._proof_1_5",
+   3809349468,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloid_centered_minimizer_direction._proof_1_6",
+   1440789446,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloid_centered_minimizer_direction._simp_1_2",
+   2438746445,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloid_centered_minimizer_direction_deriv",
+   2503357813,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloid_centered_minimizer_direction_deriv._simp_1_4",
+   557169699,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloid_centered_minimizer_direction_deriv._simp_1_5",
+   1711543404,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloid_centered_minimizer_direction_deriv._simp_1_6",
+   1535117820,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloid_centered_minimizer_image",
+   783896546,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloid_centered_minimizer_image._proof_1_1",
+   2588882536,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloid_centered_minimizer_image._simp_1_2",
+   557169699,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloid_centered_minimizer_image._simp_1_3",
+   1711543404,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloid_centered_minimizer_losses",
+   3326098686,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloid_centered_minimizer_radius_monotone",
+   1840753092,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloid_centered_minimizer_zero",
+   2319241961,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloid_centered_piecewiseC1EDist",
+   2656161135,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloid_centered_unitSpeed_unique",
+   3201465795,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloid_centered_unitSpeed_unique._proof_1_1",
+   2588882536,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloid_centered_unitSpeed_unique._proof_1_2",
+   1128980098,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloid_centered_unitSpeed_unique._proof_1_3",
+   2863430497,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloid_chartAt",
+   416128208,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloid_chart_inverse_eventually",
+   1896085870,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloid_denominator_pos",
+   1338998154,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloid_distinct_span_plane",
+   1201587254,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloid_exists_finiteCurve",
+   3923913482,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloid_extChartAt",
+   2178419982,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloid_extChartAt_symm_val",
+   3500807163,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloid_finite_length_tail_cauchy",
+   2110865841,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloid_intrinsicEDist_finite",
+   888943220,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloid_lengthCauchy_compact_tail",
+   2771861075,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloid_lengthCauchy_not_tendsto_ideal",
+   530136104,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloid_minimizer_image",
+   4200289971,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloid_neg_lorentz_pos",
+   774631893,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloid_normal_components",
+   2637675874,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloid_normal_components._simp_1_1",
+   4173162993,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloid_normal_components._simp_1_2",
+   2525783790,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloid_normal_sides_pathConnected",
+   4101199832,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloid_normal_sign_on_preconnected",
+   70618485,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloid_spatial_dot_lt_time_mul",
+   269960876,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloid_tangent_lorentz_positive",
+   726999094,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloid_unitSpeed_minimizer_unique",
+   1479305737,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.injective_fderiv_toHyperboloid",
+   3774659423,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.isCompact_hyperboloidLengthDist_center_sublevel",
+   3416236672,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.isCompact_hyperboloidLengthMetricSpace_center_closedBall",
+   772424109,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.isCompact_hyperboloidLengthMetricSpace_closedBall",
+   3829647097,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.isCompact_hyperboloid_center_ambient",
+   764574668,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.isCompact_upperHalfPlaneLengthMetricSpace_closedBall",
+   2270906649,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.isOpenEmbedding_hyperboloidCoords",
+   113937726,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.locallyArclengthMinimizingHyperboloid_iff",
+   878433317,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.lorentzAdapted_decomposition",
+   538276355,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.lorentzAxisDirectionCoords",
+   2006600107,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.lorentzAxisDirectionCoords_spec",
+   988024964,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.lorentzAxisDirectionRemainder_spec",
+   1263880920,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.lorentzAxisPoint",
+   1085527405,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.lorentzAxisPoint._proof_1",
+   2811594084,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.lorentzAxisPointCoords",
+   626217188,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.lorentzAxisPointCoords_spec",
+   944913245,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.lorentzAxisProjection",
+   626217188,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.lorentzAxisProjection.eq_1",
+   2461934211,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.lorentzAxisProjection_spec",
+   3197279108,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.lorentzAxis_span_ker",
+   512669637,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.lorentzAxis_span_ker._proof_1_1",
+   3707084622,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.lorentzBilinForm",
+   2905879987,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.lorentzBilinForm._proof_1",
+   3068137246,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.lorentzBilinForm._proof_2",
+   700626221,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.lorentzBilinForm_apply",
+   132630740,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.lorentzBilinForm_symm",
+   883196811,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.lorentzBilinear",
+   3724940619,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.lorentzBilinear._proof_1",
+   1821370961,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.lorentzBilinear._proof_2",
+   3922943767,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.lorentzBilinear._proof_3",
+   2032158248,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.lorentzBilinear._proof_4",
+   3006552814,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.lorentzBilinear._proof_5",
+   2093931100,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.lorentzBilinear._proof_6",
+   1774777598,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.lorentzBilinear_apply",
+   1250056904,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.lorentzBilinear_eq_functional",
+   1174192653,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.lorentzBilinear_pos_on_ker",
+   2907569390,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.lorentzBilinear_symm",
+   3511327046,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.lorentzCenterCoordinates",
+   2591039742,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.lorentzCenterCoordinates._proof_1",
+   394901729,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.lorentzCenterCoordinates.eq_1",
+   4271948201,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.lorentzCenterCoordinates_mem",
+   1937845810,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.lorentzCenterCoordinates_preserves",
+   4247475179,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.lorentzCenterCoordinates_properties",
+   2614641914,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.lorentzCenterCoordinates_properties._simp_1_2",
+   3472596325,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.lorentzCenterCoordinates_symm_mem",
+   1341386764,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.lorentzCenterCoordinates_symm_preserves",
+   2847372305,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.lorentzCenterCoordinates_time",
+   4240968273,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.lorentzFrameBasis",
+   783172706,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.lorentzFrameBasis.eq_1",
+   2802119000,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.lorentzFrameBasis_apply",
+   432070132,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.lorentzFrameBasis_gram",
+   3822579837,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.lorentzFunctional",
+   4022847732,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.lorentzFunctional._proof_1",
+   213455248,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.lorentzFunctional._proof_2",
+   1751206130,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.lorentzFunctional._proof_3",
+   1289510895,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.lorentzFunctional_apply",
+   2571317808,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.lorentzKerBilinear",
+   3159971069,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.lorentzKerBilinear._proof_1",
+   172708704,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.lorentzKerBilinear._proof_2",
+   2993849969,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.lorentzKerBilinear._proof_3",
+   1398103295,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.lorentzKerBilinear_properties",
+   321895876,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.lorentzKer_quadratic_eq_zero_iff",
+   1686236755,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.lorentzKer_quadratic_lowerBound",
+   4108353337,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.lorentzKer_quadratic_nonneg",
+   724804310,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.lorentzKer_quadratic_pos",
+   2907569390,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.lorentzKer_time_eq",
+   1644344913,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.lorentzPlaneBasis",
+   2526333366,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.lorentzPlaneBasis._proof_1",
+   2509808464,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.lorentzPlaneBasis.eq_1",
+   3993468642,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.lorentzPlaneBasis_gram",
+   2816668769,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.lorentzPlaneBasis_gram._simp_1_2",
+   911487475,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.lorentzPlaneCore",
+   1992046658,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.lorentzPlaneCore._proof_1",
+   385596874,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.lorentzPlaneCore._proof_2",
+   1932914649,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.lorentzPlaneCore._proof_3",
+   76990836,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.lorentzPlaneCore._proof_4",
+   35261090,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.lorentzPlaneCore._proof_5",
+   3903894994,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.lorentzPlaneCore._proof_6",
+   750371999,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.lorentzPlane_eq_normalKer",
+   2869429658,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.lorentzPlane_eq_normalKer._proof_1_1",
+   3229054650,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.lorentzPlane_unitNormals_iff",
+   501666285,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.lorentzPlane_unitNormals_iff._proof_1_1",
+   1278721714,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.lorentzPlane_unitNormals_iff._simp_1_2",
+   3724262017,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.lorentzReflection",
+   88221817,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.lorentzReflection._proof_1",
+   3273777235,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.lorentzReflection.congr_simp",
+   1615662648,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.lorentzReflection_apply",
+   39975009,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.lorentzReflection_axisPoint",
+   3558607831,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.lorentzReflection_fixed_iff",
+   3661797927,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.lorentzReflection_hyperboloid_mem",
+   1891897176,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.lorentzReflection_hyperboloid_square",
+   2918123954,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.lorentzReflection_involutive",
+   2871647675,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.lorentzReflection_mem_tangentKer",
+   1071981419,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.lorentzReflection_neg_normal",
+   1933501673,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.lorentzReflection_normal",
+   181985867,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.lorentzReflection_preserves",
+   3022732235,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.lorentzReflection_self",
+   822396643,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.lorentzReflection_symm",
+   2177962476,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.lorentzReflection_time_ne_zero",
+   3241282077,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.lorentzReflection_time_pos",
+   1462690193,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.lorentzSumEquiv",
+   2093365740,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.lorentzSumEquiv.eq_1",
+   1237172450,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.lorentzSumMap",
+   1975030783,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.lorentzSumMap.eq_1",
+   2203003060,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.lorentzSumMap_bijective",
+   3956987788,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.lorentzUnit_time_ne_zero",
+   2918048939,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.lorentzUnit_time_sign",
+   941026984,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.lorentz_directSum",
+   702917201,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.lorentz_fderiv_bilinear",
+   1167763524,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.lorentz_fderiv_eq_auxiliary",
+   1367585065,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.lorentz_fderiv_quadratic",
+   1142478776,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.mfderiv_centerHyperboloid_val",
+   1643580088,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.mfderiv_fromHyperboloid_comp_toHyperboloid",
+   2641299960,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.mfderiv_hyperboloidPolar_val",
+   3706611877,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.mfderiv_hyperboloidReflection_val",
+   2918972317,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.mfderiv_hyperboloid_val",
+   2997959815,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.mfderiv_toHyperboloid_comp_fromHyperboloid",
+   3909221894,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.mfderiv_uncenterHyperboloid_val",
+   1084002179,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.modelLengthMetric_isometries",
+   4216127304,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.modelSegment_onePiece",
+   1113126819,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.modelSegment_pos",
+   4231243997,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.p_tangent_coordinates",
+   1490279573,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.planeCoefficientFunctional",
+   2117208836,
+   {
+    "Lib.Geometry.Hyperbolic.GeodesicEquations": 1
+   }
+  ],
+  [
+   "Hyperbolic.planeCoefficientFunctional._proof_1",
+   1751206130,
+   {
+    "Lib.Geometry.Hyperbolic.GeodesicEquations": 1
+   }
+  ],
+  [
+   "Hyperbolic.planeCoefficientFunctional._proof_2",
+   518125532,
+   {
+    "Lib.Geometry.Hyperbolic.GeodesicEquations": 1
+   }
+  ],
+  [
+   "Hyperbolic.planeCoefficientFunctional_apply",
+   256291114,
+   {
+    "Lib.Geometry.Hyperbolic.GeodesicEquations": 1
+   }
+  ],
+  [
+   "Hyperbolic.planeCoefficient_discriminant_pos_of_mem",
+   1415213831,
+   {
+    "Lib.Geometry.Hyperbolic.GeodesicEquations": 1
+   }
+  ],
+  [
+   "Hyperbolic.planeCoefficient_discriminant_pos_of_timelike",
+   3502346767,
+   {
+    "Lib.Geometry.Hyperbolic.GeodesicEquations": 1
+   }
+  ],
+  [
+   "Hyperbolic.planeCoefficient_toHyperboloid_iff",
+   1919663797,
+   {
+    "Lib.Geometry.Hyperbolic.GeodesicEquations": 1
+   }
+  ],
+  [
+   "Hyperbolic.planeCoefficient_toHyperboloid_mul",
+   4040930174,
+   {
+    "Lib.Geometry.Hyperbolic.GeodesicEquations": 1
+   }
+  ],
+  [
+   "Hyperbolic.planeCoefficient_toHyperboloid_mul._simp_1_1",
+   3288593392,
+   {
+    "Lib.Geometry.Hyperbolic.GeodesicEquations": 1
+   }
+  ],
+  [
+   "Hyperbolic.planeCoefficient_toHyperboloid_mul._simp_1_2",
+   4033513777,
+   {
+    "Lib.Geometry.Hyperbolic.GeodesicEquations": 1
+   }
+  ],
+  [
+   "Hyperbolic.planeCoefficient_toHyperboloid_mul._simp_1_3",
+   1623334871,
+   {
+    "Lib.Geometry.Hyperbolic.GeodesicEquations": 1
+   }
+  ],
+  [
+   "Hyperbolic.planeCoefficient_toHyperboloid_mul._simp_1_4",
+   1092673916,
+   {
+    "Lib.Geometry.Hyperbolic.GeodesicEquations": 1
+   }
+  ],
+  [
+   "Hyperbolic.planeCoefficient_toHyperboloid_mul._simp_1_5",
+   2195956633,
+   {
+    "Lib.Geometry.Hyperbolic.GeodesicEquations": 1
+   }
+  ],
+  [
+   "Hyperbolic.planeCoefficient_toHyperboloid_mul._simp_1_6",
+   1459115028,
+   {
+    "Lib.Geometry.Hyperbolic.GeodesicEquations": 1
+   }
+  ],
+  [
+   "Hyperbolic.planeCoefficient_toHyperboloid_mul._simp_1_7",
+   3730275133,
+   {
+    "Lib.Geometry.Hyperbolic.GeodesicEquations": 1
+   }
+  ],
+  [
+   "Hyperbolic.properSpace_hyperboloidLengthMetricSpace",
+   1917963757,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.properSpace_upperHalfPlaneLengthMetricSpace",
+   1901482116,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.range_fderiv_toHyperboloid",
+   4109674542,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.range_hyperboloidCoords",
+   4294910418,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.range_mfderiv_hyperboloid_val",
+   1542085664,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.source_chart_derivative",
+   2990619193,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.target_chart_derivative",
+   1370718131,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.termB",
+   1560175301,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.termF",
+   1560175301,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.termI",
+   1560175301,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.termJ",
+   1560175301,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.termK",
+   1560175301,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.termK_1",
+   1560175301,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.termV",
+   1560175301,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.toHyperboloid",
+   3034834793,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.toHyperboloid.eq_1",
+   2041166436,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.toHyperboloid_fromHyperboloid",
+   1405350331,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.toHyperboloid_intrinsicEDist",
+   198631134,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.toHyperboloid_length",
+   3043575591,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.toHyperboloid_norm_angle",
+   375486035,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.toHyperboloid_piecewiseC1EDist_le",
+   4058923504,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.toHyperboloid_preserves_metric",
+   2949058422,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.toHyperboloid_preserves_tangentTensor",
+   2012009051,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.toHyperboloid_speed",
+   2254732756,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.toHyperboloid_speedWithin",
+   2903030661,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.toHyperboloid_val",
+   3510471892,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.uncenterHyperboloid",
+   2934093408,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.uncenterHyperboloid_length",
+   144842526,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.uncenterHyperboloid_norm_enorm",
+   3981785201,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.uncenterHyperboloid_preserves_metric",
+   1630929845,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.uncenterHyperboloid_preserves_tangentTensor",
+   91495494,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.uncenterHyperboloid_speed",
+   3312029115,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.uncenterHyperboloid_speedWithin",
+   3970624133,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.upperHalfPlaneCoordinateTensor",
+   3149663438,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.upperHalfPlaneCoordinateTensor._proof_1",
+   1859183080,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.upperHalfPlaneCoordinateTensor._proof_2",
+   3298689944,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.upperHalfPlaneCoordinateTensor._proof_3",
+   392310977,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.upperHalfPlaneCoordinateTensor._proof_4",
+   252348540,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.upperHalfPlaneCoordinateTensor._proof_5",
+   346065723,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.upperHalfPlaneCoordinateTensor_apply",
+   3665678462,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.upperHalfPlaneCoordinateTensor_pos",
+   2368065495,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.upperHalfPlaneCoordinateTensor_symm",
+   66806173,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.upperHalfPlaneDiffeomorphHyperboloid",
+   1629231078,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.upperHalfPlaneDiffeomorphHyperboloid_coe",
+   3264469994,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.upperHalfPlaneDiffeomorphHyperboloid_curveFamily_length",
+   739539623,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.upperHalfPlaneEquivHyperboloid",
+   1436570228,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.upperHalfPlaneEquivHyperboloid_apply",
+   1187272459,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.upperHalfPlaneEquivHyperboloid_symm_apply",
+   3808896489,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.upperHalfPlaneHomeomorphHyperboloid",
+   292293560,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.upperHalfPlaneHomeomorphHyperboloid_toEquiv",
+   3105348338,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.upperHalfPlaneIsManifoldReal",
+   409956667,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.upperHalfPlaneLengthDist_nhds",
+   302008266,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.upperHalfPlaneLengthMetricSpace",
+   438248696,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.upperHalfPlaneLengthMetricSpace._proof_1",
+   2343916534,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.upperHalfPlaneLengthMetricSpace._proof_2",
+   2551160084,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.upperHalfPlaneLengthMetricSpace._proof_3",
+   1210053491,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.upperHalfPlaneLengthMetricSpace._proof_4",
+   3744716381,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.upperHalfPlaneLengthMetricSpace._proof_5",
+   1840006970,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.upperHalfPlaneLengthMetricSpace_coherence",
+   3381959599,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.upperHalfPlaneMetric",
+   1644626602,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.upperHalfPlaneMetric._proof_1",
+   3547569637,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.upperHalfPlaneMetric._proof_2",
+   3183587331,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.upperHalfPlaneMetric._proof_3",
+   3360032314,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.upperHalfPlaneMetric._proof_4",
+   4040139764,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.upperHalfPlaneMetric._proof_5",
+   3249285364,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.upperHalfPlaneMetric_inner",
+   1014566553,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.upperHalfPlaneSegment",
+   2526393763,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.upperHalfPlaneSegment.eq_1",
+   881555833,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.upperHalfPlaneSegment_properties",
+   1279116287,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.upperHalfPlaneTangentTensor",
+   3518091750,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.upperHalfPlaneTangentTensor._proof_1",
+   1158307750,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.upperHalfPlaneTangentTensor._proof_2",
+   3791332839,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.upperHalfPlaneTangentTensor._proof_3",
+   4191998605,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.upperHalfPlaneTangentTensor._proof_4",
+   2229631230,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.upperHalfPlaneTangentTensor._proof_5",
+   2229845961,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.upperHalfPlaneTangentTensor._proof_6",
+   1665494761,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.upperHalfPlaneTangentTensor_apply",
+   2012665389,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.upperHalfPlaneTangentTensor_inCoordinates",
+   982231456,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.upperHalfPlaneTangentTensor_pos",
+   1539598081,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.upperHalfPlaneTangentTensor_symm",
+   1846344029,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.upperHalfPlaneToHyperboloidCoords",
+   1199427549,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.upperHalfPlaneToHyperboloidCoords._proof_1",
+   2547959801,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.upperHalfPlaneToHyperboloidCoords.eq_1",
+   3549302406,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.upperHalfPlaneToHyperboloidCoords_add",
+   467278491,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.upperHalfPlaneToHyperboloidCoords_mem",
+   2257808191,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.upperHalfPlaneToHyperboloidCoords_sub",
+   575993773,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.upperHalfPlane_exists_finiteCurve",
+   4260513482,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.upperHalfPlane_finite_length_tail_cauchy",
+   2643000063,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.upperHalfPlane_intrinsicEDist_finite",
+   900010559,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.upperHalfPlane_lengthCauchy_compact_tail",
+   4126727791,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.upperHalfPlane_lengthCauchy_not_tendsto_ideal",
+   1739581673,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.z_tangent_coordinates",
+   58350518,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "LinearMap.BilinForm.unitNormalReflection",
+   823256636,
+   {
+    "Lib.LinearAlgebra.BilinearForm.Reflection": 1
+   }
+  ],
+  [
+   "LinearMap.BilinForm.unitNormalReflection._proof_1",
+   733092485,
+   {
+    "Lib.LinearAlgebra.BilinearForm.Reflection": 1
+   }
+  ],
+  [
+   "LinearMap.BilinForm.unitNormalReflection._proof_2",
+   3068137246,
+   {
+    "Lib.LinearAlgebra.BilinearForm.Reflection": 1
+   }
+  ],
+  [
+   "LinearMap.BilinForm.unitNormalReflection._proof_3",
+   1751206130,
+   {
+    "Lib.LinearAlgebra.BilinearForm.Reflection": 1
+   }
+  ],
+  [
+   "LinearMap.BilinForm.unitNormalReflection._proof_4",
+   2547959801,
+   {
+    "Lib.LinearAlgebra.BilinearForm.Reflection": 1
+   }
+  ],
+  [
+   "LinearMap.BilinForm.unitNormalReflection_apply",
+   3990758620,
+   {
+    "Lib.LinearAlgebra.BilinearForm.Reflection": 1
+   }
+  ],
+  [
+   "LinearMap.BilinForm.unitNormalReflection_apply_left",
+   3346289670,
+   {
+    "Lib.LinearAlgebra.BilinearForm.Reflection": 1
+   }
+  ],
+  [
+   "LinearMap.BilinForm.unitNormalReflection_fixed_iff",
+   853404115,
+   {
+    "Lib.LinearAlgebra.BilinearForm.Reflection": 1
+   }
+  ],
+  [
+   "LinearMap.BilinForm.unitNormalReflection_involutive",
+   1150662386,
+   {
+    "Lib.LinearAlgebra.BilinearForm.Reflection": 1
+   }
+  ],
+  [
+   "LinearMap.BilinForm.unitNormalReflection_normal",
+   2057116728,
+   {
+    "Lib.LinearAlgebra.BilinearForm.Reflection": 1
+   }
+  ],
+  [
+   "LinearMap.BilinForm.unitNormalReflection_preserves",
+   4216804562,
+   {
+    "Lib.LinearAlgebra.BilinearForm.Reflection": 1
+   }
+  ],
+  [
+   "LinearMap.BilinForm.unitNormalReflection_self",
+   2408827622,
+   {
+    "Lib.LinearAlgebra.BilinearForm.Reflection": 1
+   }
+  ],
+  [
+   "LinearMap.BilinForm.unitNormalReflection_symm",
+   788696313,
+   {
+    "Lib.LinearAlgebra.BilinearForm.Reflection": 1
+   }
+  ],
+  [
+   "Manifold.IsPiecewiseC1On",
+   578463670,
+   {
+    "Lib.Geometry.Manifold.Riemannian.CurveTransport": 1
+   }
+  ],
+  [
+   "Manifold.IsPiecewiseC1On._proof_1",
+   1374387624,
+   {
+    "Lib.Geometry.Manifold.Riemannian.CurveTransport": 1
+   }
+  ],
+  [
+   "Manifold.IsPiecewiseC1On.comp_contMDiff",
+   2080215941,
+   {
+    "Lib.Geometry.Manifold.Riemannian.CurveTransport": 1
+   }
+  ],
+  [
+   "Manifold.IsPiecewiseC1On.length_comp_of_tensorPreserving",
+   2037585741,
+   {
+    "Lib.Geometry.Manifold.Riemannian.CurveTransport": 1
+   }
+  ],
+  [
+   "Manifold.IsPiecewiseC1On.length_comp_of_tensorPreserving._proof_1_1",
+   4154903769,
+   {
+    "Lib.Geometry.Manifold.Riemannian.CurveTransport": 1
+   }
+  ],
+  [
+   "Manifold.IsPiecewiseC1On.length_eq",
+   383156603,
+   {
+    "Lib.Geometry.Manifold.Riemannian.CurveTransport": 1
+   }
+  ],
+  [
+   "Manifold.IsPiecewiseC1On.length_eq_of_strictRefinement",
+   748328648,
+   {
+    "Lib.Geometry.Manifold.Riemannian.CurveTransport": 1
+   }
+  ],
+  [
+   "Manifold.IsPiecewiseC1On.length_symm_of_tensorPreserving",
+   3991613698,
+   {
+    "Lib.Geometry.Manifold.Riemannian.CurveTransport": 1
+   }
+  ],
+  [
+   "Manifold.IsPiecewiseC1On.pieceIntegral_eq_sum_rankBlock",
+   1282764433,
+   {
+    "Lib.Geometry.Manifold.Riemannian.CurveTransport": 1
+   }
+  ],
+  [
+   "Manifold.IsPiecewiseC1On.pieceIntegral_eq_sum_rankBlock._proof_1_1",
+   2132809949,
+   {
+    "Lib.Geometry.Manifold.Riemannian.CurveTransport": 1
+   }
+  ],
+  [
+   "Manifold.IsPiecewiseC1On.piecewiseC1Length_eq_zero",
+   2116391058,
+   {
+    "Lib.Geometry.Manifold.Riemannian.CurveTransport": 1
+   }
+  ],
+  [
+   "Manifold.IsPiecewiseC1On.refine",
+   2328916382,
+   {
+    "Lib.Geometry.Manifold.Riemannian.CurveTransport": 1
+   }
+  ],
+  [
+   "Manifold.IsPiecewiseC1On.refine_length",
+   2084389493,
+   {
+    "Lib.Geometry.Manifold.Riemannian.CurveTransport": 1
+   }
+  ],
+  [
+   "Manifold.IsPiecewiseC1On.riemannianEDist_le_length",
+   1144003036,
+   {
+    "Lib.Geometry.Manifold.Riemannian.CurveTransport": 1
+   }
+  ],
+  [
+   "Manifold.IsPiecewiseC1On.riemannianEDist_le_piece",
+   2252683054,
+   {
+    "Lib.Geometry.Manifold.Riemannian.CurveTransport": 1
+   }
+  ],
+  [
+   "Manifold.IsPiecewiseC1On.riemannianEDist_le_piece._proof_1_1",
+   4154903769,
+   {
+    "Lib.Geometry.Manifold.Riemannian.CurveTransport": 1
+   }
+  ],
+  [
+   "Manifold.IsPiecewiseC1On.speedRepresentative_length",
+   1757160887,
+   {
+    "Lib.Geometry.Manifold.Riemannian.CurveTransport": 1
+   }
+  ],
+  [
+   "Manifold.IsPiecewiseC1On.speedRepresentative_length._proof_1_1",
+   1243427640,
+   {
+    "Lib.Geometry.Manifold.Riemannian.CurveTransport": 1
+   }
+  ],
+  [
+   "Manifold.IsPiecewiseC1On.speedRepresentative_length._proof_1_2",
+   2759633567,
+   {
+    "Lib.Geometry.Manifold.Riemannian.CurveTransport": 1
+   }
+  ],
+  [
+   "Manifold.IsPiecewiseC1On.speedRepresentative_length._proof_1_3",
+   2588882536,
+   {
+    "Lib.Geometry.Manifold.Riemannian.CurveTransport": 1
+   }
+  ],
+  [
+   "Manifold.IsPiecewiseC1On.speedRepresentative_length._proof_1_4",
+   1128980098,
+   {
+    "Lib.Geometry.Manifold.Riemannian.CurveTransport": 1
+   }
+  ],
+  [
+   "Manifold.IsPiecewiseC1On.speedRepresentative_length._proof_1_5",
+   2863430497,
+   {
+    "Lib.Geometry.Manifold.Riemannian.CurveTransport": 1
+   }
+  ],
+  [
+   "Manifold.IsPiecewiseC1On.speedRepresentative_length._proof_1_6",
+   1048840069,
+   {
+    "Lib.Geometry.Manifold.Riemannian.CurveTransport": 1
+   }
+  ],
+  [
+   "Manifold.IsPiecewiseC1On.speedRepresentative_length._proof_1_7",
+   707381403,
+   {
+    "Lib.Geometry.Manifold.Riemannian.CurveTransport": 1
+   }
+  ],
+  [
+   "Manifold.IsPiecewiseC1On.speedRepresentative_length._proof_1_8",
+   4154903769,
+   {
+    "Lib.Geometry.Manifold.Riemannian.CurveTransport": 1
+   }
+  ],
+  [
+   "Manifold.IsPiecewiseC1On.speed_extension",
+   1749679609,
+   {
+    "Lib.Geometry.Manifold.Riemannian.CurveTransport": 1
+   }
+  ],
+  [
+   "Manifold.IsPiecewiseC1On.speed_extension._proof_1_1",
+   1243427640,
+   {
+    "Lib.Geometry.Manifold.Riemannian.CurveTransport": 1
+   }
+  ],
+  [
+   "Manifold.IsPiecewiseC1On.speed_extension._proof_1_2",
+   2759633567,
+   {
+    "Lib.Geometry.Manifold.Riemannian.CurveTransport": 1
+   }
+  ],
+  [
+   "Manifold.IsPiecewiseC1On.speed_extension._proof_1_3",
+   2588882536,
+   {
+    "Lib.Geometry.Manifold.Riemannian.CurveTransport": 1
+   }
+  ],
+  [
+   "Manifold.IsPiecewiseC1On.speed_extension._proof_1_4",
+   1128980098,
+   {
+    "Lib.Geometry.Manifold.Riemannian.CurveTransport": 1
+   }
+  ],
+  [
+   "Manifold.IsPiecewiseC1On.speed_extension._proof_1_5",
+   2863430497,
+   {
+    "Lib.Geometry.Manifold.Riemannian.CurveTransport": 1
+   }
+  ],
+  [
+   "Manifold.IsPiecewiseC1On.speed_extension._proof_1_6",
+   1048840069,
+   {
+    "Lib.Geometry.Manifold.Riemannian.CurveTransport": 1
+   }
+  ],
+  [
+   "Manifold.IsPiecewiseC1On.speed_extension._proof_1_7",
+   707381403,
+   {
+    "Lib.Geometry.Manifold.Riemannian.CurveTransport": 1
+   }
+  ],
+  [
+   "Manifold.IsPiecewiseC1On.speed_length",
+   2377320870,
+   {
+    "Lib.Geometry.Manifold.Riemannian.CurveTransport": 1
+   }
+  ],
+  [
+   "Manifold.IsPiecewiseC1On.speed_length._proof_1_1",
+   4154903769,
+   {
+    "Lib.Geometry.Manifold.Riemannian.CurveTransport": 1
+   }
+  ],
+  [
+   "Manifold.PiecewiseC1CurveOn",
+   1687487271,
+   {
+    "Lib.Geometry.Manifold.Riemannian.CurveTransport": 1
+   }
+  ],
+  [
+   "Manifold.PiecewiseC1CurveOn.map",
+   877397371,
+   {
+    "Lib.Geometry.Manifold.Riemannian.CurveTransport": 1
+   }
+  ],
+  [
+   "Manifold.PiecewiseC1CurveOn.map._proof_1",
+   28081201,
+   {
+    "Lib.Geometry.Manifold.Riemannian.CurveTransport": 1
+   }
+  ],
+  [
+   "Manifold.PiecewiseC1CurveOn.mapEquiv",
+   2506029724,
+   {
+    "Lib.Geometry.Manifold.Riemannian.CurveTransport": 1
+   }
+  ],
+  [
+   "Manifold.PiecewiseC1CurveOn.mapEquiv._proof_1",
+   903797568,
+   {
+    "Lib.Geometry.Manifold.Riemannian.CurveTransport": 1
+   }
+  ],
+  [
+   "Manifold.PiecewiseC1CurveOn.mapEquiv._proof_2",
+   448636314,
+   {
+    "Lib.Geometry.Manifold.Riemannian.CurveTransport": 1
+   }
+  ],
+  [
+   "Manifold.PiecewiseC1CurveOn.mapEquiv._proof_3",
+   2165228294,
+   {
+    "Lib.Geometry.Manifold.Riemannian.CurveTransport": 1
+   }
+  ],
+  [
+   "Manifold.PiecewiseC1CurveOn.mapEquiv._proof_4",
+   686372761,
+   {
+    "Lib.Geometry.Manifold.Riemannian.CurveTransport": 1
+   }
+  ],
+  [
+   "Manifold.PiecewiseC1CurveOn.mapEquiv._proof_5",
+   1751047358,
+   {
+    "Lib.Geometry.Manifold.Riemannian.CurveTransport": 1
+   }
+  ],
+  [
+   "Manifold.PiecewiseC1CurveOn.mapEquiv_apply",
+   3348777454,
+   {
+    "Lib.Geometry.Manifold.Riemannian.CurveTransport": 1
+   }
+  ],
+  [
+   "Manifold.PiecewiseC1CurveOn.mapEquiv_length",
+   737613127,
+   {
+    "Lib.Geometry.Manifold.Riemannian.CurveTransport": 1
+   }
+  ],
+  [
+   "Manifold.PiecewiseC1CurveOn.mapEquiv_symm_apply",
+   4290189083,
+   {
+    "Lib.Geometry.Manifold.Riemannian.CurveTransport": 1
+   }
+  ],
+  [
+   "Manifold.PiecewiseC1CurveOn.map_apply",
+   3629201941,
+   {
+    "Lib.Geometry.Manifold.Riemannian.CurveTransport": 1
+   }
+  ],
+  [
+   "Manifold.continuousOn_pieceSpeed",
+   1831586775,
+   {
+    "Lib.Geometry.Manifold.Riemannian.CurveTransport": 1
+   }
+  ],
+  [
+   "Manifold.conventionSinglePiece",
+   3032169581,
+   {
+    "Lib.Geometry.Manifold.Riemannian.CurveTransport": 1
+   }
+  ],
+  [
+   "Manifold.conventionTwoCut",
+   1149663508,
+   {
+    "Lib.Geometry.Manifold.Riemannian.CurveTransport": 1
+   }
+  ],
+  [
+   "Manifold.conventionTwoCut._proof_1",
+   29803911,
+   {
+    "Lib.Geometry.Manifold.Riemannian.CurveTransport": 1
+   }
+  ],
+  [
+   "Manifold.conventionTwoCut.eq_1",
+   3053485517,
+   {
+    "Lib.Geometry.Manifold.Riemannian.CurveTransport": 1
+   }
+  ],
+  [
+   "Manifold.lengthRefinementT2",
+   2531344429,
+   {
+    "Lib.Geometry.Manifold.Riemannian.CurveTransport": 1
+   }
+  ],
+  [
+   "Manifold.lengthTangentT2",
+   2531344429,
+   {
+    "Lib.Geometry.Manifold.Riemannian.CurveTransport": 1
+   }
+  ],
+  [
+   "Manifold.mfderiv_comp_symm_of_diffeomorph",
+   2066209055,
+   {
+    "Lib.Geometry.Manifold.Riemannian.CurveTransport": 1
+   }
+  ],
+  [
+   "Manifold.mfderiv_symm_comp_of_diffeomorph",
+   2119785034,
+   {
+    "Lib.Geometry.Manifold.Riemannian.CurveTransport": 1
+   }
+  ],
+  [
+   "Manifold.pieceIntegral_comp_of_tensorPreserving",
+   1520915674,
+   {
+    "Lib.Geometry.Manifold.Riemannian.CurveTransport": 1
+   }
+  ],
+  [
+   "Manifold.piecewiseC1EDist",
+   619227870,
+   {
+    "Lib.Geometry.Manifold.Riemannian.CurveTransport": 1
+   }
+  ],
+  [
+   "Manifold.piecewiseC1EDist.congr_simp",
+   1596095279,
+   {
+    "Lib.Geometry.Manifold.Riemannian.CurveTransport": 1
+   }
+  ],
+  [
+   "Manifold.piecewiseC1EDist_eq_riemannianEDist",
+   512377958,
+   {
+    "Lib.Geometry.Manifold.Riemannian.CurveTransport": 1
+   }
+  ],
+  [
+   "Manifold.piecewiseC1EDist_eq_top_iff",
+   3317931524,
+   {
+    "Lib.Geometry.Manifold.Riemannian.CurveTransport": 1
+   }
+  ],
+  [
+   "Manifold.piecewiseC1EDist_eq_top_iff_no_c1",
+   1176359401,
+   {
+    "Lib.Geometry.Manifold.Riemannian.CurveTransport": 1
+   }
+  ],
+  [
+   "Manifold.piecewiseC1EDist_finite_of_curve",
+   1410354756,
+   {
+    "Lib.Geometry.Manifold.Riemannian.CurveTransport": 1
+   }
+  ],
+  [
+   "Manifold.piecewiseC1EDist_le_pathELength",
+   1556847894,
+   {
+    "Lib.Geometry.Manifold.Riemannian.CurveTransport": 1
+   }
+  ],
+  [
+   "Manifold.piecewiseC1EDist_le_riemannianEDist",
+   3794981947,
+   {
+    "Lib.Geometry.Manifold.Riemannian.CurveTransport": 1
+   }
+  ],
+  [
+   "Manifold.piecewiseC1Length",
+   633338988,
+   {
+    "Lib.Geometry.Manifold.Riemannian.CurveTransport": 1
+   }
+  ],
+  [
+   "Manifold.piecewiseC1Length._proof_1",
+   3052347782,
+   {
+    "Lib.Geometry.Manifold.Riemannian.CurveTransport": 1
+   }
+  ],
+  [
+   "Manifold.piecewiseC1Length._proof_2",
+   883419821,
+   {
+    "Lib.Geometry.Manifold.Riemannian.CurveTransport": 1
+   }
+  ],
+  [
+   "Manifold.piecewiseC1Length._proof_3",
+   1092026570,
+   {
+    "Lib.Geometry.Manifold.Riemannian.CurveTransport": 1
+   }
+  ],
+  [
+   "Manifold.piecewiseC1Length._proof_4",
+   3435079114,
+   {
+    "Lib.Geometry.Manifold.Riemannian.CurveTransport": 1
+   }
+  ],
+  [
+   "Manifold.piecewiseC1Length.congr_simp",
+   875313997,
+   {
+    "Lib.Geometry.Manifold.Riemannian.CurveTransport": 1
+   }
+  ],
+  [
+   "Manifold.riemannianEDist_le_piecewiseC1EDist",
+   4017094786,
+   {
+    "Lib.Geometry.Manifold.Riemannian.CurveTransport": 1
+   }
+  ],
+  [
+   "Manifold.speedWithin_comp_of_tensorPreserving",
+   2454412834,
+   {
+    "Lib.Geometry.Manifold.Riemannian.CurveTransport": 1
+   }
+  ],
+  [
+   "Manifold.speed_comp_of_tensorPreserving",
+   2384784576,
+   {
+    "Lib.Geometry.Manifold.Riemannian.CurveTransport": 1
+   }
+  ],
+  [
+   "Manifold.symm_norm_enorm_of_tensorPreserving",
+   2454154761,
+   {
+    "Lib.Geometry.Manifold.Riemannian.CurveTransport": 1
+   }
+  ],
+  [
+   "Manifold.symm_tensorPreserving_of_diffeomorph",
+   3933689974,
+   {
+    "Lib.Geometry.Manifold.Riemannian.CurveTransport": 1
+   }
+  ],
+  [
+   "RiemannBoundary.principalRoot_three_reverse_of_wedge",
+   3222552504,
+   {
+    "Lib.Analysis.Complex.RiemannMapping.PrincipalRoot": 1
+   }
+  ],
+  [
+   "RiemannBoundary.rotatedPrincipalRootFour_reverse_of_wedge",
+   1628229891,
+   {
+    "Hopf.Proof.Analysis.Complex.RiemannMapping.SectorRoots": 1
+   }
+  ],
+  [
+   "RiemannBoundary.rotatedPrincipalRootFour_reverse_of_wedge._simp_1_1",
+   2438746445,
+   {
+    "Hopf.Proof.Analysis.Complex.RiemannMapping.SectorRoots": 1
+   }
+  ],
+  [
+   "RiemannSphere.closedDiscHalfPlaneHomeomorph_inverse_receipt",
+   3842016994,
+   {
+    "Lib.Analysis.Complex.Mobius": 1
+   }
+  ],
+  [
+   "RiemannSphere.closedDiscHalfPlaneHomeomorph_inverse_receipt._simp_1_1",
+   3288593392,
+   {
+    "Lib.Analysis.Complex.Mobius": 1
+   }
+  ],
+  [
+   "RiemannSphere.closedDiscHalfPlaneHomeomorph_inverse_receipt._simp_1_2",
+   4033513777,
+   {
+    "Lib.Analysis.Complex.Mobius": 1
+   }
+  ],
+  [
+   "RiemannSphere.closedDiscHalfPlaneHomeomorph_inverse_receipt._simp_1_3",
+   1623334871,
+   {
+    "Lib.Analysis.Complex.Mobius": 1
+   }
+  ],
+  [
+   "RiemannSphere.closedDiscHalfPlaneHomeomorph_inverse_receipt._simp_1_4",
+   1092673916,
+   {
+    "Lib.Analysis.Complex.Mobius": 1
+   }
+  ],
+  [
+   "RiemannSphere.closedDiscHalfPlaneHomeomorph_inverse_receipt._simp_1_5",
+   2195956633,
+   {
+    "Lib.Analysis.Complex.Mobius": 1
+   }
+  ],
+  [
+   "RiemannSphere.closedDiscHalfPlaneHomeomorph_inverse_receipt._simp_1_6",
+   1459115028,
+   {
+    "Lib.Analysis.Complex.Mobius": 1
+   }
+  ],
+  [
+   "RiemannSphere.closedDiscHalfPlaneHomeomorph_inverse_receipt._simp_1_7",
+   3730275133,
+   {
+    "Lib.Analysis.Complex.Mobius": 1
+   }
+  ],
+  [
+   "RiemannSphere.closedOrientedHalfPlane_topology",
+   3366896300,
+   {
+    "Lib.Analysis.Complex.Mobius": 1
+   }
+  ],
+  [
+   "RiemannSphere.closedOrientedHalfPlane_topology._simp_1_1",
+   3288593392,
+   {
+    "Lib.Analysis.Complex.Mobius": 1
+   }
+  ],
+  [
+   "RiemannSphere.closedOrientedHalfPlane_topology._simp_1_2",
+   4033513777,
+   {
+    "Lib.Analysis.Complex.Mobius": 1
+   }
+  ],
+  [
+   "RiemannSphere.closedOrientedHalfPlane_topology._simp_1_3",
+   1623334871,
+   {
+    "Lib.Analysis.Complex.Mobius": 1
+   }
+  ],
+  [
+   "RiemannSphere.closedOrientedHalfPlane_topology._simp_1_4",
+   1092673916,
+   {
+    "Lib.Analysis.Complex.Mobius": 1
+   }
+  ],
+  [
+   "RiemannSphere.closedOrientedHalfPlane_topology._simp_1_5",
+   2195956633,
+   {
+    "Lib.Analysis.Complex.Mobius": 1
+   }
+  ],
+  [
+   "RiemannSphere.closedOrientedHalfPlane_topology._simp_1_6",
+   1459115028,
+   {
+    "Lib.Analysis.Complex.Mobius": 1
+   }
+  ],
+  [
+   "RiemannSphere.closedOrientedHalfPlane_topology._simp_1_7",
+   3730275133,
+   {
+    "Lib.Analysis.Complex.Mobius": 1
+   }
+  ],
+  [
+   "RiemannSphere.closedOrientedHalfPlane_topology._simp_1_8",
+   1822873633,
+   {
+    "Lib.Analysis.Complex.Mobius": 1
+   }
+  ],
+  [
+   "RiemannSphere.closedOrientedHalfPlane_topology._simp_1_9",
+   2525783790,
+   {
+    "Lib.Analysis.Complex.Mobius": 1
+   }
+  ]
+ ],
+ "changed_type_source": [],
+ "changed_type_proof_naming": [
+  "DiskFraming.exists_smooth_frame_near_starConvex",
+  "DiskFraming.exists_smooth_frame_on_neighborhood_closedBall"
+ ],
+ "changed_type_accepted": [],
+ "added_accepted": [],
+ "accept_without_effect": [],
+ "changed_type_all": [
+  "DiskFraming.exists_smooth_frame_near_starConvex",
+  "DiskFraming.exists_smooth_frame_on_neighborhood_closedBall"
+ ],
+ "moves": [],
+ "ambiguous": [],
+ "auxiliary_moved": 0,
+ "verdict": "FAIL"
+}

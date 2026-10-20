@@ -1,0 +1,19 @@
+constants before 38301 after 38305 (keys 38199 38203 )
+lost 1 added 5 of which source declarations: 0 0 ; names with changed type 1 of which source: 0
+auxiliary lost/added/changed (not judged): 1 5 1
+module moves (source declarations, 1-to-1):
+       3  Lib.Geometry.Manifold.Whitney.RankThreeModel -> Lib.Geometry.Manifold.Whitney.RankThreeModel.Cancellation
+      15  Lib.Geometry.Manifold.Whitney.RankThreeModel -> Lib.Geometry.Manifold.Whitney.RankThreeModel.CompatibleChart
+      27  Lib.Geometry.Manifold.Whitney.RankThreeModel -> Lib.Geometry.Manifold.Whitney.RankThreeModel.CorrectedCoordinates
+      50  Lib.Geometry.Manifold.Whitney.RankThreeModel -> Lib.Geometry.Manifold.Whitney.RankThreeModel.GraphMotion
+       3  Lib.Geometry.Manifold.Whitney.RankThreeModel -> Lib.Geometry.Manifold.Whitney.RankThreeModel.IntersectionRemoval
+      34  Lib.Geometry.Manifold.Whitney.RankThreeModel -> Lib.Geometry.Manifold.Whitney.RankThreeModel.Model
+      20  Lib.Geometry.Manifold.Whitney.RankThreeModel -> Lib.Geometry.Manifold.Whitney.RankThreeModel.ModelGraphMotion
+      17  Lib.Geometry.Manifold.Whitney.RankThreeModel -> Lib.Geometry.Manifold.Whitney.RankThreeModel.SheetCorrection
+      31  Lib.Geometry.Manifold.Whitney.RankThreeModel -> Lib.Geometry.Manifold.Whitney.RankThreeModel.SheetParametrizedChart
+       6  Lib.Geometry.Manifold.Whitney.RankThreeModel -> Lib.Geometry.Manifold.Whitney.RankThreeModel.SheetRecognition
+      20  Lib.Geometry.Manifold.Whitney.RankThreeModel -> Lib.Geometry.Manifold.Whitney.RankThreeModel.SheetRetiming
+      43  Lib.Geometry.Manifold.Whitney.RankThreeModel -> Lib.Geometry.Manifold.Whitney.RankThreeModel.TangentAdaptedChart
+ambiguous module changes: 0
+auxiliary constants that changed module: 152
+VERDICT PASS

@@ -1,0 +1,32 @@
+constants before 38301 after 38303 (keys 38199 38201 )
+lost 11 added 13 of which source declarations: 0 0 ; names with changed type 1 of which source: 0
+auxiliary lost/added/changed (not judged): 11 13 1
+module moves (source declarations, 1-to-1):
+       3  Lib.Geometry.Manifold.Whitney.EmbeddedArcs -> Lib.Geometry.Manifold.Whitney.EmbeddedArcs.Arcs
+       3  Lib.Geometry.Manifold.Whitney.EmbeddedArcs -> Lib.Geometry.Manifold.Whitney.EmbeddedArcs.BeltBigon
+       3  Lib.Geometry.Manifold.Whitney.EmbeddedArcs -> Lib.Geometry.Manifold.Whitney.EmbeddedArcs.CornerCharts
+       5  Lib.Geometry.Manifold.Whitney.EmbeddedArcs -> Lib.Geometry.Manifold.Whitney.EmbeddedArcs.FiberRestriction
+      13  Lib.Geometry.Manifold.Whitney.EmbeddedArcs -> Lib.Geometry.Manifold.Whitney.EmbeddedArcs.ImmersionRepair
+      14  Lib.Geometry.Manifold.Whitney.EmbeddedArcs -> Lib.Geometry.Manifold.Whitney.EmbeddedArcs.InnerBigon
+       8  Lib.Geometry.Manifold.Whitney.EmbeddedArcs -> Lib.Geometry.Manifold.Whitney.EmbeddedArcs.SmallPerturbation
+      11  Lib.Geometry.Manifold.Whitney.EmbeddedArcs -> Lib.Geometry.Manifold.Whitney.EmbeddedArcs.SphereNormalCoordinates
+       3  Lib.Geometry.Manifold.Whitney.EmbeddedArcs -> Lib.Geometry.Manifold.Whitney.EmbeddedArcs.StripAlongArc
+       6  Lib.Geometry.Manifold.Whitney.EmbeddedArcs -> Lib.Geometry.Manifold.Whitney.EmbeddedArcs.StripInterpolation
+       5  Lib.Geometry.Manifold.Whitney.EmbeddedArcs -> Lib.Geometry.Manifold.Whitney.EmbeddedArcs.StripPair
+       7  Lib.Geometry.Manifold.Whitney.EmbeddedArcs -> Lib.Geometry.Manifold.Whitney.EmbeddedArcs.TransverseCoordinates
+       7  Lib.Geometry.Manifold.Whitney.EmbeddedArcs -> Lib.Geometry.Manifold.Whitney.EmbeddedArcs.WhitneyDisc
+      13  Lib.Geometry.Manifold.Whitney.FrameField -> Lib.Geometry.Manifold.Whitney.FrameField.BlockDeterminant
+      17  Lib.Geometry.Manifold.Whitney.FrameField -> Lib.Geometry.Manifold.Whitney.FrameField.BoundaryArcs
+       2  Lib.Geometry.Manifold.Whitney.FrameField -> Lib.Geometry.Manifold.Whitney.FrameField.BoundaryField
+       3  Lib.Geometry.Manifold.Whitney.FrameField -> Lib.Geometry.Manifold.Whitney.FrameField.Complement
+       8  Lib.Geometry.Manifold.Whitney.FrameField -> Lib.Geometry.Manifold.Whitney.FrameField.FrameExtension
+      12  Lib.Geometry.Manifold.Whitney.FrameField -> Lib.Geometry.Manifold.Whitney.FrameField.IntersectionCoordinates
+       4  Lib.Geometry.Manifold.Whitney.FrameField -> Lib.Geometry.Manifold.Whitney.FrameField.InvertibleJoin
+      23  Lib.Geometry.Manifold.Whitney.FrameField -> Lib.Geometry.Manifold.Whitney.FrameField.PlanarFrame
+       3  Lib.Geometry.Manifold.Whitney.FrameField -> Lib.Geometry.Manifold.Whitney.FrameField.RankThreeCorners
+      12  Lib.Geometry.Manifold.Whitney.FrameField -> Lib.Geometry.Manifold.Whitney.FrameField.RankThreeFrame
+       5  Lib.Geometry.Manifold.Whitney.FrameField -> Lib.Geometry.Manifold.Whitney.FrameField.SheetCoordinates
+      19  Lib.Geometry.Manifold.Whitney.FrameField -> Lib.Geometry.Manifold.Whitney.FrameField.SheetNormal
+ambiguous module changes: 0
+auxiliary constants that changed module: 74
+VERDICT PASS

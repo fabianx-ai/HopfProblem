@@ -1,0 +1,6 @@
+theorem StripCoordinates.hasDerivAt_verticalSlice {E : Type*} [NormedAddCommGroup E]
+    [NormedSpace ℝ E] {F : (ℝ × ℝ) → E} {t s : ℝ} (hF : DifferentiableAt ℝ F (t, s)) :
+    HasDerivAt (fun u : ℝ => F (t, u)) (fderiv ℝ F (t, s) (0, 1)) s := by
+  have hi : HasDerivAt (fun u : ℝ => (t, u)) (0, 1) s :=
+    (hasDerivAt_const s t).prodMk (hasDerivAt_id s)
+  exact hF.hasFDerivAt.comp_hasDerivAt s hi

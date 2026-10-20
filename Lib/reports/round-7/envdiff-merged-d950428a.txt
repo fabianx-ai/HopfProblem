@@ -1,0 +1,27 @@
+constants before 21719 after 21721 (keys 21713 21715 )
+lost 1438 added 1440 of which source declarations: 0 0 ; names with changed type 1438 of which source: 1028
+  PROOF-NAMING AlgebraicTopology.SingularCochains.DualEvaluation.ChainClass
+  PROOF-NAMING AlgebraicTopology.SingularCochains.DualEvaluation.HomeomorphCoordinates.A
+  PROOF-NAMING AlgebraicTopology.SingularCochains.DualEvaluation.HomeomorphCoordinates.coordinateEvaluation
+  PROOF-NAMING AlgebraicTopology.SingularCochains.DualEvaluation.HomeomorphCoordinates.coordinateEvaluationPositive
+  PROOF-NAMING AlgebraicTopology.SingularCochains.DualEvaluation.HomeomorphCoordinates.coordinateEvaluationPositive_pullback
+  PROOF-NAMING AlgebraicTopology.SingularCochains.DualEvaluation.HomeomorphCoordinates.coordinateEvaluation_pullback
+  PROOF-NAMING AlgebraicTopology.SingularCochains.DualEvaluation.HomeomorphCoordinates.evaluationTargetEquiv
+  PROOF-NAMING AlgebraicTopology.SingularCochains.DualEvaluation.HomeomorphCoordinates.pullback_comp_coordinateEvaluationPositive_eq_of_homologyMap_eq
+  PROOF-NAMING AlgebraicTopology.SingularCochains.DualEvaluation.HomeomorphCoordinates.uliftDownHomEquiv
+  PROOF-NAMING AlgebraicTopology.SingularCochains.DualEvaluation.IsClosedFunctional
+  PROOF-NAMING AlgebraicTopology.SingularCochains.DualEvaluation.LocalUCT.IncomingImage
+  PROOF-NAMING AlgebraicTopology.SingularCochains.DualEvaluation.LocalUCT.OutgoingImage
+  PROOF-NAMING AlgebraicTopology.SingularCochains.DualEvaluation.LocalUCT.boundaryCycle
+  PROOF-NAMING AlgebraicTopology.SingularCochains.DualEvaluation.LocalUCT.boundaryCycle_val
+  PROOF-NAMING AlgebraicTopology.SingularCochains.DualEvaluation.LocalUCT.cohomologyEvaluationAlong
+  PROOF-NAMING AlgebraicTopology.SingularCochains.DualEvaluation.LocalUCT.cohomologyEvaluationAlongCoefficient
+  PROOF-NAMING AlgebraicTopology.SingularCochains.DualEvaluation.LocalUCT.cohomologyEvaluationAlongCoefficient_apply
+  PROOF-NAMING AlgebraicTopology.SingularCochains.DualEvaluation.LocalUCT.cohomologyEvaluationAlongCoefficient_isIso_of_free_of_projective
+  PROOF-NAMING AlgebraicTopology.SingularCochains.DualEvaluation.LocalUCT.cohomologyEvaluationAlongCoefficient_natural
+  PROOF-NAMING AlgebraicTopology.SingularCochains.DualEvaluation.LocalUCT.cohomologyEvaluationAlong_apply
+auxiliary lost/added/changed (not judged): 1438 1440 410
+module moves (source declarations, 1-to-1):
+ambiguous module changes: 0
+auxiliary constants that changed module: 0
+VERDICT PASS

@@ -1,0 +1,42 @@
+CMD: LEAN_PATH=.: lake env lean C19_InterfaceConsumerCheck.lean (post-move)
+start 1789321047
+C19_InterfaceCheck.c1.{u_1} {X : Type u_1} [TopologicalSpace X]
+  (D : Mathoverflow1973.FundamentalGroup.VanKampen.TwoOpenCover X) : PathConnectedSpace X
+C19_InterfaceCheck.c2.{u_1} {X : Type u_1} [TopologicalSpace X]
+  (D : Mathoverflow1973.FundamentalGroup.VanKampen.TwoOpenCover X) [SimplyConnectedSpace ↥D.U]
+  [SimplyConnectedSpace ↥D.V] (g : FundamentalGroup X D.base) : g = 1
+C19_InterfaceCheck.c3 (X : Type) [TopologicalSpace X] [PathConnectedSpace X] (x : X) :
+  Mathoverflow1973.FundamentalGroup.VanKampen.TwoOpenCover (Mathoverflow1973.Suspension X)
+C19_InterfaceCheck.c4 {X : Type} [TopologicalSpace X] [SimplyConnectedSpace X] (x : X)
+  [Subsingleton (HomotopyGroup.Pi 2 X x)] :
+  Additive (HomotopyGroup.Pi 3 X x) ≃ₗ[ℤ] ↑(Mathoverflow1973.SingularMayerVietoris.SingularHomology X 3)
+C19_InterfaceCheck.c5 {X : Type} [TopologicalSpace X] [SimplyConnectedSpace X] (x : X)
+  [Subsingleton (HomotopyGroup.Pi 2 X x)] :
+  HomotopyGroup.Pi 3 X x ≃* Multiplicative ↑(Mathoverflow1973.SingularMayerVietoris.SingularHomology X 3)
+C19_InterfaceCheck.c6 {X : Type} [TopologicalSpace X] [SimplyConnectedSpace X] (x : X)
+  [Subsingleton (HomotopyGroup.Pi 2 X x)] [Subsingleton (HomotopyGroup.Pi 3 X x)] :
+  Additive (HomotopyGroup.Pi 4 X x) ≃ₗ[ℤ] ↑(Mathoverflow1973.SingularMayerVietoris.SingularHomology X 4)
+C19_InterfaceCheck.c7 {X : Type} [TopologicalSpace X] [SimplyConnectedSpace X] (x : X)
+  [Subsingleton (HomotopyGroup.Pi 2 X x)] [Subsingleton (HomotopyGroup.Pi 3 X x)] :
+  HomotopyGroup.Pi 4 X x ≃* Multiplicative ↑(Mathoverflow1973.SingularMayerVietoris.SingularHomology X 4)
+C19_InterfaceCheck.c8 {X : Type} [TopologicalSpace X] [SimplyConnectedSpace X] (x : X)
+  [Subsingleton (HomotopyGroup.Pi 2 X x)] [Subsingleton (HomotopyGroup.Pi 3 X x)]
+  [Subsingleton (HomotopyGroup.Pi 4 X x)] :
+  Additive (HomotopyGroup.Pi 5 X x) ≃ₗ[ℤ] ↑(Mathoverflow1973.SingularMayerVietoris.SingularHomology X 5)
+C19_InterfaceCheck.c9 {X : Type} [TopologicalSpace X] [SimplyConnectedSpace X] (x : X)
+  [Subsingleton (HomotopyGroup.Pi 2 X x)] [Subsingleton (HomotopyGroup.Pi 3 X x)]
+  [Subsingleton (HomotopyGroup.Pi 4 X x)] :
+  HomotopyGroup.Pi 5 X x ≃* Multiplicative ↑(Mathoverflow1973.SingularMayerVietoris.SingularHomology X 5)
+C19_InterfaceCheck.c10 : Set (EuclideanSpace ℝ (Fin (6 + 1)))
+C19_InterfaceCheck.c11 : OnePoint (EuclideanSpace ℝ (Fin 6)) ≃ₜ ↑Mathoverflow1973.SixSphereCube.StandardSphere
+C19_InterfaceCheck.c12 : ↑Mathoverflow1973.SixSphereCube.StandardSphere
+C19_InterfaceCheck.c13 (x : ↑Mathoverflow1973.SixSphereCube.StandardSphere) :
+  Subsingleton (HomotopyGroup.Pi 2 (↑Mathoverflow1973.SixSphereCube.StandardSphere) x)
+C19_InterfaceCheck.c14 (x : ↑Mathoverflow1973.SixSphereCube.StandardSphere) :
+  Subsingleton (HomotopyGroup.Pi 3 (↑Mathoverflow1973.SixSphereCube.StandardSphere) x)
+C19_InterfaceCheck.c15 (x : ↑Mathoverflow1973.SixSphereCube.StandardSphere) :
+  Subsingleton (HomotopyGroup.Pi 4 (↑Mathoverflow1973.SixSphereCube.StandardSphere) x)
+C19_InterfaceCheck.c16 (x : ↑Mathoverflow1973.SixSphereCube.StandardSphere) :
+  Subsingleton (HomotopyGroup.Pi 5 (↑Mathoverflow1973.SixSphereCube.StandardSphere) x)
+exit 0
+end 1789321055

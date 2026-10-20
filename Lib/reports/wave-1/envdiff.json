@@ -1,0 +1,4062 @@
+{
+ "before": "/home/goblin/.claude/jobs/06995e68/tmp/wave1/dump_head.jsonl",
+ "after": "/home/goblin/.claude/jobs/06995e68/tmp/wave1/final/dump_after.jsonl",
+ "prefix": "",
+ "constants": [
+  38248,
+  38301
+ ],
+ "lost": [
+  [
+   "AlgebraicTopology.SingularCochains.dualHomotopyEquiv",
+   140768443,
+   {
+    "Lib.AlgebraicTopology.SingularCochains.PositivePrimitives": 1
+   }
+  ],
+  [
+   "AlgebraicTopology.SingularCochains.dualHomotopyEquiv._proof_1",
+   181655784,
+   {
+    "Lib.AlgebraicTopology.SingularCochains.PositivePrimitives": 1
+   }
+  ],
+  [
+   "AlgebraicTopology.SingularCochains.dualHomotopyEquiv._proof_2",
+   3654990933,
+   {
+    "Lib.AlgebraicTopology.SingularCochains.PositivePrimitives": 1
+   }
+  ],
+  [
+   "CoverNaturality.chainSequenceSwap._proof_1",
+   470474317,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.Naturality": 1
+   }
+  ],
+  [
+   "CoverNaturality.chainSequenceSwap._proof_2",
+   1890398342,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.Naturality": 1
+   }
+  ],
+  [
+   "FrameField.correctedComplement.eq_1",
+   4055834812,
+   {
+    "Lib.Geometry.Manifold.Immersion.Relative": 1
+   }
+  ],
+  [
+   "Hurewicz.CubeSubdivision.orientedPrismRealization_standardPrism._simp_1_2",
+   3705374514,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition": 1
+   }
+  ],
+  [
+   "Hurewicz.CubeSubdivision.prismCubeVertex_shuffle._simp_1_2",
+   821638330,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition": 1
+   }
+  ],
+  [
+   "Hurewicz.CubeSubdivision.prismCubeVertex_shuffle._simp_1_3",
+   3269858211,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition": 1
+   }
+  ],
+  [
+   "Hurewicz.CubeSubdivision.prismCubeVertex_shuffle._simp_1_5",
+   2185636451,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition": 1
+   }
+  ],
+  [
+   "Hurewicz.CubeSubdivision.prismCubeVertex_shuffle._simp_1_6",
+   821100061,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition": 1
+   }
+  ],
+  [
+   "Hurewicz.CubeSubdivision.shufflePrismVertices.eq_1",
+   1941682677,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.basedEdgePath._proof_1",
+   1785502152,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.basedEdgePath._proof_2",
+   137656284,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.basedTriangleCycle._proof_1",
+   4205808816,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.basedTrianglesHomotopy_of_faces._proof_2",
+   1250168214,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.basedTrianglesHomotopy_of_faces._proof_3",
+   3772832479,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.basedTrianglesHomotopy_of_faces._proof_4",
+   3372039359,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.bottomProductDegenerate.eq_1",
+   600068511,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.edgeStraighteningHomotopy._proof_1",
+   1320203781,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.edgeStraighteningHomotopy._proof_2",
+   3725989975,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.edgeStraighteningHomotopy.eq_1",
+   1424306941,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.gluedTriangleHomotopy._proof_1",
+   1810973802,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.gluedTriangleHomotopy._proof_2",
+   3757567331,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.gluedTriangleHomotopy._proof_3",
+   1307716221,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.gluedTriangleHomotopyMap._proof_1",
+   778258193,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.hurewiczPi2Equiv._proof_1",
+   4019860423,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.hurewiczPi2Equiv._proof_2",
+   3685264617,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.hurewiczPi2Equiv._proof_3",
+   3375359379,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.leftProductDegenerate.eq_1",
+   1821419953,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.lowerProductTriangle.eq_1",
+   728481985,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.lowerSquareTriangle_outerFace",
+   1270476586,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.productSquareChain_four_triangles._abel_1_3",
+   3527063956,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.quarterTurn._proof_1",
+   4035993764,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.rotationCentered.eq_1",
+   222644973,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.simplexPrism.eq_1",
+   2501862445,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.squareTriangles_diagonal",
+   2422672512,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.straightenedTwoCycle._proof_1",
+   639069101,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.subdivisionLowerProductMap._proof_1",
+   3408976143,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.subdivisionLowerProductMap.eq_1",
+   3613511969,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.subdivisionLowerSquareTriangle_based",
+   3397367119,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.subdivisionLowerTriangleMap._proof_2",
+   1441084204,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.subdivisionLowerTriangleMap.eq_1",
+   4239249729,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.subdivisionUpperConeMap._proof_1",
+   3061419314,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.subdivisionUpperConeMap.eq_1",
+   2969245419,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.subdivisionUpperNegativeMap._proof_1",
+   984858144,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.subdivisionUpperNegativeMap.eq_1",
+   542937731,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.subdivisionUpperNegativeReversedMap._proof_1",
+   3294804829,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.subdivisionUpperNegativeReversedMap.eq_1",
+   3313075028,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.subdivisionUpperNegativeSquareTriangle_based",
+   288581926,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.subdivisionUpperPositiveSquareTriangle.eq_1",
+   1554591518,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.subdivisionUpperPositiveSquareTriangle_based",
+   1004228009,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.subdivisionUpperProductMap._proof_1",
+   3346518133,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.subdivisionUpperProductMap.eq_1",
+   1829775686,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.subdivisionUpperTriangleMap._proof_1",
+   73688279,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.subdivisionUpperTriangleMap.eq_1",
+   217424556,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.subdivisionWarpCoordinate._proof_2",
+   2442915563,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.subdivisionWarpCoordinate.eq_1",
+   1576636581,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.subdivisionWarpMap._proof_1",
+   779078459,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.subdivisionWarpMap.eq_1",
+   145284800,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.tetrahedronQuadrilateralA._proof_1",
+   2342206144,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.tetrahedronQuadrilateralA._proof_2",
+   3237678119,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.tetrahedronQuadrilateralA.eq_1",
+   132560859,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.tetrahedronSimplexBlendMap",
+   2733494787,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.tetrahedronSimplexBlendMap._proof_1",
+   429816409,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.tetrahedronSimplexBlendMap._proof_2",
+   2485303369,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.triangleCubeQuotient._proof_1",
+   2307902640,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.upperProductTriangle.eq_1",
+   1728566766,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.upperSquareTriangle_outerFace",
+   2869357885,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.vertexNormalizedTwoCycle._proof_1",
+   3062302807,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator": 1
+   }
+  ],
+  [
+   "Hurewicz.cubeCoordinates._proof_1",
+   2272690309,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition": 1
+   }
+  ],
+  [
+   "Hurewicz.cubeCoordinates.eq_1",
+   630135612,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition": 1
+   }
+  ],
+  [
+   "Hurewicz.cubeRemainingCoordinates._proof_1",
+   4128272863,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition": 1
+   }
+  ],
+  [
+   "Hurewicz.cubeRemainingCoordinates._proof_2",
+   1244004431,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition": 1
+   }
+  ],
+  [
+   "Hurewicz.cubeRemainingCoordinates.eq_1",
+   2337187207,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition": 1
+   }
+  ],
+  [
+   "Hurewicz.homotopyTrans_compContinuousMap",
+   2465953690,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator": 1
+   }
+  ],
+  [
+   "Hurewicz.homotopyTrans_congr",
+   525357237,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator": 1
+   }
+  ],
+  [
+   "Hurewicz.homotopyTrans_const",
+   1015205991,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator": 1
+   }
+  ],
+  [
+   "LinearFramePaths.matrixCoordinates._proof_1",
+   4097458953,
+   {
+    "Lib.Geometry.Manifold.Immersion.Relative": 1
+   }
+  ],
+  [
+   "LinearFramePaths.matrixCoordinates._proof_10",
+   2518188102,
+   {
+    "Lib.Geometry.Manifold.Immersion.Relative": 1
+   }
+  ],
+  [
+   "LinearFramePaths.matrixCoordinates._proof_11",
+   2478895964,
+   {
+    "Lib.Geometry.Manifold.Immersion.Relative": 1
+   }
+  ],
+  [
+   "LinearFramePaths.matrixCoordinates._proof_12",
+   908635498,
+   {
+    "Lib.Geometry.Manifold.Immersion.Relative": 1
+   }
+  ],
+  [
+   "LinearFramePaths.matrixCoordinates._proof_13",
+   1960294102,
+   {
+    "Lib.Geometry.Manifold.Immersion.Relative": 1
+   }
+  ],
+  [
+   "LinearFramePaths.matrixCoordinates._proof_14",
+   2104510348,
+   {
+    "Lib.Geometry.Manifold.Immersion.Relative": 1
+   }
+  ],
+  [
+   "LinearFramePaths.matrixCoordinates._proof_15",
+   1422682179,
+   {
+    "Lib.Geometry.Manifold.Immersion.Relative": 1
+   }
+  ],
+  [
+   "LinearFramePaths.matrixCoordinates._proof_16",
+   3372672843,
+   {
+    "Lib.Geometry.Manifold.Immersion.Relative": 1
+   }
+  ],
+  [
+   "LinearFramePaths.matrixCoordinates._proof_17",
+   318672172,
+   {
+    "Lib.Geometry.Manifold.Immersion.Relative": 1
+   }
+  ],
+  [
+   "LinearFramePaths.matrixCoordinates._proof_18",
+   2044759301,
+   {
+    "Lib.Geometry.Manifold.Immersion.Relative": 1
+   }
+  ],
+  [
+   "LinearFramePaths.matrixCoordinates._proof_2",
+   1251713775,
+   {
+    "Lib.Geometry.Manifold.Immersion.Relative": 1
+   }
+  ],
+  [
+   "LinearFramePaths.matrixCoordinates._proof_3",
+   1767678328,
+   {
+    "Lib.Geometry.Manifold.Immersion.Relative": 1
+   }
+  ],
+  [
+   "LinearFramePaths.matrixCoordinates._proof_4",
+   792980634,
+   {
+    "Lib.Geometry.Manifold.Immersion.Relative": 1
+   }
+  ],
+  [
+   "LinearFramePaths.matrixCoordinates._proof_5",
+   2863932817,
+   {
+    "Lib.Geometry.Manifold.Immersion.Relative": 1
+   }
+  ],
+  [
+   "LinearFramePaths.matrixCoordinates._proof_6",
+   1638091324,
+   {
+    "Lib.Geometry.Manifold.Immersion.Relative": 1
+   }
+  ],
+  [
+   "LinearFramePaths.matrixCoordinates._proof_7",
+   1137362524,
+   {
+    "Lib.Geometry.Manifold.Immersion.Relative": 1
+   }
+  ],
+  [
+   "LinearFramePaths.matrixCoordinates._proof_8",
+   2914754502,
+   {
+    "Lib.Geometry.Manifold.Immersion.Relative": 1
+   }
+  ],
+  [
+   "LinearFramePaths.matrixCoordinates._proof_9",
+   3802260410,
+   {
+    "Lib.Geometry.Manifold.Immersion.Relative": 1
+   }
+  ],
+  [
+   "LinearFramePaths.operatorComponent._proof_1",
+   979688293,
+   {
+    "Lib.Geometry.Manifold.Immersion.Relative": 1
+   }
+  ],
+  [
+   "LocalDegree.NativeNeighborhood.sphereConnecting._proof_1",
+   3757265103,
+   {
+    "Lib.Geometry.Manifold.Morse.SurgeryCollapse": 1
+   }
+  ],
+  [
+   "ManifoldMorse.MorseSurgeryData.indexTwoCollapseCoordinate._proof_1",
+   1801389531,
+   {
+    "Lib.Geometry.Manifold.Morse.SurgeryCollapse": 1
+   }
+  ],
+  [
+   "PeriodTorusHigherHomology.affineProductLeft._proof_1",
+   4092239684,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct": 1
+   }
+  ],
+  [
+   "PeriodTorusHigherHomology.chainTrilinearLift.eq_1",
+   4232716929,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct": 1
+   }
+  ],
+  [
+   "PeriodTorusHigherHomology.crossProductAssociatorDefect._proof_1",
+   1865244419,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct": 1
+   }
+  ],
+  [
+   "PeriodTorusHigherHomology.crossProductCyclicMap._proof_1",
+   4205954283,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct": 1
+   }
+  ],
+  [
+   "PeriodTorusHigherHomology.crossProductHomologyTwoOne._proof_1",
+   3744114429,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct": 1
+   }
+  ],
+  [
+   "PeriodTorusHigherHomology.crossProductTwoOneCycles._proof_1",
+   1024424658,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct": 1
+   }
+  ],
+  [
+   "PeriodTorusHigherHomology.crossProductTwoOneCycles._proof_2",
+   3688281753,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct": 1
+   }
+  ],
+  [
+   "PeriodTorusHigherHomology.crossProductTwoOneCycles._proof_3",
+   2335214933,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct": 1
+   }
+  ],
+  [
+   "PeriodTorusHigherHomology.crossProductTwoOneCycles._proof_4",
+   892094427,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct": 1
+   }
+  ],
+  [
+   "PeriodTorusHigherHomology.crossProductTwoOneCycles._proof_5",
+   3181621422,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct": 1
+   }
+  ],
+  [
+   "PeriodTorusHigherHomology.formalAssociatorDefect._proof_1",
+   1789430371,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct": 1
+   }
+  ],
+  [
+   "PeriodTorusHigherHomology.formalAssociatorDefect._proof_10",
+   3585158322,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct": 1
+   }
+  ],
+  [
+   "PeriodTorusHigherHomology.formalAssociatorDefect._proof_11",
+   111060855,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct": 1
+   }
+  ],
+  [
+   "PeriodTorusHigherHomology.formalAssociatorDefect._proof_12",
+   2625806280,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct": 1
+   }
+  ],
+  [
+   "PeriodTorusHigherHomology.formalAssociatorDefect._proof_13",
+   1684387173,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct": 1
+   }
+  ],
+  [
+   "PeriodTorusHigherHomology.formalAssociatorDefect._proof_14",
+   3084393928,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct": 1
+   }
+  ],
+  [
+   "PeriodTorusHigherHomology.formalAssociatorDefect._proof_15",
+   1922363688,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct": 1
+   }
+  ],
+  [
+   "PeriodTorusHigherHomology.formalAssociatorDefect._proof_2",
+   968992555,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct": 1
+   }
+  ],
+  [
+   "PeriodTorusHigherHomology.formalAssociatorDefect._proof_3",
+   574068967,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct": 1
+   }
+  ],
+  [
+   "PeriodTorusHigherHomology.formalAssociatorDefect._proof_4",
+   3402838586,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct": 1
+   }
+  ],
+  [
+   "PeriodTorusHigherHomology.formalAssociatorDefect._proof_5",
+   3043886200,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct": 1
+   }
+  ],
+  [
+   "PeriodTorusHigherHomology.formalAssociatorDefect._proof_6",
+   2397281173,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct": 1
+   }
+  ],
+  [
+   "PeriodTorusHigherHomology.formalAssociatorDefect._proof_7",
+   1797985934,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct": 1
+   }
+  ],
+  [
+   "PeriodTorusHigherHomology.formalAssociatorDefect._proof_8",
+   2071813923,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct": 1
+   }
+  ],
+  [
+   "PeriodTorusHigherHomology.formalAssociatorDefect._proof_9",
+   1582443665,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct": 1
+   }
+  ],
+  [
+   "PeriodTorusHigherHomology.formalAssociatorHomotopy._f",
+   2985856489,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct": 1
+   }
+  ],
+  [
+   "PeriodTorusHigherHomology.formalAssociatorHomotopy._sunfold",
+   1573461383,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct": 1
+   }
+  ],
+  [
+   "PeriodTorusHigherHomology.formalAssociatorHomotopy._unsafe_rec",
+   1573461383,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct": 1
+   }
+  ],
+  [
+   "PeriodTorusHigherHomology.formalBoundary_associatorDefect._abel_1_2",
+   4207170178,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct": 1
+   }
+  ],
+  [
+   "PeriodTorusHigherHomology.formalBoundary_associatorDefect._simp_1_1",
+   2994530165,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct": 1
+   }
+  ],
+  [
+   "PeriodTorusHigherHomology.formalBoundary_edgeSwapDefect._abel_1_1",
+   2808007814,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct": 1
+   }
+  ],
+  [
+   "PeriodTorusHigherHomology.formalBoundary_mixedSwapDefect._abel_1_1",
+   694763107,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct": 1
+   }
+  ],
+  [
+   "PeriodTorusHigherHomology.formalEdgeSwapDefect._proof_1",
+   3134129241,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct": 1
+   }
+  ],
+  [
+   "PeriodTorusHigherHomology.formalEdgeSwapDefect._proof_2",
+   3856344283,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct": 1
+   }
+  ],
+  [
+   "PeriodTorusHigherHomology.formalEdgeSwapDefect._proof_3",
+   419592357,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct": 1
+   }
+  ],
+  [
+   "PeriodTorusHigherHomology.formalEdgeSwapDefect._proof_4",
+   1336307134,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct": 1
+   }
+  ],
+  [
+   "PeriodTorusHigherHomology.formalEdgeSwapDefect._proof_5",
+   4028904035,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct": 1
+   }
+  ],
+  [
+   "PeriodTorusHigherHomology.formalMixedSwapDefect._proof_1",
+   1909725688,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct": 1
+   }
+  ],
+  [
+   "PeriodTorusHigherHomology.formalMixedSwapDefect._proof_2",
+   1770252111,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct": 1
+   }
+  ],
+  [
+   "PeriodTorusHigherHomology.formalMixedSwapDefect._proof_3",
+   2467597201,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct": 1
+   }
+  ],
+  [
+   "PeriodTorusHigherHomology.formalMixedSwapDefect._proof_4",
+   3533599864,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct": 1
+   }
+  ],
+  [
+   "PeriodTorusHigherHomology.formalMixedSwapDefect._proof_5",
+   1954377399,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct": 1
+   }
+  ],
+  [
+   "PeriodTorusHigherHomology.formalTrilinearLift.eq_1",
+   4205218995,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct": 1
+   }
+  ],
+  [
+   "PeriodTorusHigherHomology.integerTrilinearLeftAssociated._proof_1",
+   3759817943,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct": 1
+   }
+  ],
+  [
+   "PeriodTorusHigherHomology.integerTrilinearLeftAssociated._proof_2",
+   2003916440,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct": 1
+   }
+  ],
+  [
+   "PeriodTorusHigherHomology.integerTrilinearPostcompose._proof_1",
+   1832531652,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct": 1
+   }
+  ],
+  [
+   "PeriodTorusHigherHomology.integerTrilinearPostcompose._proof_2",
+   3881666035,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct": 1
+   }
+  ],
+  [
+   "PeriodTorusHigherHomology.integerTrilinearPrecompose._proof_1",
+   4175984243,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct": 1
+   }
+  ],
+  [
+   "PeriodTorusHigherHomology.integerTrilinearPrecompose._proof_2",
+   1050072763,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct": 1
+   }
+  ],
+  [
+   "PeriodTorusHigherHomology.integerTrilinearRightAssociated._proof_1",
+   1918852733,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct": 1
+   }
+  ],
+  [
+   "PeriodTorusHigherHomology.integerTrilinearRightAssociated._proof_2",
+   2707927881,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct": 1
+   }
+  ],
+  [
+   "PeriodTorusHigherHomology.triplePostcomp._proof_1",
+   2917826429,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct": 1
+   }
+  ],
+  [
+   "PeriodTorusHigherHomology.triplePostcomp._proof_2",
+   4128468722,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct": 1
+   }
+  ],
+  [
+   "PeriodTorusHigherHomology.triplePostcomp._proof_3",
+   2926647639,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct": 1
+   }
+  ],
+  [
+   "PeriodTorusHigherHomology.triplePostcomp._proof_4",
+   598285192,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct": 1
+   }
+  ],
+  [
+   "PeriodTorusHigherHomology.triplePostcomp._proof_5",
+   4276720523,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct": 1
+   }
+  ],
+  [
+   "PeriodTorusHigherHomology.triplePrecompLast._proof_1",
+   3460795562,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct": 1
+   }
+  ],
+  [
+   "SecondHurewicz.SimplyConnected.bottomProductDegenerate.eq_1",
+   600068511,
+   {
+    "Hopf.LibShims": 1
+   }
+  ],
+  [
+   "SecondHurewicz.SimplyConnected.edgeStraighteningHomotopy.eq_1",
+   1424306941,
+   {
+    "Hopf.LibShims": 1
+   }
+  ],
+  [
+   "SecondHurewicz.SimplyConnected.leftProductDegenerate.eq_1",
+   1821419953,
+   {
+    "Hopf.LibShims": 1
+   }
+  ],
+  [
+   "SecondHurewicz.SimplyConnected.lowerProductTriangle.eq_1",
+   728481985,
+   {
+    "Hopf.LibShims": 1
+   }
+  ],
+  [
+   "SecondHurewicz.SimplyConnected.rotationCentered.eq_1",
+   222644973,
+   {
+    "Hopf.LibShims": 1
+   }
+  ],
+  [
+   "SecondHurewicz.SimplyConnected.subdivisionLowerProductMap.eq_1",
+   3613511969,
+   {
+    "Hopf.LibShims": 1
+   }
+  ],
+  [
+   "SecondHurewicz.SimplyConnected.subdivisionLowerTriangleMap.eq_1",
+   4239249729,
+   {
+    "Hopf.LibShims": 1
+   }
+  ],
+  [
+   "SecondHurewicz.SimplyConnected.subdivisionUpperConeMap.eq_1",
+   2969245419,
+   {
+    "Hopf.LibShims": 1
+   }
+  ],
+  [
+   "SecondHurewicz.SimplyConnected.subdivisionUpperNegativeMap.eq_1",
+   542937731,
+   {
+    "Hopf.LibShims": 1
+   }
+  ],
+  [
+   "SecondHurewicz.SimplyConnected.subdivisionUpperNegativeReversedMap.eq_1",
+   3313075028,
+   {
+    "Hopf.LibShims": 1
+   }
+  ],
+  [
+   "SecondHurewicz.SimplyConnected.subdivisionUpperPositiveSquareTriangle.eq_1",
+   1554591518,
+   {
+    "Hopf.LibShims": 1
+   }
+  ],
+  [
+   "SecondHurewicz.SimplyConnected.subdivisionUpperProductMap.eq_1",
+   1829775686,
+   {
+    "Hopf.LibShims": 1
+   }
+  ],
+  [
+   "SecondHurewicz.SimplyConnected.subdivisionUpperTriangleMap.eq_1",
+   217424556,
+   {
+    "Hopf.LibShims": 1
+   }
+  ],
+  [
+   "SecondHurewicz.SimplyConnected.subdivisionWarpCoordinate.eq_1",
+   1576636581,
+   {
+    "Hopf.LibShims": 1
+   }
+  ],
+  [
+   "SecondHurewicz.SimplyConnected.subdivisionWarpMap.eq_1",
+   145284800,
+   {
+    "Hopf.LibShims": 1
+   }
+  ],
+  [
+   "SecondHurewicz.SimplyConnected.tetrahedronQuadrilateralA.eq_1",
+   132560859,
+   {
+    "Hopf.LibShims": 1
+   }
+  ],
+  [
+   "SecondHurewicz.SimplyConnected.upperProductTriangle.eq_1",
+   1728566766,
+   {
+    "Hopf.LibShims": 1
+   }
+  ],
+  [
+   "SingularHomology.crossProductCycleClasses._proof_1",
+   766532411,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct": 1
+   }
+  ],
+  [
+   "SingularHomology.crossProductHomology.eq_1",
+   915655318,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct": 1
+   }
+  ],
+  [
+   "SingularHomology.crossProductHomologyCycles._proof_3",
+   2040839875,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct": 1
+   }
+  ],
+  [
+   "SingularMayerVietoris.SingularHomology._proof_1",
+   2955129997,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris": 1
+   }
+  ],
+  [
+   "SingularMayerVietoris.SmallHomology._proof_1",
+   5494786,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris": 1
+   }
+  ],
+  [
+   "SingularMayerVietoris.connectingHomomorphism._proof_1",
+   957241875,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris": 1
+   }
+  ],
+  [
+   "SingularMayerVietoris.connectingHomomorphism._proof_2",
+   2985765952,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris": 1
+   }
+  ],
+  [
+   "SingularMayerVietoris.connectingHomomorphism.eq_1",
+   4155680907,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris": 1
+   }
+  ],
+  [
+   "SingularMayerVietoris.connectingMap._proof_2",
+   899080153,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris": 1
+   }
+  ],
+  [
+   "SingularMayerVietoris.connectingMap._proof_3",
+   852754117,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris": 1
+   }
+  ],
+  [
+   "SingularMayerVietoris.formalSimplex_mem_supported_iff._simp_1_3",
+   3137220829,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris": 1
+   }
+  ],
+  [
+   "SingularMayerVietoris.formalSubdivisionIteratedHomotopy.eq_1",
+   1919159929,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris": 1
+   }
+  ],
+  [
+   "SingularMayerVietoris.homologyBiprodEquiv._proof_3",
+   3957068070,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris": 1
+   }
+  ],
+  [
+   "SingularMayerVietoris.homologyBiprodEquiv._proof_4",
+   767568128,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris": 1
+   }
+  ],
+  [
+   "SingularMayerVietoris.homologyClassOfCycle.eq_1",
+   4070199763,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CircleProduct": 1
+   }
+  ],
+  [
+   "SingularMayerVietoris.homologyLinearMap._proof_1",
+   938989362,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris": 1
+   }
+  ],
+  [
+   "SingularMayerVietoris.inl_rightMap",
+   62707364,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris": 1
+   }
+  ],
+  [
+   "SingularMayerVietoris.inr_rightMap",
+   873701905,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris": 1
+   }
+  ],
+  [
+   "SingularMayerVietoris.leftMap_fst",
+   3879107237,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris": 1
+   }
+  ],
+  [
+   "SingularMayerVietoris.leftMap_snd",
+   3201112993,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris": 1
+   }
+  ],
+  [
+   "SingularMayerVietoris.middleComplex._proof_1",
+   1567396540,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris": 1
+   }
+  ],
+  [
+   "SingularMayerVietoris.smallHomologyIso._proof_1",
+   1869050116,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris": 1
+   }
+  ],
+  [
+   "SingularMayerVietoris.smallLeftHomologyMap_components",
+   395791457,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris": 1
+   }
+  ],
+  [
+   "SingularMayerVietoris.smallRightHomologyMap_components",
+   58810413,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris": 1
+   }
+  ],
+  [
+   "SingularMayerVietoris.toSmallLeft._proof_1",
+   3243782329,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris": 1
+   }
+  ],
+  [
+   "SingularMayerVietoris.toSmallRight._proof_1",
+   3085748086,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris": 1
+   }
+  ],
+  [
+   "TransverseGerms.transverseBlockMap._proof_1",
+   2159798104,
+   {
+    "Lib.Geometry.Manifold.Morse.Connection": 1
+   }
+  ]
+ ],
+ "added": [
+  [
+   "AlgebraicTopology.SingularCochains.dualHomotopyEquiv",
+   3481755636,
+   {
+    "Lib.AlgebraicTopology.SingularCochains.PositivePrimitives": 1
+   }
+  ],
+  [
+   "AlgebraicTopology.SingularCochains.dualHomotopyEquiv._proof_1",
+   2953461149,
+   {
+    "Lib.AlgebraicTopology.SingularCochains.PositivePrimitives": 1
+   }
+  ],
+  [
+   "AlgebraicTopology.SingularCochains.dualHomotopyEquiv._proof_2",
+   391043269,
+   {
+    "Lib.AlgebraicTopology.SingularCochains.PositivePrimitives": 1
+   }
+  ],
+  [
+   "CoverNaturality.chainSequenceSwap._proof_1",
+   1825200221,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.Naturality": 1
+   }
+  ],
+  [
+   "CoverNaturality.chainSequenceSwap._proof_2",
+   2319132881,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.Naturality": 1
+   }
+  ],
+  [
+   "FrameField.complementQuotient._proof_2",
+   2159798104,
+   {
+    "Lib.Geometry.Manifold.Immersion.Relative.FrameField": 1
+   }
+  ],
+  [
+   "FrameField.correctedComplement.eq_1",
+   4110852959,
+   {
+    "Lib.Geometry.Manifold.Immersion.Relative.FrameField": 1
+   }
+  ],
+  [
+   "Hurewicz.CubeSubdivision.orientedPrismRealization_standardPrism._simp_1_1",
+   3705374514,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition.PermutationInsertion": 1
+   }
+  ],
+  [
+   "Hurewicz.CubeSubdivision.prismCubeVertex_shuffle._simp_1_1",
+   821638330,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition.PermutationInsertion": 1
+   }
+  ],
+  [
+   "Hurewicz.CubeSubdivision.prismCubeVertex_shuffle._simp_1_2",
+   3269858211,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition.PermutationInsertion": 1
+   }
+  ],
+  [
+   "Hurewicz.CubeSubdivision.prismCubeVertex_shuffle._simp_1_3",
+   2185636451,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition.PermutationInsertion": 1
+   }
+  ],
+  [
+   "Hurewicz.CubeSubdivision.prismCubeVertex_shuffle._simp_1_4",
+   821100061,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition.PermutationInsertion": 1
+   }
+  ],
+  [
+   "Hurewicz.CubeSubdivision.shufflePrismVertices._proof_1",
+   29803911,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition.StandardPrism": 1
+   }
+  ],
+  [
+   "Hurewicz.CubeSubdivision.shufflePrismVertices.eq_1",
+   522826629,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition.StandardPrism": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.basedEdgePath._proof_1",
+   29803911,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator.VertexEdgeStraightening": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.basedEdgePath._proof_2",
+   198484479,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator.VertexEdgeStraightening": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.basedEdgePath._proof_3",
+   2314487529,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator.VertexEdgeStraightening": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.basedTriangleCycle._proof_1",
+   1635492264,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator.HurewiczInverse": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.basedTriangleCycle._proof_2",
+   2565146257,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator.HurewiczInverse": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.basedTrianglesHomotopy_of_faces._proof_2",
+   1651744395,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator.NormalizedSquare": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.basedTrianglesHomotopy_of_faces._proof_3",
+   3105997277,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator.NormalizedSquare": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.basedTrianglesHomotopy_of_faces._proof_4",
+   825888971,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator.NormalizedSquare": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.bottomProductDegenerate.eq_1",
+   3985841653,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator.TwoTriangles": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.edgeStraighteningHomotopy._proof_1",
+   3297861718,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator.VertexEdgeStraightening": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.edgeStraighteningHomotopy._proof_2",
+   793248439,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator.VertexEdgeStraightening": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.edgeStraighteningHomotopy.eq_1",
+   1240637916,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator.VertexEdgeStraightening": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.gluedTriangleHomotopy._proof_1",
+   3686155482,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator.NormalizedSquare": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.gluedTriangleHomotopy._proof_2",
+   2578474810,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator.NormalizedSquare": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.gluedTriangleHomotopy._proof_3",
+   4165349324,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator.NormalizedSquare": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.gluedTriangleHomotopyMap._proof_1",
+   518125532,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator.NormalizedSquare": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.gluedTriangleHomotopyMap._proof_2",
+   29803911,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator.NormalizedSquare": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.gluedTriangleHomotopyMap._proof_3",
+   36777443,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator.NormalizedSquare": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.hurewiczPi2Equiv._proof_1",
+   3919561693,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator.DegreeTwo": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.hurewiczPi2Equiv._proof_2",
+   1838234707,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator.DegreeTwo": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.hurewiczPi2Equiv._proof_3",
+   2954972231,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator.DegreeTwo": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.hurewiczPi2Equiv._proof_4",
+   3314775264,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator.DegreeTwo": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.leftProductDegenerate.eq_1",
+   2841492300,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator.TwoTriangles": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.lowerProductTriangle._proof_1",
+   29803911,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator.TwoTriangles": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.lowerProductTriangle.eq_1",
+   2161378975,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator.TwoTriangles": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.lowerSquareTriangle_outerFace",
+   2339093418,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator.NormalizedSquare": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.productSquareChain_four_triangles._abel_1_2",
+   3527063956,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator.TwoTriangles": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.quarterTurn._proof_1",
+   29803911,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator.SquareRotation": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.quarterTurn._proof_2",
+   3423264737,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator.SquareRotation": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.rotationCentered.eq_1",
+   3783010898,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator.SquareRotation": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.secondHomologyDesc._proof_1",
+   2096436044,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator.HurewiczInverse": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.squareTriangles_diagonal",
+   464812562,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator.NormalizedSquare": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.subdivisionLowerProductMap._proof_1",
+   29803911,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator.SquareSubdivision": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.subdivisionLowerProductMap._proof_2",
+   2143322266,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator.SquareSubdivision": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.subdivisionLowerProductMap.eq_1",
+   1413838508,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator.SquareSubdivision": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.subdivisionLowerSquareTriangle_based",
+   2230439070,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator.SubdivisionTriangleClass": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.subdivisionLowerTriangleMap._proof_2",
+   2760865979,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator.SquareSubdivision": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.subdivisionLowerTriangleMap.eq_1",
+   1752094135,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator.SquareSubdivision": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.subdivisionUpperConeMap._proof_1",
+   3120029086,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator.SquareSubdivision": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.subdivisionUpperConeMap.eq_1",
+   1885229535,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator.SquareSubdivision": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.subdivisionUpperNegativeMap._proof_1",
+   2910392277,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator.SubdivisionTriangleClass": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.subdivisionUpperNegativeMap._proof_2",
+   138656239,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator.SubdivisionTriangleClass": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.subdivisionUpperNegativeMap.eq_1",
+   4192957062,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator.SubdivisionTriangleClass": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.subdivisionUpperNegativeReversedMap._proof_1",
+   2663043067,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator.SubdivisionTriangleClass": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.subdivisionUpperNegativeReversedMap.eq_1",
+   3181547491,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator.SubdivisionTriangleClass": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.subdivisionUpperNegativeSquareTriangle_based",
+   2098125853,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator.SubdivisionTriangleClass": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.subdivisionUpperPositiveSquareTriangle._proof_1",
+   29803911,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator.SubdivisionTriangleClass": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.subdivisionUpperPositiveSquareTriangle.eq_1",
+   1980604441,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator.SubdivisionTriangleClass": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.subdivisionUpperPositiveSquareTriangle_based",
+   1923200059,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator.SubdivisionTriangleClass": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.subdivisionUpperProductMap._proof_1",
+   662028853,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator.SquareSubdivision": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.subdivisionUpperProductMap.eq_1",
+   2672264511,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator.SquareSubdivision": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.subdivisionUpperTriangleMap._proof_1",
+   1466779811,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator.SquareSubdivision": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.subdivisionUpperTriangleMap.eq_1",
+   64658413,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator.SquareSubdivision": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.subdivisionWarpCoordinate._proof_2",
+   2547959801,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator.SquareSubdivision": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.subdivisionWarpCoordinate._proof_3",
+   1561031451,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator.SquareSubdivision": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.subdivisionWarpCoordinate.eq_1",
+   3921709605,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator.SquareSubdivision": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.subdivisionWarpMap._proof_1",
+   1208323697,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator.SquareSubdivision": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.subdivisionWarpMap.eq_1",
+   293208256,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator.SquareSubdivision": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.tetrahedronQuadrilateralA._proof_1",
+   29803911,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator.BasedTetrahedron": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.tetrahedronQuadrilateralA._proof_2",
+   3522528163,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator.BasedTetrahedron": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.tetrahedronQuadrilateralA._proof_3",
+   1616695616,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator.BasedTetrahedron": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.tetrahedronQuadrilateralA.eq_1",
+   3205553058,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator.BasedTetrahedron": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.tetrahedronSimplexBlendMap",
+   2701296840,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator.BasedTetrahedron": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.tetrahedronSimplexBlendMap._proof_1",
+   2256617786,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator.BasedTetrahedron": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.tetrahedronSimplexBlendMap._proof_2",
+   3594464993,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator.BasedTetrahedron": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.triangleClassOperator._proof_1",
+   2396439088,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator.HurewiczInverse": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.triangleCubeQuotient._proof_1",
+   29803911,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator.BasedTriangle": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.triangleCubeQuotient._proof_2",
+   2858726212,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator.BasedTriangle": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.upperProductTriangle.eq_1",
+   155084500,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator.TwoTriangles": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.upperSquareTriangle_outerFace",
+   2930714629,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator.NormalizedSquare": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.vertexNormalizedTwoCycle._proof_1",
+   1635492264,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator.BasedTriangle": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.vertexNormalizedTwoCycle._proof_2",
+   3062302807,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator.BasedTriangle": 1
+   }
+  ],
+  [
+   "Hurewicz.Prism.prismOperator._proof_1",
+   2096436044,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator.Basic": 1
+   }
+  ],
+  [
+   "Hurewicz.Prism.simplexPrism.eq_1",
+   2501862445,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator.Basic": 1
+   }
+  ],
+  [
+   "Hurewicz.Prism.straightenedTwoCycle._proof_1",
+   1635492264,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator.Basic": 1
+   }
+  ],
+  [
+   "Hurewicz.Prism.straightenedTwoCycle._proof_2",
+   54894488,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator.Basic": 1
+   }
+  ],
+  [
+   "Hurewicz.cubeCoordinates._proof_1",
+   520313552,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition.CubeChain": 1
+   }
+  ],
+  [
+   "Hurewicz.cubeCoordinates.eq_1",
+   2181265777,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition.CubeChain": 1
+   }
+  ],
+  [
+   "Hurewicz.cubeRemainingCoordinates._proof_1",
+   1374387624,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition.CubeChain": 1
+   }
+  ],
+  [
+   "Hurewicz.cubeRemainingCoordinates._proof_2",
+   2739609344,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition.CubeChain": 1
+   }
+  ],
+  [
+   "Hurewicz.cubeRemainingCoordinates._proof_3",
+   2982083630,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition.CubeChain": 1
+   }
+  ],
+  [
+   "Hurewicz.cubeRemainingCoordinates.eq_1",
+   1015438925,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition.CubeChain": 1
+   }
+  ],
+  [
+   "Hurewicz.degreeTwoLinearEquiv._proof_1",
+   2396439088,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator.DegreeTwo": 1
+   }
+  ],
+  [
+   "Hurewicz.homotopyTrans_compContinuousMap",
+   1035699703,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator.ComposeHomotopies": 1
+   }
+  ],
+  [
+   "Hurewicz.homotopyTrans_congr",
+   3057228831,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator.ComposeHomotopies": 1
+   }
+  ],
+  [
+   "Hurewicz.homotopyTrans_const",
+   978681661,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator.ComposeHomotopies": 1
+   }
+  ],
+  [
+   "LinearFramePaths.matrixCoordinates._proof_1",
+   458547056,
+   {
+    "Lib.Geometry.Manifold.Immersion.Relative.AxisChart": 1
+   }
+  ],
+  [
+   "LinearFramePaths.matrixCoordinates._proof_10",
+   2914754502,
+   {
+    "Lib.Geometry.Manifold.Immersion.Relative.AxisChart": 1
+   }
+  ],
+  [
+   "LinearFramePaths.matrixCoordinates._proof_11",
+   3434567803,
+   {
+    "Lib.Geometry.Manifold.Immersion.Relative.AxisChart": 1
+   }
+  ],
+  [
+   "LinearFramePaths.matrixCoordinates._proof_12",
+   2518188102,
+   {
+    "Lib.Geometry.Manifold.Immersion.Relative.AxisChart": 1
+   }
+  ],
+  [
+   "LinearFramePaths.matrixCoordinates._proof_13",
+   2478895964,
+   {
+    "Lib.Geometry.Manifold.Immersion.Relative.AxisChart": 1
+   }
+  ],
+  [
+   "LinearFramePaths.matrixCoordinates._proof_14",
+   953505966,
+   {
+    "Lib.Geometry.Manifold.Immersion.Relative.AxisChart": 1
+   }
+  ],
+  [
+   "LinearFramePaths.matrixCoordinates._proof_15",
+   1960294102,
+   {
+    "Lib.Geometry.Manifold.Immersion.Relative.AxisChart": 1
+   }
+  ],
+  [
+   "LinearFramePaths.matrixCoordinates._proof_16",
+   2104510348,
+   {
+    "Lib.Geometry.Manifold.Immersion.Relative.AxisChart": 1
+   }
+  ],
+  [
+   "LinearFramePaths.matrixCoordinates._proof_17",
+   1422682179,
+   {
+    "Lib.Geometry.Manifold.Immersion.Relative.AxisChart": 1
+   }
+  ],
+  [
+   "LinearFramePaths.matrixCoordinates._proof_18",
+   3372672843,
+   {
+    "Lib.Geometry.Manifold.Immersion.Relative.AxisChart": 1
+   }
+  ],
+  [
+   "LinearFramePaths.matrixCoordinates._proof_19",
+   318672172,
+   {
+    "Lib.Geometry.Manifold.Immersion.Relative.AxisChart": 1
+   }
+  ],
+  [
+   "LinearFramePaths.matrixCoordinates._proof_2",
+   4097458953,
+   {
+    "Lib.Geometry.Manifold.Immersion.Relative.AxisChart": 1
+   }
+  ],
+  [
+   "LinearFramePaths.matrixCoordinates._proof_20",
+   2044759301,
+   {
+    "Lib.Geometry.Manifold.Immersion.Relative.AxisChart": 1
+   }
+  ],
+  [
+   "LinearFramePaths.matrixCoordinates._proof_3",
+   1251713775,
+   {
+    "Lib.Geometry.Manifold.Immersion.Relative.AxisChart": 1
+   }
+  ],
+  [
+   "LinearFramePaths.matrixCoordinates._proof_4",
+   2159798104,
+   {
+    "Lib.Geometry.Manifold.Immersion.Relative.AxisChart": 1
+   }
+  ],
+  [
+   "LinearFramePaths.matrixCoordinates._proof_5",
+   3317647320,
+   {
+    "Lib.Geometry.Manifold.Immersion.Relative.AxisChart": 1
+   }
+  ],
+  [
+   "LinearFramePaths.matrixCoordinates._proof_6",
+   792980634,
+   {
+    "Lib.Geometry.Manifold.Immersion.Relative.AxisChart": 1
+   }
+  ],
+  [
+   "LinearFramePaths.matrixCoordinates._proof_7",
+   2863932817,
+   {
+    "Lib.Geometry.Manifold.Immersion.Relative.AxisChart": 1
+   }
+  ],
+  [
+   "LinearFramePaths.matrixCoordinates._proof_8",
+   499891787,
+   {
+    "Lib.Geometry.Manifold.Immersion.Relative.AxisChart": 1
+   }
+  ],
+  [
+   "LinearFramePaths.matrixCoordinates._proof_9",
+   1137362524,
+   {
+    "Lib.Geometry.Manifold.Immersion.Relative.AxisChart": 1
+   }
+  ],
+  [
+   "LinearFramePaths.operatorComponent._proof_1",
+   410642024,
+   {
+    "Lib.Geometry.Manifold.Immersion.Relative.AxisChart": 1
+   }
+  ],
+  [
+   "LocalDegree.NativeNeighborhood.sphereConnecting._proof_1",
+   2096436044,
+   {
+    "Lib.Geometry.Manifold.Morse.SurgeryCollapse.LocalDegreeConnecting": 1
+   }
+  ],
+  [
+   "LocalDegree.NativeNeighborhood.sphereConnecting._proof_2",
+   3757265103,
+   {
+    "Lib.Geometry.Manifold.Morse.SurgeryCollapse.LocalDegreeConnecting": 1
+   }
+  ],
+  [
+   "ManifoldMorse.MorseSurgeryData.indexTwoCollapseCoordinate._proof_1",
+   2096436044,
+   {
+    "Hopf.Proof.Geometry.Manifold.Morse.SurgeryCollapse.MiddlePresentation": 1
+   }
+  ],
+  [
+   "ManifoldMorse.MorseSurgeryData.indexTwoCollapseCoordinate._proof_2",
+   1801389531,
+   {
+    "Hopf.Proof.Geometry.Manifold.Morse.SurgeryCollapse.MiddlePresentation": 1
+   }
+  ],
+  [
+   "ManifoldMorse.MorseSurgeryData.morseConnectingMap._proof_1",
+   2096436044,
+   {
+    "Lib.Geometry.Manifold.Morse.SurgeryCollapse.HandleExactSequence": 1
+   }
+  ],
+  [
+   "MorseCancellation.NativeConnectionCancellationData.Transverse._proof_1",
+   2547959801,
+   {
+    "Lib.Geometry.Manifold.Morse.Cancellation.ConnectionData": 1
+   }
+  ],
+  [
+   "MorseCancellation.NativeConnectionCancellationData.outgoingSheet._proof_1",
+   2547959801,
+   {
+    "Lib.Geometry.Manifold.Morse.Cancellation.BasinSheets": 1
+   }
+  ],
+  [
+   "OnePointCover.sphereConnecting._proof_1",
+   2096436044,
+   {
+    "Lib.Geometry.Manifold.Morse.SurgeryCollapse.OnePointCover": 1
+   }
+  ],
+  [
+   "SecondHurewicz.SimplyConnected.bottomProductDegenerate.eq_1",
+   3985841653,
+   {
+    "Hopf.LibShims": 1
+   }
+  ],
+  [
+   "SecondHurewicz.SimplyConnected.edgeStraighteningHomotopy.eq_1",
+   1240637916,
+   {
+    "Hopf.LibShims": 1
+   }
+  ],
+  [
+   "SecondHurewicz.SimplyConnected.leftProductDegenerate.eq_1",
+   2841492300,
+   {
+    "Hopf.LibShims": 1
+   }
+  ],
+  [
+   "SecondHurewicz.SimplyConnected.lowerProductTriangle.eq_1",
+   2161378975,
+   {
+    "Hopf.LibShims": 1
+   }
+  ],
+  [
+   "SecondHurewicz.SimplyConnected.rotationCentered.eq_1",
+   3783010898,
+   {
+    "Hopf.LibShims": 1
+   }
+  ],
+  [
+   "SecondHurewicz.SimplyConnected.subdivisionLowerProductMap.eq_1",
+   1413838508,
+   {
+    "Hopf.LibShims": 1
+   }
+  ],
+  [
+   "SecondHurewicz.SimplyConnected.subdivisionLowerTriangleMap.eq_1",
+   1752094135,
+   {
+    "Hopf.LibShims": 1
+   }
+  ],
+  [
+   "SecondHurewicz.SimplyConnected.subdivisionUpperConeMap.eq_1",
+   1885229535,
+   {
+    "Hopf.LibShims": 1
+   }
+  ],
+  [
+   "SecondHurewicz.SimplyConnected.subdivisionUpperNegativeMap.eq_1",
+   4192957062,
+   {
+    "Hopf.LibShims": 1
+   }
+  ],
+  [
+   "SecondHurewicz.SimplyConnected.subdivisionUpperNegativeReversedMap.eq_1",
+   3181547491,
+   {
+    "Hopf.LibShims": 1
+   }
+  ],
+  [
+   "SecondHurewicz.SimplyConnected.subdivisionUpperPositiveSquareTriangle.eq_1",
+   1980604441,
+   {
+    "Hopf.LibShims": 1
+   }
+  ],
+  [
+   "SecondHurewicz.SimplyConnected.subdivisionUpperProductMap.eq_1",
+   2672264511,
+   {
+    "Hopf.LibShims": 1
+   }
+  ],
+  [
+   "SecondHurewicz.SimplyConnected.subdivisionUpperTriangleMap.eq_1",
+   64658413,
+   {
+    "Hopf.LibShims": 1
+   }
+  ],
+  [
+   "SecondHurewicz.SimplyConnected.subdivisionWarpCoordinate.eq_1",
+   3921709605,
+   {
+    "Hopf.LibShims": 1
+   }
+  ],
+  [
+   "SecondHurewicz.SimplyConnected.subdivisionWarpMap.eq_1",
+   293208256,
+   {
+    "Hopf.LibShims": 1
+   }
+  ],
+  [
+   "SecondHurewicz.SimplyConnected.tetrahedronQuadrilateralA.eq_1",
+   3205553058,
+   {
+    "Hopf.LibShims": 1
+   }
+  ],
+  [
+   "SecondHurewicz.SimplyConnected.upperProductTriangle.eq_1",
+   155084500,
+   {
+    "Hopf.LibShims": 1
+   }
+  ],
+  [
+   "SingularHomology.affineProductLeft._proof_1",
+   4092239684,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct.Affine": 1
+   }
+  ],
+  [
+   "SingularHomology.chainTrilinearLift.eq_1",
+   4232716929,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct.Multilinear": 1
+   }
+  ],
+  [
+   "SingularHomology.crossProductAssociatorDefect._proof_1",
+   1865244419,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct.Associator": 1
+   }
+  ],
+  [
+   "SingularHomology.crossProductCycleClasses._proof_1",
+   2720960268,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct.Homology": 1
+   }
+  ],
+  [
+   "SingularHomology.crossProductCycles._proof_6",
+   1635492264,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct.Homology": 1
+   }
+  ],
+  [
+   "SingularHomology.crossProductCyclicMap._proof_1",
+   4205954283,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct.Associator": 1
+   }
+  ],
+  [
+   "SingularHomology.crossProductHomology.eq_1",
+   34172131,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct.Homology": 1
+   }
+  ],
+  [
+   "SingularHomology.crossProductHomologyCycles._proof_3",
+   1511690742,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct.Homology": 1
+   }
+  ],
+  [
+   "SingularHomology.crossProductHomologyTwoOne._proof_1",
+   2476649748,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct.Swap": 1
+   }
+  ],
+  [
+   "SingularHomology.crossProductTwoOneCycles._proof_1",
+   1024424658,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct.Swap": 1
+   }
+  ],
+  [
+   "SingularHomology.crossProductTwoOneCycles._proof_2",
+   66395885,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct.Swap": 1
+   }
+  ],
+  [
+   "SingularHomology.crossProductTwoOneCycles._proof_3",
+   2943411299,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct.Swap": 1
+   }
+  ],
+  [
+   "SingularHomology.crossProductTwoOneCycles._proof_4",
+   353302187,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct.Swap": 1
+   }
+  ],
+  [
+   "SingularHomology.crossProductTwoOneCycles._proof_5",
+   3950937944,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct.Swap": 1
+   }
+  ],
+  [
+   "SingularHomology.crossProductTwoOneCycles._proof_6",
+   1635492264,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct.Swap": 1
+   }
+  ],
+  [
+   "SingularHomology.formalAssociatorDefect._proof_1",
+   1789430371,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct.Associator": 1
+   }
+  ],
+  [
+   "SingularHomology.formalAssociatorDefect._proof_10",
+   3585158322,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct.Associator": 1
+   }
+  ],
+  [
+   "SingularHomology.formalAssociatorDefect._proof_11",
+   111060855,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct.Associator": 1
+   }
+  ],
+  [
+   "SingularHomology.formalAssociatorDefect._proof_12",
+   2625806280,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct.Associator": 1
+   }
+  ],
+  [
+   "SingularHomology.formalAssociatorDefect._proof_13",
+   1684387173,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct.Associator": 1
+   }
+  ],
+  [
+   "SingularHomology.formalAssociatorDefect._proof_14",
+   3084393928,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct.Associator": 1
+   }
+  ],
+  [
+   "SingularHomology.formalAssociatorDefect._proof_15",
+   1922363688,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct.Associator": 1
+   }
+  ],
+  [
+   "SingularHomology.formalAssociatorDefect._proof_2",
+   968992555,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct.Associator": 1
+   }
+  ],
+  [
+   "SingularHomology.formalAssociatorDefect._proof_3",
+   1913661966,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct.Associator": 1
+   }
+  ],
+  [
+   "SingularHomology.formalAssociatorDefect._proof_4",
+   3402838586,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct.Associator": 1
+   }
+  ],
+  [
+   "SingularHomology.formalAssociatorDefect._proof_5",
+   3035142151,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct.Associator": 1
+   }
+  ],
+  [
+   "SingularHomology.formalAssociatorDefect._proof_6",
+   2397281173,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct.Associator": 1
+   }
+  ],
+  [
+   "SingularHomology.formalAssociatorDefect._proof_7",
+   1797985934,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct.Associator": 1
+   }
+  ],
+  [
+   "SingularHomology.formalAssociatorDefect._proof_8",
+   2071813923,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct.Associator": 1
+   }
+  ],
+  [
+   "SingularHomology.formalAssociatorDefect._proof_9",
+   1582443665,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct.Associator": 1
+   }
+  ],
+  [
+   "SingularHomology.formalAssociatorHomotopy._f",
+   2985856489,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct.Associator": 1
+   }
+  ],
+  [
+   "SingularHomology.formalAssociatorHomotopy._proof_1",
+   29803911,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct.Associator": 1
+   }
+  ],
+  [
+   "SingularHomology.formalAssociatorHomotopy._proof_2",
+   1362279371,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct.Associator": 1
+   }
+  ],
+  [
+   "SingularHomology.formalAssociatorHomotopy._sunfold",
+   1573461383,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct.Associator": 1
+   }
+  ],
+  [
+   "SingularHomology.formalAssociatorHomotopy._unsafe_rec",
+   1573461383,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct.Associator": 1
+   }
+  ],
+  [
+   "SingularHomology.formalAssociatorHomotopy.match_1",
+   413685589,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct.Associator": 1
+   }
+  ],
+  [
+   "SingularHomology.formalBoundary_associatorDefect._abel_1_2",
+   4207170178,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct.Associator": 1
+   }
+  ],
+  [
+   "SingularHomology.formalBoundary_associatorDefect._simp_1_1",
+   2994530165,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct.Associator": 1
+   }
+  ],
+  [
+   "SingularHomology.formalBoundary_edgeSwapDefect._abel_1_1",
+   2808007814,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct.Swap": 1
+   }
+  ],
+  [
+   "SingularHomology.formalBoundary_mixedSwapDefect._abel_1_1",
+   694763107,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct.Swap": 1
+   }
+  ],
+  [
+   "SingularHomology.formalEdgeSwapDefect._proof_1",
+   3134129241,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct.Swap": 1
+   }
+  ],
+  [
+   "SingularHomology.formalEdgeSwapDefect._proof_2",
+   3856344283,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct.Swap": 1
+   }
+  ],
+  [
+   "SingularHomology.formalEdgeSwapDefect._proof_3",
+   419592357,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct.Swap": 1
+   }
+  ],
+  [
+   "SingularHomology.formalEdgeSwapDefect._proof_4",
+   1336307134,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct.Swap": 1
+   }
+  ],
+  [
+   "SingularHomology.formalEdgeSwapDefect._proof_5",
+   4028904035,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct.Swap": 1
+   }
+  ],
+  [
+   "SingularHomology.formalEdgeSwapHomotopy._proof_1",
+   29803911,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct.Swap": 1
+   }
+  ],
+  [
+   "SingularHomology.formalMixedSwapDefect._proof_1",
+   1909725688,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct.Swap": 1
+   }
+  ],
+  [
+   "SingularHomology.formalMixedSwapDefect._proof_2",
+   1770252111,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct.Swap": 1
+   }
+  ],
+  [
+   "SingularHomology.formalMixedSwapDefect._proof_3",
+   2467597201,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct.Swap": 1
+   }
+  ],
+  [
+   "SingularHomology.formalMixedSwapDefect._proof_4",
+   3533599864,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct.Swap": 1
+   }
+  ],
+  [
+   "SingularHomology.formalMixedSwapDefect._proof_5",
+   1954377399,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct.Swap": 1
+   }
+  ],
+  [
+   "SingularHomology.formalMixedSwapHomotopy._proof_1",
+   518125532,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct.Swap": 1
+   }
+  ],
+  [
+   "SingularHomology.formalPointCrossProduct._proof_1",
+   3031492042,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct.Formal": 1
+   }
+  ],
+  [
+   "SingularHomology.formalTrilinearLift.eq_1",
+   4205218995,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct.Multilinear": 1
+   }
+  ],
+  [
+   "SingularHomology.integerTrilinearLeftAssociated._proof_1",
+   3759817943,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct.Multilinear": 1
+   }
+  ],
+  [
+   "SingularHomology.integerTrilinearLeftAssociated._proof_2",
+   2003916440,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct.Multilinear": 1
+   }
+  ],
+  [
+   "SingularHomology.integerTrilinearPostcompose._proof_1",
+   1832531652,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct.Multilinear": 1
+   }
+  ],
+  [
+   "SingularHomology.integerTrilinearPostcompose._proof_2",
+   3881666035,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct.Multilinear": 1
+   }
+  ],
+  [
+   "SingularHomology.integerTrilinearPrecompose._proof_1",
+   4175984243,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct.Multilinear": 1
+   }
+  ],
+  [
+   "SingularHomology.integerTrilinearPrecompose._proof_2",
+   1050072763,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct.Multilinear": 1
+   }
+  ],
+  [
+   "SingularHomology.integerTrilinearRightAssociated._proof_1",
+   1918852733,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct.Multilinear": 1
+   }
+  ],
+  [
+   "SingularHomology.integerTrilinearRightAssociated._proof_2",
+   2707927881,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct.Multilinear": 1
+   }
+  ],
+  [
+   "SingularHomology.triplePostcomp._proof_1",
+   2917826429,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct.Associator": 1
+   }
+  ],
+  [
+   "SingularHomology.triplePostcomp._proof_2",
+   211036529,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct.Associator": 1
+   }
+  ],
+  [
+   "SingularHomology.triplePostcomp._proof_3",
+   2926647639,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct.Associator": 1
+   }
+  ],
+  [
+   "SingularHomology.triplePostcomp._proof_4",
+   598285192,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct.Associator": 1
+   }
+  ],
+  [
+   "SingularHomology.triplePostcomp._proof_5",
+   2825908287,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct.Associator": 1
+   }
+  ],
+  [
+   "SingularHomology.triplePrecompLast._proof_1",
+   4236735190,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct.Associator": 1
+   }
+  ],
+  [
+   "SingularMayerVietoris.SingularHomology._proof_1",
+   1635492264,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris.SingularHomology": 1
+   }
+  ],
+  [
+   "SingularMayerVietoris.SingularHomology._proof_2",
+   1202459432,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris.SingularHomology": 1
+   }
+  ],
+  [
+   "SingularMayerVietoris.SmallHomology._proof_1",
+   1635492264,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris.SmallHomology": 1
+   }
+  ],
+  [
+   "SingularMayerVietoris.SmallHomology._proof_2",
+   2288662010,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris.SmallHomology": 1
+   }
+  ],
+  [
+   "SingularMayerVietoris.connectingHomomorphism._proof_1",
+   2096436044,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris.Sequence": 1
+   }
+  ],
+  [
+   "SingularMayerVietoris.connectingHomomorphism._proof_2",
+   1635492264,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris.Sequence": 1
+   }
+  ],
+  [
+   "SingularMayerVietoris.connectingHomomorphism._proof_3",
+   2709443010,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris.Sequence": 1
+   }
+  ],
+  [
+   "SingularMayerVietoris.connectingHomomorphism._proof_4",
+   1197342865,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris.Sequence": 1
+   }
+  ],
+  [
+   "SingularMayerVietoris.connectingHomomorphism.eq_1",
+   2576658301,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris.Sequence": 1
+   }
+  ],
+  [
+   "SingularMayerVietoris.connectingMap._proof_2",
+   4283473839,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris.HomologyLongExact": 1
+   }
+  ],
+  [
+   "SingularMayerVietoris.connectingMap._proof_3",
+   2438398402,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris.HomologyLongExact": 1
+   }
+  ],
+  [
+   "SingularMayerVietoris.formalSimplex_mem_supported_iff._simp_1_2",
+   3137220829,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris.Support": 1
+   }
+  ],
+  [
+   "SingularMayerVietoris.formalSubdivisionIteratedHomotopy._proof_1",
+   2096436044,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris.FormalSubdivision": 1
+   }
+  ],
+  [
+   "SingularMayerVietoris.formalSubdivisionIteratedHomotopy.eq_1",
+   929871627,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris.FormalSubdivision": 1
+   }
+  ],
+  [
+   "SingularMayerVietoris.homologyBiprodEquiv._proof_3",
+   1635492264,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris.BiprodSequence": 1
+   }
+  ],
+  [
+   "SingularMayerVietoris.homologyBiprodEquiv._proof_4",
+   3427659504,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris.BiprodSequence": 1
+   }
+  ],
+  [
+   "SingularMayerVietoris.homologyBiprodEquiv._proof_5",
+   2517950485,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris.BiprodSequence": 1
+   }
+  ],
+  [
+   "SingularMayerVietoris.homologyBiprodEquiv._proof_6",
+   712766430,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris.BiprodSequence": 1
+   }
+  ],
+  [
+   "SingularMayerVietoris.homologyClassOfCycle.eq_1",
+   3532992362,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CircleProduct": 1
+   }
+  ],
+  [
+   "SingularMayerVietoris.homologyLinearMap._proof_1",
+   1635492264,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris.HomologyLongExact": 1
+   }
+  ],
+  [
+   "SingularMayerVietoris.homologyLinearMap._proof_2",
+   1064300304,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris.HomologyLongExact": 1
+   }
+  ],
+  [
+   "SingularMayerVietoris.inl_rightMap",
+   375370963,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris.ChainSequence": 1
+   }
+  ],
+  [
+   "SingularMayerVietoris.inr_rightMap",
+   607036414,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris.ChainSequence": 1
+   }
+  ],
+  [
+   "SingularMayerVietoris.leftMap_fst",
+   2086310683,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris.ChainSequence": 1
+   }
+  ],
+  [
+   "SingularMayerVietoris.leftMap_snd",
+   1027802954,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris.ChainSequence": 1
+   }
+  ],
+  [
+   "SingularMayerVietoris.middleComplex._proof_1",
+   3035178675,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris.ChainSequence": 1
+   }
+  ],
+  [
+   "SingularMayerVietoris.smallHomologyIso._proof_1",
+   1635492264,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris.SmallSimplices": 1
+   }
+  ],
+  [
+   "SingularMayerVietoris.smallHomologyIso._proof_2",
+   3239464798,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris.SmallSimplices": 1
+   }
+  ],
+  [
+   "SingularMayerVietoris.smallHomologyIso._proof_3",
+   2073459180,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris.SmallSimplices": 1
+   }
+  ],
+  [
+   "SingularMayerVietoris.smallHomologyIso._proof_4",
+   3406296379,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris.SmallSimplices": 1
+   }
+  ],
+  [
+   "SingularMayerVietoris.smallLeftHomologyMap_components",
+   3393917008,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris.SmallHomology": 1
+   }
+  ],
+  [
+   "SingularMayerVietoris.smallRightHomologyMap_components",
+   3830137233,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris.SmallHomology": 1
+   }
+  ],
+  [
+   "SingularMayerVietoris.toSmallLeft._proof_1",
+   1635492264,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris.ChainSequence": 1
+   }
+  ],
+  [
+   "SingularMayerVietoris.toSmallLeft._proof_2",
+   2036396828,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris.ChainSequence": 1
+   }
+  ],
+  [
+   "SingularMayerVietoris.toSmallRight._proof_1",
+   658287007,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris.ChainSequence": 1
+   }
+  ],
+  [
+   "SpherePoint.sourceCountMark._proof_1",
+   2096436044,
+   {
+    "Lib.Geometry.Manifold.Morse.SurgeryCollapse.SphereOrientation": 1
+   }
+  ],
+  [
+   "SpherePoint.targetCountMark._proof_1",
+   28464636,
+   {
+    "Lib.Geometry.Manifold.Morse.SurgeryCollapse.SphereOrientation": 1
+   }
+  ],
+  [
+   "TransverseGerms.transverseBlockMap._proof_1",
+   1158307750,
+   {
+    "Lib.Geometry.Manifold.Morse.Connection.TransverseBlocks": 1
+   }
+  ],
+  [
+   "TransverseGerms.transverseBlockMap._proof_2",
+   2159798104,
+   {
+    "Lib.Geometry.Manifold.Morse.Connection.TransverseBlocks": 1
+   }
+  ]
+ ],
+ "changed_type_source": [],
+ "changed_type_proof_naming": [
+  "AlgebraicTopology.SingularCochains.dualHomotopyEquiv",
+  "Hurewicz.DegreeTwo.SimplyConnected.lowerSquareTriangle_outerFace",
+  "Hurewicz.DegreeTwo.SimplyConnected.squareTriangles_diagonal",
+  "Hurewicz.DegreeTwo.SimplyConnected.subdivisionLowerSquareTriangle_based",
+  "Hurewicz.DegreeTwo.SimplyConnected.subdivisionUpperNegativeSquareTriangle_based",
+  "Hurewicz.DegreeTwo.SimplyConnected.subdivisionUpperPositiveSquareTriangle_based",
+  "Hurewicz.DegreeTwo.SimplyConnected.tetrahedronSimplexBlendMap",
+  "Hurewicz.DegreeTwo.SimplyConnected.upperSquareTriangle_outerFace",
+  "Hurewicz.homotopyTrans_compContinuousMap",
+  "Hurewicz.homotopyTrans_congr",
+  "Hurewicz.homotopyTrans_const",
+  "SecondHurewicz.SimplyConnected.bottomProductDegenerate.eq_1",
+  "SecondHurewicz.SimplyConnected.edgeStraighteningHomotopy.eq_1",
+  "SecondHurewicz.SimplyConnected.leftProductDegenerate.eq_1",
+  "SecondHurewicz.SimplyConnected.lowerProductTriangle.eq_1",
+  "SecondHurewicz.SimplyConnected.rotationCentered.eq_1",
+  "SecondHurewicz.SimplyConnected.subdivisionLowerProductMap.eq_1",
+  "SecondHurewicz.SimplyConnected.subdivisionLowerTriangleMap.eq_1",
+  "SecondHurewicz.SimplyConnected.subdivisionUpperConeMap.eq_1",
+  "SecondHurewicz.SimplyConnected.subdivisionUpperNegativeMap.eq_1",
+  "SecondHurewicz.SimplyConnected.subdivisionUpperNegativeReversedMap.eq_1",
+  "SecondHurewicz.SimplyConnected.subdivisionUpperPositiveSquareTriangle.eq_1",
+  "SecondHurewicz.SimplyConnected.subdivisionUpperProductMap.eq_1",
+  "SecondHurewicz.SimplyConnected.subdivisionUpperTriangleMap.eq_1",
+  "SecondHurewicz.SimplyConnected.subdivisionWarpCoordinate.eq_1",
+  "SecondHurewicz.SimplyConnected.subdivisionWarpMap.eq_1",
+  "SecondHurewicz.SimplyConnected.tetrahedronQuadrilateralA.eq_1",
+  "SecondHurewicz.SimplyConnected.upperProductTriangle.eq_1",
+  "SingularMayerVietoris.inl_rightMap",
+  "SingularMayerVietoris.inr_rightMap",
+  "SingularMayerVietoris.leftMap_fst",
+  "SingularMayerVietoris.leftMap_snd",
+  "SingularMayerVietoris.smallLeftHomologyMap_components",
+  "SingularMayerVietoris.smallRightHomologyMap_components"
+ ],
+ "changed_type_accepted": [],
+ "added_accepted": [],
+ "accept_without_effect": [],
+ "changed_type_all": [
+  "AlgebraicTopology.SingularCochains.dualHomotopyEquiv",
+  "AlgebraicTopology.SingularCochains.dualHomotopyEquiv._proof_1",
+  "AlgebraicTopology.SingularCochains.dualHomotopyEquiv._proof_2",
+  "CoverNaturality.chainSequenceSwap._proof_1",
+  "CoverNaturality.chainSequenceSwap._proof_2",
+  "FrameField.correctedComplement.eq_1",
+  "Hurewicz.CubeSubdivision.prismCubeVertex_shuffle._simp_1_2",
+  "Hurewicz.CubeSubdivision.prismCubeVertex_shuffle._simp_1_3",
+  "Hurewicz.CubeSubdivision.shufflePrismVertices.eq_1",
+  "Hurewicz.DegreeTwo.SimplyConnected.basedEdgePath._proof_1",
+  "Hurewicz.DegreeTwo.SimplyConnected.basedEdgePath._proof_2",
+  "Hurewicz.DegreeTwo.SimplyConnected.basedTriangleCycle._proof_1",
+  "Hurewicz.DegreeTwo.SimplyConnected.basedTrianglesHomotopy_of_faces._proof_2",
+  "Hurewicz.DegreeTwo.SimplyConnected.basedTrianglesHomotopy_of_faces._proof_3",
+  "Hurewicz.DegreeTwo.SimplyConnected.basedTrianglesHomotopy_of_faces._proof_4",
+  "Hurewicz.DegreeTwo.SimplyConnected.bottomProductDegenerate.eq_1",
+  "Hurewicz.DegreeTwo.SimplyConnected.edgeStraighteningHomotopy._proof_1",
+  "Hurewicz.DegreeTwo.SimplyConnected.edgeStraighteningHomotopy._proof_2",
+  "Hurewicz.DegreeTwo.SimplyConnected.edgeStraighteningHomotopy.eq_1",
+  "Hurewicz.DegreeTwo.SimplyConnected.gluedTriangleHomotopy._proof_1",
+  "Hurewicz.DegreeTwo.SimplyConnected.gluedTriangleHomotopy._proof_2",
+  "Hurewicz.DegreeTwo.SimplyConnected.gluedTriangleHomotopy._proof_3",
+  "Hurewicz.DegreeTwo.SimplyConnected.gluedTriangleHomotopyMap._proof_1",
+  "Hurewicz.DegreeTwo.SimplyConnected.hurewiczPi2Equiv._proof_1",
+  "Hurewicz.DegreeTwo.SimplyConnected.hurewiczPi2Equiv._proof_2",
+  "Hurewicz.DegreeTwo.SimplyConnected.hurewiczPi2Equiv._proof_3",
+  "Hurewicz.DegreeTwo.SimplyConnected.leftProductDegenerate.eq_1",
+  "Hurewicz.DegreeTwo.SimplyConnected.lowerProductTriangle.eq_1",
+  "Hurewicz.DegreeTwo.SimplyConnected.lowerSquareTriangle_outerFace",
+  "Hurewicz.DegreeTwo.SimplyConnected.quarterTurn._proof_1",
+  "Hurewicz.DegreeTwo.SimplyConnected.rotationCentered.eq_1",
+  "Hurewicz.DegreeTwo.SimplyConnected.squareTriangles_diagonal",
+  "Hurewicz.DegreeTwo.SimplyConnected.subdivisionLowerProductMap._proof_1",
+  "Hurewicz.DegreeTwo.SimplyConnected.subdivisionLowerProductMap.eq_1",
+  "Hurewicz.DegreeTwo.SimplyConnected.subdivisionLowerSquareTriangle_based",
+  "Hurewicz.DegreeTwo.SimplyConnected.subdivisionLowerTriangleMap._proof_2",
+  "Hurewicz.DegreeTwo.SimplyConnected.subdivisionLowerTriangleMap.eq_1",
+  "Hurewicz.DegreeTwo.SimplyConnected.subdivisionUpperConeMap._proof_1",
+  "Hurewicz.DegreeTwo.SimplyConnected.subdivisionUpperConeMap.eq_1",
+  "Hurewicz.DegreeTwo.SimplyConnected.subdivisionUpperNegativeMap._proof_1",
+  "Hurewicz.DegreeTwo.SimplyConnected.subdivisionUpperNegativeMap.eq_1",
+  "Hurewicz.DegreeTwo.SimplyConnected.subdivisionUpperNegativeReversedMap._proof_1",
+  "Hurewicz.DegreeTwo.SimplyConnected.subdivisionUpperNegativeReversedMap.eq_1",
+  "Hurewicz.DegreeTwo.SimplyConnected.subdivisionUpperNegativeSquareTriangle_based",
+  "Hurewicz.DegreeTwo.SimplyConnected.subdivisionUpperPositiveSquareTriangle.eq_1",
+  "Hurewicz.DegreeTwo.SimplyConnected.subdivisionUpperPositiveSquareTriangle_based",
+  "Hurewicz.DegreeTwo.SimplyConnected.subdivisionUpperProductMap._proof_1",
+  "Hurewicz.DegreeTwo.SimplyConnected.subdivisionUpperProductMap.eq_1",
+  "Hurewicz.DegreeTwo.SimplyConnected.subdivisionUpperTriangleMap._proof_1",
+  "Hurewicz.DegreeTwo.SimplyConnected.subdivisionUpperTriangleMap.eq_1",
+  "Hurewicz.DegreeTwo.SimplyConnected.subdivisionWarpCoordinate._proof_2",
+  "Hurewicz.DegreeTwo.SimplyConnected.subdivisionWarpCoordinate.eq_1",
+  "Hurewicz.DegreeTwo.SimplyConnected.subdivisionWarpMap._proof_1",
+  "Hurewicz.DegreeTwo.SimplyConnected.subdivisionWarpMap.eq_1",
+  "Hurewicz.DegreeTwo.SimplyConnected.tetrahedronQuadrilateralA._proof_1",
+  "Hurewicz.DegreeTwo.SimplyConnected.tetrahedronQuadrilateralA._proof_2",
+  "Hurewicz.DegreeTwo.SimplyConnected.tetrahedronQuadrilateralA.eq_1",
+  "Hurewicz.DegreeTwo.SimplyConnected.tetrahedronSimplexBlendMap",
+  "Hurewicz.DegreeTwo.SimplyConnected.tetrahedronSimplexBlendMap._proof_1",
+  "Hurewicz.DegreeTwo.SimplyConnected.tetrahedronSimplexBlendMap._proof_2",
+  "Hurewicz.DegreeTwo.SimplyConnected.triangleCubeQuotient._proof_1",
+  "Hurewicz.DegreeTwo.SimplyConnected.upperProductTriangle.eq_1",
+  "Hurewicz.DegreeTwo.SimplyConnected.upperSquareTriangle_outerFace",
+  "Hurewicz.DegreeTwo.SimplyConnected.vertexNormalizedTwoCycle._proof_1",
+  "Hurewicz.cubeCoordinates._proof_1",
+  "Hurewicz.cubeCoordinates.eq_1",
+  "Hurewicz.cubeRemainingCoordinates._proof_1",
+  "Hurewicz.cubeRemainingCoordinates._proof_2",
+  "Hurewicz.cubeRemainingCoordinates.eq_1",
+  "Hurewicz.homotopyTrans_compContinuousMap",
+  "Hurewicz.homotopyTrans_congr",
+  "Hurewicz.homotopyTrans_const",
+  "LinearFramePaths.matrixCoordinates._proof_1",
+  "LinearFramePaths.matrixCoordinates._proof_10",
+  "LinearFramePaths.matrixCoordinates._proof_11",
+  "LinearFramePaths.matrixCoordinates._proof_12",
+  "LinearFramePaths.matrixCoordinates._proof_13",
+  "LinearFramePaths.matrixCoordinates._proof_14",
+  "LinearFramePaths.matrixCoordinates._proof_15",
+  "LinearFramePaths.matrixCoordinates._proof_16",
+  "LinearFramePaths.matrixCoordinates._proof_17",
+  "LinearFramePaths.matrixCoordinates._proof_18",
+  "LinearFramePaths.matrixCoordinates._proof_2",
+  "LinearFramePaths.matrixCoordinates._proof_3",
+  "LinearFramePaths.matrixCoordinates._proof_4",
+  "LinearFramePaths.matrixCoordinates._proof_5",
+  "LinearFramePaths.matrixCoordinates._proof_6",
+  "LinearFramePaths.matrixCoordinates._proof_7",
+  "LinearFramePaths.matrixCoordinates._proof_8",
+  "LinearFramePaths.matrixCoordinates._proof_9",
+  "LinearFramePaths.operatorComponent._proof_1",
+  "LocalDegree.NativeNeighborhood.sphereConnecting._proof_1",
+  "ManifoldMorse.MorseSurgeryData.indexTwoCollapseCoordinate._proof_1",
+  "SecondHurewicz.SimplyConnected.bottomProductDegenerate.eq_1",
+  "SecondHurewicz.SimplyConnected.edgeStraighteningHomotopy.eq_1",
+  "SecondHurewicz.SimplyConnected.leftProductDegenerate.eq_1",
+  "SecondHurewicz.SimplyConnected.lowerProductTriangle.eq_1",
+  "SecondHurewicz.SimplyConnected.rotationCentered.eq_1",
+  "SecondHurewicz.SimplyConnected.subdivisionLowerProductMap.eq_1",
+  "SecondHurewicz.SimplyConnected.subdivisionLowerTriangleMap.eq_1",
+  "SecondHurewicz.SimplyConnected.subdivisionUpperConeMap.eq_1",
+  "SecondHurewicz.SimplyConnected.subdivisionUpperNegativeMap.eq_1",
+  "SecondHurewicz.SimplyConnected.subdivisionUpperNegativeReversedMap.eq_1",
+  "SecondHurewicz.SimplyConnected.subdivisionUpperPositiveSquareTriangle.eq_1",
+  "SecondHurewicz.SimplyConnected.subdivisionUpperProductMap.eq_1",
+  "SecondHurewicz.SimplyConnected.subdivisionUpperTriangleMap.eq_1",
+  "SecondHurewicz.SimplyConnected.subdivisionWarpCoordinate.eq_1",
+  "SecondHurewicz.SimplyConnected.subdivisionWarpMap.eq_1",
+  "SecondHurewicz.SimplyConnected.tetrahedronQuadrilateralA.eq_1",
+  "SecondHurewicz.SimplyConnected.upperProductTriangle.eq_1",
+  "SingularHomology.crossProductCycleClasses._proof_1",
+  "SingularHomology.crossProductHomology.eq_1",
+  "SingularHomology.crossProductHomologyCycles._proof_3",
+  "SingularMayerVietoris.SingularHomology._proof_1",
+  "SingularMayerVietoris.SmallHomology._proof_1",
+  "SingularMayerVietoris.connectingHomomorphism._proof_1",
+  "SingularMayerVietoris.connectingHomomorphism._proof_2",
+  "SingularMayerVietoris.connectingHomomorphism.eq_1",
+  "SingularMayerVietoris.connectingMap._proof_2",
+  "SingularMayerVietoris.connectingMap._proof_3",
+  "SingularMayerVietoris.formalSubdivisionIteratedHomotopy.eq_1",
+  "SingularMayerVietoris.homologyBiprodEquiv._proof_3",
+  "SingularMayerVietoris.homologyBiprodEquiv._proof_4",
+  "SingularMayerVietoris.homologyClassOfCycle.eq_1",
+  "SingularMayerVietoris.homologyLinearMap._proof_1",
+  "SingularMayerVietoris.inl_rightMap",
+  "SingularMayerVietoris.inr_rightMap",
+  "SingularMayerVietoris.leftMap_fst",
+  "SingularMayerVietoris.leftMap_snd",
+  "SingularMayerVietoris.middleComplex._proof_1",
+  "SingularMayerVietoris.smallHomologyIso._proof_1",
+  "SingularMayerVietoris.smallLeftHomologyMap_components",
+  "SingularMayerVietoris.smallRightHomologyMap_components",
+  "SingularMayerVietoris.toSmallLeft._proof_1",
+  "SingularMayerVietoris.toSmallRight._proof_1",
+  "TransverseGerms.transverseBlockMap._proof_1"
+ ],
+ "moves": [
+  [
+   "Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition",
+   "Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition.Concatenation",
+   13
+  ],
+  [
+   "Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition",
+   "Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition.CubeChain",
+   21
+  ],
+  [
+   "Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition",
+   "Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition.Cycle",
+   7
+  ],
+  [
+   "Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition",
+   "Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition.IntervalSplit",
+   11
+  ],
+  [
+   "Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition",
+   "Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition.KuhnDecomposition",
+   6
+  ],
+  [
+   "Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition",
+   "Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition.PermutationInsertion",
+   16
+  ],
+  [
+   "Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition",
+   "Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition.PrismRealization",
+   28
+  ],
+  [
+   "Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition",
+   "Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition.StandardPrism",
+   31
+  ],
+  [
+   "Lib.AlgebraicTopology.Hurewicz.PrismOperator",
+   "Lib.AlgebraicTopology.Hurewicz.PrismOperator.BasedTetrahedron",
+   37
+  ],
+  [
+   "Lib.AlgebraicTopology.Hurewicz.PrismOperator",
+   "Lib.AlgebraicTopology.Hurewicz.PrismOperator.BasedTriangle",
+   38
+  ],
+  [
+   "Lib.AlgebraicTopology.Hurewicz.PrismOperator",
+   "Lib.AlgebraicTopology.Hurewicz.PrismOperator.Basic",
+   20
+  ],
+  [
+   "Lib.AlgebraicTopology.Hurewicz.PrismOperator",
+   "Lib.AlgebraicTopology.Hurewicz.PrismOperator.ComposeHomotopies",
+   11
+  ],
+  [
+   "Lib.AlgebraicTopology.Hurewicz.PrismOperator",
+   "Lib.AlgebraicTopology.Hurewicz.PrismOperator.CrossProductPoint",
+   4
+  ],
+  [
+   "Lib.AlgebraicTopology.Hurewicz.PrismOperator",
+   "Lib.AlgebraicTopology.Hurewicz.PrismOperator.DegreeTwo",
+   2
+  ],
+  [
+   "Lib.AlgebraicTopology.Hurewicz.PrismOperator",
+   "Lib.AlgebraicTopology.Hurewicz.PrismOperator.HurewiczInverse",
+   25
+  ],
+  [
+   "Lib.AlgebraicTopology.Hurewicz.PrismOperator",
+   "Lib.AlgebraicTopology.Hurewicz.PrismOperator.HurewiczMap",
+   52
+  ],
+  [
+   "Lib.AlgebraicTopology.Hurewicz.PrismOperator",
+   "Lib.AlgebraicTopology.Hurewicz.PrismOperator.MapGenLoop",
+   5
+  ],
+  [
+   "Lib.AlgebraicTopology.Hurewicz.PrismOperator",
+   "Lib.AlgebraicTopology.Hurewicz.PrismOperator.NormalizedSquare",
+   30
+  ],
+  [
+   "Lib.AlgebraicTopology.Hurewicz.PrismOperator",
+   "Lib.AlgebraicTopology.Hurewicz.PrismOperator.SquareRotation",
+   36
+  ],
+  [
+   "Lib.AlgebraicTopology.Hurewicz.PrismOperator",
+   "Lib.AlgebraicTopology.Hurewicz.PrismOperator.SquareSubdivision",
+   58
+  ],
+  [
+   "Lib.AlgebraicTopology.Hurewicz.PrismOperator",
+   "Lib.AlgebraicTopology.Hurewicz.PrismOperator.SubdivisionTriangleClass",
+   34
+  ],
+  [
+   "Lib.AlgebraicTopology.Hurewicz.PrismOperator",
+   "Lib.AlgebraicTopology.Hurewicz.PrismOperator.TetrahedronRelation",
+   14
+  ],
+  [
+   "Lib.AlgebraicTopology.Hurewicz.PrismOperator",
+   "Lib.AlgebraicTopology.Hurewicz.PrismOperator.TwoTriangles",
+   28
+  ],
+  [
+   "Lib.AlgebraicTopology.Hurewicz.PrismOperator",
+   "Lib.AlgebraicTopology.Hurewicz.PrismOperator.VertexEdgeStraightening",
+   60
+  ],
+  [
+   "Lib.AlgebraicTopology.Hurewicz.Subdivision",
+   "Lib.AlgebraicTopology.Hurewicz.Subdivision.ChamberChart",
+   34
+  ],
+  [
+   "Lib.AlgebraicTopology.Hurewicz.Subdivision",
+   "Lib.AlgebraicTopology.Hurewicz.Subdivision.CubeClass",
+   36
+  ],
+  [
+   "Lib.AlgebraicTopology.Hurewicz.Subdivision",
+   "Lib.AlgebraicTopology.Hurewicz.Subdivision.DuffyMap",
+   28
+  ],
+  [
+   "Lib.AlgebraicTopology.Hurewicz.Subdivision",
+   "Lib.AlgebraicTopology.Hurewicz.Subdivision.ExtendedChamber",
+   30
+  ],
+  [
+   "Lib.AlgebraicTopology.Hurewicz.Subdivision",
+   "Lib.AlgebraicTopology.Hurewicz.Subdivision.InsertPermutation",
+   13
+  ],
+  [
+   "Lib.AlgebraicTopology.Hurewicz.Subdivision",
+   "Lib.AlgebraicTopology.Hurewicz.Subdivision.SimplexQuotient",
+   52
+  ],
+  [
+   "Lib.AlgebraicTopology.Hurewicz.Subdivision",
+   "Lib.AlgebraicTopology.Hurewicz.Subdivision.Slicing",
+   28
+  ],
+  [
+   "Lib.AlgebraicTopology.Hurewicz.Subdivision",
+   "Lib.AlgebraicTopology.Hurewicz.Subdivision.SubdivisionClass",
+   17
+  ],
+  [
+   "Lib.AlgebraicTopology.SingularHomology.CrossProduct",
+   "Lib.AlgebraicTopology.SingularHomology.CrossProduct.Affine",
+   25
+  ],
+  [
+   "Lib.AlgebraicTopology.SingularHomology.CrossProduct",
+   "Lib.AlgebraicTopology.SingularHomology.CrossProduct.Associator",
+   38
+  ],
+  [
+   "Lib.AlgebraicTopology.SingularHomology.CrossProduct",
+   "Lib.AlgebraicTopology.SingularHomology.CrossProduct.Chain",
+   33
+  ],
+  [
+   "Lib.AlgebraicTopology.SingularHomology.CrossProduct",
+   "Lib.AlgebraicTopology.SingularHomology.CrossProduct.Formal",
+   26
+  ],
+  [
+   "Lib.AlgebraicTopology.SingularHomology.CrossProduct",
+   "Lib.AlgebraicTopology.SingularHomology.CrossProduct.Homology",
+   16
+  ],
+  [
+   "Lib.AlgebraicTopology.SingularHomology.CrossProduct",
+   "Lib.AlgebraicTopology.SingularHomology.CrossProduct.HomologyDescent",
+   5
+  ],
+  [
+   "Lib.AlgebraicTopology.SingularHomology.CrossProduct",
+   "Lib.AlgebraicTopology.SingularHomology.CrossProduct.Multilinear",
+   30
+  ],
+  [
+   "Lib.AlgebraicTopology.SingularHomology.CrossProduct",
+   "Lib.AlgebraicTopology.SingularHomology.CrossProduct.Naturality",
+   3
+  ],
+  [
+   "Lib.AlgebraicTopology.SingularHomology.CrossProduct",
+   "Lib.AlgebraicTopology.SingularHomology.CrossProduct.Swap",
+   42
+  ],
+  [
+   "Lib.AlgebraicTopology.SingularHomology.MayerVietoris",
+   "Lib.AlgebraicTopology.SingularHomology.MayerVietoris.AffineSimplex",
+   11
+  ],
+  [
+   "Lib.AlgebraicTopology.SingularHomology.MayerVietoris",
+   "Lib.AlgebraicTopology.SingularHomology.MayerVietoris.BiprodSequence",
+   15
+  ],
+  [
+   "Lib.AlgebraicTopology.SingularHomology.MayerVietoris",
+   "Lib.AlgebraicTopology.SingularHomology.MayerVietoris.ChainSequence",
+   20
+  ],
+  [
+   "Lib.AlgebraicTopology.SingularHomology.MayerVietoris",
+   "Lib.AlgebraicTopology.SingularHomology.MayerVietoris.FormalChains",
+   17
+  ],
+  [
+   "Lib.AlgebraicTopology.SingularHomology.MayerVietoris",
+   "Lib.AlgebraicTopology.SingularHomology.MayerVietoris.FormalSubdivision",
+   20
+  ],
+  [
+   "Lib.AlgebraicTopology.SingularHomology.MayerVietoris",
+   "Lib.AlgebraicTopology.SingularHomology.MayerVietoris.HomologyLongExact",
+   12
+  ],
+  [
+   "Lib.AlgebraicTopology.SingularHomology.MayerVietoris",
+   "Lib.AlgebraicTopology.SingularHomology.MayerVietoris.Mesh",
+   32
+  ],
+  [
+   "Lib.AlgebraicTopology.SingularHomology.MayerVietoris",
+   "Lib.AlgebraicTopology.SingularHomology.MayerVietoris.Sequence",
+   15
+  ],
+  [
+   "Lib.AlgebraicTopology.SingularHomology.MayerVietoris",
+   "Lib.AlgebraicTopology.SingularHomology.MayerVietoris.SingularHomology",
+   3
+  ],
+  [
+   "Lib.AlgebraicTopology.SingularHomology.MayerVietoris",
+   "Lib.AlgebraicTopology.SingularHomology.MayerVietoris.SmallChains",
+   30
+  ],
+  [
+   "Lib.AlgebraicTopology.SingularHomology.MayerVietoris",
+   "Lib.AlgebraicTopology.SingularHomology.MayerVietoris.SmallHomology",
+   17
+  ],
+  [
+   "Lib.AlgebraicTopology.SingularHomology.MayerVietoris",
+   "Lib.AlgebraicTopology.SingularHomology.MayerVietoris.SmallSimplices",
+   12
+  ],
+  [
+   "Lib.AlgebraicTopology.SingularHomology.MayerVietoris",
+   "Lib.AlgebraicTopology.SingularHomology.MayerVietoris.Subdivision",
+   22
+  ],
+  [
+   "Lib.AlgebraicTopology.SingularHomology.MayerVietoris",
+   "Lib.AlgebraicTopology.SingularHomology.MayerVietoris.Support",
+   17
+  ],
+  [
+   "Lib.Geometry.Manifold.Immersion.Relative",
+   "Lib.Geometry.Manifold.Immersion.Relative.AffinePerturbation",
+   32
+  ],
+  [
+   "Lib.Geometry.Manifold.Immersion.Relative",
+   "Lib.Geometry.Manifold.Immersion.Relative.Arc",
+   13
+  ],
+  [
+   "Lib.Geometry.Manifold.Immersion.Relative",
+   "Lib.Geometry.Manifold.Immersion.Relative.AxisChart",
+   8
+  ],
+  [
+   "Lib.Geometry.Manifold.Immersion.Relative",
+   "Lib.Geometry.Manifold.Immersion.Relative.ChartPerturbation",
+   13
+  ],
+  [
+   "Lib.Geometry.Manifold.Immersion.Relative",
+   "Lib.Geometry.Manifold.Immersion.Relative.Curve",
+   25
+  ],
+  [
+   "Lib.Geometry.Manifold.Immersion.Relative",
+   "Lib.Geometry.Manifold.Immersion.Relative.Embedding",
+   25
+  ],
+  [
+   "Lib.Geometry.Manifold.Immersion.Relative",
+   "Lib.Geometry.Manifold.Immersion.Relative.FrameField",
+   38
+  ],
+  [
+   "Lib.Geometry.Manifold.Immersion.Relative",
+   "Lib.Geometry.Manifold.Immersion.Relative.ImmersionLocus",
+   16
+  ],
+  [
+   "Lib.Geometry.Manifold.Immersion.Relative",
+   "Lib.Geometry.Manifold.Immersion.Relative.Plane",
+   14
+  ],
+  [
+   "Lib.Geometry.Manifold.Immersion.Relative",
+   "Lib.Geometry.Manifold.Immersion.Relative.PointMoving",
+   20
+  ],
+  [
+   "Lib.Geometry.Manifold.Immersion.Relative",
+   "Lib.Geometry.Manifold.Immersion.Relative.TubularNeighborhood",
+   6
+  ],
+  [
+   "Lib.Geometry.Manifold.Immersion.Relative",
+   "Lib.Geometry.Manifold.Immersion.Relative.TwoSheetArc",
+   5
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.Cancellation",
+   "Lib.Geometry.Manifold.Morse.Cancellation.BandHeight",
+   27
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.Cancellation",
+   "Lib.Geometry.Manifold.Morse.Cancellation.BandReplacement",
+   11
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.Cancellation",
+   "Lib.Geometry.Manifold.Morse.Cancellation.BasinSheets",
+   11
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.Cancellation",
+   "Lib.Geometry.Manifold.Morse.Cancellation.ConnectionData",
+   39
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.Cancellation",
+   "Lib.Geometry.Manifold.Morse.Cancellation.CriticalGerms",
+   16
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.Cancellation",
+   "Lib.Geometry.Manifold.Morse.Cancellation.CubicConnection",
+   8
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.Cancellation",
+   "Lib.Geometry.Manifold.Morse.Cancellation.CubicModel",
+   22
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.Cancellation",
+   "Lib.Geometry.Manifold.Morse.Cancellation.LevelExit",
+   11
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.Cancellation",
+   "Lib.Geometry.Manifold.Morse.Cancellation.LevelIsotopy",
+   2
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.Cancellation",
+   "Lib.Geometry.Manifold.Morse.Cancellation.LogarithmicCutoff",
+   7
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.Cancellation",
+   "Lib.Geometry.Manifold.Morse.Cancellation.LyapunovResidence",
+   9
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.Cancellation",
+   "Lib.Geometry.Manifold.Morse.Cancellation.TransverseGerms",
+   7
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.Connection",
+   "Lib.Geometry.Manifold.Morse.Connection.BeltArc",
+   16
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.Connection",
+   "Lib.Geometry.Manifold.Morse.Connection.CubicEndpoints",
+   8
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.Connection",
+   "Lib.Geometry.Manifold.Morse.Connection.CubicFieldChart",
+   22
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.Connection",
+   "Lib.Geometry.Manifold.Morse.Connection.CylinderHolonomy",
+   10
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.Connection",
+   "Lib.Geometry.Manifold.Morse.Connection.EndpointBasins",
+   37
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.Connection",
+   "Lib.Geometry.Manifold.Morse.Connection.FieldChartGluing",
+   13
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.Connection",
+   "Lib.Geometry.Manifold.Morse.Connection.LevelHolonomy",
+   20
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.Connection",
+   "Lib.Geometry.Manifold.Morse.Connection.MinimumBasins",
+   9
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.Connection",
+   "Lib.Geometry.Manifold.Morse.Connection.NoReturn",
+   9
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.Connection",
+   "Lib.Geometry.Manifold.Morse.Connection.PhaseCylinder",
+   17
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.Connection",
+   "Lib.Geometry.Manifold.Morse.Connection.PhaseFlow",
+   26
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.Connection",
+   "Lib.Geometry.Manifold.Morse.Connection.SignEnumerations",
+   8
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.Connection",
+   "Lib.Geometry.Manifold.Morse.Connection.Suspension",
+   22
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.Connection",
+   "Lib.Geometry.Manifold.Morse.Connection.TimeChange",
+   16
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.Connection",
+   "Lib.Geometry.Manifold.Morse.Connection.TransitionPhase",
+   6
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.Connection",
+   "Lib.Geometry.Manifold.Morse.Connection.TransportedCorrections",
+   5
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.Connection",
+   "Lib.Geometry.Manifold.Morse.Connection.TransverseBlocks",
+   14
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.Connection",
+   "Lib.Geometry.Manifold.Morse.Connection.TransverseTimeLifts",
+   8
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.OrderedCancellation",
+   "Hopf.Proof.Geometry.Manifold.Morse.OrderedCancellation.MiddleIndexBlocks",
+   5
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.OrderedCancellation",
+   "Lib.Geometry.Manifold.Morse.OrderedCancellation.BeltTube",
+   15
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.OrderedCancellation",
+   "Lib.Geometry.Manifold.Morse.OrderedCancellation.BirthPreservation",
+   7
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.OrderedCancellation",
+   "Lib.Geometry.Manifold.Morse.OrderedCancellation.CircleParametrization",
+   4
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.OrderedCancellation",
+   "Lib.Geometry.Manifold.Morse.OrderedCancellation.IndexCounts",
+   9
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.OrderedCancellation",
+   "Lib.Geometry.Manifold.Morse.OrderedCancellation.MinimalSystem",
+   3
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.OrderedCancellation",
+   "Lib.Geometry.Manifold.Morse.OrderedCancellation.Negation",
+   6
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.OrderedCancellation",
+   "Lib.Geometry.Manifold.Morse.OrderedCancellation.PairCancellation",
+   8
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.OrderedCancellation",
+   "Lib.Geometry.Manifold.Morse.OrderedCancellation.PathComponents",
+   12
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.OrderedCancellation",
+   "Lib.Geometry.Manifold.Morse.OrderedCancellation.PrescribedFlow",
+   5
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.OrderedCancellation",
+   "Lib.Geometry.Manifold.Morse.OrderedCancellation.TwoSphereDegree",
+   3
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.OrderedCancellation",
+   "Lib.Geometry.Manifold.Morse.OrderedCancellation.ValueExchange",
+   9
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.Rearrangement",
+   "Hopf.Proof.Geometry.Manifold.Morse.Rearrangement.MiddleLevel",
+   2
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.Rearrangement",
+   "Hopf.Proof.Geometry.Manifold.Morse.Rearrangement.SheetArc",
+   2
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.Rearrangement",
+   "Lib.Geometry.Manifold.Morse.Rearrangement.AmbientTransversality",
+   23
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.Rearrangement",
+   "Lib.Geometry.Manifold.Morse.Rearrangement.BasinImages",
+   19
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.Rearrangement",
+   "Lib.Geometry.Manifold.Morse.Rearrangement.HeightCoordinates",
+   14
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.Rearrangement",
+   "Lib.Geometry.Manifold.Morse.Rearrangement.IntervalTranslation",
+   17
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.Rearrangement",
+   "Lib.Geometry.Manifold.Morse.Rearrangement.LevelConnectedness",
+   8
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.Rearrangement",
+   "Lib.Geometry.Manifold.Morse.Rearrangement.LevelTime",
+   8
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.Rearrangement",
+   "Lib.Geometry.Manifold.Morse.Rearrangement.LongitudinalBlend",
+   9
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.Rearrangement",
+   "Lib.Geometry.Manifold.Morse.Rearrangement.SmoothTransition",
+   4
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.Rearrangement",
+   "Lib.Geometry.Manifold.Morse.Rearrangement.TransverseChart",
+   10
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.Rearrangement",
+   "Lib.Geometry.Manifold.Morse.Rearrangement.TubeMotion",
+   37
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.SurgeryCollapse",
+   "Hopf.Proof.Geometry.Manifold.Morse.SurgeryCollapse.BeltIntersections",
+   7
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.SurgeryCollapse",
+   "Hopf.Proof.Geometry.Manifold.Morse.SurgeryCollapse.MiddleFamilies",
+   6
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.SurgeryCollapse",
+   "Hopf.Proof.Geometry.Manifold.Morse.SurgeryCollapse.MiddlePresentation",
+   16
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.SurgeryCollapse",
+   "Hopf.Proof.Geometry.Manifold.Morse.SurgeryCollapse.OuterIndexMinimal",
+   1
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.SurgeryCollapse",
+   "Lib.Geometry.Manifold.Morse.SurgeryCollapse.BeltTubeMeridian",
+   4
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.SurgeryCollapse",
+   "Lib.Geometry.Manifold.Morse.SurgeryCollapse.CellExactSequence",
+   18
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.SurgeryCollapse",
+   "Lib.Geometry.Manifold.Morse.SurgeryCollapse.DiskCollapse",
+   25
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.SurgeryCollapse",
+   "Lib.Geometry.Manifold.Morse.SurgeryCollapse.DiskFilling",
+   7
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.SurgeryCollapse",
+   "Lib.Geometry.Manifold.Morse.SurgeryCollapse.HandleCollapse",
+   31
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.SurgeryCollapse",
+   "Lib.Geometry.Manifold.Morse.SurgeryCollapse.HandleExactSequence",
+   23
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.SurgeryCollapse",
+   "Lib.Geometry.Manifold.Morse.SurgeryCollapse.IndexOrdering",
+   4
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.SurgeryCollapse",
+   "Lib.Geometry.Manifold.Morse.SurgeryCollapse.LevelIsotopy",
+   4
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.SurgeryCollapse",
+   "Lib.Geometry.Manifold.Morse.SurgeryCollapse.LevelTransport",
+   8
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.SurgeryCollapse",
+   "Lib.Geometry.Manifold.Morse.SurgeryCollapse.LocalDegreeConnecting",
+   22
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.SurgeryCollapse",
+   "Lib.Geometry.Manifold.Morse.SurgeryCollapse.MinimumReduction",
+   6
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.SurgeryCollapse",
+   "Lib.Geometry.Manifold.Morse.SurgeryCollapse.OnePointCover",
+   14
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.SurgeryCollapse",
+   "Lib.Geometry.Manifold.Morse.SurgeryCollapse.PuncturedBall",
+   3
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.SurgeryCollapse",
+   "Lib.Geometry.Manifold.Morse.SurgeryCollapse.SphereOrientation",
+   32
+  ]
+ ],
+ "ambiguous": [],
+ "auxiliary_moved": 938,
+ "verdict": "PASS"
+}

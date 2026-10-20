@@ -1,0 +1,181 @@
+def PeriodTorusHigherHomology.circleProductMap {X Y : Type} [TopologicalSpace X]
+    [TopologicalSpace Y] (f : C(X, Y)) :
+    C((PeriodTorusHigherHomology.CircleTopology.Circle) × X,
+      (PeriodTorusHigherHomology.CircleTopology.Circle) × Y) :=
+  ⟨fun z => (z.1, f z.2), continuous_fst.prodMk (f.continuous.comp continuous_snd)⟩
+
+def PeriodTorusHigherHomology.intersectionProductMap {X Y : Type} [TopologicalSpace X]
+    [TopologicalSpace Y] (f : C(X, Y)) :
+    C(↥(CircleTopology.productU X ∩ CircleTopology.productV X),
+      ↥(CircleTopology.productU Y ∩ CircleTopology.productV Y)) :=
+  ⟨fun z => ⟨circleProductMap f z.val, z.property⟩,
+    ((circleProductMap f).continuous.comp continuous_subtype_val).subtype_mk _⟩
+
+theorem PeriodTorusHigherHomology.circleProductMap_projection {X Y : Type} [TopologicalSpace X]
+    [TopologicalSpace Y] (f : C(X, Y)) :
+    (CircleTopology.productProjection Y).comp (circleProductMap f) =
+      f.comp (CircleTopology.productProjection X) :=
+  rfl
+
+theorem PeriodTorusHigherHomology.intersectionProductMap_homotopyEquiv {X Y : Type}
+    [TopologicalSpace X] [TopologicalSpace Y] (f : C(X, Y)) :
+    (CircleTopology.productIntersectionHomotopyEquiv Y).toFun.comp (intersectionProductMap f) =
+      (CircleTopology.sumContinuousMap f f).comp
+        (CircleTopology.productIntersectionHomotopyEquiv X).toFun := by
+  apply ContinuousMap.ext
+  intro z
+  let c : ↥(CircleTopology.arcU ∩ CircleTopology.arcV) := ⟨z.val.1, z.property⟩
+  change
+    Sum.map (fun t : Set.Ioo (0 : ℝ) (1 / 2) × Y => t.2)
+        (fun t : Set.Ioo (1 / 2 : ℝ) 1 × Y => t.2)
+        (Homeomorph.sumProdDistrib (CircleTopology.intersectionHomeomorph c, f z.val.2)) =
+      Sum.map f f
+        (Sum.map (fun t : Set.Ioo (0 : ℝ) (1 / 2) × X => t.2)
+          (fun t : Set.Ioo (1 / 2 : ℝ) 1 × X => t.2)
+          (Homeomorph.sumProdDistrib (CircleTopology.intersectionHomeomorph c, z.val.2)))
+  cases h : CircleTopology.intersectionHomeomorph c <;> rfl
+
+theorem PeriodTorusHigherHomology.circleProjectionHomology_naturality {X Y : Type}
+    [TopologicalSpace X] [TopologicalSpace Y] (f : C(X, Y)) (n : ℕ) :
+    (circleProjectionHomology Y n).comp
+        (SingularMayerVietoris.singularHomologyMap (circleProductMap f) n) =
+      (SingularMayerVietoris.singularHomologyMap f n).comp (circleProjectionHomology X n) := by
+  rw [← singularHomologyMap_comp, circleProductMap_projection, singularHomologyMap_comp]
+
+theorem PeriodTorusHigherHomology.sumHomologyEquiv_naturality {X Y : Type} [TopologicalSpace X]
+    [TopologicalSpace Y] {X' Y' : Type} [TopologicalSpace X'] [TopologicalSpace Y'] (f : C(X, X'))
+    (g : C(Y, Y')) (n : ℕ) (a : SingularMayerVietoris.SingularHomology (X ⊕ Y) n) :
+    sumHomologyEquiv X' Y' n
+        (SingularMayerVietoris.singularHomologyMap (CircleTopology.sumContinuousMap f g) n a) =
+      (SingularMayerVietoris.singularHomologyMap f n (sumHomologyEquiv X Y n a).1,
+        SingularMayerVietoris.singularHomologyMap g n (sumHomologyEquiv X Y n a).2) := by
+  have hsum :
+    CircleTopology.sumContinuousMap f g =
+      sumElimMap ((sumInlMap X' Y').comp f) ((sumInrMap X' Y').comp g) := by
+    ext x
+    cases x <;> rfl
+  simp only [hsum, sumHomologyEquiv_sumElim, singularHomologyMap_comp, LinearMap.comp_apply,
+    map_add, sumHomologyEquiv_inl, sumHomologyEquiv_inr, Prod.mk_add_mk, add_zero, zero_add]
+
+theorem PeriodTorusHigherHomology.productIntersectionHomologyEquiv_naturality {X Y : Type}
+    [TopologicalSpace X] [TopologicalSpace Y] (f : C(X, Y)) (n : ℕ)
+    (a :
+      SingularMayerVietoris.SingularHomology
+        (CircleTopology.productU X ∩ CircleTopology.productV X :
+          Set ((PeriodTorusHigherHomology.CircleTopology.Circle) × X))
+        n) :
+    productIntersectionHomologyEquiv Y n
+        (SingularMayerVietoris.singularHomologyMap (intersectionProductMap f) n a) =
+      (SingularMayerVietoris.singularHomologyMap f n (productIntersectionHomologyEquiv X n a).1,
+        SingularMayerVietoris.singularHomologyMap f n
+          (productIntersectionHomologyEquiv X n a).2) := by
+  have h :=
+    congrArg (fun g => SingularMayerVietoris.singularHomologyMap g n)
+      (intersectionProductMap_homotopyEquiv f)
+  rw [singularHomologyMap_comp, singularHomologyMap_comp] at h
+  calc
+    _ =
+        sumHomologyEquiv Y Y n
+          (SingularMayerVietoris.singularHomologyMap (CircleTopology.sumContinuousMap f f) n
+            (SingularMayerVietoris.singularHomologyMap
+              (CircleTopology.productIntersectionHomotopyEquiv X).toFun n a)) :=
+      congrArg (sumHomologyEquiv Y Y n) (LinearMap.congr_fun h a)
+    _ = _ := sumHomologyEquiv_naturality f f n _
+
+theorem PeriodTorusHigherHomology.circleProductMap_mapsToU {X Y : Type} [TopologicalSpace X]
+    [TopologicalSpace Y] (f : C(X, Y)) :
+    Set.MapsTo (circleProductMap f) (CircleTopology.productU X) (CircleTopology.productU Y) :=
+  fun _ h => h
+
+theorem PeriodTorusHigherHomology.circleProductMap_mapsToV {X Y : Type} [TopologicalSpace X]
+    [TopologicalSpace Y] (f : C(X, Y)) :
+    Set.MapsTo (circleProductMap f) (CircleTopology.productV X) (CircleTopology.productV Y) :=
+  fun _ h => h
+
+theorem PeriodTorusHigherHomology.circleProductIntersectionRestriction_eq {X Y : Type}
+    [TopologicalSpace X] [TopologicalSpace Y] (f : C(X, Y)) :
+    SingularMayerVietoris.intersectionRestriction (circleProductMap f) (CircleTopology.productU X)
+        (CircleTopology.productV X) (CircleTopology.productU Y) (CircleTopology.productV Y)
+        (circleProductMap_mapsToU f) (circleProductMap_mapsToV f) =
+      intersectionProductMap f :=
+  rfl
+
+theorem PeriodTorusHigherHomology.circleMayerVietorisConnecting_naturality {X Y : Type}
+    [TopologicalSpace X] [TopologicalSpace Y] (f : C(X, Y)) (n : ℕ) :
+    (SingularMayerVietoris.singularHomologyMap (intersectionProductMap f) n).comp
+        (circleMayerVietorisConnecting X n) =
+      (circleMayerVietorisConnecting Y n).comp
+        (SingularMayerVietoris.singularHomologyMap (circleProductMap f) (n + 1)) := by
+  have h :=
+    SingularMayerVietoris.connectingHomomorphism_naturality (circleProductMap f)
+      (CircleTopology.productU X) (CircleTopology.productV X) (CircleTopology.productU Y)
+      (CircleTopology.productV Y) (circleProductMap_mapsToU f) (circleProductMap_mapsToV f)
+      (CircleTopology.productU_open X) (CircleTopology.productV_open X)
+      (CircleTopology.product_cover X) (CircleTopology.productU_open Y)
+      (CircleTopology.productV_open Y) (CircleTopology.product_cover Y) n
+  rw [circleProductIntersectionRestriction_eq] at h
+  exact h
+
+theorem PeriodTorusHigherHomology.circleBoundaryCoordinates_naturality {X Y : Type}
+    [TopologicalSpace X] [TopologicalSpace Y] (f : C(X, Y)) (n : ℕ)
+    (a :
+      SingularMayerVietoris.SingularHomology
+        ((PeriodTorusHigherHomology.CircleTopology.Circle) × X) (n + 1)) :
+    circleBoundaryCoordinates Y n
+        (SingularMayerVietoris.singularHomologyMap (circleProductMap f) (n + 1) a) =
+      (SingularMayerVietoris.singularHomologyMap f n (circleBoundaryCoordinates X n a).1,
+        SingularMayerVietoris.singularHomologyMap f n (circleBoundaryCoordinates X n a).2) := by
+  have h := LinearMap.congr_fun (circleMayerVietorisConnecting_naturality f n) a
+  change
+    SingularMayerVietoris.singularHomologyMap (intersectionProductMap f) n
+        (circleMayerVietorisConnecting X n a) =
+      circleMayerVietorisConnecting Y n
+        (SingularMayerVietoris.singularHomologyMap (circleProductMap f) (n + 1) a) at h
+  change
+    productIntersectionHomologyEquiv Y n
+        (circleMayerVietorisConnecting Y n
+          (SingularMayerVietoris.singularHomologyMap (circleProductMap f) (n + 1) a)) =
+      _
+  rw [← h]
+  exact productIntersectionHomologyEquiv_naturality f n (circleMayerVietorisConnecting X n a)
+
+theorem PeriodTorusHigherHomology.circleBoundary_naturality {X Y : Type} [TopologicalSpace X]
+    [TopologicalSpace Y] (f : C(X, Y)) (n : ℕ)
+    (a :
+      SingularMayerVietoris.SingularHomology
+        ((PeriodTorusHigherHomology.CircleTopology.Circle) × X) (n + 1)) :
+    circleBoundary Y n
+        (SingularMayerVietoris.singularHomologyMap (circleProductMap f) (n + 1) a) =
+      SingularMayerVietoris.singularHomologyMap f n (circleBoundary X n a) := by
+  change
+    -(circleBoundaryCoordinates Y n
+            (SingularMayerVietoris.singularHomologyMap (circleProductMap f) (n + 1) a)).1 =
+      SingularMayerVietoris.singularHomologyMap f n (-(circleBoundaryCoordinates X n a).1)
+  rw [circleBoundaryCoordinates_naturality, map_neg]
+
+theorem PeriodTorusHigherHomology.circleProductHomologyEquiv_naturality {X Y : Type}
+    [TopologicalSpace X] [TopologicalSpace Y] (f : C(X, Y)) (n : ℕ)
+    (a :
+      SingularMayerVietoris.SingularHomology
+        ((PeriodTorusHigherHomology.CircleTopology.Circle) × X) (n + 1)) :
+    circleProductHomologyEquiv Y n
+        (SingularMayerVietoris.singularHomologyMap (circleProductMap f) (n + 1) a) =
+      (SingularMayerVietoris.singularHomologyMap f (n + 1) (circleProductHomologyEquiv X n a).1,
+        SingularMayerVietoris.singularHomologyMap f n (circleProductHomologyEquiv X n a).2) := by
+  apply Prod.ext
+  · exact LinearMap.congr_fun (circleProjectionHomology_naturality f (n + 1)) a
+  · exact circleBoundary_naturality f n a
+
+theorem PeriodTorusHigherHomology.circleProductHomologyEquiv_symm_naturality {X Y : Type}
+    [TopologicalSpace X] [TopologicalSpace Y] (f : C(X, Y)) (n : ℕ)
+    (a :
+      SingularMayerVietoris.SingularHomology X (n + 1) ×
+        SingularMayerVietoris.SingularHomology X n) :
+    SingularMayerVietoris.singularHomologyMap (circleProductMap f) (n + 1)
+        ((circleProductHomologyEquiv X n).symm a) =
+      (circleProductHomologyEquiv Y n).symm
+        (SingularMayerVietoris.singularHomologyMap f (n + 1) a.1,
+          SingularMayerVietoris.singularHomologyMap f n a.2) := by
+  apply (circleProductHomologyEquiv Y n).injective
+  rw [circleProductHomologyEquiv_naturality, LinearEquiv.apply_symm_apply,
+    LinearEquiv.apply_symm_apply]

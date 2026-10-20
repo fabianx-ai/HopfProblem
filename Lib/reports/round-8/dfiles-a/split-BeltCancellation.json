@@ -1,0 +1,669 @@
+{
+"module": "Lib.Geometry.Manifold.Morse.BeltCancellation",
+"source": "Lib/Geometry/Manifold/Morse/BeltCancellation.lean",
+"source_sha256": "1162ee2646b00f238fa4065654a06493d6774738479668e16c7ee818d358076c",
+"units_kept": 50,
+"units_moved": 10,
+"units": [
+{
+"names": [
+"ManifoldMorse.MorseSurgeryData.exists_belt_whitney_cancellation_of_opposite_signs"
+],
+"class": "keep",
+"lines": [
+41,
+109
+],
+"sha256": "4ad821cee2c2bcc65dfb30ce31a8d848139c7f0509bb8e4d294524e1bb7484db"
+},
+{
+"names": [
+"ManifoldMorse.MorseSurgeryData.exists_signed_belt_cancellation_step"
+],
+"class": "keep",
+"lines": [
+111,
+242
+],
+"sha256": "2445e5215ec5952741334d50b4edfbbf51347b0ebd7c3dae983eb5974bd5bbe0"
+},
+{
+"names": [
+"ManifoldMorse.MorseSurgeryData.IsTransverseBeltSphere"
+],
+"class": "keep",
+"lines": [
+244,
+258
+],
+"sha256": "996985c2f34147626e9e598018e11d9b0ab59380b3d554b7338204186811a582"
+},
+{
+"names": [
+"ManifoldMorse.MorseSurgeryData.finite_points_of_isTransverseBeltSphere"
+],
+"class": "keep",
+"lines": [
+260,
+272
+],
+"sha256": "a6b3d58d704e739ec8a4da9748febba7a3a55aac49dd36c63cb5bceeeb8c024d"
+},
+{
+"names": [
+"ManifoldMorse.MorseSurgeryData.HandleDomain"
+],
+"class": "keep",
+"lines": [
+274,
+279
+],
+"sha256": "17e309f95f0b6bf8b5d88258dd8ac8b499c3276ffbfcb00541d436a40188ae4e"
+},
+{
+"names": [
+"ManifoldMorse.MorseSurgeryData.handleMap"
+],
+"class": "keep",
+"lines": [
+281,
+285
+],
+"sha256": "d3ee688cba6aefd52002c8e5d85668826ad2eaeb5bd1d5e1a1c8d37cf1cdbf90"
+},
+{
+"names": [
+"ManifoldMorse.MorseSurgeryData.handleFacePoint"
+],
+"class": "keep",
+"lines": [
+287,
+293
+],
+"sha256": "c73ea013cc02b7f401322723f94ccbad49fe2796aaaaedf67eaa9fe6412ec8b0"
+},
+{
+"names": [
+"ManifoldMorse.MorseSurgeryData.handleMap_core"
+],
+"class": "keep",
+"lines": [
+295,
+302
+],
+"sha256": "ba4b4c09f1f6d869053f1b9dcac9e80c779b6e6c4c6d95f9d7b79f1e0276c5af"
+},
+{
+"names": [
+"ManifoldMorse.MorseSurgeryData.coreMap"
+],
+"class": "keep",
+"lines": [
+304,
+309
+],
+"sha256": "56a918212aeb68e363a172004c334d3ea4045e15ee6498a034fa7ce7aee6dcc8"
+},
+{
+"names": [
+"ManifoldMorse.MorseSurgeryData.coreMap_boundary"
+],
+"class": "keep",
+"lines": [
+311,
+318
+],
+"sha256": "5771066c4b4b4dd72575a404d33740e73e51208c8e08e4789e30c92a5faeb80d"
+},
+{
+"names": [
+"ManifoldMorse.MorseSurgeryData.coreMap_lower_iff"
+],
+"class": "keep",
+"lines": [
+320,
+326
+],
+"sha256": "410e4d25228ff1cc10636b337d7fcccfa37d34fa2a7335eebdd71b24a7f9ea47"
+},
+{
+"names": [
+"ManifoldMorse.MorseSurgeryData.coreMap_isClosedEmbedding"
+],
+"class": "keep",
+"lines": [
+328,
+337
+],
+"sha256": "07cbc248ebc9a6f5c3a1da4ad0f8685db2a492cd3661560a838c716ce7fba867"
+},
+{
+"names": [
+"ManifoldMorse.MorseSurgeryData.coreUnionHomotopyEquiv"
+],
+"class": "keep",
+"lines": [
+339,
+349
+],
+"sha256": "b960016e076563eae0106b303c24777616bc85f992f1870e72d43cc693001dc1"
+},
+{
+"names": [
+"ManifoldMorse.MorseSurgeryData.coreCellPresentation"
+],
+"class": "keep",
+"lines": [
+351,
+358
+],
+"sha256": "a8579a93743c7b4d2c23c61aab34946c2b1d88ca2b0d3d5ae8911366b7aa0914"
+},
+{
+"names": [
+"ManifoldMorse.MorseSurgeryData.cellOldHomeomorph"
+],
+"class": "keep",
+"lines": [
+360,
+371
+],
+"sha256": "804560e14b2ac37c8bea587b6d9796f2a7901c97cd9d25e90d2e22097c8122c4"
+},
+{
+"names": [
+"ManifoldMorse.MorseSurgeryData.coreBoundaryMap"
+],
+"class": "keep",
+"lines": [
+373,
+380
+],
+"sha256": "d0e01fc729d6a8a4838fab1a6dafc165c7393c70f26dfaf5e8a5b9ff79874ddc"
+},
+{
+"names": [
+"ManifoldMorse.MorseSurgeryData.coreCell_attaching_eq"
+],
+"class": "keep",
+"lines": [
+382,
+392
+],
+"sha256": "6f51469c7b1f613889f311c686a7ca6458ad5e458a20121dba3af75ca6e2adea"
+},
+{
+"names": [
+"ManifoldMorse.MorseSurgeryData.realizedLowerInclusion"
+],
+"class": "keep",
+"lines": [
+394,
+400
+],
+"sha256": "043cb30d48621b0d39b2e9f63798b7e4957ddf8c82dc4da6f2a3be0b038e586a"
+},
+{
+"names": [
+"AdaptedWindows.forward_limit_below_regular_level"
+],
+"class": "keep",
+"lines": [
+402,
+413
+],
+"sha256": "d729396373df8663e79f39a9aefd6fb03c0721c811196d4d14e442c2b6d7b50c"
+},
+{
+"names": [
+"AdaptedWindows.place_one_handle_in_distinct_minimum_basins"
+],
+"class": "keep",
+"lines": [
+415,
+482
+],
+"sha256": "89caa8096aa4b35f97fbee8bdf30b9579d4ea0bac1776a25003a81c83d38c42b"
+},
+{
+"names": [
+"MorseCancellation.fderiv_beltPassage_upper_fst"
+],
+"class": "keep",
+"lines": [
+484,
+503
+],
+"sha256": "6dd800f198fa225021b87f80b41b69af7ea54a9ae95c8786477335a05d0849b9"
+},
+{
+"names": [
+"MorseCancellation.injective_fderiv_beltPassage_upper"
+],
+"class": "keep",
+"lines": [
+505,
+512
+],
+"sha256": "21cca5d6e9ccf622c66849894a4f0375eba47ffd7f2a7a172a7a42c24431087f"
+},
+{
+"names": [
+"MorseCancellation.nativeBeltArc_derivative_injective"
+],
+"class": "keep",
+"lines": [
+514,
+540
+],
+"sha256": "b5799538af06c6062a8fddbbe36be299d17b81783d319d0c16e1c287c0c708e7"
+},
+{
+"names": [
+"RegularLevel.contMDiffWithinAt_iff_inclusion"
+],
+"class": "keep",
+"lines": [
+542,
+564
+],
+"sha256": "f10eb600c093ea09497bc7e4ddaae753d1b6c8ccd456d976d5e378bc796d9144"
+},
+{
+"names": [
+"RegularLevel.contMDiffOn_iff_inclusion"
+],
+"class": "keep",
+"lines": [
+566,
+577
+],
+"sha256": "108d932024c6dbc5ed7fb03049675a1b3335ccfd8d35c10b6c853544ea6cb9f1"
+},
+{
+"names": [
+"MorseCancellation.nativeBeltLevelArc"
+],
+"class": "keep",
+"lines": [
+579,
+587
+],
+"sha256": "3863171731b758a881a0cb03ca7f2773bd2ee3bcd9c2d2207cc1466afdc7ec6b"
+},
+{
+"names": [
+"MorseCancellation.nativeBeltLevelArc_coe"
+],
+"class": "keep",
+"lines": [
+589,
+595
+],
+"sha256": "97a69e4e2b4e985c8a4d13ad7da6b01370d88f74f523124aa6596c00ea1e00e0"
+},
+{
+"names": [
+"MorseCancellation.nativeBeltLevelArc_coe_germ"
+],
+"class": "keep",
+"lines": [
+597,
+605
+],
+"sha256": "70045713c76fc1cf742c70eaa1c98e610b81c7dc5c18af7113c0acf43a383983"
+},
+{
+"names": [
+"MorseCancellation.nativeBeltLevelArc_contMDiffOn"
+],
+"class": "keep",
+"lines": [
+607,
+622
+],
+"sha256": "33b79a83c9306c7459a11f46c47fdb19d3d83155932cc366bea3601f0954df51"
+},
+{
+"names": [
+"MorseCancellation.nativeBeltLevelArc_derivative_injective"
+],
+"class": "keep",
+"lines": [
+624,
+644
+],
+"sha256": "4c30b55bc47dd4e57f205c5cf8d408b26746a165d8fa268d42204943c8d9b456"
+},
+{
+"names": [
+"MorseCancellation.nativeBeltLevelArc_normal"
+],
+"class": "keep",
+"lines": [
+646,
+658
+],
+"sha256": "f54b2bcc3d1ae2d9edad5c127800805eac2d4b1aae006bc5b20cf0b2e7556ab1"
+},
+{
+"names": [
+"MorseCancellation.nativeBeltLevelArc_transverse"
+],
+"class": "keep",
+"lines": [
+660,
+740
+],
+"sha256": "2850e2940b62a4bb8420a9261adbf4acc06ccaeebbc4d8613646c38bcf4e0de2"
+},
+{
+"names": [
+"MorseCancellation.transverse_circle_of_arc_germ"
+],
+"class": "keep",
+"lines": [
+742,
+762
+],
+"sha256": "97fa143c2d06f496bd85ab47c53aebab5790dff1cd1d660db71f7d663e81d5c9"
+},
+{
+"names": [
+"MorseCancellation.surjective_coprod_comp_left"
+],
+"class": "keep",
+"lines": [
+764,
+775
+],
+"sha256": "fc0b81397d92e16fe4a4c32a9600778a9f84f44af1de3c9d810caa3b74bb331c"
+},
+{
+"names": [
+"MorseCancellation.euclideanTail"
+],
+"class": "keep",
+"lines": [
+777,
+782
+],
+"sha256": "dfdace65aa896223dfc45a09df1740f06345523e2b53602e32473bcbf506715b"
+},
+{
+"names": [
+"MorseCancellation.euclideanTail_hemisphere"
+],
+"class": "keep",
+"lines": [
+784,
+787
+],
+"sha256": "c175af4a056c5c0b6725abc5e5a82204c8002a40b4aff7003e3a24212806539f"
+},
+{
+"names": [
+"MorseCancellation.exists_belt_point_avoiding_smooth_image"
+],
+"class": "keep",
+"lines": [
+789,
+855
+],
+"sha256": "5271a3c780a6f82304b9fa63d1c063f7cbadff203cc356f63ee293e98f179c73"
+},
+{
+"names": [
+"AdaptedWindows.exists_belt_point_reaching_level"
+],
+"class": "keep",
+"lines": [
+857,
+902
+],
+"sha256": "5553c8bc7faf77c0c4645437e07595448fbd986d4fe5f491adf0d5ddee675674"
+},
+{
+"names": [
+"AdaptedWindows.joinedIn_level_minimum_basin_reaching_level"
+],
+"class": "keep",
+"lines": [
+904,
+1011
+],
+"sha256": "ffc0dc456e1564db73cc30223ae00a895d76d6fc1ea79f0465de31bb4c44ec68"
+},
+{
+"names": [
+"AdaptedWindows.exists_belt_arc_closing_path_reaching_level"
+],
+"class": "keep",
+"lines": [
+1013,
+1094
+],
+"sha256": "7b3c37f9f33045ab3bddc89077133f7629aa5e92bc84c0dacf8c34a9425ddef9"
+},
+{
+"names": [
+"MorseCancellation.single_belt_intersection_of_arc_and_minimum_range"
+],
+"class": "keep",
+"lines": [
+1096,
+1126
+],
+"sha256": "2d36b20fa50c706dcf4628583c04499b09b9c1cea995e71a6d3e4fc2d7139ded"
+},
+{
+"names": [
+"AdaptedWindows.exists_single_belt_circle_in_open_with_image"
+],
+"class": "keep",
+"lines": [
+1128,
+1230
+],
+"sha256": "c2c88bf9bac33b37e0b0deaba0b7db8258042997b96f2505119875a553f830c5"
+},
+{
+"names": [
+"AdaptedWindows.exists_transverse_belt_circle_reaching_level_with_endpoints"
+],
+"class": "keep",
+"lines": [
+1232,
+1334
+],
+"sha256": "9bdb4caa90ef597b8d779b8fbea4501681c48e52ea53cf9530ec5d2203e0b4a7"
+},
+{
+"names": [
+"AdaptedWindows.exists_native_level_basin_transport"
+],
+"class": "keep",
+"lines": [
+1336,
+1445
+],
+"sha256": "3dca676b7f43a5b6ac309a97c59d4ee618a631ce670a43ced5409a68bc45b892"
+},
+{
+"names": [
+"AdaptedWindows.belt_complement_reaches_lower_level"
+],
+"class": "move",
+"lines": [
+1447,
+1473
+],
+"sha256": "4c46c898e5f7b6d9dc97ff89fdedeeacaafb1ad5dde327b27d98a7a355a8ea75"
+},
+{
+"names": [
+"AdaptedWindows.exists_belt_complement_lower_transport"
+],
+"class": "move",
+"lines": [
+1475,
+1508
+],
+"sha256": "05c353ee12bc1bf7dfcb357d3b7a20e441d40e9714ba9cca4032f0e2c8f1f651"
+},
+{
+"names": [
+"MorseCancellation.nativeUpperMeridianInComplement"
+],
+"class": "keep",
+"lines": [
+1510,
+1519
+],
+"sha256": "da4415867694994ac29fc134079ab3308a2ff1f2f7f1bf325da0bf390e601970"
+},
+{
+"names": [
+"MorseCancellation.lower_transport_upperMeridian_eq"
+],
+"class": "move",
+"lines": [
+1521,
+1536
+],
+"sha256": "2ee6d4ecd58c0f6d94151915f0484b4513a18beb44a4b9c475868963c6faa714"
+},
+{
+"names": [
+"AdaptedWindows.exists_lower_transport_with_meridians"
+],
+"class": "move",
+"lines": [
+1538,
+1557
+],
+"sha256": "c78fd2a15a3b6d13a2cfc7c7afce9c795efb4f6b627897aa01bd2333cf0c90a0"
+},
+{
+"names": [
+"AdaptedWindows.exists_lower_passage_homology_relation"
+],
+"class": "move",
+"lines": [
+1559,
+1609
+],
+"sha256": "13aba2d3e78eddfdf46baf46eef9ad8bc4f39e4899e45b5c1e723889fef4aee5"
+},
+{
+"names": [
+"PuncturedRadial.toSphere_fromSphere"
+],
+"class": "keep",
+"lines": [
+1611,
+1617
+],
+"sha256": "80161ac76ef364525e1693e9f35ab8a5c64dad0223d4d902beecfaf6f61b5b50"
+},
+{
+"names": [
+"PuncturedRadial.deformation"
+],
+"class": "keep",
+"lines": [
+1619,
+1632
+],
+"sha256": "4ec803475b6818f881425c60b616d4c4c2f90dd22ebfe19c8dae1eef3f79b18f"
+},
+{
+"names": [
+"PuncturedRadial.sphereHomotopyEquiv"
+],
+"class": "keep",
+"lines": [
+1634,
+1643
+],
+"sha256": "5eb82a385b485ccfe4fdbee52dcd849ec5d0adf7b919170103811f1d7a78c0ff"
+},
+{
+"names": [
+"LocalDegree.linearSphereEquiv"
+],
+"class": "keep",
+"lines": [
+1645,
+1649
+],
+"sha256": "44f23be85980e6ee75efbdd9ec91880f1ac09f27adf49b01ab8bb43eceee1a33"
+},
+{
+"names": [
+"LocalDegree.BoundaryData.normalizedMap"
+],
+"class": "keep",
+"lines": [
+1651,
+1655
+],
+"sha256": "83d51a787d240e5a441f2e3cdfe3dce7e596914b11e3a57b4aa2a31bee0db943"
+},
+{
+"names": [
+"MorseCancellation.radialParameterChart"
+],
+"class": "move",
+"lines": [
+1657,
+1672
+],
+"sha256": "510db2b657e0bca449923baa3f248295043257125cef7029096f8c1173f883ad"
+},
+{
+"names": [
+"MorseCancellation.radialParameterChart_zero_mem_source"
+],
+"class": "move",
+"lines": [
+1674,
+1686
+],
+"sha256": "1b71d13a96feb3e9502e8707a4fa9d566d6ec6ab46e6ef47ed06f313b6e17e95"
+},
+{
+"names": [
+"MorseCancellation.radialParameterChart_zero"
+],
+"class": "move",
+"lines": [
+1688,
+1704
+],
+"sha256": "beb55cfbfa26b46871e2f3ee2531de476db8f8c1cbedff5772efd0094f79a4d3"
+},
+{
+"names": [
+"MorseCancellation.radialParameterChart_apply"
+],
+"class": "move",
+"lines": [
+1706,
+1714
+],
+"sha256": "e04b5e07f1032518db04eceb8439f5558f44d6c1486db93948e8460e52393dbd"
+},
+{
+"names": [
+"MorseCancellation.radialParameterChart_link"
+],
+"class": "move",
+"lines": [
+1716,
+1723
+],
+"sha256": "a7c80e802f35613f76770e946df78c96feb121100867e40317b4beb552ca3c99"
+}
+]
+}

@@ -1,0 +1,50 @@
+# integration 7d replay log (source pin H=0870a3da8ddccf2d78a8d609b5679e0877ee6b3b, base 41b46d37b3cdb89a9f2468554ace91c60bac28bb)
+[1] 0870a3da8ddccf2d78a8d609b5679e0877ee6b3b -> 32c9a73481edd96c4592c6e3cda86c3490ffe277 | cherry-pick
+b1 (after [1]): lake build Lib.Geometry.Hyperbolic.Models Lib.AxiomAudit -> Build completed successfully (9402 jobs).
+lake: /home/goblin/.elan/toolchains/leanprover--lean4---v4.33.0/bin/lake, taskset -c 0-7 (base worktree 8-13)
+## final.sh output
+2026-10-11T14:13:50+02:00
+32c9a734 feat(Lib): generalize polar reflections to arbitrary angular origins
+b1 0
+Build completed successfully (9402 jobs).
+lib 0
+Build completed successfully (9402 jobs).
+chain 0
+Build completed successfully (9462 jobs).
+info: Solution.lean:61:0: 'Mathoverflow1973.mathoverflow_1973' depends on axioms: [propext, Classical.choice, Quot.sound]
+sharedcenter 0
+Build completed successfully (8867 jobs).
+axioms 0
+Build completed successfully (9418 jobs).
+census 0
+  extracted (no longer under Hopf/): SphereCone
+ratchet PASS: 123 <= baseline 1648
+importgrep lines 4 (4 = all empty)
+roots 0
+Build completed successfully (9474 jobs).
+dump 0
+39478
+2026-10-11T14:48:27+02:00
+done 0
+## base.sh output (worktree /home/goblin/hopf-int7d-base, detached 41b46d37)
+2026-10-11T14:13:50+02:00
+41b46d37 docs: NEXT_STEPS after the better homes; rename wave held back for the rebase
+basebuild 0
+Build completed successfully (9474 jobs).
+dump 0
+39475
+2026-10-11T14:56:53+02:00
+done 0
+## axiom probe counts (grep -cE '^info: <file>.*(depends on axioms|does not depend)' final-axioms.log)
+Lib/AxiomAudit.lean 3788; Shared/Proof/AxiomAudit.lean 53; Center/Proof/AxiomAudit.lean 9; Unused/Topology/Dimension/CubeBoundaryThreeCells.lean 34; axiom union {propext, Classical.choice, Quot.sound}; sorryAx 0; errors 0
+## envdiff
+constants before 39475 after 39478 (keys 39368 39371 )
+lost 0 added 3 of which source declarations: 0 3 ; names with changed type 0 of which source: 0
+  ADDED Hyperbolic.hyperboloidPolar_angular_reflection {'Lib.Geometry.Hyperbolic.Models': 1}
+  ADDED Hyperbolic.hyperboloidPolar_axis_comparison {'Lib.Geometry.Hyperbolic.Models': 1}
+  ADDED Hyperbolic.hyperboloidPolar_rotated_frame {'Lib.Geometry.Hyperbolic.Models': 1}
+auxiliary lost/added/changed (not judged): 0 0 0
+module moves (source declarations, 1-to-1):
+ambiguous module changes: 0
+auxiliary constants that changed module: 0
+VERDICT FAIL

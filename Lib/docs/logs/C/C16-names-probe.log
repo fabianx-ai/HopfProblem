@@ -1,0 +1,28 @@
+CMD: lake env lean C16_NamesProbe.lean
+start 05:23:52
+Mathoverflow1973.Hurewicz.DegreeTwo.mapGenLoop {N X Y : Type} [TopologicalSpace X] [TopologicalSpace Y] (f : C(X, Y))
+  (x : X) : C(↑(GenLoop N X x), ↑(GenLoop N Y (f x)))
+Mathoverflow1973.Hurewicz.DegreeTwo.mapGenLoop {N X Y : Type} [TopologicalSpace X] [TopologicalSpace Y] (f : C(X, Y))
+  (x : X) : C(↑(GenLoop N X x), ↑(GenLoop N Y (f x)))
+Mathoverflow1973.Hurewicz.DegreeTwo.SimplyConnected.hurewiczPi2Equiv {X : Type} [TopologicalSpace X]
+  [SimplyConnectedSpace X] (x : X) :
+  HomotopyGroup.Pi 2 X x ≃* Multiplicative ↑(Mathoverflow1973.SingularMayerVietoris.SingularHomology X 2)
+Mathoverflow1973.Hurewicz.DegreeTwo.SimplyConnected.hurewiczPi2Equiv {X : Type} [TopologicalSpace X]
+  [SimplyConnectedSpace X] (x : X) :
+  HomotopyGroup.Pi 2 X x ≃* Multiplicative ↑(Mathoverflow1973.SingularMayerVietoris.SingularHomology X 2)
+Mathoverflow1973.SecondHurewicz.SimplyConnected.hurewiczLinearEquiv {X : Type} [TopologicalSpace X]
+  [SimplyConnectedSpace X] (x : X) :
+  Additive (HomotopyGroup.Pi 2 X x) ≃ₗ[ℤ] ↑(Mathoverflow1973.SingularMayerVietoris.SingularHomology X 2)
+'Mathoverflow1973.Hurewicz.DegreeTwo.SimplyConnected.hurewiczPi2Equiv' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'Mathoverflow1973.Hurewicz.hurewiczLinearEquivOfTwoLE_natural' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'Mathoverflow1973.Hurewicz.subsingleton_singularHomology_of_lt' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'Mathoverflow1973.DiskCube.boundary_iff' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Mathoverflow1973.mathoverflow_1973' depends on axioms: [propext, Classical.choice, Quot.sound]
+exit 0
+end 05:23:55

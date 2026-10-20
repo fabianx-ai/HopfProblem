@@ -56,7 +56,7 @@ Authors: Sebastian Kumar
 Copyright 2025 The Formal Conjectures Authors.
 -/
 
-import Hopf.Final
+import Hopf.Proof.Final
 
 #print axioms Mathoverflow1973.mathoverflow_1973
 -- 'Mathoverflow1973.mathoverflow_1973' depends on axioms: [propext, Classical.choice, Quot.sound]

@@ -1,0 +1,3024 @@
+{
+ "rows": [
+  {
+   "target": "Lib/Algebra/Homology/MayerVietorisShortExact.lean",
+   "source": "Hopf/DifferentialTopology.lean",
+   "start": 30922,
+   "end": 31137,
+   "sha256": "192d0e034322e7dae66aba63c7db88a86e0a5ed93978c7e7329ec8c51c0a7bdb",
+   "decls": 19,
+   "commit": "bd7a4b5",
+   "lane": "A"
+  },
+  {
+   "target": "Lib/AlgebraicTopology/FundamentalGroup/SimplyConnectedCover.lean",
+   "source": "Hopf/Hurewicz.lean",
+   "start": 545,
+   "end": 676,
+   "sha256": "a6126c0b67a41763229b66218ee36d8b370d312d60c61ece1ba301a121cc14a2",
+   "decls": 9,
+   "commit": "da29618",
+   "lane": "B"
+  },
+  {
+   "target": "Lib/AlgebraicTopology/FundamentalGroup/TwoSimplyConnectedCover.lean",
+   "source": "Hopf/Hurewicz.lean",
+   "start": 1065,
+   "end": 1261,
+   "sha256": "e812cd98ceda5ddb2341c1c82086b8f393285adcad739ccacfb0e79219ded5b9",
+   "decls": 19,
+   "commit": "0b5d47f",
+   "lane": "B"
+  },
+  {
+   "target": "Lib/AlgebraicTopology/FundamentalGroup/TwoSimplyConnectedCover.lean",
+   "source": "Hopf/LCP/BoundaryTopology.lean",
+   "start": 8622,
+   "end": 8767,
+   "sha256": "e9d1ff3c3b8cc32559e87c7964425ce15893e11e5d182fafe014e77a40f4feec",
+   "decls": 10,
+   "commit": "0b5d47f",
+   "lane": "B"
+  },
+  {
+   "target": "Lib/AlgebraicTopology/FundamentalGroup/VanKampen.lean",
+   "source": "Hopf/Hurewicz.lean",
+   "start": 719,
+   "end": 1064,
+   "sha256": "d022e6b360b1fc485f632f939db132fd0fe64eed8ba75b0e47c2d7e0f75cae88",
+   "decls": 50,
+   "commit": "eca3d71",
+   "lane": "B"
+  },
+  {
+   "target": "Lib/AlgebraicTopology/FundamentalGroup/VanKampen.lean",
+   "source": "Hopf/Hurewicz.lean",
+   "start": 1262,
+   "end": 1325,
+   "sha256": "01451ffaa598f43c0194c152d2c0e8ba176b34dac21cde77cf090dff5e7161ec",
+   "decls": 1,
+   "commit": "eca3d71",
+   "lane": "B"
+  },
+  {
+   "target": "Lib/AlgebraicTopology/FundamentalGroup/VanKampen.lean",
+   "source": "Hopf/LCP/BoundaryTopology.lean",
+   "start": 539,
+   "end": 1675,
+   "sha256": "8a2aabe771b94f4e2a685ca240a4865980142d6d9d9134f0e178ee20cd0b58e9",
+   "decls": 111,
+   "commit": "eca3d71",
+   "lane": "B"
+  },
+  {
+   "target": "Lib/AlgebraicTopology/FundamentalGroup/VanKampen.lean",
+   "source": "Hopf/LCP/BoundaryTopology.lean",
+   "start": 12954,
+   "end": 12978,
+   "sha256": "5487e3b5484874ed1e97ec18923f3dfcde21e571b0324f37e3be02e17681052b",
+   "decls": 1,
+   "commit": "eca3d71",
+   "lane": "B"
+  },
+  {
+   "target": "Lib/AlgebraicTopology/FundamentalGroupoid/SimplyConnectedSphere.lean",
+   "source": "Hopf/SingularHomology.lean",
+   "start": 18868,
+   "end": 18941,
+   "sha256": "cd27321c7a8e9507bd2b0209056a95e73691e34444d4d4c296db6c8dbe168cea",
+   "decls": 11,
+   "commit": "?",
+   "lane": "?"
+  },
+  {
+   "target": "Lib/AlgebraicTopology/FundamentalGroupoid/SimplyConnectedSphere.lean",
+   "source": "Hopf/SingularHomology.lean",
+   "start": 18978,
+   "end": 19047,
+   "sha256": "aa7a6a15015dc2b3299464b5ffb17863c0a114ccf1dc6fdd2ff9c61465c6609c",
+   "decls": 3,
+   "commit": "?",
+   "lane": "?"
+  },
+  {
+   "target": "Lib/AlgebraicTopology/Hurewicz/CubeChainDecomposition.lean",
+   "source": "Hopf/Hurewicz.lean",
+   "start": 16624,
+   "end": 16647,
+   "sha256": "c7e8735ac8bcaeaa5cb402a107425d78fba73e31c9359c1ab017669b61236263",
+   "decls": 2,
+   "commit": "?",
+   "lane": "?"
+  },
+  {
+   "target": "Lib/AlgebraicTopology/Hurewicz/CubeChainDecomposition.lean",
+   "source": "Hopf/Hurewicz.lean",
+   "start": 16714,
+   "end": 16802,
+   "sha256": "6129779faf22ba5d12c6a642e52d07b7a972f1c83b0361966d79a9d87f88c07f",
+   "decls": 11,
+   "commit": "?",
+   "lane": "?"
+  },
+  {
+   "target": "Lib/AlgebraicTopology/Hurewicz/CubeChainDecomposition.lean",
+   "source": "Hopf/Hurewicz.lean",
+   "start": 16887,
+   "end": 16892,
+   "sha256": "0e4ef8f3bbce04edca106e0966ed584208b79fe61cc83bbcc2c3e915349c457b",
+   "decls": 1,
+   "commit": "?",
+   "lane": "?"
+  },
+  {
+   "target": "Lib/AlgebraicTopology/Hurewicz/CubeChainDecomposition.lean",
+   "source": "Hopf/Hurewicz.lean",
+   "start": 16900,
+   "end": 16974,
+   "sha256": "50e530e6f8e2498fd1f5cebba94d784c6e3d74d7f00c690c158a4e351f86bba7",
+   "decls": 4,
+   "commit": "?",
+   "lane": "?"
+  },
+  {
+   "target": "Lib/AlgebraicTopology/Hurewicz/CubeChainDecomposition.lean",
+   "source": "Hopf/Hurewicz.lean",
+   "start": 17523,
+   "end": 17568,
+   "sha256": "217d3c4bbc7eca4dfbcaee46c31b6fb344769cee5b3f6e4e4000f7744005861b",
+   "decls": 2,
+   "commit": "?",
+   "lane": "?"
+  },
+  {
+   "target": "Lib/AlgebraicTopology/Hurewicz/CubeChainDecomposition.lean",
+   "source": "Hopf/Hurewicz.lean",
+   "start": 17680,
+   "end": 18223,
+   "sha256": "06751ab9a23ab90a415ec4d504e0eaa92cdbc9748a9210d1b6a989eac0a5134e",
+   "decls": 55,
+   "commit": "?",
+   "lane": "?"
+  },
+  {
+   "target": "Lib/AlgebraicTopology/Hurewicz/CubeGluing.lean",
+   "source": "Hopf/Hurewicz.lean",
+   "start": 18323,
+   "end": 18346,
+   "sha256": "74dd32611b57e8bbcb4cc0ee14b1799d75d2ac968a8bcba7e7150458e1aab057",
+   "decls": 3,
+   "commit": "?",
+   "lane": "?"
+  },
+  {
+   "target": "Lib/AlgebraicTopology/Hurewicz/CubeGluing.lean",
+   "source": "Hopf/Hurewicz.lean",
+   "start": 18413,
+   "end": 18425,
+   "sha256": "ac7fd3a060612c8315cbe57cdfd7b968d47571259df2799a22258006299213af",
+   "decls": 1,
+   "commit": "?",
+   "lane": "?"
+  },
+  {
+   "target": "Lib/AlgebraicTopology/Hurewicz/CubeGluing.lean",
+   "source": "Hopf/Hurewicz.lean",
+   "start": 18783,
+   "end": 18865,
+   "sha256": "88cbb8a62a4154564d55a1acb3204e630c75bd2b4386401d256c2f8000fda2e7",
+   "decls": 11,
+   "commit": "?",
+   "lane": "?"
+  },
+  {
+   "target": "Lib/AlgebraicTopology/Hurewicz/CubeGluing.lean",
+   "source": "Hopf/Hurewicz.lean",
+   "start": 18925,
+   "end": 19919,
+   "sha256": "eeed2833521458710f3ed85c1fb51ee387bb537b0886056716770bd620cb81fa",
+   "decls": 91,
+   "commit": "?",
+   "lane": "?"
+  },
+  {
+   "target": "Lib/AlgebraicTopology/Hurewicz/CubeGluing.lean",
+   "source": "Hopf/Hurewicz.lean",
+   "start": 19975,
+   "end": 20039,
+   "sha256": "ff99ed9459fd08f9525c2c3a5734a9514708fa45dbc2e2db2f42c4dfc4616cb2",
+   "decls": 7,
+   "commit": "?",
+   "lane": "?"
+  },
+  {
+   "target": "Lib/AlgebraicTopology/Hurewicz/CubeGluing.lean",
+   "source": "Hopf/Hurewicz.lean",
+   "start": 20088,
+   "end": 20176,
+   "sha256": "05af30994cae0fcbdc5ae5de6e40c7d20563c1beb3e2487e698f6a900baa09b0",
+   "decls": 6,
+   "commit": "?",
+   "lane": "?"
+  },
+  {
+   "target": "Lib/AlgebraicTopology/Hurewicz/CubeGluing.lean",
+   "source": "Hopf/Hurewicz.lean",
+   "start": 20361,
+   "end": 20492,
+   "sha256": "e44184d052d89d26940e1acac005c9806049c31b2d1265b6bec8aa86c38e6933",
+   "decls": 8,
+   "commit": "?",
+   "lane": "?"
+  },
+  {
+   "target": "Lib/AlgebraicTopology/Hurewicz/CubeSphere.lean",
+   "source": "Hopf/Recognition.lean",
+   "start": 1737,
+   "end": 1840,
+   "sha256": "e5ab7aadb1f54e5f808002bbde50a98023026b54669542bd53b718f7360cd53b",
+   "decls": 12,
+   "commit": "?",
+   "lane": "?"
+  },
+  {
+   "target": "Lib/AlgebraicTopology/Hurewicz/CubeSphere.lean",
+   "source": "Hopf/Recognition.lean",
+   "start": 2334,
+   "end": 2427,
+   "sha256": "5845bfeb768437de9c11ee115c190a51b7b37a6bd270fb77cf6cb58de635663b",
+   "decls": 13,
+   "commit": "?",
+   "lane": "?"
+  },
+  {
+   "target": "Lib/AlgebraicTopology/Hurewicz/CubeTriangulation.lean",
+   "source": "Hopf/Hurewicz.lean",
+   "start": 16057,
+   "end": 16320,
+   "sha256": "600bf832e039b5502d1b7dc334d845a3a47e86d15957dd219a07fdb3bd996635",
+   "decls": 34,
+   "commit": "?",
+   "lane": "?"
+  },
+  {
+   "target": "Lib/AlgebraicTopology/Hurewicz/CubeTriangulation.lean",
+   "source": "Hopf/Hurewicz.lean",
+   "start": 16333,
+   "end": 16466,
+   "sha256": "38c7adf839d0819e14b5d33b6e9755b4306d1a28a39aa320e359eda18426ace4",
+   "decls": 12,
+   "commit": "?",
+   "lane": "?"
+  },
+  {
+   "target": "Lib/AlgebraicTopology/Hurewicz/CubeTriangulation.lean",
+   "source": "Hopf/Hurewicz.lean",
+   "start": 16648,
+   "end": 16713,
+   "sha256": "7430e80fdbc4e705b84be8260724bcb4546f748d89e3f38016a1f53348844355",
+   "decls": 6,
+   "commit": "?",
+   "lane": "?"
+  },
+  {
+   "target": "Lib/AlgebraicTopology/Hurewicz/CubeTriangulation.lean",
+   "source": "Hopf/Hurewicz.lean",
+   "start": 19948,
+   "end": 19974,
+   "sha256": "242933accca0342a487780426d9d163e5f16035cff60d687a3829f8d418b27db",
+   "decls": 5,
+   "commit": "?",
+   "lane": "?"
+  },
+  {
+   "target": "Lib/AlgebraicTopology/Hurewicz/CubeTriangulation.lean",
+   "source": "Hopf/Hurewicz.lean",
+   "start": 20040,
+   "end": 20087,
+   "sha256": "adeb176f9c659348dc09cc5c1c6118afc14460c7645288cdc7009bcc21ab1d17",
+   "decls": 3,
+   "commit": "?",
+   "lane": "?"
+  },
+  {
+   "target": "Lib/AlgebraicTopology/Hurewicz/CubeTriangulation.lean",
+   "source": "Hopf/Hurewicz.lean",
+   "start": 20177,
+   "end": 20360,
+   "sha256": "82ff6b253bb40c6d16683f0892224a5093b1901706d14d3e379f77990720daf7",
+   "decls": 11,
+   "commit": "?",
+   "lane": "?"
+  },
+  {
+   "target": "Lib/AlgebraicTopology/Hurewicz/CubeTriangulation.lean",
+   "source": "Hopf/Hurewicz.lean",
+   "start": 20616,
+   "end": 20639,
+   "sha256": "ea0666deba11faf905ee61eae84f6b01d738d65adf820a5fb6a6ca83215a0f33",
+   "decls": 1,
+   "commit": "?",
+   "lane": "?"
+  },
+  {
+   "target": "Lib/AlgebraicTopology/Hurewicz/CycleClasses.lean",
+   "source": "Hopf/SingularHomology.lean",
+   "start": 673,
+   "end": 676,
+   "sha256": "525e85c8a302c3f286315aff9b4439937751bafa7ceb7ee58d0ae0762b5035a5",
+   "decls": 1,
+   "commit": "?",
+   "lane": "?"
+  },
+  {
+   "target": "Lib/AlgebraicTopology/Hurewicz/CycleClasses.lean",
+   "source": "Hopf/SingularHomology.lean",
+   "start": 685,
+   "end": 691,
+   "sha256": "95e0ab932e72f9baa287cdc6f426de992436a6aeb9609441529453de54578162",
+   "decls": 2,
+   "commit": "?",
+   "lane": "?"
+  },
+  {
+   "target": "Lib/AlgebraicTopology/Hurewicz/CycleClasses.lean",
+   "source": "Hopf/SingularHomology.lean",
+   "start": 695,
+   "end": 697,
+   "sha256": "bdba5123bc8dec561d1b86376f1142c886463b5b05756cf917b7eb7045dc5c10",
+   "decls": 1,
+   "commit": "?",
+   "lane": "?"
+  },
+  {
+   "target": "Lib/AlgebraicTopology/Hurewicz/CycleClasses.lean",
+   "source": "Hopf/SingularHomology.lean",
+   "start": 701,
+   "end": 725,
+   "sha256": "cd30ec20743ebadce10b0a1d5e498cc56da25eac7b2a3ec685044d19d58b18e7",
+   "decls": 6,
+   "commit": "?",
+   "lane": "?"
+  },
+  {
+   "target": "Lib/AlgebraicTopology/Hurewicz/Degree.lean",
+   "source": "Hopf/Hurewicz.lean",
+   "start": 15093,
+   "end": 15249,
+   "sha256": "fb0be9acf6278f29b692c366fc9d245e755d0c3034708b3bfc3bbb8f0615bd3b",
+   "decls": 16,
+   "commit": "?",
+   "lane": "?"
+  },
+  {
+   "target": "Lib/AlgebraicTopology/Hurewicz/Degree.lean",
+   "source": "Hopf/Hurewicz.lean",
+   "start": 15602,
+   "end": 15638,
+   "sha256": "87d0f743a887027361a0d2449f4b9c4c4ccba8dcdf84e4f52469d05c53d9d8a8",
+   "decls": 2,
+   "commit": "?",
+   "lane": "?"
+  },
+  {
+   "target": "Lib/AlgebraicTopology/Hurewicz/Degree.lean",
+   "source": "Hopf/Hurewicz.lean",
+   "start": 15690,
+   "end": 15758,
+   "sha256": "d5cb0fb45a09591213378f3341a3693ab4994190aef165ed5ca40afb5a280c15",
+   "decls": 4,
+   "commit": "?",
+   "lane": "?"
+  },
+  {
+   "target": "Lib/AlgebraicTopology/Hurewicz/Degree.lean",
+   "source": "Hopf/Hurewicz.lean",
+   "start": 15792,
+   "end": 15842,
+   "sha256": "988ebe5896b8a3ec8aff898ba5f7ec28214fcea27acb6245e6bdbc966de87770",
+   "decls": 5,
+   "commit": "?",
+   "lane": "?"
+  },
+  {
+   "target": "Lib/AlgebraicTopology/Hurewicz/Degree.lean",
+   "source": "Hopf/Hurewicz.lean",
+   "start": 15847,
+   "end": 15896,
+   "sha256": "5eb027b1792c93b28ead140aed9679714cf6b5dd848123b30b4bbd180a51b924",
+   "decls": 7,
+   "commit": "?",
+   "lane": "?"
+  },
+  {
+   "target": "Lib/AlgebraicTopology/Hurewicz/Degree.lean",
+   "source": "Hopf/Hurewicz.lean",
+   "start": 15901,
+   "end": 15933,
+   "sha256": "41904b85ed8276b726a8fd10fbb6aef4727dacbc0d45cb55c116ab8cdb2757a0",
+   "decls": 3,
+   "commit": "?",
+   "lane": "?"
+  },
+  {
+   "target": "Lib/AlgebraicTopology/Hurewicz/Degree.lean",
+   "source": "Hopf/Hurewicz.lean",
+   "start": 15956,
+   "end": 16001,
+   "sha256": "3d5bc4bbfe48c5bf2e827d81a3a009f434dd8930972e4f2b96e65a341cd321af",
+   "decls": 4,
+   "commit": "?",
+   "lane": "?"
+  },
+  {
+   "target": "Lib/AlgebraicTopology/Hurewicz/Degree.lean",
+   "source": "Hopf/Hurewicz.lean",
+   "start": 20493,
+   "end": 20581,
+   "sha256": "bed3d94bb87aec45e7f5c86141b0b3f675b67e636210edc34b71e31a81cd4f17",
+   "decls": 5,
+   "commit": "?",
+   "lane": "?"
+  },
+  {
+   "target": "Lib/AlgebraicTopology/Hurewicz/Degree.lean",
+   "source": "Hopf/Hurewicz.lean",
+   "start": 23324,
+   "end": 23443,
+   "sha256": "3574a5c5a137ae3b2a8228a6f371585b7e80d2f9aa60757cf7d61378a2a81289",
+   "decls": 7,
+   "commit": "?",
+   "lane": "?"
+  },
+  {
+   "target": "Lib/AlgebraicTopology/Hurewicz/Degree1.lean",
+   "source": "Hopf/SingularHomology.lean",
+   "start": 289,
+   "end": 392,
+   "sha256": "c0793ded1d18a6fa61815d19f0984d3b157c2df01f84b3ee40db9687c8f4ea87",
+   "decls": 15,
+   "commit": "?",
+   "lane": "?"
+  },
+  {
+   "target": "Lib/AlgebraicTopology/Hurewicz/Degree1.lean",
+   "source": "Hopf/SingularHomology.lean",
+   "start": 664,
+   "end": 697,
+   "sha256": "6361a98b9ffa8d8b8d4e59f616261e3d2432af64a47b4b363456824d88235ece",
+   "decls": 9,
+   "commit": "?",
+   "lane": "?"
+  },
+  {
+   "target": "Lib/AlgebraicTopology/Hurewicz/Degree1.lean",
+   "source": "Hopf/SingularHomology.lean",
+   "start": 701,
+   "end": 725,
+   "sha256": "cd30ec20743ebadce10b0a1d5e498cc56da25eac7b2a3ec685044d19d58b18e7",
+   "decls": 6,
+   "commit": "?",
+   "lane": "?"
+  },
+  {
+   "target": "Lib/AlgebraicTopology/Hurewicz/Degree1.lean",
+   "source": "Hopf/SingularHomology.lean",
+   "start": 738,
+   "end": 757,
+   "sha256": "aa9ba950e43fae23563f6d1bc3227a9a7f64d1db6f13213b2651c5cc01aaeb48",
+   "decls": 4,
+   "commit": "?",
+   "lane": "?"
+  },
+  {
+   "target": "Lib/AlgebraicTopology/Hurewicz/Degree1.lean",
+   "source": "Hopf/SingularHomology.lean",
+   "start": 763,
+   "end": 795,
+   "sha256": "8bf5f0d19526f4d59031fce6d88e9f4c3cb26fe986e41d369ae03a3226421a7d",
+   "decls": 4,
+   "commit": "?",
+   "lane": "?"
+  },
+  {
+   "target": "Lib/AlgebraicTopology/Hurewicz/Degree1.lean",
+   "source": "Hopf/SingularHomology.lean",
+   "start": 854,
+   "end": 863,
+   "sha256": "76dbf1040d9b6d0026936425eb5852cc709b12d454a64d60f5ac9bdef1820938",
+   "decls": 2,
+   "commit": "?",
+   "lane": "?"
+  },
+  {
+   "target": "Lib/AlgebraicTopology/Hurewicz/Degree1.lean",
+   "source": "Hopf/SphereTopology.lean",
+   "start": 7166,
+   "end": 7236,
+   "sha256": "34ae6e91a293afa1d5fa360a5fa13ead7dd53f00a136231c8c0bcfe9bd91b37a",
+   "decls": 14,
+   "commit": "?",
+   "lane": "?"
+  },
+  {
+   "target": "Lib/AlgebraicTopology/Hurewicz/Degree1.lean",
+   "source": "Hopf/LCP/CuspFilling.lean",
+   "start": 8877,
+   "end": 8879,
+   "sha256": "f6505a5b4f9fc7fda9db0f9d9776f045bc4d2f4f60f53d71ef523f94dc94620e",
+   "decls": 1,
+   "commit": "?",
+   "lane": "?"
+  },
+  {
+   "target": "Lib/AlgebraicTopology/Hurewicz/Degree1.lean",
+   "source": "Hopf/LCP/CuspFilling.lean",
+   "start": 8884,
+   "end": 8898,
+   "sha256": "d5d28ddc9a00696368ab0115996e936c648cd3d295757bb85c6788f385945ccf",
+   "decls": 2,
+   "commit": "?",
+   "lane": "?"
+  },
+  {
+   "target": "Lib/AlgebraicTopology/Hurewicz/Degree1.lean",
+   "source": "Hopf/LCP/CuspFilling.lean",
+   "start": 8907,
+   "end": 8922,
+   "sha256": "510ae870d0fb3ffb0421ea2fd369c47167f6ab0dd87d26e5df0c4818bb007bb1",
+   "decls": 3,
+   "commit": "?",
+   "lane": "?"
+  },
+  {
+   "target": "Lib/AlgebraicTopology/Hurewicz/Degree1.lean",
+   "source": "Hopf/LCP/CuspFilling.lean",
+   "start": 8927,
+   "end": 8934,
+   "sha256": "40418515938181491f4ba1fca4f8cab3a7ba1fc7567351d9feed03be523179ca",
+   "decls": 2,
+   "commit": "?",
+   "lane": "?"
+  },
+  {
+   "target": "Lib/AlgebraicTopology/Hurewicz/Degree1.lean",
+   "source": "Hopf/LCP/CuspFilling.lean",
+   "start": 8945,
+   "end": 9066,
+   "sha256": "e5d0efd66ba5ddce04fb4e9eb18c695cd009a73265292af4907dacbc4654759c",
+   "decls": 20,
+   "commit": "?",
+   "lane": "?"
+  },
+  {
+   "target": "Lib/AlgebraicTopology/Hurewicz/Degree1.lean",
+   "source": "Hopf/LCP/CuspFilling.lean",
+   "start": 9072,
+   "end": 9085,
+   "sha256": "7d9b62ddb43706f6b5724d9995dcc71600252347c4fc9b6580a8b06f85c13ee9",
+   "decls": 1,
+   "commit": "?",
+   "lane": "?"
+  },
+  {
+   "target": "Lib/AlgebraicTopology/Hurewicz/Degree1.lean",
+   "source": "Hopf/LCP/CuspFilling.lean",
+   "start": 9114,
+   "end": 9192,
+   "sha256": "ea830a7e6d93ef2ac1ac02a4758979cb53af7171343ad9b194271abdb31f832b",
+   "decls": 11,
+   "commit": "?",
+   "lane": "?"
+  },
+  {
+   "target": "Lib/AlgebraicTopology/Hurewicz/Degree1.lean",
+   "source": "Hopf/LCP/CuspFilling.lean",
+   "start": 9203,
+   "end": 9245,
+   "sha256": "e8e399a649dfd86184abb19e34806d4e687750c2a79bd73a2eb5881040ef3d0d",
+   "decls": 5,
+   "commit": "?",
+   "lane": "?"
+  },
+  {
+   "target": "Lib/AlgebraicTopology/Hurewicz/Degree1.lean",
+   "source": "Hopf/LCP/CuspFilling.lean",
+   "start": 9282,
+   "end": 9289,
+   "sha256": "fb34ca3a9fb40b9effe3fe51104ec17d4bda79fd640bcbf92961cb34af0ab359",
+   "decls": 1,
+   "commit": "?",
+   "lane": "?"
+  },
+  {
+   "target": "Lib/AlgebraicTopology/Hurewicz/Degree1.lean",
+   "source": "Hopf/LCP/CuspFilling.lean",
+   "start": 13990,
+   "end": 14008,
+   "sha256": "fc94c70c654e0c2644104ecd8030e582decfb36bf80e53aa8e30687930e59183",
+   "decls": 3,
+   "commit": "?",
+   "lane": "?"
+  },
+  {
+   "target": "Lib/AlgebraicTopology/Hurewicz/HomotopyExtension.lean",
+   "source": "Hopf/Hurewicz.lean",
+   "start": 1431,
+   "end": 2152,
+   "sha256": "2814b6041fc6b2cd3e6f93ca3af0569e206ab83dfc20bcc1563836d362d6250d",
+   "decls": 87,
+   "commit": "?",
+   "lane": "?"
+  },
+  {
+   "target": "Lib/AlgebraicTopology/Hurewicz/PrismOperator.lean",
+   "source": "Hopf/Hurewicz.lean",
+   "start": 3840,
+   "end": 6952,
+   "sha256": "79fce2e8caed7ff0f6846ecfbb009b14af3462529346df8b5ff6c967e85296f5",
+   "decls": 316,
+   "commit": "?",
+   "lane": "?"
+  },
+  {
+   "target": "Lib/AlgebraicTopology/Hurewicz/PrismOperator.lean",
+   "source": "Hopf/Hurewicz.lean",
+   "start": 6975,
+   "end": 8300,
+   "sha256": "a0e8365d2dedf52f2f6be0f3dfd65cb74f07dd0f10fde95d960a6ce957fe5b72",
+   "decls": 125,
+   "commit": "?",
+   "lane": "?"
+  },
+  {
+   "target": "Lib/AlgebraicTopology/Hurewicz/PrismOperator.lean",
+   "source": "Hopf/Hurewicz.lean",
+   "start": 8306,
+   "end": 8380,
+   "sha256": "906d8039b16ae9fc381dbc341b1402f74f4018a5112b0f8b42ca84e0cda6380b",
+   "decls": 3,
+   "commit": "?",
+   "lane": "?"
+  },
+  {
+   "target": "Lib/AlgebraicTopology/Hurewicz/PrismOperator.lean",
+   "source": "Hopf/Hurewicz.lean",
+   "start": 13916,
+   "end": 14057,
+   "sha256": "4507ca3d1190a457626b18cef29d0094a9cafc9194ab61022a4576e8456c474b",
+   "decls": 11,
+   "commit": "?",
+   "lane": "?"
+  },
+  {
+   "target": "Lib/AlgebraicTopology/Hurewicz/SimplexCube.lean",
+   "source": "Hopf/Hurewicz.lean",
+   "start": 85,
+   "end": 457,
+   "sha256": "74d8372b4bedb6d528d47290ec886a090564c4d24990e7bd590d71c2edbd49b6",
+   "decls": 47,
+   "commit": "?",
+   "lane": "?"
+  },
+  {
+   "target": "Lib/AlgebraicTopology/Hurewicz/SimplexPaths.lean",
+   "source": "Hopf/SingularHomology.lean",
+   "start": 85,
+   "end": 288,
+   "sha256": "8af4a6048c21d3970c09717ee7f6b89a6aba3b1df87e1f506d1dbccd87293d12",
+   "decls": 25,
+   "commit": "?",
+   "lane": "?"
+  },
+  {
+   "target": "Lib/AlgebraicTopology/Hurewicz/SimplexPaths.lean",
+   "source": "Hopf/SphereTopology.lean",
+   "start": 7020,
+   "end": 7165,
+   "sha256": "658ab3f14bc6cd732d2e7e0f4408b2c19c42981ea9c25d342c3fdda6d9ae9e56",
+   "decls": 17,
+   "commit": "?",
+   "lane": "?"
+  },
+  {
+   "target": "Lib/AlgebraicTopology/Hurewicz/SimplexPaths.lean",
+   "source": "Hopf/Hurewicz.lean",
+   "start": 1431,
+   "end": 1434,
+   "sha256": "dfa53e3d8534972ff68a5f391993ce08831d4f455d3d0fb16d29859fc6a59ed1",
+   "decls": 1,
+   "commit": "?",
+   "lane": "?"
+  },
+  {
+   "target": "Lib/AlgebraicTopology/Hurewicz/SimplexPaths.lean",
+   "source": "Hopf/Hurewicz.lean",
+   "start": 1444,
+   "end": 1478,
+   "sha256": "7b061e7b7aea46beffc3d3c01f5e0c15ad89ee1f274d8dad244ad21ed5757e4f",
+   "decls": 5,
+   "commit": "?",
+   "lane": "?"
+  },
+  {
+   "target": "Lib/AlgebraicTopology/Hurewicz/Straightening.lean",
+   "source": "Hopf/Hurewicz.lean",
+   "start": 14086,
+   "end": 14101,
+   "sha256": "f842d03d50568551dac9063a7717dd84baa03ef207806998cdcb546a4b23436e",
+   "decls": 1,
+   "commit": "?",
+   "lane": "?"
+  },
+  {
+   "target": "Lib/AlgebraicTopology/Hurewicz/Subdivision.lean",
+   "source": "Hopf/Hurewicz.lean",
+   "start": 15418,
+   "end": 15581,
+   "sha256": "69e8fbb72ec273ca2aa8a3d6d49d9cd6b83c7f9c36304ccd5929fbff619802d2",
+   "decls": 23,
+   "commit": "?",
+   "lane": "?"
+  },
+  {
+   "target": "Lib/AlgebraicTopology/Hurewicz/Subdivision.lean",
+   "source": "Hopf/Hurewicz.lean",
+   "start": 15843,
+   "end": 15846,
+   "sha256": "3aeb4097f3d481177abca6addd71eb558cca9460fc0c632ab815048dfa389138",
+   "decls": 1,
+   "commit": "?",
+   "lane": "?"
+  },
+  {
+   "target": "Lib/AlgebraicTopology/Hurewicz/Subdivision.lean",
+   "source": "Hopf/Hurewicz.lean",
+   "start": 15897,
+   "end": 15900,
+   "sha256": "240b4cee415deb150d096908d48538b8e46bfb9703ade576248b312958984e4a",
+   "decls": 1,
+   "commit": "?",
+   "lane": "?"
+  },
+  {
+   "target": "Lib/AlgebraicTopology/Hurewicz/Subdivision.lean",
+   "source": "Hopf/Hurewicz.lean",
+   "start": 16321,
+   "end": 16332,
+   "sha256": "f5679f54dde4d1e39473b7a7e0cace7113d1b411e3733993eb92f0702ed29b50",
+   "decls": 1,
+   "commit": "?",
+   "lane": "?"
+  },
+  {
+   "target": "Lib/AlgebraicTopology/Hurewicz/Subdivision.lean",
+   "source": "Hopf/Hurewicz.lean",
+   "start": 16467,
+   "end": 16613,
+   "sha256": "2b89c8e3927bde7793ed601b33dfcfba484826fa7d59fef66761dd2b18e560cb",
+   "decls": 10,
+   "commit": "?",
+   "lane": "?"
+  },
+  {
+   "target": "Lib/AlgebraicTopology/Hurewicz/Subdivision.lean",
+   "source": "Hopf/Hurewicz.lean",
+   "start": 18347,
+   "end": 18412,
+   "sha256": "03d1dd74f7f8667b4137b2494a6d88ba4d19cb887fa75d9b7446dc3b92fc9a2f",
+   "decls": 7,
+   "commit": "?",
+   "lane": "?"
+  },
+  {
+   "target": "Lib/AlgebraicTopology/Hurewicz/Subdivision.lean",
+   "source": "Hopf/Hurewicz.lean",
+   "start": 18426,
+   "end": 18457,
+   "sha256": "d818985b438399205b12cb14a23d70ef46e3633924d22d2978b68cbe8a0c4fb6",
+   "decls": 3,
+   "commit": "?",
+   "lane": "?"
+  },
+  {
+   "target": "Lib/AlgebraicTopology/Hurewicz/Subdivision.lean",
+   "source": "Hopf/Hurewicz.lean",
+   "start": 18489,
+   "end": 18782,
+   "sha256": "3a1cf99ae792e9756c1d75f242d025c41537706d3c105bf86859e0b4ce3fddab",
+   "decls": 33,
+   "commit": "?",
+   "lane": "?"
+  },
+  {
+   "target": "Lib/AlgebraicTopology/Hurewicz/Subdivision.lean",
+   "source": "Hopf/Hurewicz.lean",
+   "start": 18866,
+   "end": 18924,
+   "sha256": "e0fa3c4f55e88f22bd58c53b7ae76b8f0c6c7efb703493186b9c74252b5c32a4",
+   "decls": 7,
+   "commit": "?",
+   "lane": "?"
+  },
+  {
+   "target": "Lib/AlgebraicTopology/Hurewicz/Subdivision.lean",
+   "source": "Hopf/Hurewicz.lean",
+   "start": 20640,
+   "end": 20675,
+   "sha256": "a24daad47d20aff66b81f856e7f2a827a73e464bc61b28ef01b5412d289ea126",
+   "decls": 4,
+   "commit": "?",
+   "lane": "?"
+  },
+  {
+   "target": "Lib/AlgebraicTopology/Hurewicz/Subdivision.lean",
+   "source": "Hopf/Hurewicz.lean",
+   "start": 20699,
+   "end": 22081,
+   "sha256": "abe7055f857c5c2fadf0e34f081199548a071d70aa465061a30c4d0e07cc0613",
+   "decls": 139,
+   "commit": "?",
+   "lane": "?"
+  },
+  {
+   "target": "Lib/AlgebraicTopology/SingularHomology/Chains.lean",
+   "source": "Hopf/SingularHomology.lean",
+   "start": 85,
+   "end": 672,
+   "sha256": "2c034cbfcfbf9f19d252f0da8b3950f57ca27787655c6bbfeabc0a5c4a944909",
+   "decls": 87,
+   "commit": "cd31909",
+   "lane": "A"
+  },
+  {
+   "target": "Lib/AlgebraicTopology/SingularHomology/Chains.lean",
+   "source": "Hopf/SingularHomology.lean",
+   "start": 677,
+   "end": 684,
+   "sha256": "65075020184a932dd7532227d18a53a66c2a1fbc1a6cfdc72f31794674c8af2c",
+   "decls": 1,
+   "commit": "cd31909",
+   "lane": "A"
+  },
+  {
+   "target": "Lib/AlgebraicTopology/SingularHomology/Chains.lean",
+   "source": "Hopf/SingularHomology.lean",
+   "start": 692,
+   "end": 694,
+   "sha256": "55b8d11f74ca24d9799185dc2e70093bcd8d0e74ee29014444be25bdb6d0e21e",
+   "decls": 1,
+   "commit": "cd31909",
+   "lane": "A"
+  },
+  {
+   "target": "Lib/AlgebraicTopology/SingularHomology/Chains.lean",
+   "source": "Hopf/SingularHomology.lean",
+   "start": 738,
+   "end": 868,
+   "sha256": "97373a55dd13d1f634a7f7587604983e28cc3759f88002e235ef01b1cd1eba36",
+   "decls": 18,
+   "commit": "cd31909",
+   "lane": "A"
+  },
+  {
+   "target": "Lib/AlgebraicTopology/SingularHomology/Chains.lean",
+   "source": "Hopf/SingularHomology.lean",
+   "start": 1018,
+   "end": 1095,
+   "sha256": "4f048241afbb528440f31162a3ffcd143ebb013060735e3185d58b58ed0d6a76",
+   "decls": 14,
+   "commit": "cd31909",
+   "lane": "A"
+  },
+  {
+   "target": "Lib/AlgebraicTopology/SingularHomology/Chains.lean",
+   "source": "Hopf/SphereTopology.lean",
+   "start": 7020,
+   "end": 7242,
+   "sha256": "23b351114a6c8b22a9b7ba7fac5c94a1538747c3ac1bbe9547e1fba5cd511dc7",
+   "decls": 32,
+   "commit": "cd31909",
+   "lane": "A"
+  },
+  {
+   "target": "Lib/AlgebraicTopology/SingularHomology/CircleProduct.lean",
+   "source": "Hopf/SphereTopology.lean",
+   "start": 1481,
+   "end": 2508,
+   "sha256": "5ff9ac1b1af1bf997854ff9f8ff0f48bbc7d42406f5ccf9c54af30d0f5c8a4cb",
+   "decls": 118,
+   "commit": "44c11ef",
+   "lane": "D1"
+  },
+  {
+   "target": "Lib/AlgebraicTopology/SingularHomology/Coproduct.lean",
+   "source": "Hopf/SphereTopology.lean",
+   "start": 15326,
+   "end": 15575,
+   "sha256": "e68de4dd6859d542a8caf2a39029bdfdf02c28c169b5a05117f2cf1edac500c7",
+   "decls": 22,
+   "commit": "44c11ef",
+   "lane": "D1"
+  },
+  {
+   "target": "Lib/AlgebraicTopology/SingularHomology/Coproduct.lean",
+   "source": "Hopf/SphereTopology.lean",
+   "start": 15589,
+   "end": 15705,
+   "sha256": "ff4d2c0241dc6ba8784e162dab9f828f7c878fcf75d60fbe6f9f4bbee1a98f7a",
+   "decls": 7,
+   "commit": "44c11ef",
+   "lane": "D1"
+  },
+  {
+   "target": "Lib/AlgebraicTopology/SingularHomology/CrossInsert.lean",
+   "source": "Hopf/Hurewicz.lean",
+   "start": 2264,
+   "end": 2267,
+   "sha256": "4fa712f5b44257d81d3f4b4fef722360d0496bdf9152b101c9b851e6c62aee6a",
+   "decls": 1,
+   "commit": "5e9a74e",
+   "lane": "I"
+  },
+  {
+   "target": "Lib/AlgebraicTopology/SingularHomology/CrossInsert.lean",
+   "source": "Hopf/Hurewicz.lean",
+   "start": 2272,
+   "end": 2289,
+   "sha256": "71b67cb3d6228634511a0c2c2ae06176d53fd060877d4af543bc5514e60547d5",
+   "decls": 2,
+   "commit": "5e9a74e",
+   "lane": "I"
+  },
+  {
+   "target": "Lib/AlgebraicTopology/SingularHomology/CrossProduct.lean",
+   "source": "Hopf/Hurewicz.lean",
+   "start": 2153,
+   "end": 2263,
+   "sha256": "38aa83e0b00f0b3ece636ca44d3f62dfb5b4d689d5ba12ad09773b2a31ad0b6b",
+   "decls": 12,
+   "commit": "?",
+   "lane": "?"
+  },
+  {
+   "target": "Lib/AlgebraicTopology/SingularHomology/CrossProduct.lean",
+   "source": "Hopf/Hurewicz.lean",
+   "start": 2268,
+   "end": 2271,
+   "sha256": "31a551c581fe4e0d1a60d6cd4b5bf0ddf1d04712d040b85ced02ff1573f1f036",
+   "decls": 1,
+   "commit": "?",
+   "lane": "?"
+  },
+  {
+   "target": "Lib/AlgebraicTopology/SingularHomology/CrossProduct.lean",
+   "source": "Hopf/Hurewicz.lean",
+   "start": 2290,
+   "end": 3839,
+   "sha256": "ec9bd1aec507227d955b32520f794ae04552308a56d1656cc991723ade00f699",
+   "decls": 86,
+   "commit": "?",
+   "lane": "?"
+  },
+  {
+   "target": "Lib/AlgebraicTopology/SingularHomology/CrossProduct.lean",
+   "source": "Hopf/Hurewicz.lean",
+   "start": 6953,
+   "end": 6974,
+   "sha256": "2f21946f7006ef2033806756b84874a2f5a730430aea2e733444e7c281761fe9",
+   "decls": 2,
+   "commit": "?",
+   "lane": "?"
+  },
+  {
+   "target": "Lib/AlgebraicTopology/SingularHomology/CrossProduct.lean",
+   "source": "Hopf/Hurewicz.lean",
+   "start": 17616,
+   "end": 17679,
+   "sha256": "ac262840ee959b90703db3eb80864442ecd7e1efce1399f8ee9c9d50a3402f7e",
+   "decls": 2,
+   "commit": "?",
+   "lane": "?"
+  },
+  {
+   "target": "Lib/AlgebraicTopology/SingularHomology/HomotopyInvariance.lean",
+   "source": "Hopf/SingularHomology.lean",
+   "start": 3659,
+   "end": 3834,
+   "sha256": "f81dab85d2ab018645585213bce74a84fe696742f3fbeb69c518e9d16737e54c",
+   "decls": 24,
+   "commit": "e997d6c",
+   "lane": "A"
+  },
+  {
+   "target": "Lib/AlgebraicTopology/SingularHomology/HomotopyInvariance.lean",
+   "source": "Hopf/SingularHomology.lean",
+   "start": 4016,
+   "end": 4040,
+   "sha256": "b4044e66696cb07060fcb8a8ef256713a810be8037965591c308c658b4babdcd",
+   "decls": 2,
+   "commit": "e997d6c",
+   "lane": "A"
+  },
+  {
+   "target": "Lib/AlgebraicTopology/SingularHomology/LocalContributions.lean",
+   "source": "Hopf/SphereTopology.lean",
+   "start": 15706,
+   "end": 15840,
+   "sha256": "224eb59865bd67631227aac9e9670f77aa87f2976b53bca1ea7039b08c9c1b0f",
+   "decls": 13,
+   "commit": "44c11ef",
+   "lane": "D1"
+  },
+  {
+   "target": "Lib/AlgebraicTopology/SingularHomology/LocalDegree.lean",
+   "source": "Hopf/SingularHomology.lean",
+   "start": 3835,
+   "end": 4015,
+   "sha256": "dae34e4841b5d62909ae06c86be9ecd6a38980f7dc63dac60477094dcba0b386",
+   "decls": 11,
+   "commit": "44c11ef",
+   "lane": "D1"
+  },
+  {
+   "target": "Lib/AlgebraicTopology/SingularHomology/LocalDegree.lean",
+   "source": "Hopf/SingularHomology.lean",
+   "start": 4041,
+   "end": 4153,
+   "sha256": "932e91b7407529b7e2eb5596e21b62990c76e4d2437ff62ece06c44cdf0556ec",
+   "decls": 5,
+   "commit": "44c11ef",
+   "lane": "D1"
+  },
+  {
+   "target": "Lib/AlgebraicTopology/SingularHomology/LocalDegree.lean",
+   "source": "Hopf/SingularHomology.lean",
+   "start": 4161,
+   "end": 4170,
+   "sha256": "a5632d8756bdb7a766d97999aeaf817b683b12549b2e7d8162403117f4f1f518",
+   "decls": 2,
+   "commit": "44c11ef",
+   "lane": "D1"
+  },
+  {
+   "target": "Lib/AlgebraicTopology/SingularHomology/LocalDegree.lean",
+   "source": "Hopf/SingularHomology.lean",
+   "start": 4218,
+   "end": 4224,
+   "sha256": "02b38cbe0674b1f24ad3a1d7984d8c586fd5fb509e25dcc19710b52cbca0c0f5",
+   "decls": 1,
+   "commit": "44c11ef",
+   "lane": "D1"
+  },
+  {
+   "target": "Lib/AlgebraicTopology/SingularHomology/LocalDegree.lean",
+   "source": "Hopf/SingularHomology.lean",
+   "start": 4297,
+   "end": 4358,
+   "sha256": "91d3abb540cf3042910d86211ef4d2f9c516db115a06bf4b8843ea16c6d4edd8",
+   "decls": 6,
+   "commit": "44c11ef",
+   "lane": "D1"
+  },
+  {
+   "target": "Lib/AlgebraicTopology/SingularHomology/LocalDegree.lean",
+   "source": "Hopf/SingularHomology.lean",
+   "start": 30894,
+   "end": 30897,
+   "sha256": "504420e0d396cc3ac16212658706510495544adc80e377c16dba6021073bfe73",
+   "decls": 1,
+   "commit": "44c11ef",
+   "lane": "D1"
+  },
+  {
+   "target": "Lib/AlgebraicTopology/SingularHomology/LocalDegree.lean",
+   "source": "Hopf/SingularHomology.lean",
+   "start": 31011,
+   "end": 31013,
+   "sha256": "bec7a8e8775f18f884f1ba066944a6d17bf0f45263aa89ececd5637a4dcecf8a",
+   "decls": 1,
+   "commit": "44c11ef",
+   "lane": "D1"
+  },
+  {
+   "target": "Lib/AlgebraicTopology/SingularHomology/LocalDegree.lean",
+   "source": "Hopf/SingularHomology.lean",
+   "start": 31021,
+   "end": 31025,
+   "sha256": "a19464488c5172cd01721c9426063d3f310a34ffeda1e8b0dbd1cc8b1a214b67",
+   "decls": 1,
+   "commit": "44c11ef",
+   "lane": "D1"
+  },
+  {
+   "target": "Lib/AlgebraicTopology/SingularHomology/LocalDegree.lean",
+   "source": "Hopf/SingularHomology.lean",
+   "start": 31034,
+   "end": 31060,
+   "sha256": "da1ea995148280748a951f816a932662d018bd57033e230e3393db46593c1b0d",
+   "decls": 3,
+   "commit": "44c11ef",
+   "lane": "D1"
+  },
+  {
+   "target": "Lib/AlgebraicTopology/SingularHomology/LocalDegree.lean",
+   "source": "Hopf/SingularHomology.lean",
+   "start": 31087,
+   "end": 31260,
+   "sha256": "74411b5b041fac6e7c88634b6227c3e297cbf869d2c397d751905ddbb6c4e9c5",
+   "decls": 15,
+   "commit": "44c11ef",
+   "lane": "D1"
+  },
+  {
+   "target": "Lib/AlgebraicTopology/SingularHomology/LocalDegree.lean",
+   "source": "Hopf/SingularHomology.lean",
+   "start": 31267,
+   "end": 31274,
+   "sha256": "c3089a7963e1a3cfc1c9d1043bae185ab0c649f40ec44284120bdc8817d73079",
+   "decls": 1,
+   "commit": "44c11ef",
+   "lane": "D1"
+  },
+  {
+   "target": "Lib/AlgebraicTopology/SingularHomology/MayerVietoris.lean",
+   "source": "Hopf/SingularHomology.lean",
+   "start": 869,
+   "end": 1017,
+   "sha256": "a9f13c1a1a948473e57762bb339545d9b248511299eaec9ee572e744907f082f",
+   "decls": 16,
+   "commit": "81c066b",
+   "lane": "A"
+  },
+  {
+   "target": "Lib/AlgebraicTopology/SingularHomology/MayerVietoris.lean",
+   "source": "Hopf/SingularHomology.lean",
+   "start": 1096,
+   "end": 1860,
+   "sha256": "e36a0f546e925a0016c45af25ba3c121f239c78542281536981eab787a5b1544",
+   "decls": 87,
+   "commit": "81c066b",
+   "lane": "A"
+  },
+  {
+   "target": "Lib/AlgebraicTopology/SingularHomology/MayerVietoris.lean",
+   "source": "Hopf/SingularHomology.lean",
+   "start": 2088,
+   "end": 3658,
+   "sha256": "53fd13336e46e24a5f75e3ef02b298793d36bfe08444bcd43e930576a39f7284",
+   "decls": 146,
+   "commit": "81c066b",
+   "lane": "A"
+  },
+  {
+   "target": "Lib/AlgebraicTopology/SingularHomology/ModuleHomology.lean",
+   "source": "Hopf/SingularHomology.lean",
+   "start": 1861,
+   "end": 2087,
+   "sha256": "fe28a16a8bf23db706b76f8e32d508177ed0d99c734c7f832821c07753dfaef7",
+   "decls": 20,
+   "commit": "90685ed",
+   "lane": "A"
+  },
+  {
+   "target": "Lib/AlgebraicTopology/SingularHomology/Naturality.lean",
+   "source": "Hopf/SphereTopology.lean",
+   "start": 13759,
+   "end": 13962,
+   "sha256": "a96b70736751fd97e911f7406c8a66ccc350ac75e55b57685653ce40455b7834",
+   "decls": 15,
+   "commit": "44c11ef",
+   "lane": "D1"
+  },
+  {
+   "target": "Lib/AlgebraicTopology/SingularHomology/Naturality.lean",
+   "source": "Hopf/SphereTopology.lean",
+   "start": 16386,
+   "end": 16529,
+   "sha256": "5417addb81a0d78b6b3472c4205a1ab92f574e454ae3ce3e0549d963c0ec4722",
+   "decls": 13,
+   "commit": "44c11ef",
+   "lane": "D1"
+  },
+  {
+   "target": "Lib/AlgebraicTopology/SingularHomology/Naturality.lean",
+   "source": "Hopf/SphereTopology.lean",
+   "start": 17342,
+   "end": 17373,
+   "sha256": "504c2b664aac5277940f8298960435e47d65b0de1002ad1251d33d7af3c978d5",
+   "decls": 2,
+   "commit": "44c11ef",
+   "lane": "D1"
+  },
+  {
+   "target": "Lib/AlgebraicTopology/SingularHomology/Naturality.lean",
+   "source": "Hopf/LCP/CuspFilling.lean",
+   "start": 15076,
+   "end": 15346,
+   "sha256": "62191b7e3299c9d62f6d72cccf76a94c1299edb4d5608e7d6c0ffe74cddb14d3",
+   "decls": 18,
+   "commit": "44c11ef",
+   "lane": "D1"
+  },
+  {
+   "target": "Lib/AlgebraicTopology/SingularHomology/PathClass.lean",
+   "source": "Hopf/LCP/CuspFilling.lean",
+   "start": 8877,
+   "end": 9135,
+   "sha256": "e198d1aebdd22c63169e1c01b8d92386a376be172bb745b5ef9a95821eb4d6c4",
+   "decls": 43,
+   "commit": "5e9a74e",
+   "lane": "I"
+  },
+  {
+   "target": "Lib/AlgebraicTopology/SingularHomology/PathClass.lean",
+   "source": "Hopf/LCP/CuspFilling.lean",
+   "start": 9142,
+   "end": 9163,
+   "sha256": "82f1e9df83200cf75274c496a0a96373a287b23f87af607e3ac7da396cdc4138",
+   "decls": 4,
+   "commit": "5e9a74e",
+   "lane": "I"
+  },
+  {
+   "target": "Lib/AlgebraicTopology/SingularHomology/PathClass.lean",
+   "source": "Hopf/LCP/CuspFilling.lean",
+   "start": 9203,
+   "end": 9245,
+   "sha256": "e8e399a649dfd86184abb19e34806d4e687750c2a79bd73a2eb5881040ef3d0d",
+   "decls": 5,
+   "commit": "5e9a74e",
+   "lane": "I"
+  },
+  {
+   "target": "Lib/AlgebraicTopology/SingularHomology/PathClass.lean",
+   "source": "Hopf/LCP/CuspFilling.lean",
+   "start": 9290,
+   "end": 9302,
+   "sha256": "d1f1caa51e23753ee713a09baa06109300d01118ef838a667a610554ebd0a3c0",
+   "decls": 2,
+   "commit": "5e9a74e",
+   "lane": "I"
+  },
+  {
+   "target": "Lib/AlgebraicTopology/SingularHomology/PathClass.lean",
+   "source": "Hopf/LCP/CuspFilling.lean",
+   "start": 13990,
+   "end": 14014,
+   "sha256": "6bde737f0a3732fae31f1d6e72aa4c485b57ed027be6cab242252a3049656deb",
+   "decls": 4,
+   "commit": "5e9a74e",
+   "lane": "I"
+  },
+  {
+   "target": "Lib/AlgebraicTopology/SingularHomology/Sphere.lean",
+   "source": "Hopf/SphereTopology.lean",
+   "start": 85,
+   "end": 329,
+   "sha256": "3702da86f1a50ea29e08cfae5289a8d2cf70e6359f73f5c2a120c98c841af618",
+   "decls": 37,
+   "commit": "44c11ef",
+   "lane": "D1"
+  },
+  {
+   "target": "Lib/AlgebraicTopology/SingularHomology/SphereHomology.lean",
+   "source": "Hopf/SphereTopology.lean",
+   "start": 2509,
+   "end": 2562,
+   "sha256": "3e45af0c3a1404f61c98ddc2e8d0f22052327ecc59b23d8b0043ed3364f8bf6b",
+   "decls": 11,
+   "commit": "44c11ef",
+   "lane": "D1"
+  },
+  {
+   "target": "Lib/AlgebraicTopology/SingularHomology/SphereHomology.lean",
+   "source": "Hopf/SphereTopology.lean",
+   "start": 6863,
+   "end": 6900,
+   "sha256": "e79660ac8d91c5f9786f7fca2950c898b9f33960b94f323654c4fe305bd7e3e5",
+   "decls": 5,
+   "commit": "44c11ef",
+   "lane": "D1"
+  },
+  {
+   "target": "Lib/AlgebraicTopology/SingularHomology/SphereHomology.lean",
+   "source": "Hopf/SphereTopology.lean",
+   "start": 16075,
+   "end": 16146,
+   "sha256": "0b57e0f47a8765a8d727ab3d4240051c3fda075e190fade7007f883f78b67dec",
+   "decls": 6,
+   "commit": "44c11ef",
+   "lane": "D1"
+  },
+  {
+   "target": "Lib/AlgebraicTopology/SingularHomology/Sum.lean",
+   "source": "Hopf/SphereTopology.lean",
+   "start": 1141,
+   "end": 1480,
+   "sha256": "3b359f079e27a7510c6121b29d36fae5935883e8b27bc8b862084d93d704a510",
+   "decls": 28,
+   "commit": "44c11ef",
+   "lane": "D1"
+  },
+  {
+   "target": "Lib/AlgebraicTopology/SingularHomology/Suspension.lean",
+   "source": "Hopf/SphereTopology.lean",
+   "start": 825,
+   "end": 1140,
+   "sha256": "f6c268e56522c8248d00d77f619d2ee9c092c3b885cb4bdb05dbddef88a315af",
+   "decls": 33,
+   "commit": "44c11ef",
+   "lane": "D1"
+  },
+  {
+   "target": "Lib/Analysis/Calculus/MorseLemma.lean",
+   "source": "Hopf/DifferentialTopology.lean",
+   "start": 777,
+   "end": 2989,
+   "sha256": "00a0b304c27013e818527b90564ac7c1edf64e79e991eb39ea4ae8a7f0b33771",
+   "decls": 157,
+   "commit": "913716d",
+   "lane": "D1"
+  },
+  {
+   "target": "Lib/Analysis/Complex/Cousin.lean",
+   "source": "Hopf/LCP/PeriodConstruction.lean",
+   "start": 15593,
+   "end": 15601,
+   "sha256": "edfa15504ca7b9a83b60d3a7de9a858a3b0f5282a3c792baeceaa6a0ba4000b3",
+   "decls": 2,
+   "commit": "685fd91",
+   "lane": "H"
+  },
+  {
+   "target": "Lib/Analysis/Complex/Cousin.lean",
+   "source": "Hopf/LCP/PeriodConstruction.lean",
+   "start": 16409,
+   "end": 17286,
+   "sha256": "ebf6829496bf6f023437792f0f5754ce6b03b6fb3a975ca7e0d5cc6b98527ee3",
+   "decls": 93,
+   "commit": "685fd91",
+   "lane": "H"
+  },
+  {
+   "target": "Lib/Analysis/Complex/Mobius.lean",
+   "source": "Hopf/LCP/AnalyticFillings.lean",
+   "start": 3581,
+   "end": 4028,
+   "sha256": "a28ac7da24f9197cc36e0995cb799aec348f0f76bd15df403e2f936b23456e78",
+   "decls": 54,
+   "commit": "685fd91",
+   "lane": "H"
+  },
+  {
+   "target": "Lib/Analysis/Complex/RiemannMapping/Steps.lean",
+   "source": "Hopf/LCP/AnalyticFillings.lean",
+   "start": 4711,
+   "end": 4967,
+   "sha256": "8ef330ad8a5906332fd403e31cb4fa2120c6efcad687aa60c098014b4b8ceaa8",
+   "decls": 4,
+   "commit": "685fd91",
+   "lane": "H"
+  },
+  {
+   "target": "Lib/Analysis/Complex/RiemannMapping/Steps.lean",
+   "source": "Hopf/LCP/AnalyticFillings.lean",
+   "start": 5061,
+   "end": 5413,
+   "sha256": "2dca922074b6aed6668116cdb09dc0f7ceaedf1c4244f26d1e265c43a729d0d5",
+   "decls": 27,
+   "commit": "685fd91",
+   "lane": "H"
+  },
+  {
+   "target": "Lib/Analysis/Complex/RiemannMapping.lean",
+   "source": "Hopf/LCP/AnalyticFillings.lean",
+   "start": 4149,
+   "end": 4275,
+   "sha256": "f96a1298f592b0588f70da4db97cdb550ca065a0184fe82acd1bb9fd496487fb",
+   "decls": 14,
+   "commit": "685fd91",
+   "lane": "H"
+  },
+  {
+   "target": "Lib/Analysis/Complex/RiemannMapping.lean",
+   "source": "Hopf/LCP/AnalyticFillings.lean",
+   "start": 4369,
+   "end": 4568,
+   "sha256": "cc6aa36264c0de76b581246b2eaaaa0799fd3994d7a8aa44b33780b759925ae3",
+   "decls": 26,
+   "commit": "685fd91",
+   "lane": "H"
+  },
+  {
+   "target": "Lib/Analysis/Complex/RiemannMapping.lean",
+   "source": "Hopf/LCP/AnalyticFillings.lean",
+   "start": 4615,
+   "end": 4710,
+   "sha256": "aca0a5d3dbb4bf49bb1b58e45b6361bcef8c2a6a6a1e4326d6dab90d78737619",
+   "decls": 8,
+   "commit": "685fd91",
+   "lane": "H"
+  },
+  {
+   "target": "Lib/Analysis/Complex/RiemannMapping.lean",
+   "source": "Hopf/LCP/AnalyticFillings.lean",
+   "start": 4968,
+   "end": 5060,
+   "sha256": "c9ac7fea8c8a889ab3d53661e9d5be5781f97b10e6b1fd641a0c48d5a0c3cf94",
+   "decls": 5,
+   "commit": "685fd91",
+   "lane": "H"
+  },
+  {
+   "target": "Lib/Analysis/Complex/RiemannMapping.lean",
+   "source": "Hopf/LCP/AnalyticFillings.lean",
+   "start": 5414,
+   "end": 5535,
+   "sha256": "d75ef12c2ec64e8d6b316b43f005c1f18040e014ecf0c72c71d8188f8deb6e62",
+   "decls": 6,
+   "commit": "685fd91",
+   "lane": "H"
+  },
+  {
+   "target": "Lib/Analysis/Complex/RiemannMapping.lean",
+   "source": "Hopf/LCP/AnalyticFillings.lean",
+   "start": 5559,
+   "end": 5572,
+   "sha256": "d9f2921ee98793c907517b2b944bec3d28a2024a6e0c015fa5b61a338db09c7c",
+   "decls": 3,
+   "commit": "685fd91",
+   "lane": "H"
+  },
+  {
+   "target": "Lib/Analysis/Complex/RiemannMapping.lean",
+   "source": "Hopf/LCP/AnalyticFillings.lean",
+   "start": 6195,
+   "end": 6429,
+   "sha256": "ecc69c5052614bcb24af34a7bb4c730e85c43df1456cab4f0dc9128fffc3c409",
+   "decls": 17,
+   "commit": "685fd91",
+   "lane": "H"
+  },
+  {
+   "target": "Lib/Analysis/Complex/RiemannMapping.lean",
+   "source": "Hopf/LCP/AnalyticFillings.lean",
+   "start": 6600,
+   "end": 7062,
+   "sha256": "7a3bddc0959b6f9ec5ea09ddbb174773fbd1acfadc01548d2f155f4fcc91483e",
+   "decls": 26,
+   "commit": "685fd91",
+   "lane": "H"
+  },
+  {
+   "target": "Lib/Analysis/Complex/RiemannMapping.lean",
+   "source": "Hopf/LCP/AnalyticFillings.lean",
+   "start": 7085,
+   "end": 7097,
+   "sha256": "807e5d0282fc2ba07b42d4b514327a04a6d06ca0470bd54513c0cfc1866456a6",
+   "decls": 1,
+   "commit": "685fd91",
+   "lane": "H"
+  },
+  {
+   "target": "Lib/Analysis/Complex/RiemannMapping.lean",
+   "source": "Hopf/LCP/AnalyticFillings.lean",
+   "start": 7297,
+   "end": 7624,
+   "sha256": "29aeaf8a27a5555d1717a3508f6f2417375eca163a11f1e4fbf1da8bd43310a4",
+   "decls": 43,
+   "commit": "685fd91",
+   "lane": "H"
+  },
+  {
+   "target": "Lib/Analysis/Complex/RiemannMapping.lean",
+   "source": "Hopf/LCP/AnalyticFillings.lean",
+   "start": 7795,
+   "end": 7952,
+   "sha256": "7256b9fa231043980c937e6e6538e77a3ce1aa4c0e92e392a4c5d1b5abebb211",
+   "decls": 8,
+   "commit": "685fd91",
+   "lane": "H"
+  },
+  {
+   "target": "Lib/Analysis/Complex/RiemannMapping.lean",
+   "source": "Hopf/LCP/AnalyticFillings.lean",
+   "start": 8067,
+   "end": 8178,
+   "sha256": "a9f84e14a14ed068d3964311828dbd3f1d31dbd05209d017fbf8e4ed42fb1fd1",
+   "decls": 7,
+   "commit": "685fd91",
+   "lane": "H"
+  },
+  {
+   "target": "Lib/Analysis/Complex/RiemannMapping.lean",
+   "source": "Hopf/LCP/AnalyticFillings.lean",
+   "start": 8326,
+   "end": 8442,
+   "sha256": "ab42cfaa20f641dd07f23f7531faf1b940a4ca2b376f4be026491319c00b3335",
+   "decls": 10,
+   "commit": "685fd91",
+   "lane": "H"
+  },
+  {
+   "target": "Lib/Analysis/Complex/RiemannMapping.lean",
+   "source": "Hopf/LCP/AnalyticFillings.lean",
+   "start": 8557,
+   "end": 8570,
+   "sha256": "51431aee01fb059645e29c0455384d9ee0ced34c4ef56ecb245d6a4fdf86b213",
+   "decls": 3,
+   "commit": "685fd91",
+   "lane": "H"
+  },
+  {
+   "target": "Lib/Analysis/Complex/RiemannMapping.lean",
+   "source": "Hopf/LCP/AnalyticFillings.lean",
+   "start": 9099,
+   "end": 9135,
+   "sha256": "e3f4f2f6de0dcdd8bed01ff5f307416753df32f8059a27221aec2da90d5ac272",
+   "decls": 4,
+   "commit": "685fd91",
+   "lane": "H"
+  },
+  {
+   "target": "Lib/Analysis/Complex/SchwarzReflection.lean",
+   "source": "Hopf/LCP/AnalyticFillings.lean",
+   "start": 6430,
+   "end": 6599,
+   "sha256": "e117c9662ade87ab6e36d571ab15615d5850bdb42c869fb7cf6967c9dccfb71d",
+   "decls": 16,
+   "commit": "685fd91",
+   "lane": "H"
+  },
+  {
+   "target": "Lib/Analysis/Complex/SquareRoot.lean",
+   "source": "Hopf/LCP/PeriodConstruction.lean",
+   "start": 10071,
+   "end": 10098,
+   "sha256": "3a393b9066b41c5e46ffde21f221da0c6c42e82dcbdaf9156e150a1b9a5d1a1d",
+   "decls": 1,
+   "commit": "685fd91",
+   "lane": "H"
+  },
+  {
+   "target": "Lib/Analysis/Complex/SquareRoot.lean",
+   "source": "Hopf/LCP/PeriodConstruction.lean",
+   "start": 12060,
+   "end": 12220,
+   "sha256": "7afd135606639aa6a47a4f582f935be58160e6beda81c5885fe8dc906d7906ec",
+   "decls": 24,
+   "commit": "685fd91",
+   "lane": "H"
+  },
+  {
+   "target": "Lib/Analysis/Complex/SquareRoot.lean",
+   "source": "Hopf/LCP/PeriodConstruction.lean",
+   "start": 12576,
+   "end": 12786,
+   "sha256": "1f3bd7549dfca014a1bce9aefadd458aac539d59aef02266ceb7d1fde63fe3ef",
+   "decls": 16,
+   "commit": "685fd91",
+   "lane": "H"
+  },
+  {
+   "target": "Lib/Analysis/Complex/SquareRoot.lean",
+   "source": "Hopf/LCP/PeriodConstruction.lean",
+   "start": 12909,
+   "end": 13107,
+   "sha256": "ac9e4c435121aae40a5add598db64c3948907009499095c271886cabc9fa66c3",
+   "decls": 17,
+   "commit": "685fd91",
+   "lane": "H"
+  },
+  {
+   "target": "Lib/Analysis/Complex/SquareRoot.lean",
+   "source": "Hopf/LCP/PeriodConstruction.lean",
+   "start": 13188,
+   "end": 13240,
+   "sha256": "53185febcbe0da1e66cd239072e1c13a509b664c985457dfbe19ecbfdc564866",
+   "decls": 4,
+   "commit": "685fd91",
+   "lane": "H"
+  },
+  {
+   "target": "Lib/Analysis/ODE/SmoothFlow.lean",
+   "source": "Hopf/DifferentialTopology.lean",
+   "start": 18259,
+   "end": 19185,
+   "sha256": "60ad51e78504e427487a8d342d5c451f0a3edfbc78464fa7e47cd745cac1ce38",
+   "decls": 54,
+   "commit": "913716d",
+   "lane": "D1"
+  },
+  {
+   "target": "Lib/Geometry/Manifold/ChartedSpace/Transport.lean",
+   "source": "Hopf/Recognition.lean",
+   "start": 1613,
+   "end": 1640,
+   "sha256": "f9c732eb9dd0f200b4319b842603668ad4dcd07318ac7f19e41b28070109c8c9",
+   "decls": 3,
+   "commit": "44c11ef",
+   "lane": "D1"
+  },
+  {
+   "target": "Lib/Geometry/Manifold/Collar.lean",
+   "source": "Hopf/DifferentialTopology.lean",
+   "start": 11602,
+   "end": 13901,
+   "sha256": "f11da1e7688a638f7a3228795905801a2e39a98aaa5b4d1d0600e21480f9d359",
+   "decls": 147,
+   "commit": "488c283",
+   "lane": "D2"
+  },
+  {
+   "target": "Lib/Geometry/Manifold/Complex/Biholomorph.lean",
+   "source": "Hopf/LCP/AnalyticFillings.lean",
+   "start": 11975,
+   "end": 12022,
+   "sha256": "c6ffa4da878daecd79f6172cc7e873ca4e0760b175488d13fac5c66112a0a060",
+   "decls": 2,
+   "commit": "685fd91",
+   "lane": "H"
+  },
+  {
+   "target": "Lib/Geometry/Manifold/Complex/Biholomorph.lean",
+   "source": "Hopf/LCP/AnalyticFillings.lean",
+   "start": 12124,
+   "end": 12220,
+   "sha256": "ecb789dd050fe573bdb124809c46d50e344d9d5fe7194bbab39e69835959154b",
+   "decls": 5,
+   "commit": "685fd91",
+   "lane": "H"
+  },
+  {
+   "target": "Lib/Geometry/Manifold/Flow/Compact.lean",
+   "source": "Hopf/DifferentialTopology.lean",
+   "start": 2990,
+   "end": 3543,
+   "sha256": "8db444fd9cf02056a5462a2cd4b36091317375059118ddb6b6f9601bef741b9c",
+   "decls": 28,
+   "commit": "913716d",
+   "lane": "D1"
+  },
+  {
+   "target": "Lib/Geometry/Manifold/Flow/HeightTranslating.lean",
+   "source": "Hopf/DifferentialTopology.lean",
+   "start": 5337,
+   "end": 6989,
+   "sha256": "f2af90454c7f0e9ce1b72f144eb07a3a9c83ec4f23e581bac831e1915220bfd3",
+   "decls": 106,
+   "commit": "913716d",
+   "lane": "D1"
+  },
+  {
+   "target": "Lib/Geometry/Manifold/Immersion/Relative.lean",
+   "source": "Hopf/DifferentialTopology.lean",
+   "start": 23749,
+   "end": 27461,
+   "sha256": "20888bb712bd6a5ac513421732ae30d3bd33dbc4fe3bc5b81f5b01fc1f148e83",
+   "decls": 166,
+   "commit": "753ecf8",
+   "lane": "D2"
+  },
+  {
+   "target": "Lib/Geometry/Manifold/Immersion/Relative.lean",
+   "source": "Hopf/DifferentialTopology.lean",
+   "start": 27473,
+   "end": 27612,
+   "sha256": "6a9b9adb61238b24233ba434ac214599a21b2926cf4a15c594e6c651ab388e3b",
+   "decls": 12,
+   "commit": "753ecf8",
+   "lane": "D2"
+  },
+  {
+   "target": "Lib/Geometry/Manifold/Immersion/Relative.lean",
+   "source": "Hopf/DifferentialTopology.lean",
+   "start": 27620,
+   "end": 28343,
+   "sha256": "67d9a3b495c84191d018d27d5ebfee6d571b6e73cf33b4f64b68ec07b834cd54",
+   "decls": 35,
+   "commit": "753ecf8",
+   "lane": "D2"
+  },
+  {
+   "target": "Lib/Geometry/Manifold/Instances/RiemannSphere.lean",
+   "source": "Hopf/LCP/PeriodConstruction.lean",
+   "start": 7757,
+   "end": 8084,
+   "sha256": "70af88f472628923427062003123541c65cae8acbd39029a85bf2afc5310aaa7",
+   "decls": 37,
+   "commit": "685fd91",
+   "lane": "H"
+  },
+  {
+   "target": "Lib/Geometry/Manifold/Morse/Cancellation.lean",
+   "source": "Hopf/DifferentialTopology.lean",
+   "start": 14131,
+   "end": 14999,
+   "sha256": "697b416785fd8f46d0f4025b0765b0126b3a268d651c31a616d4d4c7714ad954",
+   "decls": 33,
+   "commit": "753ecf8",
+   "lane": "D2"
+  },
+  {
+   "target": "Lib/Geometry/Manifold/Morse/Cancellation.lean",
+   "source": "Hopf/DifferentialTopology.lean",
+   "start": 15011,
+   "end": 17991,
+   "sha256": "b682d8ae12b5595eddf47ccb93b4b4cf95b97788591ff62ebbd401d7e3063542",
+   "decls": 195,
+   "commit": "753ecf8",
+   "lane": "D2"
+  },
+  {
+   "target": "Lib/Geometry/Manifold/Morse/Cancellation.lean",
+   "source": "Hopf/DifferentialTopology.lean",
+   "start": 18082,
+   "end": 18258,
+   "sha256": "ab376c5e6ffae484c3b31a50c5abb13a403be4fc845177d603aa6806fa336ee0",
+   "decls": 5,
+   "commit": "753ecf8",
+   "lane": "D2"
+  },
+  {
+   "target": "Lib/Geometry/Manifold/Morse/Cancellation.lean",
+   "source": "Hopf/DifferentialTopology.lean",
+   "start": 19186,
+   "end": 19913,
+   "sha256": "aa6f242801f08c88aff66497c09bd9694c0a1e68cfe8b311b0ac29bdfe2f65bf",
+   "decls": 25,
+   "commit": "753ecf8",
+   "lane": "D2"
+  },
+  {
+   "target": "Lib/Geometry/Manifold/Morse/Cancellation.lean",
+   "source": "Hopf/DifferentialTopology.lean",
+   "start": 19923,
+   "end": 20995,
+   "sha256": "41f4648555d95830728d65d7d65472fb743e3b2dbf83fb656d1312a8de9cb825",
+   "decls": 43,
+   "commit": "753ecf8",
+   "lane": "D2"
+  },
+  {
+   "target": "Lib/Geometry/Manifold/Morse/CellStructure.lean",
+   "source": "Hopf/Recognition.lean",
+   "start": 2580,
+   "end": 3162,
+   "sha256": "38c2f8982d3ede50634b00d5eee476251800c31112be063e6f0d5cf28e97622e",
+   "decls": 53,
+   "commit": "4273335",
+   "lane": "D2"
+  },
+  {
+   "target": "Lib/Geometry/Manifold/Morse/CellStructure.lean",
+   "source": "Hopf/Recognition.lean",
+   "start": 3538,
+   "end": 3715,
+   "sha256": "34a8debb8ce33078b1f28292037092166388ba84cd74672f5c0565d37527598c",
+   "decls": 7,
+   "commit": "4273335",
+   "lane": "D2"
+  },
+  {
+   "target": "Lib/Geometry/Manifold/Morse/Existence.lean",
+   "source": "Hopf/DifferentialTopology.lean",
+   "start": 6990,
+   "end": 9042,
+   "sha256": "ebe8c66c18470d999b538d0f7ef7319b06d27309bd4f5058233eef78013d9023",
+   "decls": 117,
+   "commit": "913716d",
+   "lane": "D1"
+  },
+  {
+   "target": "Lib/Geometry/Manifold/Morse/Handle.lean",
+   "source": "Hopf/DifferentialTopology.lean",
+   "start": 85,
+   "end": 776,
+   "sha256": "1ec365c49f7a0945f0fca692e92a2ce35ea68963c88040e6e7cd3b7058b2536e",
+   "decls": 78,
+   "commit": "913716d",
+   "lane": "D1"
+  },
+  {
+   "target": "Lib/Geometry/Manifold/Morse/HandleAttachment.lean",
+   "source": "Hopf/DifferentialTopology.lean",
+   "start": 3867,
+   "end": 5336,
+   "sha256": "c2b706bf7c7bc84bfe3e1f90f3597cf6490ce70fb9e53730072449b322e1c8ee",
+   "decls": 125,
+   "commit": "913716d",
+   "lane": "D1"
+  },
+  {
+   "target": "Lib/Geometry/Manifold/Morse/Index.lean",
+   "source": "Hopf/SphereTopology.lean",
+   "start": 8246,
+   "end": 8398,
+   "sha256": "e916565c89e6460008cc0463069d7a54d9ce6eaf755c7d02ba75bb1857ac7f2d",
+   "decls": 16,
+   "commit": "de4b876",
+   "lane": "D1"
+  },
+  {
+   "target": "Lib/Geometry/Manifold/Morse/Index.lean",
+   "source": "Hopf/SphereTopology.lean",
+   "start": 8444,
+   "end": 8474,
+   "sha256": "39ff9752720d8747708017f2d0b25c342283c0f3afbef57a640e24f91ad6df7a",
+   "decls": 2,
+   "commit": "de4b876",
+   "lane": "D1"
+  },
+  {
+   "target": "Lib/Geometry/Manifold/Morse/Index.lean",
+   "source": "Hopf/SphereTopology.lean",
+   "start": 8592,
+   "end": 8699,
+   "sha256": "198b2d2eb08a2e34dc4fae350499906768ca7f8d5f8078cc65eb44536159eaf3",
+   "decls": 8,
+   "commit": "de4b876",
+   "lane": "D1"
+  },
+  {
+   "target": "Lib/Geometry/Manifold/Morse/Rearrangement.lean",
+   "source": "Hopf/DifferentialTopology.lean",
+   "start": 28344,
+   "end": 30921,
+   "sha256": "4434e070cdfb91441f6a156bf37d63836057da5174fb150255ee4acefa2cc036",
+   "decls": 116,
+   "commit": "753ecf8",
+   "lane": "D2"
+  },
+  {
+   "target": "Lib/Geometry/Manifold/Morse/SublevelSets.lean",
+   "source": "Hopf/SphereTopology.lean",
+   "start": 2595,
+   "end": 2601,
+   "sha256": "52e5343b859e3e5760fd6136871067a12dd883270140d4d458de9c2e722b0064",
+   "decls": 2,
+   "commit": "de4b876",
+   "lane": "D1"
+  },
+  {
+   "target": "Lib/Geometry/Manifold/Morse/SublevelSets.lean",
+   "source": "Hopf/SphereTopology.lean",
+   "start": 2606,
+   "end": 2615,
+   "sha256": "e5c35b201ea1f4560393feca9e30af3548521a2c5c0c2222645609d3ecfbd19b",
+   "decls": 1,
+   "commit": "de4b876",
+   "lane": "D1"
+  },
+  {
+   "target": "Lib/Geometry/Manifold/Morse/SublevelSets.lean",
+   "source": "Hopf/SphereTopology.lean",
+   "start": 2621,
+   "end": 2647,
+   "sha256": "3b8ab99fe2bd776c3e33e5ee11aef820d9c91d922ac09814f5773cbe41d996cf",
+   "decls": 4,
+   "commit": "de4b876",
+   "lane": "D1"
+  },
+  {
+   "target": "Lib/Geometry/Manifold/Morse/SublevelSets.lean",
+   "source": "Hopf/SphereTopology.lean",
+   "start": 7414,
+   "end": 7439,
+   "sha256": "addac04233dc939d38a1c30d0bfc20c027606d80a920e49558608fe8eec6e4fd",
+   "decls": 1,
+   "commit": "de4b876",
+   "lane": "D1"
+  },
+  {
+   "target": "Lib/Geometry/Manifold/Morse/SublevelSets.lean",
+   "source": "Hopf/SphereTopology.lean",
+   "start": 7677,
+   "end": 7737,
+   "sha256": "a9a2624f90e7cecb246d5fec3c2d3b688580a4ac5275b626a5a44940724a0b9e",
+   "decls": 3,
+   "commit": "de4b876",
+   "lane": "D1"
+  },
+  {
+   "target": "Lib/Geometry/Manifold/Morse/SublevelSets.lean",
+   "source": "Hopf/SphereTopology.lean",
+   "start": 7800,
+   "end": 7818,
+   "sha256": "a5bf3bcc191a77f9076247629adab20d5254fb0c1ae972aadc24c8cd6db4c911",
+   "decls": 1,
+   "commit": "de4b876",
+   "lane": "D1"
+  },
+  {
+   "target": "Lib/Geometry/Manifold/Morse/SurgeryWindows.lean",
+   "source": "Hopf/DifferentialTopology.lean",
+   "start": 9043,
+   "end": 10576,
+   "sha256": "ebf559564864ddeedc73bf4f8a0050c885e27c86a3aa516202ba84da32a2249a",
+   "decls": 103,
+   "commit": "753ecf8",
+   "lane": "D2"
+  },
+  {
+   "target": "Lib/Geometry/Manifold/Morse/SurgeryWindows.lean",
+   "source": "Hopf/DifferentialTopology.lean",
+   "start": 13902,
+   "end": 14130,
+   "sha256": "fc6fc11d9a804eb935d7b77dfaf4bd9203d7329e7ddc8ffdf73734ff614fb81a",
+   "decls": 16,
+   "commit": "753ecf8",
+   "lane": "D2"
+  },
+  {
+   "target": "Lib/Geometry/Manifold/Quotient/Atlas.lean",
+   "source": "Hopf/LCP/PeriodConstruction.lean",
+   "start": 85,
+   "end": 137,
+   "sha256": "2858e14c4c3d52328d2a3f2ad27a3745994d59cfcad30f675ea64b56307d33ac",
+   "decls": 6,
+   "commit": "91dc733",
+   "lane": "I"
+  },
+  {
+   "target": "Lib/Geometry/Manifold/Quotient/Atlas.lean",
+   "source": "Hopf/LCP/PeriodConstruction.lean",
+   "start": 182,
+   "end": 326,
+   "sha256": "e1487146d630844799e2efba3926d45187921d28fea50fc617c3f13769c74224",
+   "decls": 16,
+   "commit": "91dc733",
+   "lane": "I"
+  },
+  {
+   "target": "Lib/Geometry/Manifold/Quotient/LocalOrbit.lean",
+   "source": "Hopf/LCP/PeriodConstruction.lean",
+   "start": 3232,
+   "end": 3351,
+   "sha256": "4f8e17820567af33d8831dc31f4600a5408cc0bdd6daa7f5b6ee4744be8eb953",
+   "decls": 17,
+   "commit": "91dc733",
+   "lane": "I"
+  },
+  {
+   "target": "Lib/Geometry/Manifold/RegularLevel.lean",
+   "source": "Hopf/DifferentialTopology.lean",
+   "start": 3544,
+   "end": 3866,
+   "sha256": "a3025e150f48ad718ebe9d8d0ef66f7fc8a0a02842998806ecceb9420b42061e",
+   "decls": 20,
+   "commit": "913716d",
+   "lane": "D1"
+  },
+  {
+   "target": "Lib/Geometry/Manifold/Transversality/Basic.lean",
+   "source": "Hopf/DifferentialTopology.lean",
+   "start": 20996,
+   "end": 23748,
+   "sha256": "d6f68c6f00dd85ec28553106f1c13a5c093e7898a49c3c60a8549dee27340591",
+   "decls": 133,
+   "commit": "753ecf8",
+   "lane": "D2"
+  },
+  {
+   "target": "Lib/Geometry/Manifold/VectorBundle/ProjectionBundle.lean",
+   "source": "Hopf/DifferentialTopology.lean",
+   "start": 11287,
+   "end": 11601,
+   "sha256": "beea0c76f3704d0ae3f5815f231da6011b582136a6a50d964a32a13ea795ee69",
+   "decls": 31,
+   "commit": "488c283",
+   "lane": "D2"
+  },
+  {
+   "target": "Lib/Geometry/Manifold/WhitneyEmbedding.lean",
+   "source": "Hopf/DifferentialTopology.lean",
+   "start": 10577,
+   "end": 11286,
+   "sha256": "86ffbe7d86d30d6f24b53d9607b663d84de7cfa56c94420d30b8a96b534c4a8a",
+   "decls": 51,
+   "commit": "488c283",
+   "lane": "D2"
+  },
+  {
+   "target": "Lib/GroupTheory/PresentedGroup/CentralTwist.lean",
+   "source": "Hopf/LCP/BoundaryTopology.lean",
+   "start": 23691,
+   "end": 23756,
+   "sha256": "fb4575804ab84d7ebf60a23c3d344d6a4b8af4ed98bff46585478a167bc2ee68",
+   "decls": 13,
+   "commit": "6f66a42",
+   "lane": "I"
+  },
+  {
+   "target": "Lib/GroupTheory/PresentedGroup/CentralTwist.lean",
+   "source": "Hopf/LCP/BoundaryTopology.lean",
+   "start": 23768,
+   "end": 23780,
+   "sha256": "7ae7dd6967a4410948305fde584983a83b92a2dfc3a2236ad0790826fa65ffd0",
+   "decls": 1,
+   "commit": "6f66a42",
+   "lane": "I"
+  },
+  {
+   "target": "Lib/GroupTheory/PresentedGroup/CentralTwist.lean",
+   "source": "Hopf/LCP/BoundaryTopology.lean",
+   "start": 23787,
+   "end": 23819,
+   "sha256": "decce72f946df827ce2401224db4924e41ede71c8263664294b65d346bdf8e3e",
+   "decls": 6,
+   "commit": "6f66a42",
+   "lane": "I"
+  },
+  {
+   "target": "Lib/GroupTheory/SplitExtension.lean",
+   "source": "Hopf/LCP/BoundaryTopology.lean",
+   "start": 14723,
+   "end": 14827,
+   "sha256": "f28721ef9a6db001bfac1f1725e5ed6b4b7c08446f752eb14092bf47c1658edb",
+   "decls": 13,
+   "commit": "fa74283",
+   "lane": "I"
+  },
+  {
+   "target": "Lib/Topology/Algebra/FreeActionLocus.lean",
+   "source": "Hopf/LCP/PeriodConstruction.lean",
+   "start": 2958,
+   "end": 3056,
+   "sha256": "f2ba581a6b07f28f1de72a7eb29e2d545a711870fbf818e511f5d0b23ae029b1",
+   "decls": 13,
+   "commit": "867880d",
+   "lane": "I"
+  },
+  {
+   "target": "Lib/Topology/Covering/DiagonalQuotient.lean",
+   "source": "Hopf/LCP/AnalyticFillings.lean",
+   "start": 1118,
+   "end": 1467,
+   "sha256": "3bcff51793cde1699474207c7d7d63026dbd7810a55a99b71f2cb0f91ee2c2d0",
+   "decls": 41,
+   "commit": "1303c4a",
+   "lane": "I"
+  },
+  {
+   "target": "Lib/Topology/Covering/DiagonalQuotient.lean",
+   "source": "Hopf/LCP/BoundaryTopology.lean",
+   "start": 11136,
+   "end": 11141,
+   "sha256": "88d763f022ff40552b11bb8f939c87236f986a305292235931ff7547d71a9b0a",
+   "decls": 1,
+   "commit": "1303c4a",
+   "lane": "I"
+  },
+  {
+   "target": "Lib/Topology/Covering/DiagonalQuotient.lean",
+   "source": "Hopf/LCP/BoundaryTopology.lean",
+   "start": 12979,
+   "end": 12984,
+   "sha256": "2123de67d57d5731ab48846d5f4957ff5a36f43c4eaffe3e2d9fa5ea9818e055",
+   "decls": 1,
+   "commit": "1303c4a",
+   "lane": "I"
+  },
+  {
+   "target": "Lib/Topology/Covering/DiagonalQuotient.lean",
+   "source": "Hopf/LCP/BoundaryTopology.lean",
+   "start": 14239,
+   "end": 14338,
+   "sha256": "8ab7d86bb06ca468f08c70905200a73c5178c3b5f39826b8784e78534959e90e",
+   "decls": 12,
+   "commit": "1303c4a",
+   "lane": "I"
+  },
+  {
+   "target": "Lib/Topology/Covering/DiagonalQuotient.lean",
+   "source": "Hopf/LCP/BoundaryTopology.lean",
+   "start": 14407,
+   "end": 14645,
+   "sha256": "41053cac087203fb883f17509f151c91f6b26748b2c7b6209227572b01dc8d7e",
+   "decls": 9,
+   "commit": "1303c4a",
+   "lane": "I"
+  },
+  {
+   "target": "Lib/Topology/Covering/DiagonalQuotient.lean",
+   "source": "Hopf/LCP/BoundaryTopology.lean",
+   "start": 17579,
+   "end": 17679,
+   "sha256": "eab02886b8e00b90cb12b095dbafde47dba461a351b0bebfae9563a7c700ce1e",
+   "decls": 10,
+   "commit": "1303c4a",
+   "lane": "I"
+  },
+  {
+   "target": "Lib/Topology/Covering/DiagonalQuotient.lean",
+   "source": "Hopf/LCP/BoundaryTopology.lean",
+   "start": 21863,
+   "end": 21918,
+   "sha256": "aae994fe6457b2b4fb3ed9a622d0a6d54594c25761af040cfab55c15983f53c4",
+   "decls": 4,
+   "commit": "1303c4a",
+   "lane": "I"
+  },
+  {
+   "target": "Lib/Topology/Covering/InvariantSubset.lean",
+   "source": "Hopf/LCP/CuspFilling.lean",
+   "start": 797,
+   "end": 831,
+   "sha256": "5923adf2b1c2dba58cfd834a12f39357f0447b91018958a863c3fba5b592458c",
+   "decls": 5,
+   "commit": "26f5ffd",
+   "lane": "I"
+  },
+  {
+   "target": "Lib/Topology/Covering/InvariantSubset.lean",
+   "source": "Hopf/LCP/CuspFilling.lean",
+   "start": 1524,
+   "end": 1661,
+   "sha256": "f8ea22578e4705e8a783c41dbf0a1c44cd042be9542cd61d1d8a9e3866a7295f",
+   "decls": 14,
+   "commit": "26f5ffd",
+   "lane": "I"
+  },
+  {
+   "target": "Lib/Topology/Covering/Quotient.lean",
+   "source": "Hopf/LCP/LocalModels.lean",
+   "start": 231,
+   "end": 367,
+   "sha256": "9e6c32675687d07753307b9aca6f1dbd6729984813b110384377ca825c1eaa62",
+   "decls": 13,
+   "commit": "4e0bb8e",
+   "lane": "I"
+  },
+  {
+   "target": "Lib/Topology/Covering/Quotient.lean",
+   "source": "Hopf/LCP/LocalModels.lean",
+   "start": 570,
+   "end": 583,
+   "sha256": "53327116d71fc1358890909aac63dc459558f81ce3457dfed2cb46e7b2ad0e03",
+   "decls": 1,
+   "commit": "4e0bb8e",
+   "lane": "I"
+  },
+  {
+   "target": "Lib/Topology/Covering/Quotient.lean",
+   "source": "Hopf/LCP/LocalModels.lean",
+   "start": 2551,
+   "end": 2561,
+   "sha256": "99f964460b8b7ec6394adf77ce5133385c4de84b80e66f31baac19ab67f5a81d",
+   "decls": 1,
+   "commit": "4e0bb8e",
+   "lane": "I"
+  },
+  {
+   "target": "Lib/Topology/Covering/Quotient.lean",
+   "source": "Hopf/LCP/LocalModels.lean",
+   "start": 2589,
+   "end": 2819,
+   "sha256": "a9dab89ada6328a402e635a07a20426e5c0441774868323da585e45e4680fbbd",
+   "decls": 16,
+   "commit": "4e0bb8e",
+   "lane": "I"
+  },
+  {
+   "target": "Lib/Topology/Covering/Quotient.lean",
+   "source": "Hopf/LCP/LocalModels.lean",
+   "start": 4538,
+   "end": 4564,
+   "sha256": "80b8beb2bd3447f555d5a61207ad1bea3916924575d89beada2af97cebd70e50",
+   "decls": 1,
+   "commit": "4e0bb8e",
+   "lane": "I"
+  },
+  {
+   "target": "Lib/Topology/FiberBundle/TwoOpenTransition.lean",
+   "source": "Hopf/LCP/BoundaryTopology.lean",
+   "start": 9537,
+   "end": 9686,
+   "sha256": "2cd87a5647bc60030ac422b5db9d67247b18a6b69a18e86851703ce9698eb3fa",
+   "decls": 24,
+   "commit": "82a568a",
+   "lane": "I"
+  },
+  {
+   "target": "Lib/Topology/FiberBundle/TwoOpenTransition.lean",
+   "source": "Hopf/LCP/BoundaryTopology.lean",
+   "start": 9790,
+   "end": 9989,
+   "sha256": "7bdb2d4a0d7a9b87f058434cd48f4b2e7b65e5a2eff0c8111ce6356564fc64be",
+   "decls": 22,
+   "commit": "82a568a",
+   "lane": "I"
+  },
+  {
+   "target": "Lib/Topology/Homotopy/CellAttachment.lean",
+   "source": "Hopf/SingularHomology.lean",
+   "start": 28353,
+   "end": 28954,
+   "sha256": "8495b3baa2f99e1156c74ef4464f46913d37da204b56f736b75d05747d4f6c21",
+   "decls": 59,
+   "commit": "cf18527",
+   "lane": "D2"
+  },
+  {
+   "target": "Lib/Topology/Homotopy/CellAttachment.lean",
+   "source": "Hopf/SingularHomology.lean",
+   "start": 29032,
+   "end": 29600,
+   "sha256": "561cf5c2ff512c54d72cc217abdc3f5fc9b4b6c863c4af9d41f0bf3c278e3330",
+   "decls": 73,
+   "commit": "cf18527",
+   "lane": "D2"
+  },
+  {
+   "target": "Lib/Topology/Homotopy/CellFilling.lean",
+   "source": "Hopf/Recognition.lean",
+   "start": 2438,
+   "end": 2527,
+   "sha256": "99f0838e4a2293b7dea3c96507a10066c632decbe0a5355e02a0b478753eb4c6",
+   "decls": 5,
+   "commit": "?",
+   "lane": "?"
+  },
+  {
+   "target": "Lib/Topology/Homotopy/CellFilling.lean",
+   "source": "Hopf/Recognition.lean",
+   "start": 2542,
+   "end": 2579,
+   "sha256": "8748866912a5ac036e15f976ec139a791a99d82fae6982c367ffd28acf83293f",
+   "decls": 1,
+   "commit": "?",
+   "lane": "?"
+  },
+  {
+   "target": "Lib/Topology/Homotopy/CylinderHEP.lean",
+   "source": "Hopf/Recognition.lean",
+   "start": 2090,
+   "end": 2333,
+   "sha256": "d446a33a128d5666f166cf5df71819a131c2483dd39f00a999174a4d422429f0",
+   "decls": 23,
+   "commit": "44c11ef",
+   "lane": "D1"
+  },
+  {
+   "target": "Lib/Topology/Homotopy/CylinderHEP.lean",
+   "source": "Hopf/Recognition.lean",
+   "start": 3197,
+   "end": 3453,
+   "sha256": "7e2159b612d39b412cd60ccc94698bfa07e5ad9d9d686fa3e39ddf2b1afbc0ba",
+   "decls": 17,
+   "commit": "44c11ef",
+   "lane": "D1"
+  },
+  {
+   "target": "Lib/Topology/Homotopy/HandleRetraction.lean",
+   "source": "Hopf/SingularHomology.lean",
+   "start": 5310,
+   "end": 5858,
+   "sha256": "c9d75ebcd40d9decc2cfcd2469df9267e50bff3410b6b2dbb5018f8473187091",
+   "decls": 68,
+   "commit": "720a5ae",
+   "lane": "D1"
+  },
+  {
+   "target": "Lib/Topology/Homotopy/LocalCollapse.lean",
+   "source": "Hopf/LCP/CuspFilling.lean",
+   "start": 490,
+   "end": 627,
+   "sha256": "43f1fa15cd973f3209779c6a8ed5d369fd913c2b99aa36c419728ed54669c518",
+   "decls": 11,
+   "commit": "b0a1029",
+   "lane": "I"
+  },
+  {
+   "target": "Lib/Topology/Homotopy/LoopSubdivision.lean",
+   "source": "Hopf/SingularHomology.lean",
+   "start": 18734,
+   "end": 18867,
+   "sha256": "5ae3a7c573ddfeb3fcf0f412add99c6478a21c4e7c75f936f561bd1184465d9f",
+   "decls": 8,
+   "commit": "f09e304",
+   "lane": "B"
+  },
+  {
+   "target": "Lib/Topology/Homotopy/SublevelRetraction.lean",
+   "source": "Hopf/LCP/LocalModels.lean",
+   "start": 8731,
+   "end": 8924,
+   "sha256": "95141c3b5d7ebaedcf58edd9859c5108ca6ad91457b666471481b43c8d269188",
+   "decls": 22,
+   "commit": "dfad079",
+   "lane": "I"
+  },
+  {
+   "target": "Lib/Topology/Homotopy/Suspension.lean",
+   "source": "Hopf/SphereTopology.lean",
+   "start": 330,
+   "end": 351,
+   "sha256": "48361756855fcaf87a4bbea9d7d6fcfacf5aec8f3b3e96694b3a966a766214f2",
+   "decls": 2,
+   "commit": "44c11ef",
+   "lane": "D1"
+  },
+  {
+   "target": "Lib/Topology/Homotopy/Suspension.lean",
+   "source": "Hopf/SphereTopology.lean",
+   "start": 356,
+   "end": 824,
+   "sha256": "6f989fcc39d2146e0b0d68128825c2b8333bce61ff45705098c70c4c708229b4",
+   "decls": 63,
+   "commit": "44c11ef",
+   "lane": "D1"
+  },
+  {
+   "target": "Lib/Topology/MappingTorus/Basic.lean",
+   "source": "Hopf/LCP/LocalModels.lean",
+   "start": 6899,
+   "end": 7036,
+   "sha256": "660516c5346ec90c68cb2e3867ca18149d7efccfb49868bb2252606c04a8668f",
+   "decls": 22,
+   "commit": "79211df",
+   "lane": "I"
+  },
+  {
+   "target": "Lib/Topology/MappingTorus/Basic.lean",
+   "source": "Hopf/LCP/LocalModels.lean",
+   "start": 7984,
+   "end": 8395,
+   "sha256": "6d95645f1de1fa92b32d6838388bd216b50a0481fd55ef0ccfac27a2d550b243",
+   "decls": 54,
+   "commit": "79211df",
+   "lane": "I"
+  },
+  {
+   "target": "Lib/Topology/MappingTorus/HomologyCover.lean",
+   "source": "Hopf/LCP/BoundaryTopology.lean",
+   "start": 3988,
+   "end": 4609,
+   "sha256": "4e0ed08f80cc446cf4a09c0082d0f2800315f965b7e55ee68589f502f58e9aca",
+   "decls": 58,
+   "commit": "d92f3cf",
+   "lane": "I"
+  },
+  {
+   "target": "Lib/Topology/OnePointCollapse.lean",
+   "source": "Hopf/SphereTopology.lean",
+   "start": 13388,
+   "end": 13480,
+   "sha256": "16e4cb16cd986865c5d8279563c75559150747a5b3f340b511e2db32a57df37e",
+   "decls": 12,
+   "commit": "44c11ef",
+   "lane": "D1"
+  }
+ ],
+ "unmatched": [
+  [
+   "Lib/Algebra/Group/Filtration.lean",
+   "eq_of_le_of_quotient_subsingleton"
+  ],
+  [
+   "Lib/Algebra/Group/Filtration.lean",
+   "eq_top_of_le_of_quotient_subsingleton"
+  ],
+  [
+   "Lib/AlgebraicTopology/Hurewicz/CubeChainDecomposition.lean",
+   "HigherHurewicz.cubeRemainingCoordinates"
+  ],
+  [
+   "Lib/AlgebraicTopology/Hurewicz/CubeChainDecomposition.lean",
+   "HigherHurewicz.cubeCoordinates"
+  ],
+  [
+   "Lib/AlgebraicTopology/Hurewicz/CubeChainDecomposition.lean",
+   "HigherHurewicz.cubeCoordinates_zero"
+  ],
+  [
+   "Lib/AlgebraicTopology/Hurewicz/CubeChainDecomposition.lean",
+   "HigherHurewicz.cubeCoordinates_succ"
+  ],
+  [
+   "Lib/AlgebraicTopology/Hurewicz/CubeChainDecomposition.lean",
+   "HigherHurewicz.cubeCoordinates_boundary_right"
+  ],
+  [
+   "Lib/AlgebraicTopology/Hurewicz/CubeChainDecomposition.lean",
+   "HigherHurewicz.cubeMap"
+  ],
+  [
+   "Lib/AlgebraicTopology/Hurewicz/CubeChainDecomposition.lean",
+   "HigherHurewicz.curryLoop"
+  ],
+  [
+   "Lib/AlgebraicTopology/Hurewicz/CubeChainDecomposition.lean",
+   "HigherHurewicz.evalLeft_comp_curryLoop"
+  ],
+  [
+   "Lib/AlgebraicTopology/Hurewicz/CubeChainDecomposition.lean",
+   "HigherHurewicz.fundamentalCubeChain"
+  ],
+  [
+   "Lib/AlgebraicTopology/Hurewicz/CubeChainDecomposition.lean",
+   "HigherHurewicz.cubeChain"
+  ],
+  [
+   "Lib/AlgebraicTopology/Hurewicz/CubeChainDecomposition.lean",
+   "HigherHurewicz.fundamentalCubeChain_succ"
+  ],
+  [
+   "Lib/AlgebraicTopology/Hurewicz/CubeChainDecomposition.lean",
+   "HigherHurewicz.cubeChain_succ"
+  ],
+  [
+   "Lib/AlgebraicTopology/Hurewicz/CubeChainDecomposition.lean",
+   "HigherHurewicz.cubeCoordinates_comp_prismCubeMap"
+  ],
+  [
+   "Lib/AlgebraicTopology/Hurewicz/CubeChainDecomposition.lean",
+   "HigherHurewicz.evalLeft_crossProductEdge_intervalChain_simplex"
+  ],
+  [
+   "Lib/AlgebraicTopology/Hurewicz/CubeChainDecomposition.lean",
+   "HigherHurewicz.funUniqueSymm_pathSimplex_eq_cubeSimplex_one"
+  ],
+  [
+   "Lib/AlgebraicTopology/Hurewicz/CubeChainDecomposition.lean",
+   "HigherHurewicz.cubeChain_one"
+  ],
+  [
+   "Lib/AlgebraicTopology/Hurewicz/CubeChainDecomposition.lean",
+   "HigherHurewicz.cubeCoordinates_one_comp_eq_squareCoordinates"
+  ],
+  [
+   "Lib/AlgebraicTopology/Hurewicz/CubeChainDecomposition.lean",
+   "HigherHurewicz.fundamentalCubeChain_two"
+  ],
+  [
+   "Lib/AlgebraicTopology/Hurewicz/CubeChainDecomposition.lean",
+   "HigherHurewicz.lowerSquareTriangle_eq_cubeSimplex_one"
+  ],
+  [
+   "Lib/AlgebraicTopology/Hurewicz/CubeChainDecomposition.lean",
+   "HigherHurewicz.upperSquareTriangle_eq_cubeSimplex_swap"
+  ],
+  [
+   "Lib/AlgebraicTopology/Hurewicz/CubeChainDecomposition.lean",
+   "HigherHurewicz.cubeChain_two"
+  ],
+  [
+   "Lib/AlgebraicTopology/Hurewicz/CubeChainDecomposition.lean",
+   "HigherHurewicz.cubeChain_eq_sum_simplices_step"
+  ],
+  [
+   "Lib/AlgebraicTopology/Hurewicz/CubeChainDecomposition.lean",
+   "HigherHurewicz.cubeChain_eq_sum_simplices"
+  ],
+  [
+   "Lib/AlgebraicTopology/Hurewicz/CubeSphere.lean",
+   "Degree.SphereCube.quotientLoop"
+  ],
+  [
+   "Lib/AlgebraicTopology/Hurewicz/CubeSphere.lean",
+   "Degree.SphereCube.quotientLoop_val"
+  ],
+  [
+   "Lib/AlgebraicTopology/Hurewicz/CubeSphere.lean",
+   "Degree.SphereCube.factorMap"
+  ],
+  [
+   "Lib/AlgebraicTopology/Hurewicz/CubeSphere.lean",
+   "Degree.SphereCube.factorMap_quotient"
+  ],
+  [
+   "Lib/AlgebraicTopology/Hurewicz/CubeSphere.lean",
+   "Degree.SphereCube.factorMap_comp_quotient"
+  ],
+  [
+   "Lib/AlgebraicTopology/Hurewicz/CubeSphere.lean",
+   "Degree.SphereCube.factorMap_unique"
+  ],
+  [
+   "Lib/AlgebraicTopology/Hurewicz/CubeSphere.lean",
+   "Degree.SphereCube.factor_cubeChain"
+  ],
+  [
+   "Lib/AlgebraicTopology/Hurewicz/CubeSphere.lean",
+   "Degree.SphereCube.factor_cubeCycle"
+  ],
+  [
+   "Lib/AlgebraicTopology/Hurewicz/CubeSphere.lean",
+   "Degree.SphereCube.factor_cubeHomologyClass"
+  ],
+  [
+   "Lib/AlgebraicTopology/Hurewicz/CycleClasses.lean",
+   "Cycle1"
+  ],
+  [
+   "Lib/AlgebraicTopology/Hurewicz/CycleClasses.lean",
+   "range_sc_one_f"
+  ],
+  [
+   "Lib/AlgebraicTopology/Hurewicz/CycleClasses.lean",
+   "cycleClass_induction_on"
+  ],
+  [
+   "Lib/AlgebraicTopology/Hurewicz/CycleClasses.lean",
+   "cycleClass_eq_zero_iff"
+  ],
+  [
+   "Lib/AlgebraicTopology/Hurewicz/CycleClasses.lean",
+   "boundaryCycle1"
+  ],
+  [
+   "Lib/AlgebraicTopology/Hurewicz/CycleClasses.lean",
+   "pi_homologyIso_inv_homologyi"
+  ],
+  [
+   "Lib/AlgebraicTopology/Hurewicz/CycleClasses.lean",
+   "cycleClass_comp_homologyToChainClass"
+  ],
+  [
+   "Lib/AlgebraicTopology/Hurewicz/CycleClasses.lean",
+   "range_toCycles_le_ker"
+  ],
+  [
+   "Lib/AlgebraicTopology/Hurewicz/CycleClasses.lean",
+   "f'_comp_ofHom_eq_zero"
+  ],
+  [
+   "Lib/AlgebraicTopology/Hurewicz/CycleClasses.lean",
+   "homologyDesc"
+  ],
+  [
+   "Lib/AlgebraicTopology/Hurewicz/CycleClasses.lean",
+   "homologyDesc_cycleClass"
+  ],
+  [
+   "Lib/AlgebraicTopology/Hurewicz/CycleClasses.lean",
+   "shortMap"
+  ],
+  [
+   "Lib/AlgebraicTopology/Hurewicz/CycleClasses.lean",
+   "mapCycles"
+  ],
+  [
+   "Lib/AlgebraicTopology/Hurewicz/CycleClasses.lean",
+   "mapCycles_val"
+  ],
+  [
+   "Lib/AlgebraicTopology/Hurewicz/CycleClasses.lean",
+   "pi_homologyIso_inv_naturality"
+  ],
+  [
+   "Lib/AlgebraicTopology/Hurewicz/CycleClasses.lean",
+   "cycleClass_comp_homologyMap"
+  ],
+  [
+   "Lib/AlgebraicTopology/Hurewicz/CycleClasses.lean",
+   "homologyMap_cycleClass"
+  ],
+  [
+   "Lib/AlgebraicTopology/Hurewicz/Degree1.lean",
+   "homologyDesc"
+  ],
+  [
+   "Lib/AlgebraicTopology/Hurewicz/Degree1.lean",
+   "homologyDesc_cycleClass"
+  ],
+  [
+   "Lib/AlgebraicTopology/Hurewicz/Degree1.lean",
+   "SingularH1.map"
+  ],
+  [
+   "Lib/AlgebraicTopology/Hurewicz/Degree1.lean",
+   "SingularH1.map_id"
+  ],
+  [
+   "Lib/AlgebraicTopology/Hurewicz/Degree1.lean",
+   "SingularH1.map_eq_singularHomologyFunctor_map"
+  ],
+  [
+   "Lib/AlgebraicTopology/Hurewicz/Degree1.lean",
+   "SingularH1.map_comp"
+  ],
+  [
+   "Lib/AlgebraicTopology/Hurewicz/Degree1.lean",
+   "SingularH1.map_cycleClass"
+  ],
+  [
+   "Lib/AlgebraicTopology/Hurewicz/Degree1.lean",
+   "mk_trans"
+  ],
+  [
+   "Lib/AlgebraicTopology/Hurewicz/Degree1.lean",
+   "mk_symm"
+  ],
+  [
+   "Lib/AlgebraicTopology/Hurewicz/Degree1.lean",
+   "basedLoop"
+  ],
+  [
+   "Lib/AlgebraicTopology/Hurewicz/Degree1.lean",
+   "basedLoopQuotient_mk"
+  ],
+  [
+   "Lib/AlgebraicTopology/Hurewicz/Degree1.lean",
+   "basedLoopClass_def"
+  ],
+  [
+   "Lib/AlgebraicTopology/Hurewicz/Degree1.lean",
+   "hurewiczFunction"
+  ],
+  [
+   "Lib/AlgebraicTopology/Hurewicz/Degree1.lean",
+   "loopHomologyClass_eq_zero_of_mk_eq_one"
+  ],
+  [
+   "Lib/AlgebraicTopology/Hurewicz/Degree1.lean",
+   "hurewiczHom"
+  ],
+  [
+   "Lib/AlgebraicTopology/Hurewicz/Degree1.lean",
+   "hurewiczHom_loopClass"
+  ],
+  [
+   "Lib/AlgebraicTopology/Hurewicz/Degree1.lean",
+   "homologyToChainClass_hurewiczHom_loopClass"
+  ],
+  [
+   "Lib/AlgebraicTopology/Hurewicz/Degree1.lean",
+   "hurewiczHom_basedLoopClass"
+  ],
+  [
+   "Lib/AlgebraicTopology/Hurewicz/Degree1.lean",
+   "inverseHurewiczHom"
+  ],
+  [
+   "Lib/AlgebraicTopology/Hurewicz/Degree1.lean",
+   "inverseHurewiczHom_cycleClass"
+  ],
+  [
+   "Lib/AlgebraicTopology/Hurewicz/Degree1.lean",
+   "inverseHurewiczHom_loopHomologyClass"
+  ],
+  [
+   "Lib/AlgebraicTopology/Hurewicz/Degree1.lean",
+   "inverseHurewiczHom_hurewiczHom"
+  ],
+  [
+   "Lib/AlgebraicTopology/Hurewicz/Degree1.lean",
+   "hurewiczHom_inverseHurewiczHom"
+  ],
+  [
+   "Lib/AlgebraicTopology/Hurewicz/Degree1.lean",
+   "hurewiczEquivOfPaths"
+  ],
+  [
+   "Lib/AlgebraicTopology/Hurewicz/Degree1.lean",
+   "hurewiczEquiv"
+  ],
+  [
+   "Lib/AlgebraicTopology/Hurewicz/Degree1.lean",
+   "hurewiczEquiv_loopClass"
+  ],
+  [
+   "Lib/AlgebraicTopology/Hurewicz/Degree1.lean",
+   "hurewiczEquiv_symm_loopHomologyClass"
+  ],
+  [
+   "Lib/AlgebraicTopology/Hurewicz/Degree1.lean",
+   "singularH1_induction_on"
+  ],
+  [
+   "Lib/AlgebraicTopology/Hurewicz/Degree1.lean",
+   "SingularH1.map_loopHomologyClass"
+  ],
+  [
+   "Lib/AlgebraicTopology/Hurewicz/Degree1.lean",
+   "loopHomologyClass_conjugate"
+  ],
+  [
+   "Lib/AlgebraicTopology/Hurewicz/H1Character.lean",
+   "rebaseCharacter"
+  ],
+  [
+   "Lib/AlgebraicTopology/Hurewicz/H1Character.lean",
+   "h1CharacterOfPi1"
+  ],
+  [
+   "Lib/AlgebraicTopology/Hurewicz/H1Character.lean",
+   "h1CharacterOfPi1_loop"
+  ],
+  [
+   "Lib/AlgebraicTopology/Hurewicz/H1Character.lean",
+   "pi1_ker_le_of_h1_ker_le"
+  ],
+  [
+   "Lib/AlgebraicTopology/Hurewicz/H1Character.lean",
+   "h1CharacterOfPi1_loop_at"
+  ],
+  [
+   "Lib/AlgebraicTopology/Hurewicz/H1Character.lean",
+   "monoidHom_eq_of_h1Character_eq"
+  ],
+  [
+   "Lib/AlgebraicTopology/Hurewicz/H1Character.lean",
+   "h1CharacterOfPi1_rebaseCharacter"
+  ],
+  [
+   "Lib/AlgebraicTopology/Hurewicz/H1Character.lean",
+   "h1CharacterOfPi1_comp_map"
+  ],
+  [
+   "Lib/AlgebraicTopology/Hurewicz/PeriodicLoop.lean",
+   "periodicScaledLoop"
+  ],
+  [
+   "Lib/AlgebraicTopology/Hurewicz/PeriodicLoop.lean",
+   "periodicScaledLoop_apply"
+  ],
+  [
+   "Lib/AlgebraicTopology/Hurewicz/PeriodicLoop.lean",
+   "periodicScaledLoop_zero"
+  ],
+  [
+   "Lib/AlgebraicTopology/Hurewicz/PeriodicLoop.lean",
+   "periodicScaledLoop_one"
+  ],
+  [
+   "Lib/AlgebraicTopology/Hurewicz/PeriodicLoop.lean",
+   "periodicScaledLoop_succ_homotopic"
+  ],
+  [
+   "Lib/AlgebraicTopology/Hurewicz/PeriodicLoop.lean",
+   "loopHomologyClass_periodicScaledLoop"
+  ],
+  [
+   "Lib/AlgebraicTopology/Hurewicz/Straightening.lean",
+   "HigherHurewicz.TowerPair"
+  ],
+  [
+   "Lib/AlgebraicTopology/Hurewicz/Straightening.lean",
+   "HigherHurewicz.TowerPair.step"
+  ],
+  [
+   "Lib/AlgebraicTopology/Hurewicz/Straightening.lean",
+   "HigherHurewicz.edgeTower"
+  ],
+  [
+   "Lib/AlgebraicTopology/Hurewicz/Straightening.lean",
+   "HigherHurewicz.vertexEdgeHomotopy"
+  ],
+  [
+   "Lib/AlgebraicTopology/Hurewicz/Straightening.lean",
+   "HigherHurewicz.vertexEdgeHomotopy_zero"
+  ],
+  [
+   "Lib/AlgebraicTopology/Hurewicz/Straightening.lean",
+   "HigherHurewicz.vertexEdgeHomotopy_one_endpoint"
+  ],
+  [
+   "Lib/AlgebraicTopology/Hurewicz/Straightening.lean",
+   "HigherHurewicz.vertexEdgeHomotopy_endpoint_boundary"
+  ],
+  [
+   "Lib/AlgebraicTopology/Hurewicz/Straightening.lean",
+   "HigherHurewicz.NormalizationState"
+  ],
+  [
+   "Lib/AlgebraicTopology/Hurewicz/Straightening.lean",
+   "HigherHurewicz.composeSimplexHomotopies_one_straightening"
+  ],
+  [
+   "Lib/AlgebraicTopology/Hurewicz/Straightening.lean",
+   "HigherHurewicz.normalizationStep"
+  ],
+  [
+   "Lib/AlgebraicTopology/Hurewicz/Straightening.lean",
+   "HigherHurewicz.normalizationBaseTwo"
+  ],
+  [
+   "Lib/AlgebraicTopology/Hurewicz/Straightening.lean",
+   "HigherHurewicz.normalizationTower"
+  ],
+  [
+   "Lib/AlgebraicTopology/Hurewicz/Straightening.lean",
+   "HigherHurewicz.normalizationHomotopy"
+  ],
+  [
+   "Lib/AlgebraicTopology/Hurewicz/Straightening.lean",
+   "HigherHurewicz.normalizationHomotopy_zero"
+  ],
+  [
+   "Lib/AlgebraicTopology/Hurewicz/Straightening.lean",
+   "HigherHurewicz.edgeTower_two_verticesBased"
+  ],
+  [
+   "Lib/AlgebraicTopology/Hurewicz/Straightening.lean",
+   "HigherHurewicz.vertexEdgeHomotopy_two_endpoint_boundary"
+  ],
+  [
+   "Lib/AlgebraicTopology/Hurewicz/Straightening.lean",
+   "HigherHurewicz.normalizationHomotopy_endpoint"
+  ],
+  [
+   "Lib/AlgebraicTopology/Hurewicz/Straightening.lean",
+   "HigherHurewicz.normalizedSimplex"
+  ],
+  [
+   "Lib/AlgebraicTopology/Hurewicz/Straightening.lean",
+   "HigherHurewicz.SimplexGeometry.straighteningHomotopy_one_based"
+  ],
+  [
+   "Lib/AlgebraicTopology/Hurewicz/Straightening.lean",
+   "HigherHurewicz.SimplexGeometry.straightenedBasedSimplex"
+  ],
+  [
+   "Lib/AlgebraicTopology/Hurewicz/Straightening.lean",
+   "HigherHurewicz.SimplexGeometry.basedSimplexLoop_straighteningHomotopy"
+  ],
+  [
+   "Lib/AlgebraicTopology/Hurewicz/Straightening.lean",
+   "HigherHurewicz.SimplexGeometry.basedSimplexClass_straightening"
+  ],
+  [
+   "Lib/AlgebraicTopology/Hurewicz/Straightening.lean",
+   "HigherHurewicz.topStorey"
+  ],
+  [
+   "Lib/AlgebraicTopology/Hurewicz/Straightening.lean",
+   "HigherHurewicz.topStorey_zero"
+  ],
+  [
+   "Lib/AlgebraicTopology/Hurewicz/Straightening.lean",
+   "HigherHurewicz.topStorey_face"
+  ],
+  [
+   "Lib/AlgebraicTopology/Hurewicz/Straightening.lean",
+   "HigherHurewicz.towerBelow"
+  ],
+  [
+   "Lib/AlgebraicTopology/Hurewicz/Straightening.lean",
+   "HigherHurewicz.topNormalization"
+  ],
+  [
+   "Lib/AlgebraicTopology/Hurewicz/Straightening.lean",
+   "HigherHurewicz.topNormalization_zero"
+  ],
+  [
+   "Lib/AlgebraicTopology/Hurewicz/Straightening.lean",
+   "HigherHurewicz.classOperator"
+  ],
+  [
+   "Lib/AlgebraicTopology/Hurewicz/Straightening.lean",
+   "HigherHurewicz.classOperator_simplex"
+  ],
+  [
+   "Lib/GroupTheory/Abelianization/SemidirectProduct.lean",
+   "mapMulAut"
+  ],
+  [
+   "Lib/GroupTheory/Abelianization/SemidirectProduct.lean",
+   "abelianizationRepresentation"
+  ],
+  [
+   "Lib/GroupTheory/Abelianization/SemidirectProduct.lean",
+   "AbelianizationCoinvariants"
+  ],
+  [
+   "Lib/GroupTheory/Abelianization/SemidirectProduct.lean",
+   "coinvariantsMk"
+  ],
+  [
+   "Lib/GroupTheory/Abelianization/SemidirectProduct.lean",
+   "coinvariantsMk_action"
+  ],
+  [
+   "Lib/GroupTheory/Abelianization/SemidirectProduct.lean",
+   "abelianizationMulEquiv"
+  ],
+  [
+   "Lib/GroupTheory/Abelianization/SemidirectProduct.lean",
+   "abelianizationMulEquiv_apply_of_inl"
+  ],
+  [
+   "Lib/GroupTheory/Abelianization/SemidirectProduct.lean",
+   "abelianizationMulEquiv_apply_of_inr"
+  ],
+  [
+   "Lib/GroupTheory/Abelianization/SemidirectProduct.lean",
+   "abelianizationMulEquiv_symm_apply_inl"
+  ],
+  [
+   "Lib/GroupTheory/Abelianization/SemidirectProduct.lean",
+   "abelianizationMulEquiv_symm_apply_inr"
+  ],
+  [
+   "Lib/GroupTheory/GeneratingSet.lean",
+   "isMulCommutative_of_closure_eq_top"
+  ],
+  [
+   "Lib/GroupTheory/GroupExtension/Abelianization.lean",
+   "abelianizationMulEquiv"
+  ],
+  [
+   "Lib/LinearAlgebra/CyclicAverage.lean",
+   "cyclicAverage"
+  ],
+  [
+   "Lib/LinearAlgebra/CyclicAverage.lean",
+   "mul_sum_powers_eq_sum_powers"
+  ],
+  [
+   "Lib/LinearAlgebra/CyclicAverage.lean",
+   "sum_powers_mul_eq_sum_powers"
+  ],
+  [
+   "Lib/LinearAlgebra/CyclicAverage.lean",
+   "mul_cyclicAverage"
+  ],
+  [
+   "Lib/LinearAlgebra/CyclicAverage.lean",
+   "cyclicAverage_mul"
+  ],
+  [
+   "Lib/LinearAlgebra/CyclicAverage.lean",
+   "cyclicAverage_apply_of_fixed"
+  ],
+  [
+   "Lib/LinearAlgebra/CyclicAverage.lean",
+   "isProj_cyclicAverage"
+  ],
+  [
+   "Lib/LinearAlgebra/CyclicAverage.lean",
+   "isIdempotentElem_cyclicAverage"
+  ],
+  [
+   "Lib/LinearAlgebra/CyclicAverage.lean",
+   "range_cyclicAverage"
+  ],
+  [
+   "Lib/LinearAlgebra/CyclicAverage.lean",
+   "comp_cyclicAverage"
+  ],
+  [
+   "Lib/LinearAlgebra/FreeModule/Finite/CardQuotient.lean",
+   "natAbs_det_eq_natCard_quotient_range_toLin'"
+  ],
+  [
+   "Lib/LinearAlgebra/FreeModule/RankTwoCokernel.lean",
+   "quotientRangeToLin'EquivZModOfIsCoprime"
+  ],
+  [
+   "Lib/LinearAlgebra/FreeModule/RankTwoCokernel.lean",
+   "quotientRangeToLinEquivZModOfIsCoprime"
+  ],
+  [
+   "Lib/LinearAlgebra/SquareZero.lean",
+   "oneAddSMul"
+  ],
+  [
+   "Lib/LinearAlgebra/SquareZero.lean",
+   "oneAddSMul_zero"
+  ],
+  [
+   "Lib/LinearAlgebra/SquareZero.lean",
+   "oneAddSMul_apply"
+  ],
+  [
+   "Lib/LinearAlgebra/SquareZero.lean",
+   "oneAddSMul_mul_oneAddSMul"
+  ],
+  [
+   "Lib/LinearAlgebra/SquareZero.lean",
+   "oneAddSMulEquiv"
+  ],
+  [
+   "Lib/LinearAlgebra/SquareZero.lean",
+   "oneAddSMulEquiv_toLinearMap"
+  ],
+  [
+   "Lib/LinearAlgebra/SquareZero.lean",
+   "oneAddSMulEquiv_apply"
+  ],
+  [
+   "Lib/LinearAlgebra/SquareZero.lean",
+   "oneAddSMulEquiv_symm_toLinearMap"
+  ],
+  [
+   "Lib/LinearAlgebra/SquareZero.lean",
+   "quadratic_term_eq_zero"
+  ],
+  [
+   "Lib/LinearAlgebra/SquareZero.lean",
+   "oneAddSMul_preserves_bilin"
+  ],
+  [
+   "Lib/LinearAlgebra/SquareZero.lean",
+   "oneAddSMul_preserves_bilin_of_isSkewAdjoint"
+  ],
+  [
+   "Lib/Topology/Homotopy/Suspension.lean",
+   "Suspension.instLocal1"
+  ]
+ ]
+}

@@ -1,0 +1,1505 @@
+{
+"module": "Lib.Geometry.Manifold.Transversality.Basic",
+"source": "/home/goblin/.claude/jobs/06995e68/tmp/wave2/transversality/Basic.orig.lean",
+"source_sha256": "5c0bffc90b61b8729c2fadb9fbe21fa13a4ed45f08ed7473cabafdcbc354e57e",
+"units_kept": 134,
+"units_moved": 2,
+"units": [
+{
+"names": [
+"Diffeomorph.toPartialDiffeomorph'"
+],
+"class": "keep",
+"lines": [
+65,
+87
+],
+"sha256": "7ce89ef8fb7964feec828cc520a72adb2cdb8d73b6758aa7a8a5557d07d22252"
+},
+{
+"names": [
+"IsLocalDiffeomorph.diffeomorph'"
+],
+"class": "keep",
+"lines": [
+89,
+121
+],
+"sha256": "02c5d0661c6df65f416ce36f60aefc5ce85bc4873e1ebeec73a00fa5ffba24b0"
+},
+{
+"names": [
+"NativeSubmersion.surjective_fderiv_sourceChart_iff"
+],
+"class": "keep",
+"lines": [
+123,
+146
+],
+"sha256": "7ef8fa3f70f67d383657e98812a539cb55942b283beb2eb4f7ae0bb92534ca73"
+},
+{
+"names": [
+"NativeSubmersion.isOpen_surjective_nativeDerivative"
+],
+"class": "keep",
+"lines": [
+148,
+217
+],
+"sha256": "a2e46e59dce5df1812ac24f46b4c35b61a320b9f5b922ff4e9e389adacac7945"
+},
+{
+"names": [
+"RegularValues.exists_null_exceptional_values_on"
+],
+"class": "keep",
+"lines": [
+219,
+236
+],
+"sha256": "73320968de9d5b086c6c3dd98fee64601ee9f80d6ed8c3a49ee596875360c7f5"
+},
+{
+"names": [
+"RegularValues.exists_null_exceptional_values_in_chart"
+],
+"class": "keep",
+"lines": [
+238,
+293
+],
+"sha256": "57c7db45e068066978b00c47b7f07519961e05288efd86f48cec9e657521ab30"
+},
+{
+"names": [
+"RegularValues.exists_null_exceptional_values_manifold"
+],
+"class": "keep",
+"lines": [
+295,
+322
+],
+"sha256": "1b7da154904b04c5f03a9387b1149984f3dfb338093993505ffb10c0e8d3643d"
+},
+{
+"names": [
+"TransverseCoordinates.mfderiv_sheetDifference"
+],
+"class": "keep",
+"lines": [
+324,
+349
+],
+"sha256": "f15b6fc8444b2c75be0d5f4c2d00c1eec5a1c7886c306e5f2df76a26a988d65a"
+},
+{
+"names": [
+"TransverseCoordinates.surjective_sheetDifference_iff"
+],
+"class": "keep",
+"lines": [
+351,
+379
+],
+"sha256": "4e6f88d557c9973d42f56e8ddaa103b960b3241f6b0e7e0ce28b2fbc6369cfbb"
+},
+{
+"names": [
+"TransverseCoordinates.exists_null_exceptional_native_translations"
+],
+"class": "keep",
+"lines": [
+381,
+433
+],
+"sha256": "40f78e0c4caf2615f80315da33237e4d51af1df6973d56ff078b69754ad8b41e"
+},
+{
+"names": [
+"TransverseCoordinates.dense_native_translations"
+],
+"class": "keep",
+"lines": [
+435,
+462
+],
+"sha256": "4d40034fa8d4b97e7aa3c96c48fa1ffb468efa897d5064d2a7657d45b46518ec"
+},
+{
+"names": [
+"ChartMapPerturbation.mfderiv_eq_of_translation_germ"
+],
+"class": "keep",
+"lines": [
+464,
+479
+],
+"sha256": "4f4fb97ec3ce99a659a5694a8fb920b5b59da4172fe1bc279beaf5dab54e5d69"
+},
+{
+"names": [
+"ChartMapPerturbation.transverse_of_chart"
+],
+"class": "keep",
+"lines": [
+481,
+519
+],
+"sha256": "f19559cb3f616630d97347edccc8ecb4253b26450c9a8a1943faa458400d7f9e"
+},
+{
+"names": [
+"ChartMapPerturbation.transverse_in_chart"
+],
+"class": "keep",
+"lines": [
+521,
+557
+],
+"sha256": "07c7d114e10e3d669f7bd89415ac1f93ca6c3930b484a8274712c089ac2e250e"
+},
+{
+"names": [
+"NativeTransversality.At"
+],
+"class": "keep",
+"lines": [
+559,
+570
+],
+"sha256": "d313e5c4eb1c4dc781bd4d0c33e2ca1f17df611cecc0f3ae309c6f908c625931"
+},
+{
+"names": [
+"NativeTransversality.at_iff_chart_difference"
+],
+"class": "keep",
+"lines": [
+572,
+596
+],
+"sha256": "d05eb2f46db71f28d0e92c101d002d0bf073fb8e64e7a061ea6298c409ef572e"
+},
+{
+"names": [
+"NativeTransversality.isOpen_at_family"
+],
+"class": "keep",
+"lines": [
+598,
+679
+],
+"sha256": "8776c2ca09bf387c031762444896ee0a21be495ba7bfcbf297cac88241317505"
+},
+{
+"names": [
+"NativeTransversality.eventually_on_compact"
+],
+"class": "keep",
+"lines": [
+681,
+702
+],
+"sha256": "c597fffc9dfe174d345ca0b43a28ecd29051cdf978253eb014aee5730c080c0d"
+},
+{
+"names": [
+"TransverseGerms.native_transversality_partial_diffeomorph_iff"
+],
+"class": "keep",
+"lines": [
+704,
+749
+],
+"sha256": "b02c3eadbd0df07556c7bd5b9ea5994b51620d63d243e85ee3ca97031796a47d"
+},
+{
+"names": [
+"MorseHandle.ambientMap_lower_sphere"
+],
+"class": "keep",
+"lines": [
+751,
+762
+],
+"sha256": "fcfbd1c3feb8da4de1af30816728e287c9ab269a0766562f4d42f81501cb3858"
+},
+{
+"names": [
+"MorseHandle.ambientMap_sphere_mem_product"
+],
+"class": "keep",
+"lines": [
+764,
+787
+],
+"sha256": "f0fd084e146535ce5a1de3c006b66b71b7c05881b6ae996f2bf060b1a21b4c79"
+},
+{
+"names": [
+"MorseHandle.norm_ambientInverse_fst_of_lower"
+],
+"class": "keep",
+"lines": [
+789,
+800
+],
+"sha256": "2621622bcec9f080e1a3825428ff543f8e0740a78f82043575be09da86e01e10"
+},
+{
+"names": [
+"ManifoldMorse.SignedMorseChart.beltRawCoordinates"
+],
+"class": "keep",
+"lines": [
+802,
+812
+],
+"sha256": "5ffb9279d14800893224410c4ab12ed405552c48795d99362a9baee0856a0dae"
+},
+{
+"names": [
+"ManifoldMorse.SignedMorseChart.continuous_beltRawCoordinates"
+],
+"class": "keep",
+"lines": [
+814,
+822
+],
+"sha256": "b27e96750dbbf1765d0e36f6180b5eb09aab74f55b5898092f2670f289ba81f4"
+},
+{
+"names": [
+"ManifoldMorse.SignedMorseChart.beltSource"
+],
+"class": "keep",
+"lines": [
+824,
+834
+],
+"sha256": "d04f8a478a9b935e68b28b9e5f3b0a0a3b0840b42e26987eaeb71597b5715ef9"
+},
+{
+"names": [
+"ManifoldMorse.SignedMorseChart.beltTarget"
+],
+"class": "keep",
+"lines": [
+836,
+842
+],
+"sha256": "0ccc6c960c61d698b16b7c9060b70d5b2d6311fe348cf349f8cede061cd7d793"
+},
+{
+"names": [
+"ManifoldMorse.SignedMorseChart.beltNeighborhoodMap"
+],
+"class": "keep",
+"lines": [
+844,
+860
+],
+"sha256": "a15e54a73209ed1626ee6ef714069cac04f3f14163f2f4632cb204493dcca878"
+},
+{
+"names": [
+"ManifoldMorse.SignedMorseChart.continuous_beltNeighborhoodMap"
+],
+"class": "keep",
+"lines": [
+862,
+872
+],
+"sha256": "6be65b3884f45c6a0f083ecf660f770b8d3f88886c0c26ec787f294cf989fa95"
+},
+{
+"names": [
+"ManifoldMorse.SignedMorseChart.beltInverseCoordinates"
+],
+"class": "keep",
+"lines": [
+874,
+882
+],
+"sha256": "07d3f6065ced4bad0567c36682352740e89268b379df973151ee28174be31667"
+},
+{
+"names": [
+"ManifoldMorse.SignedMorseChart.continuousOn_beltInverseCoordinates"
+],
+"class": "keep",
+"lines": [
+884,
+891
+],
+"sha256": "a3cf1eeebd450823864ff0b3b11de20ebad0ebdc0e50624bd03e14c7b85f8f98"
+},
+{
+"names": [
+"ManifoldMorse.SignedMorseChart.beltInverseCoordinates_neighborhoodMap"
+],
+"class": "keep",
+"lines": [
+893,
+910
+],
+"sha256": "fd05c928753c08dcb43a3c540148f349fc7161b614bf3f09185e0d3b07d79412"
+},
+{
+"names": [
+"ManifoldMorse.SignedMorseChart.norm_beltInverseCoordinates_fst"
+],
+"class": "keep",
+"lines": [
+912,
+923
+],
+"sha256": "a5b8fdbfc8b9cff87abeb3d90f47681f6fa2606881171f25c5a3352496b5c2f4"
+},
+{
+"names": [
+"ManifoldMorse.SignedMorseChart.beltNeighborhoodInverse"
+],
+"class": "keep",
+"lines": [
+925,
+940
+],
+"sha256": "3497485aefc711ab9ea3322761b16922ce785b9146304b3e45f9fadd77e3ac63"
+},
+{
+"names": [
+"ManifoldMorse.SignedMorseChart.continuous_beltNeighborhoodInverse"
+],
+"class": "keep",
+"lines": [
+942,
+951
+],
+"sha256": "f34fb3af9496f97f85d59f6fa7cba0225fd71e6da4e3df8ee73b29ad719b1092"
+},
+{
+"names": [
+"ManifoldMorse.SignedMorseChart.beltNeighborhoodHomeomorph"
+],
+"class": "keep",
+"lines": [
+953,
+985
+],
+"sha256": "20012c6b497688d61a2a72bb5175a294df73f0f940157a7f0a9d638aee905ae7"
+},
+{
+"names": [
+"ManifoldMorse.SignedMorseChart.enlarged_closed_belt_subset_source"
+],
+"class": "keep",
+"lines": [
+987,
+1004
+],
+"sha256": "137182189178c13a1435f03dd5af20af7dbf7c460d570bc7dea88a753fd1e8f6"
+},
+{
+"names": [
+"ManifoldMorse.SignedMorseChart.beltNeighborhoodHomeomorph_normal"
+],
+"class": "keep",
+"lines": [
+1006,
+1021
+],
+"sha256": "962530845a6598c6aae0f4f4b6b7494663f4f17c38e531ea50ae6174c8cfc32d"
+},
+{
+"names": [
+"ManifoldMorse.MorseSurgeryData.beltNormalDomain"
+],
+"class": "keep",
+"lines": [
+1023,
+1030
+],
+"sha256": "abc2e26c0af8e5de73c85355728281406d12a0871c54a6c526c3b467014a5d48"
+},
+{
+"names": [
+"ManifoldMorse.MorseSurgeryData.beltNormal"
+],
+"class": "keep",
+"lines": [
+1032,
+1039
+],
+"sha256": "bb3569788897ba82482f842eedc9b1e3403d06b525d38ecb3a1f2b35c5ebcd6e"
+},
+{
+"names": [
+"ManifoldMorse.MorseSurgeryData.isOpen_beltNormalDomain"
+],
+"class": "keep",
+"lines": [
+1041,
+1046
+],
+"sha256": "94e284402b6beef0814ccd9f2d7f8718638a245e3946b2ba3341317184d6ed82"
+},
+{
+"names": [
+"ManifoldMorse.MorseSurgeryData.belt_model_mem_target"
+],
+"class": "keep",
+"lines": [
+1048,
+1062
+],
+"sha256": "5129baab7d6a6a0fe20b9096fd33f9b16e0724a565f68722d1064bcb0c5b1163"
+},
+{
+"names": [
+"ManifoldMorse.MorseSurgeryData.belt_mem_normalDomain"
+],
+"class": "keep",
+"lines": [
+1064,
+1073
+],
+"sha256": "75cc22bdd308648d10347a5cb64b6d6b54a0f5fc398eea492af874ddf1c11299"
+},
+{
+"names": [
+"ManifoldMorse.MorseSurgeryData.belt_split_coordinates"
+],
+"class": "keep",
+"lines": [
+1075,
+1086
+],
+"sha256": "8b02742385bffe09bbe865f79039e2a15e8faaa177d6ff7d52b155b95f648f21"
+},
+{
+"names": [
+"ManifoldMorse.MorseSurgeryData.beltNormal_belt"
+],
+"class": "keep",
+"lines": [
+1088,
+1096
+],
+"sha256": "b7fac99310cff87bbdc517b336cb9cfa89296f8e15072c58e2c54d32eda2a194"
+},
+{
+"names": [
+"ManifoldMorse.MorseSurgeryData.beltNormal_eq_zero_iff"
+],
+"class": "keep",
+"lines": [
+1098,
+1126
+],
+"sha256": "1893c5cb388aafc28b3e03728118a1e54a181a6836007682a7a81e9772a65db2"
+},
+{
+"names": [
+"ManifoldMorse.MorseSurgeryData.contMDiffOn_beltNormal"
+],
+"class": "keep",
+"lines": [
+1128,
+1144
+],
+"sha256": "e630e711bc3228a6096a12ebd59b3a4b6c993d3d4b8973cae5182a42a2e43011"
+},
+{
+"names": [
+"ManifoldMorse.MorseSurgeryData.beltNormal_derivative_comp_belt"
+],
+"class": "keep",
+"lines": [
+1146,
+1172
+],
+"sha256": "8469d2e5e718692b907651b53f31d7458c37e14f75e851dfb03524bda0b0b65b"
+},
+{
+"names": [
+"NativeParametrization.translation"
+],
+"class": "keep",
+"lines": [
+1174,
+1184
+],
+"sha256": "fe9815687d2cc1a3b783a5153245076736b9db53ef1f8d1358dc43341bd27185"
+},
+{
+"names": [
+"NativeParametrization.centered"
+],
+"class": "keep",
+"lines": [
+1186,
+1193
+],
+"sha256": "47b1d0f99d50be3221d340d9a390ffa3f50ad8aa56df8d67087eca057a34e1f2"
+},
+{
+"names": [
+"NativeParametrization.zero_mem_centered_source"
+],
+"class": "keep",
+"lines": [
+1195,
+1203
+],
+"sha256": "9fc177e4ff53df62c955d82aeccbf7481bfeb175e1ddc41a5f46698fced98490"
+},
+{
+"names": [
+"NativeParametrization.centered_zero"
+],
+"class": "keep",
+"lines": [
+1205,
+1212
+],
+"sha256": "1242aff72ac98eea176e383ad6acb0b4dab5aa4e41fdd9e8390c69758839eb81"
+},
+{
+"names": [
+"NativeParametrization.mem_centered_target"
+],
+"class": "keep",
+"lines": [
+1214,
+1219
+],
+"sha256": "f97a0cb54c102f647dadbbe593e87cfeb9ae9856c3b81eb30262827b0f3c9362"
+},
+{
+"names": [
+"SupportedDiffeomorph.SupportedRelativeIsotopy.mapsTo_superset"
+],
+"class": "keep",
+"lines": [
+1221,
+1234
+],
+"sha256": "d4bf5162e00b03c5b80161d1a902bd57b70e0fd5c105367e4c6a432d58e216ae"
+},
+{
+"names": [
+"SupportedDiffeomorph.SupportedRelativeIsotopy.extension"
+],
+"class": "keep",
+"lines": [
+1236,
+1281
+],
+"sha256": "34a8f509ed4dfc1bc8c43c3d72e129851d9003d9d122151ed70cfb0c4039957b"
+},
+{
+"names": [
+"SupportedDiffeomorph.normalBumpFamily"
+],
+"class": "keep",
+"lines": [
+1283,
+1291
+],
+"sha256": "59afa22f0d07a55a7c626ad658a5192d1c28096b9a55b1c1fcbb4fd7f12c24eb"
+},
+{
+"names": [
+"SupportedDiffeomorph.normalBumpFamily_normal"
+],
+"class": "keep",
+"lines": [
+1293,
+1299
+],
+"sha256": "e5c617b210ca31f1af51e678dfb8458f4b132d4f1778debd6bfb8806c009a6fd"
+},
+{
+"names": [
+"SupportedDiffeomorph.normalBumpFamily_zero"
+],
+"class": "keep",
+"lines": [
+1301,
+1310
+],
+"sha256": "a4bdae077d79bbbd3d55400f0ff83d4dd28c2462d8bc901206746baf6a999a0d"
+},
+{
+"names": [
+"SupportedDiffeomorph.normalBumpFamily_fixed_fiber"
+],
+"class": "keep",
+"lines": [
+1312,
+1321
+],
+"sha256": "d4b319115410bec4ea3145b287327250c707987584d2b351fe3ddf07f95c717c"
+},
+{
+"names": [
+"SupportedDiffeomorph.normalBumpFamily_fixed_outside"
+],
+"class": "keep",
+"lines": [
+1323,
+1338
+],
+"sha256": "e7cd0f94a4f1455f24c15d814ce791f71e2b6b2983850aab9ae15eef7760849d"
+},
+{
+"names": [
+"SupportedDiffeomorph.normalBumpFamily_chart"
+],
+"class": "keep",
+"lines": [
+1340,
+1350
+],
+"sha256": "0c98a1ef586791d49ca22020011cde93dc49e50a55510cea294035edda69a798"
+},
+{
+"names": [
+"SupportedDiffeomorph.exists_radius_normalBumpFamily"
+],
+"class": "keep",
+"lines": [
+1352,
+1432
+],
+"sha256": "e77280f3987c06f3f516097899b97bdb4df0fec0e2b573f3eb20837b63a918dc"
+},
+{
+"names": [
+"exists_small_supported_germ"
+],
+"class": "keep",
+"lines": [
+1434,
+1488
+],
+"sha256": "c14665f0e4a8023d1ec93722191711c39dd5b83963ffea4c87f1452acb91eb46"
+},
+{
+"names": [
+"SupportedDiffeomorph.exists_supported_shear_isotopy"
+],
+"class": "keep",
+"lines": [
+1490,
+1548
+],
+"sha256": "f80ffebbf5748fb35ca6a2e186071022e22c76ad44265dca264ccdd8c9cb5cfb"
+},
+{
+"names": [
+"SupportedGerms.Realizes"
+],
+"class": "keep",
+"lines": [
+1550,
+1560
+],
+"sha256": "6e7444d7f279df73b6bbb7cb6ea95dceb13b60bfc2426db8f38d0b22004c2629"
+},
+{
+"names": [
+"SupportedGerms.Realizes.comp"
+],
+"class": "keep",
+"lines": [
+1562,
+1595
+],
+"sha256": "8209b21a0d1137c5c3113a3b08759809733ea6160406c307507711c84993a482"
+},
+{
+"names": [
+"SupportedGerms.Realizes.conj"
+],
+"class": "keep",
+"lines": [
+1597,
+1635
+],
+"sha256": "d1498b63f8fbe45ba592b72943fcad39c23933b8d99a86d4b38d72fa74bb6574"
+},
+{
+"names": [
+"SupportedGerms.realizes_shear"
+],
+"class": "keep",
+"lines": [
+1637,
+1653
+],
+"sha256": "246dc5bce8624cdeced611ee6df5644bbab069300e617975e3c7db2728929eec"
+},
+{
+"names": [
+"LinearFramePaths.diag2n_decompose"
+],
+"class": "keep",
+"lines": [
+1655,
+1679
+],
+"sha256": "d89b44d3a8aea317324b856cc324621ecc07e8d60b7100d721c51527e3588c5f"
+},
+{
+"names": [
+"LinearFramePaths.joined_one_transvection"
+],
+"class": "keep",
+"lines": [
+1681,
+1701
+],
+"sha256": "514b4f14a43a7b3be8c8722d5627710efba5184d0cc651353fcd506dde82f6df"
+},
+{
+"names": [
+"LinearFramePaths.joined_one_specialLinear"
+],
+"class": "keep",
+"lines": [
+1703,
+1727
+],
+"sha256": "163d3fc312b8b8d5a3c0fc512b15cf259446d1f26fdd0363a579b164c4d9f7a4"
+},
+{
+"names": [
+"SupportedGerms.coordinateSplit"
+],
+"class": "keep",
+"lines": [
+1729,
+1746
+],
+"sha256": "c7c985c96385fb69e6ee73729d769bee82b98f8777561f07eb2859290349a203"
+},
+{
+"names": [
+"SupportedGerms.realizes_transvection"
+],
+"class": "keep",
+"lines": [
+1748,
+1776
+],
+"sha256": "a8894aa38cb38bf1ccd6a182d0a848a2583a687150f7d56ab4c9d123bbc3ee3c"
+},
+{
+"names": [
+"SupportedGerms.realizes_specialLinear"
+],
+"class": "keep",
+"lines": [
+1778,
+1807
+],
+"sha256": "1c13840cf0999276a1c3172e92c9fb6030a2d9be12f4ff891da45268670da407"
+},
+{
+"names": [
+"SupportedGerms.realizes_det_one"
+],
+"class": "keep",
+"lines": [
+1809,
+1835
+],
+"sha256": "62c721f0bcaa1adec07aa278ee9b85459e28c13e530d1282e7882b8bbfcd5cd9"
+},
+{
+"names": [
+"SmallPerturbation.lipschitzWith_cutoff_smul"
+],
+"class": "keep",
+"lines": [
+1837,
+1885
+],
+"sha256": "85a91e0a4431b911a2ab55db72988a26c2419bab2a5b421937133362cfb0241f"
+},
+{
+"names": [
+"SmallPerturbation.exists_closedBall_small_lipschitz_of_fderiv_zero"
+],
+"class": "keep",
+"lines": [
+1887,
+1910
+],
+"sha256": "40c50d728d6c235cec0fb8646cf8b8b88827718d7ebb72224c2b5111eb925652"
+},
+{
+"names": [
+"SmallPerturbation.exists_lipschitz_supported_germ"
+],
+"class": "keep",
+"lines": [
+1912,
+2004
+],
+"sha256": "381ae6f6c29af413551cc574e4ba51a2d32611718fed1fcf1b0837d9f1be272d"
+},
+{
+"names": [
+"SmallPerturbation.exists_supported_tangent_identity_isotopy"
+],
+"class": "keep",
+"lines": [
+2006,
+2084
+],
+"sha256": "6c0c0d1bf7be5be2b4498e1903cc3ea3ead44e19ec85a24ca342b55024438b22"
+},
+{
+"names": [
+"SmallPerturbation.exists_relative_tangent_identity_isotopy"
+],
+"class": "keep",
+"lines": [
+2086,
+2115
+],
+"sha256": "752ae0d56f6ae5d46b51eb2d09e2d44252f7c2b4a2c19680be704695581fe7a2"
+},
+{
+"names": [
+"SmallPerturbation.fderiv_preserves_projection"
+],
+"class": "keep",
+"lines": [
+2117,
+2127
+],
+"sha256": "6968337fc8596d54437e231096090a81c3a7750050c629a6f4aa86df65f8aeaf"
+},
+{
+"names": [
+"SmallPerturbation.fderiv_fixes_subspace"
+],
+"class": "keep",
+"lines": [
+2129,
+2144
+],
+"sha256": "606d335b6250128d0f2ba0c47e899e92d40425105da723902a13eb03b2c0e369"
+},
+{
+"names": [
+"SmallPerturbation.exists_relative_germ_linearization_isotopy"
+],
+"class": "keep",
+"lines": [
+2146,
+2206
+],
+"sha256": "8233777a6f901454baf781130d6eb10dd51e28e7a6b0b5810e70b1522d47c2e8"
+},
+{
+"names": [
+"SupportedGerms.realizes_local_germ"
+],
+"class": "keep",
+"lines": [
+2208,
+2240
+],
+"sha256": "80e0e2f8f12977fc0ed63e0071a62231cdf42c5638163ca9a7ad0dbb0e47d723"
+},
+{
+"names": [
+"LinearFramePaths.scalarDiagonal"
+],
+"class": "keep",
+"lines": [
+2242,
+2245
+],
+"sha256": "321650a56ee91e3f09e5b2b8fe3187331d4e13d8fe12150e635605e1b9c405aa"
+},
+{
+"names": [
+"LinearFramePaths.det_scalarDiagonal"
+],
+"class": "keep",
+"lines": [
+2247,
+2249
+],
+"sha256": "5faa3abef34501b5e10693b96e1827ca4066b6430df208041d9fe9984e5c0e43"
+},
+{
+"names": [
+"LinearFramePaths.scalarDiagonal_mul"
+],
+"class": "keep",
+"lines": [
+2251,
+2257
+],
+"sha256": "edcd98beaf31589ef5e8dcf528829db54e82ab3973a59d3d21207e56b609c4eb"
+},
+{
+"names": [
+"LinearFramePaths.scalarDiagonal_one"
+],
+"class": "keep",
+"lines": [
+2259,
+2261
+],
+"sha256": "d566263e5236b5296123bfe522eff72188ef23fcb6535038550d4fee0fae386b"
+},
+{
+"names": [
+"LinearFramePaths.continuous_scalarDiagonal"
+],
+"class": "keep",
+"lines": [
+2263,
+2279
+],
+"sha256": "1837b9d39dbfd35471b0d3db50e63716c9284c5e29336c7528382bf87dfd0e79"
+},
+{
+"names": [
+"LinearFramePaths.determinantComponent"
+],
+"class": "keep",
+"lines": [
+2281,
+2287
+],
+"sha256": "2fb4bc203625b5574233e4edea460f7e72fb95df6861df8974a38a977463f741"
+},
+{
+"names": [
+"LinearFramePaths.diagonalPoint"
+],
+"class": "keep",
+"lines": [
+2289,
+2298
+],
+"sha256": "84348cff57e367be63f3799b48844457e47bbbd7339249f8b828fb882a7a952c"
+},
+{
+"names": [
+"LinearFramePaths.joined_diagonal_to_matrix"
+],
+"class": "keep",
+"lines": [
+2300,
+2334
+],
+"sha256": "abfaffade07c37e875d2fe4bc110accaeb91f65071534c2fce0501bffb583861"
+},
+{
+"names": [
+"LinearFramePaths.joined_diagonal_points"
+],
+"class": "keep",
+"lines": [
+2336,
+2374
+],
+"sha256": "89953bb07ae1d80bbdf11616633778821ddaab879d9f0873aac73c490d9a0021"
+},
+{
+"names": [
+"LinearFramePaths.joined_determinantComponent"
+],
+"class": "keep",
+"lines": [
+2376,
+2385
+],
+"sha256": "d69f254b2d1bfdaec670831e8913034ada2c8dad9650e05f1a5461d7fcf71ad2"
+},
+{
+"names": [
+"SupportedGerms.exists_linearEquiv_with_det"
+],
+"class": "keep",
+"lines": [
+2387,
+2411
+],
+"sha256": "f2768b9b2777994a20f687969f98d95c303d36d8f53c19c19540eee820140982"
+},
+{
+"names": [
+"SupportedGerms.exists_normal_det_correction"
+],
+"class": "keep",
+"lines": [
+2413,
+2431
+],
+"sha256": "929a32bec6fa9ded63ab3c563b42cec03d7641b0017615d1c628404de8442a0c"
+},
+{
+"names": [
+"SupportedGerms.exists_supported_disk_germ_alignment"
+],
+"class": "keep",
+"lines": [
+2433,
+2495
+],
+"sha256": "b96b2b18925923259da1133f700aa08c01d8374fd2ec9965b9f24a825c98526c"
+},
+{
+"names": [
+"SupportedGerms.exists_native_disk_germ_alignment"
+],
+"class": "keep",
+"lines": [
+2497,
+2551
+],
+"sha256": "bd3a11bdfe9326809404eee8b301a0ac73b744bf0b68cfe2d18ab55bcd5fc282"
+},
+{
+"names": [
+"SmoothRadial.radialMap"
+],
+"class": "keep",
+"lines": [
+2553,
+2556
+],
+"sha256": "719742c41133298df17f0a84417bf6fa81b6cc0e346b04c11855af90b38cc601"
+},
+{
+"names": [
+"SmoothRadial.norm_radialMap"
+],
+"class": "keep",
+"lines": [
+2558,
+2561
+],
+"sha256": "3ccccadf387c20b89ba907d553b76139f428c7b99ed0408f54d13f55429dc810"
+},
+{
+"names": [
+"SmoothRadial.radius_strictMono"
+],
+"class": "keep",
+"lines": [
+2563,
+2570
+],
+"sha256": "2f7a0a908c30da28c0ca7654eafcee8214f2e26290d936d7ea83dff356adc5a2"
+},
+{
+"names": [
+"SmoothRadial.radialMap_injective"
+],
+"class": "keep",
+"lines": [
+2572,
+2582
+],
+"sha256": "945a8f5959314b64ebd386ff471d31e7f43e78da6e516d53d020b537d2180d1c"
+},
+{
+"names": [
+"SmoothRadial.radialMap_surjective"
+],
+"class": "keep",
+"lines": [
+2584,
+2610
+],
+"sha256": "6676407bf16abb8136a634221f98be56dbef93712235bb5745910226d7dc8c4d"
+},
+{
+"names": [
+"SmoothRadial.contDiff_radialMap"
+],
+"class": "keep",
+"lines": [
+2612,
+2616
+],
+"sha256": "b1894bd7a5b9958c204e4269e30bb6513b673216fa4ccecbfea6c4e358ca6514"
+},
+{
+"names": [
+"SmoothRadial.fderiv_radialMap_apply"
+],
+"class": "keep",
+"lines": [
+2618,
+2632
+],
+"sha256": "3f7b622320f3d66685cf6420735ace0a24eb1f629465a086999a53e1c1e7a4dd"
+},
+{
+"names": [
+"SmoothRadial.fderiv_radialMap_injective"
+],
+"class": "keep",
+"lines": [
+2634,
+2652
+],
+"sha256": "dc3ef407547d7a26724a9fd78fe0c4134348624bf05d142eb4bf827f9bf6c523"
+},
+{
+"names": [
+"SmoothRadial.isInvertible_fderiv_radialMap"
+],
+"class": "keep",
+"lines": [
+2654,
+2662
+],
+"sha256": "127b0f46cacde0b9f10b9d869c6363197d0090b1ed1d58f8480595bc73d78058"
+},
+{
+"names": [
+"SmoothRadial.diffeomorph"
+],
+"class": "keep",
+"lines": [
+2664,
+2680
+],
+"sha256": "c0ec111ba18ec22105c8c868ebbd4a35ce4c9d25c7ae3058b19cf8e6bedf7788"
+},
+{
+"names": [
+"SmoothRadial.shrinkTimeFactor"
+],
+"class": "keep",
+"lines": [
+2682,
+2686
+],
+"sha256": "56c069b3a9a7103f48f55f25da050ca6b75830d371f2f5e20ef74f90f8c7dda3"
+},
+{
+"names": [
+"SmoothRadial.shrinkTimeFactor_bounds"
+],
+"class": "keep",
+"lines": [
+2688,
+2694
+],
+"sha256": "3543921165d8b5d8ddb93ece436e21d972642e93dd8957c60d6f378da51395b2"
+},
+{
+"names": [
+"SmoothRadial.shrinkTimeFactor_zero"
+],
+"class": "keep",
+"lines": [
+2696,
+2698
+],
+"sha256": "b4b9a5c90aef3502873a731f7b0271c5fa01a0fbfb6d82993e0f6f6cbd344b05"
+},
+{
+"names": [
+"SmoothRadial.shrinkTimeFactor_one"
+],
+"class": "keep",
+"lines": [
+2700,
+2703
+],
+"sha256": "9c82a5df50b25faa57cd4bd808965eb04eba8184efa361666dd1dd5be2ced6eb"
+},
+{
+"names": [
+"SmoothRadial.contDiff_shrinkTimeFactor"
+],
+"class": "keep",
+"lines": [
+2705,
+2708
+],
+"sha256": "be94f7ba8883e786b2d3f67c6e00a4d95e897a640e65609c2cc39f1e0ccb7ee1"
+},
+{
+"names": [
+"DiskShrinking.scale"
+],
+"class": "keep",
+"lines": [
+2710,
+2714
+],
+"sha256": "e56defff2dec8ea2c05ee030c99cba349f0ceb1a131b9624b879a807b125c541"
+},
+{
+"names": [
+"DiskShrinking.contDiff_scale"
+],
+"class": "keep",
+"lines": [
+2716,
+2721
+],
+"sha256": "93edbe94a8106373cf9b76b71d1eac76b5e754f624cc07b8fc97547fc59a7853"
+},
+{
+"names": [
+"DiskShrinking.scale_pos"
+],
+"class": "keep",
+"lines": [
+2723,
+2726
+],
+"sha256": "02ac1b0a2fc09aa6ddf067c9ffc5ee3f0109cabb444716cab097c3e316de444a"
+},
+{
+"names": [
+"DiskShrinking.scale_monotone"
+],
+"class": "keep",
+"lines": [
+2728,
+2739
+],
+"sha256": "db3de124902ed028703a49248bc34dcae6131e1fb4060d99306721f9a0474eb1"
+},
+{
+"names": [
+"DiskShrinking.scale_inner"
+],
+"class": "keep",
+"lines": [
+2741,
+2748
+],
+"sha256": "ede015a015eb77f6a5045288fb6ff635e07b1245ae11fca7543c7f0992e18dd4"
+},
+{
+"names": [
+"DiskShrinking.scale_outer"
+],
+"class": "keep",
+"lines": [
+2750,
+2755
+],
+"sha256": "003c6641048ab8a225199344509565f7d85d092395d47bd7e49612b9830825f6"
+},
+{
+"names": [
+"DiskShrinking.scale_one"
+],
+"class": "keep",
+"lines": [
+2757,
+2759
+],
+"sha256": "a32d12ca4a0af7ca01a6585c5acea43a05e8fcc5a60633d1edeeaf208028f664"
+},
+{
+"names": [
+"DiskShrinking.family"
+],
+"class": "keep",
+"lines": [
+2761,
+2767
+],
+"sha256": "601293df285a918e08427d1ccdb15d31e3899fa6a4d267a277deab2834d1e1fa"
+},
+{
+"names": [
+"DiskShrinking.contMDiff_family"
+],
+"class": "keep",
+"lines": [
+2769,
+2789
+],
+"sha256": "1623bfb641784f0e9fa2458763e41cb8aa1f04bbe3e1e985e08f4bf56061148a"
+},
+{
+"names": [
+"DiskShrinking.family_zero"
+],
+"class": "keep",
+"lines": [
+2791,
+2795
+],
+"sha256": "40cdc629bc257380bef3f2671f4c4184d2e65d061fdc658940d82a7cdcd459d9"
+},
+{
+"names": [
+"DiskShrinking.family_slices"
+],
+"class": "keep",
+"lines": [
+2797,
+2806
+],
+"sha256": "994c068ee69baf2666a32167e69d9a47a7895e9844353f47110639286973a8ab"
+},
+{
+"names": [
+"DiskShrinking.family_outer"
+],
+"class": "keep",
+"lines": [
+2808,
+2815
+],
+"sha256": "3b129c185c85bd3890437866635a044ae6bf1484fc0e686cc7948bf725c6b1ca"
+},
+{
+"names": [
+"DiskShrinking.family_one_inner"
+],
+"class": "keep",
+"lines": [
+2817,
+2822
+],
+"sha256": "054dd7cd0196b0347d64cdd56a936e59aec00bcccd4d0954132ee4ed7a66f29f"
+},
+{
+"names": [
+"DiskShrinking.family_origin"
+],
+"class": "keep",
+"lines": [
+2824,
+2827
+],
+"sha256": "5696dbf2e834d357ea27f4b1b758996efa4ffca453d5435950936e0376a8ebeb"
+},
+{
+"names": [
+"DiskShrinking.exists_larger_closedBall_subset"
+],
+"class": "keep",
+"lines": [
+2829,
+2860
+],
+"sha256": "abbbcc1abd7db35ab6e0130aa04cb8e22b069d9bf6461f47291a06717476f2ba"
+},
+{
+"names": [
+"DiskShrinking.exists_disk_ellipsoid_in_open"
+],
+"class": "keep",
+"lines": [
+2862,
+2906
+],
+"sha256": "6df7e6d1044705decbcf9de51d7f3a963ad9846eb4d901ed3c6300f5d1a6ccfa"
+},
+{
+"names": [
+"SupportedDiffeomorph.exists_supported_isotopy_extension"
+],
+"class": "keep",
+"lines": [
+2908,
+2956
+],
+"sha256": "8b319a581f6d6b02df90c0f95f4d17c69646865253179bea7d4c6474e55ce6d4"
+},
+{
+"names": [
+"DiskShrinking.exists_chart_disk_shrinking"
+],
+"class": "keep",
+"lines": [
+2958,
+3015
+],
+"sha256": "134fdf1b516eb36098ed9b2f1ef34edf474189cab89464b1b98098c8eca5e214"
+},
+{
+"names": [
+"SupportedDiffeomorph.IsotopicToIdentity.symm"
+],
+"class": "keep",
+"lines": [
+3017,
+3041
+],
+"sha256": "42760637e39ea041f3d3f4f9ffd14928aa6861d71f6133ed85f70af52def459a"
+},
+{
+"names": [
+"SupportedGerms.exists_disk_chart_isotopy"
+],
+"class": "keep",
+"lines": [
+3043,
+3080
+],
+"sha256": "b51c553a544ea198b19118ad764d013a319ca464adfff91e9ebb47d8b3b7de7f"
+},
+{
+"names": [
+"DiskShrinking.exists_embedded_disk_isotopy_of_same_center"
+],
+"class": "keep",
+"lines": [
+3082,
+3130
+],
+"sha256": "e65af7101bd30b94824ad4a627a1c80c5080bd32ab3bb61e4a1b95224befc9ca"
+},
+{
+"names": [
+"SupportedDiffeomorph.exists_supported_pointMoving"
+],
+"class": "move",
+"lines": [
+3132,
+3168
+],
+"sha256": "07db890c1bbc94aa853e5e1da123aa41c11dad029e75ad930385302deaae537d"
+},
+{
+"names": [
+"SupportedDiffeomorph.exists_open_pointMoving"
+],
+"class": "move",
+"lines": [
+3170,
+3205
+],
+"sha256": "52a1b9109a68aafb63f82a130ae4f14430b3cab506576fbb87e9fcc969c19f5b"
+},
+{
+"names": [
+"ContinuousLinearMap.surjective_coprod_comp_left"
+],
+"class": "keep",
+"lines": [
+3207,
+3220
+],
+"sha256": "d11c1ee4236a7b0b6b57158e7d6706d7a33f4f3a303db4e2e9aacee4d837e87d"
+}
+]
+}

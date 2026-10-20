@@ -1,0 +1,384 @@
+# group-03 — head f0e28a82 — 2026-09-20
+
+## Lib/AlgebraicTopology/SingularHomology/CirclePaths.lean  (88 declarations, 1104 lines)
+verdict: C (project namespace and `_mo1973_*` names; `Type`-0 specialisation)
+twin: Hatcher §3.B (Künneth, the case `H_n(S¹ × X) ≅ H_n(X) ⊕ H_{n-1}(X)`) and §2.2 Mayer–Vietoris connecting map; no Mathlib twin (Mathlib has no Künneth or cross product)
+findings:
+- l.76–1085 every declaration lives in `PeriodTorusHigherHomology` / `PeriodTorusHigherHomology.CirclePaths`; the namespace names the project's period torus, not the mathematics (Mathlib: `SingularHomology.Circle` or `CircleProduct`)
+- l.175–251 `const_prodMk_id_eq_crossInsertLeft_mo1973_12793`, `biprodElement_mo1973_12801` … `biprod_lift_eq_boundary_mo1973_12805`: five Mathoverflow-numbered names; `biprodElement*` are generic facts about `K ⊞ L` in `ChainComplex (ModuleCat.{0} ℤ) ℕ` and belong in a `Homology/Biprod` helper
+- l.139, 262–395, 714–1085 all spaces are `X : Type` (universe 0) and coefficients are `ℤ` throughout; the Künneth section argument is universe- and ring-general
+- l.262–395 `twoChainMiddle`, `twoChainSmallCycle`, `connectingHomomorphism_twoChain` are a general Mayer–Vietoris connecting-homomorphism computation for any cover `U V`; they are a different topic from the circle paths and belong in `MayerVietoris.lean`
+- 88 of 88 declarations lack docstrings (module docstring is good and its promised names all exist)
+- l.61–70 `set_option maxSynthPendingDepth 3`, `open scoped … Modular UpperHalfPlane`, `universe u v` unused; `public import Mathlib`
+suggestion: rename the namespace to `SingularHomology.CircleProduct`, strip the `_mo1973_*` suffixes, and move `biprodElement*`/`twoChain*` to the biproduct and Mayer–Vietoris files.
+
+## Lib/AlgebraicTopology/SingularHomology/CircleProduct.lean  (133 declarations, 1422 lines)
+verdict: C (mixes four topics; naturality block in project namespace; `Type`-0/`ℤ` specialisation)
+twin: Hatcher §2.2 Example 2.? (Mayer–Vietoris for `S¹ × X`), §3.B Künneth for one circle factor; no Mathlib twin (Mathlib `AlgebraicTopology/SingularHomology` has no MV or Künneth)
+findings:
+- l.15–58 module docstring cites Hatcher Cor 2.11 for the Künneth splitting; Cor 2.11 is the homology of spheres, the reference is wrong (should be §3.B / Example 2.? Mayer–Vietoris for products); all promised names exist
+- l.81–599 `CircleTopology.*` (arcs, punctured interval homeomorphisms, `contractibleProdHomotopyEquiv`, `sumHomotopyEquiv`, `circleLiftContraction`) is point-set topology of `AddCircle 1` and generic homotopy-equivalence glue (`sumHomotopyEquiv` l.345 is a general `A ⊕ B` fact); a separate `Topology/Homotopy/Circle` file
+- l.946–1019 `SingularMayerVietoris.ModuleHomology.cycleClass_eq_homologyClassOfCycle*`, `connectingMap_cycleClass`: generic `ModuleCat` homology-class lemmas parked here, belong in `ModuleHomology.lean`
+- l.1049–1187 `pointCycle`, `pointClass`, `eq_zsmul_pointClass`, `trivialFirstEquiv`: `H_0` API for any space, unrelated to the circle; `trivialFirstEquiv (A B) [AddCommGroup A] [Subsingleton A] : A × B ≃+ B` is a `Prod` lemma
+- l.1237–1407 the naturality block switches to namespace `PeriodTorusHigherHomology` with 15 undocumented declarations (`circleProductMap`, `circleProductHomologyEquiv_naturality`); the same file's main API is in `SingularHomology`
+- l.600–929 all homology statements take `X : Type` (universe 0), coefficients `ℤ` fixed by the `SingularMayerVietoris.SingularHomology` API
+- l.61–76 `set_option maxSynthPendingDepth 3`, `open scoped … Modular UpperHalfPlane`, `universe u v` unused, `local notation … SlashAction.map` unused
+suggestion: split into `Topology/Homotopy/Circle` (l.81–599), `CircleProduct` (l.600–929 + 1196–1224, with the naturality block renamed into `SingularHomology`), and move the `ModuleHomology`/`pointClass` blocks to their own files.
+
+## Lib/AlgebraicTopology/SingularHomology/Coproduct.lean  (29 declarations, 481 lines)
+verdict: B (docs/names only; finite-index and `ℤ` specialisation is the only mathematical narrowing)
+twin: Hatcher Prop 2.6 (`H_n(⊔ Xᵢ) ≅ ⊕ H_n(Xᵢ)`); Mathlib nearest: `Mathlib/Algebra/Homology/Additive.lean` (biproducts of homological complexes) and `CategoryTheory/Limits/Shapes/Biproducts`
+findings:
+- l.71 `Coproduct.singularChainsFiniteBiproducts : HasFiniteBiproducts (ChainComplex (ModuleCat.{0} ℤ) ℕ)` stated as a `theorem` and used as a local instance; Mathlib's `HomologicalComplex` already has finite biproducts from `ModuleCat` (Additive.lean), so this is a re-derivation rather than a new fact
+- l.326–433 `homologyFiniteBiproducts`, `homology_π_ι_self`, `homologyBiproductEquiv`: "homology commutes with finite biproducts" is a generic additive-functor fact for any `ChainComplex (ModuleCat R)`; here fixed to `ℤ`, universe 0, and not in a `HomologicalComplex` namespace
+- l.449 `sigmaHomologyEquiv` needs `[Fintype ι]`; Hatcher's statement is for arbitrary `ι` (direct sum); the finite restriction should be stated in the docstring as deliberate
+- namespace `Coproduct` is a bare noun; Mathlib would use `SingularHomology.sigma…` / `SingularChains.sigma…`
+- 0 missing docstrings; module docstring accurate; `ι : Type`, `X : ι → Type` universe-0 throughout
+- l.51–66 unused `set_option`, kitchen-sink `open scoped`, `universe u v`, `local notation … SlashAction.map`
+suggestion: replace `singularChainsFiniteBiproducts`/`homologyBiproductEquiv` by Mathlib's additive-functor biproduct API and rename the namespace to `SingularHomology`.
+
+## Lib/AlgebraicTopology/SingularHomology/CrossInsert.lean  (3 declarations, 62 lines)
+verdict: B (minor: stale docstring, heavy import, preamble)
+twin: Eilenberg–Steenrod, Foundations VIII.6 (as cited); Mathlib: none (no cross product)
+findings:
+- l.10–16 docstring promises "the induced map on homology" and "naturality in both factors"; the file has only `crossInsertLeft`, `crossInsertLeft_natural`, `inducedChain_crossInsertLeft` (no homology map, no right insertion)
+- l.9 `public import Lib.AlgebraicTopology.SingularHomology.CircleProduct` for a 3-declaration chain-level file; only `Chains` is needed
+- l.41 `crossInsertLeft` is `ContinuousMap.const … |>.prodMk id`; a Mathlib name would be `ContinuousMap.prodMk_const_left` or reuse `ContinuousMap.prodMk`
+- 0 missing docstrings; `X Y : Type` universe 0
+- l.20–35 unused `set_option maxSynthPendingDepth`, kitchen-sink `open scoped`, `universe u v`, `local infixr " ≫ₚ "`, `local notation … SlashAction.map`
+suggestion: fix the docstring to what the file contains and import only `Chains`.
+
+## Lib/AlgebraicTopology/SingularHomology/CrossProduct.lean  (218 declarations, 4475 lines)
+verdict: C (left degree fixed to 1 and 2 where Hatcher is general; half the file in the project namespace despite the docstring; `_mo1973_*` names)
+twin: Hatcher §3.B (cross product, Leibniz rule, graded commutativity and associativity; Prop 3B.? via `Δᵖ × Δ^q` triangulation); Mathlib: none (genuine gap)
+findings:
+- l.30–31 docstring claims "the cross-product declarations use the general `SingularHomology` namespace; historical `PeriodTorusHigherHomology` names are available only through shims"; l.2064–4475 (≈120 declarations: swap homotopy, associator, `crossProductHomologyTwoOne`, `crossProductHomology_natural`) are in `PeriodTorusHigherHomology` — stale sentence
+- l.886, 1225, 1853 `crossProductEdge`, `crossProductTriangle`, `crossProductHomology : H₁(X) → Hₙ(Y) → H_{n+1}(X × Y)`: the textbook cross product is `H_p ⊗ H_q → H_{p+q}` for all `p`; the left degree is fixed to 1 (and 2 for the prism), which is the project's need, not the theorem; `formalEdgeCrossProduct`/`formalTriangleCrossProduct` (l.555, 1041) hard-code the `Δ¹ × Δⁿ`, `Δ² × Δⁿ` triangulations instead of the general shuffle formula
+- l.97–106 `integerLinearMapModule`, `integerTensorModule`: local `Module ℤ` instance wrappers to dodge a diamond; documented as a workaround (l.68–75) — elaboration residue, not mathematics
+- l.116–403, 2533–2640 `integerBilinearRightApply`, `integerBilinearFlip`, `integerBilinearPostcompose`, `integerTrilinearPostcompose`…: `LinearMap.flip`, `LinearMap.compl₂`, `LinearMap.lcomp` exist in Mathlib for any semiring; re-implemented for `ℤ`
+- l.1577–1625 `homologyBoundaries`, `homologyLinearMap_ext`, `homologyDesc` are generic `ChainComplex (ModuleCat.{0} ℤ) ℕ` facts (belong in `ModuleHomology.lean`, over any `R`)
+- l.2917, 2932 `private def triplePostcomp_mo1973_13949`, `triplePrecompLast_mo1973_13950`
+- l.86–88 docstring "Consumers: the Hurewicz lane, the torus lane" — project-plan vocabulary; 0 missing docstrings otherwise; universe-0 `X Y Z : Type` throughout
+- pattern clear after l.2100 (each property = formal defect + formal homotopy + affine chain map + boundary + descent); rest sampled only
+suggestion: rename the l.2064–4475 block into `SingularHomology`, split it (Swap / Associator / Naturality) into separate files, and state the degree-1 restriction in the docstring or generalise `crossProductEdge` to `Δᵖ × Δ^q` shuffles.
+
+## Lib/AlgebraicTopology/SingularHomology/FirstHurewicz.lean  (16 declarations, 156 lines)
+verdict: B (docs only: no docstrings; the mathematics is the textbook statement)
+twin: Hatcher Thm 2A.1 (`H₁(X) ≅ π₁(X)^{ab}` for path-connected `X`); Mathlib: none (genuine gap; Mathlib has `FundamentalGroup` but no Hurewicz)
+findings:
+- 16 of 16 declarations lack docstrings (`inverseHurewiczMap`, `firstHurewiczEquiv`, `singularH1EquivOfPi1` included); module docstring is short but names the result
+- l.114 `firstHurewiczEquiv (b : X) [PathConnectedSpace X] : AbelianPi1 X b ≃ₗ[ℤ] SingularH1 X` is the textbook statement; `X : Type` universe 0
+- l.132 `singularH1EquivOfPi1 … (e : FundamentalGroup X b ≃* Multiplicative A) : SingularH1 X ≃ₗ[ℤ] A` is a transport convenience for the project's torus/circle computations; textbook has no counterpart but it is harmless
+- l.20–21 docstring "the source used the `FirstHurewicz` alias of that namespace" is a porting remark, not documentation; l.9 `import Lib.AlgebraicTopology.Hurewicz.HomotopyExtension` — the file is in `SingularHomology/` while its siblings (`Hurewicz/`) are elsewhere; placement should be `Hurewicz/First.lean`
+- l.6 plain `import Mathlib` (not `module`/`public import` like the neighbours), l.29–38 `set_option maxSynthPendingDepth`, kitchen-sink `open scoped`, unused `universe u v`
+suggestion: add docstrings to all 16 declarations and move the file next to `Lib/AlgebraicTopology/Hurewicz/`.
+
+## Lib/AlgebraicTopology/SingularHomology/HomotopyInvariance.lean  (26 declarations, 311 lines)
+verdict: B (docs/names only)
+twin: Hatcher Thm 2.10 (homotopy invariance), Prop 2.? (homology of a point/contractible space); Mathlib `Mathlib/AlgebraicTopology/SingularHomology/Basic.lean` and `TopCat.Homotopy.singularChainComplexFunctorObjMap` (used at l.106)
+findings:
+- l.102–116 `singularChainHomotopy`, `homotopic_homologyMap` are a thin wrapper over Mathlib's `TopCat.Homotopy.singularChainComplexFunctorObjMap`; the value added is the `SingularMayerVietoris.singularHomologyMap` API translation, which is fine but should be stated in the docstring
+- l.287–306 `Suspension.singularHomologyMap_const_eq_zero`, `Suspension.singularHomologyMap_eq_zero_of_nullhomotopic` sit in namespace `Suspension` though they say nothing about suspensions; should be `SingularHomology.`
+- l.245, 263 `connectedHomologyZeroEquiv`, `pointHomologyZeroEquiv` return `… ≃ₗ[ℤ] ℤ`; coefficients fixed to `ℤ`, `X : Type` universe 0 throughout
+- 0 missing docstrings; module docstring names Hatcher 2.10 and every promised declaration exists
+- l.62–77 `set_option maxSynthPendingDepth 3`, kitchen-sink `open scoped … Modular UpperHalfPlane`, `universe u v` unused, `local notation … SlashAction.map` unused
+suggestion: move the two `Suspension.*` null-homotopy lemmas into `SingularHomology` and drop the preamble residue.
+
+## Lib/AlgebraicTopology/SingularHomology/LinearSphereAction.lean  (35 declarations, 527 lines)
+verdict: C (three topics and five namespaces in one file; an unrelated manifold import)
+twin: Hatcher §2.2, properties of degree (d) reflection has degree −1, and the remark that `GL_n(ℝ)` acts on `H_{n-1}(S^{n-1})` by `sign det`; Mathlib: none (no degree theory)
+findings:
+- l.165–257, 392–430 `SuspensionReflection.reflect`, `reflect_homology : map reflect (n+1) a = -a` is a general suspension fact (reversal of the cone coordinate negates positive homology) — a different topic from linear actions; belongs in `Suspension.lean`
+- l.262–268 `hyperplaneReflectionOperator` sits in the root namespace and is `(ℝ ∙ v)ᗮ.reflection` re-packaged; Mathlib's `Submodule.reflection`/`reflection` suffices
+- l.281–382 `SphereReflection.linearReflection`, `sphereMap_suspension`: identification of the coordinate reflection with the suspension reflection through `SphereHomology`'s homeomorphism — the third topic
+- l.514 `homology_eq_sign_smul` is stated for `EuclideanSpace ℝ (Fin (n+2))` and `H_{k+1}(UnitSphere (n+1))`, the textbook statement; `PuncturedRadial.toSphere` (l.73) is `Metric.sphere` normalisation for any normed space, good
+- l.10 `import Lib.Geometry.Manifold.Immersion.Relative` — no `Immersion`/`Relative` identifier is used (grep empty except the import); probably for `PuncturedRadial.Space`, which should live in a topology file
+- 0 missing docstrings; namespaces `PuncturedRadial`, `LinearSphereAction`, `SuspensionReflection`, `SphereReflection`, root — Mathlib would use one (`SingularHomology.Sphere`)
+- l.53–68 preamble residue (`set_option`, kitchen-sink `open scoped`, `universe u v`, `local notation … SlashAction.map`); plain `import Mathlib`
+suggestion: split out `SuspensionReflection` into `Suspension.lean`, delete `hyperplaneReflectionOperator` in favour of Mathlib's `reflection`, and unify the namespaces.
+
+## Lib/AlgebraicTopology/SingularHomology/LocalContributions.lean  (18 declarations, 609 lines)
+verdict: C (the "regular/filling" cover vocabulary and the project-document citations are the project's, not the textbook's)
+twin: Hatcher §2.2 Mayer–Vietoris with a disjoint family of opens (the localisation used in Prop 2.30 local degree); Mathlib: none
+findings:
+- l.212–590 `leftHomologyMap_in_coordinates`, `leftHomologyMap_surjective_of_regular_surjective`, `connectingHomomorphism_injective_of_regular_surjective`, `connectingRegularKernelEquiv`: each takes the 14-argument datum `(r : R ≃ₜ U) (p : ∀ i, P i ≃ₜ V i) (a : ∀ i, A i ≃ₜ U ∩ V i) (α β) (hr hp)` — the project's "regular piece / filling pieces / attachment maps" set-up; a textbook would state the MV coordinate identity for the cover `{U, ⋃ V i}` and let the user transport along homeomorphisms; the packaging should be a `structure` (`DisjointCoverChart`) or a `variable`
+- l.306, 364, 408 docstrings cite `CENTER_NATIVE_H5_INJECTIVITY_TEXTBOOK.md`, `CENTER_NATIVE_CONNECTING_KERNEL_TEXTBOOK.md`, "HI1–HI4", "CK1–CK4" — project working documents, not references; "regular", "filling" are project vocabulary throughout
+- l.27–30 module docstring: "`SurgeryWindows` homology rows that stay in `Hopf/` pending lanes D1/E1 (see Lib/reports/A.md)" — project-plan residue
+- l.69–178 `DisjointOpenHomology.*`, `CoverOverlapHomology.*` (homology of a disjoint union of opens is the product) are the genuine library part; `[Fintype ι]` and `ι : Type`, `X : Type` universe 0
+- l.604 `map_union` is `Set.MapsTo` on an `iUnion` (`Set.mapsTo_iUnion`-style Mathlib lemma), misplaced
+- 0 missing docstrings; namespaces `DisjointOpenHomology`, `CoverOverlapHomology`, `CoverLocalContributions` are three names for one topic
+- l.49–64 preamble residue (`set_option`, kitchen-sink `open scoped`, `universe u v`, `local notation … SlashAction.map`)
+suggestion: bundle `(R, P, A, r, p, a, α, β, hr, hp)` into one structure with a docstring, delete the `*_TEXTBOOK.md` citations, and keep only `DisjointOpenHomology`/`CoverOverlapHomology` as the library API.
+
+## Lib/AlgebraicTopology/SingularHomology/LocalContributionsNaturality.lean  (7 declarations, 162 lines)
+verdict: B (docs only: no docstrings, porting note as module docstring)
+twin: naturality of Hatcher §2.2 Mayer–Vietoris under maps of covers (Hatcher p. 150, "the MV sequence is natural"); Mathlib: none
+findings:
+- 7 of 7 declarations lack docstrings (`homologyEquiv_symm_single`, `componentMap`, `overlapMap`, `homologyEquiv_map`, `componentConnecting_enlarge`)
+- l.28–30 module docstring ends with "Moved verbatim from `Hopf/Recognition.lean` (… qualifier retarget `PeriodTorusHigherHomology.singularHomologyMap_{comp,id} -> …`)": porting history, not documentation; no reference given
+- l.109 `componentConnecting_enlarge` (enlarging `U` to `U'` does not change the `i`-component of the localised connecting map) is a natural naturality statement, general in `X`, `ι`; universe 0, `[Fintype ι] [DecidableEq ι]`
+- the file is 162 lines continuing `LocalContributions.lean`; Mathlib would merge it there
+- l.6 plain `import Mathlib` (siblings use `module`/`public import`); l.33–42 preamble residue (`set_option`, kitchen-sink `open scoped`, `universe u v`)
+suggestion: merge into `LocalContributions.lean` with docstrings and delete the "moved verbatim" paragraph.
+
+## Lib/AlgebraicTopology/SingularHomology/LocalDegree.lean  (47 declarations, 736 lines)
+verdict: C (`PassageHomology` block is a one-consumer construction; hard-coded `1/2`; project-plan residue in docstring)
+twin: Hatcher Prop 2.30 and the surrounding local-degree discussion (§2.2); Mathlib: none (no local degree); `PuncturedRadial.sphereHomotopyEquiv` twin is Hatcher Ex. 0.? (`ℝⁿ∖0 ≃ Sⁿ⁻¹`)
+findings:
+- l.404–490 `PassageHomology.cylinderPuncture`, `cylinderSlice`, `clampTime`, `puncturedPassageTrace` (with hypothesis `hcross : ∀ t ∈ Icc 0 1, ∀ v, H (t, v) ∈ S ↔ t = τ ∧ v = u`): a "passage trace" through a set hit exactly once — this is the project's crossing argument packaged as a def; no textbook counterpart; `clampTime` is `Set.projIcc 0 1`
+- l.648–656 `LocalDegree.BoundaryData.remainder_bound` uses the constant `(1/2) * ‖L x‖`; the textbook estimate is "any `c < 1`"; the constant belongs in a field or `variable`
+- l.90–152 `twoPunctureSet`, `homology_ext_of_ambient_vanishing`, `two_puncture_homology_ext`: generic MV facts for `X ∖ {a, b}`; fine but namespace `PassageHomology` hides them
+- l.318 `radial_sphere_homology_relation : map outer = map inner + map link` in `H_n(E ∖ {0, b})` is the textbook local relation (Hatcher's `S^n → ⋁ S^n` decomposition), good, though stated for a fixed second puncture `b` rather than a finite set of punctures as in Prop 2.30
+- l.29–31 module docstring: "The radial-cylinder chart family that needs `PartialChart` … stays in `Hopf/` (see Lib/reports/A.md, obstruction 3)" — project-plan residue
+- 0 missing docstrings; `E : Type` universe 0 in `PassageHomology`, `Type*` in `LocalDegree`/`PuncturedRadial` (inconsistent); namespaces `PassageHomology`, `PuncturedRadial`, `LocalDegree` in one file
+- l.70–85 preamble residue (`set_option`, kitchen-sink `open scoped`, `universe u v`, `local notation … SlashAction.map`)
+suggestion: move `cylinder*`/`puncturedPassageTrace` to the project, replace `clampTime` by `Set.projIcc`, and make the `1/2` in `BoundaryData` a parameter.
+
+## Lib/AlgebraicTopology/SingularHomology/LocalDegreeNeighborhoods.lean  (65 declarations, 777 lines)
+verdict: D (proof-specific: "native" charts/parametrisations, Morse-theory imports, moved verbatim from `Hopf/SphereTopology.lean`)
+twin: none found (the neighbourhood bookkeeping around Hatcher Prop 2.30 has no textbook statement)
+findings:
+- l.6–53 forty-eight `import`s including `Morse.Handle`, `Morse.SurgeryWindows`, `Morse.Cancellation`, `Morse.Reeb`, `WhitneyEmbedding`, `Whitney.BigonModel`, `Transversality.Basic` — none of which a local-degree file needs; the import list is the project's monolith
+- l.63–64 module docstring: "Moved verbatim from `Hopf/SphereTopology.lean` (base `304a0fea`); see `Lib/reports/integration-4/spheretop-moves.md`" — the file documents its own porting, not its mathematics; no reference
+- l.84, 193, 280–341, 623–716 `exists_native_boundaryData`, `NativeNeighborhood.*`, `NativeParametrization.centered_symm_self`, `NativeChartTransition.*`: "native parametrisation" is the project's chart convention; statements are `∃ L, L = fderiv (f ∘ centered x) 0 ∧ Nonempty (BoundaryData …)` — existence packaging for one downstream proof
+- l.357–528 `SeparatedNeighborhoods` (a finite family of disjoint chart balls around finitely many points with `overlap_eq`, `open_cover`): the genuinely general part, but stated with the same native charts
+- l.535–541 `SublevelDisk.contractibleSpace`, `homology_subsingleton` and l.547–716 `LinearSphereAction.sphereMap_comp/_trans/_relative/homology_relative_sign` are stray lemmas belonging to `Morse/SublevelSets` and `LinearSphereAction.lean`
+- l.745 `identity_center_mo1973_5731`; 65 of 65 declarations lack docstrings; `E F M : Type` universe 0
+- l.67–78 preamble residue (`set_option`, kitchen-sink `open scoped`, `universe u v`); plain `import Mathlib`
+suggestion: move the file under `Hopf/Proof` (or `W4W1`), keeping only `SeparatedNeighborhoods` and the four `LinearSphereAction.sphereMap_*` lemmas in `Lib` with docstrings.
+
+## Lib/AlgebraicTopology/SingularHomology/MayerVietoris.lean  (249 declarations, 2856 lines)
+verdict: C (one file for four textbook topics; the definition of singular homology itself is buried in a namespace named after a theorem; duplicates the `SingularSmallChains/Barycentric` files)
+twin: Hatcher §2.1 Prop 2.21 (small simplices / barycentric subdivision), Thm 2.20 & §2.2 (Mayer–Vietoris); Mathlib `Mathlib/AlgebraicTopology/SingularHomology/Basic.lean` (definition of singular homology), `Mathlib/Algebra/Homology/ShortComplex/ShortExact.lean` (long exact sequence)
+findings:
+- l.937 `def SingularMayerVietoris.SingularHomology (X : Type) [TopologicalSpace X] (n : ℕ)` and l.941 `singularHomologyMap` — the whole library's definition of singular homology, at line 937 of a Mayer–Vietoris file in namespace `SingularMayerVietoris`; Mathlib would put it in `SingularHomology/Basic.lean` as `SingularHomology`; every other file in the group refers to `SingularMayerVietoris.SingularHomology`
+- l.1127–1980 `affineSimplex`, `FormalChains`, `formalCone`, `formalBoundary`, `formalSubdivision`, `formalSubdivisionHomotopy`, `subdivision`, `subdivisionHomotopy`: barycentric subdivision (Hatcher Prop 2.21 proof) — the same material as `Lib/AlgebraicTopology/SingularSmallChains/Barycentric/{AffineSimplex,FormalChains,FormalSubdivision,FormalHomotopy,FormalIteration}.lean` (names `formalCone`, `formalBoundary`, `formalSubdivision` recur there); two implementations of one theorem
+- l.2219–2600 `vertexBarycenter`, `exists_lebesgue_number_two`, `meshFactor`, `formalSubdivision_mesh`: the mesh estimate (Hatcher p. 120) — a metric-geometry topic; `exists_lebesgue_number_two` is `lebesgue_number_lemma` for two opens
+- l.674–933 `homologyClassOfCycle`, `homologyBiprodEquiv`, `biprodSequence_exact_at_*`: generic `ChainComplex (ModuleCat.{0} ℤ) ℕ` biproduct facts, duplicated by `Coproduct.homologyBiproductEquiv` (l.388 there)
+- l.2811–2826 `exact_at_intersection/_pair/_ambient` state the long exact sequence as three `Function.Exact` statements rather than as a `ShortComplex`/`HomologicalComplex` exactness object; fine for a textbook, not Mathlib style
+- 0 missing docstrings; module docstring accurate and well-referenced; `X : Type` universe 0 (100 occurrences) mixed with `Type*` (80) in the affine part
+- l.80–95 preamble residue (`set_option`, kitchen-sink `open scoped`, `universe u v`, `local infixr " ≫ₚ "`, `local notation … SlashAction.map`)
+- pattern clear by l.1200; l.1200–2700 sampled by statement names only
+suggestion: extract `SingularHomology`/`singularHomologyMap` into a `Basic.lean` in namespace `SingularHomology`, and replace l.1127–2600 by the `SingularSmallChains/Barycentric` development so the small-simplices theorem is proved once.
+
+## Lib/AlgebraicTopology/SingularHomology/ModuleHomology.lean  (20 declarations, 330 lines)
+verdict: C (`ModuleCat.{0} ℤ` where the argument is over any ring and universe; docstring describes another file)
+twin: Hatcher §2.1 (cycles/boundaries); Mathlib `Mathlib/Algebra/Homology/ShortComplex/ModuleCat.lean` (`ShortComplex.moduleCatHomologyIso`, `ModuleCat.homologyπ`), `Mathlib/Algebra/Homology/QuasiIso.lean` (`quasiIsoAt_iff_isIso_homologyMap`)
+findings:
+- l.14–42 the docstring's first half (`FirstHurewicz.ChainHomology.shortCycleClass`, `ShortCycle`, `ShortOpchains`, `shortHomologyToChainClass`, `homologyDesc`, `homologyToChainClass_cycleClass`, `chainClass_eq_iff`, `boundaries1_le_ker`) names declarations that are not in this file (they are `SingularChains.ChainHomology.*` in `Chains.lean`; the namespace `FirstHurewicz.ChainHomology` does not exist)
+- l.85–320 every statement is for `K L : ChainComplex (ModuleCat.{0} ℤ) ℕ`; `Cycle`, `cycleClass`, `mapCycles`, `homologyMap_cycleClass`, `homologyMap_surjective_of_cycle_lifting`, `quasiIso_of_cycle_boundary_lifting` hold verbatim for `ModuleCat.{v} R` and any `ComplexShape`; Mathlib has `HomologicalComplex.cycles`, `homologyπ`, `ModuleCat.cyclesMk` for this
+- namespace `SingularMayerVietoris.ModuleHomology` for a file with no topology; Mathlib name would be `HomologicalComplex.ModuleCat.*`
+- l.85 `Cycle` is `LinearMap.ker (K.d n (n-1))` as a subtype with a hand-made `Module` instance (l.91) — `Submodule` would give the structure for free
+- 0 missing docstrings
+- l.64–79 preamble residue (`set_option`, kitchen-sink `open scoped`, `universe u v`, `local notation … SlashAction.map`)
+suggestion: generalise to `ChainComplex (ModuleCat.{v} R) ℕ`, rename to `HomologicalComplex.ModuleCat.*`, and rewrite the docstring to the declarations actually present.
+
+## Lib/AlgebraicTopology/SingularHomology/Naturality.lean  (48 declarations, 775 lines)
+verdict: C (two parallel proofs of the same naturality theorem, labelled by the project blocks they came from)
+twin: Hatcher §2.2 (naturality of the Mayer–Vietoris sequence, p. 150); Mathlib `Mathlib/Algebra/Homology/ShortComplex/ShortExact.lean` (naturality of `δ` for a morphism of short exact sequences) — the abstract half exists
+findings:
+- l.20–23 docstring: "`CoverNaturality.connecting_naturality_apply`-family (SphereTopology block) and `SingularMayerVietoris.connectingHomomorphism_naturality_apply` (CuspFilling block)" — the file keeps both origins' versions: `CoverNaturality.smallMap`/`chainSequenceMap`/`connecting_naturality_apply` (l.116–277) and `SingularMayerVietoris.smallMapOfMapsTo`/`chainSequenceMapOfMapsTo`/`connectingHomomorphism_naturality_apply` (l.568–766) prove the same statement with the same hypotheses `MapsTo f U U'`, `MapsTo f V V'`
+- l.292–414 `intersectionSwap`, `chainSequenceSwap`, `connecting_swap` (swapping `U`, `V` negates `δ`) is a genuine textbook remark and the one non-duplicated result; l.451–459 `overlapCoordinateMap`, `normalized_connecting_naturality` with extra coordinate homeomorphisms `S T` are the project's chart-transport form
+- l.12 `public import Lib.Topology.OnePointCollapse` — nothing here mentions one-point collapses
+- 0 missing docstrings; `X Y : Type` universe 0; namespace `CoverNaturality` is not a mathematical object
+- l.51–66 preamble residue (`set_option`, kitchen-sink `open scoped`, `universe u v`, `local notation … SlashAction.map`)
+suggestion: delete one of the two naturality developments (keep the `SingularMayerVietoris.*` one) and derive it from Mathlib's `ShortComplex.ShortExact` δ-naturality applied to `chainSequenceMap`.
+
+## Lib/AlgebraicTopology/SingularHomology/OnePointCover.lean  (48 declarations, 515 lines)
+verdict: D (a grab-bag moved verbatim from `Hopf/SphereTopology.lean`; embedded-cell attachment, disk isotopies, sphere point transports and chart Jacobian signs in one file with the Morse import monolith)
+twin: none found (pieces: Hatcher §2.2 cellular attachment MV; `isPathConnected_sphere`-style transitivity of `SO(n+1)` on `Sⁿ` for `positiveTransport`)
+findings:
+- l.6–53 forty-eight imports (`Morse.SurgeryWindows`, `Morse.Cancellation`, `Whitney.BigonModel`, …), l.65–66 docstring "Moved verbatim from `Hopf/SphereTopology.lean` (base `304a0fea`); see `Lib/reports/integration-4/spheretop-moves.md`"
+- l.82–140 `EmbeddedCellAttachment.oldHomologyEquiv`, `coverRight_formula`; l.152–184 `DiskShrinking.exists_embedded_disk_isotopy*`; l.201–265 `DiskOnePointCollapse.*`, `OnePointCover.oldPatch/finitePatch/overlapRadius := …` (an ad-hoc numeric radius); l.269 `SphereNormalCoordinates.normalDerivative_smul_isInvertible`; l.278–283 `CoverLocalContributions.localMap/connecting_sum`; l.302–501 `SpherePoint.*` (positive transport of sphere points, chart transition derivatives, `instLocal2`, `instLocal3`, `referencePoint`, `referenceNeighborhood`) — seven namespaces, no common theorem
+- l.481 `sign_factor_mo1973_5719 {a b c : ℝ} (hb : b ≠ 0)`: an arithmetic lemma with a Mathoverflow-numbered name; l.488–492 `instLocal2`, `instLocal3` are theorems named like instances
+- 48 of 48 declarations lack docstrings; plain `import Mathlib`; l.68–79 preamble residue
+suggestion: move the file under `Hopf/Proof`; if anything is kept, `SpherePoint.positiveTransport` (l.332–416: `SO(n+2)` acts transitively on `S^{n+1}` by maps of positive determinant) as a standalone documented lemma.
+
+## Lib/AlgebraicTopology/SingularHomology/PathClass.lean  (58 declarations, 476 lines)
+verdict: B (docs/imports only: truncated module docstring, ten unused imports)
+twin: Hatcher proof of Thm 2A.1 (paths as 1-chains, `[f·g] = [f] + [g]`, the Hurewicz map `π₁ → H₁`); Mathlib: none (no Hurewicz)
+findings:
+- l.19–23 module docstring begins mid-sentence ("  its homotopy invariance, additivity under concatenation, and the induced class of loops …"); the first line describing `pathClass` is missing; no "Main results" list
+- l.8–19 imports `CircleProduct`, `Coproduct`, `Sphere`, `SphereHomology`, `Sum`, `Suspension`, `Topology.Homotopy.Suspension` for a file about paths as 1-chains; only `Chains` and `ModuleHomology` are needed
+- l.50–172 `AbelianPi1`, `loopClass`, `basedLoopClass*` use `X : Type*`; l.182–472 `pathClass`, `loopHomologyClass`, `hurewiczMap`, `edgeLoopCochain` use `X : Type` — inconsistent universes within one file, forced by `SingularMayerVietoris.SingularHomology`
+- l.278–299 `hurewiczFunction`, `hurewiczPi1`, `hurewiczMap : AbelianPi1 X b →ₗ[ℤ] SingularH1 X` are the textbook objects with textbook names; l.433 `abelianPi1EquivOfPi1` is a transport convenience
+- 0 missing docstrings
+- l.30–45 preamble residue (`set_option`, kitchen-sink `open scoped`, `universe u v`, `local infixr " ≫ₚ "`, `local notation … SlashAction.map`)
+suggestion: restore the first sentence of the module docstring (`pathClass : Path x y → Chains X 1`) and cut the imports to `Chains`/`ModuleHomology`.
+
+## Lib/AlgebraicTopology/SingularHomology/Pontryagin.lean  (33 declarations, 434 lines)
+verdict: C (project namespace; left degree fixed to 1; project-plan vocabulary "J-C1/J-C2/J-C3" in the docstring)
+twin: Hatcher §3.C (Pontryagin product on an H-space); Mathlib: none
+findings:
+- l.43–429 every declaration is in `PeriodTorusHigherHomologyPontryagin`; Mathlib name: `SingularHomology.PontryaginProduct` or `TopologicalAddGroup.pontryaginProduct`
+- l.90 `product G n : H₁(G) →ₗ[ℤ] Hₙ(G) →ₗ[ℤ] H_{n+1}(G)` — the textbook product is `H_p ⊗ H_q → H_{p+q}` on any H-space (not only a topological abelian group); the degree-1 restriction is inherited from `CrossProduct.lean`; `product11`, `product12`, `tripleProduct` (l.113–169) are the degree slices the project needs
+- l.27–34 docstring "This file carries the coherence-free core (boundary J-C1) … J-C2/J-C3 material and do not live here" — project-lane vocabulary as documentation
+- l.176–231 `multilinearOfBilinear`, `alternatingOfBilinear`, `multilinearOfTrilinear`, `alternatingOfTrilinear`, `skewBilinear_diagonal_zero`: generic `AlternatingMap` constructions over `ℤ` for `Fin 2`/`Fin 3`; Mathlib has `LinearMap.compMultilinearMap`, `AlternatingMap.mk`, `MultilinearMap.mkPiAlgebraFin`-style API; `homologyAlternatingTwo/Three`, `homologyWedgeTwo/Three` (l.339–429) are the `⋀²H₁ → H₂`, `⋀³H₁ → H₃` maps and are the interesting result
+- 33 of 33 declarations lack docstrings; `G : Type` universe 0; preamble is clean (no residue) — the only file in the group without it
+suggestion: rename the namespace to `SingularHomology.Pontryagin`, document all 33 declarations, and drop the "J-C1" sentences.
+
+## Lib/AlgebraicTopology/SingularHomology/Sphere.lean  (37 declarations, 345 lines)
+verdict: B (docs/names: namespace and docstring do not match the content; otherwise generic sphere geometry)
+twin: Hatcher §2.2 (`Sⁿ` as two hemispheres / suspension of `Sⁿ⁻¹`); Mathlib `Mathlib/Analysis/InnerProductSpace/EuclideanDist.lean`, `Metric.sphere`, `EuclideanSpace`, `isPathConnected_sphere` (Analysis/Normed/Module/Connected)
+findings:
+- l.29–30, 38 docstring promises `unitSphere_pathConnectedSpace` ("for `n ≥ 1`") and "stereographic presentations"; neither exists in this file (`unitSphere_pathConnectedSpace` is an instance in `Suspension.lean` l.130; no stereographic declaration anywhere) — stale
+- l.62 `SphereHomology.UnitSphere n := Metric.sphere (0 : EuclideanSpace ℝ (Fin (n+1))) 1`: a point-set/geometry file in namespace `SphereHomology`; Mathlib would say `EuclideanSpace.unitSphere` or use `Metric.sphere` directly
+- l.85–315 `Latitude.height/radius/point/parameter/tail`, `point_surjective`: the latitude decomposition `Sⁿ⁺¹ ∖ {poles} ≅ (0,1) × Sⁿ` — the standard suspension chart; `height t = 2t − 1` is an ad-hoc parametrisation constant that belongs in a docstring
+- 0 missing docstrings; `n : ℕ` explicit everywhere (fine)
+- l.42–57 preamble residue (`set_option`, kitchen-sink `open scoped`, `universe u v`, `local notation … SlashAction.map`)
+suggestion: delete the stale docstring promises (or add `unitSphere_pathConnectedSpace` via Mathlib's `isPathConnected_sphere`) and rename the namespace to `EuclideanSpace.Sphere`/`UnitSphere`.
+
+## Lib/AlgebraicTopology/SingularHomology/SphereHomology.lean  (22 declarations, 264 lines)
+verdict: B (docs/names: generic `H₀`/MV helpers in the `SphereHomology` namespace; porting phrase in docstring)
+twin: Hatcher Cor 2.14 (`H_k(Sⁿ)`); Mathlib: none (no computation of `H_*(Sⁿ)`)
+findings:
+- l.137, 246 `unitSphereTopClass (n) : H_{n+1}(S^{n+1})` and `unitSphere_homology_subsingleton (n k) (hk : k ≠ 0) (hkn : k ≠ n+1)` are the textbook statements; the sphere is indexed as `UnitSphere (n+1)` so `S⁰` is excluded (fine, but say so)
+- l.144–181 `singularHomologyMap_zero_injective/_surjective/_bijective`, `leftHomologyMap_zero_injective/_ker`: general facts about `H₀` of path-connected spaces and MV in degree 0, unrelated to spheres; belong in `HomotopyInvariance.lean`/`MayerVietoris.lean`
+- l.189–223 `suspension_middleBand_pathConnectedSpace`, `suspensionHomologyOneEquivKernel`, `suspension_homology_one_subsingleton`: suspension results (`H₁(SX) = 0` for path-connected `X`) placed here instead of `Suspension.lean`
+- l.26–27 docstring "identifying the two circle models used in the sources" — porting vocabulary
+- 0 missing docstrings; coefficients `ℤ`, `X : Type` universe 0
+- l.57–72 preamble residue (`set_option`, kitchen-sink `open scoped`, `universe u v`, `local notation … SlashAction.map`)
+suggestion: move the `H₀` and suspension helpers to their topic files and leave `unitSphereTopClass`/`unitSphere_homology_subsingleton` with the circle dictionary.
+
+## Lib/AlgebraicTopology/SingularHomology/Sum.lean  (28 declarations, 443 lines)
+verdict: B (docs/names only; overlaps with `Coproduct.lean`)
+twin: Hatcher Prop 2.6 (binary case); Mathlib `Mathlib/AlgebraicTopology/SingularHomology/Basic.lean` has no coproduct lemma; `Mathlib/Algebra/Homology/Additive.lean` for biproducts of complexes
+findings:
+- l.321, 334 `sumChainComplexIso : C(X ⊕ Y) ≅ C(X) ⊞ C(Y)`, `sumHomologyEquiv : H_n(X ⊕ Y) ≃ₗ[ℤ] H_n(X) × H_n(Y)` — the textbook statement; the same theorem for finite `ι` is `Coproduct.sigmaHomologyEquiv`, and neither file derives the other (binary should be `ι = Bool` or the finite case should be induction on the binary one)
+- l.74–84 `sumInlMap`, `sumInrMap`, `sumElimMap` re-package `ContinuousMap.inl`, `ContinuousMap.inr`, `ContinuousMap.sumElim`-style Mathlib API (which exists as `ContinuousMap.inl`/`inr` and `ContinuousMap.sum_elim`?) — a Mathlib reviewer would ask for those
+- l.381–437 `sumElim_homology_inl`, `sumHomologyEquiv_fold`: fold/elim computations used by the circle-product splitting; fine
+- 0 missing docstrings; module docstring accurate; `X Y : Type` universe 0
+- l.54–69 preamble residue (`set_option`, kitchen-sink `open scoped`, `universe u v`, `local notation … SlashAction.map`)
+suggestion: derive `sumHomologyEquiv` from `Coproduct.sigmaHomologyEquiv` (or vice versa) so Hatcher 2.6 is proved once, and use Mathlib's `ContinuousMap.inl/inr`.
+
+## Lib/AlgebraicTopology/SingularHomology/Suspension.lean  (33 declarations, 439 lines)
+verdict: C (three topics in one file; generic split-exact algebra and `ℂ ≅ ℝ²` re-proved; namespaces disagree with content)
+twin: Hatcher §2.1 (suspension isomorphism `H̃_n(SX) ≅ H̃_{n-1}(X)`, stated after Thm 2.13 / via MV Thm 2.20), Cor 2.14; Mathlib: none for suspension; `AddMonoidHom.toIntLinearMap`, `Complex.equivRealProdLm`/`Complex.orthonormalBasisOneI` for the algebra
+findings:
+- l.138–300 `SingularHomology.splitExactPair_injective/_surjective`, `splitExactEquiv`, `pairSumMap`, `negativeFirstMap`, `circleSplitExactEquiv`: pure `AddCommGroup` algebra (a split short exact triangle) in the `SingularHomology` namespace; l.215 `intLinearMapOfAddHom` duplicates Mathlib's `AddMonoidHom.toIntLinearMap`
+- l.85–130 `SphereHomology.suspensionSphereMap`, `suspensionSphereHomeomorph : Suspension (UnitSphere n) ≃ₜ UnitSphere (n+1)`, `unitSphere_pathConnectedSpace` (the instance `Sphere.lean`'s docstring promises) — sphere geometry, not suspension homology
+- l.313–395 `Suspension.contractibleCoverConnecting_injective`, `contractibleCoverHomologyHigherEquiv`, `contractibleCoverHomologyOneEquivKernel`, `SphereHomology.suspensionHomologyHigherEquiv (X) [Nonempty X] : H_{n+2}(ΣX) ≃ H_{n+1}(X)` — the textbook theorem, stated generally; the same result is split across namespaces `Suspension` and `SphereHomology`
+- l.418–435 `euclideanPlaneComplexIsometry : EuclideanSpace ℝ (Fin 2) ≃ₗᵢ[ℝ] ℂ`, `sphereCircleHomeomorph`: Mathlib has `Complex.orthonormalBasisOneI.repr`/`Complex.isometryOfOrthonormal`; re-derived here
+- 0 missing docstrings; docstring cites Hatcher Cor 2.14 "engine"; `X : Type` universe 0
+- l.65–80 preamble residue (`set_option`, kitchen-sink `open scoped`, `universe u v`, `local notation … SlashAction.map`)
+suggestion: keep only the suspension isomorphism (in one namespace `Suspension`), move the split-exact algebra to `Algebra/` (using `AddMonoidHom.toIntLinearMap`) and the sphere homeomorphisms to `Sphere.lean`.
+
+## Lib/AlgebraicTopology/SingularHomology/SuspensionCover.lean  (1 declarations, 52 lines)
+verdict: B (fine as a glue file; namespace and the hard-coded band constants are the only issues)
+twin: Hatcher Thm 1.20 (van Kampen, two-open cover of `ΣX`); Mathlib `Mathlib/AlgebraicTopology/FundamentalGroupoid/…` (no van Kampen)
+findings:
+- l.25 `SphereHomology.suspensionConeCover (X) [PathConnectedSpace X] (x : X) : FundamentalGroup.VanKampen.TwoOpenCover (Suspension X)` — a `FundamentalGroup` object in namespace `SphereHomology`; should be `Suspension.coneCover`
+- l.39–47 `base := Suspension.mk ⟨1/2, _⟩ x`, `baseU : (1/2 : ℝ) < 3/4`, `baseV : (1/4 : ℝ) < 1/2` — the `middleBand` constants leak into the proof; a `Suspension.mem_middleBand` lemma would hide them
+- l.13–15 docstring "not a Lean `module` because `FundamentalGroup/VanKampen.lean` is not one yet" — build note, acceptable but temporary
+- 0 missing docstrings; docstring names the use (van Kampen and MV on suspensions); `X : Type` universe 0; preamble clean
+suggestion: rename to `Suspension.coneCover` and prove `baseU`/`baseV` through a `middleBand` membership lemma.
+
+## Lib/AlgebraicTopology/SingularHomology/Torus.lean  (50 declarations, 411 lines)
+verdict: C (project namespace; no docstrings; the mathematics is general and textbook)
+twin: Hatcher §3.B Künneth applied to `(S¹)^r` (Example 3B.?; also §2.2 Example 2.? for `T²`); Mathlib: none
+findings:
+- l.45–409 all declarations in `PeriodTorusHigherHomology` (`ProductTorus r := Fin r → AddCircle 1`, `productTorusHomologyEquiv : H_n((S¹)^r) ≃ₗ[ℤ] ℤ^{C(r,n)}`, `productTorusTopClass`, `torusMatrixMap`, `coordinateCircleMap`) — Mathlib name: `SingularHomology.Torus` / `AddCircle.torusHomologyEquiv`
+- l.77–169 `binomialModule r n := Fin (r.choose n) → ℤ`, `binomialModuleSuccEquiv` (Pascal's rule as a `Fin`-sum equiv), `binomialCoordinateBasis`: combinatorial bookkeeping; `finSumFinEquiv`/`Nat.choose_succ_succ` give it in Mathlib in two lines
+- l.292–409 `torusMatrixLinearMap`, `torusMatrixMap (A : Matrix (Fin m) (Fin n) ℤ) : C(ProductTorus n, ProductTorus m)`, `_one`, `_mul`, `_add`: the functor `Matrix → ContinuousMap` of tori — a general and useful API, unrelated to the homology recursion; own file
+- 50 of 50 declarations lack docstrings; module docstring good (reference "Hatcher §2.2 (Mayer–Vietoris, product homology)" should be §3.B Künneth); preamble clean
+suggestion: rename the namespace to `SingularHomology.Torus`, add docstrings, and split the `torusMatrixMap` API into `Topology/Instances/AddCircle/TorusMap`.
+
+## Lib/AlgebraicTopology/SingularHomology/TorusCoordinates.lean  (54 declarations, 529 lines)
+verdict: C (project namespace kept on purpose; porting note as docstring; no docstrings)
+twin: Hatcher §3.B (the basis of `H_n(T^r)` by coordinate sub-tori); Mathlib: none
+findings:
+- l.28–30 module docstring: "The declarations keep the `PeriodTorusHigherHomology` namespace of the source; the only changes are qualifier retargets to the `Lib` spellings" — porting note; no reference
+- l.106–130 `rightTranslation`, `rightTranslationHomotopyAlong`, `rightTranslation_singularHomologyMap [PathConnectedSpace G]`: "translations of a path-connected topological group act trivially on homology" is a general fact (Hatcher §3.C context) placed in a torus file, with `G : Type*` vs `G : Type` in adjacent statements
+- l.192–428 `coordinateTorusMap`, `coordinateTorusMatrix`, `coordinateTorusClass`, `coordinateTorusBasis (r n) : Basis (Fin (r.choose n)) ℤ (H_n(T^r))` — the textbook basis, well stated; l.434–475 `*Along` versions transport along an arbitrary homeomorphism `X ≃ₜ ProductTorus r` — the project's consumer form (fine as API)
+- l.521 `positiveCircleCross_pointClass` is a `CirclePaths` lemma parked at the end of this file
+- 54 of 54 declarations lack docstrings; plain `import Mathlib`; l.35–44 preamble residue (`set_option`, kitchen-sink `open scoped`, `universe u v`)
+suggestion: rename into `SingularHomology.Torus`, document, and move `rightTranslation*` to a `TopologicalGroup` homology file.
+
+## Lib/AlgebraicTopology/SingularSmallChains/Barycentric.lean  (4 declarations, 67 lines)
+verdict: A (textbook-ready: the small-simplices theorem for an arbitrary open cover, stated on Mathlib's singular complex)
+twin: Hatcher Prop 2.21 (`C^𝒰_*(X) ↪ C_*(X)` is a chain-homotopy equivalence); Mathlib `Mathlib/AlgebraicTopology/SingularHomology/Basic.lean` (`AlgebraicTopology.SingularCochains.chains X`, used as the target)
+findings:
+- l.48–62 `inclusion_quasiIso (U : I → Set X) (hU) (hcover) : QuasiIso (inclusion U)` and `smallChainHomotopyEquiv : HomotopyEquiv (complex U) (chains X)` for any index type `I` — the general statement; `X : Type` universe 0 is the only narrowing (Mathlib's `TopCat` is universe-polymorphic)
+- l.36 `subdivisionData` packages the four inputs of the abstract `SubdivisionCriterion`; a clean separation of the combinatorial and the topological halves
+- l.63 `smallChainHomotopyEquiv_hom` is the one declaration without a docstring (a `@[simp]` rfl lemma)
+- l.12–19 module docstring names the theorem but gives no reference (Hatcher 2.21 / Bredon IV.17); the words "actual", "literal", "native" (4 uses) are the project's idiom, not mathematical
+- preamble is Mathlib-style: targeted imports, `set_option warningAsError`, `autoImplicit false`, one namespace `TopCat.SingularSmallChains.Barycentric`
+suggestion: add the Hatcher 2.21 reference and drop "actual/literal/native" from the docstrings.
+
+## Lib/AlgebraicTopology/SingularSmallChains/Barycentric/AffineChains.lean  (13 declarations, 132 lines)
+verdict: A (generic, Mathlib-style; docstring only)
+twin: Hatcher §2.1 proof of Prop 2.21 step (3) (affine chains `LC_n(Δᵖ)` evaluated in `C_n(Δᵖ)`); Mathlib `Mathlib/AlgebraicTopology/SingularHomology/Basic.lean` (`singularComplex`, `simplexChain`)
+findings:
+- l.36–44 `affineChainMap (p n) : FormalChains (Simplex p) (n+1) →ₗ[ℤ] Chains (Simplex p) n` with `affineChainMap_boundary` (evaluation is a chain map) and l.125 `formalSubdivision_affine_natural` — the textbook facts, general in `p n`
+- l.33 `simplexCenter` chooses the barycenter as `FormalCenter`; l.83 `faceVertices`, l.106 `simplexFace_stdVertices` relate to Mathlib's face maps
+- 3 of 13 lack docstrings (`affineChainMap_simplex`, `affineSimplex_faceVertices` simp lemmas; `simplexFace_stdVertices`)
+- "actual" appears 11 times in 132 lines ("the actual singular differential", "actual barycenter selector") — project idiom
+- no reference in the module docstring; preamble clean
+suggestion: strike "actual" throughout and cite Hatcher Prop 2.21.
+
+## Lib/AlgebraicTopology/SingularSmallChains/Barycentric/AffineSimplex.lean  (15 declarations, 144 lines)
+verdict: A (generic affine simplices on `stdSimplex`; docstring only)
+twin: Hatcher §2.1 (linear/affine singular simplices `[v₀,…,vₙ]`, barycenter `b = Σ vᵢ/(n+1)`); Mathlib `Mathlib/Analysis/Convex/Combination.lean`, `stdSimplex`, `Finset.centroid`
+findings:
+- l.35 `affineSimplex (v : Fin (n+1) → Simplex p) : C(Simplex n, Simplex p)`, l.74 `affineSimplex_face`, l.85 `affineSimplex_comp`, l.117 `simplexBarycenter` — the textbook definitions with Mathlib-style names
+- l.117 `simplexBarycenter v := affineSimplex v (barycenter of Δⁿ)`; Mathlib's `Finset.centroid ℝ univ v` is the same point and would connect to the affine-geometry library
+- 6 of 15 lack docstrings (five `@[simp]`/`_coe` lemmas and `simplexBarycenter_mem_convexHull`)
+- "actual" 8 times; no reference; imports are targeted (`Mathlib.Analysis.Convex.Combination`, `Algebra.BigOperators.Fin`)
+suggestion: relate `simplexBarycenter` to `Finset.centroid` and add the six docstrings.
+
+## Lib/AlgebraicTopology/SingularSmallChains/Barycentric/ArbitraryCoverMesh.lean  (6 declarations, 147 lines)
+verdict: A (the Lebesgue-number step of Prop 2.21 for an arbitrary cover, universe-polymorphic)
+twin: Hatcher §2.1 proof of Prop 2.21 step (4) (Lebesgue number of `σ⁻¹𝒰` on `Δᵖ`); Mathlib `lebesgue_number_lemma_of_metric` (used at l.54)
+findings:
+- l.44–78 `exists_lebesgue_number_pairwise`, `exists_lebesgue_number (σ : C(K, X)) : ∃ δ > 0, ∀ s, diam s ≤ δ → ∃ i, σ '' s ⊆ U i` for any compact metric `K` and `ι : Sort*` — more general than needed and a reasonable Mathlib lemma (`ContinuousMap.exists_lebesgue_number_preimage`-style name would fit better)
+- l.88–126 `simplex_lebesgue_number_subsimplices`, `simplex_formalSubdivision_eventually_small`, `finite_family_formalSubdivision_eventually_small (s : Finset C(Simplex p, X))` — the "eventually every iterated subdivision is 𝒰-small" statement; covers `U : ι → Set X` need not be finite, as the docstring says
+- 0 missing docstrings; `X : Type*`, `K : Type*`, `ι : Sort*`; imports one file; preamble clean; "actual" 4 times; no reference
+suggestion: rename `exists_lebesgue_number` to a `ContinuousMap.`-namespaced Mathlib-style name and cite Hatcher 2.21.
+
+## Lib/AlgebraicTopology/SingularSmallChains/Barycentric/FormalChains.lean  (17 declarations, 178 lines)
+verdict: A (the augmented ordered chain complex of a vertex set, fully generic)
+twin: Hatcher §2.1 (`LC_n(Y)` linear chains, cone operator `b : LC_n → LC_{n+1}` with `∂b + b∂ = 1`); Mathlib `Mathlib/AlgebraicTopology/AlternatingFaceMapComplex.lean` (for simplicial objects; not the ordered-tuple version)
+findings:
+- l.35 `FormalChains V n := (Fin n → V) →₀ ℤ` (augmented: degree `n` = `n` vertices), l.70 `formalCone`, l.78 `formalBoundary`, l.102 `formalBoundary_cone : ∂(b c) = c − b(∂c)`, l.150 `formalBoundary_boundary` — Hatcher's `LC` with the augmentation handled by the index shift; a `ChainComplex` packaging is not provided but not needed
+- coefficients fixed to `ℤ` (16 occurrences); `V W M : Type*` universe-polymorphic; the construction works over any ring `R` — a `variable (R)` would cost nothing
+- 5 of 17 lack docstrings, all `@[simp]` computation lemmas
+- imports are three specific Mathlib files (`Finsupp.LinearCombination`, `BigOperators.Fin`, `Fin.Tuple.Basic`); preamble clean; no reference
+suggestion: generalise the coefficient ring to `R` and cite Hatcher §2.1 (`LC_n`, cone operator).
+
+## Lib/AlgebraicTopology/SingularSmallChains/Barycentric/FormalHomotopy.lean  (6 declarations, 135 lines)
+verdict: A (Hatcher's `T : LC_n → LC_{n+1}` with `∂T + T∂ = 1 − S`, stated for any center choice)
+twin: Hatcher §2.1 proof of Prop 2.21 step (2) (the operator `T`, defined inductively by `Tσ = b_σ(σ − T∂σ)`); Mathlib: none
+findings:
+- l.31 `formalSubdivisionHomotopy (center) : (n) → FormalChains V n →ₗ[ℤ] FormalChains V (n+1)` by recursion coning to `v 0`; l.58 `formalSubdivisionHomotopy_boundary : ∂ H + H ∂ = 1 − sd` — exactly Hatcher's formula; l.112 `formalMap_subdivisionHomotopy` naturality under center-preserving vertex maps
+- the cone point is `v 0` (first vertex) rather than Hatcher's barycenter `b_σ`; both work and the docstring says so ("coning to the first vertex")
+- 2 of 6 lack docstrings (`_zero`, `_simplex_succ` simp lemmas); no reference; preamble clean; imports one file
+suggestion: cite Hatcher Prop 2.21 step (2) and note the first-vertex convention against the textbook's barycenter.
+
+## Lib/AlgebraicTopology/SingularSmallChains/Barycentric/FormalIteration.lean  (11 declarations, 146 lines)
+verdict: A (iterated subdivision and its telescoping homotopy `D_m = Σ_{i<m} T S^i`)
+twin: Hatcher §2.1 proof of Prop 2.21 step (4) (`D_m = Σ_{0≤i<m} T S^i`, `∂D_m + D_m∂ = 1 − S^m`); Mathlib: none
+findings:
+- l.58 `formalSubdivisionIteratedHomotopy (center) (k n)` as `Σ_{i<k} H ∘ sd^[i]`, l.103 `formalSubdivisionIteratedHomotopy_boundary : ∂ D_k + D_k ∂ = 1 − sd^[k]`, l.35 `formalBoundary_subdivision_iterate` — the textbook statements
+- 5 of 11 lack docstrings (`_apply`, `_zero`, `_succ`, two `_degree_zero` lemmas)
+- imports `Mathlib.Algebra.Module.LinearMap.End`, `Mathlib.Tactic.Abel` and one Lib file; preamble clean; no reference; no project idiom
+suggestion: add the five docstrings and the Hatcher reference.
+
+## Lib/AlgebraicTopology/SingularSmallChains/Barycentric/FormalSubdivision.lean  (6 declarations, 96 lines)
+verdict: A (Hatcher's `S : LC_n → LC_n`, `Sσ = b_σ(S∂σ)`, for any center selector)
+twin: Hatcher §2.1 proof of Prop 2.21 step (2) (subdivision operator `S`); Mathlib: none
+findings:
+- l.31 `FormalCenter V := ∀ n, (Fin (n+1) → V) → V` abstracts the barycenter, l.34 `formalSubdivision (center) : (n) → FormalChains V n →ₗ[ℤ] FormalChains V n` by cone-of-subdivided-boundary, l.52 `formalBoundary_subdivision` (chain map), l.78 `formalMap_subdivision` (naturality for center-preserving maps) — the textbook construction, slightly more general
+- 2 of 6 lack docstrings (`_zero`, `_simplex_succ` simp lemmas); no reference; preamble clean
+suggestion: cite Hatcher Prop 2.21 step (2); otherwise ready.
+
+## Lib/AlgebraicTopology/SingularSmallChains/Barycentric/FormalSupport.lean  (25 declarations, 264 lines)
+verdict: A (vertex-support submodule of formal chains; the carrier-preservation lemmas Hatcher states in words)
+twin: Hatcher §2.1 proof of Prop 2.21 ("`S` and `T` take chains in `𝒰`-small simplices to `𝒰`-small simplices", the support bookkeeping); Mathlib `Finsupp.supported` (`Mathlib/LinearAlgebra/Finsupp/Supported.lean`, imported)
+findings:
+- l.37 `formalChainsSupported (S : Set V) (n) : Submodule ℤ (FormalChains V n)` is `Finsupp.supported ℤ ℤ {v | ∀ i, v i ∈ S}` in disguise; l.108–254 `formalBoundary_mem_supported`, `formalCone_mem_supported`, `formalSubdivision_mem_supported`, `formalSubdivisionHomotopy_mem_supported`, `formalSubdivisionIteratedHomotopy_mem_supported` — the needed closure lemmas, general in `V`, `S`, `center`
+- l.188–219 `formalCone_support_exists`, `formalLift_support_exists`, `formalLinearMap_support_exists`, `formalBoundary_support_exists`: existence-of-finite-support lemmas (chains are finitely supported) — fine
+- 8 of 25 lack docstrings (`mem_…_iff`, `_mono`, `_univ`, `_inter`, `formalSimplex_mem_supported*`, `formalMap_mem_supported_image/_of_preimage`)
+- no reference; preamble clean; imports targeted; no project idiom
+suggestion: define `formalChainsSupported` as `Finsupp.supported` on the vertex predicate so Mathlib's `supported_mono`/`supported_univ` give the first six lemmas.
+
+# done 34 files

@@ -1,0 +1,21 @@
+{
+ "before": "/home/goblin/.claude/jobs/06995e68/tmp/facades/dump_base.jsonl",
+ "after": "/home/goblin/.claude/jobs/06995e68/tmp/facades/dump_final.jsonl",
+ "prefix": "",
+ "constants": [
+  39476,
+  39476
+ ],
+ "lost": [],
+ "added": [],
+ "changed_type_source": [],
+ "changed_type_proof_naming": [],
+ "changed_type_accepted": [],
+ "added_accepted": [],
+ "accept_without_effect": [],
+ "changed_type_all": [],
+ "moves": [],
+ "ambiguous": [],
+ "auxiliary_moved": 1,
+ "verdict": "PASS"
+}

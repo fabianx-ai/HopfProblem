@@ -1,0 +1,269 @@
+{
+ "before": "/home/goblin/.claude/jobs/06995e68/tmp/wave2/dump_head.jsonl",
+ "after": "/home/goblin/.claude/jobs/06995e68/tmp/wave2/cubic/dump_after.jsonl",
+ "prefix": "",
+ "constants": [
+  38301,
+  38304
+ ],
+ "lost": [
+  [
+   "MorseCancellation.endpointCoordinate.eq_1",
+   1137247376,
+   {
+    "Lib.Geometry.Manifold.Morse.Cubic": 1
+   }
+  ],
+  [
+   "MorseCancellation.endpointDomain.eq_1",
+   3810735150,
+   {
+    "Lib.Geometry.Manifold.Morse.Cubic": 1
+   }
+  ],
+  [
+   "MorseCancellation.endpointLinearField.eq_1",
+   1027510862,
+   {
+    "Lib.Geometry.Manifold.Morse.Cubic": 1
+   }
+  ],
+  [
+   "MorseCancellation.hasDerivAt_tanh._simp_1_1",
+   3288593392,
+   {
+    "Lib.Geometry.Manifold.Morse.Cubic": 1
+   }
+  ],
+  [
+   "MorseCancellation.hasDerivAt_tanh._simp_1_2",
+   4033513777,
+   {
+    "Lib.Geometry.Manifold.Morse.Cubic": 1
+   }
+  ],
+  [
+   "MorseCancellation.hasDerivAt_tanh._simp_1_3",
+   1623334871,
+   {
+    "Lib.Geometry.Manifold.Morse.Cubic": 1
+   }
+  ],
+  [
+   "MorseCancellation.hasDerivAt_tanh._simp_1_4",
+   1092673916,
+   {
+    "Lib.Geometry.Manifold.Morse.Cubic": 1
+   }
+  ],
+  [
+   "MorseCancellation.hasDerivAt_tanh._simp_1_5",
+   2195956633,
+   {
+    "Lib.Geometry.Manifold.Morse.Cubic": 1
+   }
+  ],
+  [
+   "MorseCancellation.hasDerivAt_tanh._simp_1_6",
+   1459115028,
+   {
+    "Lib.Geometry.Manifold.Morse.Cubic": 1
+   }
+  ],
+  [
+   "MorseCancellation.hasDerivAt_tanh._simp_1_7",
+   3730275133,
+   {
+    "Lib.Geometry.Manifold.Morse.Cubic": 1
+   }
+  ],
+  [
+   "MorseCancellation.splitTransverseChange.eq_1",
+   572527147,
+   {
+    "Lib.Geometry.Manifold.Morse.Cubic": 1
+   }
+  ]
+ ],
+ "added": [
+  [
+   "MorseCancellation.endpointCoordinate._proof_1",
+   1885022586,
+   {
+    "Lib.Geometry.Manifold.Morse.Cubic.EndpointChart": 1
+   }
+  ],
+  [
+   "MorseCancellation.endpointCoordinate.eq_1",
+   2986110397,
+   {
+    "Lib.Geometry.Manifold.Morse.Cubic.EndpointChart": 1
+   }
+  ],
+  [
+   "MorseCancellation.endpointDomain.eq_1",
+   439020934,
+   {
+    "Lib.Geometry.Manifold.Morse.Cubic.EndpointChart": 1
+   }
+  ],
+  [
+   "MorseCancellation.endpointLinearField._proof_1",
+   2547959801,
+   {
+    "Lib.Geometry.Manifold.Morse.Cubic.DescentField": 1
+   }
+  ],
+  [
+   "MorseCancellation.endpointLinearField.eq_1",
+   583838361,
+   {
+    "Lib.Geometry.Manifold.Morse.Cubic.SplitCoordinates": 1
+   }
+  ],
+  [
+   "MorseCancellation.selectedMorseFieldEquiv._proof_1",
+   1158307750,
+   {
+    "Lib.Geometry.Manifold.Morse.Cubic.SplitCoordinates": 1
+   }
+  ],
+  [
+   "MorseCancellation.splitTransverseChange.eq_1",
+   2591372891,
+   {
+    "Lib.Geometry.Manifold.Morse.Cubic.SplitCoordinates": 1
+   }
+  ],
+  [
+   "Real.hasDerivAt_tanh._simp_1_1",
+   3288593392,
+   {
+    "Lib.Geometry.Manifold.Morse.Cubic.Tanh": 1
+   }
+  ],
+  [
+   "Real.hasDerivAt_tanh._simp_1_2",
+   4033513777,
+   {
+    "Lib.Geometry.Manifold.Morse.Cubic.Tanh": 1
+   }
+  ],
+  [
+   "Real.hasDerivAt_tanh._simp_1_3",
+   1623334871,
+   {
+    "Lib.Geometry.Manifold.Morse.Cubic.Tanh": 1
+   }
+  ],
+  [
+   "Real.hasDerivAt_tanh._simp_1_4",
+   1092673916,
+   {
+    "Lib.Geometry.Manifold.Morse.Cubic.Tanh": 1
+   }
+  ],
+  [
+   "Real.hasDerivAt_tanh._simp_1_5",
+   2195956633,
+   {
+    "Lib.Geometry.Manifold.Morse.Cubic.Tanh": 1
+   }
+  ],
+  [
+   "Real.hasDerivAt_tanh._simp_1_6",
+   1459115028,
+   {
+    "Lib.Geometry.Manifold.Morse.Cubic.Tanh": 1
+   }
+  ],
+  [
+   "Real.hasDerivAt_tanh._simp_1_7",
+   3730275133,
+   {
+    "Lib.Geometry.Manifold.Morse.Cubic.Tanh": 1
+   }
+  ]
+ ],
+ "changed_type_source": [],
+ "changed_type_proof_naming": [],
+ "changed_type_accepted": [],
+ "added_accepted": [],
+ "accept_without_effect": [],
+ "changed_type_all": [
+  "MorseCancellation.endpointCoordinate.eq_1",
+  "MorseCancellation.endpointDomain.eq_1",
+  "MorseCancellation.endpointLinearField.eq_1",
+  "MorseCancellation.splitTransverseChange.eq_1"
+ ],
+ "moves": [
+  [
+   "Lib.Geometry.Manifold.Morse.Cubic",
+   "Lib.Geometry.Manifold.Morse.Cubic.AlignedRays",
+   14
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.Cubic",
+   "Lib.Geometry.Manifold.Morse.Cubic.AxisParameter",
+   17
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.Cubic",
+   "Lib.Geometry.Manifold.Morse.Cubic.BasinBlock",
+   15
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.Cubic",
+   "Lib.Geometry.Manifold.Morse.Cubic.CoreBasins",
+   4
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.Cubic",
+   "Lib.Geometry.Manifold.Morse.Cubic.DescentField",
+   20
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.Cubic",
+   "Lib.Geometry.Manifold.Morse.Cubic.EndpointChart",
+   11
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.Cubic",
+   "Lib.Geometry.Manifold.Morse.Cubic.LevelOrbit",
+   2
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.Cubic",
+   "Lib.Geometry.Manifold.Morse.Cubic.LocalReplacement",
+   10
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.Cubic",
+   "Lib.Geometry.Manifold.Morse.Cubic.Model",
+   13
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.Cubic",
+   "Lib.Geometry.Manifold.Morse.Cubic.SplitCoordinates",
+   24
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.Cubic",
+   "Lib.Geometry.Manifold.Morse.Cubic.SublevelFlow",
+   6
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.Cubic",
+   "Lib.Geometry.Manifold.Morse.Cubic.SurgeryWindowsExistence",
+   1
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.Cubic",
+   "Lib.Geometry.Manifold.Morse.Cubic.Tanh",
+   5
+  ]
+ ],
+ "ambiguous": [],
+ "auxiliary_moved": 42,
+ "verdict": "PASS"
+}

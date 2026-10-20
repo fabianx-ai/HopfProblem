@@ -1,0 +1,4 @@
+# no renames: the `_mo1973_` names named by the judgement packet (Subdivision l.886/899,
+# CubeChainDecomposition l.780) were already renamed at the base e669bc93
+# (`Hurewicz.SimplexGeometry.succAbove_lt_prefix_iff`, `succAbove_lt_prefix_succ_iff`,
+# `Hurewicz.CubeSubdivision.linearMap_zsmul_apply`); `grep -rn mo1973` over the two files is empty.

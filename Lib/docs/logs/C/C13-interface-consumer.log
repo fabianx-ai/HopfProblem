@@ -1,0 +1,10 @@
+@C13_InterfaceCheck.pi_subsingleton_of_homology_vanishing : ∀ {X : Type} [inst : TopologicalSpace X]
+  [SimplyConnectedSpace X] (x : X) (n : ℕ),
+  (∀ (k : ℕ), 2 ≤ k → k < n → Subsingleton ↑(Mathoverflow1973.SingularMayerVietoris.SingularHomology X k)) →
+    ∀ (k : ℕ), 2 ≤ k → k < n → Subsingleton (HomotopyGroup.Pi k X x)
+C13_InterfaceCheck.sphere_pi_subsingleton_of_lt : ∀ (n k : ℕ),
+  2 ≤ k →
+    k < n →
+      ∀ (x : ↑(Mathoverflow1973.Degree.SphereCube.Sphere n)),
+        Subsingleton (HomotopyGroup.Pi k (↑(Mathoverflow1973.Degree.SphereCube.Sphere n)) x)
+exit=0

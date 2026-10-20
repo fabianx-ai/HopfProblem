@@ -1,0 +1,22 @@
+import C_InterfaceCheck
+noncomputable section
+#check @C_InterfaceCheck.C1
+#check @C_InterfaceCheck.C2
+#check @C_InterfaceCheck.C3
+#check @C_InterfaceCheck.C4
+#check @C_InterfaceCheck.C5
+#check @C_InterfaceCheck.C6
+#check @C_InterfaceCheck.C7
+#check @C_InterfaceCheck.C8
+#check @C_InterfaceCheck.C9
+#check @C_InterfaceCheck.C10
+#check @C_InterfaceCheck.C11
+#check @C_InterfaceCheck.C12
+#check @C_InterfaceCheck.C13
+open Mathoverflow1973 Topology
+example {X : Type} [TopologicalSpace X] [SimplyConnectedSpace X] (x : X)
+    [Subsingleton (π_ 2 X x)] [Subsingleton (π_ 3 X x)]
+    [Subsingleton (π_ 4 X x)] [Subsingleton (π_ 5 X x)] :
+    Additive (π_ 6 X x) ≃ₗ[ℤ] SingularMayerVietoris.SingularHomology X 6 :=
+  C_InterfaceCheck.C10 x 6 (by decide)
+    (by intro j hj hjn; interval_cases j <;> infer_instance)

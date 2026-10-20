@@ -1,0 +1,197 @@
+/-
+Copyright (c) 2026 Fabian Franz. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Fabian Franz
+SPDX-License-Identifier: Apache-2.0
+-/
+module
+
+public import Lib.Topology.Sheaves.Cohomology.Cech.Coefficients
+public import Lib.Topology.Sheaves.Cohomology.Cech.Colimit
+
+/-!
+# Coefficient functoriality of direct-limit Cech cohomology
+
+Direct-limit Cech cohomology is functorial in the coefficients.  The fixed-cover coefficient
+maps commute with refinement, so the colimit universal property gives a canonical map on
+refinement-directed Cech cohomology; these maps preserve identities and composition and hence
+make `Ȟⁿ(X, -)` a functor on presheaves, and therefore on sheaves, of coefficients.
+
+## References
+
+* R. Godement, *Topologie algébrique et théorie des faisceaux*, II.5
+* G. E. Bredon, *Sheaf Theory*, III.4
+-/
+
+@[expose] public section
+
+set_option warningAsError true
+set_option autoImplicit false
+
+noncomputable section
+
+open CategoryTheory CategoryTheory.Limits
+
+universe u v w
+
+namespace TopologicalSpace.OpenCover.SetOpenCover
+
+variable {X : TopCat.{u}}
+variable {A : Type v} [Category.{w} A] [Preadditive A] [HasProducts.{u} A]
+  [CategoryWithHomology A] [HasColimitsOfShape (SetOpenCover X) A]
+variable {P Q R : TopCat.Presheaf A X}
+
+/-- The canonical map on refinement-directed Cech cohomology induced by a morphism of
+coefficient presheaves. -/
+noncomputable def cechCohomologyCoefficientMap (f : P ⟶ Q) (n : ℕ) :
+    cechCohomology P n ⟶ cechCohomology Q n :=
+  cechCohomologyDesc P n (cechCohomology Q n)
+    (fun U => normalizedCechCohomologyCoefficientMap f U n ≫
+      toCechCohomology Q n U)
+    (fun {U V} h => by
+      rw [← Category.assoc,
+        ← normalizedCechCohomologyCoefficientMap_comp_refinement f h n,
+        Category.assoc, normalizedCechCohomologyMap_comp_toCechCohomology])
+
+/-- The canonical map from fixed-cover to direct-limit Cech cohomology is natural in the
+coefficient presheaf. -/
+@[reassoc (attr := simp)]
+theorem toCechCohomology_comp_cechCohomologyCoefficientMap
+    (f : P ⟶ Q) (n : ℕ) (U : SetOpenCover X) :
+    toCechCohomology P n U ≫ cechCohomologyCoefficientMap f n =
+      normalizedCechCohomologyCoefficientMap f U n ≫
+        toCechCohomology Q n U := by
+  exact toCechCohomology_comp_cechCohomologyDesc P n _ _ _ U
+
+/-- The identity coefficient morphism induces the identity map on direct-limit Cech
+cohomology. -/
+@[simp]
+theorem cechCohomologyCoefficientMap_id (P : TopCat.Presheaf A X) (n : ℕ) :
+    cechCohomologyCoefficientMap (𝟙 P) n = 𝟙 (cechCohomology P n) := by
+  apply cechCohomology_hom_ext P n
+  intro U
+  rw [toCechCohomology_comp_cechCohomologyCoefficientMap,
+    normalizedCechCohomologyCoefficientMap_id, Category.id_comp, Category.comp_id]
+
+/-- Direct-limit Cech coefficient maps preserve composition. -/
+@[reassoc]
+theorem cechCohomologyCoefficientMap_comp (f : P ⟶ Q) (g : Q ⟶ R) (n : ℕ) :
+    cechCohomologyCoefficientMap (f ≫ g) n =
+      cechCohomologyCoefficientMap f n ≫ cechCohomologyCoefficientMap g n := by
+  apply cechCohomology_hom_ext P n
+  intro U
+  rw [toCechCohomology_comp_cechCohomologyCoefficientMap,
+    normalizedCechCohomologyCoefficientMap_comp]
+  calc
+    (normalizedCechCohomologyCoefficientMap f U n ≫
+        normalizedCechCohomologyCoefficientMap g U n) ≫
+          toCechCohomology R n U =
+      normalizedCechCohomologyCoefficientMap f U n ≫
+        (normalizedCechCohomologyCoefficientMap g U n ≫
+          toCechCohomology R n U) := Category.assoc _ _ _
+    _ = normalizedCechCohomologyCoefficientMap f U n ≫
+        (toCechCohomology Q n U ≫ cechCohomologyCoefficientMap g n) := by
+      rw [toCechCohomology_comp_cechCohomologyCoefficientMap]
+    _ = (normalizedCechCohomologyCoefficientMap f U n ≫
+          toCechCohomology Q n U) ≫ cechCohomologyCoefficientMap g n :=
+      (Category.assoc _ _ _).symm
+    _ = (toCechCohomology P n U ≫ cechCohomologyCoefficientMap f n) ≫
+        cechCohomologyCoefficientMap g n := by
+      rw [toCechCohomology_comp_cechCohomologyCoefficientMap]
+    _ = toCechCohomology P n U ≫
+        (cechCohomologyCoefficientMap f n ≫
+          cechCohomologyCoefficientMap g n) := Category.assoc _ _ _
+
+/-- The zero coefficient morphism induces zero on refinement-directed Cech cohomology. -/
+theorem cechCohomologyCoefficientMap_zero
+    (P Q : TopCat.Presheaf AddCommGrpCat.{u} X) (n : ℕ) :
+    cechCohomologyCoefficientMap (0 : P ⟶ Q) n = 0 := by
+  apply cechCohomology_hom_ext P n
+  intro U
+  rw [toCechCohomology_comp_cechCohomologyCoefficientMap,
+    normalizedCechCohomologyCoefficientMap_zero]
+  simp
+
+/-- Refinement-directed Cech coefficient maps preserve addition. -/
+theorem cechCohomologyCoefficientMap_add
+    {P Q : TopCat.Presheaf AddCommGrpCat.{u} X}
+    (f g : P ⟶ Q) (n : ℕ) :
+    cechCohomologyCoefficientMap (f + g) n =
+      cechCohomologyCoefficientMap f n + cechCohomologyCoefficientMap g n := by
+  apply cechCohomology_hom_ext P n
+  intro U
+  rw [toCechCohomology_comp_cechCohomologyCoefficientMap,
+    normalizedCechCohomologyCoefficientMap_add]
+  simp only [Preadditive.add_comp, Preadditive.comp_add,
+    toCechCohomology_comp_cechCohomologyCoefficientMap]
+
+/-- Refinement-directed Cech cohomology in a fixed degree, as a functor of coefficient
+presheaves. -/
+noncomputable def cechCohomologyCoefficientFunctor (n : ℕ) :
+    TopCat.Presheaf A X ⥤ A where
+  obj P := cechCohomology P n
+  map f := cechCohomologyCoefficientMap f n
+  map_id P := cechCohomologyCoefficientMap_id P n
+  map_comp f g := cechCohomologyCoefficientMap_comp f g n
+
+/-- The coefficient functor sends a presheaf to its direct-limit Cech cohomology. -/
+@[simp]
+theorem cechCohomologyCoefficientFunctor_obj (n : ℕ) (P : TopCat.Presheaf A X) :
+    (cechCohomologyCoefficientFunctor (A := A) n).obj P = cechCohomology P n :=
+  rfl
+
+/-- The coefficient functor sends a morphism of presheaves to the induced map on direct-limit
+Cech cohomology. -/
+@[simp]
+theorem cechCohomologyCoefficientFunctor_map
+    (n : ℕ) {P Q : TopCat.Presheaf A X} (f : P ⟶ Q) :
+    (cechCohomologyCoefficientFunctor (A := A) n).map f =
+      cechCohomologyCoefficientMap f n :=
+  rfl
+
+/-- Refinement-directed Cech cohomology in a fixed degree, functorial in abelian-sheaf
+coefficients. -/
+noncomputable def sheafCechCohomologyCoefficientFunctor (n : ℕ) :
+    TopCat.Sheaf A X ⥤ A :=
+  TopCat.Sheaf.forget A X ⋙ cechCohomologyCoefficientFunctor (A := A) n
+
+/-- The sheaf-valued coefficient functor sends a sheaf to the direct-limit Cech cohomology of its
+underlying presheaf. -/
+@[simp]
+theorem sheafCechCohomologyCoefficientFunctor_obj
+    (n : ℕ) (F : TopCat.Sheaf A X) :
+    (sheafCechCohomologyCoefficientFunctor (A := A) n).obj F =
+      cechCohomology F.presheaf n :=
+  rfl
+
+/-- The sheaf-valued coefficient functor sends a morphism of sheaves to the map induced by the
+underlying morphism of presheaves. -/
+@[simp]
+theorem sheafCechCohomologyCoefficientFunctor_map
+    (n : ℕ) {F G : TopCat.Sheaf A X} (f : F ⟶ G) :
+    (sheafCechCohomologyCoefficientFunctor (A := A) n).map f =
+      cechCohomologyCoefficientMap f.hom n :=
+  rfl
+
+/-- The sheaf-valued Cech cohomology coefficient functor is additive. -/
+instance sheafCechCohomologyCoefficientFunctor_additive (n : ℕ) :
+    (sheafCechCohomologyCoefficientFunctor
+      (X := X) (A := AddCommGrpCat.{u}) n).Additive where
+  map_add := fun {F G} f g => by
+    change cechCohomologyCoefficientMap (f + g).hom n =
+      cechCohomologyCoefficientMap f.hom n +
+        cechCohomologyCoefficientMap g.hom n
+    rw [show (f + g).hom = f.hom + g.hom by
+      apply NatTrans.ext
+      funext U
+      exact Sheaf.Hom.add_app f g U]
+    exact cechCohomologyCoefficientMap_add f.hom g.hom n
+
+/-- Refinement-directed Cech cohomology in a fixed degree, bundled as an additive functor. -/
+noncomputable def sheafCechCohomologyAdditiveFunctor (n : ℕ) :
+    AdditiveFunctor (TopCat.Sheaf AddCommGrpCat.{u} X) AddCommGrpCat.{u} :=
+  AdditiveFunctor.of
+    (sheafCechCohomologyCoefficientFunctor
+      (X := X) (A := AddCommGrpCat.{u}) n)
+
+end TopologicalSpace.OpenCover.SetOpenCover

@@ -1,0 +1,40 @@
+CMD: lake env lean C_ModuleDiamondProbe.lean
+START: 1789256129 Sun Sep 13 01:35:29 CEST 2026
+C_ModuleDiamondProbe.lean:111:19: error: Type mismatch
+  congrArg (fun l => l b) (LinearMap.map_smul F r a)
+has type
+  (F (r • a)) b = (r • F a) b
+but is expected to have type
+  (F (r • a)) b = (RingHom.id ℤ) r • (F a) b
+C_ModuleDiamondProbe.lean:133:4: error: Type mismatch
+  LinearMap.map_smul (F a) r b
+has type
+  (F a) (r • b) = r • (F a) b
+but is expected to have type
+  (integerBilinearRightApply F (r • b)) a = ((RingHom.id ℤ) r • integerBilinearRightApply F b) a
+C_ModuleDiamondProbe.lean:292:75: error: Application type mismatch: The argument
+  LinearMap.map_smul g r ((F a) b)
+has type
+  g (r • (F a) b) = r • g ((F a) b)
+but is expected to have type
+  g ((r • F a) b) = ((RingHom.id ℤ) r • g ∘ₗ F a) b
+in the application
+  Eq.trans (congrArg (fun l => g (l b)) (LinearMap.map_smul F r a)) (LinearMap.map_smul g r ((F a) b))
+C_ModuleDiamondProbe.lean:1540:4: error: Type mismatch
+  congrArg (fun f => f c) (LinearMap.map_smul (crossProductCycleClasses X Y n) r a)
+has type
+  ((crossProductCycleClasses X Y n) (r • a)) c = (r • (crossProductCycleClasses X Y n) a) c
+but is expected to have type
+  (SingularMayerVietoris.ModuleHomology.cycleClass (SingularChains.singularComplex (X × Y)) (n + 1))
+      (((crossProductCycles X Y n) (r • a)) c) =
+    (r • crossProductHomologyFixed n a)
+      ((SingularMayerVietoris.ModuleHomology.cycleClass (SingularChains.singularComplex Y) n) c)
+C_ModuleDiamondProbe.lean:1539:15: warning: This simp argument is unused:
+  LinearMap.smul_apply
+
+Hint: Omit it from the simp argument list.
+  [apply] simp only [RingHom.id_apply, crossProductHomologyFixed_cycleClass]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+END: 1789256139 Sun Sep 13 01:35:39 CEST 2026
+EXIT: 1

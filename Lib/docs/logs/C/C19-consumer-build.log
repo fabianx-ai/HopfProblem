@@ -1,0 +1,162 @@
+CMD: lake build Hopf.Hurewicz Hopf.LibShims Hopf.Final Solution
+start 1789321330
+✖ [8704/8822] Running Hopf.Final
+error: no such file or directory (error code: 4294967294)
+  file: /home/kimi/hopf/Hopf/Final.lean
+⚠ [8738/8840] Replayed Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition
+warning: Lib/AlgebraicTopology/Hurewicz/CubeChainDecomposition.lean:1399:56: This simp argument is unused:
+  Function.update_of_ne hj
+
+Hint: Omit it from the simp argument list.
+  [apply] simp [Hurewicz.cubeScaleLeft, ContinuousMap.coe_mk, Hurewicz.cubeCoordinates_succ]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+warning: Lib/AlgebraicTopology/Hurewicz/CubeChainDecomposition.lean:1415:57: This simp argument is unused:
+  Function.update_of_ne hj
+
+Hint: Omit it from the simp argument list.
+  [apply] simp [Hurewicz.cubeScaleRight, ContinuousMap.coe_mk, Hurewicz.cubeCoordinates_succ]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+warning: Lib/AlgebraicTopology/Hurewicz/CubeChainDecomposition.lean:1535:81: This simp argument is unused:
+  hri
+
+Hint: Omit it from the simp argument list.
+  [apply] simp [Hurewicz.cubeScaleRight, ContinuousMap.coe_mk, Function.update_self, ht0]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+warning: Lib/AlgebraicTopology/Hurewicz/CubeChainDecomposition.lean:1784:72: This simp argument is unused:
+  ContinuousMap.const_comp
+
+Hint: Omit it from the simp argument list.
+  [apply] simp [SingularChains.pointChain, SingularChains.inducedChain_simplex]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+⚠ [8739/8840] Replayed Lib.AlgebraicTopology.Hurewicz.Straightening
+warning: Lib/AlgebraicTopology/Hurewicz/Straightening.lean:799:6: Try this: 
+  haveI̵
+
+The goal is a proposition, so `have` is preferred over `haveI`.
+The difference between `have` and `haveI` is that `haveI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Lib/AlgebraicTopology/Hurewicz/Straightening.lean:835:2: Try this: 
+  haveI̵
+
+The goal is a proposition, so `have` is preferred over `haveI`.
+The difference between `have` and `haveI` is that `haveI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+⚠ [8740/8840] Replayed Lib.AlgebraicTopology.Hurewicz.CubeSphere
+warning: Lib/AlgebraicTopology/Hurewicz/CubeSphere.lean:583:32: This simp argument is unused:
+  Submodule.coe_sub
+
+Hint: Omit it from the simp argument list.
+  [apply] simp only [Submodule.coe_add, Hurewicz.cubeCycle_val, map_sub, hWextra]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+warning: Lib/AlgebraicTopology/Hurewicz/CubeSphere.lean:790:4: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Lib/AlgebraicTopology/Hurewicz/CubeSphere.lean:798:4: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Lib/AlgebraicTopology/Hurewicz/CubeSphere.lean:940:21: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+✔ [8786/8840] Built Lib.AlgebraicTopology.SingularHomology.SphereHomology (6.3s)
+⚠ [8787/8840] Replayed Lib.AlgebraicTopology.Hurewicz.HopfDegree
+warning: Lib/AlgebraicTopology/Hurewicz/HopfDegree.lean:84:4: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Lib/AlgebraicTopology/Hurewicz/HopfDegree.lean:85:4: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Lib/AlgebraicTopology/Hurewicz/HopfDegree.lean:102:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Lib/AlgebraicTopology/Hurewicz/HopfDegree.lean:272:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+⚠ [8795/8840] Replayed Hopf.LibShims
+warning: Hopf/LibShims.lean:1617:2: `match_1` refers to an auto-generated auxiliary declaration. These are not stable across refactors; consider using a different approach.
+
+Note: This linter can be disabled with `set_option linter.auxLemma false`
+⚠ [8815/8840] Replayed Lib.AlgebraicTopology.Hurewicz.Naturality
+warning: Lib/AlgebraicTopology/Hurewicz/Naturality.lean:231:4: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Lib/AlgebraicTopology/Hurewicz/Naturality.lean:232:4: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+✔ [8817/8840] Built Hopf.Proof.DifferentialTopology (5.8s)
+✔ [8818/8840] Built Hopf.Proof.SingularHomology (6.5s)
+✔ [8819/8840] Built Hopf.LCP.CuspFilling (13s)
+✔ [8820/8840] Built Hopf.Proof.SphereTopology (7.3s)
+✔ [8821/8840] Built Hopf.LCP.Specialization (13s)
+✔ [8822/8840] Built Hopf.Proof.Hurewicz (8.4s)
+✔ [8823/8840] Built Hopf.LCP.PeriodConstruction (7.1s)
+✔ [8824/8840] Built Hopf.LCP.BoundaryTopology (7.8s)
+✔ [8825/8840] Built Hopf.Proof.FiniteCore (15s)
+✔ [8826/8840] Built Hopf.LCP.IntegralHomology (7.6s)
+✔ [8827/8840] Built Hopf.Proof.Shortcuts (6.8s)
+✔ [8828/8840] Built Hopf.Recognition (108s)
+✔ [8829/8840] Built Hopf.Proof.LCP.LocalModels (126s)
+✔ [8830/8840] Built Hopf.Proof.LCP.CuspFilling (133s)
+✔ [8831/8840] Built Hopf.Proof.LCP.Specialization (91s)
+✔ [8832/8840] Built Hopf.Proof.LCP.PeriodConstruction (270s)
+✔ [8833/8840] Built Hopf.Proof.LCP.AnalyticFillings (126s)
+✔ [8834/8840] Built Hopf.Proof.LCP.GlobalAssembly (46s)
+✔ [8835/8840] Built Hopf.Proof.LCP.BoundaryTopology (170s)
+✔ [8836/8840] Built Hopf.Proof.LCP.IntegralHomology (278s)
+✔ [8837/8840] Built Hopf.Proof.Recognition (18s)
+✔ [8838/8840] Built Hopf.Proof.Final (9.4s)
+ℹ [8839/8840] Built Solution (5.2s)
+info: Solution.lean:61:0: 'Mathoverflow1973.mathoverflow_1973' depends on axioms: [propext, Classical.choice, Quot.sound]
+Some required targets logged failures:
+- Hopf.Final
+error: build failed
+exit 1
+end 1789322673

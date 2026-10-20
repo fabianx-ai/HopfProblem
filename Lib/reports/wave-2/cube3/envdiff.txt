@@ -1,0 +1,14 @@
+constants before 38301 after 38302 (keys 38199 38200 )
+lost 3 added 4 of which source declarations: 0 0 ; names with changed type 3 of which source: 0
+auxiliary lost/added/changed (not judged): 3 4 3
+module moves (source declarations, 1-to-1):
+      73  Lib.Topology.Dimension.CubeBoundaryThreeCells -> Lib.Topology.Dimension.CubeBoundaryThreeCells.Cells
+      20  Lib.Topology.Dimension.CubeBoundaryThreeCells -> Lib.Topology.Dimension.CubeBoundaryThreeCells.Coverage
+      32  Lib.Topology.Dimension.CubeBoundaryThreeCells -> Lib.Topology.Dimension.CubeBoundaryThreeCells.Faces
+      30  Lib.Topology.Dimension.CubeBoundaryThreeCells -> Lib.Topology.Dimension.CubeBoundaryThreeCells.Lattice
+       6  Lib.Topology.Dimension.CubeBoundaryThreeCells -> Lib.Topology.Dimension.CubeBoundaryThreeCells.RelInterior
+      26  Lib.Topology.Dimension.CubeBoundaryThreeCells -> Lib.Topology.Dimension.CubeBoundaryThreeCells.Separation
+      26  Lib.Topology.Dimension.CubeBoundaryThreeCells -> Lib.Topology.Dimension.CubeBoundaryThreeCells.SquareBoundary
+ambiguous module changes: 0
+auxiliary constants that changed module: 190
+VERDICT PASS

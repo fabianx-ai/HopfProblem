@@ -1,0 +1,4 @@
+CMD: lake env lean -o C_InterfaceCheck.olean C_InterfaceCheck.lean
+start 02:56:52 epoch 1789261012
+exit 0
+end 02:56:55 epoch 1789261015

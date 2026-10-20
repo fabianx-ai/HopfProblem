@@ -1,0 +1,20 @@
+import Lib.AlgebraicTopology.Hurewicz.HopfDegree
+import Lib.Topology.Homotopy.CellFilling
+noncomputable section
+namespace C_InterfaceCheck
+abbrev C1 := @Mathoverflow1973.SingularHomology.crossProductHomology
+abbrev C2 := @Mathoverflow1973.Hurewicz.CubeTriangulation.cubeSimplex
+abbrev C3 := @Mathoverflow1973.Hurewicz.simplexCubeHomeomorph
+abbrev C4 := @Mathoverflow1973.SecondHurewicz.SimplyConnected.extendBoundaryHomotopy
+abbrev C5 := @Mathoverflow1973.SecondHurewicz.SimplyConnected.simplexPrismOperator
+abbrev C6 := @Mathoverflow1973.Hurewicz.cubeChain_eq_sum_simplices
+abbrev C7 := @Mathoverflow1973.Hurewicz.normalizationHomotopy
+abbrev C8 := @Mathoverflow1973.Hurewicz.NativeSubdivision.nativeCubeSubdivision_class
+abbrev C9 := @Mathoverflow1973.Hurewicz.CubeGluing.coherentCubeEndpoint
+abbrev C10 := @Mathoverflow1973.Hurewicz.hurewiczLinearEquivOfTwoLE
+abbrev C11 := @Mathoverflow1973.SphereCube.factorMap
+abbrev C12 := @Mathoverflow1973.CylinderFilling.exists_filling
+abbrev C13 := @Mathoverflow1973.Hurewicz.sphere_homotopicRel_of_topClass_eq
+example (n : ℕ) : Mathoverflow1973.SphereCube.Sphere n =
+    Mathoverflow1973.SphereHomology.UnitSphere n := rfl
+end C_InterfaceCheck

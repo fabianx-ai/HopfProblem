@@ -1,0 +1,118 @@
+Mathoverflow1973.AdaptedWindows.{u_1, u_2} (E : Type u_1) [NormedAddCommGroup E] [NormedSpace ℝ E] {M : Type u_2}
+  [TopologicalSpace M] [ChartedSpace E M] [IsManifold (modelWithCornersSelf ℝ E) (↑⊤) M] (f : M → ℝ) :
+  Type (max u_1 u_2)
+MorseCancellation.nativeMorseIndex : (E : Type u_1) →
+  [inst : NormedAddCommGroup E] →
+    [NormedSpace ℝ E] → {M : Type u_2} → [inst_2 : TopologicalSpace M] → [ChartedSpace E M] → (M → ℝ) → M → ℕ
+@ManifoldImmersion.exists_immersion_on_compact_rel : ∀ {G : Type u_1} {H : Type u_2} {N : Type u_3}
+  [inst : NormedAddCommGroup G] [inst_1 : NormedSpace ℝ G] [FiniteDimensional ℝ G] [inst_3 : TopologicalSpace H]
+  {J : ModelWithCorners ℝ G H} [J.Boundaryless] [inst_5 : TopologicalSpace N] [inst_6 : ChartedSpace H N]
+  [IsManifold J (↑⊤) N] [T2Space N] (f : C(PlaneImmersion.Plane, N)),
+  ContMDiff (modelWithCornersSelf ℝ PlaneImmersion.Plane) J ↑⊤ ⇑f →
+    5 ≤ Module.finrank ℝ G →
+      ∀ {K L C : Set PlaneImmersion.Plane},
+        IsCompact K →
+          IsCompact L →
+            (∀ x ∈ K, Function.Injective ⇑(mfderiv% ⇑f x)) →
+              IsClosed C →
+                Disjoint L C →
+                  ∃ g,
+                    ContMDiff (modelWithCornersSelf ℝ PlaneImmersion.Plane) J ↑⊤ ⇑g ∧
+                      f.HomotopicRel g C ∧ ∀ x ∈ K ∪ L, Function.Injective ⇑(mfderiv% ⇑g x)
+@exists_tubularNeighborhood_in_open_of_embedded_closedBall : ∀ {E : Type u_1} {M : Type u_2} {D : Type u_3}
+  [inst : NormedAddCommGroup E] [inst_1 : NormedSpace ℝ E] [FiniteDimensional ℝ E] [inst_3 : TopologicalSpace M]
+  [inst_4 : ChartedSpace E M] [IsManifold (modelWithCornersSelf ℝ E) (↑⊤) M] [T2Space M] [CompactSpace M]
+  [inst_8 : NormedAddCommGroup D] [inst_9 : InnerProductSpace ℝ D] [FiniteDimensional ℝ D] {f : D → M},
+  ContMDiff (modelWithCornersSelf ℝ D) (modelWithCornersSelf ℝ E) (↑⊤) f →
+    Set.InjOn f (Metric.closedBall 0 1) →
+      (∀ x ∈ Metric.closedBall 0 1, Function.Injective ⇑(mfderiv% f x)) →
+        ∀ (n : ℕ),
+          Module.finrank ℝ D + n = Module.finrank ℝ E →
+            ∀ {O : Set M},
+              IsOpen O →
+                Set.MapsTo f (Metric.closedBall 0 1) O →
+                  ∃ ε,
+                    0 < ε ∧
+                      ∃ Φ,
+                        Metric.closedBall 0 1 ×ˢ Metric.closedBall 0 ε ⊆ Φ.source ∧
+                          (∀ x ∈ Metric.closedBall 0 1, ↑Φ.toPartialEquiv (x, 0) = f x) ∧ Φ.target ⊆ O
+@SmoothMorseLemma.diffeomorphToPartialDiffeomorph : {E : Type u_1} →
+  {F : Type u_2} →
+    {H : Type u_3} →
+      {H' : Type u_4} →
+        {X : Type u_5} →
+          {Y : Type u_6} →
+            [inst : NormedAddCommGroup E] →
+              [inst_1 : NormedSpace ℝ E] →
+                [inst_2 : TopologicalSpace H] →
+                  {I : ModelWithCorners ℝ E H} →
+                    [inst_3 : NormedAddCommGroup F] →
+                      [inst_4 : NormedSpace ℝ F] →
+                        [inst_5 : TopologicalSpace H'] →
+                          {J : ModelWithCorners ℝ F H'} →
+                            [inst_6 : TopologicalSpace X] →
+                              [inst_7 : ChartedSpace H X] →
+                                [inst_8 : TopologicalSpace Y] →
+                                  [inst_9 : ChartedSpace H' Y] → Diffeomorph I J X Y ↑⊤ → PartialDiffeomorph I J X Y ↑⊤
+@exists_partialDiffeomorph_of_isLocalDiffeomorphAt : ∀ {E : Type u_1} {F : Type u_2} {H : Type u_3} {H' : Type u_4}
+  {X : Type u_5} {Y : Type u_6} [inst : NormedAddCommGroup E] [inst_1 : NormedSpace ℝ E] [inst_2 : TopologicalSpace H]
+  {I : ModelWithCorners ℝ E H} [inst_3 : NormedAddCommGroup F] [inst_4 : NormedSpace ℝ F] [inst_5 : TopologicalSpace H']
+  {J : ModelWithCorners ℝ F H'} [inst_6 : TopologicalSpace X] [inst_7 : ChartedSpace H X] [inst_8 : TopologicalSpace Y]
+  [inst_9 : ChartedSpace H' Y] {f : X → Y} {x : X},
+  IsLocalDiffeomorphAt I J (↑⊤) f x → ∃ φ, x ∈ φ.source ∧ Set.EqOn f (↑φ.toPartialEquiv) φ.source
+WhitneyPairModel.firstSheet : WhitneyPairModel.Sheet → WhitneyPairModel.Space
+WhitneyPairModel.bigon : ℝ → Set (ℝ × ℝ)
+WhitneyPairModel.mem_frontier_bigon_iff : ∀ (h : ℝ) (p : ℝ × ℝ),
+  p ∈ frontier (WhitneyPairModel.bigon h) ↔ p ∈ WhitneyPairModel.bigon h ∧ (p.2 = 0 ∨ p.2 = h * (1 - p.1 ^ 2))
+WhitneyPairModel.cornerScale_pos : ∀ (t : ℝ), 0 < WhitneyPairModel.cornerScale t
+@WhitneyPairModel.upperStripCoordinates_right : ∀ {h : ℝ},
+  h ≠ 0 →
+    ∀ {p : ℝ × ℝ},
+      2 / 3 ≤ WhitneyPairModel.arcTime p →
+        StripCoordinates.reverse (WhitneyPairModel.upperStripCoordinates h p) =
+          (WhitneyPairModel.rightCornerCoordinates h p).swap
+@StripCoordinates.hasDerivAt_verticalSlice : ∀ {E : Type u_1} [inst : NormedAddCommGroup E] [inst_1 : NormedSpace ℝ E]
+  {F : ℝ × ℝ → E} {t s : ℝ}, DifferentiableAt ℝ F (t, s) → HasDerivAt (fun u => F (t, u)) ((fderiv ℝ F (t, s)) (0, 1)) s
+Mathoverflow1973.SixSphere : Set (EuclideanSpace ℝ (Fin 7))
+@simplyConnectedSpace_of_homotopySixSphere : ∀ {M : Type u_1} [inst : TopologicalSpace M]
+  (e : ContinuousMap.HomotopyEquiv M ↑SixSphere), SimplyConnectedSpace M
+@pathConnectedSpace_of_homotopySixSphere : ∀ {M : Type u_1} [inst : TopologicalSpace M]
+  (e : ContinuousMap.HomotopyEquiv M ↑SixSphere), PathConnectedSpace M
+@homotopySixSphere_homology_subsingleton : ∀ {M : Type} [inst : TopologicalSpace M]
+  (h : ContinuousMap.HomotopyEquiv M ↑SixSphere) (k : ℕ),
+  k ≠ 0 → k ≠ 6 → Subsingleton ↑(SingularMayerVietoris.SingularHomology M k)
+@PeriodTorusHigherHomology.circleProductMap : {X Y : Type} →
+  [inst : TopologicalSpace X] →
+    [inst_1 : TopologicalSpace Y] →
+      C(X, Y) → C(SingularHomology.CircleTopology.Circle × X, SingularHomology.CircleTopology.Circle × Y)
+@PeriodTorusHigherHomology.circleProductHomologyEquiv_symm_naturality : ∀ {X Y : Type} [inst : TopologicalSpace X]
+  [inst_1 : TopologicalSpace Y] (f : C(X, Y)) (n : ℕ)
+  (a : ↑(SingularMayerVietoris.SingularHomology X (n + 1)) × ↑(SingularMayerVietoris.SingularHomology X n)),
+  (SingularMayerVietoris.singularHomologyMap (PeriodTorusHigherHomology.circleProductMap f) (n + 1))
+      ((SingularHomology.circleProductHomologyEquiv X n).symm a) =
+    (SingularHomology.circleProductHomologyEquiv Y n).symm
+      ((SingularMayerVietoris.singularHomologyMap f (n + 1)) a.1, (SingularMayerVietoris.singularHomologyMap f n) a.2)
+@PeriodTorusHigherHomology.crossProductCycles_natural : ∀ {X Y X' Y' : Type} [inst : TopologicalSpace X]
+  [inst_1 : TopologicalSpace Y] [inst_2 : TopologicalSpace X'] [inst_3 : TopologicalSpace Y'] (f : C(X, X'))
+  (g : C(Y, Y')) (n : ℕ) (a : ↥(SingularMayerVietoris.ModuleHomology.Cycle (SingularChains.singularComplex X) 1))
+  (b : ↥(SingularMayerVietoris.ModuleHomology.Cycle (SingularChains.singularComplex Y) n)),
+  (SingularMayerVietoris.ModuleHomology.mapCycles (SingularChains.singularChainMap (f.prodMap g)) (n + 1))
+      (((SingularHomology.crossProductCycles X Y n) a) b) =
+    ((SingularHomology.crossProductCycles X' Y' n)
+        ((SingularMayerVietoris.ModuleHomology.mapCycles (SingularChains.singularChainMap f) 1) a))
+      ((SingularMayerVietoris.ModuleHomology.mapCycles (SingularChains.singularChainMap g) n) b)
+@PeriodTorusHigherHomology.crossProductHomology_natural : ∀ {X Y X' Y' : Type} [inst : TopologicalSpace X]
+  [inst_1 : TopologicalSpace Y] [inst_2 : TopologicalSpace X'] [inst_3 : TopologicalSpace Y'] (f : C(X, X'))
+  (g : C(Y, Y')) (n : ℕ) (a : ↑(HomologicalComplex.homology (SingularChains.singularComplex X) 1))
+  (b : ↑(HomologicalComplex.homology (SingularChains.singularComplex Y) n)),
+  (ModuleCat.Hom.hom (HomologicalComplex.homologyMap (SingularChains.singularChainMap (f.prodMap g)) (n + 1)))
+      (((SingularHomology.crossProductHomology X Y n) a) b) =
+    ((SingularHomology.crossProductHomology X' Y' n)
+        ((ModuleCat.Hom.hom (HomologicalComplex.homologyMap (SingularChains.singularChainMap f) 1)) a))
+      ((ModuleCat.Hom.hom (HomologicalComplex.homologyMap (SingularChains.singularChainMap g) n)) b)
+@PeriodTorusHigherHomology.crossProductHomology_snd : ∀ {X Y : Type} [inst : TopologicalSpace X]
+  [inst_1 : TopologicalSpace Y] (n : ℕ) (a : ↑(SingularMayerVietoris.SingularHomology X 1))
+  (b : ↑(SingularMayerVietoris.SingularHomology Y n)),
+  (SingularMayerVietoris.singularHomologyMap ContinuousMap.snd (n + 1))
+      (((SingularHomology.crossProductHomology X Y n) a) b) =
+    0

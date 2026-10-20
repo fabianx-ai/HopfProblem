@@ -1,0 +1,137 @@
+{
+ "before": "../dump_head.jsonl",
+ "after": "dump_after.jsonl",
+ "prefix": "",
+ "constants": [
+  38248,
+  38249
+ ],
+ "lost": [
+  [
+   "TransverseGerms.transverseBlockMap._proof_1",
+   2159798104,
+   {
+    "Lib.Geometry.Manifold.Morse.Connection": 1
+   }
+  ]
+ ],
+ "added": [
+  [
+   "TransverseGerms.transverseBlockMap._proof_1",
+   1158307750,
+   {
+    "Lib.Geometry.Manifold.Morse.Connection.TransverseBlocks": 1
+   }
+  ],
+  [
+   "TransverseGerms.transverseBlockMap._proof_2",
+   2159798104,
+   {
+    "Lib.Geometry.Manifold.Morse.Connection.TransverseBlocks": 1
+   }
+  ]
+ ],
+ "changed_type_source": [],
+ "changed_type_proof_naming": [],
+ "changed_type_accepted": [],
+ "added_accepted": [],
+ "accept_without_effect": [],
+ "changed_type_all": [
+  "TransverseGerms.transverseBlockMap._proof_1"
+ ],
+ "moves": [
+  [
+   "Lib.Geometry.Manifold.Morse.Connection",
+   "Lib.Geometry.Manifold.Morse.Connection.BeltArc",
+   16
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.Connection",
+   "Lib.Geometry.Manifold.Morse.Connection.CubicEndpoints",
+   8
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.Connection",
+   "Lib.Geometry.Manifold.Morse.Connection.CubicFieldChart",
+   22
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.Connection",
+   "Lib.Geometry.Manifold.Morse.Connection.CylinderHolonomy",
+   10
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.Connection",
+   "Lib.Geometry.Manifold.Morse.Connection.EndpointBasins",
+   37
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.Connection",
+   "Lib.Geometry.Manifold.Morse.Connection.FieldChartGluing",
+   13
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.Connection",
+   "Lib.Geometry.Manifold.Morse.Connection.LevelHolonomy",
+   20
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.Connection",
+   "Lib.Geometry.Manifold.Morse.Connection.MinimumBasins",
+   9
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.Connection",
+   "Lib.Geometry.Manifold.Morse.Connection.NoReturn",
+   9
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.Connection",
+   "Lib.Geometry.Manifold.Morse.Connection.PhaseCylinder",
+   17
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.Connection",
+   "Lib.Geometry.Manifold.Morse.Connection.PhaseFlow",
+   26
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.Connection",
+   "Lib.Geometry.Manifold.Morse.Connection.SignEnumerations",
+   8
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.Connection",
+   "Lib.Geometry.Manifold.Morse.Connection.Suspension",
+   22
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.Connection",
+   "Lib.Geometry.Manifold.Morse.Connection.TimeChange",
+   16
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.Connection",
+   "Lib.Geometry.Manifold.Morse.Connection.TransitionPhase",
+   6
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.Connection",
+   "Lib.Geometry.Manifold.Morse.Connection.TransportedCorrections",
+   5
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.Connection",
+   "Lib.Geometry.Manifold.Morse.Connection.TransverseBlocks",
+   14
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.Connection",
+   "Lib.Geometry.Manifold.Morse.Connection.TransverseTimeLifts",
+   8
+  ]
+ ],
+ "ambiguous": [],
+ "auxiliary_moved": 98,
+ "verdict": "PASS"
+}

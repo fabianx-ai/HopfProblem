@@ -1,0 +1,39 @@
+WhitneyPairModel.firstSheet : WhitneyPairModel.Sheet → WhitneyPairModel.Space
+WhitneyPairModel.bigon : ℝ → Set (ℝ × ℝ)
+WhitneyPairModel.mem_frontier_bigon_iff : ∀ (h : ℝ) (p : ℝ × ℝ),
+  p ∈ frontier (WhitneyPairModel.bigon h) ↔ p ∈ WhitneyPairModel.bigon h ∧ (p.2 = 0 ∨ p.2 = h * (1 - p.1 ^ 2))
+WhitneyPairModel.cornerScale_pos : ∀ (t : ℝ), 0 < WhitneyPairModel.cornerScale t
+@WhitneyPairModel.upperStripCoordinates_right : ∀ {h : ℝ},
+  h ≠ 0 →
+    ∀ {p : ℝ × ℝ},
+      2 / 3 ≤ WhitneyPairModel.arcTime p →
+        StripCoordinates.reverse (WhitneyPairModel.upperStripCoordinates h p) =
+          (WhitneyPairModel.rightCornerCoordinates h p).swap
+@StripCoordinates.hasDerivAt_verticalSlice : ∀ {E : Type u_1} [inst : NormedAddCommGroup E] [inst_1 : NormedSpace ℝ E]
+  {F : ℝ × ℝ → E} {t s : ℝ}, DifferentiableAt ℝ F (t, s) → HasDerivAt (fun u => F (t, u)) ((fderiv ℝ F (t, s)) (0, 1)) s
+Mathoverflow1973.SixSphere : Set (EuclideanSpace ℝ (Fin 7))
+@simplyConnectedSpace_of_homotopySixSphere : ∀ {M : Type u_1} [inst : TopologicalSpace M]
+  (e : ContinuousMap.HomotopyEquiv M ↑SixSphere), SimplyConnectedSpace M
+@pathConnectedSpace_of_homotopySixSphere : ∀ {M : Type u_1} [inst : TopologicalSpace M]
+  (e : ContinuousMap.HomotopyEquiv M ↑SixSphere), PathConnectedSpace M
+@homotopySixSphere_homology_subsingleton : ∀ {M : Type} [inst : TopologicalSpace M]
+  (h : ContinuousMap.HomotopyEquiv M ↑SixSphere) (k : ℕ),
+  k ≠ 0 → k ≠ 6 → Subsingleton ↑(SingularMayerVietoris.SingularHomology M k)
+@Path.exists_partition_unitInterval_of_open_cover : ∀ {X : Type u_1} [inst : TopologicalSpace X] {ι : Type u_2}
+  {c : ι → Set X} {a : X},
+  (∀ (i : ι), IsOpen (c i)) →
+    Set.univ ⊆ ⋃ i, c i →
+      ∀ (γ : Path a a),
+        ∃ n t,
+          t 0 = 0 ∧ t (Fin.last (n + 1)) = 1 ∧ ∀ (k : Fin (n + 1)), ∃ i, ⇑γ '' Set.uIcc (t k.castSucc) (t k.succ) ⊆ c i
+@Path.Homotopic.exists_loops_homotopic_concat_of_open_cover : ∀ {X : Type u_1} [inst : TopologicalSpace X]
+  {ι : Type u_2} {c : ι → Set X} {a : X},
+  (∀ (i : ι), IsOpen (c i)) →
+    Set.univ ⊆ ⋃ i, c i →
+      (∀ (i j : ι), IsPathConnected (c i ∩ c j)) →
+        (∀ (i : ι), a ∈ c i) →
+          ∀ (γ : Path a a),
+            ∃ n D, (Path.concat (fun x => a) D).Homotopic γ ∧ ∀ (k : Fin (n + 1)), ∃ i, Set.range ⇑(D k) ⊆ c i
+Mathoverflow1973.EuclideanSphere.instContractibleSpace1 {n : ℕ} (v : ↑((fun n => Metric.sphere 0 1) n)) :
+  ContractibleSpace ↑{v}ᶜ
+EuclideanSphere.simplyConnectedSpace : ∀ (n : ℕ), SimplyConnectedSpace ↑((fun n => Metric.sphere 0 1) (n + 2))

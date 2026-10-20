@@ -1,6 +1,6 @@
 name = "HopfProblem"
 version = "0.1.0"
-defaultTargets = ["Challenge", "Solution", "S6Shortcuts", "S6"]
+defaultTargets = ["Challenge", "Solution", "S6Shortcuts", "Lib", "S6"]
 
 [[require]]
 name = "Comparator"
@@ -16,7 +16,16 @@ rev = "v4.33.0"
 name = "Hopf"
 
 [[lean_lib]]
+name = "Center"
+
+[[lean_lib]]
+name = "Shared"
+
+[[lean_lib]]
 name = "S6Shortcuts"
+
+[[lean_lib]]
+name = "Lib"
 
 [[lean_lib]]
 name = "S6"
@@ -26,3 +35,6 @@ name = "Challenge"
 
 [[lean_lib]]
 name = "Solution"
+
+[[lean_lib]]
+name = "Unused"

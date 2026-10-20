@@ -1,0 +1,33 @@
+constants before 39476 after 39475 (keys 39369 39368 )
+lost 2 added 1 of which source declarations: 0 0 ; names with changed type 1 of which source: 0
+auxiliary lost/added/changed (not judged): 2 1 1
+module moves (source declarations, 1-to-1):
+       1  Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition.Concatenation -> Lib.AlgebraicTopology.SingularHomology.Chains
+       2  Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition.Concatenation -> Lib.AlgebraicTopology.SingularHomology.CrossProduct.Chain
+       2  Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition.Concatenation -> Lib.AlgebraicTopology.SingularHomology.MayerVietoris.SmallChains
+       5  Lib.AlgebraicTopology.SingularHomology.CrossProduct.HomologyDescent -> Lib.AlgebraicTopology.SingularHomology.ModuleHomology
+       8  Lib.Analysis.Calculus.MorseLemma.AdaptedDescentField -> Lib.Geometry.Manifold.Morse.AdaptedDescentField
+      15  Lib.Analysis.Calculus.MorseLemma.CriticalPoints -> Lib.Geometry.Manifold.Morse.CriticalPoints
+      10  Lib.Analysis.Calculus.MorseLemma.DescentField -> Lib.Geometry.Manifold.Morse.DescentField
+      10  Lib.Analysis.Calculus.MorseLemma.Existence -> Lib.Geometry.Manifold.Morse.Existence.MorseFunction
+      18  Lib.Analysis.Calculus.MorseLemma.LinearPerturbation -> Lib.Geometry.Manifold.Morse.LinearPerturbation
+      10  Lib.Analysis.Calculus.MorseLemma.SignedMorseChart -> Lib.Geometry.Manifold.Morse.SignedMorseChart
+      22  Lib.Analysis.Calculus.MorseLemma.SplitChart -> Lib.Geometry.Manifold.Morse.SplitChart
+      12  Lib.Analysis.Complex.RiemannMapping.ModulusOneReflection -> Lib.Analysis.Complex.ModulusOneReflection
+       1  Lib.Geometry.Manifold.Collar.SphereCoordinates -> Lib.Geometry.Manifold.Morse.SurgeryWindows.SurgeryData
+       4  Lib.Geometry.Manifold.Flow.HeightTranslating.AttachingUnion -> Lib.Geometry.Manifold.Morse.HandleAttachment.AttachingUnion
+       7  Lib.Geometry.Manifold.Flow.HeightTranslating.DescentModel -> Lib.Geometry.Manifold.Morse.HandleAttachment.DescentModel
+       9  Lib.Geometry.Manifold.Flow.HeightTranslating.HandleCoordinates -> Lib.Geometry.Manifold.Morse.HandleAttachment.HandleCoordinates
+      10  Lib.Geometry.Manifold.Morse.Cubic.LocalReplacement -> Lib.Geometry.Manifold.LocalReplacement
+       6  Lib.Geometry.Manifold.Morse.Cubic.SublevelFlow -> Lib.Dynamics.Flow.Sublevel
+      24  Lib.Geometry.Manifold.Morse.Existence.SmoothApproximation -> Lib.Geometry.Manifold.SmoothApproximation
+      12  Lib.Geometry.Manifold.Morse.OrderedCancellation.PathComponents -> Lib.AlgebraicTopology.SingularHomology.PathComponents
+      23  Lib.Geometry.Manifold.Morse.Rearrangement.AmbientTransversality -> Lib.Geometry.Manifold.Transversality.AmbientIsotopy
+       4  Lib.Geometry.Manifold.Morse.Rearrangement.SmoothTransition -> Lib.Analysis.SpecialFunctions.SmoothTransition
+      14  Lib.Geometry.Manifold.Morse.SurgeryCollapse.OnePointCover -> Lib.AlgebraicTopology.SingularHomology.OnePointCover
+       3  Lib.Geometry.Manifold.Morse.SurgeryCollapse.PuncturedBall -> Lib.AlgebraicTopology.SingularHomology.PuncturedBall
+      28  Lib.Geometry.Manifold.Transversality.MorseBelt -> Lib.Geometry.Manifold.Morse.MorseBelt
+       9  Lib.Geometry.Manifold.Whitney.CleanStrips.BeltIntersection -> Lib.Geometry.Manifold.Morse.BeltIntersection
+ambiguous module changes: 0
+auxiliary constants that changed module: 199
+VERDICT PASS

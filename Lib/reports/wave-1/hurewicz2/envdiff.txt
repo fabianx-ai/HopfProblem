@@ -1,0 +1,23 @@
+constants before 38248 after 38250 (keys 38146 38148 )
+lost 11 added 13 of which source declarations: 0 0 ; names with changed type 8 of which source: 0
+auxiliary lost/added/changed (not judged): 11 13 8
+module moves (source declarations, 1-to-1):
+      13  Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition -> Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition.Concatenation
+      21  Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition -> Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition.CubeChain
+       7  Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition -> Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition.Cycle
+      11  Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition -> Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition.IntervalSplit
+       6  Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition -> Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition.KuhnDecomposition
+      16  Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition -> Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition.PermutationInsertion
+      28  Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition -> Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition.PrismRealization
+      31  Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition -> Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition.StandardPrism
+      34  Lib.AlgebraicTopology.Hurewicz.Subdivision -> Lib.AlgebraicTopology.Hurewicz.Subdivision.ChamberChart
+      36  Lib.AlgebraicTopology.Hurewicz.Subdivision -> Lib.AlgebraicTopology.Hurewicz.Subdivision.CubeClass
+      28  Lib.AlgebraicTopology.Hurewicz.Subdivision -> Lib.AlgebraicTopology.Hurewicz.Subdivision.DuffyMap
+      30  Lib.AlgebraicTopology.Hurewicz.Subdivision -> Lib.AlgebraicTopology.Hurewicz.Subdivision.ExtendedChamber
+      13  Lib.AlgebraicTopology.Hurewicz.Subdivision -> Lib.AlgebraicTopology.Hurewicz.Subdivision.InsertPermutation
+      52  Lib.AlgebraicTopology.Hurewicz.Subdivision -> Lib.AlgebraicTopology.Hurewicz.Subdivision.SimplexQuotient
+      28  Lib.AlgebraicTopology.Hurewicz.Subdivision -> Lib.AlgebraicTopology.Hurewicz.Subdivision.Slicing
+      17  Lib.AlgebraicTopology.Hurewicz.Subdivision -> Lib.AlgebraicTopology.Hurewicz.Subdivision.SubdivisionClass
+ambiguous module changes: 0
+auxiliary constants that changed module: 220
+VERDICT PASS

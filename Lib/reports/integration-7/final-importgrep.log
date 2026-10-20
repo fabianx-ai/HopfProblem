@@ -1,0 +1,2 @@
+grep -rnE '^(public )?import Hopf' Lib/ --include=*.lean   (HEAD 752dfd1e)
+exit 1, 0 lines

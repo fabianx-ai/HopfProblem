@@ -1,0 +1,43 @@
+=== BUILD Lib/AlgebraicTopology/SingularHomology/Pontryagin.lean (07:17:35) ===
+EXIT 0 Lib/AlgebraicTopology/SingularHomology/Pontryagin.lean
+=== BUILD Hopf/LCP/Specialization.lean (07:17:39) ===
+EXIT 0 Hopf/LCP/Specialization.lean
+=== BUILD Lib/Analysis/Complex/SquareRoot.lean (07:18:11) ===
+EXIT 0 Lib/Analysis/Complex/SquareRoot.lean
+=== BUILD Hopf/LCP/PeriodConstruction.lean (07:18:15) ===
+EXIT 0 Hopf/LCP/PeriodConstruction.lean
+=== BUILD Hopf/LCP/BoundaryTopology.lean (07:18:59) ===
+EXIT 0 Hopf/LCP/BoundaryTopology.lean
+=== BUILD Hopf/LCP/IntegralHomology.lean (07:20:07) ===
+EXIT 0 Hopf/LCP/IntegralHomology.lean
+=== BUILD Lib/Topology/Homotopy/CellFilling.lean (07:21:15) ===
+EXIT 0 Lib/Topology/Homotopy/CellFilling.lean
+=== BUILD Lib/Geometry/Manifold/Morse/CellStructure.lean (07:21:19) ===
+EXIT 0 Lib/Geometry/Manifold/Morse/CellStructure.lean
+=== BUILD Lib/LinearAlgebra/Matrix/TransvectionReduction.lean (07:21:25) ===
+EXIT 0 Lib/LinearAlgebra/Matrix/TransvectionReduction.lean
+=== BUILD Hopf/Recognition.lean (07:21:28) ===
+EXIT 0 Hopf/Recognition.lean
+=== BUILD Hopf/Final.lean (07:22:04) ===
+EXIT 0 Hopf/Final.lean
+=== BUILD Lib/Algebra/Group/Filtration.lean (07:22:07) ===
+EXIT 0 Lib/Algebra/Group/Filtration.lean
+=== BUILD Lib/GroupTheory/GroupExtension/Abelianization.lean (07:22:08) ===
+EXIT 0 Lib/GroupTheory/GroupExtension/Abelianization.lean
+=== BUILD Lib/GroupTheory/GeneratingSet.lean (07:22:09) ===
+EXIT 0 Lib/GroupTheory/GeneratingSet.lean
+=== BUILD Lib/LinearAlgebra/CyclicAverage.lean (07:22:09) ===
+EXIT 0 Lib/LinearAlgebra/CyclicAverage.lean
+=== BUILD Lib/LinearAlgebra/FreeModule/Finite/CardQuotient.lean (07:22:10) ===
+EXIT 0 Lib/LinearAlgebra/FreeModule/Finite/CardQuotient.lean
+=== BUILD Lib/LinearAlgebra/FreeModule/RankTwoCokernel.lean (07:22:11) ===
+EXIT 0 Lib/LinearAlgebra/FreeModule/RankTwoCokernel.lean
+=== BUILD Lib.lean (07:22:13) ===
+EXIT 0 Lib.lean
+=== BUILD S6.lean (07:22:18) ===
+EXIT 0 S6.lean
+=== BUILD S6Shortcuts.lean (07:22:22) ===
+EXIT 0 S6Shortcuts.lean
+=== BUILD Solution.lean (07:22:37) ===
+EXIT 0 Solution.lean
+ALL DONE

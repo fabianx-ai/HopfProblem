@@ -1,0 +1,141 @@
+{
+ "before": "/home/goblin/.claude/jobs/06995e68/tmp/wave2/dump_head.jsonl",
+ "after": "dump_after.jsonl",
+ "prefix": "",
+ "constants": [
+  38301,
+  38304
+ ],
+ "lost": [
+  [
+   "ManifoldMorse.SignedMorseChart.beltCoreMap._proof_1",
+   2860446728,
+   {
+    "Lib.Geometry.Manifold.Morse.Existence": 1
+   }
+  ],
+  [
+   "ManifoldMorse.SignedMorseChart.beltCoreMap._proof_2",
+   3833307001,
+   {
+    "Lib.Geometry.Manifold.Morse.Existence": 1
+   }
+  ],
+  [
+   "ManifoldMorse.SignedMorseChart.boundaryLevelHomeomorph._proof_2",
+   995652011,
+   {
+    "Lib.Geometry.Manifold.Morse.Existence": 1
+   }
+  ]
+ ],
+ "added": [
+  [
+   "ManifoldMorse.SignedMorseChart.beltCoreMap._proof_1",
+   2547959801,
+   {
+    "Lib.Geometry.Manifold.Morse.Existence.BeltCore": 1
+   }
+  ],
+  [
+   "ManifoldMorse.SignedMorseChart.beltCoreMap._proof_2",
+   2860446728,
+   {
+    "Lib.Geometry.Manifold.Morse.Existence.BeltCore": 1
+   }
+  ],
+  [
+   "ManifoldMorse.SignedMorseChart.beltCoreMap._proof_3",
+   3153099389,
+   {
+    "Lib.Geometry.Manifold.Morse.Existence.BeltCore": 1
+   }
+  ],
+  [
+   "ManifoldMorse.SignedMorseChart.boundaryLevelHomeomorph._proof_2",
+   2547959801,
+   {
+    "Lib.Geometry.Manifold.Morse.Existence.LevelSurgery": 1
+   }
+  ],
+  [
+   "ManifoldMorse.SignedMorseChart.boundaryLevelHomeomorph._proof_3",
+   433327594,
+   {
+    "Lib.Geometry.Manifold.Morse.Existence.LevelSurgery": 1
+   }
+  ],
+  [
+   "ManifoldSmoothing.homotopyCollarNeighborhood._proof_1",
+   2547959801,
+   {
+    "Lib.Geometry.Manifold.Morse.Existence.HomotopyCollars": 1
+   }
+  ]
+ ],
+ "changed_type_source": [],
+ "changed_type_proof_naming": [],
+ "changed_type_accepted": [],
+ "added_accepted": [],
+ "accept_without_effect": [],
+ "changed_type_all": [
+  "ManifoldMorse.SignedMorseChart.beltCoreMap._proof_1",
+  "ManifoldMorse.SignedMorseChart.beltCoreMap._proof_2",
+  "ManifoldMorse.SignedMorseChart.boundaryLevelHomeomorph._proof_2"
+ ],
+ "moves": [
+  [
+   "Lib.Geometry.Manifold.Morse.Existence",
+   "Lib.Geometry.Manifold.Morse.Existence.AttachingUnion",
+   8
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.Existence",
+   "Lib.Geometry.Manifold.Morse.Existence.BeltCore",
+   14
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.Existence",
+   "Lib.Geometry.Manifold.Morse.Existence.ChartPerturbation",
+   40
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.Existence",
+   "Lib.Geometry.Manifold.Morse.Existence.DistinctCriticalValues",
+   7
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.Existence",
+   "Lib.Geometry.Manifold.Morse.Existence.HomotopicRelWithin",
+   6
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.Existence",
+   "Lib.Geometry.Manifold.Morse.Existence.HomotopyCollars",
+   13
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.Existence",
+   "Lib.Geometry.Manifold.Morse.Existence.LevelSurgery",
+   6
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.Existence",
+   "Lib.Geometry.Manifold.Morse.Existence.PartialChart",
+   4
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.Existence",
+   "Lib.Geometry.Manifold.Morse.Existence.RegularLocus",
+   4
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.Existence",
+   "Lib.Geometry.Manifold.Morse.Existence.SmoothApproximation",
+   24
+  ]
+ ],
+ "ambiguous": [],
+ "auxiliary_moved": 66,
+ "verdict": "PASS"
+}

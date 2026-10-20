@@ -1,0 +1,1074 @@
+{
+ "before": "dump_split.jsonl",
+ "after": "dump_int4_final_cov.jsonl",
+ "prefix": "",
+ "constants": [
+  31422,
+  31434
+ ],
+ "lost": [
+  [
+   "Mathoverflow1973.PeriodTorusHigherHomology.CirclePaths.circleTranslation._proof_1",
+   2546935746,
+   {
+    "Hopf.LCP.CuspFilling": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.PeriodTorusHigherHomology.CirclePaths.circleTranslationHomotopy._proof_1",
+   329651116,
+   {
+    "Hopf.LCP.CuspFilling": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.PeriodTorusHigherHomology.CirclePaths.circleTranslationHomotopy._proof_2",
+   1015081479,
+   {
+    "Hopf.LCP.CuspFilling": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.PeriodTorusHigherHomology.CirclePaths.circleTranslationHomotopy._proof_3",
+   3868063344,
+   {
+    "Hopf.LCP.CuspFilling": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.PeriodTorusHigherHomology.CirclePaths.positiveLoop._proof_1",
+   137169918,
+   {
+    "Hopf.LCP.CuspFilling": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.PeriodTorusHigherHomology.CirclePaths.quarterIntersection._proof_1",
+   2253068396,
+   {
+    "Hopf.Proof.LCP.CuspFilling": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.PeriodTorusHigherHomology.CirclePaths.quarterIntersection_component",
+   3804026335,
+   {
+    "Hopf.Proof.LCP.CuspFilling": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.PeriodTorusHigherHomology.CirclePaths.quarterLoop._proof_1",
+   1180137574,
+   {
+    "Hopf.Proof.LCP.CuspFilling": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.PeriodTorusHigherHomology.CirclePaths.quarterLoop._proof_2",
+   370595818,
+   {
+    "Hopf.Proof.LCP.CuspFilling": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.PeriodTorusHigherHomology.CirclePaths.quarterLoop._proof_3",
+   3357842709,
+   {
+    "Hopf.Proof.LCP.CuspFilling": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.PeriodTorusHigherHomology.CirclePaths.quarterLoop._proof_4",
+   2165915963,
+   {
+    "Hopf.Proof.LCP.CuspFilling": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.PeriodTorusHigherHomology.CirclePaths.threeQuarterIntersection._proof_1",
+   3487163762,
+   {
+    "Hopf.Proof.LCP.CuspFilling": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.PeriodTorusHigherHomology.CirclePaths.threeQuarterIntersection_component",
+   2294228923,
+   {
+    "Hopf.Proof.LCP.CuspFilling": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.PeriodTorusHigherHomology.CirclePaths.uPath._proof_1",
+   640478497,
+   {
+    "Hopf.Proof.LCP.CuspFilling": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.PeriodTorusHigherHomology.CirclePaths.uPath._proof_2",
+   4170248276,
+   {
+    "Hopf.Proof.LCP.CuspFilling": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.PeriodTorusHigherHomology.CirclePaths.uPath._proof_3",
+   3494698836,
+   {
+    "Hopf.Proof.LCP.CuspFilling": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.PeriodTorusHigherHomology.CirclePaths.uPath._proof_4",
+   525912133,
+   {
+    "Hopf.Proof.LCP.CuspFilling": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.PeriodTorusHigherHomology.CirclePaths.uPath._proof_5",
+   2005612875,
+   {
+    "Hopf.Proof.LCP.CuspFilling": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.PeriodTorusHigherHomology.CirclePaths.uPath._proof_6",
+   547916511,
+   {
+    "Hopf.Proof.LCP.CuspFilling": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.PeriodTorusHigherHomology.CirclePaths.vPath._proof_1",
+   2048773275,
+   {
+    "Hopf.Proof.LCP.CuspFilling": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.PeriodTorusHigherHomology.CirclePaths.vPath._proof_2",
+   1782644898,
+   {
+    "Hopf.Proof.LCP.CuspFilling": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.PeriodTorusHigherHomology.CirclePaths.vPath._proof_3",
+   152651751,
+   {
+    "Hopf.Proof.LCP.CuspFilling": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.PeriodTorusHigherHomology.CirclePaths.vPath._proof_4",
+   1091959556,
+   {
+    "Hopf.Proof.LCP.CuspFilling": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.PeriodTorusHigherHomology.CirclePaths.vPath._proof_5",
+   3352282961,
+   {
+    "Hopf.Proof.LCP.CuspFilling": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.PeriodTorusHigherHomology.CirclePaths.vPath._proof_6",
+   1418241589,
+   {
+    "Hopf.Proof.LCP.CuspFilling": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.PeriodTorusHigherHomology.intersectionDifferenceCycle._proof_1",
+   1635492264,
+   {
+    "Hopf.Proof.LCP.CuspFilling": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.PeriodTorusHigherHomology.intersectionDifferenceCycle._proof_2",
+   23609778,
+   {
+    "Hopf.Proof.LCP.CuspFilling": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.PeriodTorusHigherHomology.intersectionDifferenceCycle.eq_1",
+   3584761660,
+   {
+    "Hopf.Proof.LCP.CuspFilling": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.PeriodTorusHigherHomology.twoChainSmallCycle._proof_1",
+   2004815843,
+   {
+    "Hopf.LCP.CuspFilling": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.PeriodTorusHigherHomology.uCrossChain.eq_1",
+   1381740423,
+   {
+    "Hopf.Proof.LCP.CuspFilling": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.PeriodTorusHigherHomology.vCrossChain.eq_1",
+   3287387080,
+   {
+    "Hopf.Proof.LCP.CuspFilling": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.SmoothRadial.diffeomorph._proof_2",
+   3622680096,
+   {
+    "Lib.Geometry.Manifold.Transversality.Basic": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.SphereHomology.suspensionConeCover",
+   3134951918,
+   {
+    "Hopf.Hurewicz": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.SphereHomology.suspensionConeCover._proof_1",
+   2108111555,
+   {
+    "Hopf.Hurewicz": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.SphereHomology.suspensionConeCover._proof_2",
+   3513773589,
+   {
+    "Hopf.Hurewicz": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.SphereHomology.suspensionConeCover._proof_3",
+   664438071,
+   {
+    "Hopf.Hurewicz": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.SphereHomology.suspensionConeCover._proof_6",
+   3623555887,
+   {
+    "Hopf.Hurewicz": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.SphereHomology.suspensionConeCover._proof_7",
+   2999286772,
+   {
+    "Hopf.Hurewicz": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.\u00ab_aux_<M>___macroRules__private_<M>_0_Mathoverflow1973_term_\u2223[_]__1\u00bb",
+   407006920,
+   {
+    "Hopf.Proof.DifferentialTopology": 1,
+    "Hopf.Proof.Final": 1,
+    "Hopf.Proof.FiniteCore": 1,
+    "Hopf.Proof.Hurewicz": 1,
+    "Hopf.Proof.Recognition": 1,
+    "Hopf.Proof.SingularHomology": 1,
+    "Hopf.Proof.SphereTopology": 1,
+    "Lib.GroupTheory.SplitExtension": 1,
+    "Lib.Topology.OnePointCollapse": 1,
+    "Hopf.Proof.LCP.AnalyticFillings": 1,
+    "Hopf.Proof.LCP.BoundaryTopology": 1,
+    "Hopf.Proof.LCP.CuspFilling": 1,
+    "Hopf.Proof.LCP.GlobalAssembly": 1,
+    "Hopf.Proof.LCP.IntegralHomology": 1,
+    "Hopf.Proof.LCP.LocalModels": 1,
+    "Hopf.Proof.LCP.PeriodConstruction": 1,
+    "Hopf.Proof.LCP.Specialization": 1,
+    "Lib.Algebra.Homology.MayerVietorisShortExact": 1,
+    "Lib.AlgebraicTopology.FundamentalGroup.SimplyConnectedCover": 1,
+    "Lib.AlgebraicTopology.FundamentalGroup.TwoSimplyConnectedCover": 1,
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1,
+    "Lib.AlgebraicTopology.FundamentalGroupoid.SimplyConnectedSphere": 1,
+    "Lib.AlgebraicTopology.SingularHomology.Chains": 1,
+    "Lib.AlgebraicTopology.SingularHomology.CircleProduct": 1,
+    "Lib.AlgebraicTopology.SingularHomology.Coproduct": 1,
+    "Lib.AlgebraicTopology.SingularHomology.CrossInsert": 1,
+    "Lib.AlgebraicTopology.SingularHomology.HomotopyInvariance": 1,
+    "Lib.AlgebraicTopology.SingularHomology.LinearSphereAction": 1,
+    "Lib.AlgebraicTopology.SingularHomology.LocalContributions": 1,
+    "Lib.AlgebraicTopology.SingularHomology.LocalDegree": 1,
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris": 1,
+    "Lib.AlgebraicTopology.SingularHomology.ModuleHomology": 1,
+    "Lib.AlgebraicTopology.SingularHomology.Naturality": 1,
+    "Lib.AlgebraicTopology.SingularHomology.PathClass": 1,
+    "Lib.AlgebraicTopology.SingularHomology.Sphere": 1,
+    "Lib.AlgebraicTopology.SingularHomology.SphereHomology": 1,
+    "Lib.AlgebraicTopology.SingularHomology.Sum": 1,
+    "Lib.AlgebraicTopology.SingularHomology.Suspension": 1,
+    "Lib.Analysis.Calculus.MorseLemma": 1,
+    "Lib.Analysis.Complex.Cousin": 1,
+    "Lib.Analysis.Complex.Mobius": 1,
+    "Lib.Analysis.Complex.RiemannMapping": 1,
+    "Lib.Analysis.Complex.SchwarzReflection": 1,
+    "Lib.Analysis.Complex.SquareRoot": 1,
+    "Lib.Analysis.ODE.SmoothFlow": 1,
+    "Lib.Geometry.Manifold.Collar": 1,
+    "Lib.Geometry.Manifold.RegularLevel": 1,
+    "Lib.Geometry.Manifold.WhitneyEmbedding": 1,
+    "Lib.GroupTheory.PresentedGroup.CentralTwist": 1,
+    "Lib.Topology.Algebra.FreeActionLocus": 1,
+    "Lib.Topology.Covering.DiagonalQuotient": 1,
+    "Lib.Topology.Covering.InvariantSubset": 1,
+    "Lib.Topology.Covering.Quotient": 1,
+    "Lib.Topology.FiberBundle.TwoOpenTransition": 1,
+    "Lib.Topology.Homotopy.CellAttachment": 1,
+    "Lib.Topology.Homotopy.CylinderHEP": 1,
+    "Lib.Topology.Homotopy.HandleRetraction": 1,
+    "Lib.Topology.Homotopy.LocalCollapse": 1,
+    "Lib.Topology.Homotopy.LoopSubdivision": 1,
+    "Lib.Topology.Homotopy.SublevelRetraction": 1,
+    "Lib.Topology.Homotopy.Suspension": 1,
+    "Lib.Topology.MappingTorus.Basic": 1,
+    "Lib.Topology.MappingTorus.HomologyCover": 1,
+    "Lib.Analysis.Complex.RiemannMapping.Steps": 1,
+    "Lib.Geometry.Manifold.ChartedSpace.Transport": 1,
+    "Lib.Geometry.Manifold.Complex.Biholomorph": 1,
+    "Lib.Geometry.Manifold.Flow.Compact": 1,
+    "Lib.Geometry.Manifold.Flow.HeightTranslating": 1,
+    "Lib.Geometry.Manifold.Instances.RiemannSphere": 1,
+    "Lib.Geometry.Manifold.Morse.Birth": 1,
+    "Lib.Geometry.Manifold.Morse.CellStructure": 1,
+    "Lib.Geometry.Manifold.Morse.ConnectionCancellation": 1,
+    "Lib.Geometry.Manifold.Morse.Existence": 1,
+    "Lib.Geometry.Manifold.Morse.Handle": 1,
+    "Lib.Geometry.Manifold.Morse.HandleAttachment": 1,
+    "Lib.Geometry.Manifold.Morse.Index": 1,
+    "Lib.Geometry.Manifold.Morse.RearrangementTheorem": 1,
+    "Lib.Geometry.Manifold.Morse.Reeb": 1,
+    "Lib.Geometry.Manifold.Morse.SublevelSets": 1,
+    "Lib.Geometry.Manifold.Morse.SurgeryWindows": 1,
+    "Lib.Geometry.Manifold.Quotient.Atlas": 1,
+    "Lib.Geometry.Manifold.Quotient.LocalOrbit": 1,
+    "Lib.Geometry.Manifold.VectorBundle.ProjectionBundle": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.\u00ab_aux_<M>___macroRules__private_<M>_0_Mathoverflow1973_term_\u226b\u209a__1\u00bb",
+   407006920,
+   {
+    "Hopf.Proof.DifferentialTopology": 1,
+    "Hopf.Proof.Final": 1,
+    "Hopf.Proof.FiniteCore": 1,
+    "Hopf.Proof.Hurewicz": 1,
+    "Hopf.Proof.Recognition": 1,
+    "Hopf.Proof.SingularHomology": 1,
+    "Hopf.Proof.SphereTopology": 1,
+    "Lib.GroupTheory.SplitExtension": 1,
+    "Lib.Topology.OnePointCollapse": 1,
+    "Hopf.Proof.LCP.AnalyticFillings": 1,
+    "Hopf.Proof.LCP.BoundaryTopology": 1,
+    "Hopf.Proof.LCP.CuspFilling": 1,
+    "Hopf.Proof.LCP.GlobalAssembly": 1,
+    "Hopf.Proof.LCP.IntegralHomology": 1,
+    "Hopf.Proof.LCP.LocalModels": 1,
+    "Hopf.Proof.LCP.PeriodConstruction": 1,
+    "Hopf.Proof.LCP.Specialization": 1,
+    "Lib.Algebra.Homology.MayerVietorisShortExact": 1,
+    "Lib.AlgebraicTopology.FundamentalGroup.SimplyConnectedCover": 1,
+    "Lib.AlgebraicTopology.FundamentalGroup.TwoSimplyConnectedCover": 1,
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1,
+    "Lib.AlgebraicTopology.FundamentalGroupoid.SimplyConnectedSphere": 1,
+    "Lib.AlgebraicTopology.SingularHomology.Chains": 1,
+    "Lib.AlgebraicTopology.SingularHomology.CircleProduct": 1,
+    "Lib.AlgebraicTopology.SingularHomology.Coproduct": 1,
+    "Lib.AlgebraicTopology.SingularHomology.CrossInsert": 1,
+    "Lib.AlgebraicTopology.SingularHomology.HomotopyInvariance": 1,
+    "Lib.AlgebraicTopology.SingularHomology.LinearSphereAction": 1,
+    "Lib.AlgebraicTopology.SingularHomology.LocalContributions": 1,
+    "Lib.AlgebraicTopology.SingularHomology.LocalDegree": 1,
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris": 1,
+    "Lib.AlgebraicTopology.SingularHomology.ModuleHomology": 1,
+    "Lib.AlgebraicTopology.SingularHomology.Naturality": 1,
+    "Lib.AlgebraicTopology.SingularHomology.PathClass": 1,
+    "Lib.AlgebraicTopology.SingularHomology.Sphere": 1,
+    "Lib.AlgebraicTopology.SingularHomology.SphereHomology": 1,
+    "Lib.AlgebraicTopology.SingularHomology.Sum": 1,
+    "Lib.AlgebraicTopology.SingularHomology.Suspension": 1,
+    "Lib.Analysis.Calculus.MorseLemma": 1,
+    "Lib.Analysis.Complex.Cousin": 1,
+    "Lib.Analysis.Complex.Mobius": 1,
+    "Lib.Analysis.Complex.RiemannMapping": 1,
+    "Lib.Analysis.Complex.SchwarzReflection": 1,
+    "Lib.Analysis.Complex.SquareRoot": 1,
+    "Lib.Analysis.ODE.SmoothFlow": 1,
+    "Lib.Geometry.Manifold.Collar": 1,
+    "Lib.Geometry.Manifold.RegularLevel": 1,
+    "Lib.Geometry.Manifold.WhitneyEmbedding": 1,
+    "Lib.GroupTheory.PresentedGroup.CentralTwist": 1,
+    "Lib.Topology.Algebra.FreeActionLocus": 1,
+    "Lib.Topology.Covering.DiagonalQuotient": 1,
+    "Lib.Topology.Covering.InvariantSubset": 1,
+    "Lib.Topology.Covering.Quotient": 1,
+    "Lib.Topology.FiberBundle.TwoOpenTransition": 1,
+    "Lib.Topology.Homotopy.CellAttachment": 1,
+    "Lib.Topology.Homotopy.CylinderHEP": 1,
+    "Lib.Topology.Homotopy.HandleRetraction": 1,
+    "Lib.Topology.Homotopy.LocalCollapse": 1,
+    "Lib.Topology.Homotopy.LoopSubdivision": 1,
+    "Lib.Topology.Homotopy.SublevelRetraction": 1,
+    "Lib.Topology.Homotopy.Suspension": 1,
+    "Lib.Topology.MappingTorus.Basic": 1,
+    "Lib.Topology.MappingTorus.HomologyCover": 1,
+    "Lib.Analysis.Complex.RiemannMapping.Steps": 1,
+    "Lib.Geometry.Manifold.ChartedSpace.Transport": 1,
+    "Lib.Geometry.Manifold.Complex.Biholomorph": 1,
+    "Lib.Geometry.Manifold.Flow.Compact": 1,
+    "Lib.Geometry.Manifold.Flow.HeightTranslating": 1,
+    "Lib.Geometry.Manifold.Instances.RiemannSphere": 1,
+    "Lib.Geometry.Manifold.Morse.Birth": 1,
+    "Lib.Geometry.Manifold.Morse.CellStructure": 1,
+    "Lib.Geometry.Manifold.Morse.ConnectionCancellation": 1,
+    "Lib.Geometry.Manifold.Morse.Existence": 1,
+    "Lib.Geometry.Manifold.Morse.Handle": 1,
+    "Lib.Geometry.Manifold.Morse.HandleAttachment": 1,
+    "Lib.Geometry.Manifold.Morse.Index": 1,
+    "Lib.Geometry.Manifold.Morse.RearrangementTheorem": 1,
+    "Lib.Geometry.Manifold.Morse.Reeb": 1,
+    "Lib.Geometry.Manifold.Morse.SublevelSets": 1,
+    "Lib.Geometry.Manifold.Morse.SurgeryWindows": 1,
+    "Lib.Geometry.Manifold.Quotient.Atlas": 1,
+    "Lib.Geometry.Manifold.Quotient.LocalOrbit": 1,
+    "Lib.Geometry.Manifold.VectorBundle.ProjectionBundle": 1
+   }
+  ]
+ ],
+ "added": [
+  [
+   "Diffeomorph.toPartialDiffeomorph'",
+   1873579283,
+   {
+    "Lib.Geometry.Manifold.Transversality.Basic": 1
+   }
+  ],
+  [
+   "Diffeomorph.toPartialDiffeomorph'._proof_1",
+   2132998718,
+   {
+    "Lib.Geometry.Manifold.Transversality.Basic": 1
+   }
+  ],
+  [
+   "Diffeomorph.toPartialDiffeomorph'._proof_2",
+   3296554775,
+   {
+    "Lib.Geometry.Manifold.Transversality.Basic": 1
+   }
+  ],
+  [
+   "Diffeomorph.toPartialDiffeomorph'._proof_3",
+   2752224061,
+   {
+    "Lib.Geometry.Manifold.Transversality.Basic": 1
+   }
+  ],
+  [
+   "Diffeomorph.toPartialDiffeomorph'._proof_4",
+   802979557,
+   {
+    "Lib.Geometry.Manifold.Transversality.Basic": 1
+   }
+  ],
+  [
+   "Diffeomorph.toPartialDiffeomorph'._proof_5",
+   779602910,
+   {
+    "Lib.Geometry.Manifold.Transversality.Basic": 1
+   }
+  ],
+  [
+   "Diffeomorph.toPartialDiffeomorph'._proof_6",
+   1790367835,
+   {
+    "Lib.Geometry.Manifold.Transversality.Basic": 1
+   }
+  ],
+  [
+   "IsLocalDiffeomorph.diffeomorph'",
+   4001200632,
+   {
+    "Lib.Geometry.Manifold.Transversality.Basic": 1
+   }
+  ],
+  [
+   "IsLocalDiffeomorph.diffeomorph'._proof_1",
+   1587916273,
+   {
+    "Lib.Geometry.Manifold.Transversality.Basic": 1
+   }
+  ],
+  [
+   "IsLocalDiffeomorph.diffeomorph'._proof_2",
+   65075672,
+   {
+    "Lib.Geometry.Manifold.Transversality.Basic": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.PeriodTorusHigherHomology.CirclePaths.circleTranslation._proof_1",
+   351755069,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CirclePaths": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.PeriodTorusHigherHomology.CirclePaths.circleTranslationHomotopy._proof_1",
+   2644187283,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CirclePaths": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.PeriodTorusHigherHomology.CirclePaths.circleTranslationHomotopy._proof_2",
+   4102966733,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CirclePaths": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.PeriodTorusHigherHomology.CirclePaths.circleTranslationHomotopy._proof_3",
+   1180137574,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CirclePaths": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.PeriodTorusHigherHomology.CirclePaths.positiveLoop._proof_1",
+   705122075,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CirclePaths": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.PeriodTorusHigherHomology.CirclePaths.quarterIntersection._proof_1",
+   2796184230,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CirclePaths": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.PeriodTorusHigherHomology.CirclePaths.quarterIntersection_component",
+   1928750456,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CirclePaths": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.PeriodTorusHigherHomology.CirclePaths.quarterLoop._proof_1",
+   2436164179,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CirclePaths": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.PeriodTorusHigherHomology.CirclePaths.quarterLoop._proof_2",
+   590817063,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CirclePaths": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.PeriodTorusHigherHomology.CirclePaths.quarterLoop._proof_3",
+   851678499,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CirclePaths": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.PeriodTorusHigherHomology.CirclePaths.threeQuarterIntersection._proof_1",
+   1008228881,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CirclePaths": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.PeriodTorusHigherHomology.CirclePaths.threeQuarterIntersection_component",
+   690624525,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CirclePaths": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.PeriodTorusHigherHomology.CirclePaths.uPath._proof_1",
+   2427373259,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CirclePaths": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.PeriodTorusHigherHomology.CirclePaths.uPath._proof_2",
+   3930722679,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CirclePaths": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.PeriodTorusHigherHomology.CirclePaths.uPath._proof_3",
+   2173267295,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CirclePaths": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.PeriodTorusHigherHomology.CirclePaths.uPath._proof_4",
+   2997892026,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CirclePaths": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.PeriodTorusHigherHomology.CirclePaths.uPath._proof_5",
+   1085289115,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CirclePaths": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.PeriodTorusHigherHomology.CirclePaths.vPath._proof_1",
+   2269663382,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CirclePaths": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.PeriodTorusHigherHomology.CirclePaths.vPath._proof_2",
+   1275801018,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CirclePaths": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.PeriodTorusHigherHomology.CirclePaths.vPath._proof_3",
+   4124096440,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CirclePaths": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.PeriodTorusHigherHomology.CirclePaths.vPath._proof_4",
+   1387221145,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CirclePaths": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.PeriodTorusHigherHomology.CirclePaths.vPath._proof_5",
+   3491507626,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CirclePaths": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.PeriodTorusHigherHomology.intersectionDifferenceCycle._proof_1",
+   2575186661,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CirclePaths": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.PeriodTorusHigherHomology.intersectionDifferenceCycle.eq_1",
+   3552621750,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CirclePaths": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.PeriodTorusHigherHomology.twoChainSmallCycle._proof_1",
+   2909320984,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CirclePaths": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.PeriodTorusHigherHomology.uCrossChain.eq_1",
+   624149181,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CirclePaths": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.PeriodTorusHigherHomology.vCrossChain.eq_1",
+   3860502116,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CirclePaths": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.SmoothRadial.diffeomorph._proof_2",
+   704069273,
+   {
+    "Lib.Geometry.Manifold.Transversality.Basic": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.SphereHomology.suspensionConeCover",
+   1496043126,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.SuspensionCover": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.SphereHomology.suspensionConeCover._proof_1",
+   3660785314,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.SuspensionCover": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.SphereHomology.suspensionConeCover._proof_2",
+   2781485276,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.SuspensionCover": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.SphereHomology.suspensionConeCover._proof_3",
+   3317997316,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.SuspensionCover": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.SphereHomology.suspensionConeCover._proof_6",
+   2777043147,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.SuspensionCover": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.SphereHomology.suspensionConeCover._proof_7",
+   22883219,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.SuspensionCover": 1
+   }
+  ],
+  [
+   "NativeParametrization.centered._proof_2",
+   247095479,
+   {
+    "Lib.Geometry.Manifold.Transversality.Basic": 1
+   }
+  ],
+  [
+   "PeriodTorusHigherHomology.CirclePaths.circleTranslationHomotopy._proof_4",
+   1358664488,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CirclePaths": 1
+   }
+  ],
+  [
+   "PeriodTorusHigherHomology.CirclePaths.quarterIntersection._proof_2",
+   2547959801,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CirclePaths": 1
+   }
+  ],
+  [
+   "PeriodTorusHigherHomology.CirclePaths.quarterIntersection._proof_3",
+   2205062316,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CirclePaths": 1
+   }
+  ],
+  [
+   "PeriodTorusHigherHomology.CirclePaths.threeQuarterIntersection._proof_2",
+   1885022586,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CirclePaths": 1
+   }
+  ],
+  [
+   "SmoothRadial.diffeomorph._proof_3",
+   3622680096,
+   {
+    "Lib.Geometry.Manifold.Transversality.Basic": 1
+   }
+  ],
+  [
+   "\u00ab_aux_<M>___macroRules__private_<M>_0_term_\u2223[_]__1\u00bb",
+   407006920,
+   {
+    "Hopf.Proof.DifferentialTopology": 1,
+    "Hopf.Proof.Final": 1,
+    "Hopf.Proof.FiniteCore": 1,
+    "Hopf.Proof.Hurewicz": 1,
+    "Hopf.Proof.Recognition": 1,
+    "Hopf.Proof.SingularHomology": 1,
+    "Hopf.Proof.SphereTopology": 1,
+    "Lib.GroupTheory.SplitExtension": 1,
+    "Lib.Topology.OnePointCollapse": 1,
+    "Hopf.Proof.LCP.AnalyticFillings": 1,
+    "Hopf.Proof.LCP.BoundaryTopology": 1,
+    "Hopf.Proof.LCP.CuspFilling": 1,
+    "Hopf.Proof.LCP.GlobalAssembly": 1,
+    "Hopf.Proof.LCP.IntegralHomology": 1,
+    "Hopf.Proof.LCP.LocalModels": 1,
+    "Hopf.Proof.LCP.PeriodConstruction": 1,
+    "Hopf.Proof.LCP.Specialization": 1,
+    "Lib.Algebra.Homology.MayerVietorisShortExact": 1,
+    "Lib.AlgebraicTopology.FundamentalGroup.SimplyConnectedCover": 1,
+    "Lib.AlgebraicTopology.FundamentalGroup.TwoSimplyConnectedCover": 1,
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1,
+    "Lib.AlgebraicTopology.FundamentalGroupoid.SimplyConnectedSphere": 1,
+    "Lib.AlgebraicTopology.SingularHomology.Chains": 1,
+    "Lib.AlgebraicTopology.SingularHomology.CircleProduct": 1,
+    "Lib.AlgebraicTopology.SingularHomology.Coproduct": 1,
+    "Lib.AlgebraicTopology.SingularHomology.CrossInsert": 1,
+    "Lib.AlgebraicTopology.SingularHomology.HomotopyInvariance": 1,
+    "Lib.AlgebraicTopology.SingularHomology.LinearSphereAction": 1,
+    "Lib.AlgebraicTopology.SingularHomology.LocalContributions": 1,
+    "Lib.AlgebraicTopology.SingularHomology.LocalDegree": 1,
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris": 1,
+    "Lib.AlgebraicTopology.SingularHomology.ModuleHomology": 1,
+    "Lib.AlgebraicTopology.SingularHomology.Naturality": 1,
+    "Lib.AlgebraicTopology.SingularHomology.PathClass": 1,
+    "Lib.AlgebraicTopology.SingularHomology.Sphere": 1,
+    "Lib.AlgebraicTopology.SingularHomology.SphereHomology": 1,
+    "Lib.AlgebraicTopology.SingularHomology.Sum": 1,
+    "Lib.AlgebraicTopology.SingularHomology.Suspension": 1,
+    "Lib.Analysis.Calculus.MorseLemma": 1,
+    "Lib.Analysis.Complex.Cousin": 1,
+    "Lib.Analysis.Complex.Mobius": 1,
+    "Lib.Analysis.Complex.RiemannMapping": 1,
+    "Lib.Analysis.Complex.SchwarzReflection": 1,
+    "Lib.Analysis.Complex.SquareRoot": 1,
+    "Lib.Analysis.ODE.SmoothFlow": 1,
+    "Lib.Geometry.Manifold.Collar": 1,
+    "Lib.Geometry.Manifold.RegularLevel": 1,
+    "Lib.Geometry.Manifold.WhitneyEmbedding": 1,
+    "Lib.GroupTheory.PresentedGroup.CentralTwist": 1,
+    "Lib.Topology.Algebra.FreeActionLocus": 1,
+    "Lib.Topology.Covering.DiagonalQuotient": 1,
+    "Lib.Topology.Covering.InvariantSubset": 1,
+    "Lib.Topology.Covering.Quotient": 1,
+    "Lib.Topology.FiberBundle.TwoOpenTransition": 1,
+    "Lib.Topology.Homotopy.CellAttachment": 1,
+    "Lib.Topology.Homotopy.CylinderHEP": 1,
+    "Lib.Topology.Homotopy.HandleRetraction": 1,
+    "Lib.Topology.Homotopy.LocalCollapse": 1,
+    "Lib.Topology.Homotopy.LoopSubdivision": 1,
+    "Lib.Topology.Homotopy.SublevelRetraction": 1,
+    "Lib.Topology.Homotopy.Suspension": 1,
+    "Lib.Topology.MappingTorus.Basic": 1,
+    "Lib.Topology.MappingTorus.HomologyCover": 1,
+    "Lib.Analysis.Complex.RiemannMapping.Steps": 1,
+    "Lib.Geometry.Manifold.ChartedSpace.Transport": 1,
+    "Lib.Geometry.Manifold.Complex.Biholomorph": 1,
+    "Lib.Geometry.Manifold.Flow.Compact": 1,
+    "Lib.Geometry.Manifold.Flow.HeightTranslating": 1,
+    "Lib.Geometry.Manifold.Instances.RiemannSphere": 1,
+    "Lib.Geometry.Manifold.Morse.Birth": 1,
+    "Lib.Geometry.Manifold.Morse.CellStructure": 1,
+    "Lib.Geometry.Manifold.Morse.ConnectionCancellation": 1,
+    "Lib.Geometry.Manifold.Morse.Existence": 1,
+    "Lib.Geometry.Manifold.Morse.Handle": 1,
+    "Lib.Geometry.Manifold.Morse.HandleAttachment": 1,
+    "Lib.Geometry.Manifold.Morse.Index": 1,
+    "Lib.Geometry.Manifold.Morse.RearrangementTheorem": 1,
+    "Lib.Geometry.Manifold.Morse.Reeb": 1,
+    "Lib.Geometry.Manifold.Morse.SublevelSets": 1,
+    "Lib.Geometry.Manifold.Morse.SurgeryWindows": 1,
+    "Lib.Geometry.Manifold.Quotient.Atlas": 1,
+    "Lib.Geometry.Manifold.Quotient.LocalOrbit": 1,
+    "Lib.Geometry.Manifold.VectorBundle.ProjectionBundle": 1
+   }
+  ],
+  [
+   "\u00ab_aux_<M>___macroRules__private_<M>_0_term_\u226b\u209a__1\u00bb",
+   407006920,
+   {
+    "Hopf.Proof.DifferentialTopology": 1,
+    "Hopf.Proof.Final": 1,
+    "Hopf.Proof.FiniteCore": 1,
+    "Hopf.Proof.Hurewicz": 1,
+    "Hopf.Proof.Recognition": 1,
+    "Hopf.Proof.SingularHomology": 1,
+    "Hopf.Proof.SphereTopology": 1,
+    "Lib.GroupTheory.SplitExtension": 1,
+    "Lib.Topology.OnePointCollapse": 1,
+    "Hopf.Proof.LCP.AnalyticFillings": 1,
+    "Hopf.Proof.LCP.BoundaryTopology": 1,
+    "Hopf.Proof.LCP.CuspFilling": 1,
+    "Hopf.Proof.LCP.GlobalAssembly": 1,
+    "Hopf.Proof.LCP.IntegralHomology": 1,
+    "Hopf.Proof.LCP.LocalModels": 1,
+    "Hopf.Proof.LCP.PeriodConstruction": 1,
+    "Hopf.Proof.LCP.Specialization": 1,
+    "Lib.Algebra.Homology.MayerVietorisShortExact": 1,
+    "Lib.AlgebraicTopology.FundamentalGroup.SimplyConnectedCover": 1,
+    "Lib.AlgebraicTopology.FundamentalGroup.TwoSimplyConnectedCover": 1,
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1,
+    "Lib.AlgebraicTopology.FundamentalGroupoid.SimplyConnectedSphere": 1,
+    "Lib.AlgebraicTopology.SingularHomology.Chains": 1,
+    "Lib.AlgebraicTopology.SingularHomology.CircleProduct": 1,
+    "Lib.AlgebraicTopology.SingularHomology.Coproduct": 1,
+    "Lib.AlgebraicTopology.SingularHomology.CrossInsert": 1,
+    "Lib.AlgebraicTopology.SingularHomology.HomotopyInvariance": 1,
+    "Lib.AlgebraicTopology.SingularHomology.LinearSphereAction": 1,
+    "Lib.AlgebraicTopology.SingularHomology.LocalContributions": 1,
+    "Lib.AlgebraicTopology.SingularHomology.LocalDegree": 1,
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris": 1,
+    "Lib.AlgebraicTopology.SingularHomology.ModuleHomology": 1,
+    "Lib.AlgebraicTopology.SingularHomology.Naturality": 1,
+    "Lib.AlgebraicTopology.SingularHomology.PathClass": 1,
+    "Lib.AlgebraicTopology.SingularHomology.Sphere": 1,
+    "Lib.AlgebraicTopology.SingularHomology.SphereHomology": 1,
+    "Lib.AlgebraicTopology.SingularHomology.Sum": 1,
+    "Lib.AlgebraicTopology.SingularHomology.Suspension": 1,
+    "Lib.Analysis.Calculus.MorseLemma": 1,
+    "Lib.Analysis.Complex.Cousin": 1,
+    "Lib.Analysis.Complex.Mobius": 1,
+    "Lib.Analysis.Complex.RiemannMapping": 1,
+    "Lib.Analysis.Complex.SchwarzReflection": 1,
+    "Lib.Analysis.Complex.SquareRoot": 1,
+    "Lib.Analysis.ODE.SmoothFlow": 1,
+    "Lib.Geometry.Manifold.Collar": 1,
+    "Lib.Geometry.Manifold.RegularLevel": 1,
+    "Lib.Geometry.Manifold.WhitneyEmbedding": 1,
+    "Lib.GroupTheory.PresentedGroup.CentralTwist": 1,
+    "Lib.Topology.Algebra.FreeActionLocus": 1,
+    "Lib.Topology.Covering.DiagonalQuotient": 1,
+    "Lib.Topology.Covering.InvariantSubset": 1,
+    "Lib.Topology.Covering.Quotient": 1,
+    "Lib.Topology.FiberBundle.TwoOpenTransition": 1,
+    "Lib.Topology.Homotopy.CellAttachment": 1,
+    "Lib.Topology.Homotopy.CylinderHEP": 1,
+    "Lib.Topology.Homotopy.HandleRetraction": 1,
+    "Lib.Topology.Homotopy.LocalCollapse": 1,
+    "Lib.Topology.Homotopy.LoopSubdivision": 1,
+    "Lib.Topology.Homotopy.SublevelRetraction": 1,
+    "Lib.Topology.Homotopy.Suspension": 1,
+    "Lib.Topology.MappingTorus.Basic": 1,
+    "Lib.Topology.MappingTorus.HomologyCover": 1,
+    "Lib.Analysis.Complex.RiemannMapping.Steps": 1,
+    "Lib.Geometry.Manifold.ChartedSpace.Transport": 1,
+    "Lib.Geometry.Manifold.Complex.Biholomorph": 1,
+    "Lib.Geometry.Manifold.Flow.Compact": 1,
+    "Lib.Geometry.Manifold.Flow.HeightTranslating": 1,
+    "Lib.Geometry.Manifold.Instances.RiemannSphere": 1,
+    "Lib.Geometry.Manifold.Morse.Birth": 1,
+    "Lib.Geometry.Manifold.Morse.CellStructure": 1,
+    "Lib.Geometry.Manifold.Morse.ConnectionCancellation": 1,
+    "Lib.Geometry.Manifold.Morse.Existence": 1,
+    "Lib.Geometry.Manifold.Morse.Handle": 1,
+    "Lib.Geometry.Manifold.Morse.HandleAttachment": 1,
+    "Lib.Geometry.Manifold.Morse.Index": 1,
+    "Lib.Geometry.Manifold.Morse.RearrangementTheorem": 1,
+    "Lib.Geometry.Manifold.Morse.Reeb": 1,
+    "Lib.Geometry.Manifold.Morse.SublevelSets": 1,
+    "Lib.Geometry.Manifold.Morse.SurgeryWindows": 1,
+    "Lib.Geometry.Manifold.Quotient.Atlas": 1,
+    "Lib.Geometry.Manifold.Quotient.LocalOrbit": 1,
+    "Lib.Geometry.Manifold.VectorBundle.ProjectionBundle": 1
+   }
+  ]
+ ],
+ "changed_type_source": [],
+ "changed_type_proof_naming": [
+  "Mathoverflow1973.PeriodTorusHigherHomology.CirclePaths.quarterIntersection_component",
+  "Mathoverflow1973.PeriodTorusHigherHomology.CirclePaths.threeQuarterIntersection_component"
+ ],
+ "changed_type_accepted": [
+  "Mathoverflow1973.SphereHomology.suspensionConeCover"
+ ],
+ "added_accepted": [
+  "Diffeomorph.toPartialDiffeomorph'",
+  "IsLocalDiffeomorph.diffeomorph'"
+ ],
+ "accept_without_effect": [],
+ "changed_type_all": [
+  "Mathoverflow1973.PeriodTorusHigherHomology.CirclePaths.circleTranslation._proof_1",
+  "Mathoverflow1973.PeriodTorusHigherHomology.CirclePaths.circleTranslationHomotopy._proof_1",
+  "Mathoverflow1973.PeriodTorusHigherHomology.CirclePaths.circleTranslationHomotopy._proof_2",
+  "Mathoverflow1973.PeriodTorusHigherHomology.CirclePaths.circleTranslationHomotopy._proof_3",
+  "Mathoverflow1973.PeriodTorusHigherHomology.CirclePaths.positiveLoop._proof_1",
+  "Mathoverflow1973.PeriodTorusHigherHomology.CirclePaths.quarterIntersection._proof_1",
+  "Mathoverflow1973.PeriodTorusHigherHomology.CirclePaths.quarterIntersection_component",
+  "Mathoverflow1973.PeriodTorusHigherHomology.CirclePaths.quarterLoop._proof_1",
+  "Mathoverflow1973.PeriodTorusHigherHomology.CirclePaths.quarterLoop._proof_2",
+  "Mathoverflow1973.PeriodTorusHigherHomology.CirclePaths.quarterLoop._proof_3",
+  "Mathoverflow1973.PeriodTorusHigherHomology.CirclePaths.threeQuarterIntersection._proof_1",
+  "Mathoverflow1973.PeriodTorusHigherHomology.CirclePaths.threeQuarterIntersection_component",
+  "Mathoverflow1973.PeriodTorusHigherHomology.CirclePaths.uPath._proof_1",
+  "Mathoverflow1973.PeriodTorusHigherHomology.CirclePaths.uPath._proof_2",
+  "Mathoverflow1973.PeriodTorusHigherHomology.CirclePaths.uPath._proof_3",
+  "Mathoverflow1973.PeriodTorusHigherHomology.CirclePaths.uPath._proof_4",
+  "Mathoverflow1973.PeriodTorusHigherHomology.CirclePaths.uPath._proof_5",
+  "Mathoverflow1973.PeriodTorusHigherHomology.CirclePaths.vPath._proof_1",
+  "Mathoverflow1973.PeriodTorusHigherHomology.CirclePaths.vPath._proof_2",
+  "Mathoverflow1973.PeriodTorusHigherHomology.CirclePaths.vPath._proof_3",
+  "Mathoverflow1973.PeriodTorusHigherHomology.CirclePaths.vPath._proof_4",
+  "Mathoverflow1973.PeriodTorusHigherHomology.CirclePaths.vPath._proof_5",
+  "Mathoverflow1973.PeriodTorusHigherHomology.intersectionDifferenceCycle._proof_1",
+  "Mathoverflow1973.PeriodTorusHigherHomology.intersectionDifferenceCycle.eq_1",
+  "Mathoverflow1973.PeriodTorusHigherHomology.twoChainSmallCycle._proof_1",
+  "Mathoverflow1973.PeriodTorusHigherHomology.uCrossChain.eq_1",
+  "Mathoverflow1973.PeriodTorusHigherHomology.vCrossChain.eq_1",
+  "Mathoverflow1973.SmoothRadial.diffeomorph._proof_2",
+  "Mathoverflow1973.SphereHomology.suspensionConeCover",
+  "Mathoverflow1973.SphereHomology.suspensionConeCover._proof_1",
+  "Mathoverflow1973.SphereHomology.suspensionConeCover._proof_2",
+  "Mathoverflow1973.SphereHomology.suspensionConeCover._proof_3",
+  "Mathoverflow1973.SphereHomology.suspensionConeCover._proof_6",
+  "Mathoverflow1973.SphereHomology.suspensionConeCover._proof_7"
+ ],
+ "moves": [
+  [
+   "Hopf.Hurewicz",
+   "Lib.AlgebraicTopology.FundamentalGroup.VanKampen",
+   2
+  ],
+  [
+   "Hopf.Hurewicz",
+   "Lib.AlgebraicTopology.Hurewicz.CubeSphere",
+   6
+  ],
+  [
+   "Hopf.LCP.CuspFilling",
+   "Lib.AlgebraicTopology.SingularHomology.CirclePaths",
+   26
+  ],
+  [
+   "Hopf.LCP.IntegralHomology",
+   "Lib.Topology.MappingTorus.Wang",
+   10
+  ],
+  [
+   "Hopf.LCP.Specialization",
+   "Lib.Topology.MappingTorus.Wang",
+   2
+  ],
+  [
+   "Hopf.Proof.LCP.CuspFilling",
+   "Lib.AlgebraicTopology.SingularHomology.CirclePaths",
+   60
+  ],
+  [
+   "Hopf.SingularHomology",
+   "Lib.Topology.MappingTorus.Wang",
+   15
+  ]
+ ],
+ "ambiguous": [],
+ "auxiliary_moved": 69,
+ "verdict": "PASS"
+}

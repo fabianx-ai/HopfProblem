@@ -1,0 +1,214 @@
+{
+ "AdaptedWindows.dense_minimum_forward_basins": [
+  "Lib.Geometry.Manifold.Morse.CircleGluing"
+ ],
+ "AdaptedWindows.exists_two_sided_belt_branch_in_minimum_basin": [
+  "Lib.Geometry.Manifold.Morse.BeltCancellation"
+ ],
+ "FlowCancellation.exists_native_connection_no_return": [
+  "Lib.Geometry.Manifold.Morse.Cancellation"
+ ],
+ "FlowCancellation.native_no_return_of_supported_perturbation": [
+  "Lib.Geometry.Manifold.Morse.Cancellation"
+ ],
+ "FlowSuspension.cylinder_incoming_basin_labels": [
+  "Lib.Geometry.Manifold.Morse.Cancellation"
+ ],
+ "FlowSuspension.cylinder_outgoing_basin_labels": [
+  "Lib.Geometry.Manifold.Morse.Cancellation"
+ ],
+ "FlowSuspension.exists_native_regular_level_isotopy_realization": [
+  "Lib.Geometry.Manifold.Morse.Cancellation",
+  "Lib.Geometry.Manifold.Morse.SurgeryCollapse"
+ ],
+ "FlowSuspension.exists_native_whole_level_holonomy": [
+  "Lib.Geometry.Manifold.Morse.AdaptedWindows"
+ ],
+ "FlowSuspension.exists_phase_flow_basin_chart": [
+  "Lib.Geometry.Manifold.Morse.Cancellation"
+ ],
+ "FlowSuspension.exists_unique_phase_corrected_cylinder": [
+  "Lib.Geometry.Manifold.Morse.Cancellation"
+ ],
+ "FlowSuspension.nativeSuspensionField": [
+  "Lib.Geometry.Manifold.Morse.AdaptedWindows"
+ ],
+ "FlowSuspension.nativeSuspensionFlow": [
+  "Lib.Geometry.Manifold.Morse.AdaptedWindows"
+ ],
+ "FlowSuspension.nativeVerticalField": [
+  "Lib.Geometry.Manifold.Morse.AdaptedWindows"
+ ],
+ "FlowSuspension.native_transverse_basin_tubes_of_level_maps": [
+  "Lib.Geometry.Manifold.Morse.Cancellation",
+  "Lib.Geometry.Manifold.Morse.SurgeryCollapse"
+ ],
+ "FlowSuspension.native_vertical_cylinder_flow": [
+  "Lib.Geometry.Manifold.Morse.Cancellation"
+ ],
+ "FlowSuspension.native_whole_level_exterior_tails": [
+  "Lib.Geometry.Manifold.Morse.AdaptedWindows"
+ ],
+ "FlowSuspension.phase_flow_chart_subsheet_germ": [
+  "Lib.Geometry.Manifold.Morse.Cancellation"
+ ],
+ "FlowSuspension.phase_flow_subsheet_properties": [
+  "Lib.Geometry.Manifold.Morse.Cancellation"
+ ],
+ "FlowSuspension.unique_connection_of_level_basin_intersection": [
+  "Lib.Geometry.Manifold.Morse.Cancellation",
+  "Lib.Geometry.Manifold.Morse.CircleGluing",
+  "Lib.Geometry.Manifold.Morse.SurgeryCollapse"
+ ],
+ "FlowSuspension.whole_level_basins_of_holonomy": [
+  "Lib.Geometry.Manifold.Morse.AdaptedWindows",
+  "Lib.Geometry.Manifold.Morse.Cancellation",
+  "Lib.Geometry.Manifold.Morse.SurgeryCollapse"
+ ],
+ "FlowTimeChange.descending_height_div_const_iff": [
+  "Lib.Geometry.Manifold.Morse.Cancellation"
+ ],
+ "FlowTimeChange.exists_normalized_connection_cylinder": [
+  "Lib.Geometry.Manifold.Morse.Cancellation"
+ ],
+ "FlowTimeChange.exists_normalized_whole_level_cylinder": [
+  "Lib.Geometry.Manifold.Morse.AdaptedWindows"
+ ],
+ "FlowTimeChange.exists_orbit_preserving_ambient_band_bridge": [
+  "Lib.Geometry.Manifold.Morse.RearrangementTheorem"
+ ],
+ "FlowTimeChange.exists_orbit_preserving_native_band_bridge": [
+  "Lib.Geometry.Manifold.Morse.CircleGluing",
+  "Lib.Geometry.Manifold.Morse.RearrangementTheorem"
+ ],
+ "MorseCancellation.NativeEndpointSliceData": [
+  "Lib.Geometry.Manifold.Morse.Cancellation"
+ ],
+ "MorseCancellation.NativeEndpointSliceData.H": [
+  "Lib.Geometry.Manifold.Morse.Cancellation"
+ ],
+ "MorseCancellation.NativeEndpointSliceData.H_zero": [
+  "Lib.Geometry.Manifold.Morse.Cancellation"
+ ],
+ "MorseCancellation.NativeEndpointSliceData.P": [
+  "Lib.Geometry.Manifold.Morse.Cancellation"
+ ],
+ "MorseCancellation.NativeEndpointSliceData.P_source": [
+  "Lib.Geometry.Manifold.Morse.Cancellation"
+ ],
+ "MorseCancellation.NativeEndpointSliceData.P_target": [
+  "Lib.Geometry.Manifold.Morse.Cancellation"
+ ],
+ "MorseCancellation.NativeEndpointSliceData.P_zero": [
+  "Lib.Geometry.Manifold.Morse.Cancellation"
+ ],
+ "MorseCancellation.NativeEndpointSliceData.Q": [
+  "Lib.Geometry.Manifold.Morse.Cancellation"
+ ],
+ "MorseCancellation.NativeEndpointSliceData.Q_source": [
+  "Lib.Geometry.Manifold.Morse.Cancellation"
+ ],
+ "MorseCancellation.NativeEndpointSliceData.Q_target": [
+  "Lib.Geometry.Manifold.Morse.Cancellation"
+ ],
+ "MorseCancellation.NativeEndpointSliceData.Q_zero": [
+  "Lib.Geometry.Manifold.Morse.Cancellation"
+ ],
+ "MorseCancellation.NativeEndpointSliceData._sizeOf_inst": [
+  "Lib.Geometry.Manifold.Morse.Cancellation"
+ ],
+ "MorseCancellation.NativeEndpointSliceData.diagram": [
+  "Lib.Geometry.Manifold.Morse.Cancellation"
+ ],
+ "MorseCancellation.NativeEndpointSliceData.formulaP": [
+  "Lib.Geometry.Manifold.Morse.Cancellation"
+ ],
+ "MorseCancellation.NativeEndpointSliceData.formulaQ": [
+  "Lib.Geometry.Manifold.Morse.Cancellation"
+ ],
+ "MorseCancellation.NativeEndpointSliceData.labelDomain": [
+  "Lib.Geometry.Manifold.Morse.Cancellation"
+ ],
+ "MorseCancellation.NativeEndpointSliceData.phaseP": [
+  "Lib.Geometry.Manifold.Morse.Cancellation"
+ ],
+ "MorseCancellation.NativeEndpointSliceData.phaseQ": [
+  "Lib.Geometry.Manifold.Morse.Cancellation"
+ ],
+ "MorseCancellation.NativeEndpointSliceData.sliceP": [
+  "Lib.Geometry.Manifold.Morse.Cancellation"
+ ],
+ "MorseCancellation.NativeEndpointSliceData.sliceQ": [
+  "Lib.Geometry.Manifold.Morse.Cancellation"
+ ],
+ "MorseCancellation.NativeEndpointSliceData.smooth_phaseP": [
+  "Lib.Geometry.Manifold.Morse.Cancellation"
+ ],
+ "MorseCancellation.NativeEndpointSliceData.smooth_phaseQ": [
+  "Lib.Geometry.Manifold.Morse.Cancellation"
+ ],
+ "MorseCancellation.NativeEndpointSliceData.source": [
+  "Lib.Geometry.Manifold.Morse.Cancellation"
+ ],
+ "MorseCancellation.NativeEndpointSliceData.zero_domain": [
+  "Lib.Geometry.Manifold.Morse.Cancellation"
+ ],
+ "MorseCancellation.NativeEndpointSliceData.zero_phaseP": [
+  "Lib.Geometry.Manifold.Morse.Cancellation"
+ ],
+ "MorseCancellation.NativeEndpointSliceData.zero_phaseQ": [
+  "Lib.Geometry.Manifold.Morse.Cancellation"
+ ],
+ "MorseCancellation.NativeEndpointSliceData.zero_source": [
+  "Lib.Geometry.Manifold.Morse.Cancellation"
+ ],
+ "MorseCancellation.exists_actual_connection_slice_data": [
+  "Lib.Geometry.Manifold.Morse.Cancellation"
+ ],
+ "MorseCancellation.exists_full_cubic_chart_from_corrected_cylinder": [
+  "Lib.Geometry.Manifold.Morse.Cancellation"
+ ],
+ "MorseCancellation.incoming_cubic_slice_basin": [
+  "Lib.Geometry.Manifold.Morse.Cancellation"
+ ],
+ "MorseCancellation.nativeBeltArc": [
+  "Lib.Geometry.Manifold.Morse.BeltCancellation"
+ ],
+ "MorseCancellation.nativeBeltArc_belt_eq_iff": [
+  "Lib.Geometry.Manifold.Morse.BeltCancellation"
+ ],
+ "MorseCancellation.nativeBeltArc_contMDiffOn": [
+  "Lib.Geometry.Manifold.Morse.BeltCancellation"
+ ],
+ "MorseCancellation.nativeBeltArc_coordinates_mem_target": [
+  "Lib.Geometry.Manifold.Morse.BeltCancellation"
+ ],
+ "MorseCancellation.nativeBeltArc_height": [
+  "Lib.Geometry.Manifold.Morse.BeltCancellation"
+ ],
+ "MorseCancellation.nativeBeltArc_injOn": [
+  "Lib.Geometry.Manifold.Morse.BeltCancellation"
+ ],
+ "MorseCancellation.nativeBeltArc_zero": [
+  "Lib.Geometry.Manifold.Morse.BeltCancellation"
+ ],
+ "MorseCancellation.nativeUpperMeridian": [
+  "Lib.Geometry.Manifold.Morse.BeltCancellation"
+ ],
+ "MorseCancellation.nativeUpperMeridian_avoids_belt": [
+  "Lib.Geometry.Manifold.Morse.BeltCancellation"
+ ],
+ "MorseCancellation.outgoing_cubic_slice_basin": [
+  "Lib.Geometry.Manifold.Morse.Cancellation"
+ ],
+ "MorseCancellation.partialChartField_zero_iff": [
+  "Lib.Geometry.Manifold.Morse.Cancellation"
+ ],
+ "TransverseCoordinates.surjective_coprod_swap": [
+  "Lib.Geometry.Manifold.Morse.CircleGluing",
+  "Lib.Geometry.Manifold.Whitney.EmbeddedArcs"
+ ],
+ "TransverseGerms.relative_transverse_of_label_sheets": [
+  "Lib.Geometry.Manifold.Morse.Cancellation"
+ ]
+}

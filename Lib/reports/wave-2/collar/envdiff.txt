@@ -1,0 +1,17 @@
+constants before 38301 after 38303 (keys 38199 38201 )
+lost 11 added 13 of which source declarations: 0 0 ; names with changed type 11 of which source: 2
+  PROOF-NAMING DiskFraming.exists_smooth_frame_near_starConvex
+  PROOF-NAMING DiskFraming.exists_smooth_frame_on_neighborhood_closedBall
+auxiliary lost/added/changed (not judged): 11 13 9
+module moves (source declarations, 1-to-1):
+      29  Lib.Geometry.Manifold.Collar -> Lib.Geometry.Manifold.Collar.DiskTubular
+      17  Lib.Geometry.Manifold.Collar -> Lib.Geometry.Manifold.Collar.HeightCollar
+      10  Lib.Geometry.Manifold.Collar -> Lib.Geometry.Manifold.Collar.LevelTransport
+      22  Lib.Geometry.Manifold.Collar -> Lib.Geometry.Manifold.Collar.RangeTransport
+      10  Lib.Geometry.Manifold.Collar -> Lib.Geometry.Manifold.Collar.SmallPerturbation
+       1  Lib.Geometry.Manifold.Collar -> Lib.Geometry.Manifold.Collar.SphereCoordinates
+      16  Lib.Geometry.Manifold.Collar -> Lib.Geometry.Manifold.Collar.SupportedDiffeomorph
+      55  Lib.Geometry.Manifold.Collar -> Lib.Geometry.Manifold.Collar.Tubular
+ambiguous module changes: 0
+auxiliary constants that changed module: 123
+VERDICT PASS

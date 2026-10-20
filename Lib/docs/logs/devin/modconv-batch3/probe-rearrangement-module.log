@@ -1,0 +1,95 @@
+Mathoverflow1973.AdaptedWindows.{u_1, u_2} (E : Type u_1) [NormedAddCommGroup E] [NormedSpace ℝ E] {M : Type u_2}
+  [TopologicalSpace M] [ChartedSpace E M] [IsManifold (modelWithCornersSelf ℝ E) (↑⊤) M] (f : M → ℝ) :
+  Type (max u_1 u_2)
+Mathoverflow1973.MorseCancellation.nativeMorseIndex.{u_1, u_2} (E : Type u_1) [NormedAddCommGroup E] [NormedSpace ℝ E]
+  {M : Type u_2} [TopologicalSpace M] [ChartedSpace E M] (f : M → ℝ) (p : M) : ℕ
+Mathoverflow1973.ManifoldImmersion.exists_immersion_on_compact_rel.{u_1, u_2, u_3} {G : Type u_1} {H : Type u_2}
+  {N : Type u_3} [NormedAddCommGroup G] [NormedSpace ℝ G] [FiniteDimensional ℝ G] [TopologicalSpace H]
+  {J : ModelWithCorners ℝ G H} [J.Boundaryless] [TopologicalSpace N] [ChartedSpace H N] [IsManifold J (↑⊤) N]
+  [T2Space N] (f : C(PlaneImmersion.Plane, N)) (hf : ContMDiff (modelWithCornersSelf ℝ PlaneImmersion.Plane) J ↑⊤ ⇑f)
+  (hdim : 5 ≤ Module.finrank ℝ G) {K L C : Set PlaneImmersion.Plane} (hK : IsCompact K) (hL : IsCompact L)
+  (hinj : ∀ x ∈ K, Function.Injective ⇑(mfderiv% ⇑f x)) (hC : IsClosed C) (hdis : Disjoint L C) :
+  ∃ g,
+    ContMDiff (modelWithCornersSelf ℝ PlaneImmersion.Plane) J ↑⊤ ⇑g ∧
+      f.HomotopicRel g C ∧ ∀ x ∈ K ∪ L, Function.Injective ⇑(mfderiv% ⇑g x)
+Mathoverflow1973.exists_tubularNeighborhood_in_open_of_embedded_closedBall.{u_1, u_2, u_3} {E : Type u_1} {M : Type u_2}
+  {D : Type u_3} [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M]
+  [ChartedSpace E M] [IsManifold (modelWithCornersSelf ℝ E) (↑⊤) M] [T2Space M] [CompactSpace M] [NormedAddCommGroup D]
+  [InnerProductSpace ℝ D] [FiniteDimensional ℝ D] {f : D → M}
+  (hf : ContMDiff (modelWithCornersSelf ℝ D) (modelWithCornersSelf ℝ E) (↑⊤) f)
+  (hinj : Set.InjOn f (Metric.closedBall 0 1)) (hi : ∀ x ∈ Metric.closedBall 0 1, Function.Injective ⇑(mfderiv% f x))
+  (n : ℕ) (hcodim : Module.finrank ℝ D + n = Module.finrank ℝ E) {O : Set M} (hO : IsOpen O)
+  (hfO : Set.MapsTo f (Metric.closedBall 0 1) O) :
+  ∃ ε,
+    0 < ε ∧
+      ∃ Φ,
+        Metric.closedBall 0 1 ×ˢ Metric.closedBall 0 ε ⊆ Φ.source ∧
+          (∀ x ∈ Metric.closedBall 0 1, ↑Φ.toPartialEquiv (x, 0) = f x) ∧ Φ.target ⊆ O
+Mathoverflow1973.AdaptedWindows.attaching_basin_iff.{u_1, u_2} {E : Type u_1} {M : Type u_2} [NormedAddCommGroup E]
+  [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] [IsManifold (modelWithCornersSelf ℝ E) (↑⊤) M] [T2Space M]
+  {f : M → ℝ} (S : AdaptedWindows E f) (hf : ContMDiff (modelWithCornersSelf ℝ E) (modelWithCornersSelf ℝ ℝ) (↑⊤) f)
+  (p : ↑(ManifoldMorse.criticalPoints E f)) (x : (S.data p).LowerLevel) :
+  Filter.Tendsto (fun t => S.flow.toFun t ↑x) Filter.atBot (nhds ↑p) ↔ x ∈ Set.range ⇑(S.data p).surgery.attachingSphere
+Mathoverflow1973.MorseCancellation.nativeMorseIndex_eq_chart.{u_1, u_2} {E : Type u_1} {M : Type u_2}
+  [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] {f : M → ℝ} {p : M}
+  (c : ManifoldMorse.SignedMorseChart f p) :
+  MorseCancellation.nativeMorseIndex E f p = Module.finrank ℝ c.NegativeCoordinates
+Mathoverflow1973.NativeEuclideanEmbedding.tangentNormalEquiv.{u_1, u_2} {E : Type u_1} {M : Type u_2}
+  [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] (e : NativeEuclideanEmbedding E M)
+  [FiniteDimensional ℝ E] (x : M) :
+  (TangentSpace (modelWithCornersSelf ℝ E) x × ↥(e.normalFiber x)) ≃L[ℝ] EuclideanSpace ℝ (Fin e.ambientDimension)
+Mathoverflow1973.NativeEuclideanEmbedding.contMDiff_normalProjection.{u_1, u_2} {E : Type u_1} {M : Type u_2}
+  [NormedAddCommGroup E] [NormedSpace ℝ E] [TopologicalSpace M] [ChartedSpace E M] (e : NativeEuclideanEmbedding E M)
+  [FiniteDimensional ℝ E] [IsManifold (modelWithCornersSelf ℝ E) (↑⊤) M] :
+  ContMDiff (modelWithCornersSelf ℝ E)
+    (modelWithCornersSelf ℝ (EuclideanSpace ℝ (Fin e.ambientDimension) →L[ℝ] EuclideanSpace ℝ (Fin e.ambientDimension)))
+    (↑⊤) e.normalProjection
+Mathoverflow1973.ProjectionBundle.coordinateChange_apply.{u_1, u_2, u_3, u_4, u_5} {F : Type u_1} {K : Type u_2}
+  [NormedAddCommGroup F] [NormedSpace ℝ F] [CompleteSpace F] [NormedAddCommGroup K] [NormedSpace ℝ K] {B : Type u_3}
+  {H : Type u_4} {M : Type u_5} [NormedAddCommGroup B] [NormedSpace ℝ B] [TopologicalSpace H]
+  {I : ModelWithCorners ℝ B H} [TopologicalSpace M] [ChartedSpace H M] (P : M → F →L[ℝ] F)
+  (hP : ∀ (x : M), IsIdempotentElem (P x)) (q : (x : M) → ↥(↑(P x)).range ≃L[ℝ] K)
+  (hs : ContMDiff I (modelWithCornersSelf ℝ (F →L[ℝ] F)) (↑⊤) P) (x₀ x₁ x : M)
+  (hx : x ∈ projectionTransportDomain P x₀ ∩ projectionTransportDomain P x₁) (v : K) :
+  (ProjectionBundle.coordinateChange P q x₀ x₁ x) v =
+    (↑(ProjectionBundle.pretrivialization P hP q hs x₁)
+        ⟨x, (ProjectionBundle.pretrivialization P hP q hs x₀).symm x v⟩).2
+Mathoverflow1973.NativeTransversality.exists_ambient_transverse_diffeomorph.{u_1, u_2, u_3, u_4, u_5, u_6, u_7, u_8,
+    u_9}
+  {D : Type u_1} {Z : Type u_2} {G : Type u_3} {H : Type u_4} {H' : Type u_5} {K : Type u_6} {X : Type u_7}
+  {Y : Type u_8} {N : Type u_9} [NormedAddCommGroup D] [NormedSpace ℝ D] [FiniteDimensional ℝ D] [NormedAddCommGroup Z]
+  [NormedSpace ℝ Z] [FiniteDimensional ℝ Z] [NormedAddCommGroup G] [NormedSpace ℝ G] [FiniteDimensional ℝ G]
+  [TopologicalSpace H] [TopologicalSpace H'] [TopologicalSpace K] {I : ModelWithCorners ℝ D H}
+  {I' : ModelWithCorners ℝ Z H'} {J : ModelWithCorners ℝ G K} [I.Boundaryless] [I'.Boundaryless] [J.Boundaryless]
+  [TopologicalSpace X] [ChartedSpace H X] [IsManifold I (↑⊤) X] [TopologicalSpace Y] [ChartedSpace H' Y]
+  [IsManifold I' (↑⊤) Y] [CompactSpace Y] [TopologicalSpace N] [ChartedSpace K N] [IsManifold J (↑⊤) N] [T2Space N]
+  [CompactSpace X] [T2Space X] {f : X → N} {g : Y → N} (hf : ContMDiff I J (↑⊤) f) (hg : ContMDiff I' J (↑⊤) g)
+  (hdim : Module.finrank ℝ D + Module.finrank ℝ Z = Module.finrank ℝ G) :
+  ∃ e, SupportedDiffeomorph.IsotopicToIdentity e ∧ ∀ (x : X) (y : Y), NativeTransversality.At I I' J (⇑e ∘ f) g x y
+Mathoverflow1973.MorseRearrangement.exists_ambient_disjoint_diffeomorph_of_dimension.{u_1, u_2, u_3, u_4, u_5, u_6, u_7,
+    u_8, u_9}
+  {D : Type u_1} {Z : Type u_2} {G : Type u_3} {H : Type u_4} {H' : Type u_5} {K : Type u_6} {X : Type u_7}
+  {Y : Type u_8} {N : Type u_9} [NormedAddCommGroup D] [NormedSpace ℝ D] [FiniteDimensional ℝ D] [NormedAddCommGroup Z]
+  [NormedSpace ℝ Z] [FiniteDimensional ℝ Z] [NormedAddCommGroup G] [NormedSpace ℝ G] [FiniteDimensional ℝ G]
+  [TopologicalSpace H] [TopologicalSpace H'] [TopologicalSpace K] {I : ModelWithCorners ℝ D H}
+  {I' : ModelWithCorners ℝ Z H'} {J : ModelWithCorners ℝ G K} [I.Boundaryless] [I'.Boundaryless] [J.Boundaryless]
+  [TopologicalSpace X] [ChartedSpace H X] [IsManifold I (↑⊤) X] [CompactSpace X] [T2Space X] [TopologicalSpace Y]
+  [ChartedSpace H' Y] [IsManifold I' (↑⊤) Y] [CompactSpace Y] [TopologicalSpace N] [ChartedSpace K N]
+  [IsManifold J (↑⊤) N] [T2Space N] {f : X → N} {g : Y → N} (hf : ContMDiff I J (↑⊤) f) (hg : ContMDiff I' J (↑⊤) g)
+  (hdim : Module.finrank ℝ D + Module.finrank ℝ Z < Module.finrank ℝ G) :
+  ∃ e, SupportedDiffeomorph.IsotopicToIdentity e ∧ Disjoint (Set.range (⇑e ∘ f)) (Set.range g)
+Mathoverflow1973.exists_partialDiffeomorph_of_isLocalDiffeomorphAt.{u_1, u_2, u_3, u_4, u_5, u_6} {E : Type u_1}
+  {F : Type u_2} {H : Type u_3} {H' : Type u_4} {X : Type u_5} {Y : Type u_6} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [TopologicalSpace H] {I : ModelWithCorners ℝ E H} [NormedAddCommGroup F] [NormedSpace ℝ F] [TopologicalSpace H']
+  {J : ModelWithCorners ℝ F H'} [TopologicalSpace X] [ChartedSpace H X] [TopologicalSpace Y] [ChartedSpace H' Y]
+  {f : X → Y} {x : X} (h : IsLocalDiffeomorphAt I J (↑⊤) f x) :
+  ∃ φ, x ∈ φ.source ∧ Set.EqOn f (↑φ.toPartialEquiv) φ.source
+Mathoverflow1973.partialDiffeomorphOfInjectiveLocal.{u_1, u_2, u_3, u_4, u_5, u_6} {E : Type u_1} {F : Type u_2}
+  {H : Type u_3} {H' : Type u_4} {X : Type u_5} {Y : Type u_6} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [TopologicalSpace H] {I : ModelWithCorners ℝ E H} [NormedAddCommGroup F] [NormedSpace ℝ F] [TopologicalSpace H']
+  {J : ModelWithCorners ℝ F H'} [TopologicalSpace X] [ChartedSpace H X] [Nonempty X] [TopologicalSpace Y]
+  [ChartedSpace H' Y] {f : X → Y} {U : Set X} (hU : IsOpen U) (hinj : Set.InjOn f U)
+  (hloc : IsLocalDiffeomorphOn I J (↑⊤) f U) : PartialDiffeomorph I J X Y ↑⊤
+Mathoverflow1973.SmallPerturbation.bumpTranslation_apply.{u_1} {E : Type u_1} [NormedAddCommGroup E] [NormedSpace ℝ E]
+  [FiniteDimensional ℝ E] {β : E → ℝ} {k : NNReal} (hs : ContDiff ℝ (↑⊤) β) (hβ : LipschitzWith k β) (a : E)
+  (ha : k * ‖a‖₊ < 1) (x : E) : (SmallPerturbation.bumpTranslation hs hβ a ha) x = x + β x • a

@@ -1,0 +1,3004 @@
+{
+"module": "Hopf.Recognition",
+"source": "/home/goblin/hopf-lib-integration/Hopf/Recognition.lean",
+"source_sha256": "c6b1584154425e841ca6d71c440abe80b95d8befcf37cdd6f3f635c1a6a66726",
+"units_kept": 213,
+"units_moved": 58,
+"units": [
+{
+"names": [
+"_private.Hopf.Recognition.0.Mathoverflow1973._aux_Hopf_Recognition___unexpand_Path_trans_1",
+"_private.Hopf.Recognition.0.Mathoverflow1973.\u00ab_aux_Hopf_Recognition___macroRules__private_Hopf_Recognition_0_Mathoverflow1973_term_\u226b\u209a__1\u00bb",
+"_private.Hopf.Recognition.0.Mathoverflow1973.\u00abterm_\u226b\u209a_\u00bb"
+],
+"class": "move",
+"lines": [
+91,
+91
+],
+"sha256": "8d095093345461faac1e010d0478941ed42e0e575ad161ca2a59316efc9b73f4"
+},
+{
+"names": [
+"_private.Hopf.Recognition.0.Mathoverflow1973._aux_Hopf_Recognition___unexpand_SlashAction_map_1",
+"_private.Hopf.Recognition.0.Mathoverflow1973.\u00ab_aux_Hopf_Recognition___macroRules__private_Hopf_Recognition_0_Mathoverflow1973_term_\u2223[_]__1\u00bb",
+"_private.Hopf.Recognition.0.Mathoverflow1973.\u00abterm_\u2223[_]_\u00bb"
+],
+"class": "move",
+"lines": [
+93,
+93
+],
+"sha256": "c826f8a48c119eec2c0f69fb208cac85a241ac194402fc2e0571c056e86b7351"
+},
+{
+"names": [
+"Mathoverflow1973.SpecialPeriods.Threefold.HomotopyThree.piThree_subsingleton"
+],
+"class": "move",
+"lines": [
+95,
+101
+],
+"sha256": "b7a0fdeecb9055c0d16d69f6c1c7139dedce9a6d81a17142e54b788aa4853fd0"
+},
+{
+"names": [
+"Mathoverflow1973.SpecialPeriods.Threefold.HomotopyFour.piFour_subsingleton"
+],
+"class": "move",
+"lines": [
+103,
+110
+],
+"sha256": "f809cad2303c64552f68fab91b1505aa9b7d1af8af57421e2911492f64602b21"
+},
+{
+"names": [
+"Mathoverflow1973.SpecialPeriods.Threefold.HomotopyFive.piFive_subsingleton"
+],
+"class": "move",
+"lines": [
+112,
+120
+],
+"sha256": "2f22264afc98df21a1bf110be31acac5dc11a7ac1ff1f589c803c517a029bd48"
+},
+{
+"names": [
+"Mathoverflow1973.SixthHurewicz.fundamentalCubeChain"
+],
+"class": "keep",
+"lines": [
+122,
+123
+],
+"sha256": "23621a6d29e8e4890f987ca5a8e88d4b2cb7c17ff797851f1942c546b076d183"
+},
+{
+"names": [
+"Mathoverflow1973.SixthHurewicz.cubeChain"
+],
+"class": "keep",
+"lines": [
+125,
+127
+],
+"sha256": "00cce3c70c4fc1123d6acf1bdbc389999e425ccc176f66837b14591e67613bb8"
+},
+{
+"names": [
+"Mathoverflow1973.SixthHurewicz.cubeChain_eq_induced"
+],
+"class": "keep",
+"lines": [
+129,
+132
+],
+"sha256": "baaacf4eea3f1e4b1ce8d5133d81ab4044a739df32a7858c2f81d82bac834828"
+},
+{
+"names": [
+"Mathoverflow1973.SixthHurewicz.cubeCycle"
+],
+"class": "keep",
+"lines": [
+134,
+136
+],
+"sha256": "950e34160a1915576479eb7784850dd9513b820b0cc9beeefb2da85f47d5f6e7"
+},
+{
+"names": [
+"Mathoverflow1973.SixthHurewicz.cubeCycle_val"
+],
+"class": "keep",
+"lines": [
+138,
+141
+],
+"sha256": "03231e7cefcb92c5bfb34027032490d261cedaf863c001e333210815f541251d"
+},
+{
+"names": [
+"Mathoverflow1973.SixthHurewicz.cubeHomologyClass"
+],
+"class": "keep",
+"lines": [
+143,
+145
+],
+"sha256": "a808cff6781146e33022c0bda5c4f19645bbf49e801140ce1446654f81aa1d0c"
+},
+{
+"names": [
+"Mathoverflow1973.SixthHurewicz.cubeHomologyClass_homotopic"
+],
+"class": "keep",
+"lines": [
+147,
+150
+],
+"sha256": "3458dcbb9ac6035b6759107188c7c8c08e511b2cfaf4d0568c6e776f748e68c6"
+},
+{
+"names": [
+"Mathoverflow1973.SixthHurewicz.homotopyMap"
+],
+"class": "keep",
+"lines": [
+152,
+154
+],
+"sha256": "514ff71d1d3979fe0c78870402f441cbb3a264f8d9e31497265c38fb86f2c844"
+},
+{
+"names": [
+"Mathoverflow1973.SixthHurewicz.hurewiczFunction"
+],
+"class": "keep",
+"lines": [
+156,
+158
+],
+"sha256": "55756492be11fb7d88008727ba7af0955aaae46e93861275daba2f1104706d23"
+},
+{
+"names": [
+"Mathoverflow1973.SixthHurewicz.hurewiczPi6"
+],
+"class": "keep",
+"lines": [
+160,
+162
+],
+"sha256": "b216b8a4dc9670be52a3b70f1ee4d2c0aa972b3d410436958832413ac739f1cd"
+},
+{
+"names": [
+"Mathoverflow1973.SixthHurewicz.hurewiczMap"
+],
+"class": "keep",
+"lines": [
+164,
+166
+],
+"sha256": "827b3dbd7dc6933613d5baeed21902acb72f43e37c9e7aa4f2b85cadb4e7dcce"
+},
+{
+"names": [
+"Mathoverflow1973.SixthHurewicz.hurewiczMap_representative"
+],
+"class": "keep",
+"lines": [
+168,
+173
+],
+"sha256": "c7282407b6c953990a3617847518537fe594468fd38de974bfcf7b1a2aaabe24"
+},
+{
+"names": [
+"Mathoverflow1973.SixthHurewicz.hurewiczInverse"
+],
+"class": "keep",
+"lines": [
+175,
+181
+],
+"sha256": "a186f8668e6688a91aa3ea76a954b6891484611bc26166ce9507a8a9eca0f79a"
+},
+{
+"names": [
+"Mathoverflow1973.SixthHurewicz.hurewiczLinearEquiv"
+],
+"class": "keep",
+"lines": [
+183,
+189
+],
+"sha256": "ee41af2f4752b3400ac9b5907d22f54c8018744fc99dcd1581a6b96144ba3340"
+},
+{
+"names": [
+"Mathoverflow1973.SixthHurewicz.hurewiczPi6Equiv"
+],
+"class": "keep",
+"lines": [
+191,
+202
+],
+"sha256": "65c201998ed84eb7dd7ccd0a1963045f3790f9f80c65edca7905a44065e28740"
+},
+{
+"names": [
+"Mathoverflow1973.SixthHurewicz.cubeChain_natural"
+],
+"class": "keep",
+"lines": [
+204,
+207
+],
+"sha256": "a8eb5bcc636deb445a6a90de56b28d4a1e99ae2293a8190198c184169273b433"
+},
+{
+"names": [
+"Mathoverflow1973.SixthHurewicz.cubeCycle_natural"
+],
+"class": "keep",
+"lines": [
+209,
+214
+],
+"sha256": "46f5b04330c43e3a1e56ce37e8e7cd685b9cff51f738e0350575f81a435a308c"
+},
+{
+"names": [
+"Mathoverflow1973.SixthHurewicz.cubeHomologyClass_natural"
+],
+"class": "keep",
+"lines": [
+216,
+220
+],
+"sha256": "0f3f2d7b4d058b6ce10757a95006e16136ca9b437f773477cfe79af28e9444ec"
+},
+{
+"names": [
+"Mathoverflow1973.SixthHurewicz.hurewiczFunction_natural"
+],
+"class": "keep",
+"lines": [
+222,
+226
+],
+"sha256": "9715b498485c3a923f4f1b5a02cc945854d39d79af76cde9642a2fc488f18a6c"
+},
+{
+"names": [
+"Mathoverflow1973.SixthHurewicz.hurewiczMap_natural"
+],
+"class": "keep",
+"lines": [
+228,
+232
+],
+"sha256": "9f4c74c813ccf84e01620c13d645383e45913cee6f5006696e780e8fdab6b917"
+},
+{
+"names": [
+"Mathoverflow1973.SixthHurewicz.hurewiczLinearEquiv_natural"
+],
+"class": "keep",
+"lines": [
+234,
+243
+],
+"sha256": "05bf1d1d0d0e1dcb3e768c4d4e3cab703ddbf74171de592a1f4cc494d6d55981"
+},
+{
+"names": [
+"Mathoverflow1973.SpecialPeriods.Threefold.HomotopySix.hurewiczEquiv"
+],
+"class": "move",
+"lines": [
+245,
+253
+],
+"sha256": "e2f4bc33230be6e241df66ce386433ccaa61d11e0ad7f43944f601733709595a"
+},
+{
+"names": [
+"Mathoverflow1973.SpecialPeriods.Threefold.HomotopySix.hurewiczEquiv_mk"
+],
+"class": "move",
+"lines": [
+255,
+260
+],
+"sha256": "6b10a546b2b912314978ab57e0488b65d6a2e296b01db37d68fea63c353afd49"
+},
+{
+"names": [
+"Mathoverflow1973.SpecialPeriods.Threefold.HomotopySix.piSixEquiv"
+],
+"class": "move",
+"lines": [
+262,
+264
+],
+"sha256": "a9e0cbe99d8cf8dc04049f509286074e198de6370ff4655854e61a137684b889"
+},
+{
+"names": [
+"Mathoverflow1973.SpecialPeriods.Threefold.HomotopySix.generator"
+],
+"class": "move",
+"lines": [
+266,
+268
+],
+"sha256": "b2809b01ecbcbcf841dfa38b13c1fee931be9abcf6f9e71c2314f31e285ed24a"
+},
+{
+"names": [
+"Mathoverflow1973.SpecialPeriods.Threefold.HomotopySix.hurewiczEquiv_generator"
+],
+"class": "move",
+"lines": [
+270,
+274
+],
+"sha256": "28b114c4778dacd15f8256bd6e6b3030d2ceb36fcb9629fb20d0c0823ffc61a8"
+},
+{
+"names": [
+"Mathoverflow1973.SpecialPeriods.Threefold.HomotopySix.exists_cube_topClass"
+],
+"class": "move",
+"lines": [
+276,
+286
+],
+"sha256": "cca4f8eb69397cb4ffaeed159da0e9bd3e6a7fe0a708f0a7be1423686fba9a9e"
+},
+{
+"names": [
+"Mathoverflow1973.SpecialPeriods.Threefold.HomotopySix.generatingCube"
+],
+"class": "move",
+"lines": [
+288,
+290
+],
+"sha256": "13b9d0f41e9dfbe812e51891042ac7fd743c913e95500fe13ce7bdbc948298e4"
+},
+{
+"names": [
+"Mathoverflow1973.SpecialPeriods.Threefold.HomotopySix.generatingCube_homologyClass"
+],
+"class": "move",
+"lines": [
+292,
+296
+],
+"sha256": "be89717a0e8a76c6c4e7862d439412beec8617fad54693ec2983320b609007f6"
+},
+{
+"names": [
+"Mathoverflow1973.MetricSixSphere"
+],
+"class": "move",
+"lines": [
+298,
+299
+],
+"sha256": "d7c4bb2f03b367b270c3a16ee0be504a38130a0b8d9cdfaddad70d55fbd5d763"
+},
+{
+"names": [
+"Mathoverflow1973.SixSphereHomology.homologyZeroEquiv"
+],
+"class": "move",
+"lines": [
+301,
+303
+],
+"sha256": "fd131e9e0f32f5f99110d262bdfbde9b4b849b4c4ff3bb6e41f853496a98a07c"
+},
+{
+"names": [
+"Mathoverflow1973.SixSphereHomology.homologySixEquiv"
+],
+"class": "move",
+"lines": [
+305,
+307
+],
+"sha256": "317e082da92212103b6c8daeae664fefb0fed47b5d53a231e176a388eb22ca41"
+},
+{
+"names": [
+"Mathoverflow1973.SixSphereHomology.homology_subsingleton"
+],
+"class": "move",
+"lines": [
+309,
+311
+],
+"sha256": "70ebffcc4035b828b65be3356cfc632e960e770960aa5091721496a16ec4201a"
+},
+{
+"names": [
+"Mathoverflow1973.SpecialPeriods.Threefold.HomologySphere.homology_subsingleton"
+],
+"class": "move",
+"lines": [
+313,
+326
+],
+"sha256": "866f3818775a1b50a68c25b3580ca1973a3b510c2fce5fd86438dcff56c60720"
+},
+{
+"names": [
+"Mathoverflow1973.SpecialPeriods.Threefold.HomologySphere.homologyZeroEquivSixSphere"
+],
+"class": "move",
+"lines": [
+328,
+332
+],
+"sha256": "d53d6d197e9ac356b03c4db2ad53119031dfe59eaaa19a1ec1f566d56c810d59"
+},
+{
+"names": [
+"Mathoverflow1973.SpecialPeriods.Threefold.HomologySphere.homologySixEquivSixSphere"
+],
+"class": "move",
+"lines": [
+334,
+337
+],
+"sha256": "cd8fb5edb84bc78f1397b73bba1a86d2f66098e299c091c7301efaa404ac3573"
+},
+{
+"names": [
+"Mathoverflow1973.SpecialPeriods.Threefold.SphereHomologyMap.six_surjective_of_topClass_preimage"
+],
+"class": "move",
+"lines": [
+339,
+348
+],
+"sha256": "77e20963a2e3ad905f8807a2841f51133ddc8e99065b47b22c047fe86637b65d"
+},
+{
+"names": [
+"Mathoverflow1973.SpecialPeriods.Threefold.SphereHomologyMap.six_bijective_of_topClass_preimage"
+],
+"class": "move",
+"lines": [
+350,
+366
+],
+"sha256": "1e53c4a5b645a5ef4e413649243bb2c75fb3985780bdeb9b2f63bd0975bc37aa"
+},
+{
+"names": [
+"Mathoverflow1973.SpecialPeriods.Threefold.SphereHomologyMap.homologyMap_bijective_of_topClass_preimage"
+],
+"class": "move",
+"lines": [
+368,
+382
+],
+"sha256": "117c2ff5c5bc67e8185ceedb1c71e9480f973ea177f28b143521a16bf46563cd"
+},
+{
+"names": [
+"Mathoverflow1973.SpecialPeriods.Threefold.SphereHomologyMap.homologyEquivOfTopClassPreimage"
+],
+"class": "move",
+"lines": [
+384,
+392
+],
+"sha256": "ed74f0ded2e6a21ddc72c8d1ec9f3a00f3057e145e4b0160c40c068595d416b6"
+},
+{
+"names": [
+"Mathoverflow1973.SixSphereCube.CubeInterior"
+],
+"class": "keep",
+"lines": [
+394,
+395
+],
+"sha256": "0ff4bb642b0e181d3e6eb8e6f4ddc0faa3333bb9d752cd3c46e076f6f9541635"
+},
+{
+"names": [
+"Mathoverflow1973.SixSphereCube.isClosed_cubeBoundary"
+],
+"class": "keep",
+"lines": [
+397,
+398
+],
+"sha256": "945b5d0519453e995c68c847352a3bdd9b52a4117d29ff359f0e0819fafd6eb4"
+},
+{
+"names": [
+"Mathoverflow1973.SixSphereCube.cubeInteriorHomeomorph"
+],
+"class": "keep",
+"lines": [
+400,
+401
+],
+"sha256": "022bcff018ec2216f25f96923624c29dd53da5cb9afa1cb33496f9e5aeff80bc"
+},
+{
+"names": [
+"Mathoverflow1973.SixSphereCube.zero_mem_cubeBoundary"
+],
+"class": "keep",
+"lines": [
+403,
+406
+],
+"sha256": "270033c999d796b07d4b08d75e443d9d1d7793717ffdb1723c3710ca1b45107b"
+},
+{
+"names": [
+"Mathoverflow1973.SixSphereCube.cubeBoundary_nonempty"
+],
+"class": "keep",
+"lines": [
+408,
+409
+],
+"sha256": "a2f63190ebb0f70dcc001da1ab8a38b6d1df7b9038611832260e52f13b5e5564"
+},
+{
+"names": [
+"Mathoverflow1973.SixSphereCube.cubeInteriorSphereHomeomorph"
+],
+"class": "keep",
+"lines": [
+411,
+412
+],
+"sha256": "d237cef74fb5b391933a3447c6265197f3cc8bb8354017abd17ccffd4d473a92"
+},
+{
+"names": [
+"Mathoverflow1973.SixSphereCube.cubeInteriorSphereHomeomorph_infty"
+],
+"class": "keep",
+"lines": [
+414,
+417
+],
+"sha256": "3a538adcd72fe7076b14c30abffd6a696cfdfcb4d26fd620d2df547dc9e06f2c"
+},
+{
+"names": [
+"Mathoverflow1973.SixSphereCube.cubeSphereMap"
+],
+"class": "keep",
+"lines": [
+419,
+420
+],
+"sha256": "234a4cf40c4ee4c8dcbeb89215bfd20f273cde5f64fbf27818ef78df0a9c28b6"
+},
+{
+"names": [
+"Mathoverflow1973.SixSphereCube.cubeSphereMap_apply"
+],
+"class": "keep",
+"lines": [
+422,
+425
+],
+"sha256": "33c3a7f24905597d99c169df748d851532c900ff80df76c05023515c1c4c8ba0"
+},
+{
+"names": [
+"Mathoverflow1973.SixSphereCube.cubeSphereMap_boundary"
+],
+"class": "keep",
+"lines": [
+427,
+429
+],
+"sha256": "0b5ad046f904df3e89192a40853ed21db6be8a0c723fb5414ce229b47ad635ca"
+},
+{
+"names": [
+"Mathoverflow1973.SixSphereCube.cubeSphereMap_eq_iff"
+],
+"class": "keep",
+"lines": [
+431,
+434
+],
+"sha256": "b0636bf02991d7d79db37edee50c9fb633cc06a844ce100fc2440f956c105440"
+},
+{
+"names": [
+"Mathoverflow1973.SixSphereCube.cubeSphereMap_surjective"
+],
+"class": "keep",
+"lines": [
+436,
+437
+],
+"sha256": "9778fb6449571a848fd82eac48e8a962253df1dc0508060f36021eeae1cea0e5"
+},
+{
+"names": [
+"Mathoverflow1973.SixSphereCube.cubeSphereLoop"
+],
+"class": "keep",
+"lines": [
+439,
+440
+],
+"sha256": "b8d25be3327764b241cba0025ecd54fdca9949e9b6f71b892bdc10b1a8e60ae5"
+},
+{
+"names": [
+"Mathoverflow1973.SixSphereCube.cubeSphereLoop_val"
+],
+"class": "keep",
+"lines": [
+442,
+444
+],
+"sha256": "2ea5fd2ee14eb561bfc8519af72599da586a78faa0897c2e8ac6c95ed236ef60"
+},
+{
+"names": [
+"Mathoverflow1973.SixSphereCube.factorMap"
+],
+"class": "keep",
+"lines": [
+446,
+448
+],
+"sha256": "c91bae8e254cc0399a5e1f311a2e174ac3122076a71d4130648f489b32091e69"
+},
+{
+"names": [
+"Mathoverflow1973.SixSphereCube.factorMap_cubeSphereMap"
+],
+"class": "keep",
+"lines": [
+450,
+454
+],
+"sha256": "8f32e2948b1546fbca49721051b5c661af5fa6aecdaae6bbb10f8365cc3aa962"
+},
+{
+"names": [
+"Mathoverflow1973.SixSphereCube.factorMap_comp_cubeSphereMap"
+],
+"class": "keep",
+"lines": [
+456,
+459
+],
+"sha256": "03054852a050d62dac820b7e7470bf782148920b55860ae3bfd2b5f5dcf47136"
+},
+{
+"names": [
+"Mathoverflow1973.SixSphereCube.factorMap_unique"
+],
+"class": "keep",
+"lines": [
+461,
+464
+],
+"sha256": "0c24c47a17433815f3beac10ebf6670cf5f9ffcf4b3bd5ab03550084ab3ec5ba"
+},
+{
+"names": [
+"Mathoverflow1973.SixSphereCube.factor_cubeChain"
+],
+"class": "keep",
+"lines": [
+467,
+477
+],
+"sha256": "071964096f2c8c259e0e0a523efd6f54ed52f5028351f16817a25a6c5b64d04c"
+},
+{
+"names": [
+"Mathoverflow1973.SixSphereCube.factor_cubeCycle"
+],
+"class": "keep",
+"lines": [
+479,
+487
+],
+"sha256": "0a4bdfcb7b2d735bb3886a2c3bf8929e6bbb2c902255b5d8442a93c68c92652f"
+},
+{
+"names": [
+"Mathoverflow1973.SixSphereCube.factor_cubeHomologyClass"
+],
+"class": "keep",
+"lines": [
+489,
+501
+],
+"sha256": "288f02b150515721f57331b17f4302ef45a3d182491239a113d2b0c6a69fa79b"
+},
+{
+"names": [
+"Mathoverflow1973.SpecialPeriods.Threefold.SphereHomologyEquivalence.sourceCubeClass"
+],
+"class": "move",
+"lines": [
+503,
+505
+],
+"sha256": "fe054723f04b529b6e57519ac00eae383454a526fa05b266dbec6a9386fc18cb"
+},
+{
+"names": [
+"Mathoverflow1973.SpecialPeriods.Threefold.SphereHomologyEquivalence.sphereMap"
+],
+"class": "move",
+"lines": [
+507,
+509
+],
+"sha256": "d67cb435111cab40a12cffc2a52831589a972bcbad445c64bfa9911f631c5cd0"
+},
+{
+"names": [
+"Mathoverflow1973.SpecialPeriods.Threefold.SphereHomologyEquivalence.sphereMap_sourceCubeClass"
+],
+"class": "move",
+"lines": [
+511,
+518
+],
+"sha256": "fda31413fbc90da6f8785eda74b0f3f6fa379764365dea361eef866e71c71d55"
+},
+{
+"names": [
+"Mathoverflow1973.SpecialPeriods.Threefold.SphereHomologyEquivalence.homologyMap_bijective"
+],
+"class": "move",
+"lines": [
+520,
+524
+],
+"sha256": "b1abb5f60de8495bd60dd4512083f76089643f0a5c75bff94399dcedbad0d825"
+},
+{
+"names": [
+"Mathoverflow1973.SpecialPeriods.Threefold.SphereHomologyEquivalence.homologyEquiv"
+],
+"class": "move",
+"lines": [
+526,
+531
+],
+"sha256": "0c6cd9a948e1c1d3072e7e12cbcf5d4a16bd182f20023a17474c92f174448e13"
+},
+{
+"names": [
+"Mathoverflow1973.sphereMap_piSix_bijective"
+],
+"class": "move",
+"lines": [
+533,
+576
+],
+"sha256": "67f953f838c0c99f9aa1d08bba64419ab242efdac0c7bce64cd557d048bf3d89"
+},
+{
+"names": [
+"Mathoverflow1973.BasedDiskLifting.exists_based_disk_lift"
+],
+"class": "move",
+"lines": [
+578,
+622
+],
+"sha256": "fcde158723273bf361aa2cf072b8c9596f3f66319ebb8dfb1094c34658ae3726"
+},
+{
+"names": [
+"Mathoverflow1973.Sphere.pi_subsingleton"
+],
+"class": "move",
+"lines": [
+624,
+632
+],
+"sha256": "2620123e8f8993eae91cede5444bf6be5195995c6be3c8f1e3f85359d003d2b5"
+},
+{
+"names": [
+"Mathoverflow1973.Sphere.boundary_homotopic_const"
+],
+"class": "move",
+"lines": [
+634,
+638
+],
+"sha256": "9835db9f617c3b3568aff2e5fc248d56724306e0cc0c3a90a14e6a4d62404cd9"
+},
+{
+"names": [
+"Mathoverflow1973.Sphere.exists_boundary_extension"
+],
+"class": "move",
+"lines": [
+640,
+646
+],
+"sha256": "0938bb27219aec4b96d2b243d51ac086fe0b4310fea29f60f553177471597029"
+},
+{
+"names": [
+"Mathoverflow1973.LowCellLifting.relativeDiskLifting_five"
+],
+"class": "move",
+"lines": [
+648,
+661
+],
+"sha256": "42386bb78aa64527a4f53a8701cfc225183655e94fa6c4776a4fbb8dd3da6e30"
+},
+{
+"names": [
+"Mathoverflow1973.LowCellLifting.threefold_pi_subsingleton"
+],
+"class": "move",
+"lines": [
+663,
+673
+],
+"sha256": "46548aa7f4882b86d6adf3e46d17d81ac59c23063d548448a73c2b6a62bdf2b8"
+},
+{
+"names": [
+"Mathoverflow1973.LowCellLifting.sphereMap_relativeDiskLifting_five"
+],
+"class": "move",
+"lines": [
+675,
+680
+],
+"sha256": "dffd2ece32d85faa9daf95d310a121b268ed2cfbea044ecdbf50c14996c23fc5"
+},
+{
+"names": [
+"Mathoverflow1973.TopCellLifting.exists_top_disk_lift"
+],
+"class": "move",
+"lines": [
+682,
+751
+],
+"sha256": "73fb9cd70bcfda2cbb6c69aee94d3a195a10ceb82d473d5a85c58ad22514d64a"
+},
+{
+"names": [
+"Mathoverflow1973.TopCellLifting.sphereMap_relativeDiskLifting_six"
+],
+"class": "move",
+"lines": [
+753,
+764
+],
+"sha256": "6f4ba94fa1abbfc3dfafdd48b7f00bf3b6ddb9451c2b418aaa6707e98ff82214"
+},
+{
+"names": [
+"Mathoverflow1973.Threefold.finite_homotopy_cells"
+],
+"class": "move",
+"lines": [
+766,
+773
+],
+"sha256": "441c3d3a14bdcb4ebb8b462794d060570c1b2a94b09241a55192e44c23dcff91"
+},
+{
+"names": [
+"Mathoverflow1973.exists_right_homotopy_inverse"
+],
+"class": "move",
+"lines": [
+775,
+781
+],
+"sha256": "7722a736caef93821584d84b0ac6bb430c94db0d1269b14f272b2b445458da60"
+},
+{
+"names": [
+"Mathoverflow1973.cylinderQuotient"
+],
+"class": "keep",
+"lines": [
+783,
+785
+],
+"sha256": "a924c4e1be355bc7b8f3f556f48c4f450a37a722cba7b9333de04cac1ccc0087"
+},
+{
+"names": [
+"Mathoverflow1973.cylinderQuotient_surjective"
+],
+"class": "keep",
+"lines": [
+787,
+790
+],
+"sha256": "d043bd4a7b4adda0c3e64d931c590033690290abb96fc9f0e639ee77a66814b5"
+},
+{
+"names": [
+"Mathoverflow1973.cylinderQuotient_isQuotientMap"
+],
+"class": "keep",
+"lines": [
+792,
+793
+],
+"sha256": "fea0cbf1272c11b6ed5e797176fdf89c0c68de07fe462816af7d22298285d4fa"
+},
+{
+"names": [
+"Mathoverflow1973.cubeHomotopy_constant_on_cylinderFibres"
+],
+"class": "keep",
+"lines": [
+795,
+808
+],
+"sha256": "a382576de6bd11f49cfc67758cecca2827f7a9b3ae0d1b374aead1b87006994a"
+},
+{
+"names": [
+"Mathoverflow1973.cubeHomotopyLift"
+],
+"class": "keep",
+"lines": [
+810,
+814
+],
+"sha256": "beacdbea20785661e4d5a9f2e7bfe8fd4c848cae594cf89c0f60662b4a69fd10"
+},
+{
+"names": [
+"Mathoverflow1973.cubeHomotopyLift_apply"
+],
+"class": "keep",
+"lines": [
+816,
+824
+],
+"sha256": "9480ca05bd55417b0ea835cd3516c39e86402afb5b29a93dbb8757469643d2dd"
+},
+{
+"names": [
+"Mathoverflow1973.factorHomotopy"
+],
+"class": "keep",
+"lines": [
+826,
+830
+],
+"sha256": "6895d736769e54896dd324e03f88f8e376bfe9e9ec8f3299b03afee4c937d647"
+},
+{
+"names": [
+"Mathoverflow1973.factorMap_homotopicRel"
+],
+"class": "keep",
+"lines": [
+832,
+837
+],
+"sha256": "4ee691811b50ef0146a87a2e716a60b00c2d83ca74c90bbe634015111927e61a"
+},
+{
+"names": [
+"Mathoverflow1973.SphereBasepoint.exists_adjustment"
+],
+"class": "keep",
+"lines": [
+839,
+843
+],
+"sha256": "70742e8dd8a0a8c5a48fa3d6aef6283674d8e9920c7d61f5825e4d5ddc8a0bdc"
+},
+{
+"names": [
+"Mathoverflow1973.basedSphereCube"
+],
+"class": "keep",
+"lines": [
+845,
+848
+],
+"sha256": "c780bf37ace734258b2965dbad9f81fb4d9abeec4f347ac368783398416e5124"
+},
+{
+"names": [
+"Mathoverflow1973.factorMap_basedSphereCube"
+],
+"class": "keep",
+"lines": [
+850,
+854
+],
+"sha256": "c6f717f1d3760ffc5d01713db92b9113add0a2ffd5b470d524484ea583b97707"
+},
+{
+"names": [
+"Mathoverflow1973.basedSphereCube_homologyClass"
+],
+"class": "keep",
+"lines": [
+856,
+861
+],
+"sha256": "bd117f8811b0765b113b67fef0001e3e5b6b24caef66a491bc629a736aa3a30d"
+},
+{
+"names": [
+"Mathoverflow1973.sphere_homotopicRel_of_topClass_eq"
+],
+"class": "keep",
+"lines": [
+863,
+874
+],
+"sha256": "da7601051400b8c0ecb058d1a838607499cab1801962c3bdfe3f8d95f9e5c5ca"
+},
+{
+"names": [
+"Mathoverflow1973.Sphere.based_homotopicRel_id_of_topClass"
+],
+"class": "move",
+"lines": [
+876,
+892
+],
+"sha256": "118688682d3f99684e66ba728924124253bd735800bee59d4404452a77317066"
+},
+{
+"names": [
+"Mathoverflow1973.Sphere.homotopic_id_of_topClass"
+],
+"class": "keep",
+"lines": [
+894,
+901
+],
+"sha256": "d96b8bc2788ff92a89a134b10243f9b45a1fd90f6ef26ba81d00af9b885bb2fc"
+},
+{
+"names": [
+"Mathoverflow1973.right_inverse_is_left_inverse"
+],
+"class": "move",
+"lines": [
+903,
+912
+],
+"sha256": "6ff92b2767337f17ab7c1152ff196e6e4f6a34ed6ccb5e268933663d837b35a2"
+},
+{
+"names": [
+"Mathoverflow1973.sphereHomotopyEquiv"
+],
+"class": "move",
+"lines": [
+914,
+922
+],
+"sha256": "373dae5970dcc565890067b0b99cb14a037629b497625669070a8ae59282e7ff"
+},
+{
+"names": [
+"Mathoverflow1973.threefoldHomotopyEquiv"
+],
+"class": "move",
+"lines": [
+924,
+926
+],
+"sha256": "f58bfb579595d3a97a84886201c04cbbf98ab7f3abbe2b8d6981bb75f084e7cb"
+},
+{
+"names": [
+"Mathoverflow1973.MorseCancellation.nativeMorseCount_eq_interval_length"
+],
+"class": "keep",
+"lines": [
+928,
+962
+],
+"sha256": "10116f9497896f93307386462a64642b418a201fea45fffb1ceac81b6c60548a"
+},
+{
+"names": [
+"Mathoverflow1973.MorseCancellation.native_middle_block_counts"
+],
+"class": "keep",
+"lines": [
+964,
+1008
+],
+"sha256": "861e1ecd03165ec54213e932edd5f54e59dc93e4fd929868093c83234aef389d"
+},
+{
+"names": [
+"Mathoverflow1973.AdaptedWindows.attaching_sphere_reaches_of_compact_basin_section"
+],
+"class": "keep",
+"lines": [
+1010,
+1088
+],
+"sha256": "f350f39deb04b5d6e161d51ee827aaafab110a071efce3c3f2272079b35c3d53"
+},
+{
+"names": [
+"Mathoverflow1973.MorseCancellation.nativeIndexThreeAttachingSphere_regular"
+],
+"class": "keep",
+"lines": [
+1090,
+1120
+],
+"sha256": "7141264820c60c5febb7c505a202c1dd53e454bf8363551edb6ad2ad8b7daadc"
+},
+{
+"names": [
+"Mathoverflow1973.AdaptedWindows.exists_canonical_basin_sphere"
+],
+"class": "keep",
+"lines": [
+1122,
+1164
+],
+"sha256": "22542b54cb66abd6d4e2abcc7b5069535c8cbf70fa14351ced40f4686cd928c0"
+},
+{
+"names": [
+"Mathoverflow1973.AdaptedWindows.exists_canonical_middle_family"
+],
+"class": "keep",
+"lines": [
+1166,
+1191
+],
+"sha256": "06d9d17fedfe0d68fc48e3c04892b63bf44ecb1592457d9ab80f918e9b402d22"
+},
+{
+"names": [
+"Mathoverflow1973.MorseCancellation.levelSublevelMap"
+],
+"class": "keep",
+"lines": [
+1193,
+1195
+],
+"sha256": "1b1cf54a7a979518d07e66d17e3cefec2d21d4f04ad284d39c15493f474a6dfc"
+},
+{
+"names": [
+"Mathoverflow1973.AdaptedWindows.level_transport_homotopic_in_sublevel"
+],
+"class": "keep",
+"lines": [
+1197,
+1261
+],
+"sha256": "f210a1105bc79e59683568f7e81db1e81ccb2112085c794b95a683d67f5a0c8b"
+},
+{
+"names": [
+"Mathoverflow1973.ManifoldMorse.MorseSurgeryData.indexThreeAttachingClass_parametrized"
+],
+"class": "keep",
+"lines": [
+1263,
+1274
+],
+"sha256": "26c79a592de105f12b294962fb3cf83063188c000f04faca8bd104735557d361"
+},
+{
+"names": [
+"Mathoverflow1973.MorseCancellation.sublevelMap"
+],
+"class": "keep",
+"lines": [
+1276,
+1278
+],
+"sha256": "32e82ce9e2a75612430932f18951057d1381f69038bd0a56aeef0362e43c2803"
+},
+{
+"names": [
+"Mathoverflow1973.MorseCancellation.middleSectionClass"
+],
+"class": "keep",
+"lines": [
+1280,
+1284
+],
+"sha256": "5aae47e02e645a52e6072c980afc278606a89d78248d4ca006b4b4fb8e716197"
+},
+{
+"names": [
+"Mathoverflow1973.AdaptedWindows.native_attaching_class_of_flow_section"
+],
+"class": "keep",
+"lines": [
+1286,
+1319
+],
+"sha256": "f85b61f501fa2007615fd75fe2565248acc4e36f878baec4b7b264a2aaec0dd5"
+},
+{
+"names": [
+"Mathoverflow1973.AdaptedWindows.exists_native_core_inclusion_equiv"
+],
+"class": "keep",
+"lines": [
+1321,
+1343
+],
+"sha256": "606da12a6a643249cff001e2c7f56e30aff918f7299ec93e2869d2cbe84a2052"
+},
+{
+"names": [
+"Mathoverflow1973.AdaptedWindows.exists_core_inclusion_homology_comparison"
+],
+"class": "keep",
+"lines": [
+1345,
+1387
+],
+"sha256": "b4f75a8e9f00d7c095f2280b969184c77f5a0cfbdfe83f12ba60e209fce6f25a"
+},
+{
+"names": [
+"Mathoverflow1973.AdaptedWindows.native_sublevel_inclusion_exact"
+],
+"class": "keep",
+"lines": [
+1389,
+1418
+],
+"sha256": "adbd9b5911218e2510bf6647cdef0c8842b268a3379c69b3c1d7221fe7aafb38"
+},
+{
+"names": [
+"Mathoverflow1973.AdaptedWindows.native_index_three_inclusion_relation"
+],
+"class": "keep",
+"lines": [
+1420,
+1457
+],
+"sha256": "d5954214c4b9898acdd9260f0b03fc41a1d3c8ec3d95d85216097ed9ed04062b"
+},
+{
+"names": [
+"Mathoverflow1973.MorseCancellation.sublevelMap_trans"
+],
+"class": "keep",
+"lines": [
+1459,
+1462
+],
+"sha256": "2a7be5dc20490eb95bc0821fd45f88a4902529114834bff1aae42367e5359a1c"
+},
+{
+"names": [
+"Mathoverflow1973.MorseCancellation.sublevelHomologyMap_comp"
+],
+"class": "keep",
+"lines": [
+1464,
+1469
+],
+"sha256": "7ecdb0cd4564de1173a8601f48d59ea6df51f29b924e071de9c1d4b5bc723f9b"
+},
+{
+"names": [
+"Mathoverflow1973.MorseCancellation.regular_sublevel_inclusion_bijective"
+],
+"class": "keep",
+"lines": [
+1471,
+1484
+],
+"sha256": "4cc3ee5886f6ceac396b79f9999bb2ac4d1c12f3db7c2914c9cc7570c1ef2fd9"
+},
+{
+"names": [
+"Mathoverflow1973.AdaptedWindows.middle_inclusion_step"
+],
+"class": "keep",
+"lines": [
+1486,
+1546
+],
+"sha256": "25d8216ebb5181bdf7c3ba7dbadd6327e3d75267b2a2ba91e3386acd0893dc8b"
+},
+{
+"names": [
+"Mathoverflow1973.MorseCancellation.span_prefix_succ"
+],
+"class": "keep",
+"lines": [
+1548,
+1558
+],
+"sha256": "c2bf64d26d31c054330f18be997093ef782ca54328e1ce8ee57f322720f269aa"
+},
+{
+"names": [
+"Mathoverflow1973.AdaptedWindows.finite_middle_inclusion_relations"
+],
+"class": "keep",
+"lines": [
+1560,
+1652
+],
+"sha256": "c0e95d10d309608d66d32787d85c44fcf4f16c84ac54e08471e7594ca6993ebb"
+},
+{
+"names": [
+"Mathoverflow1973.MorseCancellation.nativeMiddleBaseCut"
+],
+"class": "keep",
+"lines": [
+1654,
+1657
+],
+"sha256": "60936409b1b3c7497693fba15b15b746659508742d34b30dd2e76a298ad26ef9"
+},
+{
+"names": [
+"Mathoverflow1973.MorseCancellation.nativeMiddleCutSequence"
+],
+"class": "keep",
+"lines": [
+1659,
+1664
+],
+"sha256": "1ae083ffe867fc3f180eee6ba5d539cf2019adb3b2fdc127d7d8c6ea34a08394"
+},
+{
+"names": [
+"Mathoverflow1973.MorseCancellation.nativeMiddleCutSequence_bands"
+],
+"class": "keep",
+"lines": [
+1666,
+1718
+],
+"sha256": "c4e3aa45234d82f560a60e7873bea88f599eea9149cbbb55d040edd558e10762"
+},
+{
+"names": [
+"Mathoverflow1973.MorseCancellation.ordered_middle_inclusion_relations"
+],
+"class": "keep",
+"lines": [
+1720,
+1747
+],
+"sha256": "ae0fb7e7f6723f736ea652ea4d6066c0b06cccedb39c9efff8f367add129b7d6"
+},
+{
+"names": [
+"Mathoverflow1973.MorseCancellation.native_middle_terminal_homology_subsingleton"
+],
+"class": "move",
+"lines": [
+1749,
+1775
+],
+"sha256": "92eb986754d8ed3f7a63430d4ddc6c6b7dab46032f4039da120ba6f4a1d1db0c"
+},
+{
+"names": [
+"Mathoverflow1973.MorseCancellation.nativeMiddleCutSequence_terminal_homology_subsingleton"
+],
+"class": "move",
+"lines": [
+1777,
+1801
+],
+"sha256": "7465404089cb0fc47330df6d8dc09f6d2beac3c30455fd2b0afe0c35fc2e040a"
+},
+{
+"names": [
+"Mathoverflow1973.MorseCancellation.middle_section_classes_span"
+],
+"class": "move",
+"lines": [
+1803,
+1835
+],
+"sha256": "f2690de422f04764e31b958449e7e38217eb13012ca6b09d93daf94aa8ec1af6"
+},
+{
+"names": [
+"Mathoverflow1973.MorseCancellation.canonicalMiddleMatrix"
+],
+"class": "keep",
+"lines": [
+1837,
+1841
+],
+"sha256": "e05efb1d4add444c85eaf240edc3ff84e9799961b5eb761ddf1ec57d6566b9f6"
+},
+{
+"names": [
+"Mathoverflow1973.MorseCancellation.canonical_middle_matrix_surjective"
+],
+"class": "move",
+"lines": [
+1843,
+1873
+],
+"sha256": "9895b9ebc7eb5c9ed8e0a180f6603a7e679f1a6a39de41a6d86db9ee05f8e435"
+},
+{
+"names": [
+"Mathoverflow1973.AdaptedWindows.no_connection_above_canonical_cut"
+],
+"class": "keep",
+"lines": [
+1875,
+1918
+],
+"sha256": "1bd6dd9024a6dbe1a62dcb73efade7562b251ce76302e789837b446dddb92e91"
+},
+{
+"names": [
+"Mathoverflow1973.MorseCancellation.lower_cuts_preserved_of_critical_bound"
+],
+"class": "keep",
+"lines": [
+1920,
+1945
+],
+"sha256": "27a2ebcfd34d2e7793f35b29dfa00a36861fa5a7057e542a13a5c01eb72f2871"
+},
+{
+"names": [
+"Mathoverflow1973.AdaptedWindows.exists_common_cut_value_exchange"
+],
+"class": "keep",
+"lines": [
+1947,
+2053
+],
+"sha256": "1e8c7db1feb11d49285dc4466dbb52f131dc1481c1e168d10d162ec3f811f993"
+},
+{
+"names": [
+"Mathoverflow1973.MorseCancellation.equalCutSection"
+],
+"class": "keep",
+"lines": [
+2055,
+2059
+],
+"sha256": "fed236483c5fe97a22d1dac90803ec5cec90f0a06ba3df8f4507fcd228dfcde3"
+},
+{
+"names": [
+"Mathoverflow1973.MorseCancellation.equalCutSublevelHomeomorph"
+],
+"class": "keep",
+"lines": [
+2061,
+2069
+],
+"sha256": "081f1ce4ee35a8be20a2c8b09d6be0acac14285c4d4e2db97a60a274087ad33c"
+},
+{
+"names": [
+"Mathoverflow1973.MorseCancellation.equalCutHomologyEquiv"
+],
+"class": "keep",
+"lines": [
+2071,
+2076
+],
+"sha256": "c380097222fccd049ffc937ddd44b68db0cc538a9b34911af13843e253a9288e"
+},
+{
+"names": [
+"Mathoverflow1973.MorseCancellation.equalCutSection_class"
+],
+"class": "keep",
+"lines": [
+2078,
+2096
+],
+"sha256": "37ca74a3e4de097f4d3159917e32fd45ed40bbb07ae5347ea03a6ac9a9f94d80"
+},
+{
+"names": [
+"Mathoverflow1973.MorseCancellation.canonicalMiddleMatrix_equalCut"
+],
+"class": "keep",
+"lines": [
+2098,
+2111
+],
+"sha256": "881bcbc1f76062f6a9e6568f818b1557659cd0fe161e17665a6e1b4549de81a4"
+},
+{
+"names": [
+"Mathoverflow1973.MorseCancellation.nativeMiddleBasinFamily_equalCut"
+],
+"class": "keep",
+"lines": [
+2113,
+2163
+],
+"sha256": "1ffad8eb0f1f42700f75f3b6374fdd088d0d15ced98216e098126963fbb167fc"
+},
+{
+"names": [
+"Mathoverflow1973.MorseCancellation.native_index_order_of_equal_index_exchange"
+],
+"class": "keep",
+"lines": [
+2165,
+2209
+],
+"sha256": "320f9561b88a858a77a6c9e3a828d08251d0c7733b32e50e5904b7c8bd3227b0"
+},
+{
+"names": [
+"Mathoverflow1973.AdaptedWindows.exists_middle_family_value_exchange"
+],
+"class": "keep",
+"lines": [
+2211,
+2306
+],
+"sha256": "d1a1dcebf4dd58947066e23a02df7e19d89caf8de34c34caa51455b02ccbfbfd"
+},
+{
+"names": [
+"Mathoverflow1973.MorseCancellation.nativeMiddleBasinFamily_labels_injective"
+],
+"class": "keep",
+"lines": [
+2308,
+2323
+],
+"sha256": "796eac0c02898ebc071525393b92ebcfad1ab8bc900139629a4ecb62369b1f19"
+},
+{
+"names": [
+"Mathoverflow1973.AdaptedWindows.exists_first_middle_pivot"
+],
+"class": "keep",
+"lines": [
+2325,
+2487
+],
+"sha256": "15f4d6cc3607a9c64085b206b1be2d361b58a450db43ffb707ce1198666a87df"
+},
+{
+"names": [
+"Mathoverflow1973.AdaptedWindows.backward_basin_reaches_compact_section"
+],
+"class": "keep",
+"lines": [
+2489,
+2514
+],
+"sha256": "5cf26d0156b506c3ca09bf0b177e98aa5e811a7feeac62bb5ce92f756cb524be"
+},
+{
+"names": [
+"Mathoverflow1973.AdaptedWindows.backward_basin_reaches_intermediate_cut"
+],
+"class": "keep",
+"lines": [
+2516,
+2532
+],
+"sha256": "eeae53ecee9ed9d1266003ff59b5c4f6d23f34b66d40bafb427e1168da826663"
+},
+{
+"names": [
+"Mathoverflow1973.AdaptedWindows.transported_basin_image_of_reaching"
+],
+"class": "keep",
+"lines": [
+2534,
+2568
+],
+"sha256": "27a9e77e5476872f0fc8b0d23fff9c651696c1ca125fe4d8e90a61da00ae3e28"
+},
+{
+"names": [
+"Mathoverflow1973.AdaptedWindows.exists_higher_middle_family"
+],
+"class": "keep",
+"lines": [
+2570,
+2603
+],
+"sha256": "45e069e13bbb6cb007bf7ef5f9491ee92fa0877fd2f20aa07ff128faa7f75199"
+},
+{
+"names": [
+"Mathoverflow1973.AdaptedWindows.upper_point_not_on_belt_of_lower_orbit"
+],
+"class": "keep",
+"lines": [
+2605,
+2624
+],
+"sha256": "a91bf8b2f3784c1614b8f41fb93ea502902d05468236a88191c3fc4883511b3a"
+},
+{
+"names": [
+"Mathoverflow1973.MorseCancellation.lower_backward_basins_preserved"
+],
+"class": "keep",
+"lines": [
+2626,
+2696
+],
+"sha256": "c128c34863f6b5d4919ee8742efef26ab0371a293d8f6b2517c1a4dc5e3a16c8"
+},
+{
+"names": [
+"Mathoverflow1973.MorseCancellation.lower_forward_basins_preserved"
+],
+"class": "keep",
+"lines": [
+2698,
+2725
+],
+"sha256": "1f694be2e35a9de7aa24dd0bce33e745f786d52793aff85a661f358753a1992d"
+},
+{
+"names": [
+"Mathoverflow1973.AdaptedWindows.reaches_cut_of_forward_holonomy"
+],
+"class": "keep",
+"lines": [
+2727,
+2757
+],
+"sha256": "e6c5f12942ddd0389285fa51bdf0b2ec2a97710297b4083f971ecf535ec01da8"
+},
+{
+"names": [
+"Mathoverflow1973.AdaptedWindows.exists_relative_surgery_cut_transport"
+],
+"class": "keep",
+"lines": [
+2759,
+2901
+],
+"sha256": "e824b4375086001cb0003151bf0481f5db1b3a3c8cfe5ff0ca8641cd31ecb531"
+},
+{
+"names": [
+"Mathoverflow1973.AdaptedWindows.exists_relative_family_lower_transport"
+],
+"class": "keep",
+"lines": [
+2903,
+3028
+],
+"sha256": "aa410c9c8885413342d9271c1a27259860ad1fd95f8228f77346dafb8429d436"
+},
+{
+"names": [
+"Mathoverflow1973.AdaptedWindows.section_class_of_flow_transport"
+],
+"class": "keep",
+"lines": [
+3030,
+3052
+],
+"sha256": "f6c4d75c04ed70c1287234eea783c6f4cde93e4d57a0b4c14fe3ff4570abe70f"
+},
+{
+"names": [
+"Mathoverflow1973.MorseCancellation.signed_relation_of_regular_cut_transport"
+],
+"class": "keep",
+"lines": [
+3054,
+3082
+],
+"sha256": "398a9d648a046fe565edb3e22155318cd75dea00bd5e49090bce5d0f299024d5"
+},
+{
+"names": [
+"Mathoverflow1973.MorseCancellation.same_image_sphere_maps_unit"
+],
+"class": "keep",
+"lines": [
+3084,
+3126
+],
+"sha256": "387c818457d57b0ff1d0c3ad227d338234cf0477da5beea7a60379e5b06ed86b"
+},
+{
+"names": [
+"Mathoverflow1973.MorseCancellation.same_image_section_classes_unit"
+],
+"class": "keep",
+"lines": [
+3128,
+3141
+],
+"sha256": "37d369a23ba2892ebb305948d97e811a8f4bf9726fcadc19f625b2dc86ed1de3"
+},
+{
+"names": [
+"Mathoverflow1973.MorseCancellation.nativeMiddleBasinFamily_replace_zero"
+],
+"class": "keep",
+"lines": [
+3143,
+3185
+],
+"sha256": "017d8ba4ba371b97a9c1f2bc32fa3c20f001b02e30dfa124867aeb45b6f50c5e"
+},
+{
+"names": [
+"Mathoverflow1973.MorseCancellation.exists_sheet_arc_tube_with_normal_change"
+],
+"class": "keep",
+"lines": [
+3187,
+3235
+],
+"sha256": "d9777b45dab7dc5581f94b15808a9758ec69cfd67f4d99c89b2804c10489a0d9"
+},
+{
+"names": [
+"Mathoverflow1973.MorseCancellation.exists_clean_sheet_arc_tube_with_normal_change"
+],
+"class": "keep",
+"lines": [
+3237,
+3328
+],
+"sha256": "ccf7a4edcee6b90e13b97c5a24bacb8d792ceca0cdd78743ca4081fc0830aa16"
+},
+{
+"names": [
+"Mathoverflow1973.MorseCancellation.exists_relative_sheet_passages_with_normal_change"
+],
+"class": "keep",
+"lines": [
+3330,
+3437
+],
+"sha256": "1bca0582c21ad6380bc0b19a6b8550fc5f35cc39f8779ce78e0492f47ffb9567"
+},
+{
+"names": [
+"Mathoverflow1973.MorseCancellation.LongitudinalTubeMotion.sheet_trace_germ_of_endpoint_germs"
+],
+"class": "keep",
+"lines": [
+3439,
+3498
+],
+"sha256": "ac801163c123eab26e3fb8f0580ac0150e023252b1ff580afe92caebd93aeb4d"
+},
+{
+"names": [
+"Mathoverflow1973.MorseCancellation.exists_centered_passage_clock"
+],
+"class": "keep",
+"lines": [
+3500,
+3517
+],
+"sha256": "5e27c4c54b632bc3226eceb056f169ba8094cfebd00226218e51087356530b02"
+},
+{
+"names": [
+"Mathoverflow1973.MorseCancellation.exists_radial_link_meridian_with_derivative"
+],
+"class": "keep",
+"lines": [
+3519,
+3624
+],
+"sha256": "a0f1932f3d73daeee13ba62e9c6b85773ec62fa400975ed4663ed750c43038e2"
+},
+{
+"names": [
+"Mathoverflow1973.AdaptedWindows.exists_passage_derivative_class_addition"
+],
+"class": "keep",
+"lines": [
+3626,
+3716
+],
+"sha256": "75882567d41d8cf4f7843f7c3a001f65321f7fbfdcac74c8c47678fc1435a323"
+},
+{
+"names": [
+"Mathoverflow1973.MorseCancellation.attaching_contributions_opposite_of_relative_det_neg"
+],
+"class": "keep",
+"lines": [
+3718,
+3741
+],
+"sha256": "efda9252b69645fb5033c57fab0457acad6a0ec815a7e1b19b3d1f56e5de6515"
+},
+{
+"names": [
+"Mathoverflow1973.MorseCancellation.passageNormalProduct"
+],
+"class": "keep",
+"lines": [
+3743,
+3745
+],
+"sha256": "1ef7f2439c0cf9bf1b214ce1a3ef64afd8b65c66ded6abc06ff921c545fd510a"
+},
+{
+"names": [
+"Mathoverflow1973.MorseCancellation.passageNormalProduct_det"
+],
+"class": "keep",
+"lines": [
+3747,
+3756
+],
+"sha256": "6fa4e088efef56e4581fbe2476c46e93d11a2f438f971b784bc8aa3f8d0abebf"
+},
+{
+"names": [
+"Mathoverflow1973.MorseCancellation.relative_normal_frame_det"
+],
+"class": "keep",
+"lines": [
+3758,
+3778
+],
+"sha256": "7f4b56d1d015782dbd7966393a05ed14efe405cbaa5e2bee37b4d57d23930350"
+},
+{
+"names": [
+"Mathoverflow1973.MorseCancellation.passage_normal_relative_det_neg"
+],
+"class": "keep",
+"lines": [
+3780,
+3791
+],
+"sha256": "f38ce9e5821c1b830c3236cf9dd8eb848becbe588feb2c0f4c5d21df08608738"
+},
+{
+"names": [
+"Mathoverflow1973.MorseCancellation.mfderiv_normal_trace_model"
+],
+"class": "keep",
+"lines": [
+3793,
+3817
+],
+"sha256": "0f62a99f028601642a78af9bce84e8425f5426ff5f37c08007af12ec9faca74d"
+},
+{
+"names": [
+"Mathoverflow1973.MorseCancellation.LongitudinalTubeMotion.normal_trace_mfderiv"
+],
+"class": "keep",
+"lines": [
+3819,
+3868
+],
+"sha256": "dab193ed30073b2d5cb325f597470547153781ae7ba6955409f9b5f4049a1012"
+},
+{
+"names": [
+"Mathoverflow1973.MorseCancellation.mfderiv_retime_unit_rate"
+],
+"class": "keep",
+"lines": [
+3870,
+3901
+],
+"sha256": "db4017f13dfa7c0e7268157d450b9fe98e2d75924ce3459c1bc72a625bb5a430"
+},
+{
+"names": [
+"Mathoverflow1973.MorseCancellation.fderiv_retimed_trace_parameter"
+],
+"class": "keep",
+"lines": [
+3903,
+3930
+],
+"sha256": "c9969e2bea1f6d51d36ea5a3b3b869853c6d9859523f28fcc48069088bf61800"
+},
+{
+"names": [
+"Mathoverflow1973.MorseCancellation.exists_shared_passage_frames"
+],
+"class": "keep",
+"lines": [
+3932,
+3963
+],
+"sha256": "7e6f439c2ff443dc23b742dd2c4696c478168ab271a122dc8aef7def127bf040"
+},
+{
+"names": [
+"Mathoverflow1973.MorseCancellation.CenteredSheetPassage.mk",
+"Mathoverflow1973.MorseCancellation.CenteredSheetPassage",
+"Mathoverflow1973.MorseCancellation.CenteredSheetPassage.family",
+"Mathoverflow1973.MorseCancellation.CenteredSheetPassage.support",
+"Mathoverflow1973.MorseCancellation.CenteredSheetPassage.compact_support",
+"Mathoverflow1973.MorseCancellation.CenteredSheetPassage.avoids",
+"Mathoverflow1973.MorseCancellation.CenteredSheetPassage.smooth",
+"Mathoverflow1973.MorseCancellation.CenteredSheetPassage.zero",
+"Mathoverflow1973.MorseCancellation.CenteredSheetPassage.slices",
+"Mathoverflow1973.MorseCancellation.CenteredSheetPassage.fixedOutside",
+"Mathoverflow1973.MorseCancellation.CenteredSheetPassage.crossing"
+],
+"class": "keep",
+"lines": [
+3965,
+3977
+],
+"sha256": "d5cbe9c6ed7eae4915343636a8f3e682d0c65e230d37a93ae891b1edaf503f75"
+},
+{
+"names": [
+"Mathoverflow1973.MorseCancellation.LongitudinalTubeMotion.centeredSheetPassage"
+],
+"class": "keep",
+"lines": [
+3979,
+4007
+],
+"sha256": "f15cbaee1f0432ce03523c658996909cc8ad0ea9e6ac5cb6afd4c49f8bb4163c"
+},
+{
+"names": [
+"Mathoverflow1973.MorseCancellation.bijective_trace_normal_of_native_transverse"
+],
+"class": "keep",
+"lines": [
+4009,
+4033
+],
+"sha256": "f92d4f7c65eb01fd4c1fb84b4eddde19b6a77ac527a171f89ba45996895ffcf9"
+},
+{
+"names": [
+"Mathoverflow1973.MorseCancellation.hasFDerivAt_terminal_normal_factor"
+],
+"class": "keep",
+"lines": [
+4035,
+4057
+],
+"sha256": "7f8ac1a60797826d551931758b67b7367c601b53a013de561f932b2146e75e48"
+},
+{
+"names": [
+"Mathoverflow1973.MorseCancellation.exists_centered_passage_normal_factors"
+],
+"class": "keep",
+"lines": [
+4059,
+4180
+],
+"sha256": "b49006c5b6a1428ef5845b0c16b65d4d6237c21df857fd1323a67e62a906304a"
+},
+{
+"names": [
+"Mathoverflow1973.MorseCancellation.opposite_centered_passages_of_normal_factors"
+],
+"class": "keep",
+"lines": [
+4182,
+4244
+],
+"sha256": "21c85f6675783f0ca603bf2100297f6bf2168f4f240b03aa5bd5447f2d02d793"
+},
+{
+"names": [
+"Mathoverflow1973.MorseCancellation.exists_native_opposite_centered_passages"
+],
+"class": "keep",
+"lines": [
+4246,
+4297
+],
+"sha256": "0bf3b733c06dc51da1ccdfabd30156d815428dad22fdba311ef343c1025f1e5e"
+},
+{
+"names": [
+"Mathoverflow1973.MorseCancellation.choose_prescribed_normal_passage"
+],
+"class": "keep",
+"lines": [
+4299,
+4361
+],
+"sha256": "def914c680fc8621378da8810d5428bf85b5ae1a3a72ae6dd8c466478bed19b7"
+},
+{
+"names": [
+"Mathoverflow1973.MorseCancellation.exists_native_prescribed_centered_passage"
+],
+"class": "keep",
+"lines": [
+4363,
+4409
+],
+"sha256": "d205c4185e40a8a3491bd8e333ed7aec5aad64e7e2bee965057e430b47e1099f"
+},
+{
+"names": [
+"Mathoverflow1973.MorseCancellation.exists_native_prescribed_finite_family_passage"
+],
+"class": "keep",
+"lines": [
+4411,
+4469
+],
+"sha256": "304f20b826aea80f4775355bb897650cb81c9ee623ea97666a201238ab161e56"
+},
+{
+"names": [
+"Mathoverflow1973.AdaptedWindows.exists_higher_family_prescribed_passage"
+],
+"class": "keep",
+"lines": [
+4471,
+4561
+],
+"sha256": "a7301d6d12b02dba4d44802cddb1863f318aefa980e7ad41d0547bf8482e0776"
+},
+{
+"names": [
+"Mathoverflow1973.AdaptedWindows.prescribed_passage_actual_endpoint_classes"
+],
+"class": "keep",
+"lines": [
+4563,
+4673
+],
+"sha256": "641270bf49ffa698af7c9baef2f83e86601600e8e844faa65e014cb77c444c1a"
+},
+{
+"names": [
+"Mathoverflow1973.AdaptedWindows.exists_prescribed_family_slide"
+],
+"class": "keep",
+"lines": [
+4675,
+4814
+],
+"sha256": "d851ec880e6ef802c9f4a8fb728fb7c7e2ec4603604c32d4505ffb240a49aee3"
+},
+{
+"names": [
+"Mathoverflow1973.AdaptedWindows.exists_common_cut_prescribed_slide"
+],
+"class": "keep",
+"lines": [
+4816,
+4948
+],
+"sha256": "cffc8a0826327aec32a85de976652a6265edbc5df615a6c23d69db9399341e8a"
+},
+{
+"names": [
+"Mathoverflow1973.AdaptedWindows.exists_common_cut_prescribed_family_slide"
+],
+"class": "keep",
+"lines": [
+4950,
+5017
+],
+"sha256": "5e88995a51094f7f41d84209d63fb73bc0b77b69e70fe4886b86519d1a6b32fc"
+},
+{
+"names": [
+"Mathoverflow1973.MorseCancellation.regular_below_pivot_of_regular_lower_band"
+],
+"class": "keep",
+"lines": [
+5019,
+5030
+],
+"sha256": "2e073bb6637c031b31979594751da3db633f57040f9166224cebc309f47650c4"
+},
+{
+"names": [
+"Mathoverflow1973.MorseCancellation.lower_window_le_of_radius_le"
+],
+"class": "keep",
+"lines": [
+5032,
+5038
+],
+"sha256": "f79d5db23788922df68894bba61be12887a8bf55b88a582e91a8ab84a7d4d54a"
+},
+{
+"names": [
+"Mathoverflow1973.MorseCancellation.common_cut_band_of_smaller_radius"
+],
+"class": "keep",
+"lines": [
+5040,
+5052
+],
+"sha256": "06a16d6eab14e9da48e6110e067d0a5a4b854ec6acbff86e92eea56926a9c5fa"
+},
+{
+"names": [
+"Mathoverflow1973.MorseCancellation.higher_window_separation_of_value_order"
+],
+"class": "keep",
+"lines": [
+5054,
+5058
+],
+"sha256": "59bd939e4d0d7524f689c93bc3d20e37ca31852df9e55481a10527b1433dc6e7"
+},
+{
+"names": [
+"Mathoverflow1973.AdaptedWindows.exists_repeatable_column_slide"
+],
+"class": "keep",
+"lines": [
+5060,
+5121
+],
+"sha256": "486d0aed0d2a8ae89762b9cfe0c74e0755f4ecfed27e6043514a9cfd676a553e"
+},
+{
+"names": [
+"Mathoverflow1973.AdaptedWindows.exists_iterated_column_slide"
+],
+"class": "keep",
+"lines": [
+5123,
+5209
+],
+"sha256": "c0c180b143743468f21aa86d2ede8d4a834c9768ee3473d8ba40d95add13592e"
+},
+{
+"names": [
+"Mathoverflow1973.AdaptedWindows.exists_integer_column_slide"
+],
+"class": "keep",
+"lines": [
+5211,
+5267
+],
+"sha256": "13ce84b308af97dfd53a389b29d5527c370711a9c0f061d8d6784fbdd9b5e549"
+},
+{
+"names": [
+"Mathoverflow1973.MorseCancellation.nativeMiddleBasinFamily_reindex"
+],
+"class": "keep",
+"lines": [
+5269,
+5282
+],
+"sha256": "2a25890cb85fefa7f09c373738379504ff2bcb8d2a74b692005aafa491cd5f12"
+},
+{
+"names": [
+"Mathoverflow1973.MorseCancellation.canonicalMiddleMatrix_single_class_addition"
+],
+"class": "keep",
+"lines": [
+5284,
+5301
+],
+"sha256": "66cad91267af86d37e4340b751a010f8b7137ecfa07abc500466baef24240a81"
+},
+{
+"names": [
+"Mathoverflow1973.MorseCancellation.SurgeryWindows.regular_before_first_middle_pivot"
+],
+"class": "keep",
+"lines": [
+5303,
+5334
+],
+"sha256": "21ed3fdc0296298e39c76b3f6e81193cd16e58d56b6bd6f92a8d7e66e155329d"
+},
+{
+"names": [
+"Mathoverflow1973.MorseCancellation.low_index_cut_of_preserved_other_values"
+],
+"class": "keep",
+"lines": [
+5336,
+5360
+],
+"sha256": "0371489e8530e208b2b37bee5972d0853392692bf14369c6008785563c4644d8"
+},
+{
+"names": [
+"Mathoverflow1973.AdaptedWindows.exists_labelled_integer_slide"
+],
+"class": "keep",
+"lines": [
+5362,
+5507
+],
+"sha256": "dccda517bf7392880eab28f3fd693e187a7d11f10f0ec35e67297fe38d7b9790"
+},
+{
+"names": [
+"Mathoverflow1973.AdaptedWindows.exists_arbitrary_column_addition"
+],
+"class": "keep",
+"lines": [
+5509,
+5635
+],
+"sha256": "0ec9a16e18d56cd89d3211fcc0b74be03e4bbe74de4ad3d6e4444d7b823deffe"
+},
+{
+"names": [
+"Mathoverflow1973.MorseCancellation.equalCutSection_trans"
+],
+"class": "keep",
+"lines": [
+5637,
+5642
+],
+"sha256": "b9638f1d16a280c9dd923e0684dfb3102297725dd8936635bb627433ed4821a9"
+},
+{
+"names": [
+"Mathoverflow1973.MorseCancellation.equalCutHomologyEquiv_refl"
+],
+"class": "keep",
+"lines": [
+5644,
+5660
+],
+"sha256": "6a5593484fc0d2390dcec6b37fe78ad974573df54333d5f7bd0e8165cb291526"
+},
+{
+"names": [
+"Mathoverflow1973.MorseCancellation.equalCutHomologyEquiv_trans"
+],
+"class": "keep",
+"lines": [
+5662,
+5676
+],
+"sha256": "835bed2803fda536075f38eebc6d0888e78de0fbc7856ae6c5c3a401a7f9a57f"
+},
+{
+"names": [
+"Mathoverflow1973.AdaptedWindows.exists_arbitrary_column_sequence"
+],
+"class": "keep",
+"lines": [
+5678,
+5841
+],
+"sha256": "02bb941dc83481c126179c2637cbe0e36211f2414b44a613d04cc41c17a16b90"
+},
+{
+"names": [
+"Mathoverflow1973.AdaptedWindows.exists_primitive_functional_unit"
+],
+"class": "keep",
+"lines": [
+5843,
+5990
+],
+"sha256": "28e21f96ad89a9ab16673673769283491298c1483c983491e58a4e90a92f65c4"
+},
+{
+"names": [
+"Mathoverflow1973.MorseCancellation.regularCutHomologyEquiv"
+],
+"class": "keep",
+"lines": [
+5992,
+6000
+],
+"sha256": "502635b9eb3e02b65b643c58be9a260f2223d264dcf0e4c7ef53152398dceee4"
+},
+{
+"names": [
+"Mathoverflow1973.AdaptedWindows.exists_lower_cut_geometric_matrix"
+],
+"class": "keep",
+"lines": [
+6002,
+6050
+],
+"sha256": "c1f98dc62cdbb1440286f48f9fcc84f60507f2e30a012a1846c2be9050741bc5"
+},
+{
+"names": [
+"Mathoverflow1973.MorseCancellation.native_middle_block_complete_and_cut"
+],
+"class": "keep",
+"lines": [
+6052,
+6122
+],
+"sha256": "ef83bbe6bb9a704f1a2b057b8d3bbd47ff61fe963599fda4294e4bee004bfc55"
+},
+{
+"names": [
+"Mathoverflow1973.SpherePoint.sourceCountMark_topClass_natAbs"
+],
+"class": "keep",
+"lines": [
+6124,
+6129
+],
+"sha256": "54a070d3aada5099ebd75009ace7a5bcd925aa8930db4901f8ffe4fdf9f14950"
+},
+{
+"names": [
+"Mathoverflow1973.OnePointCover.overlapHomologyEquiv_symm_include"
+],
+"class": "keep",
+"lines": [
+6131,
+6147
+],
+"sha256": "23df707e1a6860e72b5d55194c1e8e95bdca28d25899aa6786046457c4e893ec"
+},
+{
+"names": [
+"Mathoverflow1973.ManifoldMorse.MorseSurgeryData.collapseComponentConnecting"
+],
+"class": "keep",
+"lines": [
+6149,
+6161
+],
+"sha256": "fc96d741e9c90fceb40f09c895dbce14659a40021484e90bc15a071633aad4af"
+},
+{
+"names": [
+"Mathoverflow1973.ManifoldMorse.MorseSurgeryData.collapseLocalClass"
+],
+"class": "keep",
+"lines": [
+6163,
+6173
+],
+"sha256": "684e8e9b72ccc35d8f627a36aa5e84303f3e5b0eb0be97764182bb2c75605ac2"
+},
+{
+"names": [
+"Mathoverflow1973.ManifoldMorse.MorseSurgeryData.collapseConnecting_sum_overlaps"
+],
+"class": "keep",
+"lines": [
+6175,
+6194
+],
+"sha256": "320e843baa4fd79a5fbae395c7684ac8b134935dade448d3ee538c6fec843daa"
+},
+{
+"names": [
+"Mathoverflow1973.ManifoldMorse.MorseSurgeryData.collapseConnecting_sum_boundaries"
+],
+"class": "keep",
+"lines": [
+6196,
+6223
+],
+"sha256": "9c1a8012e0212f37947edfb94181b1999d924239d5dd7d704612ee9c874103c7"
+},
+{
+"names": [
+"Mathoverflow1973.ManifoldMorse.MorseSurgeryData.collapseSphereConnecting_sum"
+],
+"class": "keep",
+"lines": [
+6225,
+6250
+],
+"sha256": "b0be86681bd8830494b2cfb226711102e419ac8eec8cf4c5cdd87a1abc3efff0"
+},
+{
+"names": [
+"Mathoverflow1973.CoverOverlapHomology.homologyEquiv_symm_single"
+],
+"class": "keep",
+"lines": [
+6252,
+6262
+],
+"sha256": "0e732192ccd6870e63834fb19d940f158d6f25a4000ceb3167c316904140f811"
+},
+{
+"names": [
+"Mathoverflow1973.CoverOverlapHomology.homologyEquiv_inclusion"
+],
+"class": "keep",
+"lines": [
+6264,
+6272
+],
+"sha256": "441c3ff9f7ed800b6d6a628fb66b47184e9a4d3bf6d865832b5d60ced7d92102"
+},
+{
+"names": [
+"Mathoverflow1973.CoverOverlapHomology.componentMap"
+],
+"class": "keep",
+"lines": [
+6274,
+6278
+],
+"sha256": "ae4a891fb323f0a416a2a9d59363f9580c27d9d5c8e106e58792b0070af310ad"
+},
+{
+"names": [
+"Mathoverflow1973.CoverOverlapHomology.overlapMap"
+],
+"class": "keep",
+"lines": [
+6280,
+6288
+],
+"sha256": "f6fb67ca90eccbeed9b722b274f43142e1325bc8ad27f29fcc336ca38100940c"
+},
+{
+"names": [
+"Mathoverflow1973.CoverOverlapHomology.overlapMap_component"
+],
+"class": "keep",
+"lines": [
+6290,
+6295
+],
+"sha256": "a1f306846cc60237a625c7e9a03e16809681c117d8f24b329128dc81cca0cb24"
+},
+{
+"names": [
+"Mathoverflow1973.CoverOverlapHomology.homologyEquiv_map"
+],
+"class": "keep",
+"lines": [
+6297,
+6313
+],
+"sha256": "1f7d7895ea3523cf9e1bba094cb8120ec7dc0d90f72ee4ad312e6f32e3facfa6"
+},
+{
+"names": [
+"Mathoverflow1973.CoverLocalContributions.componentConnecting_enlarge"
+],
+"class": "keep",
+"lines": [
+6315,
+6366
+],
+"sha256": "1a45f3de83b98f893631b647f8c54eabf5e4797b93bfb9c35352946be8beebd8"
+},
+{
+"names": [
+"Mathoverflow1973.LocalDegree.SeparatedNeighborhoods.pointComplementInclusion"
+],
+"class": "keep",
+"lines": [
+6368,
+6373
+],
+"sha256": "4be7aa6d624b5068144a707df8c73b2e24edcc8dd1d6363f20d5276afc687dbe"
+},
+{
+"names": [
+"Mathoverflow1973.LocalDegree.SeparatedNeighborhoods.pointComplementInclusion_sphereEquiv"
+],
+"class": "keep",
+"lines": [
+6375,
+6383
+],
+"sha256": "10c0b8b847ddd36a4a86b586c3a007917f676018cf0c8897e117d473e845869e"
+},
+{
+"names": [
+"Mathoverflow1973.LocalDegree.SeparatedNeighborhoods.componentConnecting_singlePoint"
+],
+"class": "keep",
+"lines": [
+6385,
+6404
+],
+"sha256": "bebfef4657d9ce5ef82755a13f802e6520f5ff035a9370c955332e2eea0aca85"
+},
+{
+"names": [
+"Mathoverflow1973.LocalDegree.SeparatedNeighborhoods.sphereConnecting_component"
+],
+"class": "keep",
+"lines": [
+6406,
+6452
+],
+"sha256": "8e6a34d12235df800c46960181955f60d6d10457007a811b653c58a1ad556bb7"
+},
+{
+"names": [
+"Mathoverflow1973.ManifoldMorse.MorseSurgeryData.collapseLocalClass_singlePoint"
+],
+"class": "keep",
+"lines": [
+6454,
+6464
+],
+"sha256": "bfa85dbdf4a582a4cb7eb01503dad3b60579a7a0bf5abf2022f4c2f28eb67e81"
+},
+{
+"names": [
+"Mathoverflow1973.SphereNormalCoordinates.localBoundary_homology_outward"
+],
+"class": "keep",
+"lines": [
+6466,
+6494
+],
+"sha256": "00393f9516e523443f6eb92d49806c8a00d4f29ac33a468f044da1ce878c5662"
+},
+{
+"names": [
+"Mathoverflow1973.ManifoldMorse.MorseSurgeryData.collapseLocalBoundary_homology_sign_of_transverse"
+],
+"class": "keep",
+"lines": [
+6496,
+6550
+],
+"sha256": "02681cd26ceef26d31696342dc44e12e53b2bd04cefa4ffbdc30979202ccc3eb"
+},
+{
+"names": [
+"Mathoverflow1973.ManifoldMorse.MorseSurgeryData.instLocal1"
+],
+"class": "keep",
+"lines": [
+6552,
+6554
+],
+"sha256": "314ecaf94657d23ac2f793e731ff019d3b551defc007697b8e6361d34c8667b9"
+},
+{
+"names": [
+"Mathoverflow1973.ManifoldMorse.MorseSurgeryData.collapseLocalClass_eq_outward"
+],
+"class": "keep",
+"lines": [
+6556,
+6574
+],
+"sha256": "f2566841ad55a1e9955604b726866ebb7b1371df4c09bf1c1d63c5cb10a1a087"
+},
+{
+"names": [
+"Mathoverflow1973.ManifoldMorse.MorseSurgeryData.collapseLocalBoundary_outward"
+],
+"class": "keep",
+"lines": [
+6576,
+6608
+],
+"sha256": "c3321b4f126ba5970f8846a0ca90ec93b0a04e1fb5f3695cce5d678ccc9e3b9d"
+},
+{
+"names": [
+"Mathoverflow1973.ManifoldMorse.MorseSurgeryData.beltIntersectionCount_smul"
+],
+"class": "keep",
+"lines": [
+6610,
+6625
+],
+"sha256": "f9207c1dc821cc01be2e4eb2ff76e736c647417f281bf4f67556ed58b0229a3d"
+},
+{
+"names": [
+"Mathoverflow1973.ManifoldMorse.MorseSurgeryData.collapseSphereConnecting_signed_count"
+],
+"class": "keep",
+"lines": [
+6627,
+6662
+],
+"sha256": "ad6b455456030fcbc5b503a60441357ad423049528e002fcb9194873d0f147dc"
+},
+{
+"names": [
+"Mathoverflow1973.ManifoldMorse.MorseSurgeryData.collapse_homology_signed_count"
+],
+"class": "keep",
+"lines": [
+6664,
+6695
+],
+"sha256": "ee1e762ced54c5d1dd27d7607b9c17d9ffb4d4a563a3bab6aa39868c994e6224"
+},
+{
+"names": [
+"Mathoverflow1973.ManifoldMorse.MorseSurgeryData.indexTwoCoordinate_signed_count"
+],
+"class": "keep",
+"lines": [
+6697,
+6728
+],
+"sha256": "b4eba53c37acf826ffc6b04229e527c491419aca1de599bc623fa57e7eaa8fbe"
+},
+{
+"names": [
+"Mathoverflow1973.ManifoldMorse.MorseSurgeryData.indexTwoCoordinate_topClass_natAbs"
+],
+"class": "keep",
+"lines": [
+6730,
+6752
+],
+"sha256": "a7c91c10a1bd05e4c903eeadfe3d0d916248d01dfc62c83a5742e3582b228bcc"
+},
+{
+"names": [
+"Mathoverflow1973.ManifoldMorse.MorseSurgeryData.indexTwoCoordinate_transverse_natAbs"
+],
+"class": "keep",
+"lines": [
+6754,
+6771
+],
+"sha256": "e6714656dc04b5820a7279706ef71fbc0198afc7c83cdff06407c51940bd623e"
+},
+{
+"names": [
+"Mathoverflow1973.MorseCancellation.last_index_two_collapse_is_primitive"
+],
+"class": "keep",
+"lines": [
+6773,
+6806
+],
+"sha256": "5d7ca1b2cf3e8cee2c405ef32e93a7ffe2c3e3c3de25a27b4b0a574100d5ce85"
+},
+{
+"names": [
+"Mathoverflow1973.MorseCancellation.exists_native_belt_cut_family"
+],
+"class": "keep",
+"lines": [
+6808,
+6886
+],
+"sha256": "d00dddfe6ac94b5c882f2d885e59f02c36b7b9d4e809321a00750427799d390a"
+},
+{
+"names": [
+"Mathoverflow1973.SupportedDiffeomorph.IsotopicToIdentity.homotopic"
+],
+"class": "keep",
+"lines": [
+6888,
+6899
+],
+"sha256": "72f7407a7601ca2f3d5cf11c1dbb2ebf1673bf9ae1375ebb9f9f72815f530c7b"
+},
+{
+"names": [
+"Mathoverflow1973.SupportedDiffeomorph.IsotopicToIdentity.comp_homotopic"
+],
+"class": "keep",
+"lines": [
+6901,
+6906
+],
+"sha256": "c20665b591c91e9f4e0a42b8f76a1faf2e1177ac71389162291308c28dafec3f"
+},
+{
+"names": [
+"Mathoverflow1973.ManifoldMorse.MorseSurgeryData.exists_transverse_representative"
+],
+"class": "keep",
+"lines": [
+6908,
+6946
+],
+"sha256": "a8e975bfdb988ffc742c987f507d66a788ecdd3c21611ebb82fd57adc1e8283f"
+},
+{
+"names": [
+"Mathoverflow1973.MorseCancellation.exists_single_intersection_of_unit_coordinate"
+],
+"class": "keep",
+"lines": [
+6948,
+6999
+],
+"sha256": "7ad6ce8422c303021ae3b8bd2ea29ffd5919818e85537027880a6e355d33faa1"
+},
+{
+"names": [
+"Mathoverflow1973.AdaptedWindows.cancel_single_basin_section_isotopy"
+],
+"class": "keep",
+"lines": [
+7001,
+7119
+],
+"sha256": "8503f285c91959638058cf377e0402693649b8b5f789e5f55b9f735d73255111"
+},
+{
+"names": [
+"Mathoverflow1973.MorseCancellation.conjugate_level_isotopy"
+],
+"class": "keep",
+"lines": [
+7121,
+7142
+],
+"sha256": "f013a88f9da2de5867de3bef6614f4b7ae66a34aaaf8fd159b529b28c8f0c9cb"
+},
+{
+"names": [
+"Mathoverflow1973.MorseCancellation.intersection_count_under_injective_map"
+],
+"class": "keep",
+"lines": [
+7144,
+7156
+],
+"sha256": "89c5c5756f7e2ed37748ace16e23f94f309df2a874b236742cc3cd7a1e06eec4"
+},
+{
+"names": [
+"Mathoverflow1973.MorseCancellation.cancel_from_preserved_unit_belt_cut"
+],
+"class": "keep",
+"lines": [
+7158,
+7267
+],
+"sha256": "bf4e5fb9b4a14eb79d85e34f6502b99e221ec8ec3226870260c459b0202a19c2"
+},
+{
+"names": [
+"Mathoverflow1973.MorseCancellation.consecutive_last_two_first_three"
+],
+"class": "keep",
+"lines": [
+7269,
+7309
+],
+"sha256": "f2f3a3c4d51224eac4682433cdb7756d0ee99f1a4bb7d9355ff2d59e74de6072"
+},
+{
+"names": [
+"Mathoverflow1973.MorseCancellation.cancel_from_complete_middle_family"
+],
+"class": "keep",
+"lines": [
+7311,
+7433
+],
+"sha256": "64f779c9c5303b084e9f456e1820f3da16a6d3b36651a4f4c33666535c94fd49"
+},
+{
+"names": [
+"Mathoverflow1973.MorseCancellation.minimal_ordered_index_two_count_zero"
+],
+"class": "move",
+"lines": [
+7435,
+7493
+],
+"sha256": "42a7fecc65b8604d0e24f9ec36f4739a98795d8e075dd20755a8998bac387d4d"
+},
+{
+"names": [
+"Mathoverflow1973.MorseCancellation.minimal_ordered_index_four_count_zero"
+],
+"class": "move",
+"lines": [
+7495,
+7538
+],
+"sha256": "b76dc9cab7f7e9aca04191ae93db5e3769abba554867d09c19e3ad211d3c2bb6"
+},
+{
+"names": [
+"Mathoverflow1973.ManifoldMorse.MorseSurgeryData.coreBoundary_two_injective_of_upper"
+],
+"class": "keep",
+"lines": [
+7540,
+7552
+],
+"sha256": "7117a0abd50c82d75a9ef4b7f19acb16fc31b648cec25db33601928ea5cb9165"
+},
+{
+"names": [
+"Mathoverflow1973.ManifoldMorse.MorseSurgeryData.indexThreeAttaching_zsmul_eq_zero"
+],
+"class": "keep",
+"lines": [
+7554,
+7568
+],
+"sha256": "d6d5f50775218b5f9b3f36806d927fbfa4141fdadb328df307953168366b7ff6"
+},
+{
+"names": [
+"Mathoverflow1973.ManifoldMorse.MorseSurgeryData.indexThreePresentation_matrix_injective"
+],
+"class": "keep",
+"lines": [
+7570,
+7582
+],
+"sha256": "b8effd5c6d4c8c8369a36810cf63c670a6691bb9c5055bfe04e815e6dde8a9d7"
+},
+{
+"names": [
+"Mathoverflow1973.ManifoldMorse.SurgeryWindows.middleMatrix_injective_of_upper_third"
+],
+"class": "keep",
+"lines": [
+7584,
+7621
+],
+"sha256": "94d3455ec74e044e7a6cf26c87e56ae6dc25e95b7cc76df846eb06341245f604"
+},
+{
+"names": [
+"Mathoverflow1973.ManifoldMorse.SurgeryWindows.middleMatrix_injective_of_complete_blocks"
+],
+"class": "move",
+"lines": [
+7623,
+7638
+],
+"sha256": "afcd4104a27bdcf9394f14b436cfde270b5cd8109c187c252edaaa96296889a6"
+},
+{
+"names": [
+"Mathoverflow1973.ManifoldMorse.SurgeryWindows.middleMatrix_bijective_of_complete_blocks"
+],
+"class": "move",
+"lines": [
+7640,
+7649
+],
+"sha256": "45069020da1be1794b8665c24910a5960b01f3707c087d5093bac46db62325bf"
+},
+{
+"names": [
+"Mathoverflow1973.ManifoldMorse.SurgeryWindows.middle_counts_equal"
+],
+"class": "move",
+"lines": [
+7651,
+7659
+],
+"sha256": "56aa04c66721ce7c0e6e0e01864053e820b002d99f740ca429c5b2cb4251b955"
+},
+{
+"names": [
+"Mathoverflow1973.MorseCancellation.native_index_excluded_of_count_zero"
+],
+"class": "keep",
+"lines": [
+7661,
+7677
+],
+"sha256": "7922c3c61756883eeae5b218f7c2f927cf3fd982f1f1bb031691a1ae3679e4e9"
+},
+{
+"names": [
+"Mathoverflow1973.MorseCancellation.middle_blocks_complete_of_no_four_five"
+],
+"class": "keep",
+"lines": [
+7679,
+7719
+],
+"sha256": "556a80eee8012ec64e86abd790118322fa4563c6e10cd966f30e935ab199642c"
+},
+{
+"names": [
+"Mathoverflow1973.MorseCancellation.ordered_no_middle_indices_count_two"
+],
+"class": "move",
+"lines": [
+7721,
+7740
+],
+"sha256": "f3453c4152d22a4e2e1b0afb7b1832cc90ac04933f07da78c406e329d0d6b092"
+},
+{
+"names": [
+"Mathoverflow1973.MorseCancellation.critical_pair_of_surgery_count_two"
+],
+"class": "keep",
+"lines": [
+7742,
+7768
+],
+"sha256": "5f64921ca167521bfff39d9ba2116a25204132681fdde8d5ad0cc4953897ee6b"
+},
+{
+"names": [
+"Mathoverflow1973.MorseCancellation.exists_two_critical_point_morse_of_homotopySixSphere"
+],
+"class": "move",
+"lines": [
+7770,
+7786
+],
+"sha256": "b2ffa1a9c4b1f145be53f265d204f4042b0f36d57d36b5f07cad15558af4f7da"
+},
+{
+"names": [
+"Mathoverflow1973.MorseCancellation.nonempty_homeomorph_of_homotopySixSphere"
+],
+"class": "move",
+"lines": [
+7788,
+7797
+],
+"sha256": "fb0c3305c0e8ccd091db54776355fb931a029f2a08fcb5a727b58641624e41f6"
+},
+{
+"names": [
+"Mathoverflow1973.homeomorphic_sixSphere_of_homotopySixSphere"
+],
+"class": "move",
+"lines": [
+7799,
+7804
+],
+"sha256": "9544b2f863bb414355ebcf2a682c916e8aede70b21973b48b247d20a30563b3b"
+}
+]
+}

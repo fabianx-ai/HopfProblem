@@ -1,0 +1,62 @@
+# integration 7e replay log (source pin H=84a62a024019b8cdee9cb3003920aae78057571d, base bf6688c01edbf1b24baaf497fa026fe391857354)
+[1] 84a62a024019b8cdee9cb3003920aae78057571d -> 672affc1f769c8452a935a326cb029d621fbb1e1 | cherry-pick
+b1 (after [1]): lake build Lib.Geometry.Hyperbolic.Models Lib.AxiomAudit -> Build completed successfully (9402 jobs).
+lake: /home/goblin/.elan/toolchains/leanprover--lean4---v4.33.0/bin/lake, taskset -c 0-7 (base worktree 8-13)
+## final.sh output
+2026-10-20T01:02:02+02:00
+672affc1 feat(Lib): provide real polar charts for arbitrary tangent frames
+b1 0
+Build completed successfully (9402 jobs).
+lib 0
+Build completed successfully (9402 jobs).
+chain 0
+Build completed successfully (9462 jobs).
+info: Solution.lean:61:0: 'Mathoverflow1973.mathoverflow_1973' depends on axioms: [propext, Classical.choice, Quot.sound]
+sharedcenter 0
+Build completed successfully (8867 jobs).
+axioms 0
+Build completed successfully (9418 jobs).
+census 0
+  extracted (no longer under Hopf/): SphereCone
+ratchet PASS: 123 <= baseline 1648
+importgrep lines 4 (4 = all empty)
+roots 0
+Build completed successfully (9474 jobs).
+dump 0
+39503
+2026-10-20T01:38:48+02:00
+done 0
+## base.sh output (worktree /home/goblin/hopf-int7e-base, detached bf6688c0)
+2026-10-20T01:02:02+02:00
+bf6688c0 docs: NEXT_STEPS after integration 7d and the import trim
+basebuild 0
+Build completed successfully (9474 jobs).
+dump 0
+39478
+2026-10-20T01:36:55+02:00
+done 0
+## axiom probe counts (grep -cE '^info: <file>.*(depends on axioms|does not depend)' final-axioms.log)
+Lib/AxiomAudit.lean 3803; Shared/Proof/AxiomAudit.lean 53; Center/Proof/AxiomAudit.lean 9; Unused/Topology/Dimension/CubeBoundaryThreeCells.lean 34; axiom union {propext, Classical.choice, Quot.sound}; sorryAx 0; errors 0
+## envdiff
+constants before 39478 after 39503 (keys 39371 39396 )
+lost 0 added 25 of which source declarations: 0 15 ; names with changed type 0 of which source: 0
+  ADDED Hyperbolic.continuous_hyperboloidFrameDirection {'Lib.Geometry.Hyperbolic.Models': 1}
+  ADDED Hyperbolic.continuous_hyperboloidFrameDirectionComplex {'Lib.Geometry.Hyperbolic.Models': 1}
+  ADDED Hyperbolic.continuous_hyperboloidFramePolar {'Lib.Geometry.Hyperbolic.Models': 1}
+  ADDED Hyperbolic.hyperboloidFrameAngle {'Lib.Geometry.Hyperbolic.Models': 1}
+  ADDED Hyperbolic.hyperboloidFrameAngleDomain {'Lib.Geometry.Hyperbolic.Models': 1}
+  ADDED Hyperbolic.hyperboloidFrameAngle_chart {'Lib.Geometry.Hyperbolic.Models': 1}
+  ADDED Hyperbolic.hyperboloidFrameAngle_forward_inverse {'Lib.Geometry.Hyperbolic.Models': 1}
+  ADDED Hyperbolic.hyperboloidFrameAngle_prescribed_lift {'Lib.Geometry.Hyperbolic.Models': 1}
+  ADDED Hyperbolic.hyperboloidFrameDirection {'Lib.Geometry.Hyperbolic.Models': 1}
+  ADDED Hyperbolic.hyperboloidFrameDirectionComplex {'Lib.Geometry.Hyperbolic.Models': 1}
+  ADDED Hyperbolic.hyperboloidFrameDirectionComplex_normalization {'Lib.Geometry.Hyperbolic.Models': 1}
+  ADDED Hyperbolic.hyperboloidFramePolar {'Lib.Geometry.Hyperbolic.Models': 1}
+  ADDED Hyperbolic.hyperboloidFramePolar_coefficients {'Lib.Geometry.Hyperbolic.Models': 1}
+  ADDED Hyperbolic.hyperboloidFramePolar_direction {'Lib.Geometry.Hyperbolic.Models': 1}
+  ADDED Hyperbolic.hyperboloidFramePolar_reconstruct {'Lib.Geometry.Hyperbolic.Models': 1}
+auxiliary lost/added/changed (not judged): 0 10 0
+module moves (source declarations, 1-to-1):
+ambiguous module changes: 0
+auxiliary constants that changed module: 0
+VERDICT FAIL

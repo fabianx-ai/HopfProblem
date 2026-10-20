@@ -1,0 +1,15 @@
+Lib/Geometry/Manifold/Complex/Biholomorph.lean
+Lib/Geometry/Manifold/ContMDiff/Descent.lean
+Lib/Geometry/Manifold/Flow/Compact.lean
+Lib/Geometry/Manifold/Flow/HeightTranslating.lean
+Lib/Geometry/Manifold/Gluing/OverBase.lean
+Lib/Geometry/Manifold/Immersion/Relative.lean
+Lib/Geometry/Manifold/Instances/RiemannSphere.lean
+Lib/Geometry/Manifold/LocalDiffeomorph.lean
+Lib/Geometry/Manifold/Morse/AdaptedWindows.lean
+Lib/Geometry/Manifold/Morse/BeltCancellation.lean
+Lib/Geometry/Manifold/Morse/Birth.lean
+Lib/Geometry/Manifold/Morse/Cancellation.lean
+Lib/Geometry/Manifold/Morse/CellStructure.lean
+Lib/Geometry/Manifold/Morse/CircleGluing.lean
+Lib/Geometry/Manifold/Morse/Connection.lean

@@ -1,0 +1,111 @@
+{
+ "before": "/home/goblin/.claude/jobs/06995e68/tmp/r8-dfiles-a/dump_base.jsonl",
+ "after": "/home/goblin/.claude/jobs/06995e68/tmp/r8-dfiles-a/dump_after.jsonl",
+ "prefix": "",
+ "constants": [
+  38593,
+  38593
+ ],
+ "lost": [
+  [
+   "MorseCancellation.span_prefix_succ",
+   1669997855,
+   {
+    "Lib.Geometry.Manifold.Morse.CutTransport": 1
+   }
+  ],
+  [
+   "MorseCancellation.span_prefix_succ._proof_1",
+   2277154165,
+   {
+    "Lib.Geometry.Manifold.Morse.CutTransport": 1
+   }
+  ]
+ ],
+ "added": [
+  [
+   "MorseCancellation.span_prefix_succ",
+   2694854125,
+   {
+    "Lib.Geometry.Manifold.Morse.CutTransport": 1
+   }
+  ],
+  [
+   "Submodule.span_range_fin_succ._proof_1",
+   2277154165,
+   {
+    "Lib.Geometry.Manifold.Morse.CutTransport": 1
+   }
+  ]
+ ],
+ "changed_type_source": [],
+ "changed_type_proof_naming": [
+  "MorseCancellation.span_prefix_succ"
+ ],
+ "changed_type_accepted": [],
+ "added_accepted": [],
+ "accept_without_effect": [],
+ "changed_type_all": [
+  "MorseCancellation.span_prefix_succ"
+ ],
+ "moves": [
+  [
+   "Lib.Geometry.Manifold.Morse.BeltCancellation",
+   "Hopf.Proof.Geometry.Manifold.Morse.BeltCancellation",
+   10
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.BeltCancellation",
+   "Lib.AlgebraicTopology.SingularHomology.LinearSphereAction",
+   5
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.BeltCancellation",
+   "Lib.Geometry.Manifold.RegularLevel",
+   2
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.BeltCancellation",
+   "Lib.Geometry.Manifold.Transversality.Basic",
+   1
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.CutTransport",
+   "Hopf.Proof.Geometry.Manifold.Morse.CutTransport",
+   52
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.MiddleBlocks",
+   "Hopf.Proof.Geometry.Manifold.Morse.MiddleBlocks",
+   27
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.MiddleBlocks",
+   "Lib.Geometry.Manifold.Morse.EqualRangeHomology",
+   4
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.MinimalSystem",
+   "Hopf.Proof.Geometry.Manifold.Morse.MinimalSystem",
+   4
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.SurgeryHomology",
+   "Hopf.Proof.Geometry.Manifold.Morse.SurgeryHomology",
+   2
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.SurgeryHomology",
+   "Lib.Algebra.BigOperators.SignedCancellation",
+   5
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.SurgeryHomology",
+   "Lib.Geometry.Manifold.Morse.RadialFilling",
+   12
+  ]
+ ],
+ "ambiguous": [],
+ "auxiliary_moved": 100,
+ "verdict": "PASS"
+}

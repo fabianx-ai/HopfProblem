@@ -1,0 +1,22 @@
+== step modules Sun Sep 27 22:20:45 CEST 2026
+✔ [8919/8922] Built Hopf.Proof.SingularHomology (6.7s)
+✔ [8920/8922] Built Lib.Geometry.Manifold.Morse.SurgeryCollapse (159s)
+✔ [8921/8922] Built Hopf.SphereTopology (18s)
+✔ [8922/8922] Built Hopf.Proof.SphereTopology (6.7s)
+Build completed successfully (8922 jobs).
+modules rc 0
+== step Lib Sun Sep 27 22:30:31 CEST 2026
+✔ [9144/9146] Built Lib.Topology.Homotopy.RelativeDiskLifting (6.7s)
+✔ [9145/9146] Built Lib (6.7s)
+Build completed successfully (9146 jobs).
+Lib rc 0
+== step AxiomAudit Sun Sep 27 22:31:14 CEST 2026
+info: Lib/AxiomAudit.lean:7438:0: 'DeterminingFamily.commute_all_of_lattice_image_eq_zpow' depends on axioms: [propext, Quot.sound]
+Build completed successfully (9146 jobs).
+AxiomAudit rc 0
+== step targets Sun Sep 27 22:32:08 CEST 2026
+ℹ [9197/9198] Built Solution (6.5s)
+info: Solution.lean:61:0: 'Mathoverflow1973.mathoverflow_1973' depends on axioms: [propext, Classical.choice, Quot.sound]
+Build completed successfully (9198 jobs).
+targets rc 0
+done 0

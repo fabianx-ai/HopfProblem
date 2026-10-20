@@ -1,0 +1,16 @@
+constants before 38248 after 38256 (keys 38146 38154 )
+lost 60 added 68 of which source declarations: 0 0 ; names with changed type 3 of which source: 0
+auxiliary lost/added/changed (not judged): 60 68 3
+module moves (source declarations, 1-to-1):
+      25  Lib.AlgebraicTopology.SingularHomology.CrossProduct -> Lib.AlgebraicTopology.SingularHomology.CrossProduct.Affine
+      38  Lib.AlgebraicTopology.SingularHomology.CrossProduct -> Lib.AlgebraicTopology.SingularHomology.CrossProduct.Associator
+      33  Lib.AlgebraicTopology.SingularHomology.CrossProduct -> Lib.AlgebraicTopology.SingularHomology.CrossProduct.Chain
+      26  Lib.AlgebraicTopology.SingularHomology.CrossProduct -> Lib.AlgebraicTopology.SingularHomology.CrossProduct.Formal
+      16  Lib.AlgebraicTopology.SingularHomology.CrossProduct -> Lib.AlgebraicTopology.SingularHomology.CrossProduct.Homology
+       5  Lib.AlgebraicTopology.SingularHomology.CrossProduct -> Lib.AlgebraicTopology.SingularHomology.CrossProduct.HomologyDescent
+      30  Lib.AlgebraicTopology.SingularHomology.CrossProduct -> Lib.AlgebraicTopology.SingularHomology.CrossProduct.Multilinear
+       3  Lib.AlgebraicTopology.SingularHomology.CrossProduct -> Lib.AlgebraicTopology.SingularHomology.CrossProduct.Naturality
+      42  Lib.AlgebraicTopology.SingularHomology.CrossProduct -> Lib.AlgebraicTopology.SingularHomology.CrossProduct.Swap
+ambiguous module changes: 0
+auxiliary constants that changed module: 40
+VERDICT PASS

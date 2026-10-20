@@ -1,0 +1,362 @@
+{
+  "source_revision": "b564b8a1728719e24f3f0c7c6e3bceeb636c55d4",
+  "root": "Mathoverflow1973.LinearSphereAction.homology_eq_sign_smul",
+  "target": "Lib/AlgebraicTopology/SingularHomology/LinearSphereAction.lean",
+  "normalizations": [
+    "s = re.sub(r\"(?<![\\w])Suspension\\.topSus\\b\", \"Suspension\", s)",
+    "s = re.sub(r\"(?<![\\w])PeriodTorusHigherHomology\\.\", \"SingularHomology.\", s)",
+    "s = re.sub(r\"(?<![\\w])CuspCentralHomology\\.contractibleCoverConnecting_injective\\b\", \"Suspension.contractibleCoverConnecting_injective\", s)"
+  ],
+  "declarations": [
+    {
+      "name": "Mathoverflow1973.PuncturedRadial.toSphere",
+      "source": "Hopf/SingularHomology.lean",
+      "start": 15433,
+      "end": 15438,
+      "kind": "def",
+      "sha256": "6cc315da566eb1fe681522771234a1e8dc341621ba7b748ddcff142f980af8c8",
+      "target": "Lib/AlgebraicTopology/SingularHomology/LinearSphereAction.lean",
+      "normalized_sha256": "6cc315da566eb1fe681522771234a1e8dc341621ba7b748ddcff142f980af8c8"
+    },
+    {
+      "name": "Mathoverflow1973.LinearSphereAction.puncturedMap",
+      "source": "Hopf/SphereTopology.lean",
+      "start": 9763,
+      "end": 9767,
+      "kind": "def",
+      "sha256": "260ee5307a463a26dec4281ad386584aab7d24913456749b06a087e4d346ece9",
+      "target": "Lib/AlgebraicTopology/SingularHomology/LinearSphereAction.lean",
+      "normalized_sha256": "260ee5307a463a26dec4281ad386584aab7d24913456749b06a087e4d346ece9"
+    },
+    {
+      "name": "Mathoverflow1973.LinearSphereAction.sphereMap",
+      "source": "Hopf/SphereTopology.lean",
+      "start": 9769,
+      "end": 9772,
+      "kind": "def",
+      "sha256": "f2c1be46c7c8ad549ccd381d71389bec270dfc420a71542908d29a5dc6ce9663",
+      "target": "Lib/AlgebraicTopology/SingularHomology/LinearSphereAction.lean",
+      "normalized_sha256": "f2c1be46c7c8ad549ccd381d71389bec270dfc420a71542908d29a5dc6ce9663"
+    },
+    {
+      "name": "Mathoverflow1973.LinearSphereAction.sphereMap_id",
+      "source": "Hopf/SphereTopology.lean",
+      "start": 9774,
+      "end": 9780,
+      "kind": "theorem",
+      "sha256": "2c7fc60e2879e9f0a189324f479f9241f4581a72d969ecf15583bb3440a47395",
+      "target": "Lib/AlgebraicTopology/SingularHomology/LinearSphereAction.lean",
+      "normalized_sha256": "2c7fc60e2879e9f0a189324f479f9241f4581a72d969ecf15583bb3440a47395"
+    },
+    {
+      "name": "Mathoverflow1973.LinearSphereAction.component_injective",
+      "source": "Hopf/SphereTopology.lean",
+      "start": 9782,
+      "end": 9793,
+      "kind": "theorem",
+      "sha256": "2e318527cfb0357c9aa731eac57bda2d5f8292356a0eaa6b3c7f30e3e92aa111",
+      "target": "Lib/AlgebraicTopology/SingularHomology/LinearSphereAction.lean",
+      "normalized_sha256": "2e318527cfb0357c9aa731eac57bda2d5f8292356a0eaa6b3c7f30e3e92aa111"
+    },
+    {
+      "name": "Mathoverflow1973.LinearSphereAction.componentHomotopy",
+      "source": "Hopf/SphereTopology.lean",
+      "start": 9795,
+      "end": 9814,
+      "kind": "def",
+      "sha256": "63bd8bab501bdffc3fde3faa3b10d308e273a6dfb62924029d4f07eb4b8eb38d",
+      "target": "Lib/AlgebraicTopology/SingularHomology/LinearSphereAction.lean",
+      "normalized_sha256": "63bd8bab501bdffc3fde3faa3b10d308e273a6dfb62924029d4f07eb4b8eb38d"
+    },
+    {
+      "name": "Mathoverflow1973.LinearSphereAction.homotopic_of_det_mul_pos",
+      "source": "Hopf/SphereTopology.lean",
+      "start": 9816,
+      "end": 9830,
+      "kind": "theorem",
+      "sha256": "bc0cea443937d1694563d3afed635874ca21f6e8147b490d288066c0a49244cd",
+      "target": "Lib/AlgebraicTopology/SingularHomology/LinearSphereAction.lean",
+      "normalized_sha256": "bc0cea443937d1694563d3afed635874ca21f6e8147b490d288066c0a49244cd"
+    },
+    {
+      "name": "Mathoverflow1973.SuspensionReflection.reflect",
+      "source": "Hopf/SphereTopology.lean",
+      "start": 9967,
+      "end": 9986,
+      "kind": "def",
+      "sha256": "8e678135d9f294a7580ea83b40c92c74b139451fb76f66df5d5d2631883b793c",
+      "target": "Lib/AlgebraicTopology/SingularHomology/LinearSphereAction.lean",
+      "normalized_sha256": "44acc46803717e86d3438e7533ca41a997db9068bc2dd366654f3c6dc7bf5a58"
+    },
+    {
+      "name": "Mathoverflow1973.SuspensionReflection.reflect_mk",
+      "source": "Hopf/SphereTopology.lean",
+      "start": 9988,
+      "end": 9992,
+      "kind": "theorem",
+      "sha256": "84fd257d15e18883e491811c96c967254d5a591d24e29ba25174626860cbc094",
+      "target": "Lib/AlgebraicTopology/SingularHomology/LinearSphereAction.lean",
+      "normalized_sha256": "ff5f358cd66f57bd92a29a86a1ca954742c362329d80e5f62cf0e6a2f45f1672"
+    },
+    {
+      "name": "Mathoverflow1973.SuspensionReflection.reflect_height",
+      "source": "Hopf/SphereTopology.lean",
+      "start": 9994,
+      "end": 9999,
+      "kind": "theorem",
+      "sha256": "c8789f3ea316f83c0a64c02cd24fd1ee8690ebe3e5ba1542d4558c4e24eb1477",
+      "target": "Lib/AlgebraicTopology/SingularHomology/LinearSphereAction.lean",
+      "normalized_sha256": "44fcb36c2cf97657c6f3edde531ee81ef3dd7364a43cfb44d21e65c1b709f719"
+    },
+    {
+      "name": "Mathoverflow1973.SuspensionReflection.reflect_north",
+      "source": "Hopf/SphereTopology.lean",
+      "start": 10001,
+      "end": 10008,
+      "kind": "theorem",
+      "sha256": "ce3d6da90260f43ebaac2a00f01d58de71fa4acbcfdb06f6982128282fc17b3e",
+      "target": "Lib/AlgebraicTopology/SingularHomology/LinearSphereAction.lean",
+      "normalized_sha256": "73765f8cfc0991233798cb9d4a5ed97fdd675bb893de6d868ebca4e2ebf1b448"
+    },
+    {
+      "name": "Mathoverflow1973.SuspensionReflection.reflect_south",
+      "source": "Hopf/SphereTopology.lean",
+      "start": 10010,
+      "end": 10017,
+      "kind": "theorem",
+      "sha256": "de773d0b32c34d86959c60e3b685e56af7e6634e1bd6952d20da3cd8bf6ad805",
+      "target": "Lib/AlgebraicTopology/SingularHomology/LinearSphereAction.lean",
+      "normalized_sha256": "132655ec996497df8d16ce790935ebe42115f40cf81f0de50519b7c66561cbd5"
+    },
+    {
+      "name": "Mathoverflow1973.SuspensionReflection.middleMap",
+      "source": "Hopf/SphereTopology.lean",
+      "start": 10019,
+      "end": 10021,
+      "kind": "def",
+      "sha256": "cb05c37b8dbfdcbd9c2a3a8a70d2307a4870fff177527c81619485b05e0ccb8d",
+      "target": "Lib/AlgebraicTopology/SingularHomology/LinearSphereAction.lean",
+      "normalized_sha256": "af5e3ac0bc038e8f2d29ec1e76fa4714f7a07829af7a57c9b88103aa8246d290"
+    },
+    {
+      "name": "Mathoverflow1973.SuspensionReflection.middle_projection",
+      "source": "Hopf/SphereTopology.lean",
+      "start": 10023,
+      "end": 10039,
+      "kind": "theorem",
+      "sha256": "df27eb267be21deaec7c1cbbcaf7f96e0b070c1084d80666d2c8980c4aad4be0",
+      "target": "Lib/AlgebraicTopology/SingularHomology/LinearSphereAction.lean",
+      "normalized_sha256": "9bc8794e8d23267fe434004ddea366de5f0b31b5af017a8576593fcb9162cd86"
+    },
+    {
+      "name": "Mathoverflow1973.SuspensionReflection.middle_projection_comp",
+      "source": "Hopf/SphereTopology.lean",
+      "start": 10041,
+      "end": 10044,
+      "kind": "theorem",
+      "sha256": "1b7918e36788997cc4ea1cf33eed0bf5329b3827d88bf71dfdf5fdfb7548001b",
+      "target": "Lib/AlgebraicTopology/SingularHomology/LinearSphereAction.lean",
+      "normalized_sha256": "4143c2b36bcac0d6a6e688a23ed258054f9639e3a48e111b7e8e06a8d4cea9c2"
+    },
+    {
+      "name": "Mathoverflow1973.hyperplaneReflectionOperator",
+      "source": "Hopf/SphereTopology.lean",
+      "start": 10046,
+      "end": 10048,
+      "kind": "def",
+      "sha256": "517e619f00d673a4b5d4402774ea085c23b455c4208dd0802a71aa0857e4a312",
+      "target": "Lib/AlgebraicTopology/SingularHomology/LinearSphereAction.lean",
+      "normalized_sha256": "517e619f00d673a4b5d4402774ea085c23b455c4208dd0802a71aa0857e4a312"
+    },
+    {
+      "name": "Mathoverflow1973.hyperplaneReflectionOperator_apply",
+      "source": "Hopf/SphereTopology.lean",
+      "start": 10050,
+      "end": 10059,
+      "kind": "theorem",
+      "sha256": "972ce9cf537ea2dbae6cf467bf0732345ae4dbe24c34f123d958a3ecd31ed79a",
+      "target": "Lib/AlgebraicTopology/SingularHomology/LinearSphereAction.lean",
+      "normalized_sha256": "972ce9cf537ea2dbae6cf467bf0732345ae4dbe24c34f123d958a3ecd31ed79a"
+    },
+    {
+      "name": "Mathoverflow1973.SphereReflection.linearReflection",
+      "source": "Hopf/SphereTopology.lean",
+      "start": 10061,
+      "end": 10063,
+      "kind": "def",
+      "sha256": "dcc3ea5fbcad4239d7dba7728d120db879f07c084c8e278f699cc868dec855b8",
+      "target": "Lib/AlgebraicTopology/SingularHomology/LinearSphereAction.lean",
+      "normalized_sha256": "dcc3ea5fbcad4239d7dba7728d120db879f07c084c8e278f699cc868dec855b8"
+    },
+    {
+      "name": "Mathoverflow1973.SphereReflection.linearReflection_apply",
+      "source": "Hopf/SphereTopology.lean",
+      "start": 10065,
+      "end": 10071,
+      "kind": "theorem",
+      "sha256": "b26583ddceb8a8408ec85a2d0bacd59bce78276dd801df9b524bc68aef7fa4e5",
+      "target": "Lib/AlgebraicTopology/SingularHomology/LinearSphereAction.lean",
+      "normalized_sha256": "b26583ddceb8a8408ec85a2d0bacd59bce78276dd801df9b524bc68aef7fa4e5"
+    },
+    {
+      "name": "Mathoverflow1973.SphereReflection.linearReflection_zero",
+      "source": "Hopf/SphereTopology.lean",
+      "start": 10073,
+      "end": 10078,
+      "kind": "theorem",
+      "sha256": "3f81c09ff330963e26a4a23377889f50e40aa4aa317d6be0bff67516f946c5ea",
+      "target": "Lib/AlgebraicTopology/SingularHomology/LinearSphereAction.lean",
+      "normalized_sha256": "3f81c09ff330963e26a4a23377889f50e40aa4aa317d6be0bff67516f946c5ea"
+    },
+    {
+      "name": "Mathoverflow1973.SphereReflection.linearReflection_succ",
+      "source": "Hopf/SphereTopology.lean",
+      "start": 10080,
+      "end": 10084,
+      "kind": "theorem",
+      "sha256": "4a425daf29322593f5de57bf8ba722612a43382752cb913a4f0257815ccef69b",
+      "target": "Lib/AlgebraicTopology/SingularHomology/LinearSphereAction.lean",
+      "normalized_sha256": "4a425daf29322593f5de57bf8ba722612a43382752cb913a4f0257815ccef69b"
+    },
+    {
+      "name": "Mathoverflow1973.SphereReflection.linearReflection_det",
+      "source": "Hopf/SphereTopology.lean",
+      "start": 10086,
+      "end": 10094,
+      "kind": "theorem",
+      "sha256": "762854d7787e9e7f907b06fce0a0dbf475fad38cc8849eb76d1e8b17963016a3",
+      "target": "Lib/AlgebraicTopology/SingularHomology/LinearSphereAction.lean",
+      "normalized_sha256": "762854d7787e9e7f907b06fce0a0dbf475fad38cc8849eb76d1e8b17963016a3"
+    },
+    {
+      "name": "Mathoverflow1973.SphereReflection.sphereMap",
+      "source": "Hopf/SphereTopology.lean",
+      "start": 10096,
+      "end": 10104,
+      "kind": "def",
+      "sha256": "9d6b0d9d700631e410567c4ca5a1546f9cfa7b444da6ba02a346a9017478f65f",
+      "target": "Lib/AlgebraicTopology/SingularHomology/LinearSphereAction.lean",
+      "normalized_sha256": "9d6b0d9d700631e410567c4ca5a1546f9cfa7b444da6ba02a346a9017478f65f"
+    },
+    {
+      "name": "Mathoverflow1973.SphereReflection.height_symm",
+      "source": "Hopf/SphereTopology.lean",
+      "start": 10106,
+      "end": 10109,
+      "kind": "theorem",
+      "sha256": "7a71450f1a37915b1040ae33a3a8c3f341d6c213caf66568da5445cd151ed2bf",
+      "target": "Lib/AlgebraicTopology/SingularHomology/LinearSphereAction.lean",
+      "normalized_sha256": "7a71450f1a37915b1040ae33a3a8c3f341d6c213caf66568da5445cd151ed2bf"
+    },
+    {
+      "name": "Mathoverflow1973.SphereReflection.radius_symm",
+      "source": "Hopf/SphereTopology.lean",
+      "start": 10111,
+      "end": 10113,
+      "kind": "theorem",
+      "sha256": "aaa3bdc1d6828944bf2141dcadfb938b5f3993ab95a7a5cc96dbcc2e5bf977a9",
+      "target": "Lib/AlgebraicTopology/SingularHomology/LinearSphereAction.lean",
+      "normalized_sha256": "aaa3bdc1d6828944bf2141dcadfb938b5f3993ab95a7a5cc96dbcc2e5bf977a9"
+    },
+    {
+      "name": "Mathoverflow1973.SphereReflection.sphereMap_latitude",
+      "source": "Hopf/SphereTopology.lean",
+      "start": 10115,
+      "end": 10132,
+      "kind": "theorem",
+      "sha256": "9b6ab66e3d22c290cb2efd8e9d50631012ab16dba6543e5f13bc27611fb5ea51",
+      "target": "Lib/AlgebraicTopology/SingularHomology/LinearSphereAction.lean",
+      "normalized_sha256": "9b6ab66e3d22c290cb2efd8e9d50631012ab16dba6543e5f13bc27611fb5ea51"
+    },
+    {
+      "name": "Mathoverflow1973.SphereReflection.sphereMap_suspension",
+      "source": "Hopf/SphereTopology.lean",
+      "start": 10134,
+      "end": 10140,
+      "kind": "theorem",
+      "sha256": "cd722f1f1e0375a20cf4c437c11291d2f3e20275e48012fdb0ed5551efcaa6e9",
+      "target": "Lib/AlgebraicTopology/SingularHomology/LinearSphereAction.lean",
+      "normalized_sha256": "9f2809bdff5a71c0aa8e15ac3f305a7e822805ecec85a4b50ea1fa9d27a9fe66"
+    },
+    {
+      "name": "Mathoverflow1973.SphereReflection.sphereMap_comp_suspension",
+      "source": "Hopf/SphereTopology.lean",
+      "start": 10142,
+      "end": 10146,
+      "kind": "theorem",
+      "sha256": "750f2243de014945189f213458a9bd6ff408690bbcef31df92c8568b9df7b305",
+      "target": "Lib/AlgebraicTopology/SingularHomology/LinearSphereAction.lean",
+      "normalized_sha256": "750f2243de014945189f213458a9bd6ff408690bbcef31df92c8568b9df7b305"
+    },
+    {
+      "name": "Mathoverflow1973.SuspensionReflection.middle_homology",
+      "source": "Hopf/SphereTopology.lean",
+      "start": 10148,
+      "end": 10161,
+      "kind": "theorem",
+      "sha256": "aef8a8e3c8392621d1f588c500bd786905b7b49a026d7346b2dc58ad7e51dbc9",
+      "target": "Lib/AlgebraicTopology/SingularHomology/LinearSphereAction.lean",
+      "normalized_sha256": "f9f516c8058166b8b43c1ff3c6b74da5b5e291a1deedd5d71eee5e58830a7ae8"
+    },
+    {
+      "name": "Mathoverflow1973.SuspensionReflection.reflect_homology",
+      "source": "Hopf/SphereTopology.lean",
+      "start": 10163,
+      "end": 10184,
+      "kind": "theorem",
+      "sha256": "acefd2b8c82ea7e856afa15254a097041e817176e5ade1b1f4fe18173ce97747",
+      "target": "Lib/AlgebraicTopology/SingularHomology/LinearSphereAction.lean",
+      "normalized_sha256": "357b472bd0e8634e6332f56db56d55efa5ee4c53155e0fa8ba612ec70b71da77"
+    },
+    {
+      "name": "Mathoverflow1973.SphereReflection.sphereMap_homology",
+      "source": "Hopf/SphereTopology.lean",
+      "start": 10186,
+      "end": 10201,
+      "kind": "theorem",
+      "sha256": "e2a4b7336f8d7ad71c6953374271e77cbc5dbc902e554d6c9b0974a09223cc99",
+      "target": "Lib/AlgebraicTopology/SingularHomology/LinearSphereAction.lean",
+      "normalized_sha256": "cbb8abc74ce931e4082846c28ae30ebe49f1837a0da327076cbd23e2b9882b72"
+    },
+    {
+      "name": "Mathoverflow1973.LinearSphereAction.sphereMap_reflection",
+      "source": "Hopf/SphereTopology.lean",
+      "start": 10203,
+      "end": 10215,
+      "kind": "theorem",
+      "sha256": "230fe5552de547f8b09680f141f7b55a5b389eb041d3e7f49e26d23ee00cea77",
+      "target": "Lib/AlgebraicTopology/SingularHomology/LinearSphereAction.lean",
+      "normalized_sha256": "230fe5552de547f8b09680f141f7b55a5b389eb041d3e7f49e26d23ee00cea77"
+    },
+    {
+      "name": "Mathoverflow1973.LinearSphereAction.homology_of_det_pos",
+      "source": "Hopf/SphereTopology.lean",
+      "start": 10217,
+      "end": 10236,
+      "kind": "theorem",
+      "sha256": "c0f6f5fb375b2d72d3baccf7514e9440eef276484c427d1edb9d15cd6b376e9a",
+      "target": "Lib/AlgebraicTopology/SingularHomology/LinearSphereAction.lean",
+      "normalized_sha256": "0bcc61cb7e9a87d4fa280cd18d485b786be82366466ea173c7d15d1708597337"
+    },
+    {
+      "name": "Mathoverflow1973.LinearSphereAction.homology_of_det_neg",
+      "source": "Hopf/SphereTopology.lean",
+      "start": 10238,
+      "end": 10256,
+      "kind": "theorem",
+      "sha256": "eafa8380884b9844416bbfc68be33958a370c71e917ce62dc7791f7d7e3ea079",
+      "target": "Lib/AlgebraicTopology/SingularHomology/LinearSphereAction.lean",
+      "normalized_sha256": "cf29eb4fcdb48e74610404d0d24d4123fadb0dae533f08f8ec03f279677c51b8"
+    },
+    {
+      "name": "Mathoverflow1973.LinearSphereAction.homology_eq_sign_smul",
+      "source": "Hopf/SphereTopology.lean",
+      "start": 10258,
+      "end": 10269,
+      "kind": "theorem",
+      "sha256": "057d46f5c013d0e7a92d7bf878fdc2306fd7cd44acc69385e64c80ecb585fad3",
+      "target": "Lib/AlgebraicTopology/SingularHomology/LinearSphereAction.lean",
+      "normalized_sha256": "057d46f5c013d0e7a92d7bf878fdc2306fd7cd44acc69385e64c80ecb585fad3"
+    }
+  ]
+}

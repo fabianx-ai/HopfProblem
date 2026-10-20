@@ -1,0 +1,7 @@
+CMD: PATH=/tmp/shared-lean-copy/toolchain-v4.33.0/bin:$PATH lake exe comparator comparator/config.json
+start 04:38:36 epoch 1789267116
+Building Challenge
+could not execute external process 'landrun'
+uncaught exception: Child exited with 255
+exit 1
+end 04:38:36 epoch 1789267116

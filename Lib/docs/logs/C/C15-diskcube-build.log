@@ -1,0 +1,6 @@
+CMD: lake build Lib.Topology.Homeomorph.DiskCube
+start 05:12:02
+✔ [8710/8710] Built Lib.Topology.Homeomorph.DiskCube (2.9s)
+Build completed successfully (8710 jobs).
+exit 0
+end 05:12:08

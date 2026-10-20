@@ -1,0 +1,8 @@
+constants before 38248 after 38248 (keys 38146 38146 )
+lost 3 added 3 of which source declarations: 0 0 ; names with changed type 3 of which source: 1
+  PROOF-NAMING AlgebraicTopology.SingularCochains.dualHomotopyEquiv
+auxiliary lost/added/changed (not judged): 3 3 2
+module moves (source declarations, 1-to-1):
+ambiguous module changes: 0
+auxiliary constants that changed module: 0
+VERDICT PASS

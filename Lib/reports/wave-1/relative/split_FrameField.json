@@ -1,0 +1,2374 @@
+{
+"module": "Lib.Geometry.Manifold.Immersion.Relative",
+"source": "Lib/Geometry/Manifold/Immersion/Relative.lean",
+"source_sha256": "a6912bc3a0020ca190ffec3fdfaf931e61c5b8b81cda4542dd8275da65cbd327",
+"units_kept": 177,
+"units_moved": 38,
+"units": [
+{
+"names": [
+"MorseCancellation.exists_open_isotopic_pointMoving"
+],
+"class": "keep",
+"lines": [
+73,
+111
+],
+"sha256": "b43a0232186e5861038a8e0589893cbcaae56d2dfd8e81d9f8bbb9bcf1119c70"
+},
+{
+"names": [
+"MorseCancellation.exists_isotopic_two_points_in_dense"
+],
+"class": "keep",
+"lines": [
+113,
+136
+],
+"sha256": "09e8a74b0a48f0ea943ba15eef62351260bbbe92a737ad6ce1a0dfce774b92ce"
+},
+{
+"names": [
+"MorseCancellation.isotopicToIdentity_joined"
+],
+"class": "keep",
+"lines": [
+138,
+149
+],
+"sha256": "e7a9141cf12bf287eb45fcabe6a0039b100465515df43a23383a58a6e1bb5e4a"
+},
+{
+"names": [
+"MorseCancellation.isotopicPointOrbit"
+],
+"class": "keep",
+"lines": [
+151,
+159
+],
+"sha256": "251bbb51e03bda047374344695f651e096222a9fb745073fdfb23ff715a42398"
+},
+{
+"names": [
+"MorseCancellation.isOpen_isotopicPointOrbit"
+],
+"class": "keep",
+"lines": [
+161,
+177
+],
+"sha256": "c97f55afebca214d7a889b63f21b16a6153cc52f8cda481b37d9f660424e5de5"
+},
+{
+"names": [
+"MorseCancellation.isOpen_sdiff_isotopicPointOrbit"
+],
+"class": "keep",
+"lines": [
+179,
+200
+],
+"sha256": "73f537a2b7a59e52a462cf681cde8402cd6d7f51a42667850cf6ccc9da62b095"
+},
+{
+"names": [
+"MorseCancellation.exists_isotopic_pointMoving_of_preconnected"
+],
+"class": "keep",
+"lines": [
+202,
+225
+],
+"sha256": "3545ca24637a641d7d73d2030db18ea4fc6252869bb386d36305d59dc60f6fd2"
+},
+{
+"names": [
+"MorseCancellation.exists_isotopic_pointMoving_of_path"
+],
+"class": "keep",
+"lines": [
+227,
+240
+],
+"sha256": "003a8a290aee96e83785eca76f66154fc548a5f675613fcac428669146d093e8"
+},
+{
+"names": [
+"CurveImmersion.smoothTime"
+],
+"class": "keep",
+"lines": [
+242,
+245
+],
+"sha256": "e66d524e0509102394c49a7dfe9f90812756f0bf2bab287ac262ab60a9955969"
+},
+{
+"names": [
+"CurveImmersion.contMDiff_smoothTime"
+],
+"class": "keep",
+"lines": [
+247,
+256
+],
+"sha256": "b69a3c947abedf4c574e8ebaa49d5292779d940132e67cc55b6f1fa335fcddc7"
+},
+{
+"names": [
+"CurveImmersion.smoothTime_zero"
+],
+"class": "keep",
+"lines": [
+258,
+261
+],
+"sha256": "fae475e652e33d76b39bf8d22f21006ce6ff713860ab69049ff42354c8cc094c"
+},
+{
+"names": [
+"CurveImmersion.smoothTime_one"
+],
+"class": "keep",
+"lines": [
+263,
+266
+],
+"sha256": "6f3f4a46e512dbf2c36ee3710b52d11f683a3f04cb18ce188505747adb2e721f"
+},
+{
+"names": [
+"exists_smooth_connecting_curve"
+],
+"class": "keep",
+"lines": [
+268,
+293
+],
+"sha256": "c634094ed43063f60533e1c4cb35af90407db58d9824e5e5a3f43dcbbba49076"
+},
+{
+"names": [
+"SupportedDiffeomorph.pointOrbit"
+],
+"class": "keep",
+"lines": [
+295,
+299
+],
+"sha256": "5e76c416546b8d821c8ab04ba404827c91ef05c8eed517824b493abfb6842771"
+},
+{
+"names": [
+"SupportedDiffeomorph.isOpen_pointOrbit"
+],
+"class": "keep",
+"lines": [
+301,
+317
+],
+"sha256": "33410e038fcb84e45f0d4b1db24f9b1b36aef2205d46e12855c77bd482b44064"
+},
+{
+"names": [
+"SupportedDiffeomorph.isOpen_sdiff_pointOrbit"
+],
+"class": "keep",
+"lines": [
+319,
+340
+],
+"sha256": "aa049e990ec7aad068cb55616f774959fe7b31745690be8d91947d455e22f6ce"
+},
+{
+"names": [
+"SupportedDiffeomorph.exists_pointMoving_of_preconnected"
+],
+"class": "keep",
+"lines": [
+342,
+362
+],
+"sha256": "bd6b0fe6a6cad97c7cf96b656634dba2f75437973319a57657bb502fc22d7a9c"
+},
+{
+"names": [
+"SupportedDiffeomorph.exists_pointMoving_of_path"
+],
+"class": "keep",
+"lines": [
+364,
+375
+],
+"sha256": "10ce8a464b9b95dd2d2d4ebc3442388d1a7f76f1f4bd8271d2747d0360572e81"
+},
+{
+"names": [
+"exists_smooth_path_avoiding_finite"
+],
+"class": "keep",
+"lines": [
+377,
+419
+],
+"sha256": "66e6d971a4188ccad8ebe2c29aca48b388b379c682160fa48a39174ab27e5709"
+},
+{
+"names": [
+"exists_pointMoving_fixing_finite"
+],
+"class": "keep",
+"lines": [
+421,
+431
+],
+"sha256": "0677e42537bad177b4a8691c91f292385fefbcb3384122b99b6b60b142c83c3a"
+},
+{
+"names": [
+"ChartMapPerturbation.collisionDomain"
+],
+"class": "keep",
+"lines": [
+433,
+439
+],
+"sha256": "20a2b1762844990a53eea2c42cd88fc6645ae2f0fac349e9075a10b405c60532"
+},
+{
+"names": [
+"ChartMapPerturbation.collisionParameter"
+],
+"class": "keep",
+"lines": [
+441,
+447
+],
+"sha256": "60bd34bff9cef9d7978749c6ee6b96859d0b33792daee062321f459ed04b40e1"
+},
+{
+"names": [
+"ChartMapPerturbation.isOpen_collisionDomain"
+],
+"class": "keep",
+"lines": [
+449,
+457
+],
+"sha256": "9258719ec90663fdc2439ea65a0044e354bad2a7b2a89846e3037f58996834bb"
+},
+{
+"names": [
+"ChartMapPerturbation.contMDiffOn_collisionParameter"
+],
+"class": "keep",
+"lines": [
+459,
+478
+],
+"sha256": "00d7852fcf05371de1b93543a2b8df8bf9332aa4e2e6554fe3cd63d5d45fd12c"
+},
+{
+"names": [
+"ChartMapPerturbation.collision_imp_old_and_equal_cutoff"
+],
+"class": "keep",
+"lines": [
+480,
+525
+],
+"sha256": "5316fa4cd329dcc1ad15fb584d361c4bd0d37c17c67a6dbce89a4868a8b8f93d"
+},
+{
+"names": [
+"ChartMapPerturbation.exists_small_collision_removing_parameter"
+],
+"class": "keep",
+"lines": [
+527,
+556
+],
+"sha256": "eac13ef7fdda3c9a0bd6d175b020e04e2e0fd36a28868da3897f801cf86d15d4"
+},
+{
+"names": [
+"ChartMapPerturbation.obstacleDomain"
+],
+"class": "keep",
+"lines": [
+558,
+564
+],
+"sha256": "85189a35402a2657737bf05d9fb8719a7fa258d3c91b24463c39e34aedd227d1"
+},
+{
+"names": [
+"ChartMapPerturbation.obstacleParameter"
+],
+"class": "keep",
+"lines": [
+566,
+572
+],
+"sha256": "d7efb2fb779402dbbc1f1f78a5c5ab21fefec0bf296d6f6de498b499d7839c40"
+},
+{
+"names": [
+"ChartMapPerturbation.isOpen_obstacleDomain"
+],
+"class": "keep",
+"lines": [
+574,
+583
+],
+"sha256": "70c7b42956d6d4b265f1cf65dbd15dc9f2848bf397a0f6d516fe8270c4b5b0ef"
+},
+{
+"names": [
+"ChartMapPerturbation.contMDiffOn_obstacleParameter"
+],
+"class": "keep",
+"lines": [
+585,
+603
+],
+"sha256": "5ef9b6b3078ad2b593178a07a4cec424de7b3e6938136995aaff79d17da6b903"
+},
+{
+"names": [
+"ChartMapPerturbation.avoids_of_not_obstacle_parameter"
+],
+"class": "keep",
+"lines": [
+605,
+623
+],
+"sha256": "be5644087b084bea51e66af7eca6dd8cd0fa1123cac56df18c9e7b4a36405c72"
+},
+{
+"names": [
+"ChartMapPerturbation.exists_small_embedding_avoiding_parameter"
+],
+"class": "keep",
+"lines": [
+625,
+674
+],
+"sha256": "84a98952e8b810011dc98b825407300c3a9d293f65f98249fff57e40c1391544"
+},
+{
+"names": [
+"ManifoldImmersion.injective_fderiv_chart_iff"
+],
+"class": "keep",
+"lines": [
+676,
+692
+],
+"sha256": "4323b6d1292b49ba20f49ce3387d7382be7217e4a03a50b0c5960b56d0390b34"
+},
+{
+"names": [
+"ManifoldImmersion.fderiv_chart_eq_zero_iff"
+],
+"class": "keep",
+"lines": [
+694,
+713
+],
+"sha256": "c1ee28a1c58dbdef3173b41facf526084e3183ebce9711c73a9a28c077214767"
+},
+{
+"names": [
+"ManifoldImmersion.isOpen_injective_nativeDerivative"
+],
+"class": "keep",
+"lines": [
+715,
+756
+],
+"sha256": "cdc2a10a64d9b9a51fc0485cc77b81d1e4105458f8a2729c03db384c92d31c79"
+},
+{
+"names": [
+"ManifoldImmersion.isOpen_injective_derivative_on"
+],
+"class": "keep",
+"lines": [
+758,
+772
+],
+"sha256": "501cdff2455869b658009e9c0c9bd10c5331279f8c37593ff012d3e4fe9ba689"
+},
+{
+"names": [
+"ManifoldImmersion.isOpen_injective_derivative"
+],
+"class": "keep",
+"lines": [
+774,
+788
+],
+"sha256": "9188b35953291eb6e264dd686e677fc331b8020e7218f3467aa853a484f37fa1"
+},
+{
+"names": [
+"ManifoldImmersion.eventually_injective_nativeDerivative"
+],
+"class": "keep",
+"lines": [
+790,
+804
+],
+"sha256": "b8ebba81844175e3314ad2cb6d8868e443142d8904b69fec96689b2838a586e8"
+},
+{
+"names": [
+"ChartMapPerturbation.eventually_perturb_injective_derivative"
+],
+"class": "keep",
+"lines": [
+806,
+831
+],
+"sha256": "48c59600035b254f8b1d1e023733fcaef86610bf47ff1e3239f48cc073a0b65e"
+},
+{
+"names": [
+"ManifoldImmersion.exists_embedded_image_avoidance_step_controlled"
+],
+"class": "keep",
+"lines": [
+833,
+899
+],
+"sha256": "72ee2b943f87ef6aab376a0c88836c672a637ec41e9c7cad57b2ef04e7fc6da2"
+},
+{
+"names": [
+"ManifoldImmersion.exists_finite_embedded_image_avoidance_controlled"
+],
+"class": "keep",
+"lines": [
+901,
+949
+],
+"sha256": "c846d711bf5ad240d5a24594e645717c3e6ed48b9dba00419be1bbabef3e6956"
+},
+{
+"names": [
+"ManifoldImmersion.exists_embedded_avoidance_on_compact_of_isClosed_image_controlled"
+],
+"class": "keep",
+"lines": [
+951,
+1007
+],
+"sha256": "f3689769347eeadb174ad6aaa6b206eff796475686dac4e964546a0f9b09e5b9"
+},
+{
+"names": [
+"ManifoldImmersion.exists_embedded_avoidance_on_compact_of_isClosed_image"
+],
+"class": "keep",
+"lines": [
+1009,
+1034
+],
+"sha256": "caa7f874a113990d28045add91c42e9420990dff96b51fc464d9d308305f278e"
+},
+{
+"names": [
+"ManifoldImmersion.exists_embedded_avoidance_on_compact_of_isClosed_range"
+],
+"class": "keep",
+"lines": [
+1036,
+1062
+],
+"sha256": "32624624a821faa818d7b18676dcf9ed8ed148914ac6da5bc6ceb91c93c2c9b2"
+},
+{
+"names": [
+"PlaneImmersion.Plane"
+],
+"class": "keep",
+"lines": [
+1064,
+1066
+],
+"sha256": "f555306d8b8afe5584c7cea2ec8f1c359f3d17b71f068756702b68947871eb0d"
+},
+{
+"names": [
+"PlaneImmersion.linearMap"
+],
+"class": "keep",
+"lines": [
+1068,
+1071
+],
+"sha256": "0e6b85e4a71cde6ddbaed5ed6537a049bba6a971fe81165e749bb5a2df0cdf4a"
+},
+{
+"names": [
+"PlaneImmersion.linearMap_apply"
+],
+"class": "keep",
+"lines": [
+1073,
+1076
+],
+"sha256": "7d1ed9e4206eac51aef7fc32052d74b84a4f1774f7103ad680baea09da8d6427"
+},
+{
+"names": [
+"PlaneImmersion.perturb"
+],
+"class": "keep",
+"lines": [
+1078,
+1081
+],
+"sha256": "acd43b9f6862fa40017850f82bbc2f453be1eb4b1a143ce785ad4e6088c205c4"
+},
+{
+"names": [
+"PlaneImmersion.contDiff_perturb_family"
+],
+"class": "keep",
+"lines": [
+1083,
+1089
+],
+"sha256": "f9863b14578d3e35b1cbd90395365c90239146b63fc64047c5c322552a8b2de5"
+},
+{
+"names": [
+"PlaneImmersion.fderiv_perturb"
+],
+"class": "keep",
+"lines": [
+1091,
+1096
+],
+"sha256": "10e78b13ec88a55465672bfe9320c8d11a3e68d82536841963aacc34e9f0b210"
+},
+{
+"names": [
+"PlaneImmersion.firstCollisionDomain"
+],
+"class": "keep",
+"lines": [
+1098,
+1101
+],
+"sha256": "99ddd3a6d614fa980831b95a2ab5e39faa55f490c2f4011c2720151e3686bb3d"
+},
+{
+"names": [
+"PlaneImmersion.secondCollisionDomain"
+],
+"class": "keep",
+"lines": [
+1103,
+1105
+],
+"sha256": "27e78b164f19a5cf36200408446bcf54388277cfa1ff43c870fa4b125f081397"
+},
+{
+"names": [
+"PlaneImmersion.firstCollision"
+],
+"class": "keep",
+"lines": [
+1107,
+1111
+],
+"sha256": "a98f5488ecdfae87dc12a85f7dc281ca59c2bd07c48982edf6ceadb29ead1aa2"
+},
+{
+"names": [
+"PlaneImmersion.secondCollision"
+],
+"class": "keep",
+"lines": [
+1113,
+1117
+],
+"sha256": "15fcf7f67343cd4ed027105b348a33b1f497c66a64da7662552236e779f53d73"
+},
+{
+"names": [
+"PlaneImmersion.isOpen_firstCollisionDomain"
+],
+"class": "keep",
+"lines": [
+1119,
+1122
+],
+"sha256": "9630ffc58fd9259aa24511de5583b75e892cea0edc767d5ef7f53c8097726262"
+},
+{
+"names": [
+"PlaneImmersion.isOpen_secondCollisionDomain"
+],
+"class": "keep",
+"lines": [
+1124,
+1127
+],
+"sha256": "74d292e3b82dfa679913a6782f4e51a6d80d02a32dd4c0d1cca0e2e762e2f632"
+},
+{
+"names": [
+"PlaneImmersion.contDiffOn_firstCollision"
+],
+"class": "keep",
+"lines": [
+1129,
+1141
+],
+"sha256": "3a1036ccb5d961c72d25b4b8ad337c9336693e1a5aca3df0ef3efcaada8a88c1"
+},
+{
+"names": [
+"PlaneImmersion.contDiffOn_secondCollision"
+],
+"class": "keep",
+"lines": [
+1143,
+1155
+],
+"sha256": "06ccae5869136b07e096739af83f9f70c8474c37d33daf18daa358026f2df11a"
+},
+{
+"names": [
+"PlaneImmersion.mem_collision_of_eq"
+],
+"class": "keep",
+"lines": [
+1157,
+1179
+],
+"sha256": "a57287b2a8f6f124a328640d61d8ac9e22df4268b1ee320f38bf72deb7d5d1e7"
+},
+{
+"names": [
+"PlaneImmersion.injective_perturb_of_not_collision"
+],
+"class": "keep",
+"lines": [
+1181,
+1189
+],
+"sha256": "86aa064d95491385c47b0f85546e009c8e06aeabd3da82a0fa431c9801f896d6"
+},
+{
+"names": [
+"PlaneImmersion.badFirst"
+],
+"class": "keep",
+"lines": [
+1191,
+1195
+],
+"sha256": "826578237d1d15e9efaa4e8069e1bac5c7cbcd2525c7c7a1ceaa39d1d989f0e8"
+},
+{
+"names": [
+"PlaneImmersion.badSecond"
+],
+"class": "keep",
+"lines": [
+1197,
+1201
+],
+"sha256": "9e81914622740b7e2ec030587e80aa866a5537eff2bc483588afce2d65cf06d7"
+},
+{
+"names": [
+"PlaneImmersion.contDiff_badFirst"
+],
+"class": "keep",
+"lines": [
+1203,
+1211
+],
+"sha256": "91a6e2b7813341bcf86e6270b1f93c3dfc22c41446f7aaf055613198dc1eeead"
+},
+{
+"names": [
+"PlaneImmersion.contDiff_badSecond"
+],
+"class": "keep",
+"lines": [
+1213,
+1221
+],
+"sha256": "290caeba6bebc6c3b471d5b75cb234ce23f9d9c7fa6877c703e0d53d21281261"
+},
+{
+"names": [
+"PlaneImmersion.mem_bad_of_nonzero_kernel"
+],
+"class": "keep",
+"lines": [
+1223,
+1262
+],
+"sha256": "e661764802f968e5890452f5040a7e2300d1c25572b7cc63e7669956d5a145ff"
+},
+{
+"names": [
+"PlaneImmersion.injective_add_linearMap_of_not_bad"
+],
+"class": "keep",
+"lines": [
+1264,
+1275
+],
+"sha256": "75fb61b7e6b972d5ec04810de0ceb147b71041503da51b3c155940dfd18fbcf9"
+},
+{
+"names": [
+"PlaneImmersion.dimH_bad_parameters_le"
+],
+"class": "keep",
+"lines": [
+1277,
+1294
+],
+"sha256": "6d3f007d00add726c996c55f6ef61e1d8b88067e3a1fa774a767d24e888e5712"
+},
+{
+"names": [
+"PlaneImmersion.dimH_collision_parameters_le"
+],
+"class": "keep",
+"lines": [
+1296,
+1309
+],
+"sha256": "ee53dd80de9c12caab8520f834b866cfaaf2a401d572c40de37f0e15036bf969"
+},
+{
+"names": [
+"PlaneImmersion.dense_injective_immersive_parameters"
+],
+"class": "keep",
+"lines": [
+1311,
+1333
+],
+"sha256": "3efa4fd6f6863a53fc793211c1651f312b7facef06efc08b315f8a144db9848a"
+},
+{
+"names": [
+"PlaneImmersion.exists_small_affine_injective_immersion"
+],
+"class": "keep",
+"lines": [
+1335,
+1352
+],
+"sha256": "46eab5d04c4a8010b92fcb9a5f727911cf074952052d6ce9b8637ac11e093962"
+},
+{
+"names": [
+"PlaneImmersion.displacement"
+],
+"class": "keep",
+"lines": [
+1354,
+1358
+],
+"sha256": "7814b055e384ac782748a49d233cbd2ef15c3c2a872c97ebcfabaca689371d64"
+},
+{
+"names": [
+"PlaneImmersion.contDiff_displacement_family"
+],
+"class": "keep",
+"lines": [
+1360,
+1365
+],
+"sha256": "5da522605f8733897fdf4e447a3347cf5d79a7656677f1d2b48d5bcc54a0e925"
+},
+{
+"names": [
+"PlaneImmersion.displacement_zero"
+],
+"class": "keep",
+"lines": [
+1367,
+1370
+],
+"sha256": "3286db8ca52e5b0f7fd1ad4c105fdfb8cb36c50687c554b71c2108c8101ad204"
+},
+{
+"names": [
+"PlaneImmersion.displacement_of_zero"
+],
+"class": "keep",
+"lines": [
+1372,
+1375
+],
+"sha256": "b5cf6290441b3f1074a8da0e2255943a381ae3baaf9bb9801b871bf2a36ee6ae"
+},
+{
+"names": [
+"PlaneImmersion.eventually_displacement_lt"
+],
+"class": "keep",
+"lines": [
+1377,
+1396
+],
+"sha256": "5725387d5d3b0a2067b6e42caf728266da4e27f1dcf79ada62cf01d98b78a135"
+},
+{
+"names": [
+"PlaneImmersion.exists_radius_displacement_lt"
+],
+"class": "keep",
+"lines": [
+1398,
+1406
+],
+"sha256": "50c52f3bba9639ae5cba5394615037a91b9d10144aef6738be07348cbdb11e91"
+},
+{
+"names": [
+"ManifoldImmersion.affinePatch"
+],
+"class": "keep",
+"lines": [
+1408,
+1415
+],
+"sha256": "6b98966caa8b0d3cc0d8586dda856bbc52a8729968f38d7f78861e7a501c58f8"
+},
+{
+"names": [
+"ManifoldImmersion.chart_affinePatch_on_plateau"
+],
+"class": "keep",
+"lines": [
+1417,
+1436
+],
+"sha256": "470743708302b6988aacca1367e70b36ca087b250b20ceef691b55f0b8ef498c"
+},
+{
+"names": [
+"ManifoldImmersion.contMDiff_affinePatch"
+],
+"class": "keep",
+"lines": [
+1438,
+1455
+],
+"sha256": "5b576be3cf94bf9e97339797407cbe5c6033ce7af07a3bae4eb123263152350e"
+},
+{
+"names": [
+"ManifoldImmersion.exists_affine_embedding_patch_with_property"
+],
+"class": "keep",
+"lines": [
+1457,
+1536
+],
+"sha256": "f73ad1f48528154cba1182e12aadb1beda2df34f08d5c454522f9db2fed2a8bd"
+},
+{
+"names": [
+"ManifoldImmersion.affinePatch_zero"
+],
+"class": "keep",
+"lines": [
+1538,
+1547
+],
+"sha256": "6ff0f4201306a8f498388623cbff2b2ec1d0d7d9d4ec57652b7ce52f45c02aab"
+},
+{
+"names": [
+"ManifoldImmersion.contMDiffAt_affinePatch_family"
+],
+"class": "keep",
+"lines": [
+1549,
+1573
+],
+"sha256": "0259c155516c65e11611ed1b45fbd26a68658dd783c73418ee05fc3cb7602cc4"
+},
+{
+"names": [
+"ManifoldImmersion.eventually_affinePatch_maps_compact_into_open"
+],
+"class": "keep",
+"lines": [
+1575,
+1594
+],
+"sha256": "4726285a930df6796606383d6b6b61eb2c50638b69527fa084d0e1ee87071711"
+},
+{
+"names": [
+"ManifoldImmersion.eventually_affinePatch_injective_derivative"
+],
+"class": "keep",
+"lines": [
+1596,
+1632
+],
+"sha256": "2667579033f4093d48e81405b5b59976f3af2768c95e092796bed58fb9183af2"
+},
+{
+"names": [
+"ManifoldImmersion.exists_immersion_patch_step"
+],
+"class": "keep",
+"lines": [
+1634,
+1680
+],
+"sha256": "10cc6e2a4a435cae32d3b2ca11d69c1fe7e352934bb9db9507a1f15932f48330"
+},
+{
+"names": [
+"ManifoldImmersion.exists_finite_patch_immersion"
+],
+"class": "keep",
+"lines": [
+1682,
+1724
+],
+"sha256": "ed97bf0908b0544548490aa322c2b8e80dd7a369f59b7a3961e67ba9c8b999dc"
+},
+{
+"names": [
+"ManifoldImmersion.exists_relative_immersion_patch_at_in_open"
+],
+"class": "keep",
+"lines": [
+1726,
+1769
+],
+"sha256": "e4762bffbc5e934fd49a83179ccfa2e1eb0dd980492feabfdc5d31907b94cd9a"
+},
+{
+"names": [
+"ManifoldImmersion.exists_relative_immersion_patch_at"
+],
+"class": "keep",
+"lines": [
+1771,
+1782
+],
+"sha256": "c1327f635607b412f7d1d64cf55e5d4f249c2d2cc9549d7d03d005e7a3fe5760"
+},
+{
+"names": [
+"ManifoldImmersion.exists_immersion_on_compact_rel"
+],
+"class": "keep",
+"lines": [
+1784,
+1820
+],
+"sha256": "c2585c20e3df9b72ce354eb02429c70239ec4978576be93905ad4444e33ce8d5"
+},
+{
+"names": [
+"ManifoldImmersion.exists_selfIntersection_removal_step_within_target"
+],
+"class": "keep",
+"lines": [
+1822,
+1867
+],
+"sha256": "a6771a88ddd5ee3deb8920be640634327a981f683ef9175c14fd5279cf9bd77d"
+},
+{
+"names": [
+"ManifoldImmersion.exists_finite_selfIntersection_removal_within_target"
+],
+"class": "keep",
+"lines": [
+1869,
+1905
+],
+"sha256": "71902832e3b483fc05394d936539e1282be3dfa1d8eb7112945b6fc3111e26ea"
+},
+{
+"names": [
+"ManifoldImmersion.exists_embedding_of_finite_separating_patches_within_target"
+],
+"class": "keep",
+"lines": [
+1907,
+1938
+],
+"sha256": "e81bc111cbac1763a57c12aac53950a1ebed5d1b10699933a0fb195bdc371786"
+},
+{
+"names": [
+"ManifoldImmersion.exists_separating_patch_in_open"
+],
+"class": "keep",
+"lines": [
+1940,
+1967
+],
+"sha256": "f4c5d7e9cc0410c8ad2546bf754aa032331189252843a9211ce058af4d06f303"
+},
+{
+"names": [
+"ManifoldImmersion.exists_separating_patch_of_not_both_fixed_in_open"
+],
+"class": "keep",
+"lines": [
+1969,
+1986
+],
+"sha256": "20d3955951dc18fc4b72e00667ac0c12f201943d7b6de8aec77e6e9abfbe1795"
+},
+{
+"names": [
+"ManifoldImmersion.exists_open_injOn_of_injective_fderiv"
+],
+"class": "keep",
+"lines": [
+1988,
+2011
+],
+"sha256": "8af2b389f411873a8ce403136cf8b196cd38cb94fcdf2bf10c29fdf5becbc599"
+},
+{
+"names": [
+"ManifoldImmersion.exists_open_injOn_of_injective_nativeDerivative_on"
+],
+"class": "keep",
+"lines": [
+2013,
+2032
+],
+"sha256": "7354c499dd47e2c85f3c992dc6c99a3c88f11e7b992fa6af5a6269a16373b789"
+},
+{
+"names": [
+"ManifoldImmersion.exists_open_injOn_of_injective_nativeDerivative"
+],
+"class": "keep",
+"lines": [
+2034,
+2045
+],
+"sha256": "b3507c26603e5c6985a69a59a08f12c1e7cc002bd4013860c334810dc994b505"
+},
+{
+"names": [
+"ManifoldImmersion.exists_open_injOn_near_compact_on"
+],
+"class": "keep",
+"lines": [
+2047,
+2066
+],
+"sha256": "ba9afc357e26eb1484b4fb8cf1a083f1408607ab67be472303226947f6a8c039"
+},
+{
+"names": [
+"ManifoldImmersion.exists_open_embedded_immersive_neighborhood"
+],
+"class": "keep",
+"lines": [
+2068,
+2085
+],
+"sha256": "de55ca24ad9a6a71e4e866d609f8c3ece00dfa909f453c9847d923b10d4f0ee4"
+},
+{
+"names": [
+"ManifoldImmersion.exists_open_injOn_near_compact"
+],
+"class": "keep",
+"lines": [
+2087,
+2098
+],
+"sha256": "fe7c3fa1274b27ba91b4bbdd2e020f817fcb950e4ee084bab950a1249909ea18"
+},
+{
+"names": [
+"ManifoldImmersion.doublePoints"
+],
+"class": "keep",
+"lines": [
+2100,
+2102
+],
+"sha256": "9ea703339daa2dc5df7632de202fa215d4271c741da97b293ec524b56277ea80"
+},
+{
+"names": [
+"ManifoldImmersion.isCompact_doublePoints_of_locally_injective"
+],
+"class": "keep",
+"lines": [
+2104,
+2133
+],
+"sha256": "4167c2d3ba4402e58e8e40f5b2c6220b825b9394eb178b782f3ff8298c559fb2"
+},
+{
+"names": [
+"ManifoldImmersion.isCompact_doublePoints_of_injective_nativeDerivative"
+],
+"class": "keep",
+"lines": [
+2135,
+2144
+],
+"sha256": "68552a8655ad9f8fc77a274d875073284f7eb0cc9cb7c93e8b61515af2e09fe9"
+},
+{
+"names": [
+"ManifoldImmersion.exists_compact_embedding_of_immersion_within_target"
+],
+"class": "keep",
+"lines": [
+2146,
+2191
+],
+"sha256": "2f891e91d319d873a3a9257a30220655c2516502ea259219bedec848dad30546"
+},
+{
+"names": [
+"ManifoldImmersion.exists_compact_embedding_of_immersion"
+],
+"class": "keep",
+"lines": [
+2193,
+2210
+],
+"sha256": "5485cbf2e43139151c15acc324b9f81320b6e006215f255ab66d5f5a91163359"
+},
+{
+"names": [
+"ManifoldImmersion.exists_relative_compact_embedding"
+],
+"class": "keep",
+"lines": [
+2212,
+2255
+],
+"sha256": "b63b1c7503d07499f65115aebb8099f1576836d7e67f49f6bca2028ba812a082"
+},
+{
+"names": [
+"ManifoldImmersion.injective_mfderiv_comp_linearEquiv_iff"
+],
+"class": "keep",
+"lines": [
+2257,
+2279
+],
+"sha256": "9bd333e12357ef4f9b82579f9338026782b1b26abefa0695fa5488535168046b"
+},
+{
+"names": [
+"ManifoldImmersion.exists_relative_compact_embedding_twoDimensional"
+],
+"class": "keep",
+"lines": [
+2281,
+2355
+],
+"sha256": "ac18b17d307b6a80990a396e324c5bd008ef465c0b2ffc6dce1a5971af038798"
+},
+{
+"names": [
+"ManifoldImmersion.exists_embedded_image_avoidance_relative_neighborhood"
+],
+"class": "keep",
+"lines": [
+2357,
+2391
+],
+"sha256": "079dee327099f2499d4429079b68f00aa1db0701dabedd9e704ca204d4d6d6f3"
+},
+{
+"names": [
+"ManifoldImmersion.exists_embedded_avoidance_relative_neighborhood_of_isClosed_range"
+],
+"class": "keep",
+"lines": [
+2393,
+2418
+],
+"sha256": "98d4de69a28e67b8973f97bc1cfd90ae52b3f5c9d2fd71fd8c1ea0fef7970d46"
+},
+{
+"names": [
+"ManifoldImmersion.exists_relative_embedded_avoidance_of_clean_neighborhood_of_isClosed_range"
+],
+"class": "keep",
+"lines": [
+2420,
+2454
+],
+"sha256": "b8f6ab5045d3d4f584783770283f3970d2df5882f6df4bc60f31444c8017e55b"
+},
+{
+"names": [
+"ManifoldImmersion.exists_embedded_avoidance_relative_neighborhood"
+],
+"class": "keep",
+"lines": [
+2456,
+2478
+],
+"sha256": "06e76b80058bd8be8fa6146195551e1f3a3da7b613f819c29cd4b3ce1c984bce"
+},
+{
+"names": [
+"OpenObstacle.source"
+],
+"class": "keep",
+"lines": [
+2480,
+2483
+],
+"sha256": "a16eebc2b9ac42643e85855146fa273a1f9796a5e4edc4933eafdaeba9ef9e4e"
+},
+{
+"names": [
+"OpenObstacle.restrict"
+],
+"class": "keep",
+"lines": [
+2485,
+2490
+],
+"sha256": "99b8acabb5d6e66f95916699f27fdfce7d4e3ff341bd695de3c8dffa73764a78"
+},
+{
+"names": [
+"OpenObstacle.mem_range_restrict_iff"
+],
+"class": "keep",
+"lines": [
+2492,
+2503
+],
+"sha256": "fe8001cecf1d2ac999cc6071ff52243d9de60cabb1c0ab6e2b0fdada6eddd21a"
+},
+{
+"names": [
+"OpenObstacle.range_restrict"
+],
+"class": "keep",
+"lines": [
+2505,
+2510
+],
+"sha256": "602e888b8ba08e568f6e5643b15b26061e16a05fb0edc54be674118f90635171"
+},
+{
+"names": [
+"OpenObstacle.isClosed_range_restrict"
+],
+"class": "keep",
+"lines": [
+2512,
+2518
+],
+"sha256": "73c9f217c84d6d61725d9a4a41e253e7383c5675ec32280da6d72ba2053e315b"
+},
+{
+"names": [
+"OpenObstacle.image_restrict"
+],
+"class": "keep",
+"lines": [
+2520,
+2533
+],
+"sha256": "40d03ebc8b1b67ed799c512fa98bc1987708657d643dc87c798f200dbf145b1c"
+},
+{
+"names": [
+"OpenObstacle.isClosed_image_restrict"
+],
+"class": "keep",
+"lines": [
+2535,
+2541
+],
+"sha256": "a7e0a9c025ab1e12905b7d388376e3ea469be9f82843e28a9729362e941f498c"
+},
+{
+"names": [
+"OpenObstacle.contMDiff_restrict"
+],
+"class": "keep",
+"lines": [
+2543,
+2551
+],
+"sha256": "d51d3fdf0a235c9374dfaf5fd3282cc80987ca8b22f11674292c9709fbad07b9"
+},
+{
+"names": [
+"MorseCancellation.exists_smooth_path_avoiding_closed_image"
+],
+"class": "keep",
+"lines": [
+2553,
+2585
+],
+"sha256": "f5a6a2f386ec85b46b0f2e3f5d0f29f638c09907973dac8cb05d6e145442505c"
+},
+{
+"names": [
+"MorseCancellation.exists_smooth_path_avoiding_closed_image_in_open"
+],
+"class": "keep",
+"lines": [
+2587,
+2605
+],
+"sha256": "5673140c34faec326301d8e830cf450af7bf7c563c121c1aa2eab4e37b3bd943"
+},
+{
+"names": [
+"ManifoldSmoothing.exists_smooth_map_homotopicRel_of_smooth_off_compact_within_target"
+],
+"class": "keep",
+"lines": [
+2607,
+2637
+],
+"sha256": "f93647675b317d2ee27317aebb3945b3f77608e0d20dd578d388164ece7fb26f"
+},
+{
+"names": [
+"ManifoldSmoothing.exists_smooth_map_homotopicRel_of_smooth_off_compact"
+],
+"class": "keep",
+"lines": [
+2639,
+2652
+],
+"sha256": "7488ad950e03b0a69f5c5e8ef76e2506ce2950d04dd4debffbef0b49637f2367"
+},
+{
+"names": [
+"CurveImmersion.exists_continuous_curve_with_endpoint_germs"
+],
+"class": "keep",
+"lines": [
+2654,
+2698
+],
+"sha256": "e5971d3f0efc93f29a6b996d9679cc2089fd8858665e855968a295167f073a28"
+},
+{
+"names": [
+"exists_smooth_curve_with_endpoint_germs"
+],
+"class": "keep",
+"lines": [
+2700,
+2752
+],
+"sha256": "849f6001e29ab2b7608e0cbdfa96d312d48179a8129509874ba660d8a5ca5063"
+},
+{
+"names": [
+"ManifoldImmersion.exists_clean_curve_endpoint_neighborhood"
+],
+"class": "keep",
+"lines": [
+2754,
+2809
+],
+"sha256": "53cc390e4ef4270c59be084983b56fa75f1d7c82fce5080bbf567a2f8a0c8d7d"
+},
+{
+"names": [
+"WeightedPerturbation.perturb"
+],
+"class": "keep",
+"lines": [
+2811,
+2814
+],
+"sha256": "7612a18840f7821f518586966155ee3b73e487c3f330799604ef4695f8558688"
+},
+{
+"names": [
+"WeightedPerturbation.contDiff_perturb"
+],
+"class": "keep",
+"lines": [
+2816,
+2820
+],
+"sha256": "f3345f0e08c0f3d1d6877abd79e2fe09301b2190b77442232f7bbf2c71ae48fe"
+},
+{
+"names": [
+"WeightedPerturbation.fderiv_perturb"
+],
+"class": "keep",
+"lines": [
+2822,
+2828
+],
+"sha256": "33dcd0084f9dbe7bed91068a6ba7d10931be8fb2811eb1064047a213601ff769"
+},
+{
+"names": [
+"WeightedPerturbation.badDomain"
+],
+"class": "keep",
+"lines": [
+2830,
+2834
+],
+"sha256": "6e37c615a8f72effb2bb58986c30ab53aeaa7ddedf0e45165f97ccb5fb59bb30"
+},
+{
+"names": [
+"WeightedPerturbation.badParameter"
+],
+"class": "keep",
+"lines": [
+2836,
+2840
+],
+"sha256": "3f46c8753ea18d3e73cbf093b22318452f9ccd8712764039e4a3b3337316e972"
+},
+{
+"names": [
+"WeightedPerturbation.contMDiff_scalarDerivative"
+],
+"class": "keep",
+"lines": [
+2842,
+2848
+],
+"sha256": "1b09a00b3cd59d4442419674c1632755e14095cc9b5a739c086e6388f4d1b9cf"
+},
+{
+"names": [
+"WeightedPerturbation.isOpen_badDomain"
+],
+"class": "keep",
+"lines": [
+2850,
+2856
+],
+"sha256": "b9580030b5088c316eb1a564f3a2540bcbc66ed9e5018bf42444644ee8742a6b"
+},
+{
+"names": [
+"WeightedPerturbation.contMDiffOn_badParameter"
+],
+"class": "keep",
+"lines": [
+2858,
+2870
+],
+"sha256": "46be05e87b36f4de23d1535e20aba0375c393b354ef532400dd9f089f1e91aaa"
+},
+{
+"names": [
+"WeightedPerturbation.kernel_iff_of_not_bad"
+],
+"class": "keep",
+"lines": [
+2872,
+2893
+],
+"sha256": "70a415a8cc9ac0ee0a4db5b5091905802e1fdd1610b1ca692e6b07262c972fca"
+},
+{
+"names": [
+"WeightedPerturbation.exists_small_parameter_with_common_kernel"
+],
+"class": "keep",
+"lines": [
+2895,
+2919
+],
+"sha256": "675bb95bfdda5e80f27711298132b12a247b83c566e781228b2216b9dad1a078"
+},
+{
+"names": [
+"CurveImmersion.perturb"
+],
+"class": "keep",
+"lines": [
+2921,
+2924
+],
+"sha256": "d1106fc2a2e1056057805c84210a7d1bea3c5bc730279281990380b3fc5f020a"
+},
+{
+"names": [
+"CurveImmersion.exists_small_affine_immersion"
+],
+"class": "keep",
+"lines": [
+2926,
+2945
+],
+"sha256": "9f33643c14dbe0574a951b5c85d6ca89a9b1d47eefcac69ac448518fe96775f9"
+},
+{
+"names": [
+"CurveImmersion.weight"
+],
+"class": "keep",
+"lines": [
+2947,
+2950
+],
+"sha256": "94269dde2561008627a659251c695c00634bcf6f54d48b01426de9ba3f414992"
+},
+{
+"names": [
+"CurveImmersion.contDiff_weight"
+],
+"class": "keep",
+"lines": [
+2952,
+2955
+],
+"sha256": "30b61f33594922aeea560ffb04c94d3d1163ff13a07023c58dea83cb0f164aa7"
+},
+{
+"names": [
+"CurveImmersion.hasCompactSupport_weight"
+],
+"class": "keep",
+"lines": [
+2957,
+2960
+],
+"sha256": "f54982a506b0efc84b47d5ab371b68bee3ee25874286c801f42cd02258668e37"
+},
+{
+"names": [
+"CurveImmersion.tsupport_weight_subset"
+],
+"class": "keep",
+"lines": [
+2962,
+2965
+],
+"sha256": "b523012ad9c0cc78ed4a7da9495e198f9e8d94425d3e6c245497638097dc9fac"
+},
+{
+"names": [
+"CurveImmersion.weight_eq_zero"
+],
+"class": "keep",
+"lines": [
+2967,
+2969
+],
+"sha256": "09158e15632bcf63529f9125f077dc8750820a3df1a26c9365cdd1f4eff3fd5f"
+},
+{
+"names": [
+"ManifoldImmersion.exists_curve_immersion_patch_with_property_within_target"
+],
+"class": "keep",
+"lines": [
+2971,
+3044
+],
+"sha256": "06a6fb26576b7e3a244f5758f88bde6f5624e80d8718df2ef8177136e0cabd45"
+},
+{
+"names": [
+"ManifoldImmersion.exists_curve_immersion_patch_step_within_target"
+],
+"class": "keep",
+"lines": [
+3046,
+3093
+],
+"sha256": "8821a0cbf837f05d76e76709e0328ce9940ffb488627b898b8dfcee8c22db93e"
+},
+{
+"names": [
+"ManifoldImmersion.exists_finite_curve_patch_immersion_within_target"
+],
+"class": "keep",
+"lines": [
+3095,
+3132
+],
+"sha256": "773095db8d05c386c30a8e0ccaddb8afe4bbb8b707cd0924276e472ea4bc79d6"
+},
+{
+"names": [
+"ManifoldImmersion.exists_curve_immersion_on_compact_rel_within_target"
+],
+"class": "keep",
+"lines": [
+3134,
+3170
+],
+"sha256": "d1d9766fffd062f998d9e138a35acc5984613b28a21ccd69600c4a10be56fb87"
+},
+{
+"names": [
+"ManifoldImmersion.exists_relative_compact_curve_embedding_within_target"
+],
+"class": "keep",
+"lines": [
+3172,
+3216
+],
+"sha256": "bf7d10c3db684aadc90839704fb7f2e1c2f916ddbb292dd495fb900bfa91e536"
+},
+{
+"names": [
+"ManifoldImmersion.exists_relative_compact_curve_embedding"
+],
+"class": "keep",
+"lines": [
+3218,
+3235
+],
+"sha256": "27dc79e8790ed6464a8bb3cc88414d5dac85ad962cc4bf76b948d041ed78fb64"
+},
+{
+"names": [
+"ManifoldImmersion.exists_relative_curve_avoidance_of_clean_neighborhood"
+],
+"class": "keep",
+"lines": [
+3237,
+3275
+],
+"sha256": "de5876caa36c46bff0f74165a35827197da7c39456ad6ebb1cca82dc115547dc"
+},
+{
+"names": [
+"ManifoldImmersion.exists_relative_curve_avoiding_finite"
+],
+"class": "keep",
+"lines": [
+3277,
+3306
+],
+"sha256": "27afee92e803d11412f21a4ec84969727e65728b8915810b4984088148266feb"
+},
+{
+"names": [
+"exists_embedded_arc_with_endpoint_germs"
+],
+"class": "keep",
+"lines": [
+3308,
+3358
+],
+"sha256": "d31d8a27de875f9e6f4cf8c7b95b34009dc607c9bea3fe5647cc67aa555e40e3"
+},
+{
+"names": [
+"exists_smooth_curve_with_germ_at"
+],
+"class": "keep",
+"lines": [
+3360,
+3367
+],
+"sha256": "34ae177fddbd47f3703a6c1bfe70ad8a65b83c6a6231ed52088b94b82cdf56cf"
+},
+{
+"names": [
+"exists_embedded_arc_with_local_endpoint_germs"
+],
+"class": "keep",
+"lines": [
+3369,
+3400
+],
+"sha256": "6366f02699912811584c0eac6ab05444649de182ffd7c4745bca3f89c8037163"
+},
+{
+"names": [
+"MorseCancellation.exists_clean_arc_with_local_endpoint_germs"
+],
+"class": "keep",
+"lines": [
+3402,
+3479
+],
+"sha256": "7d436f1f9cc346f2739bf796aec2a5e66d12663ed99d116bbe446fb24f917e6e"
+},
+{
+"names": [
+"NativeEuclideanEmbedding.exists_smooth_normalFrame_near_starConvex"
+],
+"class": "keep",
+"lines": [
+3481,
+3527
+],
+"sha256": "07d4bfc02063190e2a336f58bde18e2af59c635d23cd60f1bdb87150b4d8f095"
+},
+{
+"names": [
+"exists_tubularNeighborhood_in_open_of_embedded_starConvex_with_global_zero"
+],
+"class": "keep",
+"lines": [
+3529,
+3578
+],
+"sha256": "b3e38622937e05b9289d083652c5d42fbc3001beef1476b94bec27cbe962d500"
+},
+{
+"names": [
+"exists_normed_tubularNeighborhood_in_open_of_embedded_starConvex_with_global_zero"
+],
+"class": "keep",
+"lines": [
+3580,
+3634
+],
+"sha256": "5be41a139b7b7fb584b2c34774ad581c09db0c9a606d14d40125064b1f520fa7"
+},
+{
+"names": [
+"exists_local_tubularNeighborhood_of_embedded_starConvex"
+],
+"class": "keep",
+"lines": [
+3636,
+3685
+],
+"sha256": "7e4831a62cb710d06dab36bb960e2ea4de50dca3c2fc5d6e5771a77cedab4a34"
+},
+{
+"names": [
+"exists_clean_tubularNeighborhood_of_embedded_starConvex"
+],
+"class": "keep",
+"lines": [
+3687,
+3757
+],
+"sha256": "0cb7662f16f39b80ba8cca64d2eb0b3a588210c1ae78aefb91e6dab483798fde"
+},
+{
+"names": [
+"exists_clean_embedded_sheet_neighborhood"
+],
+"class": "keep",
+"lines": [
+3759,
+3811
+],
+"sha256": "b9d2f157abe2d33b23268f701ca3b458e4f8ab18f01607279573293598e6e4b1"
+},
+{
+"names": [
+"MorseCancellation.sheetAxisShuffle"
+],
+"class": "keep",
+"lines": [
+3813,
+3826
+],
+"sha256": "47c809ebb37252389ebcf41ff6778a34130c8ed1b94547d518d0f1fd86e28f68"
+},
+{
+"names": [
+"MorseCancellation.exists_clean_sheet_axis_chart"
+],
+"class": "keep",
+"lines": [
+3828,
+3886
+],
+"sha256": "1a84c1f60ddf659baa76f9079046eb40b30ae832b4f5abe8ff87aa0b991a2a60"
+},
+{
+"names": [
+"MorseCancellation.chart_axis_curve_properties"
+],
+"class": "keep",
+"lines": [
+3888,
+3912
+],
+"sha256": "e02596eac8b5a783815e83fedcafc69aba8188331c51f2e3a09214b76c3c0350"
+},
+{
+"names": [
+"MorseCancellation.terminalSheetCoordinates"
+],
+"class": "keep",
+"lines": [
+3914,
+3929
+],
+"sha256": "5f4637e9ce6f429dad675d07533ae8580c48c1f4bc7536ca2b279378c9dacb87"
+},
+{
+"names": [
+"MorseCancellation.exists_clean_two_sheet_arc"
+],
+"class": "keep",
+"lines": [
+3931,
+4069
+],
+"sha256": "15974631ca80a72b31457ab7cf0c8c4e7ba437f5674e7f6204c9ce0a4bca51e5"
+},
+{
+"names": [
+"TransverseCoordinates.surjective_normal_comp"
+],
+"class": "move",
+"lines": [
+4071,
+4086
+],
+"sha256": "cdafde716efe11479d68f4a76d8cd05c964b3a63a5836c1a3d558fc2e2289618"
+},
+{
+"names": [
+"TransverseCoordinates.bijective_normal_comp"
+],
+"class": "move",
+"lines": [
+4088,
+4097
+],
+"sha256": "922dd62994e2ce68e28911396315b1041da7430f073ec26116096ddc73d3e775"
+},
+{
+"names": [
+"FrameField.complementQuotient"
+],
+"class": "move",
+"lines": [
+4099,
+4103
+],
+"sha256": "1ff23e599132c24cb6c01f41da34907c39343c55ae34b50d0c5fe2febeeabbbe"
+},
+{
+"names": [
+"FrameField.complementQuotient_left"
+],
+"class": "move",
+"lines": [
+4105,
+4113
+],
+"sha256": "d583439e560f00396508f97c960b2d7284fc1b86e4d38904c364a1d656809914"
+},
+{
+"names": [
+"FrameField.complementQuotient_right"
+],
+"class": "move",
+"lines": [
+4115,
+4123
+],
+"sha256": "a2c9f2b45b749de5aa6e1d0ef0a1a77cdea25e686bc1e0329bb65d8bfba64c6f"
+},
+{
+"names": [
+"FrameField.ker_complementQuotient"
+],
+"class": "move",
+"lines": [
+4125,
+4140
+],
+"sha256": "a8d62b5a31aa28dcfc2fcd5dd7a5395782f86bd23d471e960507dc25f9171d73"
+},
+{
+"names": [
+"FrameField.bijective_coprod_of_quotient"
+],
+"class": "move",
+"lines": [
+4142,
+4178
+],
+"sha256": "471420673a81c2dfe52c8cb5f0208abc0dad0c5df43aa628648869f8edbd485d"
+},
+{
+"names": [
+"FrameField.correctedComplement"
+],
+"class": "move",
+"lines": [
+4180,
+4185
+],
+"sha256": "4a95a2d5131afb541233398b562b4577764a959a7f14d9667e8299f56fb15249"
+},
+{
+"names": [
+"FrameField.quotient_correctedComplement"
+],
+"class": "move",
+"lines": [
+4187,
+4198
+],
+"sha256": "434f4aba102122cda868af3070552715a1cbf61e9fbfc3e8e7253c1936481dd3"
+},
+{
+"names": [
+"FrameField.correctedComplement_self"
+],
+"class": "move",
+"lines": [
+4200,
+4205
+],
+"sha256": "de9f20f5bcddcf4e45675043f06f99ab609cfd74704b2bc515de6bdf736e2493"
+},
+{
+"names": [
+"FrameField.bijective_coprod_correctedComplement"
+],
+"class": "move",
+"lines": [
+4207,
+4215
+],
+"sha256": "4fd34db275585b5d1c043162272d4fb26081200ea7b0f769873c67fb1ae32a22"
+},
+{
+"names": [
+"FrameField.contDiffOn_coprod"
+],
+"class": "move",
+"lines": [
+4217,
+4224
+],
+"sha256": "443c44466927b9adf46273ab37dd5fee8b6c62a1b0cac49f481c2890783900bf"
+},
+{
+"names": [
+"FrameField.contDiffOn_complementQuotient"
+],
+"class": "move",
+"lines": [
+4226,
+4239
+],
+"sha256": "bf627063111b1b6c17b9584562b9d6ae6bd5cfc278633158e8b28b60fc906ab4"
+},
+{
+"names": [
+"FrameField.contDiffOn_correctedComplement"
+],
+"class": "move",
+"lines": [
+4241,
+4250
+],
+"sha256": "79d8e1a152e18e6f5b1c1b6ab92c44116dba83887034e6927f2cb978150e5ab2"
+},
+{
+"names": [
+"FrameField.shearedBlock"
+],
+"class": "move",
+"lines": [
+4252,
+4257
+],
+"sha256": "cee389df4e04ec2ae4892f1b043da61d5360fcbf8a7ffa7eed249df5e94c8fe1"
+},
+{
+"names": [
+"FrameField.shearedBlock_apply"
+],
+"class": "move",
+"lines": [
+4259,
+4264
+],
+"sha256": "0803f01c79ba0c5ad601de4856c6f2013979a03703b3f773855d778c2f54cb54"
+},
+{
+"names": [
+"FrameField.shearedBlock_horizontal"
+],
+"class": "move",
+"lines": [
+4266,
+4270
+],
+"sha256": "276cce39f66b4cb2e8906560855a3ef71e47796ddba20a677812f3944ae09d7c"
+},
+{
+"names": [
+"FrameField.bijective_shearedBlock"
+],
+"class": "move",
+"lines": [
+4272,
+4288
+],
+"sha256": "4d5b43f9a20cb658bbcb2abfbdfe71aee1331e625a230ba359ce37f2523dfd50"
+},
+{
+"names": [
+"FrameField.shearedMap"
+],
+"class": "move",
+"lines": [
+4290,
+4294
+],
+"sha256": "dcb86bd1d3e6c147ec6c7ec6373a4e89c880352c07a59d4f480b06dd55de240d"
+},
+{
+"names": [
+"FrameField.shearedMap_zero"
+],
+"class": "move",
+"lines": [
+4296,
+4300
+],
+"sha256": "22cb4799f311c4f4e6f86bec0287dd667d042ccb1794c05d522c70faf42c5a35"
+},
+{
+"names": [
+"FrameField.contDiffOn_shearedMap"
+],
+"class": "move",
+"lines": [
+4302,
+4309
+],
+"sha256": "f9190ecc7452a3a7a95700ebccf63558fa255f984eaebeccc7f4a02486c342fa"
+},
+{
+"names": [
+"FrameField.hasFDerivAt_shearedMap_zero"
+],
+"class": "move",
+"lines": [
+4311,
+4333
+],
+"sha256": "b0953857d63a355c9539eff6d79704cea78e3376ac8bcd03fb0abcf13a254344"
+},
+{
+"names": [
+"FrameField.isInvertible_shearedBlock"
+],
+"class": "move",
+"lines": [
+4335,
+4343
+],
+"sha256": "3b601c89e50714aa05510eb6d06f3eeeb363f209b0a3853e53b54ae12724b496"
+},
+{
+"names": [
+"FrameField.exists_sheared_frame_chart"
+],
+"class": "move",
+"lines": [
+4345,
+4379
+],
+"sha256": "6b1ef555c801934268eef650db46aa580cfa0b8526d31ecaca63a3138aa3f72b"
+},
+{
+"names": [
+"AxisCoordinates.tangentShear"
+],
+"class": "move",
+"lines": [
+4381,
+4385
+],
+"sha256": "f580e14a48ef003414aca16185499806f72093154ff0aa431279e209e97b5687"
+},
+{
+"names": [
+"AxisCoordinates.transverseBlock"
+],
+"class": "move",
+"lines": [
+4387,
+4390
+],
+"sha256": "e8fad16cd07b54919eeb0d95b0c2418530b5ef70754da1307b5a9731d69469e6"
+},
+{
+"names": [
+"AxisCoordinates.contDiff_tangentShear"
+],
+"class": "move",
+"lines": [
+4392,
+4395
+],
+"sha256": "bf37f8a1afd01e579e072e329bd92ac8c68f549cfe7fa31023daca69a0b33af6"
+},
+{
+"names": [
+"AxisCoordinates.contDiff_transverseBlock"
+],
+"class": "move",
+"lines": [
+4397,
+4400
+],
+"sha256": "e7d7b86843faa5d4bab47afa80853d406cef9e9ff4c0bd4250597b80d3bcdb4f"
+},
+{
+"names": [
+"AxisCoordinates.axis_block_apply"
+],
+"class": "move",
+"lines": [
+4402,
+4409
+],
+"sha256": "76a138b68b888e478e05e8b911f280f49a9faf4548394bc67dad9388df2edd71"
+},
+{
+"names": [
+"AxisCoordinates.axis_block_eq"
+],
+"class": "move",
+"lines": [
+4411,
+4418
+],
+"sha256": "1e3ee950809b6bfa464bb4921c9c990c64df5b075d1b4dcb7e2425c833098517"
+},
+{
+"names": [
+"AxisCoordinates.bijective_transverseBlock"
+],
+"class": "move",
+"lines": [
+4420,
+4433
+],
+"sha256": "39b31fe1d762aaebb7737a066942eed1e891fe181dbb370f6f579574cf18c995"
+},
+{
+"names": [
+"AxisCoordinates.isInvertible_transverseBlock"
+],
+"class": "move",
+"lines": [
+4435,
+4442
+],
+"sha256": "12e3ded9f96eef08c6a72a5e3ee7b262c2a9d13e5859018cfaa24b2373bec602"
+},
+{
+"names": [
+"AxisCoordinates.derivative_fixes_axis"
+],
+"class": "move",
+"lines": [
+4444,
+4453
+],
+"sha256": "90d042136d25c6d0ac385b9156e0a8869286cf72d19edf1fc0fa28aa31265885"
+},
+{
+"names": [
+"AxisCoordinates.exists_native_axis_transition_data"
+],
+"class": "move",
+"lines": [
+4455,
+4516
+],
+"sha256": "6b542cc3ca92a45d862ab2230b630c8260416d97d1fba6226b092264a20613c6"
+},
+{
+"names": [
+"exists_smooth_open_curve_with_germ"
+],
+"class": "keep",
+"lines": [
+4518,
+4541
+],
+"sha256": "d603e0544100d372ac4d0bbdfc93aa372db02f6a28f9e296cc4827bc5ae455b7"
+},
+{
+"names": [
+"exists_smooth_open_curve_with_endpoint_germs"
+],
+"class": "keep",
+"lines": [
+4543,
+4565
+],
+"sha256": "439d3db0dc55e42ef117dbe11672cc10656d54bb1ed5233ba7f8a796e02e60aa"
+},
+{
+"names": [
+"LinearFramePaths.matrixCoordinates"
+],
+"class": "keep",
+"lines": [
+4567,
+4571
+],
+"sha256": "90f0f40239a01ac7adc9822e04407ca0d5d5561768417a1fcccf33fc7d74ef7b"
+},
+{
+"names": [
+"LinearFramePaths.det_matrixCoordinates"
+],
+"class": "keep",
+"lines": [
+4573,
+4577
+],
+"sha256": "a9da188f791155c5db1aa17dd0c93e6186f53c60d424399f38d4694d39f7b849"
+},
+{
+"names": [
+"LinearFramePaths.operatorComponent"
+],
+"class": "keep",
+"lines": [
+4579,
+4584
+],
+"sha256": "652aaa56598cd50b7350d1acec90478f81a0bbfc1a3e7b40ed2d7cd1ff9ab952"
+},
+{
+"names": [
+"LinearFramePaths.joined_operatorComponent"
+],
+"class": "keep",
+"lines": [
+4586,
+4616
+],
+"sha256": "948b92cf2d7c1d79ad611f2cbda43906c1ce96d6f006d61648d6e0c30c66e01a"
+},
+{
+"names": [
+"LinearFramePaths.exists_smooth_invertible_frame_join"
+],
+"class": "keep",
+"lines": [
+4618,
+4653
+],
+"sha256": "baf1ac22f4c45b372a4274689622edf19da9a260288c99dce56abd33dbbdce0c"
+},
+{
+"names": [
+"AxisCoordinates.exists_smooth_sheared_frame_join"
+],
+"class": "keep",
+"lines": [
+4655,
+4687
+],
+"sha256": "f1365c571205313ad30d3fc85f72c74c9570ee19e306f709218bc74f806d2352"
+},
+{
+"names": [
+"AxisCoordinates.exists_smooth_sheared_frame_join_at"
+],
+"class": "keep",
+"lines": [
+4689,
+4739
+],
+"sha256": "90c6ff08933cbca28267e77c7923b4d3af5906bf7cba8bea5df5034a7334cd0a"
+},
+{
+"names": [
+"AxisCoordinates.exists_flat_local_correction"
+],
+"class": "move",
+"lines": [
+4741,
+4788
+],
+"sha256": "682c227fca53b37d6c0417b47cd6085b7b86faae709a665903eac44f498405dd"
+},
+{
+"names": [
+"AxisCoordinates.exists_axis_germ_correction"
+],
+"class": "move",
+"lines": [
+4790,
+4848
+],
+"sha256": "a8feb1f6f55fa8ffc990a3abeb120ba45d6d85fe2f4d933b1f60166f63363016"
+},
+{
+"names": [
+"FrameField.exists_sheared_tubular_chart"
+],
+"class": "move",
+"lines": [
+4850,
+4896
+],
+"sha256": "b6050a41e8a6e625f36b91089068fa935f98dd60a5df0a5e7dd5e1f135253033"
+},
+{
+"names": [
+"AxisCoordinates.exists_native_axis_chart_with_endpoint_germs"
+],
+"class": "keep",
+"lines": [
+4898,
+5004
+],
+"sha256": "6acfc9adb236e085e15ef287679d23a8d99f25d7b6f844a3d29f97f27d6c4489"
+},
+{
+"names": [
+"FrameField.isInvertible_coprod_of_bijective"
+],
+"class": "move",
+"lines": [
+5006,
+5012
+],
+"sha256": "7cb8f90acfe1bb0120aca27b78c64e7816ebb82ea9d4758910c891963dedd08a"
+}
+]
+}
