@@ -20,10 +20,13 @@ hypothesis, where it is consumed, what it says, and what is missing to discharge
   compatibility with restriction (`DualityMap.lean`); relative cohomology with excision and
   Mayer–Vietoris (`SingularCochains/Relative.lean`, `RelativeMayerVietoris.lean`); the relative cap
   product (`CapProduct/Relative.lean`).
-* **Missing (Hatcher 3.35/3.36, textbook nodes N18–N22).** (i) Compactly supported cohomology
-  `H^k_c(U) = colim_K H^k(U, U ∖ K)` as a direct limit over compact sets and the limit duality map
-  `D_U : H^k_c(U) → H_{n-k}(U)` assembled from `dualityMap` (its compatibility
-  `dualityMap_cohomologyRestriction` is proved). (ii) Lemma 3.36: the Mayer–Vietoris ladder
+* **Missing (Hatcher 3.35/3.36, textbook nodes N18–N22).** (i) *Done* (`CompactSupport.lean`):
+  compactly supported cohomology `CompactlySupportedCohomology M k = colim_K H^k(M, M ∖ K)` as a
+  direct limit over `Compacts M` and the limit duality map
+  `limitDualityMap : H^k_c(M) →+ H_{n-k}(M)` with `limitDualityMap_ofCompact` and
+  `limitDualityMap_of_univ` (closed `M`: the component at `K = M` is `absoluteDualityMap`). What is
+  missing is the same construction for the open subsets `U ⊆ M` (as subtypes, with the orientation
+  restricted) and the identification `H^k_c(U) → H^k_c(M)` for `U ⊆ M` open. (ii) Lemma 3.36: the Mayer–Vietoris ladder
   `H^k_c(U ∩ V) → H^k_c(U) ⊕ H^k_c(V) → H^k_c(U ∪ V) → H^{k+1}_c(U ∩ V)` over
   `H_{n-k}(U ∩ V) → … → H_{n-k-1}(U ∩ V)` commutes up to the sign `(-1)^k` (the relative
   cohomology Mayer–Vietoris sequence is proved, its middle term still as the dual of the biproduct;

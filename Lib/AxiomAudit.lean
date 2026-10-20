@@ -9015,3 +9015,12 @@ is an evidence command rather than library content.
 #print axioms PoincareDuality.IsPoincareDuality.cohomology_top_equiv_int
 #check PoincareDuality.IsPoincareDuality.cohomology_isTorsionFree_of_dim_four
 #print axioms PoincareDuality.IsPoincareDuality.cohomology_isTorsionFree_of_dim_four
+
+/-! ## `Lib.AlgebraicTopology.SingularHomology.Orientation.CompactSupport` -/
+
+#check PoincareDuality.ofCompact_compactRestriction
+#print axioms PoincareDuality.ofCompact_compactRestriction
+#check PoincareDuality.limitDualityMap_ofCompact
+#print axioms PoincareDuality.limitDualityMap_ofCompact
+#check PoincareDuality.limitDualityMap_of_univ
+#print axioms PoincareDuality.limitDualityMap_of_univ
