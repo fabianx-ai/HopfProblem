@@ -19,7 +19,16 @@ Seat: Claude Fable 5.1 (`claude-fable-5-1`). Branch `lib/poincare`, worktree `/h
   above n, H_n(M; ℤ) ≅ ℤ for closed connected oriented M, and for closed simply connected M
   (consumer (c) in generic form). 874 lines. `lake build Lib Lib.AxiomAudit` green (9,417 jobs),
   3,822 probes within the three standard axioms.
-* M3 next: cap and cup products at the chain level (`SingularCochains/CapProduct/`).
+* **M3 done** (`9a19c1b8`, written by a work agent and replayed by cherry-pick; receipt `M3.md`):
+  front/back faces, chain-level cap and cup products, the Leibniz formulas, naturality. 528 lines.
+  Homology-level descent not done (carried to M4b).
+* **M4a done** (receipt `M4.md`, section M4a): `quasiIso_τ₁` (first-term two-out-of-three),
+  duals of split short exact sequences (retractions or sections), the cohomology long exact
+  sequence wrappers, relative cohomology `H^q(X, A; ℤ)` with the long exact sequence of the pair,
+  **excision in cohomology** for open covers (via the cochain small-simplices theorem and
+  `quasiIso_τ₁`), the relative Mayer–Vietoris sequence in cohomology. 1,057 lines.
+  `lake build Lib Lib.AxiomAudit` green (9,423 jobs), 3,840 probes within the three standard axioms.
+* M4b next: homology-level relative cap product, duality maps `D_K`, the Euclidean base case.
 
 ## Register
 
