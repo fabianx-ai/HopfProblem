@@ -24,8 +24,10 @@ short exact sequence of cochain complexes, giving the long exact cohomology sequ
 
 ## Main definitions and results
 
-* `AlgebraicTopology.SingularCochains.dualShortComplex A S`.
-* `AlgebraicTopology.SingularCochains.dualShortComplex_shortExact`.
+* `AlgebraicTopology.SingularCochains.dualShortComplex A S`,
+  `AlgebraicTopology.SingularCochains.dualShortComplexMap`.
+* `AlgebraicTopology.SingularCochains.dualShortComplex_shortExact` (degreewise retractions of the
+  first map), `dualShortComplex_shortExact_of_section` (degreewise sections of the second map).
 
 ## References
 
@@ -85,6 +87,27 @@ def dualShortComplex (S : ShortComplex (ChainComplex (ModuleCat.{0} ℤ) ℕ)) :
 @[simp] theorem dualShortComplex_g (S : ShortComplex (ChainComplex (ModuleCat.{0} ℤ) ℕ)) :
     (dualShortComplex A S).g = dualMap A S.f := rfl
 
+/-- The dual of a morphism of short complexes of chain complexes (contravariant: the first term of
+the dual of `S₂` maps to the first term of the dual of `S₁`). -/
+def dualShortComplexMap {S₁ S₂ : ShortComplex (ChainComplex (ModuleCat.{0} ℤ) ℕ)} (φ : S₁ ⟶ S₂) :
+    dualShortComplex A S₂ ⟶ dualShortComplex A S₁ where
+  τ₁ := dualMap A φ.τ₃
+  τ₂ := dualMap A φ.τ₂
+  τ₃ := dualMap A φ.τ₁
+  comm₁₂ := by
+    change dualMap A φ.τ₃ ≫ dualMap A S₁.g = dualMap A S₂.g ≫ dualMap A φ.τ₂
+    rw [← dualMap_comp, ← dualMap_comp, φ.comm₂₃]
+  comm₂₃ := by
+    change dualMap A φ.τ₂ ≫ dualMap A S₁.f = dualMap A S₂.f ≫ dualMap A φ.τ₁
+    rw [← dualMap_comp, ← dualMap_comp, φ.comm₁₂]
+
+@[simp] theorem dualShortComplexMap_τ₁ {S₁ S₂ : ShortComplex (ChainComplex (ModuleCat.{0} ℤ) ℕ)}
+    (φ : S₁ ⟶ S₂) : (dualShortComplexMap A φ).τ₁ = dualMap A φ.τ₃ := rfl
+@[simp] theorem dualShortComplexMap_τ₂ {S₁ S₂ : ShortComplex (ChainComplex (ModuleCat.{0} ℤ) ℕ)}
+    (φ : S₁ ⟶ S₂) : (dualShortComplexMap A φ).τ₂ = dualMap A φ.τ₂ := rfl
+@[simp] theorem dualShortComplexMap_τ₃ {S₁ S₂ : ShortComplex (ChainComplex (ModuleCat.{0} ℤ) ℕ)}
+    (φ : S₁ ⟶ S₂) : (dualShortComplexMap A φ).τ₃ = dualMap A φ.τ₁ := rfl
+
 /-- A functional vanishing on the kernel of a surjective linear map descends along it. -/
 theorem exists_comp_of_ker_le {M N : Type} [AddCommGroup M] [AddCommGroup N] [Module ℤ M]
     [Module ℤ N] (g : M →ₗ[ℤ] N) (hg : Function.Surjective g) (φ : M →+ A)
@@ -142,5 +165,47 @@ theorem dualShortComplex_shortExact (S : ShortComplex (ChainComplex (ModuleCat.{
     apply AddMonoidHom.ext
     intro x
     exact congrArg (fun χ : S.X₂.X n →+ A => χ x) hψ
+
+/-- A degreewise section of the second map of a short exact sequence of chain complexes yields a
+degreewise retraction of the first map: `r x = f⁻¹(x - s (g x))`. -/
+def retractionOfSection (S : ShortComplex (ChainComplex (ModuleCat.{0} ℤ) ℕ)) (hS : S.ShortExact)
+    (s : ∀ n, S.X₃.X n →ₗ[ℤ] S.X₂.X n) (hs : ∀ n (x : S.X₃.X n), (S.g.f n).hom (s n x) = x) (n : ℕ) :
+    S.X₂.X n →ₗ[ℤ] S.X₁.X n :=
+  letI : Module ℤ (LinearMap.range (S.f.f n).hom) := Submodule.module _
+  have hn := (HomologicalComplex.shortExact_iff_degreewise_shortExact S).mp hS n
+  have hinj : Function.Injective (S.f.f n).hom := hn.moduleCat_injective_f
+  (LinearEquiv.ofInjective (S.f.f n).hom hinj).symm.toLinearMap.comp
+    ((LinearMap.id - (s n).comp (S.g.f n).hom).codRestrict (LinearMap.range (S.f.f n).hom) (fun x => by
+      have hexact : Function.Exact (S.f.f n).hom (S.g.f n).hom :=
+        (ShortComplex.ShortExact.moduleCat_exact_iff_function_exact _).mp hn.exact
+      apply (hexact _).mp
+      simp [hs]))
+
+/-- The retraction of a section left-inverts the first map. -/
+theorem retractionOfSection_apply (S : ShortComplex (ChainComplex (ModuleCat.{0} ℤ) ℕ))
+    (hS : S.ShortExact) (s : ∀ n, S.X₃.X n →ₗ[ℤ] S.X₂.X n)
+    (hs : ∀ n (x : S.X₃.X n), (S.g.f n).hom (s n x) = x) (n : ℕ) (x : S.X₁.X n) :
+    retractionOfSection S hS s hs n ((S.f.f n).hom x) = x := by
+  let _ : Module ℤ (LinearMap.range (S.f.f n).hom) := Submodule.module _
+  have hn := (HomologicalComplex.shortExact_iff_degreewise_shortExact S).mp hS n
+  have hgf : (S.g.f n).hom ((S.f.f n).hom x) = 0 := by
+    change ((S.f ≫ S.g).f n).hom x = 0
+    rw [S.zero]
+    exact zero_f_hom_apply n x
+  have hinj : Function.Injective (S.f.f n).hom := hn.moduleCat_injective_f
+  apply hinj
+  have h1 : (S.f.f n).hom (retractionOfSection S hS s hs n ((S.f.f n).hom x)) =
+      (S.f.f n).hom x - s n ((S.g.f n).hom ((S.f.f n).hom x)) :=
+    LinearEquiv.ofInjective_symm_apply (f := (S.f.f n).hom) (h := hinj) _
+  rw [h1, hgf, map_zero, sub_zero]
+
+/-- **The dual of a short exact sequence whose second map has degreewise sections is short
+exact.** -/
+theorem dualShortComplex_shortExact_of_section (S : ShortComplex (ChainComplex (ModuleCat.{0} ℤ) ℕ))
+    (hS : S.ShortExact) (s : ∀ n, S.X₃.X n →ₗ[ℤ] S.X₂.X n)
+    (hs : ∀ n (x : S.X₃.X n), (S.g.f n).hom (s n x) = x) :
+    (dualShortComplex A S).ShortExact :=
+  dualShortComplex_shortExact A S hS (retractionOfSection S hS s hs)
+    (retractionOfSection_apply S hS s hs)
 
 end AlgebraicTopology.SingularCochains

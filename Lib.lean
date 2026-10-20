@@ -3,6 +3,9 @@ import Lib.Algebra.Group.DeterminingFamily
 import Lib.Algebra.Group.Ker
 import Lib.Algebra.Homology.MayerVietorisShortExact
 import Lib.Algebra.Homology.ChainSubmodule
+import Lib.Algebra.Homology.QuasiIsoTauOne
+import Lib.Algebra.Homology.DualShortExact
+import Lib.Algebra.Homology.CohomologyLongExact
 import Lib.Topology.Homotopy.Suspension
 import Lib.Topology.Algebra.FreeActionLocus
 import Lib.Topology.OnePointCollapse
@@ -664,6 +667,9 @@ import Lib.AlgebraicTopology.SingularCochains.Vanishing
 import Lib.AlgebraicTopology.SingularCochains.DualEvaluation.CoordinateChange
 import Lib.AlgebraicTopology.SingularCochains.DualEvaluation.HomeomorphCoordinates
 import Lib.AlgebraicTopology.SingularCochains.PositivePrimitives
+import Lib.AlgebraicTopology.SingularCochains.CapProduct.Chain
+import Lib.AlgebraicTopology.SingularCochains.Relative
+import Lib.AlgebraicTopology.SingularCochains.RelativeMayerVietoris
 import Lib.Topology.Sheaves.SingularCochainSheaf.LocalExactPositive
 import Lib.Topology.Sheaves.SingularCochainSheaf.OpenRestriction
 import Lib.Topology.Sheaves.SingularCochainSheaf.ResolutionPositive

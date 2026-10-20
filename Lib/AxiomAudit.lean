@@ -8910,3 +8910,57 @@ is an evidence command rather than library content.
 #print axioms ManifoldOrientation.exists_homology_equiv_int
 #check ManifoldOrientation.exists_homology_equiv_int_of_simplyConnectedSpace
 #print axioms ManifoldOrientation.exists_homology_equiv_int_of_simplyConnectedSpace
+
+/-! ## `Lib.Algebra.Homology.QuasiIsoTauOne` -/
+
+#check HomologicalComplex.HomologySequence.quasiIso_τ₁
+#print axioms HomologicalComplex.HomologySequence.quasiIso_τ₁
+
+/-! ## `Lib.Algebra.Homology.DualShortExact` -/
+
+#check AlgebraicTopology.SingularCochains.dualShortComplex_shortExact
+#print axioms AlgebraicTopology.SingularCochains.dualShortComplex_shortExact
+#check AlgebraicTopology.SingularCochains.dualShortComplex_shortExact_of_section
+#print axioms AlgebraicTopology.SingularCochains.dualShortComplex_shortExact_of_section
+
+/-! ## `Lib.Algebra.Homology.CohomologyLongExact` -/
+
+#check CohomologyLongExact.exact_at_first
+#print axioms CohomologyLongExact.exact_at_first
+#check CohomologyLongExact.connectingHom_naturality
+#print axioms CohomologyLongExact.connectingHom_naturality
+
+/-! ## `Lib.AlgebraicTopology.SingularCochains.CapProduct.Chain` -/
+
+#check SingularCapProduct.boundary_capChain
+#print axioms SingularCapProduct.boundary_capChain
+#check SingularCapProduct.coboundary_cupChain
+#print axioms SingularCapProduct.coboundary_cupChain
+#check SingularCapProduct.inducedChain_capChain
+#print axioms SingularCapProduct.inducedChain_capChain
+#check SingularCapProduct.pullback_cupChain
+#print axioms SingularCapProduct.pullback_cupChain
+
+/-! ## `Lib.AlgebraicTopology.SingularCochains.Relative` -/
+
+#check RelativeSingularCohomology.dualPairSequence_shortExact
+#print axioms RelativeSingularCohomology.dualPairSequence_shortExact
+#check RelativeSingularCohomology.cohomology_exact_at_relative
+#print axioms RelativeSingularCohomology.cohomology_exact_at_relative
+#check RelativeSingularCohomology.dualMap_ι_sup_quasiIso
+#print axioms RelativeSingularCohomology.dualMap_ι_sup_quasiIso
+#check RelativeSingularCohomology.cohomology_excision_bijective
+#print axioms RelativeSingularCohomology.cohomology_excision_bijective
+
+/-! ## `Lib.AlgebraicTopology.SingularCochains.RelativeMayerVietoris` -/
+
+#check RelativeSingularCohomology.dualRelativeChainSequence_shortExact
+#print axioms RelativeSingularCohomology.dualRelativeChainSequence_shortExact
+#check RelativeSingularCohomology.dualMap_unionComparison_quasiIso
+#print axioms RelativeSingularCohomology.dualMap_unionComparison_quasiIso
+#check RelativeSingularCohomology.cohomologyMV_exact_at_union
+#print axioms RelativeSingularCohomology.cohomologyMV_exact_at_union
+#check RelativeSingularCohomology.cohomologyMV_exact_at_pair
+#print axioms RelativeSingularCohomology.cohomologyMV_exact_at_pair
+#check RelativeSingularCohomology.cohomologyMV_exact_at_inter
+#print axioms RelativeSingularCohomology.cohomologyMV_exact_at_inter
