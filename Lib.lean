@@ -6,6 +6,7 @@ import Lib.Algebra.Homology.ChainSubmodule
 import Lib.Algebra.Homology.QuasiIsoTauOne
 import Lib.Algebra.Homology.DualShortExact
 import Lib.Algebra.Homology.CohomologyLongExact
+import Lib.Algebra.Homology.CocycleClass
 import Lib.Topology.Homotopy.Suspension
 import Lib.Topology.Algebra.FreeActionLocus
 import Lib.Topology.OnePointCollapse
@@ -47,6 +48,8 @@ import Lib.AlgebraicTopology.SingularHomology.Orientation.Orientation
 import Lib.AlgebraicTopology.SingularHomology.Orientation.LocalToGlobal
 import Lib.AlgebraicTopology.SingularHomology.Orientation.ChartConvex
 import Lib.AlgebraicTopology.SingularHomology.Orientation.FundamentalClass
+import Lib.AlgebraicTopology.SingularHomology.Orientation.DualityMap
+import Lib.AlgebraicTopology.SingularHomology.Orientation.EuclideanDuality
 import Lib.AlgebraicTopology.SingularHomology.SuspensionCover
 import Lib.AlgebraicTopology.SingularHomology.Coproduct
 import Lib.AlgebraicTopology.SingularHomology.LocalContributions
@@ -670,6 +673,7 @@ import Lib.AlgebraicTopology.SingularCochains.PositivePrimitives
 import Lib.AlgebraicTopology.SingularCochains.CapProduct.Chain
 import Lib.AlgebraicTopology.SingularCochains.Relative
 import Lib.AlgebraicTopology.SingularCochains.RelativeMayerVietoris
+import Lib.AlgebraicTopology.SingularCochains.CapProduct.Relative
 import Lib.Topology.Sheaves.SingularCochainSheaf.LocalExactPositive
 import Lib.Topology.Sheaves.SingularCochainSheaf.OpenRestriction
 import Lib.Topology.Sheaves.SingularCochainSheaf.ResolutionPositive

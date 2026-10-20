@@ -8964,3 +8964,41 @@ is an evidence command rather than library content.
 #print axioms RelativeSingularCohomology.cohomologyMV_exact_at_pair
 #check RelativeSingularCohomology.cohomologyMV_exact_at_inter
 #print axioms RelativeSingularCohomology.cohomologyMV_exact_at_inter
+
+/-! ## `Lib.Algebra.Homology.CocycleClass` -/
+
+#check CochainCocycle.cohomologyDescSucc_cocycleClass
+#print axioms CochainCocycle.cohomologyDescSucc_cocycleClass
+#check CochainCocycle.cocycleClass_eq_zero_iff_succ
+#print axioms CochainCocycle.cocycleClass_eq_zero_iff_succ
+
+/-! ## `Lib.AlgebraicTopology.SingularCochains.CapProduct.Relative` -/
+
+#check SingularCapProduct.relativeCap_apply
+#print axioms SingularCapProduct.relativeCap_apply
+#check SingularCapProduct.relativeCap_cohomologyRestriction
+#print axioms SingularCapProduct.relativeCap_cohomologyRestriction
+#check SingularCapProduct.augmentation_relativeCap_top
+#print axioms SingularCapProduct.augmentation_relativeCap_top
+
+/-! ## `Lib.AlgebraicTopology.SingularHomology.Orientation.DualityMap` -/
+
+#check PoincareDuality.compactClass_unique
+#print axioms PoincareDuality.compactClass_unique
+#check PoincareDuality.restriction_compactClass
+#print axioms PoincareDuality.restriction_compactClass
+#check PoincareDuality.dualityMap_cohomologyRestriction
+#print axioms PoincareDuality.dualityMap_cohomologyRestriction
+#check PoincareDuality.absoluteDualityMap_eq
+#print axioms PoincareDuality.absoluteDualityMap_eq
+
+/-! ## `Lib.AlgebraicTopology.SingularHomology.Orientation.EuclideanDuality` -/
+
+#check PoincareDuality.relativeComplex_free
+#print axioms PoincareDuality.relativeComplex_free
+#check PoincareDuality.cohomologyEvaluation_relative_isIso
+#print axioms PoincareDuality.cohomologyEvaluation_relative_isIso
+#check PoincareDuality.augmentation_dualityMap
+#print axioms PoincareDuality.augmentation_dualityMap
+#check PoincareDuality.dualityMap_closedBall_bijective
+#print axioms PoincareDuality.dualityMap_closedBall_bijective
