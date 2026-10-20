@@ -8802,3 +8802,269 @@ is an evidence command rather than library content.
 #print axioms Hyperbolic.hyperboloid_normal_sign_on_preconnected
 #check Hyperbolic.hyperboloid_normal_components
 #print axioms Hyperbolic.hyperboloid_normal_components
+
+/-! ## `Lib.Algebra.Homology.ChainSubmodule` -/
+
+#check ChainSubmodule.quotientSequence_shortExact
+#print axioms ChainSubmodule.quotientSequence_shortExact
+#check ChainSubmodule.relativeSequence_shortExact
+#print axioms ChainSubmodule.relativeSequence_shortExact
+#check ChainSubmodule.relativeSupIso
+#print axioms ChainSubmodule.relativeSupIso
+#check ChainSubmodule.relativeTopIso
+#print axioms ChainSubmodule.relativeTopIso
+
+/-! ## `Lib.AlgebraicTopology.SingularHomology.Relative.Chains` -/
+
+#check RelativeSingularHomology.pairSequence_shortExact
+#print axioms RelativeSingularHomology.pairSequence_shortExact
+#check RelativeSingularHomology.pair_exact_at_subspace
+#print axioms RelativeSingularHomology.pair_exact_at_subspace
+#check RelativeSingularHomology.pair_exact_at_space
+#print axioms RelativeSingularHomology.pair_exact_at_space
+#check RelativeSingularHomology.pair_exact_at_pair
+#print axioms RelativeSingularHomology.pair_exact_at_pair
+#check RelativeSingularHomology.relativeHomologyEquivOfEmpty
+#print axioms RelativeSingularHomology.relativeHomologyEquivOfEmpty
+#check RelativeSingularHomology.relativeHomology_subsingleton_of_univ
+#print axioms RelativeSingularHomology.relativeHomology_subsingleton_of_univ
+#check RelativeSingularHomology.supportedComplexIso
+#print axioms RelativeSingularHomology.supportedComplexIso
+
+/-! ## `Lib.AlgebraicTopology.SingularHomology.Relative.Functoriality` -/
+
+#check RelativeSingularHomology.pairConnecting_naturality
+#print axioms RelativeSingularHomology.pairConnecting_naturality
+#check RelativeSingularHomology.relativeHomologyMap_bijective_of_bijective
+#print axioms RelativeSingularHomology.relativeHomologyMap_bijective_of_bijective
+#check RelativeSingularHomology.relativeHomologyEquivOfHomeomorph
+#print axioms RelativeSingularHomology.relativeHomologyEquivOfHomeomorph
+
+/-! ## `Lib.AlgebraicTopology.SingularHomology.Relative.Support` -/
+
+#check RelativeSingularHomology.isCompact_chainSupport
+#print axioms RelativeSingularHomology.isCompact_chainSupport
+#check RelativeSingularHomology.mem_supportedChainSubmodule_iff
+#print axioms RelativeSingularHomology.mem_supportedChainSubmodule_iff
+#check RelativeSingularHomology.restriction_relativeHomologyClass
+#print axioms RelativeSingularHomology.restriction_relativeHomologyClass
+
+/-! ## `Lib.AlgebraicTopology.SingularHomology.Relative.Excision` -/
+
+#check RelativeSingularHomology.excision_quasiIso
+#print axioms RelativeSingularHomology.excision_quasiIso
+#check RelativeSingularHomology.excisionEquiv
+#print axioms RelativeSingularHomology.excisionEquiv
+
+/-! ## `Lib.AlgebraicTopology.SingularHomology.Relative.MayerVietoris` -/
+
+#check RelativeSingularHomology.relativeChainSequence_shortExact
+#print axioms RelativeSingularHomology.relativeChainSequence_shortExact
+#check RelativeSingularHomology.relative_exact_at_inter
+#print axioms RelativeSingularHomology.relative_exact_at_inter
+#check RelativeSingularHomology.relative_exact_at_pair
+#print axioms RelativeSingularHomology.relative_exact_at_pair
+#check RelativeSingularHomology.relative_exact_at_union
+#print axioms RelativeSingularHomology.relative_exact_at_union
+
+/-! ## `Lib.AlgebraicTopology.SingularHomology.Orientation.ConvexComplement` -/
+
+#check ConvexComplement.homotopyEquiv
+#print axioms ConvexComplement.homotopyEquiv
+#check ConvexComplement.sphereHomotopyEquiv
+#print axioms ConvexComplement.sphereHomotopyEquiv
+#check ConvexComplement.singularHomologyMap_inclusion_bijective
+#print axioms ConvexComplement.singularHomologyMap_inclusion_bijective
+
+/-! ## `Lib.AlgebraicTopology.SingularHomology.Orientation.LocalHomology` -/
+
+#check ManifoldOrientation.isHomologyBall_of_convex
+#print axioms ManifoldOrientation.isHomologyBall_of_convex
+#check ManifoldOrientation.localHomologyEuclideanEquiv
+#print axioms ManifoldOrientation.localHomologyEuclideanEquiv
+#check ManifoldOrientation.localHomologyEuclidean_subsingleton
+#print axioms ManifoldOrientation.localHomologyEuclidean_subsingleton
+
+/-! ## `Lib.AlgebraicTopology.SingularHomology.Orientation.HomologyBall` -/
+
+#check ManifoldOrientation.isHomologyBall_trace_iff
+#print axioms ManifoldOrientation.isHomologyBall_trace_iff
+#check ManifoldOrientation.exists_isHomologyBall
+#print axioms ManifoldOrientation.exists_isHomologyBall
+#check ManifoldOrientation.localHomology_equiv_int
+#print axioms ManifoldOrientation.localHomology_equiv_int
+#check ManifoldOrientation.localHomology_subsingleton
+#print axioms ManifoldOrientation.localHomology_subsingleton
+
+/-! ## `Lib.AlgebraicTopology.SingularHomology.Orientation.OrientationCover` -/
+
+#check ManifoldOrientation.isOpen_agreementSet
+#print axioms ManifoldOrientation.isOpen_agreementSet
+#check ManifoldOrientation.isCoveringMap_proj
+#print axioms ManifoldOrientation.isCoveringMap_proj
+
+/-! ## `Lib.AlgebraicTopology.SingularHomology.Orientation.Orientation` -/
+
+#check ManifoldOrientation.isLocallyConsistent_sectionClass
+#print axioms ManifoldOrientation.isLocallyConsistent_sectionClass
+#check ManifoldOrientation.isOrientable_of_simplyConnectedSpace
+#print axioms ManifoldOrientation.isOrientable_of_simplyConnectedSpace
+
+/-! ## `Lib.AlgebraicTopology.SingularHomology.Orientation.LocalToGlobal` -/
+
+#check ManifoldOrientation.LocalToGlobal.inter
+#print axioms ManifoldOrientation.LocalToGlobal.inter
+#check ManifoldOrientation.eqOn_of_agree
+#print axioms ManifoldOrientation.eqOn_of_agree
+
+/-! ## `Lib.AlgebraicTopology.SingularHomology.Orientation.ChartConvex` -/
+
+#check ManifoldOrientation.LocalToGlobal.of_isChartConvex
+#print axioms ManifoldOrientation.LocalToGlobal.of_isChartConvex
+#check ManifoldOrientation.LocalToGlobal.of_list
+#print axioms ManifoldOrientation.LocalToGlobal.of_list
+
+/-! ## `Lib.AlgebraicTopology.SingularHomology.Orientation.FundamentalClass` -/
+
+#check ManifoldOrientation.LocalToGlobal.of_isCompact
+#print axioms ManifoldOrientation.LocalToGlobal.of_isCompact
+#check ManifoldOrientation.homology_subsingleton_of_lt
+#print axioms ManifoldOrientation.homology_subsingleton_of_lt
+#check ManifoldOrientation.absoluteRestriction_fundamentalClass
+#print axioms ManifoldOrientation.absoluteRestriction_fundamentalClass
+#check ManifoldOrientation.fundamentalClass_unique
+#print axioms ManifoldOrientation.fundamentalClass_unique
+#check ManifoldOrientation.restrictionEquiv
+#print axioms ManifoldOrientation.restrictionEquiv
+#check ManifoldOrientation.exists_homology_equiv_int
+#print axioms ManifoldOrientation.exists_homology_equiv_int
+#check ManifoldOrientation.exists_homology_equiv_int_of_simplyConnectedSpace
+#print axioms ManifoldOrientation.exists_homology_equiv_int_of_simplyConnectedSpace
+
+/-! ## `Lib.Algebra.Homology.QuasiIsoTauOne` -/
+
+#check HomologicalComplex.HomologySequence.quasiIso_τ₁
+#print axioms HomologicalComplex.HomologySequence.quasiIso_τ₁
+
+/-! ## `Lib.Algebra.Homology.DualShortExact` -/
+
+#check AlgebraicTopology.SingularCochains.dualShortComplex_shortExact
+#print axioms AlgebraicTopology.SingularCochains.dualShortComplex_shortExact
+#check AlgebraicTopology.SingularCochains.dualShortComplex_shortExact_of_section
+#print axioms AlgebraicTopology.SingularCochains.dualShortComplex_shortExact_of_section
+
+/-! ## `Lib.Algebra.Homology.CohomologyLongExact` -/
+
+#check CohomologyLongExact.exact_at_first
+#print axioms CohomologyLongExact.exact_at_first
+#check CohomologyLongExact.connectingHom_naturality
+#print axioms CohomologyLongExact.connectingHom_naturality
+
+/-! ## `Lib.AlgebraicTopology.SingularCochains.CapProduct.Chain` -/
+
+#check SingularCapProduct.boundary_capChain
+#print axioms SingularCapProduct.boundary_capChain
+#check SingularCapProduct.coboundary_cupChain
+#print axioms SingularCapProduct.coboundary_cupChain
+#check SingularCapProduct.inducedChain_capChain
+#print axioms SingularCapProduct.inducedChain_capChain
+#check SingularCapProduct.pullback_cupChain
+#print axioms SingularCapProduct.pullback_cupChain
+
+/-! ## `Lib.AlgebraicTopology.SingularCochains.Relative` -/
+
+#check RelativeSingularCohomology.dualPairSequence_shortExact
+#print axioms RelativeSingularCohomology.dualPairSequence_shortExact
+#check RelativeSingularCohomology.cohomology_exact_at_relative
+#print axioms RelativeSingularCohomology.cohomology_exact_at_relative
+#check RelativeSingularCohomology.dualMap_ι_sup_quasiIso
+#print axioms RelativeSingularCohomology.dualMap_ι_sup_quasiIso
+#check RelativeSingularCohomology.cohomology_excision_bijective
+#print axioms RelativeSingularCohomology.cohomology_excision_bijective
+
+/-! ## `Lib.AlgebraicTopology.SingularCochains.RelativeMayerVietoris` -/
+
+#check RelativeSingularCohomology.dualRelativeChainSequence_shortExact
+#print axioms RelativeSingularCohomology.dualRelativeChainSequence_shortExact
+#check RelativeSingularCohomology.dualMap_unionComparison_quasiIso
+#print axioms RelativeSingularCohomology.dualMap_unionComparison_quasiIso
+#check RelativeSingularCohomology.cohomologyMV_exact_at_union
+#print axioms RelativeSingularCohomology.cohomologyMV_exact_at_union
+#check RelativeSingularCohomology.cohomologyMV_exact_at_pair
+#print axioms RelativeSingularCohomology.cohomologyMV_exact_at_pair
+#check RelativeSingularCohomology.cohomologyMV_exact_at_inter
+#print axioms RelativeSingularCohomology.cohomologyMV_exact_at_inter
+
+/-! ## `Lib.Algebra.Homology.CocycleClass` -/
+
+#check CochainCocycle.cohomologyDescSucc_cocycleClass
+#print axioms CochainCocycle.cohomologyDescSucc_cocycleClass
+#check CochainCocycle.cocycleClass_eq_zero_iff_succ
+#print axioms CochainCocycle.cocycleClass_eq_zero_iff_succ
+
+/-! ## `Lib.AlgebraicTopology.SingularCochains.CapProduct.Relative` -/
+
+#check SingularCapProduct.relativeCap_apply
+#print axioms SingularCapProduct.relativeCap_apply
+#check SingularCapProduct.relativeCap_cohomologyRestriction
+#print axioms SingularCapProduct.relativeCap_cohomologyRestriction
+#check SingularCapProduct.augmentation_relativeCap_top
+#print axioms SingularCapProduct.augmentation_relativeCap_top
+
+/-! ## `Lib.AlgebraicTopology.SingularHomology.Orientation.DualityMap` -/
+
+#check PoincareDuality.compactClass_unique
+#print axioms PoincareDuality.compactClass_unique
+#check PoincareDuality.restriction_compactClass
+#print axioms PoincareDuality.restriction_compactClass
+#check PoincareDuality.dualityMap_cohomologyRestriction
+#print axioms PoincareDuality.dualityMap_cohomologyRestriction
+#check PoincareDuality.absoluteDualityMap_eq
+#print axioms PoincareDuality.absoluteDualityMap_eq
+
+/-! ## `Lib.AlgebraicTopology.SingularHomology.Orientation.EuclideanDuality` -/
+
+#check PoincareDuality.relativeComplex_free
+#print axioms PoincareDuality.relativeComplex_free
+#check PoincareDuality.cohomologyEvaluation_relative_isIso
+#print axioms PoincareDuality.cohomologyEvaluation_relative_isIso
+#check PoincareDuality.augmentation_dualityMap
+#print axioms PoincareDuality.augmentation_dualityMap
+#check PoincareDuality.dualityMap_closedBall_bijective
+#print axioms PoincareDuality.dualityMap_closedBall_bijective
+
+/-! ## `Lib.AlgebraicTopology.SingularHomology.Orientation.DualityConsequences` -/
+
+#check PoincareDuality.cohomology_zero_isTorsionFree
+#print axioms PoincareDuality.cohomology_zero_isTorsionFree
+#check PoincareDuality.cohomology_succ_isTorsionFree
+#print axioms PoincareDuality.cohomology_succ_isTorsionFree
+#check PoincareDuality.cohomology_subsingleton_of_lt
+#print axioms PoincareDuality.cohomology_subsingleton_of_lt
+#check PoincareDuality.IsPoincareDuality.cohomology_top_equiv_int
+#print axioms PoincareDuality.IsPoincareDuality.cohomology_top_equiv_int
+#check PoincareDuality.IsPoincareDuality.cohomology_isTorsionFree_of_dim_four
+#print axioms PoincareDuality.IsPoincareDuality.cohomology_isTorsionFree_of_dim_four
+
+/-! ## `Lib.AlgebraicTopology.SingularHomology.Orientation.CompactSupport` -/
+
+#check PoincareDuality.ofCompact_compactRestriction
+#print axioms PoincareDuality.ofCompact_compactRestriction
+#check PoincareDuality.limitDualityMap_ofCompact
+#print axioms PoincareDuality.limitDualityMap_ofCompact
+#check PoincareDuality.limitDualityMap_of_univ
+#print axioms PoincareDuality.limitDualityMap_of_univ
+
+/-! ## `Lib.AlgebraicTopology.SingularCochains.CapProduct.Cup` -/
+
+#check SingularCapProduct.cupProduct_cocycleClass
+#print axioms SingularCapProduct.cupProduct_cocycleClass
+#check SingularCapProduct.cocycleClass_cupCocycle_coboundary_right
+#print axioms SingularCapProduct.cocycleClass_cupCocycle_coboundary_right
+
+/-! ## `Lib.AlgebraicTopology.SingularHomology.Orientation.IntersectionForm` -/
+
+#check PoincareDuality.cohomologyEquivOfEmpty_cocycleClass
+#print axioms PoincareDuality.cohomologyEquivOfEmpty_cocycleClass
+#check PoincareDuality.cohomologyEvaluation_cupProduct_fundamentalClass
+#print axioms PoincareDuality.cohomologyEvaluation_cupProduct_fundamentalClass

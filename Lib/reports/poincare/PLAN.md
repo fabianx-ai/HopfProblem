@@ -1,0 +1,310 @@
+# Poincaré duality in `Lib`: plan
+
+Seat: Claude Fable 5.1 (`claude-fable-5-1`), work seat, started 2026-10-20. Branch `lib/poincare` from
+`lib/integration` at `bf6688c0`, worktree `/home/goblin/hopf-poincare`. Written before the first line of
+Lean, as the task asks; revised only in the sections marked "revised".
+
+## 0. Target
+
+Poincaré duality for closed topological manifolds with integer coefficients, in `Lib`'s own singular
+(co)homology (`SingularChains.singularComplex`, `SingularMayerVietoris.SingularHomology`,
+`AlgebraicTopology.SingularCochains.complex`), as library material with its own placeholder register
+(`PLACEHOLDERS.md`, empty until something has to be registered). Consumers that fix what matters
+(`Center/reports/native/ITEM-28.md` §P8, `ITEM-30.md` step 2, paper §4 Lemma 4.5):
+
+* (c) `H₆(X; ℤ) ≅ ℤ` for a closed simply connected 6-manifold — needs orientability of simply
+  connected manifolds and the fundamental class (milestones 1–2), not duality;
+* (a) all `H^q(S; ℤ)` torsion-free for a closed 4-manifold `S` with `H₁` free of rank 2 and `χ = 0` —
+  needs duality in every degree plus the UCT torsion dictionary (milestone 4);
+* (b) the intersection form on `H²(S)` unimodular — duality plus cup/cap and the Kronecker pairing
+  (milestone 4).
+
+## 1. What `Lib` has (census, 2026-10-20)
+
+* Chains: `SingularChains.singularComplex X : ChainComplex (ModuleCat ℤ) ℕ` for `X : Type`, simplices
+  `SingularSimplex X n = C(stdSimplex ℝ (Fin (n+1)), X)`, `simplexChain`, `chainBasis`/`chainsEquivFinsupp`,
+  `boundary_simplex`, functoriality `singularChainMap`.
+* Homology: `SingularMayerVietoris.SingularHomology X n`, `singularHomologyMap`; cycle-level API
+  `ModuleHomology.{Cycle, cycleClass, homologyMap_cycleClass, quasiIso_of_cycle_boundary_lifting}`;
+  `HomologyLongExact`: the long exact sequence of a `ShortComplex.ShortExact` of chain complexes of
+  `ℤ`-modules (`connectingMap`, `exact_at_{left,middle,right}Homology`, `connectingMap_naturality`,
+  `connectingMap_homologyClassOfCycle`).
+* Subcomplexes: `supportedChainSubmodule U n` (chains with every simplex in `U`), `smallChainSubmodule
+  U V n = supported U ⊔ supported V`, `smallComplex U V` with `smallInclusion U V` a quasi-isomorphism
+  for open `U, V` covering `X` (`smallInclusion_quasiIso`, Hatcher 2.21), `subtypeInclusion_chain_range`
+  (the chains of the subtype `U` map onto `supported U`), `subtypeInclusion_chain_injective`,
+  `supportedChainSubmodule_inf`, `inducedChain_mem_supported_of_mapsTo`; the Mayer–Vietoris sequence.
+* Homotopy invariance (`SingularHomology.homotopic_homologyMap`, `homotopyEquivHomologyEquiv`,
+  `homeomorphHomologyEquiv`, contractible/point vanishing), `H₀` of path-connected spaces
+  (`connectedHomologyZeroEquiv`, natural), spheres (`SphereHomology.unitSphereHomologyTopEquiv :
+  H_{n+1}(S^{n+1}) ≃ₗ[ℤ] ℤ`, `unitSphere_homology_subsingleton`), the punctured space
+  (`PuncturedRadial.sphereHomotopyEquiv : S(E) ≃ₕ {x : E | x ≠ 0}`), suspension, sums.
+* Cochains: `AlgebraicTopology.SingularCochains.dualComplex A K` for any `K : ChainComplex (ModuleCat ℤ) ℕ`
+  and `A : AddCommGrpCat`, `complex X A`, pullback, homotopy invariance; `DualEvaluation`: the
+  Kronecker evaluation `cohomologyEvaluation : H^{m+1}(K; A) → Hom(H_{m+1}(K), A)` with naturality and
+  surjectivity for free complexes; on `center/native` (not here) `DualEvaluation/ExtTerm.lean`: the `Ext`
+  half of the UCT and the torsion criterion (cherry-pick with `-x` when milestone 4 needs it).
+* Not present: relative homology in any form, excision, local homology, orientations, cap or cup
+  products, compactly supported cohomology. Mathlib (pinned `db584cd6`, 2026-08-10) has
+  `singularChainComplexFunctor`, homotopy invariance, `H₀`; no relative homology, no manifolds'
+  orientation (its `ChartedSpace` docstring only mentions orientable manifolds as a groupoid example).
+  Mathlib's `IsCoveringMap` has path lifting, homotopy lifting and the lifting criterion
+  `IsLocalHomeomorph.existsUnique_continuousMap_lifts` (Topology/Homotopy/Lifting.lean), which is what
+  "simply connected ⇒ orientable" needs. Mathlib's `Algebra/FiveLemma.lean` has the four and five
+  lemmas for modules.
+
+## 2. Route: Hatcher §3.3, with three adjustments for `Lib`'s framework
+
+The route is Hatcher, *Algebraic Topology*, §3.3: local orientations as generators of
+`H_n(M, M ∖ x)`, the orientation covering, Lemma 3.27 (local-to-global), the fundamental class
+(Theorem 3.26), the cap product, Theorem 3.30 through the compactly supported form (Hatcher's proof
+needs the noncompact statement for the open pieces of the Mayer–Vietoris induction; there is no
+closed-manifold-only shortcut in singular homology without triangulations). The adjustments:
+
+1. **Relative homology as a quotient complex inside `Chains X`.** `relativeComplex X A` has degree-`n`
+   term `Chains X n ⧸ supportedChainSubmodule A n`; the pair sequence `0 → C(A) → C(X) → C(X, A) → 0` is
+   a `ShortComplex.ShortExact` by `subtypeInclusion_chain_{injective,range}`, so `HomologyLongExact`
+   gives the long exact sequence at once. For an open `U ⊆ X` the pair `(U, U ∖ K)` is taken on the
+   subtype `U` with the set `(↑) ⁻¹' (U ∖ K)`; excision and the relative Mayer–Vietoris sequence are
+   proved inside `Chains X` (quotients of `supported U` by `supported A`, second isomorphism theorem on
+   submodules) and transported along the chain isomorphism `singularComplex U ≅ supportedComplex U`.
+2. **No reduced homology, no cubes, no covering-space continuity in Lemma 3.27.**
+   `H_n(E, E ∖ 0) ≅ ℤ` (`E = EuclideanSpace ℝ (Fin n)`) comes from the pair sequence with
+   `H_*(E) = 0` in positive degrees and `H_{n-1}(E ∖ 0) ≅ H_{n-1}(S^{n-1})` for `n ≥ 2`, and from the
+   `H₀` computation for `n = 1`. The convex comparison (Hatcher's "ℝⁿ ∖ B deformation retracts onto a
+   sphere") is one lemma: for a bounded convex `S ∋ x` in a normed space, the inclusion
+   `E ∖ S → E ∖ {x}` is a homotopy equivalence (both deformation retract radially from `x` onto a large
+   sphere; convexity keeps outward rays outside `S`). It serves open balls, closed balls and compact
+   convex sets alike, so Hatcher's cubes are replaced by finitely many closed balls of radius
+   `δ/2`, and the class of "finite unions of compact convex sets" (closed under intersection by
+   distributivity) carries the induction. The uniqueness half of 3.27(3) uses the openness of
+   `{x ∉ C | [z]_x = 0}` directly (the restriction from a ball to a point is an isomorphism), not the
+   covering space.
+3. **Compactly supported cohomology without `Module.DirectLimit`.** The duality property of an open
+   `U` is stated elementwise: the maps `D_K : H^k(U, U ∖ K) → H_{n-k}(U)`, `φ ↦ φ ∩ μ_K` (`μ_K` from
+   3.27), are jointly surjective, and `D_K φ = 0` forces `φ ↦ 0` in `H^k(U, U ∖ K')` for some compact
+   `K' ⊇ K`. This is exactly "colim D_K is an isomorphism" and is what the Mayer–Vietoris and nested-union
+   steps of Hatcher's proof use; it avoids building the direct limit and its exactness. For a closed
+   `M` the finite chart induction `U_j = V_1 ∪ … ∪ V_j` replaces Zorn's lemma.
+
+Manifolds: `[TopologicalSpace M] [ChartedSpace (EuclideanSpace ℝ (Fin n)) M] [T2Space M]`, `M : Type`
+(singular chains live in universe 0); closed = `[CompactSpace M]`. No second countability is needed.
+Coefficients `ℤ` throughout (the framework is `ℤ`-pinned; the cochain side is `AddCommGrpCat.of ℤ`).
+
+## 3. Milestones, files, acceptance checks, size estimates
+
+Each milestone: green `lake build Lib Lib.AxiomAudit`, probes within the three standard axioms, a
+receipt `Lib/reports/poincare/M<k>.md`, `PROGRESS.md` rewritten, small commits. Line estimates are
+Lean lines including docstrings.
+
+### M0 — Relative singular homology (new; Hatcher §2.1 relative groups, §2.2 excision) — ~2,500 lines
+
+`Lib/AlgebraicTopology/SingularHomology/Relative/`, namespace `RelativeSingularHomology`:
+
+* `Chains.lean`: `boundary_mem_supported`, `supportedComplex U` (subcomplex, with the chain
+  isomorphism `supportedComplexIso U : singularComplex U ≅ supportedComplex U` from the subtype),
+  `relativeComplex X A`, `RelativeHomology X A n := (relativeComplex X A).homology n`, `relativeProjection`,
+  `pairSequence X A : ShortComplex (ChainComplex (ModuleCat ℤ) ℕ)`, `pairSequence_shortExact`,
+  `pairConnecting`, `pair_exact_at_*`; `relativeHomologyEquivOfEmpty : RelativeHomology X ∅ n ≃ₗ[ℤ]
+  SingularHomology X n`, `relativeHomology_subsingleton_of_univ : Subsingleton (RelativeHomology X univ n)`.
+* `Functoriality.lean`: maps of pairs `relativeChainMap (f : C(X, Y)) (hf : MapsTo f A B)`,
+  `relativeHomologyMap`, `_id`, `_comp`, naturality of the pair sequence, restriction along
+  `A ⊆ A'` (`restrictionMap : RelativeHomology X A n →ₗ[ℤ] RelativeHomology X A' n`, a special case),
+  `relativeHomologyMap_bijective_of_bijective` (five lemma: a map of pairs that is a homology
+  isomorphism on both spaces is one on the pair), hence `relativeHomologyMap_bijective_of_homotopyEquiv`.
+* `Support.lean`: `chainSupport c : Set X` (union of the images of the simplices in the support of
+  `chainsRepr c`), `isCompact_chainSupport`, `mem_supported_iff_chainSupport_subset`, relative cycles
+  (`relativeCycle`): a class of `RelativeHomology X A n` is represented by `z : Chains X n` with
+  `∂z ∈ supported A`, and then represents a class of `RelativeHomology X A' n` for every
+  `A' ⊇ chainSupport (∂z)`, compatibly with restriction.
+* `Excision.lean`: for open `U, V` with `U ∪ V = univ`, the map of pairs `(V, V ∩ U) → (X, U)` induces
+  `excisionEquiv : RelativeHomology V ((↑) ⁻¹' U) n ≃ₗ[ℤ] RelativeHomology X U n` (through
+  `smallInclusion_quasiIso`, the five lemma, and the second isomorphism theorem).
+* `MayerVietoris.lean`: for open `A, B ⊆ X`, the exact sequence
+  `H_n(X, A ∩ B) → H_n(X, A) ⊕ H_n(X, B) → H_n(X, A ∪ B) → H_{n-1}(X, A ∩ B)` (Hatcher's relative
+  Mayer–Vietoris for the pairs used by Lemma 3.27).
+
+Acceptance: `excisionEquiv`, `pairConnecting` exactness, `relativeHomologyEquivOfEmpty` build; probes.
+
+### M1 — Local homology and orientations (Hatcher 3.3 up to Prop. 3.25) — ~2,500 lines
+
+`Lib/AlgebraicTopology/SingularHomology/Orientation/`, namespace `ManifoldOrientation`:
+
+* `ConvexComplement.lean`: `complementHomotopyEquiv : (E ∖ S) ≃ₕ (E ∖ {x})` realized by the inclusion,
+  for `S` bounded convex, `x ∈ S` (normed `ℝ`-space `E`).
+* `LocalHomology.lean`: `localHomology M x n := RelativeHomology M {x}ᶜ n`; for `E = EuclideanSpace ℝ
+  (Fin n)`, `n ≥ 1`: `localHomologyEuclideanEquiv : localHomology E x n ≃ₗ[ℤ] ℤ` and
+  `localHomologyEuclidean_subsingleton` in other degrees; the ball restriction
+  `ballRestriction : RelativeHomology M Bᶜ n →ₗ[ℤ] localHomology M y n` is bijective for `y ∈ B`, `B` a
+  chart ball (`B = (chartAt x).symm '' ball`), by excision to the chart and `ConvexComplement`;
+  `localHomologyEquiv : localHomology M x n ≃ₗ[ℤ] ℤ` for an `n`-manifold, and vanishing in other degrees.
+* `OrientationCover.lean`: the étalé space `LocalHomologyCover M n := Σ x, localHomology M x n` with
+  the topology generated by the images of the sections `y ↦ ⟨y, β|_y⟩` (`B` open, `β ∈ H_n(M, M ∖ B)`);
+  `isCoveringMap_localHomologyCover`; the sub-cover of generators `OrientationCover M n` (two-sheeted).
+* `Orientation.lean`: `IsLocallyConsistent (s : ∀ x, localHomology M x n)`; `Orientation M n` as a
+  structure (generators, locally consistent); `IsOrientable`; `continuous_iff_isLocallyConsistent` for
+  sections of the cover; `orientation_of_simplyConnected : SimplyConnectedSpace M → Nonempty (Orientation
+  M n)` for connected `M` (lift `id` through the orientation cover by
+  `IsLocalHomeomorph.existsUnique_continuousMap_lifts`; manifolds are locally path connected).
+
+Acceptance: `localHomologyEquiv`, `isCoveringMap_localHomologyCover`, `orientation_of_simplyConnected`.
+
+### M2 — The fundamental class (Hatcher Lemma 3.27, Theorem 3.26) — ~3,000 lines
+
+`Orientation/FundamentalClass.lean` (+ `Orientation/EuclideanCompact.lean`):
+
+* Lemma 3.27 for `E`: for a finite union `K` of compact convex sets, `H_i(E, E ∖ K) = 0` for `i > n`,
+  and every locally consistent section has a unique class over `K` (induction with the relative
+  Mayer–Vietoris sequence); then for an arbitrary compact `A ⊆ E` by the closed-ball cover of
+  radius `δ/2` and the support of `∂z`.
+* Lemma 3.27 for `M`: compact `A ⊆ M` as a finite union of compact pieces in chart domains, excision
+  to the chart, transport along the chart homeomorphism, the same union induction.
+* Theorem 3.26: for closed `M` with an orientation `μ`, `fundamentalClass μ : SingularHomology M n` is
+  the unique class restricting to `μ x` at every `x`; `homology_subsingleton_of_lt :
+  Subsingleton (SingularHomology M i)` for `i > n`; for connected closed oriented `M`,
+  `restrictionEquiv : SingularHomology M n ≃ₗ[ℤ] localHomology M x n`, hence `≃ₗ[ℤ] ℤ`. Consumer (c).
+
+### M3 — Cap product (Hatcher §3.3 "cap product") — ~2,500 lines
+
+`Lib/AlgebraicTopology/SingularCochains/CapProduct/`: front and back faces of a simplex
+(`frontFace k l : Simplex k → Simplex (k + l)`, `backFace`), the chain-level cap
+`capChain : (Chains X (k + l) →ₗ[ℤ] ℤ) → Chains X (k + l) →ₗ[ℤ] Chains X l`, the Leibniz formula
+`∂(φ ∩ σ) = (-1)^k (δφ ∩ σ - φ ∩ ∂σ)`, the induced `cap : H^k(X) → H_{k+l}(X) →ₗ[ℤ] H_l(X)`, the
+relative forms `H^k(X, A) ⊗ H_{k+l}(X, A) → H_l(X)` and `H^k(X) ⊗ H_{k+l}(X, A) → H_l(X, A)`,
+naturality `f_*(f^*φ ∩ α) = φ ∩ f_*α`, and the degree-`k = l`-pairing `φ ∩ α = ⟨φ, α⟩ · [pt]`.
+Twin for the simplicial combinatorics: `Lib/AlgebraicTopology/SingularHomology/CrossProduct/Chain.lean`.
+
+### M4 — Duality (Hatcher Theorem 3.30, 3.35, Prop. 3.38) — ~6,000 lines, four sub-milestones
+
+* M4a relative cohomology: `dualComplex (AddCommGrpCat.of ℤ) (relativeComplex X A)`, the pair
+  sequence (the dual of a short exact sequence of free complexes is short exact), excision for
+  cohomology (the dual of a quasi-isomorphism of bounded-below free complexes is one — via the UCT
+  naturality of `DualEvaluation` and `ExtTerm`, cherry-picked), the relative cohomology Mayer–Vietoris
+  sequence.
+* M4b the duality maps `D_K` and their compatibility with restriction and excision; the elementwise
+  duality property; the base case of a convex open `B ⊆ E` (`H^k(B, B ∖ K)` for compact convex `K`
+  through `localHomologyEuclideanEquiv` and the Kronecker evaluation; `D` an isomorphism by the
+  pairing formula of M3).
+* M4c Hatcher 3.36 (the Mayer–Vietoris square commutes up to sign) and the two induction steps
+  (union of two opens, nested union); open subsets of `E` by the ball induction; closed `M` by the
+  finite chart induction. Headline: `poincareDualityEquiv (μ : Orientation M n) (k ≤ n) :
+  SingularCohomology M k ≃ₗ[ℤ] SingularHomology M (n - k)`, `φ ↦ φ ∩ fundamentalClass μ`.
+* M4d consumers: `H^n(M) ≅ ℤ`, the torsion dictionary with the UCT (`ExtTerm`): torsion of `H^q` ≅
+  torsion of `H_{q-1}`, so for a closed oriented 4-manifold with `H₁` free every `H^q` is torsion-free
+  (`χ = 0` enters only through the Betti numbers, which the consumer computes); the cup-product
+  pairing `H^k ⊗ H^{n-k} → ℤ` as `⟨φ ∪ ψ, [M]⟩ = ⟨φ, ψ ∩ [M]⟩` and its unimodularity on the free parts
+  (Prop. 3.38, needs the cup product: a sibling of M3 with the same front/back faces).
+
+### M5 — Smooth bridge — ~200 lines
+
+A smooth manifold is a `ChartedSpace` manifold already; the only extra statement worth recording is
+that the model `EuclideanSpace ℝ (Fin n)` with `𝓘(ℝ, E)` is what the center seats have, so
+`Orientation`/`fundamentalClass` apply to `X_0` as is; the orientation of `X_0` itself (ITEM-28) is
+their work, not `Lib`'s.
+
+## 4. Expectation
+
+Honest estimate for this session, in order: M0 and M1 complete; M2 complete (it is the most intricate
+proof but has no open design question); M3 complete if the face combinatorics cooperate; M4 begun
+(M4a, M4b) and the rest registered with exact statements. (c) is served by M2; (a) and (b) only by M4.
+If a milestone cannot be finished, the register carries the exact missing statement as a hypothesis
+structure, never an axiom.
+
+**Outcome (2026-10-20, end of session).** M0, M1, M2 complete; M3 complete at the chain level (the
+homology-level descent of the cap product was done in M4b, the cup product's is open); M4a and M4b
+complete (relative cohomology, excision, Mayer–Vietoris, the relative cap product, the duality maps,
+the Euclidean base case); M4c (the Mayer–Vietoris/union induction) **not done** — Poincaré duality
+for closed oriented manifolds is the single placeholder P-1; M4d done conditionally on P-1
+(consumer (a) in generic form; (b) open). See `PROGRESS.md`, `M0.md`–`M4.md`, `PLACEHOLDERS.md`.
+
+## 5. Checks (per commit / before finishing)
+
+`lake build Lib Lib.AxiomAudit` green, probes ⊆ `propext, Classical.choice, Quot.sound`; before
+finishing `lake build Solution S6Shortcuts S6 Challenge`, `lake build Shared Center`,
+`python3 scripts/lib_stock_census.py --check` (123), the isolation greps of `NEXT_STEPS.md`.
+Guarded wrapper `/home/goblin/.claude/jobs/06995e68/tmp/poincare/lake.sh` (`taskset -c 0-7`).
+
+## 6. Comparison with the independent plan (revised 2026-10-20 against the accepted textbook)
+
+Read: `/home/goblin/s6-notes/S6-W1-W4/LIB_POINCARE_DUALITY_TEXTBOOK.md` (accepted canonical proof,
+P01–P50 with the sublabels P05a, P07a, P30a, P33a, P42a, P43a–c, P49a added by the eight review
+corrections), `LIB_POINCARE_DUALITY_DECOMPOSITION.md` (38 nodes: N01–N33 FREE, N34–N38 CHARGED)
+and `LIB_POINCARE_DUALITY_TEXTBOOK_REVIEW.md`. The first version of this section was written against
+the draft at the M0 boundary; this revision was written after M1's covering space (`840d6fd0`).
+Nothing in M0–M1 is changed by the comparison; this is a comparison, not a merge.
+
+**Where the routes coincide (independently).**
+* The route: Hatcher §3.3 — local homology, the local homology covering, Lemma 3.27, the fundamental
+  class, the cap product, compactly supported duality by unions (P09–P35 ≙ my M1–M4).
+* P10 ≙ `Orientation/ConvexComplement.lean`, down to the radial flow
+  `y ↦ x + ((1−t)+t·r/‖y−x‖)(y−x)` and the convexity argument for outward rays (built before I read
+  P10). P09's `H_i(ℝⁿ, ℝⁿ ∖ 0)` ≙ `localHomologyEuclideanEquiv`/`localHomologyEuclidean_subsingleton`
+  (dimensions `≥ 2` only, so far; P09's `n = 0, 1` cases are open items of M1).
+* P11 ≙ `Orientation/OrientationCover.lean`: the same sheets over compact coordinate balls with the
+  section `x ↦ a_x`, the same "equal values imply agreement on a smaller ball" argument
+  (`isOpen_agreementSet`), the same discrete fibre `H_n(M | D)` (`Fibre`, `trivialization`,
+  `isCoveringMap_proj`). My "homology ball" (`IsHomologyBall`: local restriction bijective at every
+  point) is P11's "compact closed coordinate ball" abstracted to the property actually used.
+* P17 (closed balls around points of `K` missing the boundary support; only the *boundary* support
+  must miss `L`) ≙ my adjustment 2 and `Relative/Support.lean` (`restriction_relativeHomologyClass`).
+* P18 (finite cover of `K` by compact pieces in charts; induction with the support Mayer–Vietoris
+  sequence P15/P07) ≙ my M2 plan; P07's relative sequence ≙ `Relative/MayerVietoris.lean` (my sign
+  convention `(a, −b)`/`a + b` instead of their diagonal/difference; a convention only). P07a (the
+  comparison `C(X)/(C(A)+C(B)) → C(X)/C(A∪B)` is a quasi-isomorphism) ≙ `unionComparison_quasiIso`.
+* (c) needs no cap product (P42, P48, N27): my M2 serves (c) as planned.
+* P37/P38, N23: `χ = 0` plays no part in torsion-freeness — as in my M4d.
+* N09 ≙ my M1 step (iv): "simply connected ⇒ orientable" from Mathlib's
+  `IsCoveringMap.existsUnique_continuousMap_lifts`.
+
+**Adopted from the accepted textbook.**
+* P14's stronger uniqueness ("a class in `H_n(M | K)` vanishing at every point of `K` is zero",
+  proved simultaneously with existence) — the form M2 will state.
+* P44/N29: (a) and (b) need *integral orientability* as an explicit hypothesis (the mapping torus of
+  a reflection of `S³` has `H₁ = ℤ`, `χ = 0`, `H⁴ = ℤ/2`). My M4d statements assume "closed oriented"
+  and say so.
+* P36/N22: finite generation of `H_*(M; ℤ)` for closed oriented `M` from a finite fundamental cycle
+  — needed for the unimodularity of the form on `H²/torsion` (P39/N24); added to M4d.
+* N02/N04: for *cohomological* excision (M4a) use `SingularSmallChains.Barycentric.smallChainHomotopyEquiv`
+  (an arbitrary-open-cover chain homotopy equivalence already in `Lib`; its complex is definitionally
+  `SingularChains.singularComplex`, checked by `rfl`) rather than the UCT-naturality route of my M4a
+  — dualizing a chain homotopy equivalence is formal. What is missing (their N02, N04) is the support
+  property of the homotopy inverse and the induced quotient comparison; I will check
+  `SingularSmallChains/Barycentric/HomotopySupport.lean` before choosing.
+* P30a/N17 (the connecting representative inside `U ∩ V`) and P33a/N19–N20 (the identity simplex of
+  `Δⁿ` is a normalized generator, and `e ⌢ φ = [v_n]`) are recorded as the detailed route for M4c's
+  sign lemma and base case; see the difference below on the base case.
+
+**Where I differ, and why.**
+* P06/N03 state excision in the general form `cl Z ⊆ int A`; M0 proves the open-cover form only
+  (`excisionEquiv`), which is all the manifold theory needs once supports are compact (`(M, M ∖ K)`
+  with `M ∖ K` open; `isHomologyBall_trace_iff` needs exactly this). The general form is an open
+  item of M0.md, not a gap.
+* P33a normalizes the Euclidean base case by the identity simplex of `Δⁿ` and a cone computation. I
+  plan the base case through the Kronecker evaluation (`H^n(E, E ∖ K) ≅ Hom(H_n(E, E ∖ K), ℤ)` by the
+  projective-UCT half already in `Lib`, N06) and the degree-`n` formula `c ⌢ φ = φ(c)·[v_n]` (P33's
+  own `e ⌢ φ = [v_n]`): cap of a generator of `H_n(E, E ∖ K)` with its dual generator is a generator
+  of `H_0(E)`, with no explicit generator of `H_n(Δⁿ, ∂Δⁿ)` needed. P33a is the fallback if the
+  cap–evaluation identity is harder than expected.
+* P26–P28/N15 build `H_c` as an explicit filtered colimit; my adjustment 3 states the duality
+  property elementwise (jointly surjective, eventually injective), which is what P31/P32 use. Same
+  mathematics, less API.
+* The textbook is over a general ring `R`; `Lib`'s singular framework is `ℤ`-pinned, and I keep `ℤ`.
+* P01 assumes second countability; my manifold statements assume `T2Space` and a `ChartedSpace`
+  only (no second countability is needed for M1–M2; the finite chart induction of M4c uses
+  compactness of `M`).
+
+**Their CHARGED nodes (N34–N38) and my `Lib` statements.**
+* N34 (the specified six-manifold, top-homology endpoint `H₆(X₀; ℤ) ≅ ℤ` from `r ↦ r[X₀]`): M2's
+  `fundamentalClass`/`restrictionEquiv` will discharge the FREE part N27 (my M2 headline, for closed
+  connected oriented `M`, plus "simply connected ⇒ orientable" from M1); the substitution of `X₀`
+  (its closed six-dimensional structure and simple connectivity) is the center seat's and stays
+  CHARGED/open here.
+* N35 (the two tangent-lattice matrices, orientation preservation of the actual affine generators)
+  and N36 (the quotient consequences for `S_i = T⁴/C_{m_i}`: descended orientations, ranks
+  `(1,2,2,2,1)`, the unimodular form): my M4d supplies the generic theorems they substitute into
+  (torsion-freeness for closed oriented 4-manifolds with `H₁` free, unimodularity, `H^n ≅ ℤ`); the
+  orientation descent along the free action (P43a/N28) is generic and could be a `Lib` addition
+  after M2, but is not in my milestones; the matrix facts and the quotient geometry stay CHARGED/open.
+* N37 (a concrete cellular alternative): not on my route; left open.
+* N38 (the remaining six-dimensional vanishings from independent `H₂ = H₃ = 0`): N33's generic
+  implication (UCT + duality) follows from M4; the premises stay CHARGED/open.
