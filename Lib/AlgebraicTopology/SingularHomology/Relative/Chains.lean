@@ -351,4 +351,64 @@ theorem restriction_relativeProjectionHomologyMap {A A' : Set X} (h : A ⊆ A') 
   rw [relativeProjectionHomologyMap, restriction, ← homologyLinearMap_comp,
     ChainSubmodule.π_quotientMap]
 
+/-! ### Consequences of the long exact sequence -/
+
+/-- If `H_{n+1}(X) = 0`, the connecting map `H_{n+1}(X, A) → H_n(A)` is injective. -/
+theorem pairConnecting_injective (A : Set X) (n : ℕ)
+    (hX : Subsingleton (SingularHomology X (n + 1))) : Function.Injective (pairConnecting X A n) := by
+  rw [← LinearMap.ker_eq_bot, ← pair_exact_at_pair, LinearMap.range_eq_bot]
+  ext a
+  rw [Subsingleton.elim a 0, map_zero]
+  rfl
+
+/-- If `H_n(X) = 0`, the connecting map `H_{n+1}(X, A) → H_n(A)` is surjective. -/
+theorem pairConnecting_surjective (A : Set X) (n : ℕ) (hX : Subsingleton (SingularHomology X n)) :
+    Function.Surjective (pairConnecting X A n) := by
+  rw [← LinearMap.range_eq_top, pair_exact_at_subspace, LinearMap.ker_eq_top]
+  ext a
+  exact Subsingleton.elim _ _
+
+/-- If `H_{n+1}(X) = H_n(X) = 0`, the connecting map is an isomorphism `H_{n+1}(X, A) ≅ H_n(A)`. -/
+def pairConnectingEquiv (A : Set X) (n : ℕ) (hX₁ : Subsingleton (SingularHomology X (n + 1)))
+    (hX₀ : Subsingleton (SingularHomology X n)) :
+    RelativeHomology X A (n + 1) ≃ₗ[ℤ] SingularHomology A n :=
+  LinearEquiv.ofBijective _ ⟨pairConnecting_injective A n hX₁, pairConnecting_surjective A n hX₀⟩
+
+@[simp]
+theorem pairConnectingEquiv_apply (A : Set X) (n : ℕ) (hX₁) (hX₀) (a : RelativeHomology X A (n + 1)) :
+    pairConnectingEquiv A n hX₁ hX₀ a = pairConnecting X A n a := rfl
+
+/-- If `H_{n+1}(X) = 0` and `H_n(A) → H_n(X)` is injective, then `H_{n+1}(X, A) = 0`. -/
+theorem relativeHomology_succ_subsingleton (A : Set X) (n : ℕ)
+    (hX : Subsingleton (SingularHomology X (n + 1))) (hinj : Function.Injective (subspaceHomologyMap A n)) :
+    Subsingleton (RelativeHomology X A (n + 1)) := by
+  refine ⟨fun a b => pairConnecting_injective A n hX ?_⟩
+  have hker : LinearMap.ker (subspaceHomologyMap A n) = ⊥ := LinearMap.ker_eq_bot.mpr hinj
+  have hrange : LinearMap.range (pairConnecting X A n) = ⊥ := by rw [pair_exact_at_subspace, hker]
+  have ha : pairConnecting X A n a ∈ LinearMap.range (pairConnecting X A n) := ⟨a, rfl⟩
+  have hb : pairConnecting X A n b ∈ LinearMap.range (pairConnecting X A n) := ⟨b, rfl⟩
+  rw [hrange, Submodule.mem_bot] at ha hb
+  rw [ha, hb]
+
+/-- If `H_0(A) → H_0(X)` is surjective, then `H_0(X, A) = 0`. -/
+theorem relativeHomology_zero_subsingleton (A : Set X)
+    (hsurj : Function.Surjective (subspaceHomologyMap A 0)) : Subsingleton (RelativeHomology X A 0) := by
+  refine ⟨fun a b => ?_⟩
+  obtain ⟨a', rfl⟩ := relativeProjectionHomologyMap_zero_surjective A a
+  obtain ⟨b', rfl⟩ := relativeProjectionHomologyMap_zero_surjective A b
+  have hker : LinearMap.ker (relativeProjectionHomologyMap A 0) = ⊤ := by
+    rw [← pair_exact_at_space, LinearMap.range_eq_top]
+    exact hsurj
+  have ha : a' ∈ LinearMap.ker (relativeProjectionHomologyMap A 0) := by rw [hker]; trivial
+  have hb : b' ∈ LinearMap.ker (relativeProjectionHomologyMap A 0) := by rw [hker]; trivial
+  rw [LinearMap.mem_ker] at ha hb
+  rw [ha, hb]
+
+/-- Restriction along an equality of sets is bijective. -/
+theorem restriction_bijective_of_eq {A A' : Set X} (h : A = A') (n : ℕ) :
+    Function.Bijective (restriction (le_of_eq h) n) := by
+  subst h
+  rw [restriction_refl]
+  exact Function.bijective_id
+
 end RelativeSingularHomology
