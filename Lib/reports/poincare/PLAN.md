@@ -217,59 +217,87 @@ finishing `lake build Solution S6Shortcuts S6 Challenge`, `lake build Shared Cen
 `python3 scripts/lib_stock_census.py --check` (123), the isolation greps of `NEXT_STEPS.md`.
 Guarded wrapper `/home/goblin/.claude/jobs/06995e68/tmp/poincare/lake.sh` (`taskset -c 0-7`).
 
-## 6. Comparison with the independent plan (2026-10-20, at the M0 boundary)
+## 6. Comparison with the independent plan (revised 2026-10-20 against the accepted textbook)
 
-Read: `/home/goblin/s6-notes/S6-W1-W4/LIB_POINCARE_DUALITY_TEXTBOOK_DRAFT.md` (P01–P50) and
-`LIB_POINCARE_DUALITY_DECOMPOSITION.md` (N01–N27), written by a Codex seat without seeing this
-plan. M0 was already built when I read them; nothing in M0 contradicts them.
+Read: `/home/goblin/s6-notes/S6-W1-W4/LIB_POINCARE_DUALITY_TEXTBOOK.md` (accepted canonical proof,
+P01–P50 with the sublabels P05a, P07a, P30a, P33a, P42a, P43a–c, P49a added by the eight review
+corrections), `LIB_POINCARE_DUALITY_DECOMPOSITION.md` (38 nodes: N01–N33 FREE, N34–N38 CHARGED)
+and `LIB_POINCARE_DUALITY_TEXTBOOK_REVIEW.md`. The first version of this section was written against
+the draft at the M0 boundary; this revision was written after M1's covering space (`840d6fd0`).
+Nothing in M0–M1 is changed by the comparison; this is a comparison, not a merge.
 
-**Agreement (same route, independently).**
-* Hatcher §3.3 throughout; local homology, orientation cover, Lemma 3.27, fundamental class, cap,
-  compactly supported duality (P09–P35 ≙ my M1–M4).
-* P10 is exactly my `ConvexComplement` lemma, down to the radial flow
-  `y ↦ x + ((1−t)+t·r/‖y−x‖)(y−x)` and the convexity argument for outward rays; built
-  (`Orientation/ConvexComplement.lean`) before I read P10.
-* P17 replaces Hatcher's cubes by closed balls around points of `K` missing the boundary support
-  `F` of the representative — my adjustment 2, and `Relative/Support.lean` is its chain-level form.
-  P17's remark that only the *boundary* support must miss `L` is what `restriction_relativeHomologyClass`
-  states.
-* P18 (finite cover of `K` by compact pieces in charts, induction with the relative Mayer–Vietoris
-  sequence P15/P07) is my M2 plan; the relative Mayer–Vietoris sequence of P07 is
-  `Relative/MayerVietoris.lean` (my convention `(a, −b)`/`sum` instead of their diagonal/difference;
-  a sign convention only).
-* (c) needs no cap product (P42, P48): my M2 serves (c) as planned.
-* P37/P38: `χ = 0` plays no part in torsion-freeness, only in the Betti numbers — as in my M4d.
-* N08: "simply connected ⇒ orientable" from Mathlib's lifting criterion — as in my M1.
+**Where the routes coincide (independently).**
+* The route: Hatcher §3.3 — local homology, the local homology covering, Lemma 3.27, the fundamental
+  class, the cap product, compactly supported duality by unions (P09–P35 ≙ my M1–M4).
+* P10 ≙ `Orientation/ConvexComplement.lean`, down to the radial flow
+  `y ↦ x + ((1−t)+t·r/‖y−x‖)(y−x)` and the convexity argument for outward rays (built before I read
+  P10). P09's `H_i(ℝⁿ, ℝⁿ ∖ 0)` ≙ `localHomologyEuclideanEquiv`/`localHomologyEuclidean_subsingleton`
+  (dimensions `≥ 2` only, so far; P09's `n = 0, 1` cases are open items of M1).
+* P11 ≙ `Orientation/OrientationCover.lean`: the same sheets over compact coordinate balls with the
+  section `x ↦ a_x`, the same "equal values imply agreement on a smaller ball" argument
+  (`isOpen_agreementSet`), the same discrete fibre `H_n(M | D)` (`Fibre`, `trivialization`,
+  `isCoveringMap_proj`). My "homology ball" (`IsHomologyBall`: local restriction bijective at every
+  point) is P11's "compact closed coordinate ball" abstracted to the property actually used.
+* P17 (closed balls around points of `K` missing the boundary support; only the *boundary* support
+  must miss `L`) ≙ my adjustment 2 and `Relative/Support.lean` (`restriction_relativeHomologyClass`).
+* P18 (finite cover of `K` by compact pieces in charts; induction with the support Mayer–Vietoris
+  sequence P15/P07) ≙ my M2 plan; P07's relative sequence ≙ `Relative/MayerVietoris.lean` (my sign
+  convention `(a, −b)`/`a + b` instead of their diagonal/difference; a convention only). P07a (the
+  comparison `C(X)/(C(A)+C(B)) → C(X)/C(A∪B)` is a quasi-isomorphism) ≙ `unionComparison_quasiIso`.
+* (c) needs no cap product (P42, P48, N27): my M2 serves (c) as planned.
+* P37/P38, N23: `χ = 0` plays no part in torsion-freeness — as in my M4d.
+* N09 ≙ my M1 step (iv): "simply connected ⇒ orientable" from Mathlib's
+  `IsCoveringMap.existsUnique_continuousMap_lifts`.
 
-**Adopted from the independent plan.**
+**Adopted from the accepted textbook.**
 * P14's stronger uniqueness ("a class in `H_n(M | K)` vanishing at every point of `K` is zero",
-  proved simultaneously) — this is the form I will state in M2.
-* P44: (a) and (b) need *integral orientability* as an explicit hypothesis (the mapping torus of a
-  reflection of `S³` has `H₁ = ℤ`, `χ = 0`, `H⁴ = ℤ/2`). My M4d statement already assumed "closed
-  oriented"; I record here that orientability of `S = T⁴/C_m` is CHARGED (P43: the deck
-  transformations are orientation-preserving affine maps) and is the center seat's to supply.
-* P36: finite generation of `H_*(M; ℤ)` for closed oriented `M` from a finite fundamental cycle —
-  needed for unimodularity of the form on `H²/torsion` (P39); added to M4d.
-* N02/N03: for *cohomological* excision (M4a) use `SingularSmallChains.Barycentric.smallChainHomotopyEquiv`
-  (an arbitrary-open-cover chain homotopy equivalence already in `Lib`, whose underlying complex is
-  definitionally `SingularChains.singularComplex`, checked by `rfl`) rather than the UCT-naturality
-  route of my M4a: dualizing a chain homotopy equivalence is formal. What is missing (their N02) is
-  the support property of the homotopy inverse; I will check whether `HomotopySupport.lean` has it
-  before choosing.
+  proved simultaneously with existence) — the form M2 will state.
+* P44/N29: (a) and (b) need *integral orientability* as an explicit hypothesis (the mapping torus of
+  a reflection of `S³` has `H₁ = ℤ`, `χ = 0`, `H⁴ = ℤ/2`). My M4d statements assume "closed oriented"
+  and say so.
+* P36/N22: finite generation of `H_*(M; ℤ)` for closed oriented `M` from a finite fundamental cycle
+  — needed for the unimodularity of the form on `H²/torsion` (P39/N24); added to M4d.
+* N02/N04: for *cohomological* excision (M4a) use `SingularSmallChains.Barycentric.smallChainHomotopyEquiv`
+  (an arbitrary-open-cover chain homotopy equivalence already in `Lib`; its complex is definitionally
+  `SingularChains.singularComplex`, checked by `rfl`) rather than the UCT-naturality route of my M4a
+  — dualizing a chain homotopy equivalence is formal. What is missing (their N02, N04) is the support
+  property of the homotopy inverse and the induced quotient comparison; I will check
+  `SingularSmallChains/Barycentric/HomotopySupport.lean` before choosing.
+* P30a/N17 (the connecting representative inside `U ∩ V`) and P33a/N19–N20 (the identity simplex of
+  `Δⁿ` is a normalized generator, and `e ⌢ φ = [v_n]`) are recorded as the detailed route for M4c's
+  sign lemma and base case; see the difference below on the base case.
 
 **Where I differ, and why.**
-* P06 states excision in the general form `cl Z ⊆ int A`; M0 proves the open-cover form only
-  (`excisionEquiv`), which is the only one the manifold theory uses once supports are compact
-  (`(M, M ∖ K)`, `K` compact, `M ∖ K` open). I keep the open-cover form; the general one is an
-  open item of M0.md.
-* P33 normalizes the Euclidean base case by the identity simplex of `Δⁿ` and a cone computation. I
-  plan the base case through the Kronecker evaluation (`H^n(E, E ∖ K) ≅ Hom(H_n(E, E ∖ K), ℤ)` by
-  the projective-UCT half already in `Lib`) and the formula `c ⌢ φ = φ(c)·[v_n]` in degree `n`; no
-  explicit generator of `H_n(Δⁿ, ∂Δⁿ)` is needed. P33 is the fallback if the cap–evaluation
-  identity is harder than expected.
-* P26–P28 build `H_c` as an explicit filtered colimit; my adjustment 3 states the duality property
-  elementwise (jointly surjective, eventually injective), which is what P31/P32 use anyway. Same
+* P06/N03 state excision in the general form `cl Z ⊆ int A`; M0 proves the open-cover form only
+  (`excisionEquiv`), which is all the manifold theory needs once supports are compact (`(M, M ∖ K)`
+  with `M ∖ K` open; `isHomologyBall_trace_iff` needs exactly this). The general form is an open
+  item of M0.md, not a gap.
+* P33a normalizes the Euclidean base case by the identity simplex of `Δⁿ` and a cone computation. I
+  plan the base case through the Kronecker evaluation (`H^n(E, E ∖ K) ≅ Hom(H_n(E, E ∖ K), ℤ)` by the
+  projective-UCT half already in `Lib`, N06) and the degree-`n` formula `c ⌢ φ = φ(c)·[v_n]` (P33's
+  own `e ⌢ φ = [v_n]`): cap of a generator of `H_n(E, E ∖ K)` with its dual generator is a generator
+  of `H_0(E)`, with no explicit generator of `H_n(Δⁿ, ∂Δⁿ)` needed. P33a is the fallback if the
+  cap–evaluation identity is harder than expected.
+* P26–P28/N15 build `H_c` as an explicit filtered colimit; my adjustment 3 states the duality
+  property elementwise (jointly surjective, eventually injective), which is what P31/P32 use. Same
   mathematics, less API.
-* The draft is over a general ring `R`; `Lib`'s singular framework is `ℤ`-pinned, and I keep `ℤ`.
-* P41 (covering transfer, `p_*[N] = d[M]`) is outside my milestones; it is the center seat's tool
-  for Lemma 4.5 and can be built on M2 later.
+* The textbook is over a general ring `R`; `Lib`'s singular framework is `ℤ`-pinned, and I keep `ℤ`.
+* P01 assumes second countability; my manifold statements assume `T2Space` and a `ChartedSpace`
+  only (no second countability is needed for M1–M2; the finite chart induction of M4c uses
+  compactness of `M`).
+
+**Their CHARGED nodes (N34–N38) and my `Lib` statements.**
+* N34 (the specified six-manifold, top-homology endpoint `H₆(X₀; ℤ) ≅ ℤ` from `r ↦ r[X₀]`): M2's
+  `fundamentalClass`/`restrictionEquiv` will discharge the FREE part N27 (my M2 headline, for closed
+  connected oriented `M`, plus "simply connected ⇒ orientable" from M1); the substitution of `X₀`
+  (its closed six-dimensional structure and simple connectivity) is the center seat's and stays
+  CHARGED/open here.
+* N35 (the two tangent-lattice matrices, orientation preservation of the actual affine generators)
+  and N36 (the quotient consequences for `S_i = T⁴/C_{m_i}`: descended orientations, ranks
+  `(1,2,2,2,1)`, the unimodular form): my M4d supplies the generic theorems they substitute into
+  (torsion-freeness for closed oriented 4-manifolds with `H₁` free, unimodularity, `H^n ≅ ℤ`); the
+  orientation descent along the free action (P43a/N28) is generic and could be a `Lib` addition
+  after M2, but is not in my milestones; the matrix facts and the quotient geometry stay CHARGED/open.
+* N37 (a concrete cellular alternative): not on my route; left open.
+* N38 (the remaining six-dimensional vanishings from independent `H₂ = H₃ = 0`): N33's generic
+  implication (UCT + duality) follows from M4; the premises stay CHARGED/open.
