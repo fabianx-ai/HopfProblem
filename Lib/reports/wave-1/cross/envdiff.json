@@ -1,0 +1,969 @@
+{
+ "before": "/home/goblin/.claude/jobs/06995e68/tmp/wave1/dump_head.jsonl",
+ "after": "/home/goblin/.claude/jobs/06995e68/tmp/wave1/cross/dump_after.jsonl",
+ "prefix": "",
+ "constants": [
+  38248,
+  38256
+ ],
+ "lost": [
+  [
+   "PeriodTorusHigherHomology.affineProductLeft._proof_1",
+   4092239684,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct": 1
+   }
+  ],
+  [
+   "PeriodTorusHigherHomology.chainTrilinearLift.eq_1",
+   4232716929,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct": 1
+   }
+  ],
+  [
+   "PeriodTorusHigherHomology.crossProductAssociatorDefect._proof_1",
+   1865244419,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct": 1
+   }
+  ],
+  [
+   "PeriodTorusHigherHomology.crossProductCyclicMap._proof_1",
+   4205954283,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct": 1
+   }
+  ],
+  [
+   "PeriodTorusHigherHomology.crossProductHomologyTwoOne._proof_1",
+   3744114429,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct": 1
+   }
+  ],
+  [
+   "PeriodTorusHigherHomology.crossProductTwoOneCycles._proof_1",
+   1024424658,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct": 1
+   }
+  ],
+  [
+   "PeriodTorusHigherHomology.crossProductTwoOneCycles._proof_2",
+   3688281753,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct": 1
+   }
+  ],
+  [
+   "PeriodTorusHigherHomology.crossProductTwoOneCycles._proof_3",
+   2335214933,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct": 1
+   }
+  ],
+  [
+   "PeriodTorusHigherHomology.crossProductTwoOneCycles._proof_4",
+   892094427,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct": 1
+   }
+  ],
+  [
+   "PeriodTorusHigherHomology.crossProductTwoOneCycles._proof_5",
+   3181621422,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct": 1
+   }
+  ],
+  [
+   "PeriodTorusHigherHomology.formalAssociatorDefect._proof_1",
+   1789430371,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct": 1
+   }
+  ],
+  [
+   "PeriodTorusHigherHomology.formalAssociatorDefect._proof_10",
+   3585158322,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct": 1
+   }
+  ],
+  [
+   "PeriodTorusHigherHomology.formalAssociatorDefect._proof_11",
+   111060855,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct": 1
+   }
+  ],
+  [
+   "PeriodTorusHigherHomology.formalAssociatorDefect._proof_12",
+   2625806280,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct": 1
+   }
+  ],
+  [
+   "PeriodTorusHigherHomology.formalAssociatorDefect._proof_13",
+   1684387173,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct": 1
+   }
+  ],
+  [
+   "PeriodTorusHigherHomology.formalAssociatorDefect._proof_14",
+   3084393928,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct": 1
+   }
+  ],
+  [
+   "PeriodTorusHigherHomology.formalAssociatorDefect._proof_15",
+   1922363688,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct": 1
+   }
+  ],
+  [
+   "PeriodTorusHigherHomology.formalAssociatorDefect._proof_2",
+   968992555,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct": 1
+   }
+  ],
+  [
+   "PeriodTorusHigherHomology.formalAssociatorDefect._proof_3",
+   574068967,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct": 1
+   }
+  ],
+  [
+   "PeriodTorusHigherHomology.formalAssociatorDefect._proof_4",
+   3402838586,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct": 1
+   }
+  ],
+  [
+   "PeriodTorusHigherHomology.formalAssociatorDefect._proof_5",
+   3043886200,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct": 1
+   }
+  ],
+  [
+   "PeriodTorusHigherHomology.formalAssociatorDefect._proof_6",
+   2397281173,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct": 1
+   }
+  ],
+  [
+   "PeriodTorusHigherHomology.formalAssociatorDefect._proof_7",
+   1797985934,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct": 1
+   }
+  ],
+  [
+   "PeriodTorusHigherHomology.formalAssociatorDefect._proof_8",
+   2071813923,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct": 1
+   }
+  ],
+  [
+   "PeriodTorusHigherHomology.formalAssociatorDefect._proof_9",
+   1582443665,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct": 1
+   }
+  ],
+  [
+   "PeriodTorusHigherHomology.formalAssociatorHomotopy._f",
+   2985856489,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct": 1
+   }
+  ],
+  [
+   "PeriodTorusHigherHomology.formalAssociatorHomotopy._sunfold",
+   1573461383,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct": 1
+   }
+  ],
+  [
+   "PeriodTorusHigherHomology.formalAssociatorHomotopy._unsafe_rec",
+   1573461383,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct": 1
+   }
+  ],
+  [
+   "PeriodTorusHigherHomology.formalBoundary_associatorDefect._abel_1_2",
+   4207170178,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct": 1
+   }
+  ],
+  [
+   "PeriodTorusHigherHomology.formalBoundary_associatorDefect._simp_1_1",
+   2994530165,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct": 1
+   }
+  ],
+  [
+   "PeriodTorusHigherHomology.formalBoundary_edgeSwapDefect._abel_1_1",
+   2808007814,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct": 1
+   }
+  ],
+  [
+   "PeriodTorusHigherHomology.formalBoundary_mixedSwapDefect._abel_1_1",
+   694763107,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct": 1
+   }
+  ],
+  [
+   "PeriodTorusHigherHomology.formalEdgeSwapDefect._proof_1",
+   3134129241,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct": 1
+   }
+  ],
+  [
+   "PeriodTorusHigherHomology.formalEdgeSwapDefect._proof_2",
+   3856344283,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct": 1
+   }
+  ],
+  [
+   "PeriodTorusHigherHomology.formalEdgeSwapDefect._proof_3",
+   419592357,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct": 1
+   }
+  ],
+  [
+   "PeriodTorusHigherHomology.formalEdgeSwapDefect._proof_4",
+   1336307134,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct": 1
+   }
+  ],
+  [
+   "PeriodTorusHigherHomology.formalEdgeSwapDefect._proof_5",
+   4028904035,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct": 1
+   }
+  ],
+  [
+   "PeriodTorusHigherHomology.formalMixedSwapDefect._proof_1",
+   1909725688,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct": 1
+   }
+  ],
+  [
+   "PeriodTorusHigherHomology.formalMixedSwapDefect._proof_2",
+   1770252111,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct": 1
+   }
+  ],
+  [
+   "PeriodTorusHigherHomology.formalMixedSwapDefect._proof_3",
+   2467597201,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct": 1
+   }
+  ],
+  [
+   "PeriodTorusHigherHomology.formalMixedSwapDefect._proof_4",
+   3533599864,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct": 1
+   }
+  ],
+  [
+   "PeriodTorusHigherHomology.formalMixedSwapDefect._proof_5",
+   1954377399,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct": 1
+   }
+  ],
+  [
+   "PeriodTorusHigherHomology.formalTrilinearLift.eq_1",
+   4205218995,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct": 1
+   }
+  ],
+  [
+   "PeriodTorusHigherHomology.integerTrilinearLeftAssociated._proof_1",
+   3759817943,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct": 1
+   }
+  ],
+  [
+   "PeriodTorusHigherHomology.integerTrilinearLeftAssociated._proof_2",
+   2003916440,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct": 1
+   }
+  ],
+  [
+   "PeriodTorusHigherHomology.integerTrilinearPostcompose._proof_1",
+   1832531652,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct": 1
+   }
+  ],
+  [
+   "PeriodTorusHigherHomology.integerTrilinearPostcompose._proof_2",
+   3881666035,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct": 1
+   }
+  ],
+  [
+   "PeriodTorusHigherHomology.integerTrilinearPrecompose._proof_1",
+   4175984243,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct": 1
+   }
+  ],
+  [
+   "PeriodTorusHigherHomology.integerTrilinearPrecompose._proof_2",
+   1050072763,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct": 1
+   }
+  ],
+  [
+   "PeriodTorusHigherHomology.integerTrilinearRightAssociated._proof_1",
+   1918852733,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct": 1
+   }
+  ],
+  [
+   "PeriodTorusHigherHomology.integerTrilinearRightAssociated._proof_2",
+   2707927881,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct": 1
+   }
+  ],
+  [
+   "PeriodTorusHigherHomology.triplePostcomp._proof_1",
+   2917826429,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct": 1
+   }
+  ],
+  [
+   "PeriodTorusHigherHomology.triplePostcomp._proof_2",
+   4128468722,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct": 1
+   }
+  ],
+  [
+   "PeriodTorusHigherHomology.triplePostcomp._proof_3",
+   2926647639,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct": 1
+   }
+  ],
+  [
+   "PeriodTorusHigherHomology.triplePostcomp._proof_4",
+   598285192,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct": 1
+   }
+  ],
+  [
+   "PeriodTorusHigherHomology.triplePostcomp._proof_5",
+   4276720523,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct": 1
+   }
+  ],
+  [
+   "PeriodTorusHigherHomology.triplePrecompLast._proof_1",
+   3460795562,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct": 1
+   }
+  ],
+  [
+   "SingularHomology.crossProductCycleClasses._proof_1",
+   766532411,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct": 1
+   }
+  ],
+  [
+   "SingularHomology.crossProductHomology.eq_1",
+   915655318,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct": 1
+   }
+  ],
+  [
+   "SingularHomology.crossProductHomologyCycles._proof_3",
+   2040839875,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct": 1
+   }
+  ]
+ ],
+ "added": [
+  [
+   "SingularHomology.affineProductLeft._proof_1",
+   4092239684,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct.Affine": 1
+   }
+  ],
+  [
+   "SingularHomology.chainTrilinearLift.eq_1",
+   4232716929,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct.Multilinear": 1
+   }
+  ],
+  [
+   "SingularHomology.crossProductAssociatorDefect._proof_1",
+   1865244419,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct.Associator": 1
+   }
+  ],
+  [
+   "SingularHomology.crossProductCycleClasses._proof_1",
+   2720960268,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct.Homology": 1
+   }
+  ],
+  [
+   "SingularHomology.crossProductCycles._proof_6",
+   1635492264,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct.Homology": 1
+   }
+  ],
+  [
+   "SingularHomology.crossProductCyclicMap._proof_1",
+   4205954283,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct.Associator": 1
+   }
+  ],
+  [
+   "SingularHomology.crossProductHomology.eq_1",
+   34172131,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct.Homology": 1
+   }
+  ],
+  [
+   "SingularHomology.crossProductHomologyCycles._proof_3",
+   1511690742,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct.Homology": 1
+   }
+  ],
+  [
+   "SingularHomology.crossProductHomologyTwoOne._proof_1",
+   2476649748,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct.Swap": 1
+   }
+  ],
+  [
+   "SingularHomology.crossProductTwoOneCycles._proof_1",
+   1024424658,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct.Swap": 1
+   }
+  ],
+  [
+   "SingularHomology.crossProductTwoOneCycles._proof_2",
+   66395885,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct.Swap": 1
+   }
+  ],
+  [
+   "SingularHomology.crossProductTwoOneCycles._proof_3",
+   2943411299,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct.Swap": 1
+   }
+  ],
+  [
+   "SingularHomology.crossProductTwoOneCycles._proof_4",
+   353302187,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct.Swap": 1
+   }
+  ],
+  [
+   "SingularHomology.crossProductTwoOneCycles._proof_5",
+   3950937944,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct.Swap": 1
+   }
+  ],
+  [
+   "SingularHomology.crossProductTwoOneCycles._proof_6",
+   1635492264,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct.Swap": 1
+   }
+  ],
+  [
+   "SingularHomology.formalAssociatorDefect._proof_1",
+   1789430371,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct.Associator": 1
+   }
+  ],
+  [
+   "SingularHomology.formalAssociatorDefect._proof_10",
+   3585158322,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct.Associator": 1
+   }
+  ],
+  [
+   "SingularHomology.formalAssociatorDefect._proof_11",
+   111060855,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct.Associator": 1
+   }
+  ],
+  [
+   "SingularHomology.formalAssociatorDefect._proof_12",
+   2625806280,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct.Associator": 1
+   }
+  ],
+  [
+   "SingularHomology.formalAssociatorDefect._proof_13",
+   1684387173,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct.Associator": 1
+   }
+  ],
+  [
+   "SingularHomology.formalAssociatorDefect._proof_14",
+   3084393928,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct.Associator": 1
+   }
+  ],
+  [
+   "SingularHomology.formalAssociatorDefect._proof_15",
+   1922363688,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct.Associator": 1
+   }
+  ],
+  [
+   "SingularHomology.formalAssociatorDefect._proof_2",
+   968992555,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct.Associator": 1
+   }
+  ],
+  [
+   "SingularHomology.formalAssociatorDefect._proof_3",
+   1913661966,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct.Associator": 1
+   }
+  ],
+  [
+   "SingularHomology.formalAssociatorDefect._proof_4",
+   3402838586,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct.Associator": 1
+   }
+  ],
+  [
+   "SingularHomology.formalAssociatorDefect._proof_5",
+   3035142151,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct.Associator": 1
+   }
+  ],
+  [
+   "SingularHomology.formalAssociatorDefect._proof_6",
+   2397281173,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct.Associator": 1
+   }
+  ],
+  [
+   "SingularHomology.formalAssociatorDefect._proof_7",
+   1797985934,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct.Associator": 1
+   }
+  ],
+  [
+   "SingularHomology.formalAssociatorDefect._proof_8",
+   2071813923,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct.Associator": 1
+   }
+  ],
+  [
+   "SingularHomology.formalAssociatorDefect._proof_9",
+   1582443665,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct.Associator": 1
+   }
+  ],
+  [
+   "SingularHomology.formalAssociatorHomotopy._f",
+   2985856489,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct.Associator": 1
+   }
+  ],
+  [
+   "SingularHomology.formalAssociatorHomotopy._proof_1",
+   29803911,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct.Associator": 1
+   }
+  ],
+  [
+   "SingularHomology.formalAssociatorHomotopy._proof_2",
+   1362279371,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct.Associator": 1
+   }
+  ],
+  [
+   "SingularHomology.formalAssociatorHomotopy._sunfold",
+   1573461383,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct.Associator": 1
+   }
+  ],
+  [
+   "SingularHomology.formalAssociatorHomotopy._unsafe_rec",
+   1573461383,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct.Associator": 1
+   }
+  ],
+  [
+   "SingularHomology.formalAssociatorHomotopy.match_1",
+   413685589,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct.Associator": 1
+   }
+  ],
+  [
+   "SingularHomology.formalBoundary_associatorDefect._abel_1_2",
+   4207170178,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct.Associator": 1
+   }
+  ],
+  [
+   "SingularHomology.formalBoundary_associatorDefect._simp_1_1",
+   2994530165,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct.Associator": 1
+   }
+  ],
+  [
+   "SingularHomology.formalBoundary_edgeSwapDefect._abel_1_1",
+   2808007814,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct.Swap": 1
+   }
+  ],
+  [
+   "SingularHomology.formalBoundary_mixedSwapDefect._abel_1_1",
+   694763107,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct.Swap": 1
+   }
+  ],
+  [
+   "SingularHomology.formalEdgeSwapDefect._proof_1",
+   3134129241,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct.Swap": 1
+   }
+  ],
+  [
+   "SingularHomology.formalEdgeSwapDefect._proof_2",
+   3856344283,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct.Swap": 1
+   }
+  ],
+  [
+   "SingularHomology.formalEdgeSwapDefect._proof_3",
+   419592357,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct.Swap": 1
+   }
+  ],
+  [
+   "SingularHomology.formalEdgeSwapDefect._proof_4",
+   1336307134,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct.Swap": 1
+   }
+  ],
+  [
+   "SingularHomology.formalEdgeSwapDefect._proof_5",
+   4028904035,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct.Swap": 1
+   }
+  ],
+  [
+   "SingularHomology.formalEdgeSwapHomotopy._proof_1",
+   29803911,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct.Swap": 1
+   }
+  ],
+  [
+   "SingularHomology.formalMixedSwapDefect._proof_1",
+   1909725688,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct.Swap": 1
+   }
+  ],
+  [
+   "SingularHomology.formalMixedSwapDefect._proof_2",
+   1770252111,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct.Swap": 1
+   }
+  ],
+  [
+   "SingularHomology.formalMixedSwapDefect._proof_3",
+   2467597201,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct.Swap": 1
+   }
+  ],
+  [
+   "SingularHomology.formalMixedSwapDefect._proof_4",
+   3533599864,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct.Swap": 1
+   }
+  ],
+  [
+   "SingularHomology.formalMixedSwapDefect._proof_5",
+   1954377399,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct.Swap": 1
+   }
+  ],
+  [
+   "SingularHomology.formalMixedSwapHomotopy._proof_1",
+   518125532,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct.Swap": 1
+   }
+  ],
+  [
+   "SingularHomology.formalPointCrossProduct._proof_1",
+   3031492042,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct.Formal": 1
+   }
+  ],
+  [
+   "SingularHomology.formalTrilinearLift.eq_1",
+   4205218995,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct.Multilinear": 1
+   }
+  ],
+  [
+   "SingularHomology.integerTrilinearLeftAssociated._proof_1",
+   3759817943,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct.Multilinear": 1
+   }
+  ],
+  [
+   "SingularHomology.integerTrilinearLeftAssociated._proof_2",
+   2003916440,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct.Multilinear": 1
+   }
+  ],
+  [
+   "SingularHomology.integerTrilinearPostcompose._proof_1",
+   1832531652,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct.Multilinear": 1
+   }
+  ],
+  [
+   "SingularHomology.integerTrilinearPostcompose._proof_2",
+   3881666035,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct.Multilinear": 1
+   }
+  ],
+  [
+   "SingularHomology.integerTrilinearPrecompose._proof_1",
+   4175984243,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct.Multilinear": 1
+   }
+  ],
+  [
+   "SingularHomology.integerTrilinearPrecompose._proof_2",
+   1050072763,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct.Multilinear": 1
+   }
+  ],
+  [
+   "SingularHomology.integerTrilinearRightAssociated._proof_1",
+   1918852733,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct.Multilinear": 1
+   }
+  ],
+  [
+   "SingularHomology.integerTrilinearRightAssociated._proof_2",
+   2707927881,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct.Multilinear": 1
+   }
+  ],
+  [
+   "SingularHomology.triplePostcomp._proof_1",
+   2917826429,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct.Associator": 1
+   }
+  ],
+  [
+   "SingularHomology.triplePostcomp._proof_2",
+   211036529,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct.Associator": 1
+   }
+  ],
+  [
+   "SingularHomology.triplePostcomp._proof_3",
+   2926647639,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct.Associator": 1
+   }
+  ],
+  [
+   "SingularHomology.triplePostcomp._proof_4",
+   598285192,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct.Associator": 1
+   }
+  ],
+  [
+   "SingularHomology.triplePostcomp._proof_5",
+   2825908287,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct.Associator": 1
+   }
+  ],
+  [
+   "SingularHomology.triplePrecompLast._proof_1",
+   4236735190,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct.Associator": 1
+   }
+  ]
+ ],
+ "changed_type_source": [],
+ "changed_type_proof_naming": [],
+ "changed_type_accepted": [],
+ "added_accepted": [],
+ "accept_without_effect": [],
+ "changed_type_all": [
+  "SingularHomology.crossProductCycleClasses._proof_1",
+  "SingularHomology.crossProductHomology.eq_1",
+  "SingularHomology.crossProductHomologyCycles._proof_3"
+ ],
+ "moves": [
+  [
+   "Lib.AlgebraicTopology.SingularHomology.CrossProduct",
+   "Lib.AlgebraicTopology.SingularHomology.CrossProduct.Affine",
+   25
+  ],
+  [
+   "Lib.AlgebraicTopology.SingularHomology.CrossProduct",
+   "Lib.AlgebraicTopology.SingularHomology.CrossProduct.Associator",
+   38
+  ],
+  [
+   "Lib.AlgebraicTopology.SingularHomology.CrossProduct",
+   "Lib.AlgebraicTopology.SingularHomology.CrossProduct.Chain",
+   33
+  ],
+  [
+   "Lib.AlgebraicTopology.SingularHomology.CrossProduct",
+   "Lib.AlgebraicTopology.SingularHomology.CrossProduct.Formal",
+   26
+  ],
+  [
+   "Lib.AlgebraicTopology.SingularHomology.CrossProduct",
+   "Lib.AlgebraicTopology.SingularHomology.CrossProduct.Homology",
+   16
+  ],
+  [
+   "Lib.AlgebraicTopology.SingularHomology.CrossProduct",
+   "Lib.AlgebraicTopology.SingularHomology.CrossProduct.HomologyDescent",
+   5
+  ],
+  [
+   "Lib.AlgebraicTopology.SingularHomology.CrossProduct",
+   "Lib.AlgebraicTopology.SingularHomology.CrossProduct.Multilinear",
+   30
+  ],
+  [
+   "Lib.AlgebraicTopology.SingularHomology.CrossProduct",
+   "Lib.AlgebraicTopology.SingularHomology.CrossProduct.Naturality",
+   3
+  ],
+  [
+   "Lib.AlgebraicTopology.SingularHomology.CrossProduct",
+   "Lib.AlgebraicTopology.SingularHomology.CrossProduct.Swap",
+   42
+  ]
+ ],
+ "ambiguous": [],
+ "auxiliary_moved": 40,
+ "verdict": "PASS"
+}

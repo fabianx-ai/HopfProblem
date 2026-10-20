@@ -1,0 +1,128 @@
+{
+ "before": "/home/goblin/.claude/jobs/06995e68/tmp/wave2/dump_head.jsonl",
+ "after": "/home/goblin/.claude/jobs/06995e68/tmp/wave2/rank3/dump_after.jsonl",
+ "prefix": "",
+ "constants": [
+  38301,
+  38305
+ ],
+ "lost": [
+  [
+   "WhitneyPairModel.sheetTimeCoordinates.eq_1",
+   1174350305,
+   {
+    "Lib.Geometry.Manifold.Whitney.RankThreeModel": 1
+   }
+  ]
+ ],
+ "added": [
+  [
+   "RankThreeWhitneyModel.lowerSheetCoordinates._proof_1",
+   1158307750,
+   {
+    "Lib.Geometry.Manifold.Whitney.RankThreeModel.SheetCorrection": 1
+   }
+  ],
+  [
+   "WhitneyPairModel.halfTimeDerivative._proof_1",
+   1751206130,
+   {
+    "Lib.Geometry.Manifold.Whitney.RankThreeModel.SheetRetiming": 1
+   }
+  ],
+  [
+   "WhitneyPairModel.halfTimeDerivative._proof_2",
+   1289510895,
+   {
+    "Lib.Geometry.Manifold.Whitney.RankThreeModel.SheetRetiming": 1
+   }
+  ],
+  [
+   "WhitneyPairModel.halfTimeDerivative._proof_3",
+   2547959801,
+   {
+    "Lib.Geometry.Manifold.Whitney.RankThreeModel.SheetRetiming": 1
+   }
+  ],
+  [
+   "WhitneyPairModel.sheetTimeCoordinates.eq_1",
+   4189806100,
+   {
+    "Lib.Geometry.Manifold.Whitney.RankThreeModel.SheetRetiming": 1
+   }
+  ]
+ ],
+ "changed_type_source": [],
+ "changed_type_proof_naming": [],
+ "changed_type_accepted": [],
+ "added_accepted": [],
+ "accept_without_effect": [],
+ "changed_type_all": [
+  "WhitneyPairModel.sheetTimeCoordinates.eq_1"
+ ],
+ "moves": [
+  [
+   "Lib.Geometry.Manifold.Whitney.RankThreeModel",
+   "Lib.Geometry.Manifold.Whitney.RankThreeModel.Cancellation",
+   3
+  ],
+  [
+   "Lib.Geometry.Manifold.Whitney.RankThreeModel",
+   "Lib.Geometry.Manifold.Whitney.RankThreeModel.CompatibleChart",
+   15
+  ],
+  [
+   "Lib.Geometry.Manifold.Whitney.RankThreeModel",
+   "Lib.Geometry.Manifold.Whitney.RankThreeModel.CorrectedCoordinates",
+   27
+  ],
+  [
+   "Lib.Geometry.Manifold.Whitney.RankThreeModel",
+   "Lib.Geometry.Manifold.Whitney.RankThreeModel.GraphMotion",
+   50
+  ],
+  [
+   "Lib.Geometry.Manifold.Whitney.RankThreeModel",
+   "Lib.Geometry.Manifold.Whitney.RankThreeModel.IntersectionRemoval",
+   3
+  ],
+  [
+   "Lib.Geometry.Manifold.Whitney.RankThreeModel",
+   "Lib.Geometry.Manifold.Whitney.RankThreeModel.Model",
+   34
+  ],
+  [
+   "Lib.Geometry.Manifold.Whitney.RankThreeModel",
+   "Lib.Geometry.Manifold.Whitney.RankThreeModel.ModelGraphMotion",
+   20
+  ],
+  [
+   "Lib.Geometry.Manifold.Whitney.RankThreeModel",
+   "Lib.Geometry.Manifold.Whitney.RankThreeModel.SheetCorrection",
+   17
+  ],
+  [
+   "Lib.Geometry.Manifold.Whitney.RankThreeModel",
+   "Lib.Geometry.Manifold.Whitney.RankThreeModel.SheetParametrizedChart",
+   31
+  ],
+  [
+   "Lib.Geometry.Manifold.Whitney.RankThreeModel",
+   "Lib.Geometry.Manifold.Whitney.RankThreeModel.SheetRecognition",
+   6
+  ],
+  [
+   "Lib.Geometry.Manifold.Whitney.RankThreeModel",
+   "Lib.Geometry.Manifold.Whitney.RankThreeModel.SheetRetiming",
+   20
+  ],
+  [
+   "Lib.Geometry.Manifold.Whitney.RankThreeModel",
+   "Lib.Geometry.Manifold.Whitney.RankThreeModel.TangentAdaptedChart",
+   43
+  ]
+ ],
+ "ambiguous": [],
+ "auxiliary_moved": 152,
+ "verdict": "PASS"
+}

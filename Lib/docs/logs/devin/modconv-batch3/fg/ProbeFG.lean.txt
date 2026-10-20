@@ -1,0 +1,23 @@
+module
+
+public import Lib.Geometry.Manifold.Whitney.BigonModel
+public import Lib.Geometry.Manifold.Morse.MinimalSystem
+public import Lib.Topology.Homotopy.LoopSubdivision
+public import Lib.AlgebraicTopology.FundamentalGroupoid.SimplyConnectedSphere
+
+open Mathoverflow1973
+
+#check @WhitneyPairModel.firstSheet
+#check @WhitneyPairModel.bigon
+#check @WhitneyPairModel.mem_frontier_bigon_iff
+#check @WhitneyPairModel.cornerScale_pos
+#check @WhitneyPairModel.upperStripCoordinates_right
+#check @StripCoordinates.hasDerivAt_verticalSlice
+#check SixSphere
+#check @simplyConnectedSpace_of_homotopySixSphere
+#check @pathConnectedSpace_of_homotopySixSphere
+#check @homotopySixSphere_homology_subsingleton
+#check @Path.exists_partition_unitInterval_of_open_cover
+#check @Path.Homotopic.exists_loops_homotopic_concat_of_open_cover
+#check EuclideanSphere.instContractibleSpace1
+#check @EuclideanSphere.simplyConnectedSpace

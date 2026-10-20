@@ -1,0 +1,492 @@
+/-
+Copyright (c) 2026 Fabian Franz. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Fabian Franz
+-/
+import Mathlib
+import Lib.AlgebraicTopology.SingularHomology.SpherePointTransport
+import Lib.AlgebraicTopology.SingularHomology.LocalDegreeNeighborhoods
+import Lib.Geometry.Manifold.Transversality.AmbientIsotopy
+
+/-!
+# One-point covers and embedded cell attachments
+
+The two-piece open cover of a one-point collapse (`OnePointCover.cover`,
+`OnePointCover.punctureHomeomorph`), the Mayer-Vietoris homology of embedded cell attachments
+(`EmbeddedCellAttachment.cell_exact_at_old`, `EmbeddedCellAttachment.cellConnectingMap`),
+disk one-point collapses, disk shrinking isotopies, and the sign of chart Jacobians in sphere
+normal coordinates.  The positive transport of sphere points now lives in
+`Lib/AlgebraicTopology/SingularHomology/SpherePointTransport.lean`.
+
+Moved verbatim from `Hopf/SphereTopology.lean` (base `304a0fea`); see
+`Lib/reports/integration-4/spheretop-moves.md` for the per-declaration receipt.
+-/
+
+open Set Function Filter Manifold Topology
+
+open scoped ContDiff
+
+noncomputable section
+
+def EmbeddedCellAttachment.oldHomologyEquiv {N X : Type} [NormedAddCommGroup N]
+    [NormedSpace ℝ N] [TopologicalSpace X] (D : EmbeddedCellAttachment N X) (k : ℕ) :
+    SingularMayerVietoris.SingularHomology D.old k ≃ₗ[ℤ]
+      SingularMayerVietoris.SingularHomology D.oldNeighborhood k :=
+  SingularHomology.homotopyEquivHomologyEquiv D.oldHomotopyEquiv k
+
+def EmbeddedCellAttachment.attachingHomologyMap {N X : Type} [NormedAddCommGroup N]
+    [TopologicalSpace X] (D : EmbeddedCellAttachment N X) (k : ℕ) :
+    SingularMayerVietoris.SingularHomology (Metric.sphere (0 : N) 1) k →ₗ[ℤ]
+      SingularMayerVietoris.SingularHomology D.old k :=
+  SingularMayerVietoris.singularHomologyMap D.attachingSphere k
+
+def EmbeddedCellAttachment.oldHomologyMap {N X : Type} [NormedAddCommGroup N]
+    [TopologicalSpace X] (D : EmbeddedCellAttachment N X) (k : ℕ) :
+    SingularMayerVietoris.SingularHomology D.old k →ₗ[ℤ]
+      SingularMayerVietoris.SingularHomology X k :=
+  SingularMayerVietoris.singularHomologyMap (SingularMayerVietoris.subtypeInclusion D.old) k
+
+theorem EmbeddedCellAttachment.diskPatch_homology_subsingleton {N X : Type}
+    [NormedAddCommGroup N] [NormedSpace ℝ N] [TopologicalSpace X]
+    (D : EmbeddedCellAttachment N X) (k : ℕ) (hk : k ≠ 0) :
+    Subsingleton (SingularMayerVietoris.SingularHomology D.diskPatch k) := by
+  let := D.diskPatch_contractible
+  exact SingularHomology.contractible_homology_subsingleton D.diskPatch k hk
+
+theorem EmbeddedCellAttachment.coverRight_old {N X : Type} [NormedAddCommGroup N]
+    [NormedSpace ℝ N] [TopologicalSpace X] (D : EmbeddedCellAttachment N X) (k : ℕ)
+    (a : SingularMayerVietoris.SingularHomology D.old k) :
+    SingularMayerVietoris.rightHomologyMap D.oldNeighborhood D.diskPatch k
+        (D.oldHomologyEquiv k a, 0) =
+      D.oldHomologyMap k a := by
+  rw [SingularMayerVietoris.rightHomologyMap_apply, map_zero, add_zero]
+  change
+    SingularMayerVietoris.singularHomologyMap
+        (SingularMayerVietoris.subtypeInclusion D.oldNeighborhood) k
+        (SingularMayerVietoris.singularHomologyMap D.oldInclusion k a) =
+      SingularMayerVietoris.singularHomologyMap (SingularMayerVietoris.subtypeInclusion D.old) k a
+  rw [← LinearMap.comp_apply, ← SingularHomology.singularHomologyMap_comp]
+  rfl
+
+theorem EmbeddedCellAttachment.coverRight_formula {N X : Type} [NormedAddCommGroup N]
+    [NormedSpace ℝ N] [TopologicalSpace X] (D : EmbeddedCellAttachment N X) (k : ℕ)
+    (hk : k ≠ 0)
+    (b :
+      SingularMayerVietoris.SingularHomology D.oldNeighborhood k ×
+        SingularMayerVietoris.SingularHomology D.diskPatch k) :
+    SingularMayerVietoris.rightHomologyMap D.oldNeighborhood D.diskPatch k b =
+      D.oldHomologyMap k ((D.oldHomologyEquiv k).symm b.1) := by
+  let := D.diskPatch_homology_subsingleton k hk
+  have hb : (D.oldHomologyEquiv k ((D.oldHomologyEquiv k).symm b.1), 0) = b :=
+    Prod.ext ((D.oldHomologyEquiv k).apply_symm_apply b.1) (Subsingleton.elim _ _)
+  calc
+    _ =
+        SingularMayerVietoris.rightHomologyMap D.oldNeighborhood D.diskPatch k
+          (D.oldHomologyEquiv k ((D.oldHomologyEquiv k).symm b.1), 0) :=
+      congrArg (SingularMayerVietoris.rightHomologyMap D.oldNeighborhood D.diskPatch k) hb.symm
+    _ = _ := D.coverRight_old k _
+
+theorem EmbeddedCellAttachment.range_coverRight {N X : Type} [NormedAddCommGroup N]
+    [NormedSpace ℝ N] [TopologicalSpace X] (D : EmbeddedCellAttachment N X) (k : ℕ)
+    (hk : k ≠ 0) :
+    LinearMap.range (SingularMayerVietoris.rightHomologyMap D.oldNeighborhood D.diskPatch k) =
+      LinearMap.range (D.oldHomologyMap k) := by
+  ext a
+  constructor
+  · rintro ⟨b, rfl⟩
+    exact ⟨(D.oldHomologyEquiv k).symm b.1, (D.coverRight_formula k hk b).symm⟩
+  · rintro ⟨b, rfl⟩
+    exact ⟨(D.oldHomologyEquiv k b, 0), D.coverRight_old k b⟩
+
+theorem DiskShrinking.exists_embedded_disk_isotopy_of_path {D E M : Type*}
+    [NormedAddCommGroup D] [InnerProductSpace ℝ D] [FiniteDimensional ℝ D] [NormedAddCommGroup E]
+    [NormedSpace ℝ E] [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M]
+    [IsManifold 𝓘(ℝ, E) ∞ M] [T2Space M] [CompactSpace M] {f g : D → M}
+    (hf : ContMDiff 𝓘(ℝ, D) 𝓘(ℝ, E) ∞ f) (hg : ContMDiff 𝓘(ℝ, D) 𝓘(ℝ, E) ∞ g)
+    (hfi : Set.InjOn f (Metric.closedBall (0 : D) 1))
+    (hgi : Set.InjOn g (Metric.closedBall (0 : D) 1))
+    (hfd : ∀ x ∈ Metric.closedBall (0 : D) 1, Function.Injective (mfderiv 𝓘(ℝ, D) 𝓘(ℝ, E) f x))
+    (hgd : ∀ x ∈ Metric.closedBall (0 : D) 1, Function.Injective (mfderiv 𝓘(ℝ, D) 𝓘(ℝ, E) g x))
+    (n : ℕ) (hn : 0 < n) (hdim : Module.finrank ℝ D + n = Module.finrank ℝ E)
+    (hE : 2 ≤ Module.finrank ℝ E) (γ : Path (f 0) (g 0)) :
+    ∃ P : Diffeomorph 𝓘(ℝ, E) 𝓘(ℝ, E) M M ∞,
+      SupportedDiffeomorph.IsotopicToIdentity P ∧
+        ∀ x ∈ Metric.closedBall (0 : D) 1, P (f x) = g x := by
+  obtain ⟨P, hP, hP0, -⟩ :=
+    MorseCancellation.exists_isotopic_pointMoving_of_path (J := 𝓘(ℝ, E)) isOpen_univ γ
+      (fun _ => Set.mem_univ _)
+  have hPf : ContMDiff 𝓘(ℝ, D) 𝓘(ℝ, E) ∞ (P ∘ f) := P.contMDiff.comp hf
+  have hPfi : Set.InjOn (P ∘ f) (Metric.closedBall (0 : D) 1) := by
+    intro x hx y hy hh
+    exact hfi hx hy (P.injective hh)
+  have hPfd :
+    ∀ x ∈ Metric.closedBall (0 : D) 1, Function.Injective (mfderiv 𝓘(ℝ, D) 𝓘(ℝ, E) (P ∘ f) x) := by
+    intro x hx
+    rw [mfderiv_comp x (P.contMDiff.mdifferentiableAt (by simp)) (hf.mdifferentiableAt (by simp))]
+    have hi : Function.Bijective (mfderiv 𝓘(ℝ, E) 𝓘(ℝ, E) P (f x) : E →L[ℝ] E) :=
+      PartialChart.bijective_mfderiv P.toPartialDiffeomorph (Set.mem_univ _)
+    exact hi.1.comp (hfd x hx)
+  obtain ⟨Q, hQ, hformula⟩ :=
+    exists_embedded_disk_isotopy_of_same_center hPf hg hPfi hgi hPfd hgd n hn hdim hE hP0
+  exact ⟨P.trans Q, hP.trans hQ, hformula⟩
+
+theorem DiskShrinking.exists_embedded_disk_isotopy {D E M : Type*} [NormedAddCommGroup D]
+    [InnerProductSpace ℝ D] [FiniteDimensional ℝ D] [NormedAddCommGroup E] [NormedSpace ℝ E]
+    [FiniteDimensional ℝ E] [TopologicalSpace M] [ChartedSpace E M] [IsManifold 𝓘(ℝ, E) ∞ M]
+    [T2Space M] [CompactSpace M] [PathConnectedSpace M] {f g : D → M}
+    (hf : ContMDiff 𝓘(ℝ, D) 𝓘(ℝ, E) ∞ f) (hg : ContMDiff 𝓘(ℝ, D) 𝓘(ℝ, E) ∞ g)
+    (hfi : Set.InjOn f (Metric.closedBall (0 : D) 1))
+    (hgi : Set.InjOn g (Metric.closedBall (0 : D) 1))
+    (hfd : ∀ x ∈ Metric.closedBall (0 : D) 1, Function.Injective (mfderiv 𝓘(ℝ, D) 𝓘(ℝ, E) f x))
+    (hgd : ∀ x ∈ Metric.closedBall (0 : D) 1, Function.Injective (mfderiv 𝓘(ℝ, D) 𝓘(ℝ, E) g x))
+    (n : ℕ) (hn : 0 < n) (hdim : Module.finrank ℝ D + n = Module.finrank ℝ E)
+    (hE : 2 ≤ Module.finrank ℝ E) :
+    ∃ P : Diffeomorph 𝓘(ℝ, E) 𝓘(ℝ, E) M M ∞,
+      SupportedDiffeomorph.IsotopicToIdentity P ∧
+        ∀ x ∈ Metric.closedBall (0 : D) 1, P (f x) = g x :=
+  exists_embedded_disk_isotopy_of_path hf hg hfi hgi hfd hgd n hn hdim hE
+    (Joined.somePath (PathConnectedSpace.joined (f 0) (g 0)))
+
+def DiskOnePointCollapse.boundary {N : Type*} [NormedAddCommGroup N] :
+    Set (MorseHandle.UnitDisk N) :=
+  {z | ‖(z : N)‖ = 1}
+
+theorem DiskOnePointCollapse.boundary_closed {N : Type*} [NormedAddCommGroup N] :
+    IsClosed (boundary (N := N)) :=
+  isClosed_eq continuous_subtype_val.norm continuous_const
+
+theorem DiskOnePointCollapse.not_mem_boundary_iff {N : Type*} [NormedAddCommGroup N]
+    (z : MorseHandle.UnitDisk N) : z ∉ boundary ↔ ‖(z : N)‖ < 1 := by
+  change ‖(z : N)‖ ≠ 1 ↔ ‖(z : N)‖ < 1
+  constructor
+  · exact lt_of_le_of_ne (mem_closedBall_zero_iff.mp z.property)
+  · exact ne_of_lt
+
+def DiskOnePointCollapse.interiorHomeomorph {N : Type*} [NormedAddCommGroup N]
+    [NormedSpace ℝ N] : ↥(boundary (N := N))ᶜ ≃ₜ N :=
+  (Homeomorph.setCongr (by ext z; exact not_mem_boundary_iff z)).trans
+    (DiskAnnulus.openDiskHomeomorph.trans Homeomorph.unitBall.symm)
+
+def DiskOnePointCollapse.compress {N : Type*} [NormedAddCommGroup N] [NormedSpace ℝ N]
+    (x : N) : MorseHandle.UnitDisk N :=
+  ⟨Homeomorph.unitBall x, Metric.ball_subset_closedBall (Homeomorph.unitBall x).property⟩
+
+theorem DiskOnePointCollapse.norm_compress_lt {N : Type*} [NormedAddCommGroup N]
+    [NormedSpace ℝ N] (x : N) : ‖(compress x : N)‖ < 1 :=
+  mem_ball_zero_iff.mp (Homeomorph.unitBall x).property
+
+theorem DiskOnePointCollapse.compress_zero {N : Type*} [NormedAddCommGroup N]
+    [NormedSpace ℝ N] : (compress (0 : N) : N) = 0 :=
+  Homeomorph.coe_unitBall_apply_zero
+
+theorem EmbeddedCellAttachment.collapse_piece_cover {N X : Type*} [NormedAddCommGroup N]
+    [TopologicalSpace X] (D : EmbeddedCellAttachment N X) :
+    Set.range (Subtype.val : D.old → X) ∪ Set.range D.cell = Set.univ := by
+  simpa only [Subtype.range_coe_subtype, Set.ofPred_mem_eq] using D.cover
+
+def OnePointCover.oldPatch {N : Type*} [NormedAddCommGroup N] : Set (OnePoint N) :=
+  {((0 : N) : OnePoint N)}ᶜ
+
+def OnePointCover.finitePatch {N : Type*} : Set (OnePoint N) :=
+  { OnePoint.infty }ᶜ
+
+theorem OnePointCover.cover {N : Type*} [NormedAddCommGroup N] :
+    oldPatch (N := N) ∪ finitePatch = Set.univ := by
+  apply Set.eq_univ_of_forall
+  intro x
+  by_cases hx : x = ((0 : N) : OnePoint N)
+  · right
+    subst x
+    exact OnePoint.coe_ne_infty 0
+  · exact Or.inl hx
+
+theorem OnePointCover.oldPatch_open {N : Type*} [NormedAddCommGroup N] :
+    IsOpen (oldPatch (N := N)) :=
+  isClosed_singleton.isOpen_compl
+
+theorem OnePointCover.finitePatch_open {N : Type*} [NormedAddCommGroup N] :
+    IsOpen (finitePatch (N := N)) :=
+  isClosed_singleton.isOpen_compl
+
+def OnePointCover.overlapRadius : ℝ :=
+  (Real.sqrt (1 - (3 / 4 : ℝ) ^ 2))⁻¹ * (3 / 4)
+
+theorem OnePointCover.overlapRadius_pos : 0 < overlapRadius := by
+  have h : 0 < 1 - (3 / 4 : ℝ) ^ 2 := by norm_num
+  exact mul_pos (inv_pos.mpr (Real.sqrt_pos.mpr h)) (by norm_num)
+
+theorem SphereNormalCoordinates.normalDerivative_smul_isInvertible {N : Type*}
+    [NormedAddCommGroup N] [NormedSpace ℝ N] {n : ℕ} (A : EuclideanSpace ℝ (Fin n) →L[ℝ] N)
+    (hA : A.IsInvertible) (c : ℝ) (hc : c ≠ 0) : (c • A).IsInvertible := by
+  apply ContinuousLinearMap.IsInvertible.of_inverse (g := c⁻¹ • A.inverse)
+  · ext y
+    simp [ContinuousLinearMap.comp_apply, smul_smul, hA.self_apply_inverse, hc]
+  · ext y
+    simp [ContinuousLinearMap.comp_apply, smul_smul, hA.inverse_apply_self, hc]
+
+def CoverLocalContributions.localMap {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y]
+    {ι : Type} (U : Set X) (V : ι → Set X) (U' V' : Set Y) (f : C(X, Y)) (hfU : Set.MapsTo f U U')
+    (hfV : ∀ i, Set.MapsTo f (V i) V') (i : ι) : C(↥(U ∩ V i), ↥(U' ∩ V')) :=
+  SingularMayerVietoris.coverRestriction f _ _ (fun _ hx => ⟨hfU hx.1, hfV i hx.2⟩)
+
+theorem CoverLocalContributions.connecting_sum {X Y : Type} [TopologicalSpace X]
+    [TopologicalSpace Y] {ι : Type} [Fintype ι] (U : Set X) (V : ι → Set X) (hU : IsOpen U)
+    (hV : ∀ i, IsOpen (V i)) (hd : Pairwise (Disjoint on V)) (hc : U ∪ (⋃ i, V i) = Set.univ)
+    (U' V' : Set Y) (f : C(X, Y)) (hfU : Set.MapsTo f U U') (hfV : ∀ i, Set.MapsTo f (V i) V')
+    (hU' : IsOpen U') (hV' : IsOpen V') (hc' : U' ∪ V' = Set.univ) (k : ℕ)
+    (a : SingularMayerVietoris.SingularHomology X (k + 1)) :
+    SingularMayerVietoris.connectingHomomorphism U' V' hU' hV' hc' k
+        (SingularMayerVietoris.singularHomologyMap f (k + 1) a) =
+      ∑ i,
+        SingularMayerVietoris.singularHomologyMap (localMap U V U' V' f hfU hfV i) k
+          (componentConnecting U V hU hV hd hc k a i) := by
+  rw [←
+    SingularMayerVietoris.connectingHomomorphism_naturality_apply f U (⋃ i, V i) U' V' hfU
+      (map_union V V' f hfV) hU (isOpen_iUnion hV) hc hU' hV' hc' k a]
+  rw [CoverOverlapHomology.homology_map_out U V hU hV hd]
+  apply Finset.sum_congr rfl
+  intro i _
+  rfl
+
+theorem SpherePoint.ambient_chart_hasFDerivAt {V : Type} [NormedAddCommGroup V]
+    [InnerProductSpace ℝ V] {m : ℕ} [Fact (Module.finrank ℝ V = m + 1)]
+    (c :
+      PartialDiffeomorph 𝓘(ℝ, EuclideanSpace ℝ (Fin m)) (𝓡 m) (EuclideanSpace ℝ (Fin m))
+        (Metric.sphere (0 : V) 1) ∞)
+    {z : EuclideanSpace ℝ (Fin m)} (hz : z ∈ c.source) :
+    HasFDerivAt (fun u => (c u : V)) (fderiv ℝ (fun u => (c u : V)) z) z := by
+  have hc : ContDiffOn ℝ ∞ (fun u => (c u : V)) c.source :=
+    ((contMDiff_coe_sphere (m := (∞ : ℕ∞ω))).comp_contMDiffOn c.contMDiffOn_toFun).contDiffOn
+  exact ((hc.contDiffAt (c.open_source.mem_nhds hz)).differentiableAt (by simp)).hasFDerivAt
+
+theorem SpherePoint.chart_transition_eventually_eq {V : Type} [NormedAddCommGroup V]
+    [InnerProductSpace ℝ V] {m : ℕ} [Fact (Module.finrank ℝ V = m + 1)]
+    (x y : Metric.sphere (0 : V) 1) (R : V ≃ₗᵢ[ℝ] V) (he : sphereHomeomorph R x = y) :
+    (fun u : EuclideanSpace ℝ (Fin m) =>
+        (NativeParametrization.centered y
+            (NativeChartTransition.chart x y (sphereDiffeomorph (n := m) R) u) :
+          V)) =ᶠ[𝓝 0]
+      (fun u : EuclideanSpace ℝ (Fin m) => R (NativeParametrization.centered x u : V)) := by
+  let e := sphereDiffeomorph (n := m) R
+  let T := NativeChartTransition.chart x y e
+  have hS := T.open_source.mem_nhds (NativeChartTransition.zero_mem_source x y e he)
+  filter_upwards [hS] with u hu
+  have ht :
+    e (NativeParametrization.centered x u) ∈
+      (NativeParametrization.centered (D := EuclideanSpace ℝ (Fin m)) y).target :=
+    hu.2
+  have h := (NativeParametrization.centered y).right_inv' ht
+  exact congrArg Subtype.val h
+
+theorem SpherePoint.chart_transition_ambient_derivative {V : Type} [NormedAddCommGroup V]
+    [InnerProductSpace ℝ V] {m : ℕ} [Fact (Module.finrank ℝ V = m + 1)]
+    (x y : Metric.sphere (0 : V) 1) (R : V ≃ₗᵢ[ℝ] V) (he : sphereHomeomorph R x = y) :
+    (fderiv ℝ (fun u => (NativeParametrization.centered y u : V)) 0).comp
+        (NativeChartTransition.linear x y (sphereDiffeomorph (n := m) R)
+            he).toContinuousLinearMap =
+      R.toContinuousLinearEquiv.toContinuousLinearMap.comp
+        (fderiv ℝ (fun u => (NativeParametrization.centered x u : V)) 0) := by
+  let e := sphereDiffeomorph (n := m) R
+  let T := NativeChartTransition.chart x y e
+  have hx :=
+    ambient_chart_hasFDerivAt (m := m) (NativeParametrization.centered x)
+      (NativeParametrization.zero_mem_centered_source x)
+  have hy :=
+    ambient_chart_hasFDerivAt (m := m) (NativeParametrization.centered y)
+      (NativeParametrization.zero_mem_centered_source y)
+  have hyT :
+    HasFDerivAt
+      (fun u : EuclideanSpace ℝ (Fin m) => (NativeParametrization.centered y u : V))
+      (fderiv ℝ (fun u => (NativeParametrization.centered y u : V)) 0) (T 0) :=
+    (NativeChartTransition.chart_zero x y e he).symm ▸ hy
+  have hchain := hyT.comp 0 (NativeChartTransition.hasFDerivAt_chart x y e he)
+  have hR := R.toContinuousLinearEquiv.toContinuousLinearMap.hasFDerivAt.comp 0 hx
+  exact hchain.unique (hR.congr_of_eventuallyEq (chart_transition_eventually_eq x y R he))
+
+theorem SphereNormalCoordinates.sign_factor {a b c : ℝ} (hb : b ≠ 0)
+    (h : a * b = c) : SignType.sign c * SignType.sign b = SignType.sign a := by
+  have hsq : SignType.sign b * SignType.sign b = 1 := by
+    rw [← sign_mul]
+    exact sign_eq_one_iff.mpr (mul_self_pos.mpr hb)
+  rw [← h, sign_mul, mul_assoc, hsq, mul_one]
+
+theorem SpherePoint.instLocal2 (n : ℕ) :
+    Fact (Module.finrank ℝ (EuclideanSpace ℝ (Fin (n + 3))) = (n + 2) + 1) :=
+  ⟨by simp⟩
+
+theorem SpherePoint.instLocal3 (n : ℕ) :
+    Fact (Module.finrank ℝ (EuclideanSpace ℝ (Fin (n + 3))) = (n + 2) + 1) :=
+  ⟨by simp⟩
+
+attribute [local instance] SpherePoint.instLocal3 in
+def SpherePoint.referencePoint (n : ℕ) : SphereHomology.UnitSphere (n + 2) :=
+  Classical.choice (NormedSpace.sphere_nonempty_rclike ℝ zero_le_one)
+
+attribute [local instance] SpherePoint.instLocal3 in
+def SpherePoint.referenceNeighborhood (n : ℕ) (x : SphereHomology.UnitSphere (n + 2)) :
+    LocalDegree.NeighborhoodData
+      (((NativeParametrization.centered (D := EuclideanSpace ℝ (Fin (n + 2))) x).symm ∘
+          Diffeomorph.refl (𝓡 (n + 2)) (SphereHomology.UnitSphere (n + 2)) ∞) ∘
+        NativeParametrization.centered x)
+      (NativeChartTransition.linear x x
+        (Diffeomorph.refl (𝓡 (n + 2)) (SphereHomology.UnitSphere (n + 2)) ∞) rfl)
+      ((NativeParametrization.centered x).source ∩
+        NativeParametrization.centered x ⁻¹'
+          (Set.univ : Set (SphereHomology.UnitSphere (n + 2)))) :=
+  Classical.choice
+    (NativeChartTransition.nonempty_neighborhoodData x x
+      (Diffeomorph.refl (𝓡 (n + 2)) (SphereHomology.UnitSphere (n + 2)) ∞) rfl Set.univ (by simp))
+
+end
+
+/-!
+# The one-point compactification of `ℝⁿ` covered by two contractible patches
+
+The one-point compactification `OnePoint N` of a finite-dimensional normed space is a sphere;
+removing a point leaves a space homeomorphic to `ℝⁿ` (`OnePointCover.punctureHomeomorph`, via
+Mathlib's stereographic projection `stereographic'`), so the two patches
+`OnePoint N ∖ {0}` and `OnePoint N ∖ {∞}` above
+are contractible (`oldPatch_contractible`, `finitePatch_contractible`) and their overlap
+`N ∖ {0}` is homotopy equivalent to the unit sphere (`overlapHomeomorph`, `overlapSphereEquiv`).
+Mayer–Vietoris then gives the suspension isomorphism
+`H_{k+2}(OnePoint N) ≅ H_{k+1}(S(N))` (`sphereHomologyEquiv`) with an injective connecting map
+`sphereConnecting`, cf. Hatcher, *Algebraic Topology*, Exercise 2.2.
+-/
+
+open Set Function Filter Manifold Topology
+
+open scoped ContDiff ContinuousMap
+
+noncomputable section
+
+/-- `Fact (finrank ℝ (EuclideanSpace ℝ (Fin (n + 1))) = n + 1)`, used as a local instance for the
+stereographic charts of the sphere. -/
+theorem OnePointCover.instLocal1 (n : ℕ) :
+    Fact (Module.finrank ℝ (EuclideanSpace ℝ (Fin (n + 1))) = n + 1) :=
+  ⟨finrank_euclideanSpace_fin⟩
+
+attribute [local instance] OnePointCover.instLocal1 in
+private def OnePointCover.spherePunctureHomeomorph (n : ℕ)
+    (a : Metric.sphere (0 : EuclideanSpace ℝ (Fin (n + 1))) 1) :
+    ↥({ a }ᶜ : Set (Metric.sphere (0 : EuclideanSpace ℝ (Fin (n + 1))) 1)) ≃ₜ
+      EuclideanSpace ℝ (Fin n) :=
+  (Homeomorph.setCongr (stereographic'_source (n := n) a).symm).trans
+    ((stereographic' n a).toHomeomorphSourceTarget.trans
+      ((Homeomorph.setCongr (stereographic'_target a)).trans (Homeomorph.Set.univ _)))
+
+attribute [local instance] OnePointCover.instLocal1 in
+/-- The complement of a point `a` in the one-point compactification of a finite-dimensional normed
+space `N` is homeomorphic to `EuclideanSpace ℝ (Fin (finrank ℝ N))`, by stereographic projection
+from `a` on the sphere `OnePoint N ≃ₜ S^{dim N}`. -/
+def OnePointCover.punctureHomeomorph {N : Type*} [NormedAddCommGroup N] [NormedSpace ℝ N]
+    [FiniteDimensional ℝ N] (a : OnePoint N) :
+    ↥({ a }ᶜ : Set (OnePoint N)) ≃ₜ EuclideanSpace ℝ (Fin (Module.finrank ℝ N)) := by
+  let e : OnePoint N ≃ₜ Metric.sphere (0 : EuclideanSpace ℝ (Fin (Module.finrank ℝ N + 1))) 1 :=
+    onePointEquivSphereOfFinrankEq (by simp)
+  let es : ↥({ a }ᶜ : Set (OnePoint N)) ≃ₜ ↥({e a}ᶜ : Set _) :=
+    e.subtype
+      (fun x => by
+        change x ≠ a ↔ e x ≠ e a
+        exact e.injective.ne_iff.symm)
+  exact es.trans (spherePunctureHomeomorph _ (e a))
+
+attribute [local instance] OnePointCover.instLocal1 in
+/-- `OnePointCover.oldPatch = OnePoint N ∖ {0}` is contractible. -/
+theorem OnePointCover.oldPatch_contractible {N : Type*} [NormedAddCommGroup N]
+    [NormedSpace ℝ N] [FiniteDimensional ℝ N] : ContractibleSpace (oldPatch (N := N)) :=
+  (punctureHomeomorph ((0 : N) : OnePoint N)).contractibleSpace
+
+attribute [local instance] OnePointCover.instLocal1 in
+/-- `OnePointCover.finitePatch = OnePoint N ∖ {∞}` is contractible. -/
+theorem OnePointCover.finitePatch_contractible {N : Type*} [NormedAddCommGroup N]
+    [NormedSpace ℝ N] [FiniteDimensional ℝ N] : ContractibleSpace (finitePatch (N := N)) :=
+  (punctureHomeomorph (OnePoint.infty : OnePoint N)).contractibleSpace
+
+attribute [local instance] OnePointCover.instLocal1 in
+/-- The overlap `oldPatch ∩ finitePatch` consists of finite points `(x : N)`. -/
+theorem OnePointCover.overlap_subset_range {N : Type*} [NormedAddCommGroup N] :
+    oldPatch (N := N) ∩ finitePatch ⊆ Set.range (OnePoint.some : N → _) := by
+  intro x hx
+  induction x using OnePoint.rec with
+  | infty => exact (hx.2 rfl).elim
+  | coe x => exact ⟨x, rfl⟩
+
+attribute [local instance] OnePointCover.instLocal1 in
+/-- The preimage of `oldPatch ∩ finitePatch` under `N → OnePoint N` is `{u | u ≠ 0}`. -/
+theorem OnePointCover.overlap_preimage {N : Type*} [NormedAddCommGroup N] :
+    (OnePoint.some : N → OnePoint N) ⁻¹' (oldPatch ∩ finitePatch) = {u : N | u ≠ 0} := by
+  ext x
+  change ((x : OnePoint N) ≠ ((0 : N) : OnePoint N) ∧ (x : OnePoint N) ≠ OnePoint.infty) ↔ x ≠ 0
+  constructor
+  · rintro ⟨h, -⟩ hx
+    exact h (congrArg (OnePoint.some : N → OnePoint N) hx)
+  · intro hx
+    exact ⟨fun h => hx (OnePoint.coe_injective h), OnePoint.coe_ne_infty x⟩
+
+attribute [local instance] OnePointCover.instLocal1 in
+/-- The homeomorphism `N ∖ {0} ≃ₜ oldPatch ∩ finitePatch`, `u ↦ (u : OnePoint N)`. -/
+def OnePointCover.overlapHomeomorph {N : Type*} [NormedAddCommGroup N] :
+    PuncturedRadial.Space N ≃ₜ ↥(oldPatch (N := N) ∩ finitePatch) :=
+  (Homeomorph.setCongr overlap_preimage.symm).trans
+    (OnePoint.isOpenEmbedding_coe.isEmbedding.homeomorphOfSubsetRange overlap_subset_range)
+
+attribute [local instance] OnePointCover.instLocal1 in
+/-- `overlapHomeomorph u = (u : OnePoint N)` as points of `OnePoint N`. -/
+theorem OnePointCover.overlapHomeomorph_apply {N : Type*} [NormedAddCommGroup N]
+    (u : PuncturedRadial.Space N) : (overlapHomeomorph u).val = (u.val : OnePoint N) :=
+  rfl
+
+attribute [local instance] OnePointCover.instLocal1 in
+/-- The homotopy equivalence `S(N) ≃ₕ oldPatch ∩ finitePatch` through the sphere of radius `r > 0`
+in `N ∖ {0}`. -/
+def OnePointCover.overlapSphereEquiv {N : Type*} [NormedAddCommGroup N] [NormedSpace ℝ N]
+    (r : ℝ) (hr : 0 < r) : Metric.sphere (0 : N) 1 ≃ₕ ↥(oldPatch (N := N) ∩ finitePatch) :=
+  (PuncturedRadial.sphereHomotopyEquiv r hr).trans overlapHomeomorph.toHomotopyEquiv
+
+/-- The homology isomorphism `H_k(S(N)) ≃ H_k(oldPatch ∩ finitePatch)` induced by
+`overlapSphereEquiv r hr`. -/
+def OnePointCover.overlapHomologyEquiv {N : Type} [NormedAddCommGroup N] [NormedSpace ℝ N]
+    (r : ℝ) (hr : 0 < r) (k : ℕ) :
+    SingularMayerVietoris.SingularHomology (Metric.sphere (0 : N) 1) k ≃ₗ[ℤ]
+      SingularMayerVietoris.SingularHomology (↥(oldPatch (N := N) ∩ finitePatch)) k :=
+  SingularHomology.homotopyEquivHomologyEquiv (overlapSphereEquiv r hr) k
+
+/-- The connecting homomorphism `H_{k+1}(OnePoint N) → H_k(S(N))` of the two-patch cover, the
+Mayer–Vietoris connecting map followed by `(overlapHomologyEquiv r hr k)⁻¹`. -/
+def OnePointCover.sphereConnecting {N : Type} [NormedAddCommGroup N] [NormedSpace ℝ N]
+    (r : ℝ) (hr : 0 < r) (k : ℕ) :
+    SingularMayerVietoris.SingularHomology (OnePoint N) (k + 1) →ₗ[ℤ]
+      SingularMayerVietoris.SingularHomology (Metric.sphere (0 : N) 1) k :=
+  (overlapHomologyEquiv r hr k).symm.toLinearMap.comp
+    (SingularMayerVietoris.connectingHomomorphism oldPatch finitePatch oldPatch_open
+      finitePatch_open cover k)
+
+/-- For finite-dimensional `N`, `sphereConnecting r hr k : H_{k+1}(OnePoint N) → H_k(S(N))` is
+injective (both patches are contractible). -/
+theorem OnePointCover.sphereConnecting_injective {N : Type} [NormedAddCommGroup N]
+    [NormedSpace ℝ N] [FiniteDimensional ℝ N] (r : ℝ) (hr : 0 < r) (k : ℕ) :
+    Function.Injective (sphereConnecting (N := N) r hr k) := by
+  let : ContractibleSpace (oldPatch (N := N)) := oldPatch_contractible
+  let : ContractibleSpace (finitePatch (N := N)) := finitePatch_contractible
+  have hi :
+    Function.Injective
+      (SingularMayerVietoris.connectingHomomorphism (oldPatch (N := N)) finitePatch oldPatch_open
+        finitePatch_open cover k) :=
+    Suspension.contractibleCoverConnecting_injective (oldPatch (N := N)) finitePatch
+      oldPatch_open finitePatch_open cover k
+  exact (overlapHomologyEquiv (N := N) r hr k).symm.injective.comp hi
+
+/-- The suspension isomorphism `H_{k+2}(OnePoint N) ≃ H_{k+1}(S(N))` for finite-dimensional `N`,
+from the Mayer–Vietoris sequence of the cover by two contractible patches. -/
+def OnePointCover.sphereHomologyEquiv {N : Type} [NormedAddCommGroup N] [NormedSpace ℝ N]
+    [FiniteDimensional ℝ N] (r : ℝ) (hr : 0 < r) (k : ℕ) :
+    SingularMayerVietoris.SingularHomology (OnePoint N) (k + 2) ≃ₗ[ℤ]
+      SingularMayerVietoris.SingularHomology (Metric.sphere (0 : N) 1) (k + 1) := by
+  let : ContractibleSpace (oldPatch (N := N)) := oldPatch_contractible
+  let : ContractibleSpace (finitePatch (N := N)) := finitePatch_contractible
+  exact
+    (Suspension.contractibleCoverHomologyHigherEquiv oldPatch finitePatch oldPatch_open
+          finitePatch_open cover k).trans
+      (overlapHomologyEquiv r hr (k + 1)).symm
+
+end

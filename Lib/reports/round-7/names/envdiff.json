@@ -1,0 +1,2129 @@
+{
+ "before": "/home/goblin/.claude/jobs/06995e68/tmp/r7-names/dump_base_renamed.jsonl",
+ "after": "/home/goblin/.claude/jobs/06995e68/tmp/r7-names/dump_after.jsonl",
+ "prefix": "",
+ "constants": [
+  39160,
+  39003
+ ],
+ "lost": [
+  [
+   "CategoryTheory.Sheaf.Leray.higherDirectImageZeroIsoPushforward",
+   3084788985,
+   {
+    "Lib.CategoryTheory.Sites.Leray.DegreeZero": 1
+   }
+  ],
+  [
+   "CategoryTheory.Sheaf.Leray.higherDirectImageZeroIsoPushforward._proof_1",
+   2340312802,
+   {
+    "Lib.CategoryTheory.Sites.Leray.DegreeZero": 1
+   }
+  ],
+  [
+   "CategoryTheory.Sheaf.Leray.higherDirectImageZeroIsoPushforward._proof_2",
+   2383368329,
+   {
+    "Lib.CategoryTheory.Sites.Leray.DegreeZero": 1
+   }
+  ],
+  [
+   "CategoryTheory.Sheaf.Leray.higherDirectImageZeroIsoPushforward._proof_3",
+   2663397807,
+   {
+    "Lib.CategoryTheory.Sites.Leray.DegreeZero": 1
+   }
+  ],
+  [
+   "CategoryTheory.Sheaf.Leray.higherDirectImageZeroIsoPushforward._proof_4",
+   2141449768,
+   {
+    "Lib.CategoryTheory.Sites.Leray.DegreeZero": 1
+   }
+  ],
+  [
+   "CategoryTheory.Sheaf.Leray.higherDirectImageZeroSheafIsoPushforward",
+   2196232537,
+   {
+    "Lib.CategoryTheory.Sites.Leray.DegreeZero": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.basedTrianglesLoop._proof_2",
+   4003989344,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.continuous_gluedBoundaryFunction",
+   1090613509,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.HomotopyExtension": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.gluedBoundaryFunction_bottom",
+   1689021841,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.HomotopyExtension": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.gluedBoundaryFunction_side",
+   2304974647,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.HomotopyExtension": 1
+   }
+  ],
+  [
+   "Hurewicz.flatCoordinateSum.eq_1",
+   2663809923,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.SimplexCube": 1
+   }
+  ],
+  [
+   "Hurewicz.flatCoordinateSum_succ_ne_zero",
+   2647235847,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.SimplexCube": 1
+   }
+  ],
+  [
+   "LinearRepresentation.contragredient",
+   2185554642,
+   {
+    "Lib.LinearAlgebra.Dual.Contragredient": 1
+   }
+  ],
+  [
+   "LinearRepresentation.contragredient._proof_1",
+   1113594744,
+   {
+    "Lib.LinearAlgebra.Dual.Contragredient": 1
+   }
+  ],
+  [
+   "LinearRepresentation.contragredient._proof_2",
+   1239248524,
+   {
+    "Lib.LinearAlgebra.Dual.Contragredient": 1
+   }
+  ],
+  [
+   "LinearRepresentation.contragredient._proof_3",
+   3734330314,
+   {
+    "Lib.LinearAlgebra.Dual.Contragredient": 1
+   }
+  ],
+  [
+   "LinearRepresentation.contragredient._proof_4",
+   1213407251,
+   {
+    "Lib.LinearAlgebra.Dual.Contragredient": 1
+   }
+  ],
+  [
+   "LinearRepresentation.contragredient_apply",
+   2755132686,
+   {
+    "Lib.LinearAlgebra.Dual.Contragredient": 1
+   }
+  ],
+  [
+   "LinearRepresentation.freeGroup_invariant_iff",
+   1656581587,
+   {
+    "Lib.LinearAlgebra.Dual.Contragredient": 1
+   }
+  ],
+  [
+   "LinearRepresentation.ofMultiplicative",
+   2511858124,
+   {
+    "Lib.LinearAlgebra.Dual.Contragredient": 1
+   }
+  ],
+  [
+   "LinearRepresentation.ofMultiplicative._proof_2",
+   3086346667,
+   {
+    "Lib.LinearAlgebra.Dual.Contragredient": 1
+   }
+  ],
+  [
+   "LinearRepresentation.ofMultiplicative._proof_3",
+   2173683290,
+   {
+    "Lib.LinearAlgebra.Dual.Contragredient": 1
+   }
+  ],
+  [
+   "LinearRepresentation.ofMultiplicativeEquiv",
+   703895047,
+   {
+    "Lib.LinearAlgebra.Dual.Contragredient": 1
+   }
+  ],
+  [
+   "LinearRepresentation.ofMultiplicativeEquiv.eq_1",
+   2269998436,
+   {
+    "Lib.LinearAlgebra.Dual.Contragredient": 1
+   }
+  ],
+  [
+   "LinearRepresentation.ofMultiplicativeEquiv_apply",
+   843651749,
+   {
+    "Lib.LinearAlgebra.Dual.Contragredient": 1
+   }
+  ],
+  [
+   "LinearRepresentation.ofMultiplicative_apply",
+   3087580426,
+   {
+    "Lib.LinearAlgebra.Dual.Contragredient": 1
+   }
+  ],
+  [
+   "LocalDegree.NativeNeighborhood.coordinateMap_restrictRadius",
+   659562385,
+   {
+    "Lib.Geometry.Manifold.Morse.SurgeryCollapse": 1
+   }
+  ],
+  [
+   "LowCellLifting.relativeDiskLifting_five._proof_1_1",
+   3692024863,
+   {
+    "Hopf.Proof.Recognition": 1
+   }
+  ],
+  [
+   "MappingTorusHomology.Covering.coverSmallCycle_productCover_class",
+   846955223,
+   {
+    "Hopf.Proof.LCP.IntegralHomology": 1
+   }
+  ],
+  [
+   "MappingTorusHomology.Covering.coverSmallCycle_productCover_eq",
+   932293460,
+   {
+    "Hopf.Proof.LCP.IntegralHomology": 1
+   }
+  ],
+  [
+   "MorseCancellation.range_tanh",
+   1866397104,
+   {
+    "Lib.Geometry.Manifold.Morse.Cubic": 1
+   }
+  ],
+  [
+   "PeriodTorusHigherHomology.biprodElement_boundary",
+   1529814127,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CirclePaths": 1
+   }
+  ],
+  [
+   "PeriodTorusHigherHomology.biprodElement_desc",
+   2744499432,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CirclePaths": 1
+   }
+  ],
+  [
+   "PeriodTorusHigherHomology.biprod_lift_eq_boundary",
+   1596915646,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CirclePaths": 1
+   }
+  ],
+  [
+   "PeriodTorusHigherHomology.triplePostcomp._proof_2",
+   1905007589,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct": 1
+   }
+  ],
+  [
+   "PeriodTorusHigherHomology.triplePostcomp._proof_5",
+   1609253094,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct": 1
+   }
+  ],
+  [
+   "PeriodTorusHigherHomology.triplePrecompLast._proof_1",
+   3222661552,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct": 1
+   }
+  ],
+  [
+   "SpecialPeriods.Threefold.Star.Input",
+   1928458470,
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1,
+    "Lib.Topology.Gluing.OverBase": 1
+   }
+  ],
+  [
+   "SpecialPeriods.Threefold.Star.Input._sizeOf_1",
+   616006131,
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1,
+    "Lib.Topology.Gluing.OverBase": 1
+   }
+  ],
+  [
+   "SpecialPeriods.Threefold.Star.Input._sizeOf_inst",
+   1969446350,
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1,
+    "Lib.Topology.Gluing.OverBase": 1
+   }
+  ],
+  [
+   "SpecialPeriods.Threefold.Star.Input.casesOn",
+   2346766867,
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1
+   }
+  ],
+  [
+   "SpecialPeriods.Threefold.Star.Input.cover",
+   3909168764,
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1,
+    "Lib.Topology.Gluing.OverBase": 1
+   }
+  ],
+  [
+   "SpecialPeriods.Threefold.Star.Input.ctorIdx",
+   1981394026,
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1,
+    "Lib.Topology.Gluing.OverBase": 1
+   }
+  ],
+  [
+   "SpecialPeriods.Threefold.Star.Input.disjoint",
+   4130221766,
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1
+   }
+  ],
+  [
+   "SpecialPeriods.Threefold.Star.Input.eq_or_eq_or_eq_of_common_base",
+   273339410,
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1,
+    "Lib.Topology.Gluing.OverBase": 1
+   }
+  ],
+  [
+   "SpecialPeriods.Threefold.Star.Input.filling_preimage_eq_empty",
+   3969395954,
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1,
+    "Lib.Topology.Gluing.OverBase": 1
+   }
+  ],
+  [
+   "SpecialPeriods.Threefold.Star.Input.mk",
+   1251341869,
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1
+   }
+  ],
+  [
+   "SpecialPeriods.Threefold.Star.Input.mk._flat_ctor",
+   1251341869,
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1
+   }
+  ],
+  [
+   "SpecialPeriods.Threefold.Star.Input.mk.inj",
+   1852510902,
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1
+   }
+  ],
+  [
+   "SpecialPeriods.Threefold.Star.Input.mk.injEq",
+   1990886327,
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1
+   }
+  ],
+  [
+   "SpecialPeriods.Threefold.Star.Input.mk.noConfusion",
+   1293108738,
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1
+   }
+  ],
+  [
+   "SpecialPeriods.Threefold.Star.Input.mk.sizeOf_spec",
+   488593790,
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1
+   }
+  ],
+  [
+   "SpecialPeriods.Threefold.Star.Input.noConfusion",
+   2609150279,
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1,
+    "Lib.Topology.Gluing.OverBase": 1
+   }
+  ],
+  [
+   "SpecialPeriods.Threefold.Star.Input.noConfusionType",
+   2475191984,
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1,
+    "Lib.Topology.Gluing.OverBase": 1
+   }
+  ],
+  [
+   "SpecialPeriods.Threefold.Star.Input.overlap",
+   171295954,
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1,
+    "Lib.Topology.Gluing.OverBase": 1
+   }
+  ],
+  [
+   "SpecialPeriods.Threefold.Star.Input.overlap_symm_preserves_base",
+   2842753635,
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1,
+    "Lib.Topology.Gluing.OverBase": 1
+   }
+  ],
+  [
+   "SpecialPeriods.Threefold.Star.Input.patch",
+   1205665356,
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1,
+    "Lib.Topology.Gluing.OverBase": 1
+   }
+  ],
+  [
+   "SpecialPeriods.Threefold.Star.Input.piece",
+   3289253482,
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1,
+    "Lib.Topology.Gluing.OverBase": 1
+   }
+  ],
+  [
+   "SpecialPeriods.Threefold.Star.Input.preserves_base",
+   1243988983,
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1,
+    "Lib.Topology.Gluing.OverBase": 1
+   }
+  ],
+  [
+   "SpecialPeriods.Threefold.Star.Input.rec",
+   589452271,
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1
+   }
+  ],
+  [
+   "SpecialPeriods.Threefold.Star.Input.recOn",
+   2346766867,
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1
+   }
+  ],
+  [
+   "SpecialPeriods.Threefold.Star.Input.source_eq",
+   3229691047,
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1,
+    "Lib.Topology.Gluing.OverBase": 1
+   }
+  ],
+  [
+   "SpecialPeriods.Threefold.Star.Input.target_eq",
+   2215682310,
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1,
+    "Lib.Topology.Gluing.OverBase": 1
+   }
+  ],
+  [
+   "SpecialPeriods.Threefold.Star.Input.toBase",
+   3656277092,
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1,
+    "Lib.Topology.Gluing.OverBase": 1
+   }
+  ],
+  [
+   "SpecialPeriods.Threefold.Star.Input.toBase_mem",
+   2448808691,
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1,
+    "Lib.Topology.Gluing.OverBase": 1
+   }
+  ],
+  [
+   "SpecialPeriods.Threefold.Star.Input.toBase_preimage_own",
+   1415778916,
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1,
+    "Lib.Topology.Gluing.OverBase": 1
+   }
+  ],
+  [
+   "SpecialPeriods.Threefold.Star.Input.toData",
+   3146326138,
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1,
+    "Lib.Topology.Gluing.OverBase": 1
+   }
+  ],
+  [
+   "SpecialPeriods.Threefold.Star.Input.transition",
+   2777044047,
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1,
+    "Lib.Topology.Gluing.OverBase": 1
+   }
+  ],
+  [
+   "SpecialPeriods.Threefold.Star.Input.transition.eq_1",
+   3543206276,
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1,
+    "Lib.Topology.Gluing.OverBase": 1
+   }
+  ],
+  [
+   "SpecialPeriods.Threefold.Star.Input.transition.eq_2",
+   2944994078,
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1,
+    "Lib.Topology.Gluing.OverBase": 1
+   }
+  ],
+  [
+   "SpecialPeriods.Threefold.Star.Input.transition.eq_3",
+   2606434742,
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1,
+    "Lib.Topology.Gluing.OverBase": 1
+   }
+  ],
+  [
+   "SpecialPeriods.Threefold.Star.Input.transition.eq_4",
+   3340861752,
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1,
+    "Lib.Topology.Gluing.OverBase": 1
+   }
+  ],
+  [
+   "SpecialPeriods.Threefold.Star.Input.transition.match_1",
+   2904387616,
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1,
+    "Lib.Topology.Gluing.OverBase": 1
+   }
+  ],
+  [
+   "SpecialPeriods.Threefold.Star.Input.transition.match_1.eq_1",
+   2036226336,
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1,
+    "Lib.Topology.Gluing.OverBase": 1
+   }
+  ],
+  [
+   "SpecialPeriods.Threefold.Star.Input.transition.match_1.eq_2",
+   77715459,
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1,
+    "Lib.Topology.Gluing.OverBase": 1
+   }
+  ],
+  [
+   "SpecialPeriods.Threefold.Star.Input.transition.match_1.eq_3",
+   3588301519,
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1,
+    "Lib.Topology.Gluing.OverBase": 1
+   }
+  ],
+  [
+   "SpecialPeriods.Threefold.Star.Input.transition.match_1.eq_4",
+   667418913,
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1,
+    "Lib.Topology.Gluing.OverBase": 1
+   }
+  ],
+  [
+   "SpecialPeriods.Threefold.Star.Input.transition.match_1.splitter",
+   2904387616,
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1,
+    "Lib.Topology.Gluing.OverBase": 1
+   }
+  ],
+  [
+   "SpecialPeriods.Threefold.Star.Input.transition_cocycle",
+   2413879173,
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1,
+    "Lib.Topology.Gluing.OverBase": 1
+   }
+  ],
+  [
+   "SpecialPeriods.Threefold.Star.Input.transition_cocycle._simp_1_1",
+   1822873633,
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1,
+    "Lib.Topology.Gluing.OverBase": 1
+   }
+  ],
+  [
+   "SpecialPeriods.Threefold.Star.Input.transition_cocycle._simp_1_2",
+   1989307008,
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1,
+    "Lib.Topology.Gluing.OverBase": 1
+   }
+  ],
+  [
+   "SpecialPeriods.Threefold.Star.Input.transition_none_none",
+   3543206276,
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1,
+    "Lib.Topology.Gluing.OverBase": 1
+   }
+  ],
+  [
+   "SpecialPeriods.Threefold.Star.Input.transition_none_some",
+   2944994078,
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1,
+    "Lib.Topology.Gluing.OverBase": 1
+   }
+  ],
+  [
+   "SpecialPeriods.Threefold.Star.Input.transition_preserves_base",
+   1293459990,
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1,
+    "Lib.Topology.Gluing.OverBase": 1
+   }
+  ],
+  [
+   "SpecialPeriods.Threefold.Star.Input.transition_self",
+   4156573333,
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1,
+    "Lib.Topology.Gluing.OverBase": 1
+   }
+  ],
+  [
+   "SpecialPeriods.Threefold.Star.Input.transition_some_none",
+   2606434742,
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1,
+    "Lib.Topology.Gluing.OverBase": 1
+   }
+  ],
+  [
+   "SpecialPeriods.Threefold.Star.Input.transition_some_self",
+   3505819184,
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1,
+    "Lib.Topology.Gluing.OverBase": 1
+   }
+  ],
+  [
+   "SpecialPeriods.Threefold.Star.Input.transition_some_some_of_ne",
+   4279284738,
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1,
+    "Lib.Topology.Gluing.OverBase": 1
+   }
+  ],
+  [
+   "SpecialPeriods.Threefold.Star.Input.transition_some_some_source_eq_empty",
+   3449059842,
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1,
+    "Lib.Topology.Gluing.OverBase": 1
+   }
+  ],
+  [
+   "SpecialPeriods.Threefold.Star.Input.transition_some_some_source_eq_empty._simp_1_1",
+   1822873633,
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1,
+    "Lib.Topology.Gluing.OverBase": 1
+   }
+  ],
+  [
+   "SpecialPeriods.Threefold.Star.Input.transition_some_some_source_eq_empty._simp_1_2",
+   1989307008,
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1,
+    "Lib.Topology.Gluing.OverBase": 1
+   }
+  ],
+  [
+   "SpecialPeriods.Threefold.Star.Input.transition_source_eq",
+   3565819369,
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1,
+    "Lib.Topology.Gluing.OverBase": 1
+   }
+  ],
+  [
+   "SpecialPeriods.Threefold.Star.Input.transition_symm",
+   1076709843,
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1,
+    "Lib.Topology.Gluing.OverBase": 1
+   }
+  ],
+  [
+   "ThreefoldGluing.Data",
+   3565490904,
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1,
+    "Lib.Topology.Gluing.OverBase": 1
+   }
+  ],
+  [
+   "ThreefoldGluing.Data.J",
+   2754851230,
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1,
+    "Lib.Topology.Gluing.OverBase": 1
+   }
+  ],
+  [
+   "ThreefoldGluing.Data.Space",
+   757369197,
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1,
+    "Lib.Topology.Gluing.OverBase": 1
+   }
+  ],
+  [
+   "ThreefoldGluing.Data.Space._proof_1",
+   1141420575,
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1,
+    "Lib.Topology.Gluing.OverBase": 1
+   }
+  ],
+  [
+   "ThreefoldGluing.Data._sizeOf_1",
+   4211194534,
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1,
+    "Lib.Topology.Gluing.OverBase": 1
+   }
+  ],
+  [
+   "ThreefoldGluing.Data._sizeOf_inst",
+   3938315087,
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1,
+    "Lib.Topology.Gluing.OverBase": 1
+   }
+  ],
+  [
+   "ThreefoldGluing.Data.casesOn",
+   3853451773,
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1,
+    "Lib.Topology.Gluing.OverBase": 1
+   }
+  ],
+  [
+   "ThreefoldGluing.Data.chartedSpace",
+   3105977681,
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1,
+    "Lib.Geometry.Manifold.Gluing.OverBase": 1
+   }
+  ],
+  [
+   "ThreefoldGluing.Data.chartedSpace._proof_1",
+   4132607670,
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1
+   }
+  ],
+  [
+   "ThreefoldGluing.Data.chartedSpace._proof_2",
+   2658304356,
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1
+   }
+  ],
+  [
+   "ThreefoldGluing.Data.cocycle",
+   4270679718,
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1,
+    "Lib.Topology.Gluing.OverBase": 1
+   }
+  ],
+  [
+   "ThreefoldGluing.Data.cover",
+   3817042973,
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1,
+    "Lib.Topology.Gluing.OverBase": 1
+   }
+  ],
+  [
+   "ThreefoldGluing.Data.ctorIdx",
+   812768331,
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1,
+    "Lib.Topology.Gluing.OverBase": 1
+   }
+  ],
+  [
+   "ThreefoldGluing.Data.gluedChart",
+   3063694094,
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1,
+    "Lib.Geometry.Manifold.Gluing.OverBase": 1
+   }
+  ],
+  [
+   "ThreefoldGluing.Data.gluedChart.congr_simp",
+   629957335,
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1,
+    "Lib.Geometry.Manifold.Gluing.OverBase": 1
+   }
+  ],
+  [
+   "ThreefoldGluing.Data.gluedChart_inclusion",
+   1128273892,
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1,
+    "Lib.Geometry.Manifold.Gluing.OverBase": 1
+   }
+  ],
+  [
+   "ThreefoldGluing.Data.gluedChart_inclusion_mem_source",
+   1798552819,
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1,
+    "Lib.Geometry.Manifold.Gluing.OverBase": 1
+   }
+  ],
+  [
+   "ThreefoldGluing.Data.gluedChart_mem_atlas",
+   2285834916,
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1,
+    "Lib.Geometry.Manifold.Gluing.OverBase": 1
+   }
+  ],
+  [
+   "ThreefoldGluing.Data.gluedChart_symm",
+   261458387,
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1,
+    "Lib.Geometry.Manifold.Gluing.OverBase": 1
+   }
+  ],
+  [
+   "ThreefoldGluing.Data.gluedChart_transition_apply",
+   1388246062,
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1,
+    "Lib.Geometry.Manifold.Gluing.OverBase": 1
+   }
+  ],
+  [
+   "ThreefoldGluing.Data.gluedChart_transition_holomorphic._simp_1_2",
+   665385237,
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1
+   }
+  ],
+  [
+   "ThreefoldGluing.Data.gluing",
+   3871329865,
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1,
+    "Lib.Topology.Gluing.OverBase": 1
+   }
+  ],
+  [
+   "ThreefoldGluing.Data.gluingCore",
+   3923814607,
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1,
+    "Lib.Topology.Gluing.OverBase": 1
+   }
+  ],
+  [
+   "ThreefoldGluing.Data.gluingCore._proof_1",
+   4016553562,
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1
+   }
+  ],
+  [
+   "ThreefoldGluing.Data.gluingCore._proof_10",
+   2874446103,
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1
+   }
+  ],
+  [
+   "ThreefoldGluing.Data.gluingCore._proof_11",
+   1386824215,
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1
+   }
+  ],
+  [
+   "ThreefoldGluing.Data.gluingCore._proof_12",
+   2528654972,
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1
+   }
+  ],
+  [
+   "ThreefoldGluing.Data.gluingCore._proof_13",
+   3630273623,
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1
+   }
+  ],
+  [
+   "ThreefoldGluing.Data.gluingCore._proof_2",
+   1648871440,
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1
+   }
+  ],
+  [
+   "ThreefoldGluing.Data.gluingCore._proof_3",
+   2721365722,
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1
+   }
+  ],
+  [
+   "ThreefoldGluing.Data.gluingCore._proof_4",
+   2396072007,
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1
+   }
+  ],
+  [
+   "ThreefoldGluing.Data.gluingCore._proof_5",
+   2830096310,
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1
+   }
+  ],
+  [
+   "ThreefoldGluing.Data.gluingCore._proof_6",
+   2049911000,
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1
+   }
+  ],
+  [
+   "ThreefoldGluing.Data.gluingCore._proof_7",
+   3107605777,
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1
+   }
+  ],
+  [
+   "ThreefoldGluing.Data.gluingCore._proof_8",
+   3240389816,
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1
+   }
+  ],
+  [
+   "ThreefoldGluing.Data.gluingCore._proof_9",
+   2899036599,
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1
+   }
+  ],
+  [
+   "ThreefoldGluing.Data.inclusion",
+   2309667496,
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1,
+    "Lib.Topology.Gluing.OverBase": 1
+   }
+  ],
+  [
+   "ThreefoldGluing.Data.inclusion_eq_iff",
+   224383646,
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1,
+    "Lib.Topology.Gluing.OverBase": 1
+   }
+  ],
+  [
+   "ThreefoldGluing.Data.inclusion_jointly_surjective",
+   2498848067,
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1,
+    "Lib.Topology.Gluing.OverBase": 1
+   }
+  ],
+  [
+   "ThreefoldGluing.Data.inclusion_openEmbedding",
+   1802618423,
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1,
+    "Lib.Topology.Gluing.OverBase": 1
+   }
+  ],
+  [
+   "ThreefoldGluing.Data.inclusion_range",
+   2141552664,
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1,
+    "Lib.Topology.Gluing.OverBase": 1
+   }
+  ],
+  [
+   "ThreefoldGluing.Data.inclusion_range._simp_1_1",
+   1822873633,
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1,
+    "Lib.Topology.Gluing.OverBase": 1
+   }
+  ],
+  [
+   "ThreefoldGluing.Data.inclusion_representative",
+   3799112603,
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1,
+    "Lib.Topology.Gluing.OverBase": 1
+   }
+  ],
+  [
+   "ThreefoldGluing.Data.localProjection",
+   940371604,
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1,
+    "Lib.Topology.Gluing.OverBase": 1
+   }
+  ],
+  [
+   "ThreefoldGluing.Data.localProjection._proof_1",
+   3903299970,
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1,
+    "Lib.Topology.Gluing.OverBase": 1
+   }
+  ],
+  [
+   "ThreefoldGluing.Data.mk",
+   1068661078,
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1,
+    "Lib.Topology.Gluing.OverBase": 1
+   }
+  ],
+  [
+   "ThreefoldGluing.Data.mk._flat_ctor",
+   1068661078,
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1,
+    "Lib.Topology.Gluing.OverBase": 1
+   }
+  ],
+  [
+   "ThreefoldGluing.Data.mk.inj",
+   3142194340,
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1,
+    "Lib.Topology.Gluing.OverBase": 1
+   }
+  ],
+  [
+   "ThreefoldGluing.Data.mk.injEq",
+   1336525772,
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1,
+    "Lib.Topology.Gluing.OverBase": 1
+   }
+  ],
+  [
+   "ThreefoldGluing.Data.mk.noConfusion",
+   2648802789,
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1,
+    "Lib.Topology.Gluing.OverBase": 1
+   }
+  ],
+  [
+   "ThreefoldGluing.Data.mk.sizeOf_spec",
+   2904556899,
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1,
+    "Lib.Topology.Gluing.OverBase": 1
+   }
+  ],
+  [
+   "ThreefoldGluing.Data.noConfusion",
+   3948159566,
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1,
+    "Lib.Topology.Gluing.OverBase": 1
+   }
+  ],
+  [
+   "ThreefoldGluing.Data.noConfusionType",
+   2563629902,
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1,
+    "Lib.Topology.Gluing.OverBase": 1
+   }
+  ],
+  [
+   "ThreefoldGluing.Data.parametrization",
+   44755897,
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1,
+    "Lib.Topology.Gluing.OverBase": 1
+   }
+  ],
+  [
+   "ThreefoldGluing.Data.parametrization.congr_simp",
+   570706096,
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1,
+    "Lib.Geometry.Manifold.Gluing.OverBase": 1
+   }
+  ],
+  [
+   "ThreefoldGluing.Data.parametrization.eq_1",
+   2314724545,
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1,
+    "Lib.Topology.Gluing.OverBase": 1
+   }
+  ],
+  [
+   "ThreefoldGluing.Data.parametrization_symm_inclusion",
+   47858549,
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1,
+    "Lib.Geometry.Manifold.Gluing.OverBase": 1
+   }
+  ],
+  [
+   "ThreefoldGluing.Data.parametrization_target",
+   536131018,
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1,
+    "Lib.Topology.Gluing.OverBase": 1
+   }
+  ],
+  [
+   "ThreefoldGluing.Data.parametrization_transition",
+   4051779617,
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1,
+    "Lib.Topology.Gluing.OverBase": 1
+   }
+  ],
+  [
+   "ThreefoldGluing.Data.patch",
+   861549522,
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1,
+    "Lib.Topology.Gluing.OverBase": 1
+   }
+  ],
+  [
+   "ThreefoldGluing.Data.patchHomeomorph",
+   3436572182,
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1,
+    "Lib.Topology.Gluing.OverBase": 1
+   }
+  ],
+  [
+   "ThreefoldGluing.Data.patchHomeomorph._proof_1",
+   1898860432,
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1,
+    "Lib.Topology.Gluing.OverBase": 1
+   }
+  ],
+  [
+   "ThreefoldGluing.Data.patchHomeomorph_projection",
+   3192179462,
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1,
+    "Lib.Topology.Gluing.OverBase": 1
+   }
+  ],
+  [
+   "ThreefoldGluing.Data.piece",
+   464714776,
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1,
+    "Lib.Topology.Gluing.OverBase": 1
+   }
+  ],
+  [
+   "ThreefoldGluing.Data.preserves_base",
+   3146531686,
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1,
+    "Lib.Topology.Gluing.OverBase": 1
+   }
+  ],
+  [
+   "ThreefoldGluing.Data.projection",
+   1210952128,
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1,
+    "Lib.Topology.Gluing.OverBase": 1
+   }
+  ],
+  [
+   "ThreefoldGluing.Data.projection_continuous",
+   499381370,
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1,
+    "Lib.Topology.Gluing.OverBase": 1
+   }
+  ],
+  [
+   "ThreefoldGluing.Data.projection_inclusion",
+   3733942473,
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1,
+    "Lib.Topology.Gluing.OverBase": 1
+   }
+  ],
+  [
+   "ThreefoldGluing.Data.rec",
+   1205426002,
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1,
+    "Lib.Topology.Gluing.OverBase": 1
+   }
+  ],
+  [
+   "ThreefoldGluing.Data.recOn",
+   3853451773,
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1,
+    "Lib.Topology.Gluing.OverBase": 1
+   }
+  ],
+  [
+   "ThreefoldGluing.Data.representative",
+   2561202775,
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1,
+    "Lib.Topology.Gluing.OverBase": 1
+   }
+  ],
+  [
+   "ThreefoldGluing.Data.representative._proof_1",
+   15567022,
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1,
+    "Lib.Topology.Gluing.OverBase": 1
+   }
+  ],
+  [
+   "ThreefoldGluing.Data.self_eq",
+   387756997,
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1,
+    "Lib.Topology.Gluing.OverBase": 1
+   }
+  ],
+  [
+   "ThreefoldGluing.Data.source_eq",
+   1042477275,
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1,
+    "Lib.Topology.Gluing.OverBase": 1
+   }
+  ],
+  [
+   "ThreefoldGluing.Data.symm_eq",
+   3884033530,
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1,
+    "Lib.Topology.Gluing.OverBase": 1
+   }
+  ],
+  [
+   "ThreefoldGluing.Data.toBase",
+   626453577,
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1,
+    "Lib.Topology.Gluing.OverBase": 1
+   }
+  ],
+  [
+   "ThreefoldGluing.Data.toBase_mem",
+   2186487003,
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1,
+    "Lib.Topology.Gluing.OverBase": 1
+   }
+  ],
+  [
+   "ThreefoldGluing.Data.transition",
+   1181375425,
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1,
+    "Lib.Topology.Gluing.OverBase": 1
+   }
+  ],
+  [
+   "ThreefoldGluing.Data.transition_inter",
+   3340722112,
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1,
+    "Lib.Topology.Gluing.OverBase": 1
+   }
+  ],
+  [
+   "ThreefoldGluing.Data.transition_map_source",
+   1015290603,
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1,
+    "Lib.Topology.Gluing.OverBase": 1
+   }
+  ],
+  [
+   "ThreefoldHomology.FifthDegree.signed_residual_coordinate_zero",
+   2492532872,
+   {
+    "Hopf.Proof.LCP.IntegralHomology": 1
+   }
+  ],
+  [
+   "ThreefoldHomology.FifthDegree.signed_residual_coordinate_zero._proof_1_1",
+   717470783,
+   {
+    "Hopf.Proof.LCP.IntegralHomology": 1
+   }
+  ],
+  [
+   "ThreefoldHomologyTopDegreeAlgebra.kernelEquivOfColumnIso",
+   3400082066,
+   {
+    "Hopf.Proof.LCP.IntegralHomology": 1
+   }
+  ],
+  [
+   "ThreefoldHomologyTopDegreeAlgebra.kernelProjectionAddEquiv_mo1973_30150",
+   2359281732,
+   {
+    "Hopf.Proof.LCP.IntegralHomology": 1
+   }
+  ],
+  [
+   "ThreefoldHomologyTopDegreeAlgebra.kernelProjectionAddEquiv_mo1973_30150._proof_1",
+   747906439,
+   {
+    "Hopf.Proof.LCP.IntegralHomology": 1
+   }
+  ],
+  [
+   "ThreefoldHomologyTopDegreeAlgebra.kernelProjectionAddEquiv_mo1973_30150._proof_2",
+   773456051,
+   {
+    "Hopf.Proof.LCP.IntegralHomology": 1
+   }
+  ],
+  [
+   "ThreefoldHomologyTopDegreeAlgebra.kernelProjectionAddEquiv_mo1973_30150._proof_3",
+   3245544875,
+   {
+    "Hopf.Proof.LCP.IntegralHomology": 1
+   }
+  ],
+  [
+   "ThreefoldHomologyTopDegreeAlgebra.kernelProjectionAddEquiv_mo1973_30150._proof_4",
+   3018255301,
+   {
+    "Hopf.Proof.LCP.IntegralHomology": 1
+   }
+  ],
+  [
+   "ThreefoldHomologyTopDegreeAlgebra.kernelProjectionAddEquiv_mo1973_30150._proof_5",
+   4168488703,
+   {
+    "Hopf.Proof.LCP.IntegralHomology": 1
+   }
+  ],
+  [
+   "ThreefoldHomologyTopDegreeAlgebra.surjective_of_columnIso",
+   3537929278,
+   {
+    "Hopf.Proof.LCP.IntegralHomology": 1
+   }
+  ],
+  [
+   "TopCellLifting.sphereMap_relativeDiskLifting_six._proof_1_1",
+   683599184,
+   {
+    "Hopf.Proof.Recognition": 1
+   }
+  ]
+ ],
+ "added": [
+  [
+   "BasedDiskLifting.exists_based_disk_lift_of_surjective",
+   3849137078,
+   {
+    "Lib.Topology.Homotopy.BasedDiskLifting": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.basedTrianglesLoop._proof_2",
+   4182286245,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.continuous_gluedBoundaryFunction",
+   2975446972,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.HomotopyExtension": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.gluedBoundaryFunction_bottom",
+   2134069634,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.HomotopyExtension": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.gluedBoundaryFunction_side",
+   139555976,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.HomotopyExtension": 1
+   }
+  ],
+  [
+   "Hurewicz.flatCoordinateSum.eq_1",
+   3467650057,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.SimplexCube": 1
+   }
+  ],
+  [
+   "Hurewicz.flatCoordinateSum_succ_ne_zero",
+   877672489,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.SimplexCube": 1
+   }
+  ],
+  [
+   "LocalDegree.NativeNeighborhood.coordinateMap_restrictRadius",
+   2994480327,
+   {
+    "Lib.Geometry.Manifold.Morse.SurgeryCollapse": 1
+   }
+  ],
+  [
+   "LowCellLifting.relativeDiskLifting_five._proof_1_1",
+   1741343548,
+   {
+    "Hopf.Proof.Recognition": 1
+   }
+  ],
+  [
+   "LowCellLifting.relativeDiskLifting_of_pi_vanishing",
+   1533067539,
+   {
+    "Lib.Topology.Homotopy.RelativeDiskLifting": 1
+   }
+  ],
+  [
+   "MappingTorusHomology.Covering.coverSmallCycle_productCover_class",
+   2215534626,
+   {
+    "Hopf.Proof.LCP.IntegralHomology": 1
+   }
+  ],
+  [
+   "MappingTorusHomology.Covering.coverSmallCycle_productCover_eq",
+   2016400151,
+   {
+    "Hopf.Proof.LCP.IntegralHomology": 1
+   }
+  ],
+  [
+   "PeriodTorusHigherHomology.biprodElement_boundary",
+   405204484,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CirclePaths": 1
+   }
+  ],
+  [
+   "PeriodTorusHigherHomology.biprodElement_desc",
+   1032755121,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CirclePaths": 1
+   }
+  ],
+  [
+   "PeriodTorusHigherHomology.biprod_lift_eq_boundary",
+   4157374738,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CirclePaths": 1
+   }
+  ],
+  [
+   "PeriodTorusHigherHomology.triplePostcomp._proof_2",
+   4128468722,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct": 1
+   }
+  ],
+  [
+   "PeriodTorusHigherHomology.triplePostcomp._proof_5",
+   4276720523,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct": 1
+   }
+  ],
+  [
+   "PeriodTorusHigherHomology.triplePrecompLast._proof_1",
+   3460795562,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.CrossProduct": 1
+   }
+  ],
+  [
+   "SixthHurewicz.exists_sphereMap_of_homologySixEquiv",
+   210311681,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.SphereGenerator": 1
+   }
+  ],
+  [
+   "SixthHurewicz.homotopyMap_bijective_of_homologyMap_bijective",
+   70383517,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.SphereGenerator": 1
+   }
+  ],
+  [
+   "ThreefoldGluing.Data.gluedChart_transition_holomorphic._simp_1_1",
+   665385237,
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1
+   }
+  ],
+  [
+   "TopCellLifting.exists_disk_lift_of_boundary_nullhomotopic",
+   311505388,
+   {
+    "Lib.Topology.Homotopy.BasedDiskLifting": 1
+   }
+  ],
+  [
+   "TopCellLifting.relativeDiskLifting_of_pi_vanishing_of_surjective",
+   3790355960,
+   {
+    "Lib.Topology.Homotopy.RelativeDiskLifting": 1
+   }
+  ],
+  [
+   "TopCellLifting.relativeDiskLifting_of_pi_vanishing_of_surjective._proof_1_1",
+   2215457287,
+   {
+    "Lib.Topology.Homotopy.RelativeDiskLifting": 1
+   }
+  ],
+  [
+   "TopCellLifting.relativeDiskLifting_of_pi_vanishing_of_surjective._proof_1_2",
+   1337725573,
+   {
+    "Lib.Topology.Homotopy.RelativeDiskLifting": 1
+   }
+  ],
+  [
+   "TopCellLifting.relativeDiskLifting_of_pi_vanishing_of_surjective._proof_1_3",
+   2002074745,
+   {
+    "Lib.Topology.Homotopy.RelativeDiskLifting": 1
+   }
+  ],
+  [
+   "TopCellLifting.relativeDiskLifting_of_pi_vanishing_of_surjective._proof_1_4",
+   1604492796,
+   {
+    "Lib.Topology.Homotopy.RelativeDiskLifting": 1
+   }
+  ]
+ ],
+ "changed_type_source": [],
+ "changed_type_proof_naming": [
+  "Hurewicz.DegreeTwo.SimplyConnected.continuous_gluedBoundaryFunction",
+  "Hurewicz.DegreeTwo.SimplyConnected.gluedBoundaryFunction_bottom",
+  "Hurewicz.DegreeTwo.SimplyConnected.gluedBoundaryFunction_side",
+  "Hurewicz.flatCoordinateSum_succ_ne_zero",
+  "LocalDegree.NativeNeighborhood.coordinateMap_restrictRadius",
+  "MappingTorusHomology.Covering.coverSmallCycle_productCover_class",
+  "MappingTorusHomology.Covering.coverSmallCycle_productCover_eq",
+  "PeriodTorusHigherHomology.biprodElement_boundary",
+  "PeriodTorusHigherHomology.biprodElement_desc",
+  "PeriodTorusHigherHomology.biprod_lift_eq_boundary"
+ ],
+ "changed_type_accepted": [],
+ "added_accepted": [],
+ "accept_without_effect": [],
+ "changed_type_all": [
+  "Hurewicz.DegreeTwo.SimplyConnected.basedTrianglesLoop._proof_2",
+  "Hurewicz.DegreeTwo.SimplyConnected.continuous_gluedBoundaryFunction",
+  "Hurewicz.DegreeTwo.SimplyConnected.gluedBoundaryFunction_bottom",
+  "Hurewicz.DegreeTwo.SimplyConnected.gluedBoundaryFunction_side",
+  "Hurewicz.flatCoordinateSum.eq_1",
+  "Hurewicz.flatCoordinateSum_succ_ne_zero",
+  "LocalDegree.NativeNeighborhood.coordinateMap_restrictRadius",
+  "LowCellLifting.relativeDiskLifting_five._proof_1_1",
+  "MappingTorusHomology.Covering.coverSmallCycle_productCover_class",
+  "MappingTorusHomology.Covering.coverSmallCycle_productCover_eq",
+  "PeriodTorusHigherHomology.biprodElement_boundary",
+  "PeriodTorusHigherHomology.biprodElement_desc",
+  "PeriodTorusHigherHomology.biprod_lift_eq_boundary",
+  "PeriodTorusHigherHomology.triplePostcomp._proof_2",
+  "PeriodTorusHigherHomology.triplePostcomp._proof_5",
+  "PeriodTorusHigherHomology.triplePrecompLast._proof_1"
+ ],
+ "moves": [],
+ "ambiguous": [
+  [
+   "SpecialPeriods.Threefold.Star.Input.transition_source_eq",
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1
+   },
+   {}
+  ],
+  [
+   "ThreefoldGluing.Data.transition",
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1
+   },
+   {}
+  ],
+  [
+   "SpecialPeriods.Threefold.Star.Input.transition_some_some_of_ne",
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1
+   },
+   {}
+  ],
+  [
+   "ThreefoldGluing.Data.source_eq",
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1
+   },
+   {}
+  ],
+  [
+   "ThreefoldGluing.Data.gluedChart_symm",
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1
+   },
+   {}
+  ],
+  [
+   "ThreefoldGluing.Data.patchHomeomorph_projection",
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1
+   },
+   {}
+  ],
+  [
+   "ThreefoldGluing.Data.parametrization_target",
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1
+   },
+   {}
+  ],
+  [
+   "SpecialPeriods.Threefold.Star.Input.target_eq",
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1
+   },
+   {}
+  ],
+  [
+   "ThreefoldGluing.Data.inclusion",
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1
+   },
+   {}
+  ],
+  [
+   "SpecialPeriods.Threefold.Star.Input.source_eq",
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1
+   },
+   {}
+  ],
+  [
+   "SpecialPeriods.Threefold.Star.Input.overlap_symm_preserves_base",
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1
+   },
+   {}
+  ],
+  [
+   "ThreefoldGluing.Data.parametrization_symm_inclusion",
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1
+   },
+   {}
+  ],
+  [
+   "ThreefoldGluing.Data.patchHomeomorph",
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1
+   },
+   {}
+  ],
+  [
+   "ThreefoldGluing.Data.symm_eq",
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1
+   },
+   {}
+  ],
+  [
+   "ThreefoldGluing.Data.parametrization",
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1
+   },
+   {}
+  ],
+  [
+   "ThreefoldGluing.Data.inclusion_jointly_surjective",
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1
+   },
+   {}
+  ],
+  [
+   "ThreefoldGluing.Data.projection_inclusion",
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1
+   },
+   {}
+  ],
+  [
+   "ThreefoldGluing.Data.gluedChart_mem_atlas",
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1
+   },
+   {}
+  ],
+  [
+   "ThreefoldGluing.Data.gluedChart_inclusion",
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1
+   },
+   {}
+  ],
+  [
+   "SpecialPeriods.Threefold.Star.Input.eq_or_eq_or_eq_of_common_base",
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1
+   },
+   {}
+  ],
+  [
+   "SpecialPeriods.Threefold.Star.Input.transition_cocycle",
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1
+   },
+   {}
+  ],
+  [
+   "ThreefoldGluing.Data.preserves_base",
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1
+   },
+   {}
+  ],
+  [
+   "ThreefoldGluing.Data.patch",
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1
+   },
+   {}
+  ],
+  [
+   "SpecialPeriods.Threefold.Star.Input.toData",
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1
+   },
+   {}
+  ],
+  [
+   "ThreefoldGluing.Data.piece",
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1
+   },
+   {}
+  ],
+  [
+   "ThreefoldGluing.Data.inclusion_openEmbedding",
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1
+   },
+   {}
+  ],
+  [
+   "SpecialPeriods.Threefold.Star.Input.transition_symm",
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1
+   },
+   {}
+  ],
+  [
+   "SpecialPeriods.Threefold.Star.Input.transition_self",
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1
+   },
+   {}
+  ],
+  [
+   "ThreefoldGluing.Data",
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1
+   },
+   {}
+  ],
+  [
+   "ThreefoldGluing.Data.projection",
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1
+   },
+   {}
+  ],
+  [
+   "ThreefoldGluing.Data.mk",
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1
+   },
+   {}
+  ],
+  [
+   "ThreefoldGluing.Data.toBase",
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1
+   },
+   {}
+  ],
+  [
+   "SpecialPeriods.Threefold.Star.Input.transition_preserves_base",
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1
+   },
+   {}
+  ],
+  [
+   "SpecialPeriods.Threefold.Star.Input",
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1
+   },
+   {}
+  ],
+  [
+   "ThreefoldGluing.Data.gluedChart_transition_apply",
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1
+   },
+   {}
+  ],
+  [
+   "ThreefoldGluing.Data.inclusion_representative",
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1
+   },
+   {}
+  ],
+  [
+   "ThreefoldGluing.Data.self_eq",
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1
+   },
+   {}
+  ],
+  [
+   "ThreefoldGluing.Data.gluedChart_inclusion_mem_source",
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1
+   },
+   {}
+  ],
+  [
+   "SpecialPeriods.Threefold.Star.Input.piece",
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1
+   },
+   {}
+  ],
+  [
+   "SpecialPeriods.Threefold.Star.Input.cover",
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1
+   },
+   {}
+  ],
+  [
+   "SpecialPeriods.Threefold.Star.Input.transition_some_self",
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1
+   },
+   {}
+  ],
+  [
+   "ThreefoldGluing.Data.transition_map_source",
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1
+   },
+   {}
+  ],
+  [
+   "ThreefoldGluing.Data.parametrization_transition",
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1
+   },
+   {}
+  ],
+  [
+   "SpecialPeriods.Threefold.Star.Input.toBase",
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1
+   },
+   {}
+  ],
+  [
+   "ThreefoldGluing.Data.J",
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1
+   },
+   {}
+  ],
+  [
+   "SpecialPeriods.Threefold.Star.Input.toBase_mem",
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1
+   },
+   {}
+  ],
+  [
+   "ThreefoldGluing.Data.chartedSpace",
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1
+   },
+   {}
+  ],
+  [
+   "SpecialPeriods.Threefold.Star.Input.transition_none_none",
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1
+   },
+   {}
+  ],
+  [
+   "ThreefoldGluing.Data.localProjection",
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1
+   },
+   {}
+  ],
+  [
+   "ThreefoldGluing.Data.gluingCore",
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1
+   },
+   {}
+  ],
+  [
+   "SpecialPeriods.Threefold.Star.Input.transition_some_some_source_eq_empty",
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1
+   },
+   {}
+  ],
+  [
+   "SpecialPeriods.Threefold.Star.Input.transition",
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1
+   },
+   {}
+  ],
+  [
+   "SpecialPeriods.Threefold.Star.Input.transition_some_none",
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1
+   },
+   {}
+  ],
+  [
+   "ThreefoldGluing.Data.inclusion_eq_iff",
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1
+   },
+   {}
+  ],
+  [
+   "ThreefoldGluing.Data.Space",
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1
+   },
+   {}
+  ],
+  [
+   "SpecialPeriods.Threefold.Star.Input.preserves_base",
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1
+   },
+   {}
+  ],
+  [
+   "SpecialPeriods.Threefold.Star.Input.overlap",
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1
+   },
+   {}
+  ],
+  [
+   "SpecialPeriods.Threefold.Star.Input.toBase_preimage_own",
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1
+   },
+   {}
+  ],
+  [
+   "ThreefoldGluing.Data.cocycle",
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1
+   },
+   {}
+  ],
+  [
+   "ThreefoldGluing.Data.gluing",
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1
+   },
+   {}
+  ],
+  [
+   "ThreefoldGluing.Data.representative",
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1
+   },
+   {}
+  ],
+  [
+   "SpecialPeriods.Threefold.Star.Input.filling_preimage_eq_empty",
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1
+   },
+   {}
+  ],
+  [
+   "ThreefoldGluing.Data.projection_continuous",
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1
+   },
+   {}
+  ],
+  [
+   "ThreefoldGluing.Data.toBase_mem",
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1
+   },
+   {}
+  ],
+  [
+   "ThreefoldGluing.Data.transition_inter",
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1
+   },
+   {}
+  ],
+  [
+   "ThreefoldGluing.Data.gluedChart",
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1
+   },
+   {}
+  ],
+  [
+   "ThreefoldGluing.Data.inclusion_range",
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1
+   },
+   {}
+  ],
+  [
+   "SpecialPeriods.Threefold.Star.Input.transition_none_some",
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1
+   },
+   {}
+  ],
+  [
+   "SpecialPeriods.Threefold.Star.Input.patch",
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1
+   },
+   {}
+  ],
+  [
+   "ThreefoldGluing.Data.cover",
+   {
+    "Hopf.Proof.LCP.GlobalAssembly": 1
+   },
+   {}
+  ]
+ ],
+ "auxiliary_moved": 40,
+ "verdict": "FAIL"
+}

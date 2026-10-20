@@ -1,0 +1,406 @@
+{
+ "before": "/home/goblin/.claude/jobs/06995e68/tmp/wave1/dump_head.jsonl",
+ "after": "/home/goblin/.claude/jobs/06995e68/tmp/wave1/relative/dump_after.jsonl",
+ "prefix": "",
+ "constants": [
+  38248,
+  38251
+ ],
+ "lost": [
+  [
+   "FrameField.correctedComplement.eq_1",
+   4055834812,
+   {
+    "Lib.Geometry.Manifold.Immersion.Relative": 1
+   }
+  ],
+  [
+   "LinearFramePaths.matrixCoordinates._proof_1",
+   4097458953,
+   {
+    "Lib.Geometry.Manifold.Immersion.Relative": 1
+   }
+  ],
+  [
+   "LinearFramePaths.matrixCoordinates._proof_10",
+   2518188102,
+   {
+    "Lib.Geometry.Manifold.Immersion.Relative": 1
+   }
+  ],
+  [
+   "LinearFramePaths.matrixCoordinates._proof_11",
+   2478895964,
+   {
+    "Lib.Geometry.Manifold.Immersion.Relative": 1
+   }
+  ],
+  [
+   "LinearFramePaths.matrixCoordinates._proof_12",
+   908635498,
+   {
+    "Lib.Geometry.Manifold.Immersion.Relative": 1
+   }
+  ],
+  [
+   "LinearFramePaths.matrixCoordinates._proof_13",
+   1960294102,
+   {
+    "Lib.Geometry.Manifold.Immersion.Relative": 1
+   }
+  ],
+  [
+   "LinearFramePaths.matrixCoordinates._proof_14",
+   2104510348,
+   {
+    "Lib.Geometry.Manifold.Immersion.Relative": 1
+   }
+  ],
+  [
+   "LinearFramePaths.matrixCoordinates._proof_15",
+   1422682179,
+   {
+    "Lib.Geometry.Manifold.Immersion.Relative": 1
+   }
+  ],
+  [
+   "LinearFramePaths.matrixCoordinates._proof_16",
+   3372672843,
+   {
+    "Lib.Geometry.Manifold.Immersion.Relative": 1
+   }
+  ],
+  [
+   "LinearFramePaths.matrixCoordinates._proof_17",
+   318672172,
+   {
+    "Lib.Geometry.Manifold.Immersion.Relative": 1
+   }
+  ],
+  [
+   "LinearFramePaths.matrixCoordinates._proof_18",
+   2044759301,
+   {
+    "Lib.Geometry.Manifold.Immersion.Relative": 1
+   }
+  ],
+  [
+   "LinearFramePaths.matrixCoordinates._proof_2",
+   1251713775,
+   {
+    "Lib.Geometry.Manifold.Immersion.Relative": 1
+   }
+  ],
+  [
+   "LinearFramePaths.matrixCoordinates._proof_3",
+   1767678328,
+   {
+    "Lib.Geometry.Manifold.Immersion.Relative": 1
+   }
+  ],
+  [
+   "LinearFramePaths.matrixCoordinates._proof_4",
+   792980634,
+   {
+    "Lib.Geometry.Manifold.Immersion.Relative": 1
+   }
+  ],
+  [
+   "LinearFramePaths.matrixCoordinates._proof_5",
+   2863932817,
+   {
+    "Lib.Geometry.Manifold.Immersion.Relative": 1
+   }
+  ],
+  [
+   "LinearFramePaths.matrixCoordinates._proof_6",
+   1638091324,
+   {
+    "Lib.Geometry.Manifold.Immersion.Relative": 1
+   }
+  ],
+  [
+   "LinearFramePaths.matrixCoordinates._proof_7",
+   1137362524,
+   {
+    "Lib.Geometry.Manifold.Immersion.Relative": 1
+   }
+  ],
+  [
+   "LinearFramePaths.matrixCoordinates._proof_8",
+   2914754502,
+   {
+    "Lib.Geometry.Manifold.Immersion.Relative": 1
+   }
+  ],
+  [
+   "LinearFramePaths.matrixCoordinates._proof_9",
+   3802260410,
+   {
+    "Lib.Geometry.Manifold.Immersion.Relative": 1
+   }
+  ],
+  [
+   "LinearFramePaths.operatorComponent._proof_1",
+   979688293,
+   {
+    "Lib.Geometry.Manifold.Immersion.Relative": 1
+   }
+  ]
+ ],
+ "added": [
+  [
+   "FrameField.complementQuotient._proof_2",
+   2159798104,
+   {
+    "Lib.Geometry.Manifold.Immersion.Relative.FrameField": 1
+   }
+  ],
+  [
+   "FrameField.correctedComplement.eq_1",
+   4110852959,
+   {
+    "Lib.Geometry.Manifold.Immersion.Relative.FrameField": 1
+   }
+  ],
+  [
+   "LinearFramePaths.matrixCoordinates._proof_1",
+   458547056,
+   {
+    "Lib.Geometry.Manifold.Immersion.Relative.AxisChart": 1
+   }
+  ],
+  [
+   "LinearFramePaths.matrixCoordinates._proof_10",
+   2914754502,
+   {
+    "Lib.Geometry.Manifold.Immersion.Relative.AxisChart": 1
+   }
+  ],
+  [
+   "LinearFramePaths.matrixCoordinates._proof_11",
+   3434567803,
+   {
+    "Lib.Geometry.Manifold.Immersion.Relative.AxisChart": 1
+   }
+  ],
+  [
+   "LinearFramePaths.matrixCoordinates._proof_12",
+   2518188102,
+   {
+    "Lib.Geometry.Manifold.Immersion.Relative.AxisChart": 1
+   }
+  ],
+  [
+   "LinearFramePaths.matrixCoordinates._proof_13",
+   2478895964,
+   {
+    "Lib.Geometry.Manifold.Immersion.Relative.AxisChart": 1
+   }
+  ],
+  [
+   "LinearFramePaths.matrixCoordinates._proof_14",
+   953505966,
+   {
+    "Lib.Geometry.Manifold.Immersion.Relative.AxisChart": 1
+   }
+  ],
+  [
+   "LinearFramePaths.matrixCoordinates._proof_15",
+   1960294102,
+   {
+    "Lib.Geometry.Manifold.Immersion.Relative.AxisChart": 1
+   }
+  ],
+  [
+   "LinearFramePaths.matrixCoordinates._proof_16",
+   2104510348,
+   {
+    "Lib.Geometry.Manifold.Immersion.Relative.AxisChart": 1
+   }
+  ],
+  [
+   "LinearFramePaths.matrixCoordinates._proof_17",
+   1422682179,
+   {
+    "Lib.Geometry.Manifold.Immersion.Relative.AxisChart": 1
+   }
+  ],
+  [
+   "LinearFramePaths.matrixCoordinates._proof_18",
+   3372672843,
+   {
+    "Lib.Geometry.Manifold.Immersion.Relative.AxisChart": 1
+   }
+  ],
+  [
+   "LinearFramePaths.matrixCoordinates._proof_19",
+   318672172,
+   {
+    "Lib.Geometry.Manifold.Immersion.Relative.AxisChart": 1
+   }
+  ],
+  [
+   "LinearFramePaths.matrixCoordinates._proof_2",
+   4097458953,
+   {
+    "Lib.Geometry.Manifold.Immersion.Relative.AxisChart": 1
+   }
+  ],
+  [
+   "LinearFramePaths.matrixCoordinates._proof_20",
+   2044759301,
+   {
+    "Lib.Geometry.Manifold.Immersion.Relative.AxisChart": 1
+   }
+  ],
+  [
+   "LinearFramePaths.matrixCoordinates._proof_3",
+   1251713775,
+   {
+    "Lib.Geometry.Manifold.Immersion.Relative.AxisChart": 1
+   }
+  ],
+  [
+   "LinearFramePaths.matrixCoordinates._proof_4",
+   2159798104,
+   {
+    "Lib.Geometry.Manifold.Immersion.Relative.AxisChart": 1
+   }
+  ],
+  [
+   "LinearFramePaths.matrixCoordinates._proof_5",
+   3317647320,
+   {
+    "Lib.Geometry.Manifold.Immersion.Relative.AxisChart": 1
+   }
+  ],
+  [
+   "LinearFramePaths.matrixCoordinates._proof_6",
+   792980634,
+   {
+    "Lib.Geometry.Manifold.Immersion.Relative.AxisChart": 1
+   }
+  ],
+  [
+   "LinearFramePaths.matrixCoordinates._proof_7",
+   2863932817,
+   {
+    "Lib.Geometry.Manifold.Immersion.Relative.AxisChart": 1
+   }
+  ],
+  [
+   "LinearFramePaths.matrixCoordinates._proof_8",
+   499891787,
+   {
+    "Lib.Geometry.Manifold.Immersion.Relative.AxisChart": 1
+   }
+  ],
+  [
+   "LinearFramePaths.matrixCoordinates._proof_9",
+   1137362524,
+   {
+    "Lib.Geometry.Manifold.Immersion.Relative.AxisChart": 1
+   }
+  ],
+  [
+   "LinearFramePaths.operatorComponent._proof_1",
+   410642024,
+   {
+    "Lib.Geometry.Manifold.Immersion.Relative.AxisChart": 1
+   }
+  ]
+ ],
+ "changed_type_source": [],
+ "changed_type_proof_naming": [],
+ "changed_type_accepted": [],
+ "added_accepted": [],
+ "accept_without_effect": [],
+ "changed_type_all": [
+  "FrameField.correctedComplement.eq_1",
+  "LinearFramePaths.matrixCoordinates._proof_1",
+  "LinearFramePaths.matrixCoordinates._proof_10",
+  "LinearFramePaths.matrixCoordinates._proof_11",
+  "LinearFramePaths.matrixCoordinates._proof_12",
+  "LinearFramePaths.matrixCoordinates._proof_13",
+  "LinearFramePaths.matrixCoordinates._proof_14",
+  "LinearFramePaths.matrixCoordinates._proof_15",
+  "LinearFramePaths.matrixCoordinates._proof_16",
+  "LinearFramePaths.matrixCoordinates._proof_17",
+  "LinearFramePaths.matrixCoordinates._proof_18",
+  "LinearFramePaths.matrixCoordinates._proof_2",
+  "LinearFramePaths.matrixCoordinates._proof_3",
+  "LinearFramePaths.matrixCoordinates._proof_4",
+  "LinearFramePaths.matrixCoordinates._proof_5",
+  "LinearFramePaths.matrixCoordinates._proof_6",
+  "LinearFramePaths.matrixCoordinates._proof_7",
+  "LinearFramePaths.matrixCoordinates._proof_8",
+  "LinearFramePaths.matrixCoordinates._proof_9",
+  "LinearFramePaths.operatorComponent._proof_1"
+ ],
+ "moves": [
+  [
+   "Lib.Geometry.Manifold.Immersion.Relative",
+   "Lib.Geometry.Manifold.Immersion.Relative.AffinePerturbation",
+   32
+  ],
+  [
+   "Lib.Geometry.Manifold.Immersion.Relative",
+   "Lib.Geometry.Manifold.Immersion.Relative.Arc",
+   13
+  ],
+  [
+   "Lib.Geometry.Manifold.Immersion.Relative",
+   "Lib.Geometry.Manifold.Immersion.Relative.AxisChart",
+   8
+  ],
+  [
+   "Lib.Geometry.Manifold.Immersion.Relative",
+   "Lib.Geometry.Manifold.Immersion.Relative.ChartPerturbation",
+   13
+  ],
+  [
+   "Lib.Geometry.Manifold.Immersion.Relative",
+   "Lib.Geometry.Manifold.Immersion.Relative.Curve",
+   25
+  ],
+  [
+   "Lib.Geometry.Manifold.Immersion.Relative",
+   "Lib.Geometry.Manifold.Immersion.Relative.Embedding",
+   25
+  ],
+  [
+   "Lib.Geometry.Manifold.Immersion.Relative",
+   "Lib.Geometry.Manifold.Immersion.Relative.FrameField",
+   38
+  ],
+  [
+   "Lib.Geometry.Manifold.Immersion.Relative",
+   "Lib.Geometry.Manifold.Immersion.Relative.ImmersionLocus",
+   16
+  ],
+  [
+   "Lib.Geometry.Manifold.Immersion.Relative",
+   "Lib.Geometry.Manifold.Immersion.Relative.Plane",
+   14
+  ],
+  [
+   "Lib.Geometry.Manifold.Immersion.Relative",
+   "Lib.Geometry.Manifold.Immersion.Relative.PointMoving",
+   20
+  ],
+  [
+   "Lib.Geometry.Manifold.Immersion.Relative",
+   "Lib.Geometry.Manifold.Immersion.Relative.TubularNeighborhood",
+   6
+  ],
+  [
+   "Lib.Geometry.Manifold.Immersion.Relative",
+   "Lib.Geometry.Manifold.Immersion.Relative.TwoSheetArc",
+   5
+  ]
+ ],
+ "ambiguous": [],
+ "auxiliary_moved": 59,
+ "verdict": "PASS"
+}

@@ -1,0 +1,247 @@
+{
+ "before": "/home/goblin/.claude/jobs/06995e68/tmp/wave1/dump_head.jsonl",
+ "after": "/home/goblin/.claude/jobs/06995e68/tmp/wave1/morse-d/dump_after.jsonl",
+ "prefix": "",
+ "constants": [
+  38248,
+  38254
+ ],
+ "lost": [
+  [
+   "LocalDegree.NativeNeighborhood.sphereConnecting._proof_1",
+   3757265103,
+   {
+    "Lib.Geometry.Manifold.Morse.SurgeryCollapse": 1
+   }
+  ],
+  [
+   "ManifoldMorse.MorseSurgeryData.indexTwoCollapseCoordinate._proof_1",
+   1801389531,
+   {
+    "Lib.Geometry.Manifold.Morse.SurgeryCollapse": 1
+   }
+  ]
+ ],
+ "added": [
+  [
+   "LocalDegree.NativeNeighborhood.sphereConnecting._proof_1",
+   2096436044,
+   {
+    "Lib.Geometry.Manifold.Morse.SurgeryCollapse.LocalDegreeConnecting": 1
+   }
+  ],
+  [
+   "LocalDegree.NativeNeighborhood.sphereConnecting._proof_2",
+   3757265103,
+   {
+    "Lib.Geometry.Manifold.Morse.SurgeryCollapse.LocalDegreeConnecting": 1
+   }
+  ],
+  [
+   "ManifoldMorse.MorseSurgeryData.indexTwoCollapseCoordinate._proof_1",
+   2096436044,
+   {
+    "Hopf.Proof.Geometry.Manifold.Morse.SurgeryCollapse.MiddlePresentation": 1
+   }
+  ],
+  [
+   "ManifoldMorse.MorseSurgeryData.indexTwoCollapseCoordinate._proof_2",
+   1801389531,
+   {
+    "Hopf.Proof.Geometry.Manifold.Morse.SurgeryCollapse.MiddlePresentation": 1
+   }
+  ],
+  [
+   "ManifoldMorse.MorseSurgeryData.morseConnectingMap._proof_1",
+   2096436044,
+   {
+    "Lib.Geometry.Manifold.Morse.SurgeryCollapse.HandleExactSequence": 1
+   }
+  ],
+  [
+   "OnePointCover.sphereConnecting._proof_1",
+   2096436044,
+   {
+    "Lib.Geometry.Manifold.Morse.SurgeryCollapse.OnePointCover": 1
+   }
+  ],
+  [
+   "SpherePoint.sourceCountMark._proof_1",
+   2096436044,
+   {
+    "Lib.Geometry.Manifold.Morse.SurgeryCollapse.SphereOrientation": 1
+   }
+  ],
+  [
+   "SpherePoint.targetCountMark._proof_1",
+   28464636,
+   {
+    "Lib.Geometry.Manifold.Morse.SurgeryCollapse.SphereOrientation": 1
+   }
+  ]
+ ],
+ "changed_type_source": [],
+ "changed_type_proof_naming": [],
+ "changed_type_accepted": [],
+ "added_accepted": [],
+ "accept_without_effect": [],
+ "changed_type_all": [
+  "LocalDegree.NativeNeighborhood.sphereConnecting._proof_1",
+  "ManifoldMorse.MorseSurgeryData.indexTwoCollapseCoordinate._proof_1"
+ ],
+ "moves": [
+  [
+   "Lib.Geometry.Manifold.Morse.OrderedCancellation",
+   "Hopf.Proof.Geometry.Manifold.Morse.OrderedCancellation.MiddleIndexBlocks",
+   5
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.OrderedCancellation",
+   "Lib.Geometry.Manifold.Morse.OrderedCancellation.BeltTube",
+   15
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.OrderedCancellation",
+   "Lib.Geometry.Manifold.Morse.OrderedCancellation.BirthPreservation",
+   7
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.OrderedCancellation",
+   "Lib.Geometry.Manifold.Morse.OrderedCancellation.CircleParametrization",
+   4
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.OrderedCancellation",
+   "Lib.Geometry.Manifold.Morse.OrderedCancellation.IndexCounts",
+   9
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.OrderedCancellation",
+   "Lib.Geometry.Manifold.Morse.OrderedCancellation.MinimalSystem",
+   3
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.OrderedCancellation",
+   "Lib.Geometry.Manifold.Morse.OrderedCancellation.Negation",
+   6
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.OrderedCancellation",
+   "Lib.Geometry.Manifold.Morse.OrderedCancellation.PairCancellation",
+   8
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.OrderedCancellation",
+   "Lib.Geometry.Manifold.Morse.OrderedCancellation.PathComponents",
+   12
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.OrderedCancellation",
+   "Lib.Geometry.Manifold.Morse.OrderedCancellation.PrescribedFlow",
+   5
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.OrderedCancellation",
+   "Lib.Geometry.Manifold.Morse.OrderedCancellation.TwoSphereDegree",
+   3
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.OrderedCancellation",
+   "Lib.Geometry.Manifold.Morse.OrderedCancellation.ValueExchange",
+   9
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.SurgeryCollapse",
+   "Hopf.Proof.Geometry.Manifold.Morse.SurgeryCollapse.BeltIntersections",
+   7
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.SurgeryCollapse",
+   "Hopf.Proof.Geometry.Manifold.Morse.SurgeryCollapse.MiddleFamilies",
+   6
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.SurgeryCollapse",
+   "Hopf.Proof.Geometry.Manifold.Morse.SurgeryCollapse.MiddlePresentation",
+   16
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.SurgeryCollapse",
+   "Hopf.Proof.Geometry.Manifold.Morse.SurgeryCollapse.OuterIndexMinimal",
+   1
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.SurgeryCollapse",
+   "Lib.Geometry.Manifold.Morse.SurgeryCollapse.BeltTubeMeridian",
+   4
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.SurgeryCollapse",
+   "Lib.Geometry.Manifold.Morse.SurgeryCollapse.CellExactSequence",
+   18
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.SurgeryCollapse",
+   "Lib.Geometry.Manifold.Morse.SurgeryCollapse.DiskCollapse",
+   25
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.SurgeryCollapse",
+   "Lib.Geometry.Manifold.Morse.SurgeryCollapse.DiskFilling",
+   7
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.SurgeryCollapse",
+   "Lib.Geometry.Manifold.Morse.SurgeryCollapse.HandleCollapse",
+   31
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.SurgeryCollapse",
+   "Lib.Geometry.Manifold.Morse.SurgeryCollapse.HandleExactSequence",
+   23
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.SurgeryCollapse",
+   "Lib.Geometry.Manifold.Morse.SurgeryCollapse.IndexOrdering",
+   4
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.SurgeryCollapse",
+   "Lib.Geometry.Manifold.Morse.SurgeryCollapse.LevelIsotopy",
+   4
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.SurgeryCollapse",
+   "Lib.Geometry.Manifold.Morse.SurgeryCollapse.LevelTransport",
+   8
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.SurgeryCollapse",
+   "Lib.Geometry.Manifold.Morse.SurgeryCollapse.LocalDegreeConnecting",
+   22
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.SurgeryCollapse",
+   "Lib.Geometry.Manifold.Morse.SurgeryCollapse.MinimumReduction",
+   6
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.SurgeryCollapse",
+   "Lib.Geometry.Manifold.Morse.SurgeryCollapse.OnePointCover",
+   14
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.SurgeryCollapse",
+   "Lib.Geometry.Manifold.Morse.SurgeryCollapse.PuncturedBall",
+   3
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.SurgeryCollapse",
+   "Lib.Geometry.Manifold.Morse.SurgeryCollapse.SphereOrientation",
+   32
+  ]
+ ],
+ "ambiguous": [],
+ "auxiliary_moved": 198,
+ "verdict": "PASS"
+}

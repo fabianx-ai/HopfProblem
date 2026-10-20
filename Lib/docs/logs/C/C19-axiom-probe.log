@@ -1,0 +1,17 @@
+CMD: lake env lean C19_AxiomProbe.lean
+start 1789321069
+'Mathoverflow1973.SphereHomology.twoOpenCover_pathConnectedSpace' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'Mathoverflow1973.SphereHomology.twoOpenCover_fundamentalGroup_eq_one' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'Mathoverflow1973.SphereHomology.suspensionConeCover' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Mathoverflow1973.ThirdHurewicz.hurewiczLinearEquiv' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Mathoverflow1973.ThirdHurewicz.hurewiczPi3Equiv' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Mathoverflow1973.FourthHurewicz.hurewiczLinearEquiv' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Mathoverflow1973.FourthHurewicz.hurewiczPi4Equiv' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Mathoverflow1973.FifthHurewicz.hurewiczLinearEquiv' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Mathoverflow1973.FifthHurewicz.hurewiczPi5Equiv' depends on axioms: [propext, Classical.choice, Quot.sound]
+exit 0
+end 1789321076

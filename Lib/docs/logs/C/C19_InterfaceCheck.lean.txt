@@ -1,0 +1,62 @@
+import Hopf.Hurewicz
+
+noncomputable section
+
+namespace C19_InterfaceCheck
+
+open Mathoverflow1973
+
+-- The sixteen stock declarations still in `Hopf/Hurewicz.lean` at the
+-- integration-3 head. `@`-checks pin the exact signatures.
+
+/-- FREE: two-open cover with path-connected pieces gives a path-connected space. -/
+def c1 := @SphereHomology.twoOpenCover_pathConnectedSpace
+/-- FREE: van Kampen cover with simply connected pieces gives trivial pi_1. -/
+def c2 := @SphereHomology.twoOpenCover_fundamentalGroup_eq_one
+/-- FREE: the canonical two-open cover of a suspension. -/
+def c3 := @SphereHomology.suspensionConeCover
+/-- FREE: Hurewicz equivalence pinned at degree 3. -/
+def c4 := @ThirdHurewicz.hurewiczLinearEquiv
+/-- FREE: multiplicative repackaging at degree 3. -/
+def c5 := @ThirdHurewicz.hurewiczPi3Equiv
+/-- FREE: Hurewicz equivalence pinned at degree 4. -/
+def c6 := @FourthHurewicz.hurewiczLinearEquiv
+/-- FREE: multiplicative repackaging at degree 4. -/
+def c7 := @FourthHurewicz.hurewiczPi4Equiv
+/-- FREE: Hurewicz equivalence pinned at degree 5. -/
+def c8 := @FifthHurewicz.hurewiczLinearEquiv
+/-- FREE: multiplicative repackaging at degree 5. -/
+def c9 := @FifthHurewicz.hurewiczPi5Equiv
+/-- CHARGED: the project's pinned six-sphere model. -/
+def c10 := @SixSphereCube.StandardSphere
+/-- CHARGED: R^6 one-point compactification identifies with the six-sphere. -/
+def c11 := @SixSphereCube.euclideanOnePointSphereHomeomorph
+/-- CHARGED: the project basepoint on the six-sphere. -/
+def c12 := @SixSphereCube.sphereBasePoint
+/-- CHARGED: pi_2 of the six-sphere is trivial. -/
+def c13 := @Sphere.piTwo_subsingleton
+/-- CHARGED: pi_3 of the six-sphere is trivial. -/
+def c14 := @Sphere.piThree_subsingleton
+/-- CHARGED: pi_4 of the six-sphere is trivial. -/
+def c15 := @Sphere.piFour_subsingleton
+/-- CHARGED: pi_5 of the six-sphere is trivial. -/
+def c16 := @Sphere.piFive_subsingleton
+
+#check c1
+#check c2
+#check c3
+#check c4
+#check c5
+#check c6
+#check c7
+#check c8
+#check c9
+#check c10
+#check c11
+#check c12
+#check c13
+#check c14
+#check c15
+#check c16
+
+end C19_InterfaceCheck

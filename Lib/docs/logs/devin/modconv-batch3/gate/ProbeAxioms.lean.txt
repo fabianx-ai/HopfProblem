@@ -1,0 +1,5 @@
+import Hopf.Recognition
+import Lib.Analysis.Calculus.MorseLemma
+
+#print axioms Mathoverflow1973.homeomorphic_sixSphere_of_homotopySixSphere
+#print axioms Mathoverflow1973.SmoothMorseLemma.exists_signed_morse_chart_of_contDiffOn

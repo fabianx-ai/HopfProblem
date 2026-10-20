@@ -1,0 +1,1433 @@
+{
+ "before": "../dump_head.jsonl",
+ "after": "dump_after.jsonl",
+ "prefix": "",
+ "constants": [
+  38248,
+  38267
+ ],
+ "lost": [
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.basedEdgePath._proof_1",
+   1785502152,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.basedEdgePath._proof_2",
+   137656284,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.basedTriangleCycle._proof_1",
+   4205808816,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.basedTrianglesHomotopy_of_faces._proof_2",
+   1250168214,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.basedTrianglesHomotopy_of_faces._proof_3",
+   3772832479,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.basedTrianglesHomotopy_of_faces._proof_4",
+   3372039359,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.bottomProductDegenerate.eq_1",
+   600068511,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.edgeStraighteningHomotopy._proof_1",
+   1320203781,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.edgeStraighteningHomotopy._proof_2",
+   3725989975,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.edgeStraighteningHomotopy.eq_1",
+   1424306941,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.gluedTriangleHomotopy._proof_1",
+   1810973802,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.gluedTriangleHomotopy._proof_2",
+   3757567331,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.gluedTriangleHomotopy._proof_3",
+   1307716221,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.gluedTriangleHomotopyMap._proof_1",
+   778258193,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.hurewiczPi2Equiv._proof_1",
+   4019860423,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.hurewiczPi2Equiv._proof_2",
+   3685264617,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.hurewiczPi2Equiv._proof_3",
+   3375359379,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.leftProductDegenerate.eq_1",
+   1821419953,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.lowerProductTriangle.eq_1",
+   728481985,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.lowerSquareTriangle_outerFace",
+   1270476586,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.productSquareChain_four_triangles._abel_1_3",
+   3527063956,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.quarterTurn._proof_1",
+   4035993764,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.rotationCentered.eq_1",
+   222644973,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.simplexPrism.eq_1",
+   2501862445,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.squareTriangles_diagonal",
+   2422672512,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.straightenedTwoCycle._proof_1",
+   639069101,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.subdivisionLowerProductMap._proof_1",
+   3408976143,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.subdivisionLowerProductMap.eq_1",
+   3613511969,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.subdivisionLowerSquareTriangle_based",
+   3397367119,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.subdivisionLowerTriangleMap._proof_2",
+   1441084204,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.subdivisionLowerTriangleMap.eq_1",
+   4239249729,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.subdivisionUpperConeMap._proof_1",
+   3061419314,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.subdivisionUpperConeMap.eq_1",
+   2969245419,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.subdivisionUpperNegativeMap._proof_1",
+   984858144,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.subdivisionUpperNegativeMap.eq_1",
+   542937731,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.subdivisionUpperNegativeReversedMap._proof_1",
+   3294804829,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.subdivisionUpperNegativeReversedMap.eq_1",
+   3313075028,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.subdivisionUpperNegativeSquareTriangle_based",
+   288581926,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.subdivisionUpperPositiveSquareTriangle.eq_1",
+   1554591518,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.subdivisionUpperPositiveSquareTriangle_based",
+   1004228009,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.subdivisionUpperProductMap._proof_1",
+   3346518133,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.subdivisionUpperProductMap.eq_1",
+   1829775686,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.subdivisionUpperTriangleMap._proof_1",
+   73688279,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.subdivisionUpperTriangleMap.eq_1",
+   217424556,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.subdivisionWarpCoordinate._proof_2",
+   2442915563,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.subdivisionWarpCoordinate.eq_1",
+   1576636581,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.subdivisionWarpMap._proof_1",
+   779078459,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.subdivisionWarpMap.eq_1",
+   145284800,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.tetrahedronQuadrilateralA._proof_1",
+   2342206144,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.tetrahedronQuadrilateralA._proof_2",
+   3237678119,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.tetrahedronQuadrilateralA.eq_1",
+   132560859,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.tetrahedronSimplexBlendMap",
+   2733494787,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.tetrahedronSimplexBlendMap._proof_1",
+   429816409,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.tetrahedronSimplexBlendMap._proof_2",
+   2485303369,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.triangleCubeQuotient._proof_1",
+   2307902640,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.upperProductTriangle.eq_1",
+   1728566766,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.upperSquareTriangle_outerFace",
+   2869357885,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.vertexNormalizedTwoCycle._proof_1",
+   3062302807,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator": 1
+   }
+  ],
+  [
+   "Hurewicz.homotopyTrans_compContinuousMap",
+   2465953690,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator": 1
+   }
+  ],
+  [
+   "Hurewicz.homotopyTrans_congr",
+   525357237,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator": 1
+   }
+  ],
+  [
+   "Hurewicz.homotopyTrans_const",
+   1015205991,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator": 1
+   }
+  ],
+  [
+   "SecondHurewicz.SimplyConnected.bottomProductDegenerate.eq_1",
+   600068511,
+   {
+    "Hopf.LibShims": 1
+   }
+  ],
+  [
+   "SecondHurewicz.SimplyConnected.edgeStraighteningHomotopy.eq_1",
+   1424306941,
+   {
+    "Hopf.LibShims": 1
+   }
+  ],
+  [
+   "SecondHurewicz.SimplyConnected.leftProductDegenerate.eq_1",
+   1821419953,
+   {
+    "Hopf.LibShims": 1
+   }
+  ],
+  [
+   "SecondHurewicz.SimplyConnected.lowerProductTriangle.eq_1",
+   728481985,
+   {
+    "Hopf.LibShims": 1
+   }
+  ],
+  [
+   "SecondHurewicz.SimplyConnected.rotationCentered.eq_1",
+   222644973,
+   {
+    "Hopf.LibShims": 1
+   }
+  ],
+  [
+   "SecondHurewicz.SimplyConnected.subdivisionLowerProductMap.eq_1",
+   3613511969,
+   {
+    "Hopf.LibShims": 1
+   }
+  ],
+  [
+   "SecondHurewicz.SimplyConnected.subdivisionLowerTriangleMap.eq_1",
+   4239249729,
+   {
+    "Hopf.LibShims": 1
+   }
+  ],
+  [
+   "SecondHurewicz.SimplyConnected.subdivisionUpperConeMap.eq_1",
+   2969245419,
+   {
+    "Hopf.LibShims": 1
+   }
+  ],
+  [
+   "SecondHurewicz.SimplyConnected.subdivisionUpperNegativeMap.eq_1",
+   542937731,
+   {
+    "Hopf.LibShims": 1
+   }
+  ],
+  [
+   "SecondHurewicz.SimplyConnected.subdivisionUpperNegativeReversedMap.eq_1",
+   3313075028,
+   {
+    "Hopf.LibShims": 1
+   }
+  ],
+  [
+   "SecondHurewicz.SimplyConnected.subdivisionUpperPositiveSquareTriangle.eq_1",
+   1554591518,
+   {
+    "Hopf.LibShims": 1
+   }
+  ],
+  [
+   "SecondHurewicz.SimplyConnected.subdivisionUpperProductMap.eq_1",
+   1829775686,
+   {
+    "Hopf.LibShims": 1
+   }
+  ],
+  [
+   "SecondHurewicz.SimplyConnected.subdivisionUpperTriangleMap.eq_1",
+   217424556,
+   {
+    "Hopf.LibShims": 1
+   }
+  ],
+  [
+   "SecondHurewicz.SimplyConnected.subdivisionWarpCoordinate.eq_1",
+   1576636581,
+   {
+    "Hopf.LibShims": 1
+   }
+  ],
+  [
+   "SecondHurewicz.SimplyConnected.subdivisionWarpMap.eq_1",
+   145284800,
+   {
+    "Hopf.LibShims": 1
+   }
+  ],
+  [
+   "SecondHurewicz.SimplyConnected.tetrahedronQuadrilateralA.eq_1",
+   132560859,
+   {
+    "Hopf.LibShims": 1
+   }
+  ],
+  [
+   "SecondHurewicz.SimplyConnected.upperProductTriangle.eq_1",
+   1728566766,
+   {
+    "Hopf.LibShims": 1
+   }
+  ]
+ ],
+ "added": [
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.basedEdgePath._proof_1",
+   29803911,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator.VertexEdgeStraightening": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.basedEdgePath._proof_2",
+   198484479,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator.VertexEdgeStraightening": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.basedEdgePath._proof_3",
+   2314487529,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator.VertexEdgeStraightening": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.basedTriangleCycle._proof_1",
+   1635492264,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator.HurewiczInverse": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.basedTriangleCycle._proof_2",
+   2565146257,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator.HurewiczInverse": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.basedTrianglesHomotopy_of_faces._proof_2",
+   1651744395,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator.NormalizedSquare": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.basedTrianglesHomotopy_of_faces._proof_3",
+   3105997277,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator.NormalizedSquare": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.basedTrianglesHomotopy_of_faces._proof_4",
+   825888971,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator.NormalizedSquare": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.bottomProductDegenerate.eq_1",
+   3985841653,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator.TwoTriangles": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.edgeStraighteningHomotopy._proof_1",
+   3297861718,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator.VertexEdgeStraightening": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.edgeStraighteningHomotopy._proof_2",
+   793248439,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator.VertexEdgeStraightening": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.edgeStraighteningHomotopy.eq_1",
+   1240637916,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator.VertexEdgeStraightening": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.gluedTriangleHomotopy._proof_1",
+   3686155482,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator.NormalizedSquare": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.gluedTriangleHomotopy._proof_2",
+   2578474810,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator.NormalizedSquare": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.gluedTriangleHomotopy._proof_3",
+   4165349324,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator.NormalizedSquare": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.gluedTriangleHomotopyMap._proof_1",
+   518125532,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator.NormalizedSquare": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.gluedTriangleHomotopyMap._proof_2",
+   29803911,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator.NormalizedSquare": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.gluedTriangleHomotopyMap._proof_3",
+   36777443,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator.NormalizedSquare": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.hurewiczPi2Equiv._proof_1",
+   3919561693,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator.DegreeTwo": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.hurewiczPi2Equiv._proof_2",
+   1838234707,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator.DegreeTwo": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.hurewiczPi2Equiv._proof_3",
+   2954972231,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator.DegreeTwo": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.hurewiczPi2Equiv._proof_4",
+   3314775264,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator.DegreeTwo": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.leftProductDegenerate.eq_1",
+   2841492300,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator.TwoTriangles": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.lowerProductTriangle._proof_1",
+   29803911,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator.TwoTriangles": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.lowerProductTriangle.eq_1",
+   2161378975,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator.TwoTriangles": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.lowerSquareTriangle_outerFace",
+   2339093418,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator.NormalizedSquare": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.productSquareChain_four_triangles._abel_1_2",
+   3527063956,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator.TwoTriangles": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.quarterTurn._proof_1",
+   29803911,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator.SquareRotation": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.quarterTurn._proof_2",
+   3423264737,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator.SquareRotation": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.rotationCentered.eq_1",
+   3783010898,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator.SquareRotation": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.secondHomologyDesc._proof_1",
+   2096436044,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator.HurewiczInverse": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.squareTriangles_diagonal",
+   464812562,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator.NormalizedSquare": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.subdivisionLowerProductMap._proof_1",
+   29803911,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator.SquareSubdivision": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.subdivisionLowerProductMap._proof_2",
+   2143322266,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator.SquareSubdivision": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.subdivisionLowerProductMap.eq_1",
+   1413838508,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator.SquareSubdivision": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.subdivisionLowerSquareTriangle_based",
+   2230439070,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator.SubdivisionTriangleClass": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.subdivisionLowerTriangleMap._proof_2",
+   2760865979,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator.SquareSubdivision": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.subdivisionLowerTriangleMap.eq_1",
+   1752094135,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator.SquareSubdivision": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.subdivisionUpperConeMap._proof_1",
+   3120029086,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator.SquareSubdivision": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.subdivisionUpperConeMap.eq_1",
+   1885229535,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator.SquareSubdivision": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.subdivisionUpperNegativeMap._proof_1",
+   2910392277,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator.SubdivisionTriangleClass": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.subdivisionUpperNegativeMap._proof_2",
+   138656239,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator.SubdivisionTriangleClass": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.subdivisionUpperNegativeMap.eq_1",
+   4192957062,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator.SubdivisionTriangleClass": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.subdivisionUpperNegativeReversedMap._proof_1",
+   2663043067,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator.SubdivisionTriangleClass": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.subdivisionUpperNegativeReversedMap.eq_1",
+   3181547491,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator.SubdivisionTriangleClass": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.subdivisionUpperNegativeSquareTriangle_based",
+   2098125853,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator.SubdivisionTriangleClass": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.subdivisionUpperPositiveSquareTriangle._proof_1",
+   29803911,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator.SubdivisionTriangleClass": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.subdivisionUpperPositiveSquareTriangle.eq_1",
+   1980604441,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator.SubdivisionTriangleClass": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.subdivisionUpperPositiveSquareTriangle_based",
+   1923200059,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator.SubdivisionTriangleClass": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.subdivisionUpperProductMap._proof_1",
+   662028853,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator.SquareSubdivision": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.subdivisionUpperProductMap.eq_1",
+   2672264511,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator.SquareSubdivision": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.subdivisionUpperTriangleMap._proof_1",
+   1466779811,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator.SquareSubdivision": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.subdivisionUpperTriangleMap.eq_1",
+   64658413,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator.SquareSubdivision": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.subdivisionWarpCoordinate._proof_2",
+   2547959801,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator.SquareSubdivision": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.subdivisionWarpCoordinate._proof_3",
+   1561031451,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator.SquareSubdivision": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.subdivisionWarpCoordinate.eq_1",
+   3921709605,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator.SquareSubdivision": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.subdivisionWarpMap._proof_1",
+   1208323697,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator.SquareSubdivision": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.subdivisionWarpMap.eq_1",
+   293208256,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator.SquareSubdivision": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.tetrahedronQuadrilateralA._proof_1",
+   29803911,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator.BasedTetrahedron": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.tetrahedronQuadrilateralA._proof_2",
+   3522528163,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator.BasedTetrahedron": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.tetrahedronQuadrilateralA._proof_3",
+   1616695616,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator.BasedTetrahedron": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.tetrahedronQuadrilateralA.eq_1",
+   3205553058,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator.BasedTetrahedron": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.tetrahedronSimplexBlendMap",
+   2701296840,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator.BasedTetrahedron": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.tetrahedronSimplexBlendMap._proof_1",
+   2256617786,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator.BasedTetrahedron": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.tetrahedronSimplexBlendMap._proof_2",
+   3594464993,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator.BasedTetrahedron": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.triangleClassOperator._proof_1",
+   2396439088,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator.HurewiczInverse": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.triangleCubeQuotient._proof_1",
+   29803911,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator.BasedTriangle": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.triangleCubeQuotient._proof_2",
+   2858726212,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator.BasedTriangle": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.upperProductTriangle.eq_1",
+   155084500,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator.TwoTriangles": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.upperSquareTriangle_outerFace",
+   2930714629,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator.NormalizedSquare": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.vertexNormalizedTwoCycle._proof_1",
+   1635492264,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator.BasedTriangle": 1
+   }
+  ],
+  [
+   "Hurewicz.DegreeTwo.SimplyConnected.vertexNormalizedTwoCycle._proof_2",
+   3062302807,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator.BasedTriangle": 1
+   }
+  ],
+  [
+   "Hurewicz.Prism.prismOperator._proof_1",
+   2096436044,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator.Basic": 1
+   }
+  ],
+  [
+   "Hurewicz.Prism.simplexPrism.eq_1",
+   2501862445,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator.Basic": 1
+   }
+  ],
+  [
+   "Hurewicz.Prism.straightenedTwoCycle._proof_1",
+   1635492264,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator.Basic": 1
+   }
+  ],
+  [
+   "Hurewicz.Prism.straightenedTwoCycle._proof_2",
+   54894488,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator.Basic": 1
+   }
+  ],
+  [
+   "Hurewicz.degreeTwoLinearEquiv._proof_1",
+   2396439088,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator.DegreeTwo": 1
+   }
+  ],
+  [
+   "Hurewicz.homotopyTrans_compContinuousMap",
+   1035699703,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator.ComposeHomotopies": 1
+   }
+  ],
+  [
+   "Hurewicz.homotopyTrans_congr",
+   3057228831,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator.ComposeHomotopies": 1
+   }
+  ],
+  [
+   "Hurewicz.homotopyTrans_const",
+   978681661,
+   {
+    "Lib.AlgebraicTopology.Hurewicz.PrismOperator.ComposeHomotopies": 1
+   }
+  ],
+  [
+   "SecondHurewicz.SimplyConnected.bottomProductDegenerate.eq_1",
+   3985841653,
+   {
+    "Hopf.LibShims": 1
+   }
+  ],
+  [
+   "SecondHurewicz.SimplyConnected.edgeStraighteningHomotopy.eq_1",
+   1240637916,
+   {
+    "Hopf.LibShims": 1
+   }
+  ],
+  [
+   "SecondHurewicz.SimplyConnected.leftProductDegenerate.eq_1",
+   2841492300,
+   {
+    "Hopf.LibShims": 1
+   }
+  ],
+  [
+   "SecondHurewicz.SimplyConnected.lowerProductTriangle.eq_1",
+   2161378975,
+   {
+    "Hopf.LibShims": 1
+   }
+  ],
+  [
+   "SecondHurewicz.SimplyConnected.rotationCentered.eq_1",
+   3783010898,
+   {
+    "Hopf.LibShims": 1
+   }
+  ],
+  [
+   "SecondHurewicz.SimplyConnected.subdivisionLowerProductMap.eq_1",
+   1413838508,
+   {
+    "Hopf.LibShims": 1
+   }
+  ],
+  [
+   "SecondHurewicz.SimplyConnected.subdivisionLowerTriangleMap.eq_1",
+   1752094135,
+   {
+    "Hopf.LibShims": 1
+   }
+  ],
+  [
+   "SecondHurewicz.SimplyConnected.subdivisionUpperConeMap.eq_1",
+   1885229535,
+   {
+    "Hopf.LibShims": 1
+   }
+  ],
+  [
+   "SecondHurewicz.SimplyConnected.subdivisionUpperNegativeMap.eq_1",
+   4192957062,
+   {
+    "Hopf.LibShims": 1
+   }
+  ],
+  [
+   "SecondHurewicz.SimplyConnected.subdivisionUpperNegativeReversedMap.eq_1",
+   3181547491,
+   {
+    "Hopf.LibShims": 1
+   }
+  ],
+  [
+   "SecondHurewicz.SimplyConnected.subdivisionUpperPositiveSquareTriangle.eq_1",
+   1980604441,
+   {
+    "Hopf.LibShims": 1
+   }
+  ],
+  [
+   "SecondHurewicz.SimplyConnected.subdivisionUpperProductMap.eq_1",
+   2672264511,
+   {
+    "Hopf.LibShims": 1
+   }
+  ],
+  [
+   "SecondHurewicz.SimplyConnected.subdivisionUpperTriangleMap.eq_1",
+   64658413,
+   {
+    "Hopf.LibShims": 1
+   }
+  ],
+  [
+   "SecondHurewicz.SimplyConnected.subdivisionWarpCoordinate.eq_1",
+   3921709605,
+   {
+    "Hopf.LibShims": 1
+   }
+  ],
+  [
+   "SecondHurewicz.SimplyConnected.subdivisionWarpMap.eq_1",
+   293208256,
+   {
+    "Hopf.LibShims": 1
+   }
+  ],
+  [
+   "SecondHurewicz.SimplyConnected.tetrahedronQuadrilateralA.eq_1",
+   3205553058,
+   {
+    "Hopf.LibShims": 1
+   }
+  ],
+  [
+   "SecondHurewicz.SimplyConnected.upperProductTriangle.eq_1",
+   155084500,
+   {
+    "Hopf.LibShims": 1
+   }
+  ]
+ ],
+ "changed_type_source": [],
+ "changed_type_proof_naming": [
+  "Hurewicz.DegreeTwo.SimplyConnected.lowerSquareTriangle_outerFace",
+  "Hurewicz.DegreeTwo.SimplyConnected.squareTriangles_diagonal",
+  "Hurewicz.DegreeTwo.SimplyConnected.subdivisionLowerSquareTriangle_based",
+  "Hurewicz.DegreeTwo.SimplyConnected.subdivisionUpperNegativeSquareTriangle_based",
+  "Hurewicz.DegreeTwo.SimplyConnected.subdivisionUpperPositiveSquareTriangle_based",
+  "Hurewicz.DegreeTwo.SimplyConnected.tetrahedronSimplexBlendMap",
+  "Hurewicz.DegreeTwo.SimplyConnected.upperSquareTriangle_outerFace",
+  "Hurewicz.homotopyTrans_compContinuousMap",
+  "Hurewicz.homotopyTrans_congr",
+  "Hurewicz.homotopyTrans_const",
+  "SecondHurewicz.SimplyConnected.bottomProductDegenerate.eq_1",
+  "SecondHurewicz.SimplyConnected.edgeStraighteningHomotopy.eq_1",
+  "SecondHurewicz.SimplyConnected.leftProductDegenerate.eq_1",
+  "SecondHurewicz.SimplyConnected.lowerProductTriangle.eq_1",
+  "SecondHurewicz.SimplyConnected.rotationCentered.eq_1",
+  "SecondHurewicz.SimplyConnected.subdivisionLowerProductMap.eq_1",
+  "SecondHurewicz.SimplyConnected.subdivisionLowerTriangleMap.eq_1",
+  "SecondHurewicz.SimplyConnected.subdivisionUpperConeMap.eq_1",
+  "SecondHurewicz.SimplyConnected.subdivisionUpperNegativeMap.eq_1",
+  "SecondHurewicz.SimplyConnected.subdivisionUpperNegativeReversedMap.eq_1",
+  "SecondHurewicz.SimplyConnected.subdivisionUpperPositiveSquareTriangle.eq_1",
+  "SecondHurewicz.SimplyConnected.subdivisionUpperProductMap.eq_1",
+  "SecondHurewicz.SimplyConnected.subdivisionUpperTriangleMap.eq_1",
+  "SecondHurewicz.SimplyConnected.subdivisionWarpCoordinate.eq_1",
+  "SecondHurewicz.SimplyConnected.subdivisionWarpMap.eq_1",
+  "SecondHurewicz.SimplyConnected.tetrahedronQuadrilateralA.eq_1",
+  "SecondHurewicz.SimplyConnected.upperProductTriangle.eq_1"
+ ],
+ "changed_type_accepted": [],
+ "added_accepted": [],
+ "accept_without_effect": [],
+ "changed_type_all": [
+  "Hurewicz.DegreeTwo.SimplyConnected.basedEdgePath._proof_1",
+  "Hurewicz.DegreeTwo.SimplyConnected.basedEdgePath._proof_2",
+  "Hurewicz.DegreeTwo.SimplyConnected.basedTriangleCycle._proof_1",
+  "Hurewicz.DegreeTwo.SimplyConnected.basedTrianglesHomotopy_of_faces._proof_2",
+  "Hurewicz.DegreeTwo.SimplyConnected.basedTrianglesHomotopy_of_faces._proof_3",
+  "Hurewicz.DegreeTwo.SimplyConnected.basedTrianglesHomotopy_of_faces._proof_4",
+  "Hurewicz.DegreeTwo.SimplyConnected.bottomProductDegenerate.eq_1",
+  "Hurewicz.DegreeTwo.SimplyConnected.edgeStraighteningHomotopy._proof_1",
+  "Hurewicz.DegreeTwo.SimplyConnected.edgeStraighteningHomotopy._proof_2",
+  "Hurewicz.DegreeTwo.SimplyConnected.edgeStraighteningHomotopy.eq_1",
+  "Hurewicz.DegreeTwo.SimplyConnected.gluedTriangleHomotopy._proof_1",
+  "Hurewicz.DegreeTwo.SimplyConnected.gluedTriangleHomotopy._proof_2",
+  "Hurewicz.DegreeTwo.SimplyConnected.gluedTriangleHomotopy._proof_3",
+  "Hurewicz.DegreeTwo.SimplyConnected.gluedTriangleHomotopyMap._proof_1",
+  "Hurewicz.DegreeTwo.SimplyConnected.hurewiczPi2Equiv._proof_1",
+  "Hurewicz.DegreeTwo.SimplyConnected.hurewiczPi2Equiv._proof_2",
+  "Hurewicz.DegreeTwo.SimplyConnected.hurewiczPi2Equiv._proof_3",
+  "Hurewicz.DegreeTwo.SimplyConnected.leftProductDegenerate.eq_1",
+  "Hurewicz.DegreeTwo.SimplyConnected.lowerProductTriangle.eq_1",
+  "Hurewicz.DegreeTwo.SimplyConnected.lowerSquareTriangle_outerFace",
+  "Hurewicz.DegreeTwo.SimplyConnected.quarterTurn._proof_1",
+  "Hurewicz.DegreeTwo.SimplyConnected.rotationCentered.eq_1",
+  "Hurewicz.DegreeTwo.SimplyConnected.squareTriangles_diagonal",
+  "Hurewicz.DegreeTwo.SimplyConnected.subdivisionLowerProductMap._proof_1",
+  "Hurewicz.DegreeTwo.SimplyConnected.subdivisionLowerProductMap.eq_1",
+  "Hurewicz.DegreeTwo.SimplyConnected.subdivisionLowerSquareTriangle_based",
+  "Hurewicz.DegreeTwo.SimplyConnected.subdivisionLowerTriangleMap._proof_2",
+  "Hurewicz.DegreeTwo.SimplyConnected.subdivisionLowerTriangleMap.eq_1",
+  "Hurewicz.DegreeTwo.SimplyConnected.subdivisionUpperConeMap._proof_1",
+  "Hurewicz.DegreeTwo.SimplyConnected.subdivisionUpperConeMap.eq_1",
+  "Hurewicz.DegreeTwo.SimplyConnected.subdivisionUpperNegativeMap._proof_1",
+  "Hurewicz.DegreeTwo.SimplyConnected.subdivisionUpperNegativeMap.eq_1",
+  "Hurewicz.DegreeTwo.SimplyConnected.subdivisionUpperNegativeReversedMap._proof_1",
+  "Hurewicz.DegreeTwo.SimplyConnected.subdivisionUpperNegativeReversedMap.eq_1",
+  "Hurewicz.DegreeTwo.SimplyConnected.subdivisionUpperNegativeSquareTriangle_based",
+  "Hurewicz.DegreeTwo.SimplyConnected.subdivisionUpperPositiveSquareTriangle.eq_1",
+  "Hurewicz.DegreeTwo.SimplyConnected.subdivisionUpperPositiveSquareTriangle_based",
+  "Hurewicz.DegreeTwo.SimplyConnected.subdivisionUpperProductMap._proof_1",
+  "Hurewicz.DegreeTwo.SimplyConnected.subdivisionUpperProductMap.eq_1",
+  "Hurewicz.DegreeTwo.SimplyConnected.subdivisionUpperTriangleMap._proof_1",
+  "Hurewicz.DegreeTwo.SimplyConnected.subdivisionUpperTriangleMap.eq_1",
+  "Hurewicz.DegreeTwo.SimplyConnected.subdivisionWarpCoordinate._proof_2",
+  "Hurewicz.DegreeTwo.SimplyConnected.subdivisionWarpCoordinate.eq_1",
+  "Hurewicz.DegreeTwo.SimplyConnected.subdivisionWarpMap._proof_1",
+  "Hurewicz.DegreeTwo.SimplyConnected.subdivisionWarpMap.eq_1",
+  "Hurewicz.DegreeTwo.SimplyConnected.tetrahedronQuadrilateralA._proof_1",
+  "Hurewicz.DegreeTwo.SimplyConnected.tetrahedronQuadrilateralA._proof_2",
+  "Hurewicz.DegreeTwo.SimplyConnected.tetrahedronQuadrilateralA.eq_1",
+  "Hurewicz.DegreeTwo.SimplyConnected.tetrahedronSimplexBlendMap",
+  "Hurewicz.DegreeTwo.SimplyConnected.tetrahedronSimplexBlendMap._proof_1",
+  "Hurewicz.DegreeTwo.SimplyConnected.tetrahedronSimplexBlendMap._proof_2",
+  "Hurewicz.DegreeTwo.SimplyConnected.triangleCubeQuotient._proof_1",
+  "Hurewicz.DegreeTwo.SimplyConnected.upperProductTriangle.eq_1",
+  "Hurewicz.DegreeTwo.SimplyConnected.upperSquareTriangle_outerFace",
+  "Hurewicz.DegreeTwo.SimplyConnected.vertexNormalizedTwoCycle._proof_1",
+  "Hurewicz.homotopyTrans_compContinuousMap",
+  "Hurewicz.homotopyTrans_congr",
+  "Hurewicz.homotopyTrans_const",
+  "SecondHurewicz.SimplyConnected.bottomProductDegenerate.eq_1",
+  "SecondHurewicz.SimplyConnected.edgeStraighteningHomotopy.eq_1",
+  "SecondHurewicz.SimplyConnected.leftProductDegenerate.eq_1",
+  "SecondHurewicz.SimplyConnected.lowerProductTriangle.eq_1",
+  "SecondHurewicz.SimplyConnected.rotationCentered.eq_1",
+  "SecondHurewicz.SimplyConnected.subdivisionLowerProductMap.eq_1",
+  "SecondHurewicz.SimplyConnected.subdivisionLowerTriangleMap.eq_1",
+  "SecondHurewicz.SimplyConnected.subdivisionUpperConeMap.eq_1",
+  "SecondHurewicz.SimplyConnected.subdivisionUpperNegativeMap.eq_1",
+  "SecondHurewicz.SimplyConnected.subdivisionUpperNegativeReversedMap.eq_1",
+  "SecondHurewicz.SimplyConnected.subdivisionUpperPositiveSquareTriangle.eq_1",
+  "SecondHurewicz.SimplyConnected.subdivisionUpperProductMap.eq_1",
+  "SecondHurewicz.SimplyConnected.subdivisionUpperTriangleMap.eq_1",
+  "SecondHurewicz.SimplyConnected.subdivisionWarpCoordinate.eq_1",
+  "SecondHurewicz.SimplyConnected.subdivisionWarpMap.eq_1",
+  "SecondHurewicz.SimplyConnected.tetrahedronQuadrilateralA.eq_1",
+  "SecondHurewicz.SimplyConnected.upperProductTriangle.eq_1"
+ ],
+ "moves": [
+  [
+   "Lib.AlgebraicTopology.Hurewicz.PrismOperator",
+   "Lib.AlgebraicTopology.Hurewicz.PrismOperator.BasedTetrahedron",
+   37
+  ],
+  [
+   "Lib.AlgebraicTopology.Hurewicz.PrismOperator",
+   "Lib.AlgebraicTopology.Hurewicz.PrismOperator.BasedTriangle",
+   38
+  ],
+  [
+   "Lib.AlgebraicTopology.Hurewicz.PrismOperator",
+   "Lib.AlgebraicTopology.Hurewicz.PrismOperator.Basic",
+   20
+  ],
+  [
+   "Lib.AlgebraicTopology.Hurewicz.PrismOperator",
+   "Lib.AlgebraicTopology.Hurewicz.PrismOperator.ComposeHomotopies",
+   11
+  ],
+  [
+   "Lib.AlgebraicTopology.Hurewicz.PrismOperator",
+   "Lib.AlgebraicTopology.Hurewicz.PrismOperator.CrossProductPoint",
+   4
+  ],
+  [
+   "Lib.AlgebraicTopology.Hurewicz.PrismOperator",
+   "Lib.AlgebraicTopology.Hurewicz.PrismOperator.DegreeTwo",
+   2
+  ],
+  [
+   "Lib.AlgebraicTopology.Hurewicz.PrismOperator",
+   "Lib.AlgebraicTopology.Hurewicz.PrismOperator.HurewiczInverse",
+   25
+  ],
+  [
+   "Lib.AlgebraicTopology.Hurewicz.PrismOperator",
+   "Lib.AlgebraicTopology.Hurewicz.PrismOperator.HurewiczMap",
+   52
+  ],
+  [
+   "Lib.AlgebraicTopology.Hurewicz.PrismOperator",
+   "Lib.AlgebraicTopology.Hurewicz.PrismOperator.MapGenLoop",
+   5
+  ],
+  [
+   "Lib.AlgebraicTopology.Hurewicz.PrismOperator",
+   "Lib.AlgebraicTopology.Hurewicz.PrismOperator.NormalizedSquare",
+   30
+  ],
+  [
+   "Lib.AlgebraicTopology.Hurewicz.PrismOperator",
+   "Lib.AlgebraicTopology.Hurewicz.PrismOperator.SquareRotation",
+   36
+  ],
+  [
+   "Lib.AlgebraicTopology.Hurewicz.PrismOperator",
+   "Lib.AlgebraicTopology.Hurewicz.PrismOperator.SquareSubdivision",
+   58
+  ],
+  [
+   "Lib.AlgebraicTopology.Hurewicz.PrismOperator",
+   "Lib.AlgebraicTopology.Hurewicz.PrismOperator.SubdivisionTriangleClass",
+   34
+  ],
+  [
+   "Lib.AlgebraicTopology.Hurewicz.PrismOperator",
+   "Lib.AlgebraicTopology.Hurewicz.PrismOperator.TetrahedronRelation",
+   14
+  ],
+  [
+   "Lib.AlgebraicTopology.Hurewicz.PrismOperator",
+   "Lib.AlgebraicTopology.Hurewicz.PrismOperator.TwoTriangles",
+   28
+  ],
+  [
+   "Lib.AlgebraicTopology.Hurewicz.PrismOperator",
+   "Lib.AlgebraicTopology.Hurewicz.PrismOperator.VertexEdgeStraightening",
+   60
+  ]
+ ],
+ "ambiguous": [],
+ "auxiliary_moved": 145,
+ "verdict": "PASS"
+}

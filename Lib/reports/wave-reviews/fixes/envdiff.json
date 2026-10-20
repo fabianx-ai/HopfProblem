@@ -1,0 +1,57 @@
+{
+ "before": "/home/goblin/.claude/jobs/06995e68/tmp/wave2/final/dump_head3.jsonl",
+ "after": "/home/goblin/.claude/jobs/06995e68/tmp/fix-waves/dump_after.jsonl",
+ "prefix": "",
+ "constants": [
+  38373,
+  38373
+ ],
+ "lost": [
+  [
+   "DiskFraming.exists_smooth_frame_near_starConvex",
+   3622023359,
+   {
+    "Lib.Geometry.Manifold.Collar.RangeTransport": 1
+   }
+  ],
+  [
+   "DiskFraming.exists_smooth_frame_on_neighborhood_closedBall",
+   3798691450,
+   {
+    "Lib.Geometry.Manifold.Collar.RangeTransport": 1
+   }
+  ]
+ ],
+ "added": [
+  [
+   "DiskFraming.exists_smooth_frame_near_starConvex",
+   3226562774,
+   {
+    "Lib.Geometry.Manifold.Collar.RangeTransport": 1
+   }
+  ],
+  [
+   "DiskFraming.exists_smooth_frame_on_neighborhood_closedBall",
+   995586449,
+   {
+    "Lib.Geometry.Manifold.Collar.RangeTransport": 1
+   }
+  ]
+ ],
+ "changed_type_source": [],
+ "changed_type_proof_naming": [
+  "DiskFraming.exists_smooth_frame_near_starConvex",
+  "DiskFraming.exists_smooth_frame_on_neighborhood_closedBall"
+ ],
+ "changed_type_accepted": [],
+ "added_accepted": [],
+ "accept_without_effect": [],
+ "changed_type_all": [
+  "DiskFraming.exists_smooth_frame_near_starConvex",
+  "DiskFraming.exists_smooth_frame_on_neighborhood_closedBall"
+ ],
+ "moves": [],
+ "ambiguous": [],
+ "auxiliary_moved": 0,
+ "verdict": "PASS"
+}

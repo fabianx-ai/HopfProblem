@@ -1,0 +1,97 @@
+{
+ "before": "/home/goblin/.claude/jobs/06995e68/tmp/wave1/dump_head.jsonl",
+ "after": "/home/goblin/.claude/jobs/06995e68/tmp/wave1/cancellation/dump_after.jsonl",
+ "prefix": "",
+ "constants": [
+  38248,
+  38250
+ ],
+ "lost": [],
+ "added": [
+  [
+   "MorseCancellation.NativeConnectionCancellationData.Transverse._proof_1",
+   2547959801,
+   {
+    "Lib.Geometry.Manifold.Morse.Cancellation.ConnectionData": 1
+   }
+  ],
+  [
+   "MorseCancellation.NativeConnectionCancellationData.outgoingSheet._proof_1",
+   2547959801,
+   {
+    "Lib.Geometry.Manifold.Morse.Cancellation.BasinSheets": 1
+   }
+  ]
+ ],
+ "changed_type_source": [],
+ "changed_type_proof_naming": [],
+ "changed_type_accepted": [],
+ "added_accepted": [],
+ "accept_without_effect": [],
+ "changed_type_all": [],
+ "moves": [
+  [
+   "Lib.Geometry.Manifold.Morse.Cancellation",
+   "Lib.Geometry.Manifold.Morse.Cancellation.BandHeight",
+   27
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.Cancellation",
+   "Lib.Geometry.Manifold.Morse.Cancellation.BandReplacement",
+   11
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.Cancellation",
+   "Lib.Geometry.Manifold.Morse.Cancellation.BasinSheets",
+   11
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.Cancellation",
+   "Lib.Geometry.Manifold.Morse.Cancellation.ConnectionData",
+   39
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.Cancellation",
+   "Lib.Geometry.Manifold.Morse.Cancellation.CriticalGerms",
+   16
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.Cancellation",
+   "Lib.Geometry.Manifold.Morse.Cancellation.CubicConnection",
+   8
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.Cancellation",
+   "Lib.Geometry.Manifold.Morse.Cancellation.CubicModel",
+   22
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.Cancellation",
+   "Lib.Geometry.Manifold.Morse.Cancellation.LevelExit",
+   11
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.Cancellation",
+   "Lib.Geometry.Manifold.Morse.Cancellation.LevelIsotopy",
+   2
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.Cancellation",
+   "Lib.Geometry.Manifold.Morse.Cancellation.LogarithmicCutoff",
+   7
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.Cancellation",
+   "Lib.Geometry.Manifold.Morse.Cancellation.LyapunovResidence",
+   9
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.Cancellation",
+   "Lib.Geometry.Manifold.Morse.Cancellation.TransverseGerms",
+   7
+  ]
+ ],
+ "ambiguous": [],
+ "auxiliary_moved": 82,
+ "verdict": "PASS"
+}

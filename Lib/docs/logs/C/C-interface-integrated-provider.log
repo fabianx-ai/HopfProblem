@@ -1,0 +1,4 @@
+CMD: PATH=/tmp/shared-lean-copy/toolchain-v4.33.0/bin:$PATH lake env lean -o C_InterfaceCheck.olean C_InterfaceCheck.lean
+start 03:59:57 epoch 1789264797
+exit 0
+end 04:00:02 epoch 1789264802

@@ -1,0 +1,17 @@
+constants before 38301 after 38304 (keys 38199 38202 )
+lost 3 added 6 of which source declarations: 0 0 ; names with changed type 3 of which source: 0
+auxiliary lost/added/changed (not judged): 3 6 3
+module moves (source declarations, 1-to-1):
+       8  Lib.Geometry.Manifold.Morse.Existence -> Lib.Geometry.Manifold.Morse.Existence.AttachingUnion
+      14  Lib.Geometry.Manifold.Morse.Existence -> Lib.Geometry.Manifold.Morse.Existence.BeltCore
+      40  Lib.Geometry.Manifold.Morse.Existence -> Lib.Geometry.Manifold.Morse.Existence.ChartPerturbation
+       7  Lib.Geometry.Manifold.Morse.Existence -> Lib.Geometry.Manifold.Morse.Existence.DistinctCriticalValues
+       6  Lib.Geometry.Manifold.Morse.Existence -> Lib.Geometry.Manifold.Morse.Existence.HomotopicRelWithin
+      13  Lib.Geometry.Manifold.Morse.Existence -> Lib.Geometry.Manifold.Morse.Existence.HomotopyCollars
+       6  Lib.Geometry.Manifold.Morse.Existence -> Lib.Geometry.Manifold.Morse.Existence.LevelSurgery
+       4  Lib.Geometry.Manifold.Morse.Existence -> Lib.Geometry.Manifold.Morse.Existence.PartialChart
+       4  Lib.Geometry.Manifold.Morse.Existence -> Lib.Geometry.Manifold.Morse.Existence.RegularLocus
+      24  Lib.Geometry.Manifold.Morse.Existence -> Lib.Geometry.Manifold.Morse.Existence.SmoothApproximation
+ambiguous module changes: 0
+auxiliary constants that changed module: 66
+VERDICT PASS

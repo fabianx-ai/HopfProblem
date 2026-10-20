@@ -1,0 +1,19 @@
+constants before 38593 after 38593 (keys 38491 38491 )
+lost 2 added 2 of which source declarations: 0 0 ; names with changed type 1 of which source: 1
+  PROOF-NAMING MorseCancellation.span_prefix_succ
+auxiliary lost/added/changed (not judged): 2 2 0
+module moves (source declarations, 1-to-1):
+      10  Lib.Geometry.Manifold.Morse.BeltCancellation -> Hopf.Proof.Geometry.Manifold.Morse.BeltCancellation
+       5  Lib.Geometry.Manifold.Morse.BeltCancellation -> Lib.AlgebraicTopology.SingularHomology.LinearSphereAction
+       2  Lib.Geometry.Manifold.Morse.BeltCancellation -> Lib.Geometry.Manifold.RegularLevel
+       1  Lib.Geometry.Manifold.Morse.BeltCancellation -> Lib.Geometry.Manifold.Transversality.Basic
+      52  Lib.Geometry.Manifold.Morse.CutTransport -> Hopf.Proof.Geometry.Manifold.Morse.CutTransport
+      27  Lib.Geometry.Manifold.Morse.MiddleBlocks -> Hopf.Proof.Geometry.Manifold.Morse.MiddleBlocks
+       4  Lib.Geometry.Manifold.Morse.MiddleBlocks -> Lib.Geometry.Manifold.Morse.EqualRangeHomology
+       4  Lib.Geometry.Manifold.Morse.MinimalSystem -> Hopf.Proof.Geometry.Manifold.Morse.MinimalSystem
+       2  Lib.Geometry.Manifold.Morse.SurgeryHomology -> Hopf.Proof.Geometry.Manifold.Morse.SurgeryHomology
+       5  Lib.Geometry.Manifold.Morse.SurgeryHomology -> Lib.Algebra.BigOperators.SignedCancellation
+      12  Lib.Geometry.Manifold.Morse.SurgeryHomology -> Lib.Geometry.Manifold.Morse.RadialFilling
+ambiguous module changes: 0
+auxiliary constants that changed module: 100
+VERDICT PASS

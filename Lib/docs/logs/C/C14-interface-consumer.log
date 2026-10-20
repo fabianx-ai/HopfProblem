@@ -1,0 +1,51 @@
+CMD: LEAN_PATH=.:$LEAN_PATH PATH=... lake env lean C14_InterfaceConsumerCheck.lean
+start 05:07:38 epoch 1789268858
+@C14_InterfaceCheck.homotopyMap : {n : ℕ} →
+  [inst : Nonempty (Fin n)] →
+    {X Y : Type} →
+      [inst_1 : TopologicalSpace X] → [inst_2 : TopologicalSpace Y] → (f : C(X, Y)) → (x : X) → π_ n X x →* π_ n Y (f x)
+@C14_InterfaceCheck.cubeChain_natural : ∀ {n : ℕ} {X Y : Type} [inst : TopologicalSpace X] [inst_1 : TopologicalSpace Y]
+  (f : C(X, Y)) (x : X) (p : ↑(GenLoop (Fin n) X x)),
+  (SingularChains.inducedChain f n) (Hurewicz.cubeChain p) = Hurewicz.cubeChain ((SecondHurewicz.mapGenLoop f x) p)
+@C14_InterfaceCheck.cubeCycle_natural : ∀ {m : ℕ} {X Y : Type} [inst : TopologicalSpace X] [inst_1 : TopologicalSpace Y]
+  (f : C(X, Y)) (x : X) (p : ↑(GenLoop (Fin (m + 2)) X x)),
+  (SingularMayerVietoris.ModuleHomology.mapCycles (SingularChains.singularChainMap f) (m + 2)) (Hurewicz.cubeCycle p) =
+    Hurewicz.cubeCycle ((SecondHurewicz.mapGenLoop f x) p)
+@C14_InterfaceCheck.cubeHomologyClass_natural : ∀ {m : ℕ} {X Y : Type} [inst : TopologicalSpace X]
+  [inst_1 : TopologicalSpace Y] (f : C(X, Y)) (x : X) (p : ↑(GenLoop (Fin (m + 2)) X x)),
+  (SingularMayerVietoris.singularHomologyMap f (m + 2)) (Hurewicz.cubeHomologyClass p) =
+    Hurewicz.cubeHomologyClass ((SecondHurewicz.mapGenLoop f x) p)
+@C14_InterfaceCheck.hurewiczFunction_natural : ∀ {m : ℕ} {X Y : Type} [inst : TopologicalSpace X]
+  [inst_1 : TopologicalSpace Y] (f : C(X, Y)) (x : X) (a : π_ (m + 2) X x),
+  (SingularMayerVietoris.singularHomologyMap f (m + 2)) (Hurewicz.hurewiczFunction x a) =
+    Hurewicz.hurewiczFunction (f x) ((Hurewicz.homotopyMap f x) a)
+@C14_InterfaceCheck.hurewiczMap_natural : ∀ {m : ℕ} {X Y : Type} [inst : TopologicalSpace X]
+  [inst_1 : TopologicalSpace Y] (f : C(X, Y)) (x : X) (a : Additive (π_ (m + 2) X x)),
+  (SingularMayerVietoris.singularHomologyMap f (m + 2)) ((Hurewicz.hurewiczMap x) a) =
+    (Hurewicz.hurewiczMap (f x)) ((MonoidHom.toAdditive (Hurewicz.homotopyMap f x)) a)
+@C14_InterfaceCheck.hurewiczLinearEquiv_natural : ∀ {m : ℕ} {X Y : Type} [inst : TopologicalSpace X]
+  [inst_1 : TopologicalSpace Y] [inst_2 : SimplyConnectedSpace X] [inst_3 : SimplyConnectedSpace Y] (f : C(X, Y))
+  (x : X) (hX : ∀ (j : ℕ), 2 ≤ j → j < m + 3 → Subsingleton (π_ j X x))
+  (hY : ∀ (j : ℕ), 2 ≤ j → j < m + 3 → Subsingleton (π_ j Y (f x))) (a : Additive (π_ (m + 3) X x)),
+  (SingularMayerVietoris.singularHomologyMap f (m + 3)) ((Hurewicz.hurewiczLinearEquiv x hX) a) =
+    (Hurewicz.hurewiczLinearEquiv (f x) hY) ((MonoidHom.toAdditive (Hurewicz.homotopyMap f x)) a)
+@C14_InterfaceCheck.hurewiczLinearEquivOfTwoLE_natural : ∀ {X Y : Type} [inst : TopologicalSpace X]
+  [inst_1 : TopologicalSpace Y] [inst_2 : SimplyConnectedSpace X] [inst_3 : SimplyConnectedSpace Y] (f : C(X, Y))
+  (x : X) (n : ℕ) (hn : 2 ≤ n) (hX : ∀ (j : ℕ), 2 ≤ j → j < n → Subsingleton (π_ j X x))
+  (hY : ∀ (j : ℕ), 2 ≤ j → j < n → Subsingleton (π_ j Y (f x))) (a : Additive (π_ n X x)),
+  (SingularMayerVietoris.singularHomologyMap f n) ((Hurewicz.hurewiczLinearEquivOfTwoLE x n hn hX) a) =
+    (Hurewicz.hurewiczLinearEquivOfTwoLE (f x) n hn hY) ((MonoidHom.toAdditive (Hurewicz.homotopyMap f x)) a)
+@C14_InterfaceCheck.singularHomology_one_subsingleton : ∀ {X : Type} [inst : TopologicalSpace X]
+  [SimplyConnectedSpace X] (x : X), Subsingleton ↑(SingularMayerVietoris.SingularHomology X 1)
+@C14_InterfaceCheck.subsingleton_singularHomology_of_lt : ∀ {X : Type} [inst : TopologicalSpace X]
+  [SimplyConnectedSpace X] (x : X) (n : ℕ),
+  (∀ (j : ℕ), 2 ≤ j → j < n → Subsingleton (π_ j X x)) →
+    ∀ (k : ℕ), 0 < k → k < n → Subsingleton ↑(SingularMayerVietoris.SingularHomology X k)
+C14_InterfaceConsumerCheck.lean:50:41: warning: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+C14_InterfaceConsumerCheck.lean:56:41: warning: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+exit 0
+end 05:07:41 epoch 1789268861

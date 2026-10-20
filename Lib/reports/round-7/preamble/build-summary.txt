@@ -1,0 +1,22 @@
+Final state of branch r7/preamble (base 46c22597), Lean v4.33.0 / Mathlib v4.33.0.
+
+$ lake build Lib
+Build completed successfully (9149 jobs).
+
+$ lake build Solution S6Shortcuts S6 Challenge
+Build completed successfully (9188 jobs).
+
+$ lake build Lib.AxiomAudit
+Build completed successfully (9152 jobs).
+3361 `depends on axioms` probes; the only axiom names that occur anywhere in the
+output are propext (3361), Quot.sound (3345), Classical.choice (3215).
+No occurrence of sorryAx.
+
+$ python3 /home/goblin/lean-agent-ide/tools/envdiff.py dump_base.jsonl dump_after.jsonl --receipt envdiff.json
+constants before 39159 after 38749 (keys 38535 38536 )
+lost 20 added 15 of which source declarations: 0 0 ; names with changed type 14 of which source: 0
+auxiliary lost/added/changed (not judged): 20 15 14
+module moves (source declarations, 1-to-1):
+ambiguous module changes: 0
+auxiliary constants that changed module: 6
+VERDICT PASS

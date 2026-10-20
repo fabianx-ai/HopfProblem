@@ -1,0 +1,27 @@
+{
+ "before": "/home/goblin/.claude/jobs/06995e68/tmp/r8-dfiles-c/dump_base.jsonl",
+ "after": "/home/goblin/.claude/jobs/06995e68/tmp/r8-dfiles-c/dump_after.jsonl",
+ "prefix": "",
+ "constants": [
+  38593,
+  38593
+ ],
+ "lost": [],
+ "added": [],
+ "changed_type_source": [],
+ "changed_type_proof_naming": [],
+ "changed_type_accepted": [],
+ "added_accepted": [],
+ "accept_without_effect": [],
+ "changed_type_all": [],
+ "moves": [
+  [
+   "Lib.Topology.Sheaves.Cohomology.SphereTwo",
+   "Hopf.Proof.Topology.Sheaves.Cohomology.SphereTwo",
+   6
+  ]
+ ],
+ "ambiguous": [],
+ "auxiliary_moved": 1,
+ "verdict": "PASS"
+}

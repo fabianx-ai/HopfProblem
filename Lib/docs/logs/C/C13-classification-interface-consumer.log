@@ -1,0 +1,70 @@
+CMD: LEAN_PATH=.:$LEAN_PATH lake env lean C13_ClassificationInterfaceConsumerCheck.lean
+START: 1789252877 Sun Sep 13 00:41:17 CEST 2026
+@C13_ClassificationInterfaceCheck.hurewiczMap_eq_second : ∀ {X : Type} [inst : TopologicalSpace X] (x : X),
+  Mathoverflow1973.HigherHurewicz.hurewiczMap x = Mathoverflow1973.SecondHurewicz.hurewiczMap x
+@C13_ClassificationInterfaceCheck.hurewiczMap_injective : ∀ {X : Type} [inst : TopologicalSpace X]
+  [SimplyConnectedSpace X] (x : X) {m : ℕ},
+  (∀ (j : ℕ), 2 ≤ j → j < m + 2 → Subsingleton (HomotopyGroup.Pi j X x)) →
+    Function.Injective ⇑(Mathoverflow1973.HigherHurewicz.hurewiczMap x)
+@C13_ClassificationInterfaceCheck.factorMap_homotopy_apply : ∀ {n : ℕ} (hn : 0 < n) {X : Type u_1}
+  [inst : TopologicalSpace X] {x : X} {p q : ↑(GenLoop (Fin n) X x)} (H : (↑p).HomotopyRel (↑q) (Cube.boundary (Fin n)))
+  (t : ↑unitInterval) (u : Fin n → ↑unitInterval),
+  (Mathoverflow1973.Degree.SphereCube.factorMap_homotopy hn H) (t, (Mathoverflow1973.Degree.SphereCube.quotient n) u) =
+    H (t, u)
+@C13_ClassificationInterfaceCheck.factorMap_homotopyRel : {n : ℕ} →
+  (hn : 0 < n) →
+    {X : Type u_1} →
+      [inst : TopologicalSpace X] →
+        {x : X} →
+          {p q : ↑(GenLoop (Fin n) X x)} →
+            (↑p).HomotopyRel (↑q) (Cube.boundary (Fin n)) →
+              (Mathoverflow1973.Degree.SphereCube.factorMap hn p).HomotopyRel
+                (Mathoverflow1973.Degree.SphereCube.factorMap hn q) {Mathoverflow1973.Degree.SphereCube.point n}
+@C13_ClassificationInterfaceCheck.basedSphereCube : {n : ℕ} →
+  {X : Type} →
+    [inst : TopologicalSpace X] →
+      {x : X} →
+        (f : C(↑(Mathoverflow1973.Degree.SphereCube.Sphere n), X)) →
+          f (Mathoverflow1973.Degree.SphereCube.point n) = x → ↑(GenLoop (Fin n) X x)
+@C13_ClassificationInterfaceCheck.factorMap_basedSphereCube : ∀ {n : ℕ} (hn : 0 < n) {X : Type}
+  [inst : TopologicalSpace X] {x : X} (f : C(↑(Mathoverflow1973.Degree.SphereCube.Sphere n), X))
+  (hf : f (Mathoverflow1973.Degree.SphereCube.point n) = x),
+  Mathoverflow1973.Degree.SphereCube.factorMap hn (C13_ClassificationInterfaceCheck.basedSphereCube f hf) = f
+@C13_ClassificationInterfaceCheck.basedSphereCube_homologyClass : ∀ {m : ℕ} {X : Type} [inst : TopologicalSpace X]
+  {x : X} (f : C(↑(Mathoverflow1973.Degree.SphereCube.Sphere (m + 2)), X))
+  (hf : f (Mathoverflow1973.Degree.SphereCube.point (m + 2)) = x),
+  Mathoverflow1973.HigherHurewicz.cubeHomologyClass (C13_ClassificationInterfaceCheck.basedSphereCube f hf) =
+    (Mathoverflow1973.SingularMayerVietoris.singularHomologyMap f (m + 2))
+      (Mathoverflow1973.HigherHurewicz.cubeHomologyClass (Mathoverflow1973.Degree.SphereCube.quotientLoop (m + 2)))
+@C13_ClassificationInterfaceCheck.sphere_homotopicRel_of_topClass_eq : ∀ {m : ℕ} {X : Type} [inst : TopologicalSpace X]
+  [SimplyConnectedSpace X] {x : X},
+  (∀ (j : ℕ), 2 ≤ j → j < m + 2 → Subsingleton (HomotopyGroup.Pi j X x)) →
+    ∀ (f g : C(↑(Mathoverflow1973.Degree.SphereCube.Sphere (m + 2)), X)),
+      f (Mathoverflow1973.Degree.SphereCube.point (m + 2)) = x →
+        g (Mathoverflow1973.Degree.SphereCube.point (m + 2)) = x →
+          (Mathoverflow1973.SingularMayerVietoris.singularHomologyMap f (m + 2))
+                (Mathoverflow1973.HigherHurewicz.cubeHomologyClass
+                  (Mathoverflow1973.Degree.SphereCube.quotientLoop (m + 2))) =
+              (Mathoverflow1973.SingularMayerVietoris.singularHomologyMap g (m + 2))
+                (Mathoverflow1973.HigherHurewicz.cubeHomologyClass
+                  (Mathoverflow1973.Degree.SphereCube.quotientLoop (m + 2))) →
+            f.HomotopicRel g {Mathoverflow1973.Degree.SphereCube.point (m + 2)}
+@C13_ClassificationInterfaceCheck.exists_basepoint_adjustment : ∀ {n : ℕ},
+  0 < n →
+    ∀ {Y : Type u_1} [inst : TopologicalSpace Y] {y : Y} (u : C(↑(Mathoverflow1973.Degree.SphereCube.Sphere n), Y))
+      (P : Path (u (Mathoverflow1973.Degree.SphereCube.point n)) y),
+      ∃ v, v (Mathoverflow1973.Degree.SphereCube.point n) = y ∧ u.Homotopic v
+@C13_ClassificationInterfaceCheck.sphere_homotopic_id_of_topClass : ∀ {m : ℕ}
+  (g : C(↑(Mathoverflow1973.Degree.SphereCube.Sphere (m + 2)), ↑(Mathoverflow1973.Degree.SphereCube.Sphere (m + 2)))),
+  (Mathoverflow1973.SingularMayerVietoris.singularHomologyMap g (m + 2))
+        (Mathoverflow1973.HigherHurewicz.cubeHomologyClass (Mathoverflow1973.Degree.SphereCube.quotientLoop (m + 2))) =
+      Mathoverflow1973.HigherHurewicz.cubeHomologyClass (Mathoverflow1973.Degree.SphereCube.quotientLoop (m + 2)) →
+    g.Homotopic (ContinuousMap.id ↑(Mathoverflow1973.Degree.SphereCube.Sphere (m + 2)))
+@C13_ClassificationInterfaceCheck.right_inverse_is_left_inverse : ∀ {m : ℕ} {X : Type} [inst : TopologicalSpace X]
+  (F : C(↑(Mathoverflow1973.Degree.SphereCube.Sphere (m + 2)), X))
+  (g : C(X, ↑(Mathoverflow1973.Degree.SphereCube.Sphere (m + 2)))),
+  Function.Injective ⇑(Mathoverflow1973.SingularMayerVietoris.singularHomologyMap F (m + 2)) →
+    (F.comp g).Homotopic (ContinuousMap.id X) →
+      (g.comp F).Homotopic (ContinuousMap.id ↑(Mathoverflow1973.Degree.SphereCube.Sphere (m + 2)))
+END: 1789252881 Sun Sep 13 00:41:21 CEST 2026
+EXIT: 0

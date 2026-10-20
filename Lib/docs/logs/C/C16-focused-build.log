@@ -1,0 +1,196 @@
+CMD: lake build Lib.AlgebraicTopology.Hurewicz.Naturality Lib.Topology.Homeomorph.DiskCube Hopf.LibShims
+start 05:20:03 epoch 1789269603
+✔ [8749/8762] Built Lib.AlgebraicTopology.Hurewicz.SimplexCube (3.5s)
+✔ [8750/8762] Built Lib.Topology.Homeomorph.DiskCube (4.1s)
+✔ [8751/8762] Built Lib.AlgebraicTopology.Hurewicz.CubeTriangulation (4.7s)
+✔ [8752/8762] Built Lib.AlgebraicTopology.Hurewicz.HomotopyExtension (5.1s)
+✔ [8753/8762] Built Lib.AlgebraicTopology.Hurewicz.PrismOperator (17s)
+✔ [8754/8762] Built Lib.AlgebraicTopology.Hurewicz.Subdivision (7.2s)
+⚠ [8755/8762] Built Lib.AlgebraicTopology.Hurewicz.CubeChainDecomposition (8.4s)
+warning: Lib/AlgebraicTopology/Hurewicz/CubeChainDecomposition.lean:1399:56: This simp argument is unused:
+  Function.update_of_ne hj
+
+Hint: Omit it from the simp argument list.
+  [apply] simp [Hurewicz.cubeScaleLeft, ContinuousMap.coe_mk, Hurewicz.cubeCoordinates_succ]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+warning: Lib/AlgebraicTopology/Hurewicz/CubeChainDecomposition.lean:1415:57: This simp argument is unused:
+  Function.update_of_ne hj
+
+Hint: Omit it from the simp argument list.
+  [apply] simp [Hurewicz.cubeScaleRight, ContinuousMap.coe_mk, Hurewicz.cubeCoordinates_succ]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+warning: Lib/AlgebraicTopology/Hurewicz/CubeChainDecomposition.lean:1535:81: This simp argument is unused:
+  hri
+
+Hint: Omit it from the simp argument list.
+  [apply] simp [Hurewicz.cubeScaleRight, ContinuousMap.coe_mk, Function.update_self, ht0]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+warning: Lib/AlgebraicTopology/Hurewicz/CubeChainDecomposition.lean:1784:72: This simp argument is unused:
+  ContinuousMap.const_comp
+
+Hint: Omit it from the simp argument list.
+  [apply] simp [SingularChains.pointChain, SingularChains.inducedChain_simplex]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+✔ [8756/8762] Built Lib.AlgebraicTopology.Hurewicz.CubeGluing (6.1s)
+✔ [8757/8762] Built Lib.AlgebraicTopology.Hurewicz.Degree (4.2s)
+⚠ [8758/8762] Built Lib.AlgebraicTopology.Hurewicz.Straightening (3.0s)
+warning: Lib/AlgebraicTopology/Hurewicz/Straightening.lean:799:6: Try this: 
+  haveI̵
+
+The goal is a proposition, so `have` is preferred over `haveI`.
+The difference between `have` and `haveI` is that `haveI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Lib/AlgebraicTopology/Hurewicz/Straightening.lean:835:2: Try this: 
+  haveI̵
+
+The goal is a proposition, so `have` is preferred over `haveI`.
+The difference between `have` and `haveI` is that `haveI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+⚠ [8759/8762] Built Lib.AlgebraicTopology.Hurewicz.CubeSphere (6.5s)
+warning: Lib/AlgebraicTopology/Hurewicz/CubeSphere.lean:583:32: This simp argument is unused:
+  Submodule.coe_sub
+
+Hint: Omit it from the simp argument list.
+  [apply] simp only [Submodule.coe_add, Hurewicz.cubeCycle_val, map_sub, hWextra]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+warning: Lib/AlgebraicTopology/Hurewicz/CubeSphere.lean:790:4: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Lib/AlgebraicTopology/Hurewicz/CubeSphere.lean:798:4: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+⚠ [8760/8762] Built Lib.AlgebraicTopology.Hurewicz.HopfDegree (3.1s)
+warning: Lib/AlgebraicTopology/Hurewicz/HopfDegree.lean:84:4: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Lib/AlgebraicTopology/Hurewicz/HopfDegree.lean:85:4: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Lib/AlgebraicTopology/Hurewicz/HopfDegree.lean:102:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Lib/AlgebraicTopology/Hurewicz/HopfDegree.lean:272:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+✖ [8761/8762] Building Hopf.LibShims (2.7s)
+trace: .> LEAN_PATH=/home/kimi/hopf/.lake/packages/Cli/.lake/build/lib/lean:/home/kimi/hopf/.lake/packages/lean4export/.lake/build/lib/lean:/home/kimi/hopf/.lake/packages/batteries/.lake/build/lib/lean:/home/kimi/hopf/.lake/packages/Qq/.lake/build/lib/lean:/home/kimi/hopf/.lake/packages/aesop/.lake/build/lib/lean:/home/kimi/hopf/.lake/packages/proofwidgets/.lake/build/lib/lean:/home/kimi/hopf/.lake/packages/importGraph/.lake/build/lib/lean:/home/kimi/hopf/.lake/packages/LeanSearchClient/.lake/build/lib/lean:/home/kimi/hopf/.lake/packages/plausible/.lake/build/lib/lean:/home/kimi/hopf/.lake/packages/Comparator/.lake/build/lib/lean:/home/kimi/hopf/.lake/packages/mathlib/.lake/build/lib/lean:/home/kimi/hopf/.lake/build/lib/lean /tmp/shared-lean-copy/toolchain-v4.33.0/bin/lean /home/kimi/hopf/Hopf/LibShims.lean -o /home/kimi/hopf/.lake/build/lib/lean/Hopf/LibShims.olean -i /home/kimi/hopf/.lake/build/lib/lean/Hopf/LibShims.ilean -c /home/kimi/hopf/.lake/build/ir/Hopf/LibShims.c --setup /home/kimi/hopf/.lake/build/ir/Hopf/LibShims.setup.json --json
+error: Hopf/LibShims.lean:1605:7: unknown namespace `Mathoverflow1973.Hurewicz.DegreeTwo.SimplyConnected.basedTriangleClass`
+error: Hopf/LibShims.lean:1611:7: unknown namespace `Mathoverflow1973.Hurewicz.DegreeTwo.SimplyConnected.bottomProductDegenerate`
+error: Hopf/LibShims.lean:1617:7: unknown namespace `Mathoverflow1973.Hurewicz.DegreeTwo.SimplyConnected.chosenBasePath`
+error: Hopf/LibShims.lean:1623:7: unknown namespace `Mathoverflow1973.Hurewicz.DegreeTwo.SimplyConnected.chosenNullHomotopy`
+error: Hopf/LibShims.lean:1629:7: unknown namespace `Mathoverflow1973.Hurewicz.DegreeTwo.SimplyConnected.edgeNullHomotopy`
+error: Hopf/LibShims.lean:1635:7: unknown namespace `Mathoverflow1973.Hurewicz.DegreeTwo.SimplyConnected.edgeStraighteningHomotopy`
+error: Hopf/LibShims.lean:1641:7: unknown namespace `Mathoverflow1973.Hurewicz.DegreeTwo.SimplyConnected.extendBoundaryHomotopy`
+error: Hopf/LibShims.lean:1647:7: unknown namespace `Mathoverflow1973.Hurewicz.DegreeTwo.SimplyConnected.leftProductDegenerate`
+error: Hopf/LibShims.lean:1653:7: unknown namespace `Mathoverflow1973.Hurewicz.DegreeTwo.SimplyConnected.lowerProductTriangle`
+error: Hopf/LibShims.lean:1659:7: unknown namespace `Mathoverflow1973.Hurewicz.DegreeTwo.SimplyConnected.lowerSquareTriangle`
+error: Hopf/LibShims.lean:1665:7: unknown namespace `Mathoverflow1973.Hurewicz.DegreeTwo.SimplyConnected.normalizedTetrahedron`
+error: Hopf/LibShims.lean:1671:7: unknown namespace `Mathoverflow1973.Hurewicz.DegreeTwo.SimplyConnected.normalizedTriangle`
+error: Hopf/LibShims.lean:1677:7: unknown namespace `Mathoverflow1973.Hurewicz.DegreeTwo.SimplyConnected.normalizedTriangleCycleOperator`
+error: Hopf/LibShims.lean:1683:7: unknown namespace `Mathoverflow1973.Hurewicz.DegreeTwo.SimplyConnected.normalizedTwoChain`
+error: Hopf/LibShims.lean:1689:7: unknown namespace `Mathoverflow1973.Hurewicz.DegreeTwo.SimplyConnected.rotationBlend`
+error: Hopf/LibShims.lean:1695:7: unknown namespace `Mathoverflow1973.Hurewicz.DegreeTwo.SimplyConnected.rotationCentered`
+error: Hopf/LibShims.lean:1701:7: unknown namespace `Mathoverflow1973.Hurewicz.DegreeTwo.SimplyConnected.rotationDenominator`
+error: Hopf/LibShims.lean:1707:7: unknown namespace `Mathoverflow1973.Hurewicz.DegreeTwo.SimplyConnected.rotationNormalized`
+error: Hopf/LibShims.lean:1713:7: unknown namespace `Mathoverflow1973.Hurewicz.DegreeTwo.SimplyConnected.rotationVector`
+error: Hopf/LibShims.lean:1719:7: unknown namespace `Mathoverflow1973.Hurewicz.DegreeTwo.SimplyConnected.secondHomologyDesc`
+error: Hopf/LibShims.lean:1725:7: unknown namespace `Mathoverflow1973.Hurewicz.DegreeTwo.SimplyConnected.simplexBoundary`
+error: Hopf/LibShims.lean:1731:7: unknown namespace `Mathoverflow1973.Hurewicz.DegreeTwo.SimplyConnected.simplexPrism`
+error: Hopf/LibShims.lean:1737:7: unknown namespace `Mathoverflow1973.Hurewicz.DegreeTwo.SimplyConnected.subdivisionBlend`
+error: Hopf/LibShims.lean:1743:7: unknown namespace `Mathoverflow1973.Hurewicz.DegreeTwo.SimplyConnected.subdivisionLowerBasedTriangle`
+error: Hopf/LibShims.lean:1749:7: unknown namespace `Mathoverflow1973.Hurewicz.DegreeTwo.SimplyConnected.subdivisionLowerProductLoop`
+error: Hopf/LibShims.lean:1756:7: unknown namespace `Mathoverflow1973.Hurewicz.DegreeTwo.SimplyConnected.subdivisionLowerProductMap`
+error: Hopf/LibShims.lean:1762:7: unknown namespace `Mathoverflow1973.Hurewicz.DegreeTwo.SimplyConnected.subdivisionLowerTriangleLoop`
+error: Hopf/LibShims.lean:1768:7: unknown namespace `Mathoverflow1973.Hurewicz.DegreeTwo.SimplyConnected.subdivisionLowerTriangleMap`
+error: Hopf/LibShims.lean:1774:7: unknown namespace `Mathoverflow1973.Hurewicz.DegreeTwo.SimplyConnected.subdivisionPullbackLoop`
+error: Hopf/LibShims.lean:1780:7: unknown namespace `Mathoverflow1973.Hurewicz.DegreeTwo.SimplyConnected.subdivisionSubMin`
+error: Hopf/LibShims.lean:1786:7: unknown namespace `Mathoverflow1973.Hurewicz.DegreeTwo.SimplyConnected.subdivisionUpperConeMap`
+error: Hopf/LibShims.lean:1792:7: unknown namespace `Mathoverflow1973.Hurewicz.DegreeTwo.SimplyConnected.subdivisionUpperNegativeBasedTriangle`
+error: Hopf/LibShims.lean:1798:7: unknown namespace `Mathoverflow1973.Hurewicz.DegreeTwo.SimplyConnected.subdivisionUpperNegativeLoop`
+error: Hopf/LibShims.lean:1804:7: unknown namespace `Mathoverflow1973.Hurewicz.DegreeTwo.SimplyConnected.subdivisionUpperNegativeMap`
+error: Hopf/LibShims.lean:1810:7: unknown namespace `Mathoverflow1973.Hurewicz.DegreeTwo.SimplyConnected.subdivisionUpperNegativeReversedMap`
+error: Hopf/LibShims.lean:1816:7: unknown namespace `Mathoverflow1973.Hurewicz.DegreeTwo.SimplyConnected.subdivisionUpperPositiveBasedTriangle`
+error: Hopf/LibShims.lean:1822:7: unknown namespace `Mathoverflow1973.Hurewicz.DegreeTwo.SimplyConnected.subdivisionUpperPositiveSquareTriangle`
+error: Hopf/LibShims.lean:1828:7: unknown namespace `Mathoverflow1973.Hurewicz.DegreeTwo.SimplyConnected.subdivisionUpperProductLoop`
+error: Hopf/LibShims.lean:1835:7: unknown namespace `Mathoverflow1973.Hurewicz.DegreeTwo.SimplyConnected.subdivisionUpperProductMap`
+error: Hopf/LibShims.lean:1841:7: unknown namespace `Mathoverflow1973.Hurewicz.DegreeTwo.SimplyConnected.subdivisionUpperTriangleLoop`
+error: Hopf/LibShims.lean:1847:7: unknown namespace `Mathoverflow1973.Hurewicz.DegreeTwo.SimplyConnected.subdivisionUpperTriangleMap`
+error: Hopf/LibShims.lean:1853:7: unknown namespace `Mathoverflow1973.Hurewicz.DegreeTwo.SimplyConnected.subdivisionWarpCoordinate`
+error: Hopf/LibShims.lean:1859:7: unknown namespace `Mathoverflow1973.Hurewicz.DegreeTwo.SimplyConnected.subdivisionWarpMap`
+error: Hopf/LibShims.lean:1865:7: unknown namespace `Mathoverflow1973.Hurewicz.DegreeTwo.SimplyConnected.tetrahedronQuadrilateralA`
+error: Hopf/LibShims.lean:1871:7: unknown namespace `Mathoverflow1973.Hurewicz.DegreeTwo.SimplyConnected.triangleClassOperator`
+error: Hopf/LibShims.lean:1877:7: unknown namespace `Mathoverflow1973.Hurewicz.DegreeTwo.SimplyConnected.triangleEdgeStraighteningHomotopy`
+error: Hopf/LibShims.lean:1883:7: unknown namespace `Mathoverflow1973.Hurewicz.DegreeTwo.SimplyConnected.upperProductTriangle`
+error: Hopf/LibShims.lean:1889:7: unknown namespace `Mathoverflow1973.Hurewicz.DegreeTwo.SimplyConnected.upperSquareTriangle`
+error: Hopf/LibShims.lean:1895:7: unknown namespace `Mathoverflow1973.Hurewicz.DegreeTwo.SimplyConnected.vertexStepHomotopy`
+warning: Hopf/LibShims.lean:1902:2: `match_1` refers to an auto-generated auxiliary declaration. These are not stable across refactors; consider using a different approach.
+
+Note: This linter can be disabled with `set_option linter.auxLemma false`
+error: Hopf/LibShims.lean:1907:7: unknown namespace `Mathoverflow1973.Hurewicz.DegreeTwo.SimplyConnected.vertexStraighteningHomotopy`
+error: Hopf/LibShims.lean:1913:7: unknown namespace `Mathoverflow1973.Hurewicz.DegreeTwo.fundamentalSquareChain`
+error: Hopf/LibShims.lean:1919:7: unknown namespace `Mathoverflow1973.Hurewicz.DegreeTwo.intervalChain`
+error: Hopf/LibShims.lean:1925:7: unknown namespace `Mathoverflow1973.Hurewicz.DegreeTwo.productSquareChain`
+error: Hopf/LibShims.lean:1931:7: unknown namespace `Mathoverflow1973.Hurewicz.DegreeTwo.squareChain`
+error: Hopf/LibShims.lean:1937:7: unknown namespace `Mathoverflow1973.Hurewicz.DegreeTwo.squareCoordinates`
+error: Lean exited with code 1
+⚠ [8762/8762] Built Lib.AlgebraicTopology.Hurewicz.Naturality (3.3s)
+warning: Lib/AlgebraicTopology/Hurewicz/Naturality.lean:231:4: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Lib/AlgebraicTopology/Hurewicz/Naturality.lean:232:4: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+Some required targets logged failures:
+- Hopf.LibShims
+error: build failed
+exit 1
+end 05:21:07 epoch 1789269667

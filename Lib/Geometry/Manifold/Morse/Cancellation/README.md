@@ -1,0 +1,56 @@
+# Cancellation along a transverse connection
+
+The cancellation theorems of Morse theory (Milnor, *Lectures on the
+h-cobordism theorem*, Theorem 5.4). This module re-exports the pieces:
+
+* `Morse.Cancellation.CubicModel`: the cubic local model, its cancelled descent
+  field, Lyapunov function and Hessian.
+* `Morse.Cancellation.LyapunovResidence`: residence bounds for a flow in a
+  compact set where a Lyapunov function decreases; uniform band crossings.
+* `Morse.Cancellation.LevelExit`: exits of the Morse model flow through the
+  levels `f p ± r ^ 2` near the belt and attaching spheres.
+* `Morse.Cancellation.CriticalGerms`: surviving critical germs, the Morse index
+  as a germ invariant, the Morse count after removing a pair.
+* `Morse.Cancellation.LogarithmicCutoff`: one-variable cutoffs with
+  `|t χ'(t)|` small.
+* `Morse.Cancellation.BandHeight`: the smooth band height between two regular
+  levels and its boundary germ corrections.
+* `Morse.Cancellation.BandReplacement`: replacing a Morse function on a band;
+  removal of a critical pair (`FlowCancellation.remove_morse_band_pair`).
+* `Morse.Cancellation.CubicConnection`: cancellation of a unique connection in
+  the cubic model (`MorseCancellation.cancel_unique_native_cubic_connection`).
+* `Morse.Cancellation.TransverseGerms`: transversality through sheet
+  factorisations.
+* `Morse.Cancellation.ConnectionData`: the cancellation datum
+  `MorseCancellation.NativeConnectionCancellationData`, its transversality and
+  its cancellation.
+* `Morse.Cancellation.BasinSheets`: the stable and unstable sheets of the datum;
+  transversality from maps into the basins.
+* `Morse.Cancellation.LevelIsotopy`: the First Cancellation Theorem
+  `MorseCancellation.cancel_of_transverse_level_isotopy`.
+
+## References
+
+* [milnor65] J. Milnor, *Lectures on the h-cobordism theorem*, Theorem 5.4.
+
+## Tags
+
+morse-theory, cancellation, gradient-like-flow, h-cobordism
+
+## Modules
+
+This directory replaces the former facade module `Lib.Geometry.Manifold.Morse.Cancellation` (deleted; its module docstring is the text
+above, verbatim). Import the pieces directly:
+
+* `Lib.Geometry.Manifold.Morse.Cancellation.BandHeight`
+* `Lib.Geometry.Manifold.Morse.Cancellation.BandReplacement`
+* `Lib.Geometry.Manifold.Morse.Cancellation.BasinSheets`
+* `Lib.Geometry.Manifold.Morse.Cancellation.ConnectionData`
+* `Lib.Geometry.Manifold.Morse.Cancellation.CriticalGerms`
+* `Lib.Geometry.Manifold.Morse.Cancellation.CubicConnection`
+* `Lib.Geometry.Manifold.Morse.Cancellation.CubicModel`
+* `Lib.Geometry.Manifold.Morse.Cancellation.LevelExit`
+* `Lib.Geometry.Manifold.Morse.Cancellation.LevelIsotopy`
+* `Lib.Geometry.Manifold.Morse.Cancellation.LogarithmicCutoff`
+* `Lib.Geometry.Manifold.Morse.Cancellation.LyapunovResidence`
+* `Lib.Geometry.Manifold.Morse.Cancellation.TransverseGerms`

@@ -1,0 +1,1340 @@
+{
+"module": "Lib.Geometry.Manifold.Whitney.FrameField",
+"source": "/home/goblin/.claude/jobs/06995e68/tmp/wave2/whitney/FrameField.base.lean",
+"source_sha256": "bbd4fcfe6085ba3da9cf7d4b42ccf0fdc2c1cd1d355e4993e09931747d000aa5",
+"units_kept": 104,
+"units_moved": 17,
+"units": [
+{
+"names": [
+"WhitneyPairModel.lowerBoundaryArc"
+],
+"class": "move",
+"lines": [
+42,
+45
+],
+"sha256": "c156cbf0388e76b4ad395f3b60b562ccd8cc5af06ae47a93f6c90bfcdce84286"
+},
+{
+"names": [
+"WhitneyPairModel.upperBoundaryArc"
+],
+"class": "move",
+"lines": [
+47,
+50
+],
+"sha256": "9139858eeb02bcb12b09f059bd8d6b1772f4980384bf70ef8518cfbbe534fa25"
+},
+{
+"names": [
+"WhitneyPairModel.hasDerivAt_lowerBoundaryArc"
+],
+"class": "move",
+"lines": [
+52,
+57
+],
+"sha256": "76995b7c4d5de3676bfdc96335dc2e946e282085088ea0e0f87a63705a39bc93"
+},
+{
+"names": [
+"WhitneyPairModel.hasDerivAt_upperBoundaryArc"
+],
+"class": "move",
+"lines": [
+59,
+69
+],
+"sha256": "71d67319720ec764842aa7ca3742608f2830fad3af232a3b217dbe88c4bba28c"
+},
+{
+"names": [
+"TubularBigon.lowerBoundaryArc_mem_bigon"
+],
+"class": "move",
+"lines": [
+71,
+81
+],
+"sha256": "0ff5a5d5ca5ae68d4a610b6ec12ca7c767dbc1473ed1c9b7ae5b5d52c38393bc"
+},
+{
+"names": [
+"TubularBigon.upperBoundaryArc_mem_bigon"
+],
+"class": "move",
+"lines": [
+83,
+93
+],
+"sha256": "df5513ad78b4d0fb5378d4aa8217f2476f6fdbc91804aa6a81c655d18bdf5719"
+},
+{
+"names": [
+"TubularBigon.lowerBoundaryArc_zero_mem_source"
+],
+"class": "move",
+"lines": [
+95,
+103
+],
+"sha256": "11f41933f055c382b054e36a20167a791dc74301de681b182ee87821b4f40b5a"
+},
+{
+"names": [
+"TubularBigon.upperBoundaryArc_zero_mem_source"
+],
+"class": "move",
+"lines": [
+105,
+113
+],
+"sha256": "970455354794ab7f4ddfda5ab4fa92a646b6b33da49d3521ff52b06a1be9b09f"
+},
+{
+"names": [
+"TubularBigon.lower_chart_center_mem_target"
+],
+"class": "move",
+"lines": [
+115,
+128
+],
+"sha256": "2e42f4aa286cd3ad80f55449689e2ae372da3cc3ae3e2a9e98e2e3749220b1e1"
+},
+{
+"names": [
+"TubularBigon.upper_chart_center_mem_target"
+],
+"class": "move",
+"lines": [
+130,
+143
+],
+"sha256": "2090a992e9e48c7f61ffcfab38474be8140b52b957aa01ef0d1ad446f2acef83"
+},
+{
+"names": [
+"TubularBigon.lower_sheetTransition_center_germ"
+],
+"class": "move",
+"lines": [
+145,
+159
+],
+"sha256": "178a79ea73657bf582956b62baccf8c507af3766be57633bf1c2431c5f42f65d"
+},
+{
+"names": [
+"TubularBigon.upper_sheetTransition_center_germ"
+],
+"class": "move",
+"lines": [
+161,
+175
+],
+"sha256": "7e969e66afd52fc1c9c874a1aa00691d4b0c2c1e9ea480ec2b39b9d900fc8886"
+},
+{
+"names": [
+"TubularBigon.lower_sheetDifferential_arc"
+],
+"class": "move",
+"lines": [
+177,
+187
+],
+"sha256": "31856d61968c98a0257a23f6819f24b478abe0a0d572e8fa514cce04f6cb1277"
+},
+{
+"names": [
+"TubularBigon.upper_sheetDifferential_arc"
+],
+"class": "move",
+"lines": [
+189,
+199
+],
+"sha256": "b0209e647e31711ab799dbb9d506e5aa1b7893aeca2b969ae72c503011b9e3b8"
+},
+{
+"names": [
+"FrameField.det_of_zero_lower_left"
+],
+"class": "keep",
+"lines": [
+201,
+223
+],
+"sha256": "7506af0519d2f3cd4e295726644bcc5734fcf6c731325da94ae9122f593c849b"
+},
+{
+"names": [
+"FrameField.det_of_fixed_first_factor"
+],
+"class": "keep",
+"lines": [
+225,
+245
+],
+"sha256": "31fea78f6e2dff48bc026db7b17bc32e7f57c44e31ca9ab057d368b84e22e99b"
+},
+{
+"names": [
+"FrameField.det_frame_eq_det_split_mul_det_coefficient"
+],
+"class": "keep",
+"lines": [
+247,
+288
+],
+"sha256": "7e0112060ee3823f2b4f9e4017a84fb6903becf9844b25bfbd18ef906334f8a0"
+},
+{
+"names": [
+"PlanarFrame.area"
+],
+"class": "keep",
+"lines": [
+290,
+292
+],
+"sha256": "5ea2db7d55f448e0d13ea5b1439fb842d281c0330b060fa9fac438c812af1b9f"
+},
+{
+"names": [
+"PlanarFrame.squareLength"
+],
+"class": "keep",
+"lines": [
+294,
+296
+],
+"sha256": "ae9b2dcdd3d1a8c2956027a66bbc32c7ce157016c5e7365b194bb2f05e176d91"
+},
+{
+"names": [
+"PlanarFrame.quarterTurn"
+],
+"class": "keep",
+"lines": [
+298,
+300
+],
+"sha256": "7c14ac41e90848ad90d1e4abda60d5ecadae79e934ea0f3b8551300878d906d8"
+},
+{
+"names": [
+"PlanarFrame.parallelCoeff"
+],
+"class": "keep",
+"lines": [
+302,
+304
+],
+"sha256": "c08ad36afbcfe70e36b09578db3d15e1c0caf92cf15a5bbe94cc9ae04d934f6d"
+},
+{
+"names": [
+"PlanarFrame.transverseCoeff"
+],
+"class": "keep",
+"lines": [
+306,
+308
+],
+"sha256": "fe1a8102423d6f7aa8901d688eb84c25da5902713835a3f4dae2493c1195ea7d"
+},
+{
+"names": [
+"PlanarFrame.determinant"
+],
+"class": "keep",
+"lines": [
+310,
+313
+],
+"sha256": "b21ba5cf1a34c33f8ab63036c7d96127edd9f40c9e9d640a5ff00a3e2907ffc4"
+},
+{
+"names": [
+"PlanarFrame.squareLength_pos"
+],
+"class": "keep",
+"lines": [
+315,
+324
+],
+"sha256": "e533d59c6042fff8da6fb0db1aed5b6282cd1078ea5a69d524a5440b4b5eeaa7"
+},
+{
+"names": [
+"PlanarFrame.decompose_second_column"
+],
+"class": "keep",
+"lines": [
+326,
+338
+],
+"sha256": "e4c104c5d282575496b7bf35b884900c3d2628647ccb7cae61128bbe64482023"
+},
+{
+"names": [
+"PlanarFrame.area_transverse"
+],
+"class": "keep",
+"lines": [
+340,
+345
+],
+"sha256": "00a195622f4a50fca41aed41c497913c6c8f38becfcf362d5e4acc2db07ef44e"
+},
+{
+"names": [
+"PlanarFrame.linearMap_first"
+],
+"class": "keep",
+"lines": [
+347,
+350
+],
+"sha256": "373ba8f866c24f5d2cb33294cb507d951cbb081e8e7349f5230d8992a625b6e6"
+},
+{
+"names": [
+"PlanarFrame.linearMap_second"
+],
+"class": "keep",
+"lines": [
+352,
+355
+],
+"sha256": "8357a07077804949ddf22aee2a4535b02048048a7c5fea5aef7f198542c8f62d"
+},
+{
+"names": [
+"PlanarFrame.linearMap_columns"
+],
+"class": "keep",
+"lines": [
+357,
+365
+],
+"sha256": "5b1f7af59fb5a32eb296aa7378518dec850558c8e9f298a858792cfcbb47db22"
+},
+{
+"names": [
+"PlanarFrame.determinant_linearMap"
+],
+"class": "keep",
+"lines": [
+367,
+370
+],
+"sha256": "2fd015b98a5f3c5aa16825a67f90fd44413a227c464ac2190260e3fee2e17623"
+},
+{
+"names": [
+"PlanarFrame.determinant_eq_det"
+],
+"class": "keep",
+"lines": [
+372,
+377
+],
+"sha256": "579f042cedab5e3bb45d894fa259eba3b115dfe8c88622edbf335bf55361a943"
+},
+{
+"names": [
+"PlanarFrame.bijective_of_determinant_ne_zero"
+],
+"class": "keep",
+"lines": [
+379,
+388
+],
+"sha256": "a55493f6397b34c44614d88b8e61274eb116843de937290bfcba222050aed464"
+},
+{
+"names": [
+"PlanarFrame.continuous_determinant"
+],
+"class": "keep",
+"lines": [
+390,
+400
+],
+"sha256": "cdcfbc179c04030518a191983868145cf5e4dba5c632ac366e4c44c115df46a2"
+},
+{
+"names": [
+"PlanarFrame.continuous_quarterTurn"
+],
+"class": "keep",
+"lines": [
+402,
+404
+],
+"sha256": "f2bfcc6026a0af13a0b996c37aa1d950dda8f8d0bc58a938e4966374658a981b"
+},
+{
+"names": [
+"PlanarFrame.continuous_linearMap"
+],
+"class": "keep",
+"lines": [
+406,
+418
+],
+"sha256": "a3f865479e18d52df8b50760dd9af3df4f60bf690fc418bf9361382abc93a636"
+},
+{
+"names": [
+"IntersectionCoordinates.jointBlock"
+],
+"class": "keep",
+"lines": [
+420,
+431
+],
+"sha256": "abb98db94cea98c84429bec5e1731582f61b5c113c04d42665c1586f1a6aa7ef"
+},
+{
+"names": [
+"IntersectionCoordinates.jointBlock_apply"
+],
+"class": "keep",
+"lines": [
+433,
+443
+],
+"sha256": "ad39ef1bbae17987dbe6c13e074c0cf860c2889bfba010a59a02c1c06f94e757"
+},
+{
+"names": [
+"IntersectionCoordinates.map_first_axis"
+],
+"class": "keep",
+"lines": [
+445,
+450
+],
+"sha256": "0df654789e05197b3970ef21bdae4d6c0e94584e6563ce3e35720be4877a0151"
+},
+{
+"names": [
+"IntersectionCoordinates.det_jointBlock"
+],
+"class": "keep",
+"lines": [
+452,
+496
+],
+"sha256": "237e72bb5ecee7ad0fa52fde1171d5d1a32c061a8f7cff7cbeee49b555a23539"
+},
+{
+"names": [
+"FrameField.bijective_coprod_of_orthogonal_range"
+],
+"class": "keep",
+"lines": [
+498,
+514
+],
+"sha256": "853edf0b3ee0caa24950c8a5b22a09c02702da2daa1048b64eb9c79532bb7a8b"
+},
+{
+"names": [
+"FrameField.exists_smooth_complement_near_starConvex_on"
+],
+"class": "keep",
+"lines": [
+516,
+602
+],
+"sha256": "8c4f494624b6217201694869efdfe4a9425323b3fd36f2494fbb36967050597c"
+},
+{
+"names": [
+"FrameField.exists_smooth_complement_near_starConvex"
+],
+"class": "keep",
+"lines": [
+604,
+620
+],
+"sha256": "8a941a4a5dbd88be4b1051f8136a28ce98ba4db54a88037dc6d352ba9648887e"
+},
+{
+"names": [
+"TubularBigon.lower_sheetFrame"
+],
+"class": "move",
+"lines": [
+622,
+661
+],
+"sha256": "6de7d172334f2a87ad31c3b177654540583274c2a859395ef76a06de1b033de2"
+},
+{
+"names": [
+"TubularBigon.upper_sheetFrame"
+],
+"class": "move",
+"lines": [
+663,
+707
+],
+"sha256": "1830657bc72872a1b5edb3c9b47895845a524129bc2ff5ad7f7f2225d7449087"
+},
+{
+"names": [
+"TubularBigon.upper_sheetFrame_complement_of_finrank"
+],
+"class": "move",
+"lines": [
+709,
+737
+],
+"sha256": "d1be711a1badbf5a8f8bc194bdf95a4a7958fea0e6b9a4b539dac4706f496673"
+},
+{
+"names": [
+"DiskFraming.puncturedModel"
+],
+"class": "keep",
+"lines": [
+739,
+742
+],
+"sha256": "6aba296b79f1fb5dbfe67e36363ffbc15a827ea831d7d5b663cac5f2eb562a2b"
+},
+{
+"names": [
+"DiskFraming.exists_smooth_punctured_curve_with_germ"
+],
+"class": "keep",
+"lines": [
+744,
+769
+],
+"sha256": "3549db19ca40f824eed884599c42ef05dcd8edd6c12abc428029ee6ffd767887"
+},
+{
+"names": [
+"DiskFraming.exists_nonzero_smooth_curve_with_endpoint_germs"
+],
+"class": "keep",
+"lines": [
+771,
+798
+],
+"sha256": "9e4ed5b0f6ac1a094c19ad11c10838f963a81e0b0cbd7b642f00ddc05329b70c"
+},
+{
+"names": [
+"PlanarFrame.determinantComponent"
+],
+"class": "keep",
+"lines": [
+800,
+804
+],
+"sha256": "cee05518f110bb93352f84abe0d1c471fd11b0862d9c61091754e873c81cef62"
+},
+{
+"names": [
+"PlanarFrame.first_column_ne_zero"
+],
+"class": "keep",
+"lines": [
+806,
+817
+],
+"sha256": "a4ee66ecb97a890cb5ddeef497c8ccbed2a38ae6fd8e2699a8ee8eda5b8c59e2"
+},
+{
+"names": [
+"PlanarFrame.signed_transverseCoeff_pos"
+],
+"class": "keep",
+"lines": [
+819,
+827
+],
+"sha256": "c1b23d3d94da231952be06ea2cc3d0e6f72996095b98495892a296d3ca11b9ec"
+},
+{
+"names": [
+"PlanarFrame.nonempty_path_determinantComponent"
+],
+"class": "keep",
+"lines": [
+829,
+909
+],
+"sha256": "4888d16d4e533beb272d625b8705753884279fafab22ce7186b8b66a52ba066e"
+},
+{
+"names": [
+"PlanarFrame.exists_smooth_join_of_same_determinant_sign"
+],
+"class": "keep",
+"lines": [
+911,
+953
+],
+"sha256": "743580b49d912e04d45635289af1bb36951f39ba86e9dcd3d5c5f5c9afd13934"
+},
+{
+"names": [
+"FrameField.exists_smooth_invertible_join_of_finrank_two"
+],
+"class": "keep",
+"lines": [
+955,
+1006
+],
+"sha256": "cba68d37e6f98ad850bcfcd4c15e9cf262e14cc9cbeb308d3ea4a3ada9c7212c"
+},
+{
+"names": [
+"FrameField.exists_global_field_with_closed_germ"
+],
+"class": "keep",
+"lines": [
+1008,
+1036
+],
+"sha256": "2019a4604a2a5aeb115cd29eeeae062cf259af3f51fb0dc6c988bd897e318309"
+},
+{
+"names": [
+"FrameField.exists_nonzero_field_rel_closed"
+],
+"class": "keep",
+"lines": [
+1038,
+1071
+],
+"sha256": "0c8567d7248d40dac89fd62b171e5b15e400dc7173a3f4d90e619ca987e6ee40"
+},
+{
+"names": [
+"FrameField.exists_nonzero_extension_of_local_field"
+],
+"class": "keep",
+"lines": [
+1073,
+1092
+],
+"sha256": "89fa1784871a59e228eb991c50e4092c42d112b448e4518543d47b35a215e5d9"
+},
+{
+"names": [
+"FrameField.injective_iff_ne_zero_of_finrank_one"
+],
+"class": "keep",
+"lines": [
+1094,
+1118
+],
+"sha256": "97d251f58dcd54f342dc8607ee78408161072a800ba83c518e569db06dfaa545"
+},
+{
+"names": [
+"FrameField.finrank_one_column"
+],
+"class": "keep",
+"lines": [
+1120,
+1125
+],
+"sha256": "c7c03f7a1b97365de608a7770fe4fff09ce2a775ecfb88fe1bac70cee39da3ed"
+},
+{
+"names": [
+"FrameField.exists_one_column_extension_of_local_field"
+],
+"class": "keep",
+"lines": [
+1127,
+1143
+],
+"sha256": "eb7b255dbe7fae44b1e57440e58d32eaf00e2d43100942a642efd571354de2aa"
+},
+{
+"names": [
+"FrameField.exists_completed_one_column_frame"
+],
+"class": "keep",
+"lines": [
+1145,
+1171
+],
+"sha256": "29695aa249c3311243e1effc5c7f1b3ed38abe9442381258ed26af913858f763"
+},
+{
+"names": [
+"FrameField.eq_det_smul_id_of_finrank_one"
+],
+"class": "keep",
+"lines": [
+1173,
+1181
+],
+"sha256": "81e6edb7f40c921b0d8e05358232d28ab8701ebfe7af6ee33de15657ee439321"
+},
+{
+"names": [
+"FrameField.det_smul_add_of_finrank_one"
+],
+"class": "keep",
+"lines": [
+1183,
+1195
+],
+"sha256": "df6a1c394de74ba4f4a365ed866f84ab1ee631d3e52011287a4748b78f59f062"
+},
+{
+"names": [
+"FrameField.exists_smooth_invertible_join_of_finrank_one"
+],
+"class": "keep",
+"lines": [
+1197,
+1261
+],
+"sha256": "9b8a8f12b13924631d8d1c4711d917b89f8ecc828a2df96f1ffe38f01d51842f"
+},
+{
+"names": [
+"FrameField.mul_endpoints_pos_of_continuous_nonzero"
+],
+"class": "keep",
+"lines": [
+1263,
+1273
+],
+"sha256": "888282cbb02879079d4b679b7b857612d0ea9b26f4b84d80abda074c671fa79e"
+},
+{
+"names": [
+"FrameField.det_mul_endpoints_pos"
+],
+"class": "keep",
+"lines": [
+1275,
+1287
+],
+"sha256": "60e3335ca99e41a95790adbbb8c1e8cc18f23b08b56fa9f8dceda8ccd13111d4"
+},
+{
+"names": [
+"FrameField.same_sign_frames_iff_coefficients"
+],
+"class": "keep",
+"lines": [
+1289,
+1321
+],
+"sha256": "e0be557d08078b95f93fb43fe411be6f8ec0c899802166d456a6bfbef13e527a"
+},
+{
+"names": [
+"FrameField.exists_smooth_complement_with_endpoint_germs_of_finrank_one_or_two"
+],
+"class": "keep",
+"lines": [
+1323,
+1362
+],
+"sha256": "846ca80423df7ce04b539717ab708a1c8b35056fd20ec1a29aa1a210f327a3c9"
+},
+{
+"names": [
+"FrameField.exists_smooth_complement_with_germs_of_frame_sign_of_finrank_one_or_two"
+],
+"class": "keep",
+"lines": [
+1364,
+1387
+],
+"sha256": "35993996539358dcec947beb186260d466d790cf81fbd859a3c1ff41795e25b8"
+},
+{
+"names": [
+"WhitneyPairModel.exists_smooth_bigon_boundary_field"
+],
+"class": "keep",
+"lines": [
+1389,
+1443
+],
+"sha256": "9eab3ae98fbfecc613015fb5830d8876a618014e4fb421e624d1c9ae7ceaecea"
+},
+{
+"names": [
+"WhitneyPairModel.exists_injective_bigon_boundary_field"
+],
+"class": "keep",
+"lines": [
+1445,
+1481
+],
+"sha256": "8f1d55e32268376bdd071fec741434813678251f590b126cda1b006dfea4f382"
+},
+{
+"names": [
+"FrameField.rankThreePairCoordinates"
+],
+"class": "keep",
+"lines": [
+1483,
+1488
+],
+"sha256": "dea7ced598eb54b5959f97f73ca9978f08ef3955f0802d13f121f6c47e2d2926"
+},
+{
+"names": [
+"FrameField.rankThreePairDet"
+],
+"class": "keep",
+"lines": [
+1490,
+1495
+],
+"sha256": "a991042f10be673c0cfe50de5be6d6e576ce34554a29d2a758be03eb2fb5aba1"
+},
+{
+"names": [
+"TubularBigon.exists_rankThree_boundary_complement_of_normal_sign"
+],
+"class": "keep",
+"lines": [
+1497,
+1542
+],
+"sha256": "13b684c04c581bf66cceb9e5008c05b01d6387656abfdf782fd798491b479305"
+},
+{
+"names": [
+"TubularBigon.exists_rankThree_planar_boundary_frame_of_normal_sign"
+],
+"class": "keep",
+"lines": [
+1544,
+1601
+],
+"sha256": "63bbf91239cfec88b68d81226fa53b8e2b455f0eb1d46406179817becbc7739c"
+},
+{
+"names": [
+"TubularBigon.exists_rankThree_planar_frame_of_normal_sign"
+],
+"class": "keep",
+"lines": [
+1603,
+1659
+],
+"sha256": "be17c765d426f20a589e0acc3a9dd9fa8a629ed99fda7a342f2b30b5f122e8d2"
+},
+{
+"names": [
+"FrameField.bijective_coprod_comm"
+],
+"class": "keep",
+"lines": [
+1661,
+1674
+],
+"sha256": "ab473b0ed6828ec660938b9cbe2dbd42a25710c208581f4f155685da36b9cb1f"
+},
+{
+"names": [
+"FrameField.transportComplement"
+],
+"class": "keep",
+"lines": [
+1676,
+1680
+],
+"sha256": "fd3c29eb2b89f731c92276df752c31a069613e9d34ca6d06fa29dec7ee1740fa"
+},
+{
+"names": [
+"FrameField.transportComplement_self"
+],
+"class": "keep",
+"lines": [
+1682,
+1689
+],
+"sha256": "a6d66629185e8d3666f0b72513e7ef149a9efcefcc810855628cc40dcdfdfed8"
+},
+{
+"names": [
+"FrameField.coprod_transportComplement"
+],
+"class": "keep",
+"lines": [
+1691,
+1705
+],
+"sha256": "8c38ed6674d7f604401e4897030b73a9f631f9c8508ea55a30df716b20e5d246"
+},
+{
+"names": [
+"FrameField.bijective_transportComplement"
+],
+"class": "keep",
+"lines": [
+1707,
+1716
+],
+"sha256": "b5108580110324fa42f51d3a1dfbc11943067a59f27cda920fa92ecb133aa875"
+},
+{
+"names": [
+"FrameField.contDiffOn_transportComplement"
+],
+"class": "keep",
+"lines": [
+1718,
+1733
+],
+"sha256": "d0f6aede7fbeac4ea90335d74b64334ff282260010ca4eaaa9e0d77c7313c564"
+},
+{
+"names": [
+"TubularBigon.exists_rankThree_adapted_frame_of_normal_sign"
+],
+"class": "keep",
+"lines": [
+1735,
+1844
+],
+"sha256": "8a3de216edcc91a9d67fc4dd8ce957aa44942404e49aa12aaa624da7310d6e00"
+},
+{
+"names": [
+"TubularBigon.rankThreeSheetPairJacobian"
+],
+"class": "keep",
+"lines": [
+1846,
+1857
+],
+"sha256": "254910bc5b5971ec41f280108d2d029cbe111f58120dbd34e5a6c8d2485004d4"
+},
+{
+"names": [
+"TubularBigon.rankThreeSheetPairDet"
+],
+"class": "keep",
+"lines": [
+1859,
+1867
+],
+"sha256": "76b002eaadc5c8f31fe90df6a0c8084b6c8388f591ab65e4d4b4d11ede9e313c"
+},
+{
+"names": [
+"TubularBigon.rankThree_corner_sheet_charts_coincide"
+],
+"class": "keep",
+"lines": [
+1869,
+1885
+],
+"sha256": "53057241c85e22eeefc52f9bf2f3f7bd3ac324e45cf14bf4c3c6c9698b909ff8"
+},
+{
+"names": [
+"TubularBigon.rankThreeSheetPairDet_eq"
+],
+"class": "keep",
+"lines": [
+1887,
+1912
+],
+"sha256": "b8a788f2642cac934234102d1a769c01dc13bb12c0666e10ac95a538b84b8d77"
+},
+{
+"names": [
+"TubularBigon.opposite_rankThree_corner_determinants_iff_normal_sign"
+],
+"class": "keep",
+"lines": [
+1914,
+1947
+],
+"sha256": "0c92e2a3392379ffcbc3e68c954607240a97f9f0c49cf939f378a1681f951687"
+},
+{
+"names": [
+"TubularBigon.exists_rankThree_adapted_frame_of_opposite_corner_signs"
+],
+"class": "keep",
+"lines": [
+1949,
+1978
+],
+"sha256": "ebf113a5dedd4bc244d559db01cbdd53d80bc90ccfee80042c4ed054e69f2fc0"
+},
+{
+"names": [
+"IntersectionCoordinates.pairCoordinates"
+],
+"class": "keep",
+"lines": [
+1980,
+1987
+],
+"sha256": "c522a5220a2c35e82e2b74624dd2a7e30cf09924407f47aa7caee4134fb2abec"
+},
+{
+"names": [
+"IntersectionCoordinates.det_jointBlock_eq_tangentSum"
+],
+"class": "keep",
+"lines": [
+1989,
+2008
+],
+"sha256": "2a5ce99f2706b9299c83a124882292f0b94b4d9a54bdd6873ed11f27004e1d83"
+},
+{
+"names": [
+"FrameField.normalDetector_eq_comp_quotient"
+],
+"class": "keep",
+"lines": [
+2010,
+2023
+],
+"sha256": "3ceb58e6566741d929170d332aedcb961d7cfad6257cf6ea862c181c0f352921"
+},
+{
+"names": [
+"FrameField.det_intersection_mul_normalComplement"
+],
+"class": "keep",
+"lines": [
+2025,
+2046
+],
+"sha256": "3dfc942efdaa518636f2ea25b9a3da15d4de1918be44010f2c8d9c335450fcdb"
+},
+{
+"names": [
+"FrameField.opposite_intersectionDet_iff_normalDet"
+],
+"class": "keep",
+"lines": [
+2048,
+2105
+],
+"sha256": "11cf67c14b65559f0116278a1e51d7387de3b706bd28842d3d02caf6914550c3"
+},
+{
+"names": [
+"StripNormalData.sheetBaseFrame"
+],
+"class": "keep",
+"lines": [
+2107,
+2116
+],
+"sha256": "fbfa7c2f6b52c04b84c0306cf63833ed88e2a31c119117d485096c8d4b653b77"
+},
+{
+"names": [
+"StripNormalData.contDiffOn_sheetDifferential"
+],
+"class": "keep",
+"lines": [
+2118,
+2138
+],
+"sha256": "54448941e475d744cb65e186113579949873bf0c5a3be0f4980837c000eee41e"
+},
+{
+"names": [
+"StripNormalData.contDiffOn_sheetBaseFrame"
+],
+"class": "keep",
+"lines": [
+2140,
+2150
+],
+"sha256": "1b749d084cde7a9ba3bca9f2217425aacb9c4271be8446256a9b25ad64b418b2"
+},
+{
+"names": [
+"StripNormalData.exists_open_sheetBaseFrame_domain"
+],
+"class": "keep",
+"lines": [
+2152,
+2168
+],
+"sha256": "3af26c6f5b887c73fff496bc9f24a65c7cb24072aa022ce6c254b790c94da1da"
+},
+{
+"names": [
+"StripNormalData.sheetDifferential_transverse_eq"
+],
+"class": "keep",
+"lines": [
+2170,
+2182
+],
+"sha256": "81ff0534e01ff1389cfb36a9063970d976c463d753b1c33de18cc7a964626e07"
+},
+{
+"names": [
+"StripNormalData.tubularTransitionDerivative"
+],
+"class": "keep",
+"lines": [
+2184,
+2191
+],
+"sha256": "37e539db86af004eff408add751116ccd7fb04df769319ebd216dcd9c157a00d"
+},
+{
+"names": [
+"StripNormalData.sheetComplement"
+],
+"class": "keep",
+"lines": [
+2193,
+2201
+],
+"sha256": "6f359bff8734048f430c3c67b0036eb58db4917df4083610c3645ab96e83dada"
+},
+{
+"names": [
+"StripNormalData.contDiffOn_tubularTransitionDerivative"
+],
+"class": "keep",
+"lines": [
+2203,
+2222
+],
+"sha256": "681defbca3b016e3e2e652708893dfb1fd654bec75ff9f698213e5b383084593"
+},
+{
+"names": [
+"StripNormalData.contDiffOn_sheetComplement"
+],
+"class": "keep",
+"lines": [
+2224,
+2235
+],
+"sha256": "7b061a438102fde4f5fd88f9d255531f666836c4cd700b9d005880e9a0517d78"
+},
+{
+"names": [
+"StripNormalData.bijective_tubularTransitionDerivative"
+],
+"class": "keep",
+"lines": [
+2237,
+2254
+],
+"sha256": "8c3944619f820f17edcdbdc4ea57430913eb564d99e365c912c18e195802a71d"
+},
+{
+"names": [
+"StripNormalData.sheet_coprod_complement_eq"
+],
+"class": "keep",
+"lines": [
+2256,
+2275
+],
+"sha256": "37a6163bf919b066c34ce7af4fd7328635193d412f16eb92f30bd061152d255b"
+},
+{
+"names": [
+"StripNormalData.isInvertible_sheet_coprod_complement"
+],
+"class": "keep",
+"lines": [
+2277,
+2289
+],
+"sha256": "3cf44974c436a387ba0ac8bebae8cdb7684baf536b6cd8a4319c9c95dccb4a03"
+},
+{
+"names": [
+"StripNormalData.normalDetector"
+],
+"class": "keep",
+"lines": [
+2291,
+2300
+],
+"sha256": "21d3240dbbfca93feb3da11eaac42705195f908b912e96ad43cc507ded6ac484"
+},
+{
+"names": [
+"StripNormalData.contDiffAt_normalMap_in_tube"
+],
+"class": "keep",
+"lines": [
+2302,
+2323
+],
+"sha256": "1504aa909ee6d02803afd82d094e2888379d7984ee0c33bee303d5c5864b4ca9"
+},
+{
+"names": [
+"StripNormalData.contDiffOn_normalDetector"
+],
+"class": "keep",
+"lines": [
+2325,
+2345
+],
+"sha256": "c4b2e2c6c8d87d0e671971638135de20f0dd657c675fe67077c81dbd4d770cf7"
+},
+{
+"names": [
+"StripNormalData.normalDetector_eq_native"
+],
+"class": "keep",
+"lines": [
+2347,
+2372
+],
+"sha256": "1db78b25cdd9372c58def5cdea714f692cc85a1e736f4fda4f48652b10fbdd84"
+},
+{
+"names": [
+"StripNormalData.surjective_normalDetector"
+],
+"class": "keep",
+"lines": [
+2374,
+2388
+],
+"sha256": "58c2f428855a3fbe26419b95e3e4a5155c3162c759c22397e42e8774f99e1445"
+},
+{
+"names": [
+"StripNormalData.normalDetector_comp_sheet_eq_zero"
+],
+"class": "keep",
+"lines": [
+2390,
+2424
+],
+"sha256": "68b2dab984ce182da4a559f3a15353837d87eb0f7b8f6de0ba5236fcfb9182ef"
+},
+{
+"names": [
+"StripNormalData.normalDetector_comp_sheet"
+],
+"class": "keep",
+"lines": [
+2426,
+2453
+],
+"sha256": "b14aee9e4b6b4ab097f97143a9e5620290ca0958a281b41d1e691c9cf5628ab4"
+},
+{
+"names": [
+"TubularBigon.opposite_rankThree_corners_iff_normal_sheet_determinants"
+],
+"class": "keep",
+"lines": [
+2455,
+2540
+],
+"sha256": "cdedd203d61049f11945cc350f6fa42bdb4301b5b8d97378ed739acde23342da"
+},
+{
+"names": [
+"ManifoldMorse.MorseSurgeryData.beltSheetNormal"
+],
+"class": "keep",
+"lines": [
+2542,
+2549
+],
+"sha256": "fd061e39bf62b83d637612d12c65b10ecf3e658516d8a75457c0810a158bf646"
+},
+{
+"names": [
+"ManifoldMorse.MorseSurgeryData.opposite_belt_corners_iff_normal_sheet_determinants"
+],
+"class": "keep",
+"lines": [
+2551,
+2617
+],
+"sha256": "7e493ad57db187a11fd174cb489c11774b263c5e0c31df7749a7425660b6318d"
+},
+{
+"names": [
+"NativeSheetCoordinates.projection"
+],
+"class": "keep",
+"lines": [
+2619,
+2625
+],
+"sha256": "14a9c650efdf2ff4196beb0d8a0d1da3887ef6c122d7964b82f6a3dea11eeb1f"
+},
+{
+"names": [
+"NativeSheetCoordinates.contMDiffOn_projection"
+],
+"class": "keep",
+"lines": [
+2627,
+2637
+],
+"sha256": "6ed0678df69bc7bdc63007ed8a7fc21982fae954df8b1c600a61503869fc18c4"
+},
+{
+"names": [
+"NativeSheetCoordinates.injective_mfderiv_projection"
+],
+"class": "keep",
+"lines": [
+2639,
+2693
+],
+"sha256": "bbaafe40fa25cf987b8a4fefd851241fb90d582f39e7ee0a26545afe007c2113"
+},
+{
+"names": [
+"NativeSheetCoordinates.isLocalDiffeomorphOn_projection"
+],
+"class": "keep",
+"lines": [
+2695,
+2716
+],
+"sha256": "6de03fbb041a8fcba7a8ebbbc127b0fb42d121776601c6e3f56699878767651e"
+},
+{
+"names": [
+"NativeSheetCoordinates.exists_induced_sheet_chart"
+],
+"class": "keep",
+"lines": [
+2718,
+2772
+],
+"sha256": "ee70a4f0b9c6849ce5eb7dfcd7043287d0b2083735c2c5122f1ff02dd7c09a0c"
+}
+]
+}

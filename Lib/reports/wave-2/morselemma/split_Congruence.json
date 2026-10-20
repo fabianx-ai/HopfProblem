@@ -1,0 +1,1756 @@
+{
+"module": "Lib.Analysis.Calculus.MorseLemma",
+"source": "/home/goblin/.claude/jobs/06995e68/tmp/wave2/morselemma/orig.lean",
+"source_sha256": "9510fe9912b4082547b49ad538dc219b9f4cc74c0599c49f7d4bd7ee26137af8",
+"units_kept": 146,
+"units_moved": 12,
+"units": [
+{
+"names": [
+"MorsePerturbation.dualEquiv"
+],
+"class": "keep",
+"lines": [
+65,
+71
+],
+"sha256": "5af0fb67048f25c90843cdf3f48efd28e3112d0c3e24354474cf83656e7f150c"
+},
+{
+"names": [
+"MorsePerturbation.coordinateGradient"
+],
+"class": "keep",
+"lines": [
+73,
+76
+],
+"sha256": "06af443c94d74cf1fa661f3f104aea25d8d1e66c90342edc59477f5484b19c1a"
+},
+{
+"names": [
+"MorsePerturbation.linearPerturbation"
+],
+"class": "keep",
+"lines": [
+78,
+81
+],
+"sha256": "f71cdb83c7477b2b9fcccc0ccd1abd0ff795c145f7ac0ee477f54a3fadfbf301"
+},
+{
+"names": [
+"MorsePerturbation.IsMorse"
+],
+"class": "keep",
+"lines": [
+83,
+86
+],
+"sha256": "78f4012389dc782ed3dea7c53e02fdf1b1ff59bda123d4a23a5e34c5412835c1"
+},
+{
+"names": [
+"MorsePerturbation.contDiff_fderiv"
+],
+"class": "keep",
+"lines": [
+88,
+91
+],
+"sha256": "1f799bf748c23f63fe486911a62222062371dc01a91e0f2d77294511d4650d37"
+},
+{
+"names": [
+"MorsePerturbation.contDiff_coordinateGradient"
+],
+"class": "keep",
+"lines": [
+93,
+97
+],
+"sha256": "dab1b1a533ade29ecd0d660afdc56eecf4c40cf9793dc1730971aadde1fddd11"
+},
+{
+"names": [
+"MorsePerturbation.fderiv_linearPerturbation"
+],
+"class": "keep",
+"lines": [
+99,
+105
+],
+"sha256": "a32283b8046f9d8cfa60ea22fec8fc5fdf283d16922910d6f7c3f0ff948c41f8"
+},
+{
+"names": [
+"MorsePerturbation.hessian_linearPerturbation"
+],
+"class": "keep",
+"lines": [
+107,
+113
+],
+"sha256": "6b748cb93e5fd0f3646af7649fcfcad697e9b4e64404e1bd691e9418aa7aed94"
+},
+{
+"names": [
+"MorsePerturbation.fderiv_coordinateGradient"
+],
+"class": "keep",
+"lines": [
+115,
+122
+],
+"sha256": "692cea44d7982ae38025712a1491ecc46accc46bda882105d3788928025a384c"
+},
+{
+"names": [
+"MorsePerturbation.isMorse_of_regularValue"
+],
+"class": "keep",
+"lines": [
+124,
+140
+],
+"sha256": "378bd6945f4b84299df8cb12b3f19c5e85f4a4d911358d8776706cd6769f6ba9"
+},
+{
+"names": [
+"MorsePerturbation.isOpen_forall_mem_compact"
+],
+"class": "keep",
+"lines": [
+142,
+163
+],
+"sha256": "abb65c30878a79b397e49acea8b1017a76f6b7da8ce345fb1326c989ef83359c"
+},
+{
+"names": [
+"MorsePerturbation.contDiff_spatialDerivative"
+],
+"class": "keep",
+"lines": [
+165,
+172
+],
+"sha256": "dfef20e3d7042653bfea6c9a890ee37372b5ffd48682bf9ed403da9f914944f9"
+},
+{
+"names": [
+"MorsePerturbation.bijective_hessian_iff"
+],
+"class": "keep",
+"lines": [
+174,
+187
+],
+"sha256": "412a8cd93d9f1efacb3ee51836f81d1bba650deca4c4d92fc7188ba36a44af25"
+},
+{
+"names": [
+"MorsePerturbation.contDiffAt_spatialDerivative"
+],
+"class": "keep",
+"lines": [
+189,
+198
+],
+"sha256": "2ca35fc4361abca714c04f28110ad90e44df3f24c3791ad6a2efc3a07f9d85bf"
+},
+{
+"names": [
+"MorsePerturbation.contDiffOn_spatialDerivative"
+],
+"class": "keep",
+"lines": [
+200,
+207
+],
+"sha256": "61320d045ceedf5598f2c92849322466553614f933b6e07916fb8306a105e974"
+},
+{
+"names": [
+"MorsePerturbation.isOpen_goodJetOn"
+],
+"class": "keep",
+"lines": [
+209,
+246
+],
+"sha256": "7eaa1f07fd48586d1256893b2d0bba7a2df8f9c88815fba0902211a886677c4f"
+},
+{
+"names": [
+"ManifoldPerturbation.coordinateVector"
+],
+"class": "keep",
+"lines": [
+250,
+254
+],
+"sha256": "c03c5565e4d516d90360a867fb0e04c81e76046a9a28ea43b976f98366e27b84"
+},
+{
+"names": [
+"ManifoldPerturbation.contMDiff_coordinateVector"
+],
+"class": "keep",
+"lines": [
+256,
+261
+],
+"sha256": "5118a571e15f09b250c704c7e728c668ba8549a4619524e499f7ff08b060a9b1"
+},
+{
+"names": [
+"ManifoldPerturbation.perturb"
+],
+"class": "keep",
+"lines": [
+263,
+267
+],
+"sha256": "ebacd1a259f2babb8ee7618f610fdeb8b9c0282d1ae791db3a6b45d57a3d58c6"
+},
+{
+"names": [
+"ManifoldPerturbation.contMDiff_perturb"
+],
+"class": "keep",
+"lines": [
+269,
+277
+],
+"sha256": "5d3e768871ff99f0587f3d0595096b152d824e663433e3a98478730c77e4fc97"
+},
+{
+"names": [
+"ManifoldPerturbation.perturb_zero"
+],
+"class": "keep",
+"lines": [
+279,
+285
+],
+"sha256": "f5b14c452e2d8c9a64809c7b5122061046798b11e8bbb423f3bcd575a7a159b2"
+},
+{
+"names": [
+"ManifoldMorse.IsMorseAt"
+],
+"class": "keep",
+"lines": [
+287,
+294
+],
+"sha256": "4d27cfae994a2ca51ce222544a2b0ab93e75f491671cbe24faf7a0566a5bd1bc"
+},
+{
+"names": [
+"ManifoldMorse.IsMorseOn"
+],
+"class": "keep",
+"lines": [
+296,
+299
+],
+"sha256": "67d3d0cd69fa26e7bf369de12f985f630dad024f3a66375a40f95d7b1efe7480"
+},
+{
+"names": [
+"ManifoldMorse.IsMorse"
+],
+"class": "keep",
+"lines": [
+301,
+304
+],
+"sha256": "af5a6de57ddd5ccfd78d8ad0a355ca70ae6d8da51a2c39951166698e657beac7"
+},
+{
+"names": [
+"ManifoldMorse.IsMorseOn.union"
+],
+"class": "keep",
+"lines": [
+308,
+316
+],
+"sha256": "32f7cc99378fde402838e6f87d9d41128e94fc0e69ffffce80dc9595231dced4"
+},
+{
+"names": [
+"ManifoldMorse.contDiffOn_chartExpression"
+],
+"class": "keep",
+"lines": [
+318,
+323
+],
+"sha256": "6fe61292be6fde4ad0a1a51314ecbac5ca9a023ea76d17adeade914b875ab911"
+},
+{
+"names": [
+"ManifoldMorse.isMorseAt_of_chart_eventuallyEq"
+],
+"class": "keep",
+"lines": [
+325,
+337
+],
+"sha256": "18251fa091a8b11c8d237a352ea92a9e8933d1ceac16e7dc849d5939a24e9d72"
+},
+{
+"names": [
+"ManifoldMorse.contDiffOn_inChart"
+],
+"class": "keep",
+"lines": [
+339,
+351
+],
+"sha256": "75ab6b03bf8f69f687581175d11c2db60912e1b108505f9bfc93c60c2089da88"
+},
+{
+"names": [
+"ManifoldMorse.isOpen_morseInChart"
+],
+"class": "keep",
+"lines": [
+353,
+380
+],
+"sha256": "a75b90d46840e9376d636a88a8b3d13a65d83e7e46b64d77504cecfaad66dc99"
+},
+{
+"names": [
+"ManifoldMorse.isOpen_isMorseAt"
+],
+"class": "keep",
+"lines": [
+382,
+398
+],
+"sha256": "b31b1ff80523d8fc0d072a4bfbf6658a534f38bd59edb6a8d5d97936b9fd062d"
+},
+{
+"names": [
+"ManifoldMorse.isOpen_isMorseOn"
+],
+"class": "keep",
+"lines": [
+400,
+406
+],
+"sha256": "25c631537ed7fbe89c85f7de366cd3c4badfdc72840fe50068aa290a91ae3e79"
+},
+{
+"names": [
+"MorsePerturbation.hessianEquiv"
+],
+"class": "keep",
+"lines": [
+408,
+412
+],
+"sha256": "87252a7a45040dab73a4114f286e74dc7f11c4cccb18594501f305cb490ac144"
+},
+{
+"names": [
+"MorsePerturbation.hessianEquiv_toContinuousLinearMap"
+],
+"class": "keep",
+"lines": [
+414,
+421
+],
+"sha256": "1eec5c09551378be6f36e4e70bda83158bbbe87dcaa0832602394c5f5b64f0a8"
+},
+{
+"names": [
+"ManifoldMorse.criticalPoints"
+],
+"class": "keep",
+"lines": [
+423,
+426
+],
+"sha256": "60190e9ab22411830b8fef158fbd524d5e5b00af7ae01f858b6e44464438f44e"
+},
+{
+"names": [
+"ManifoldMorse.mem_criticalPoints_iff"
+],
+"class": "keep",
+"lines": [
+428,
+457
+],
+"sha256": "b06958092480afee5d9a54a819a6e4f187d92c8c128045d5c9a6a3c73dd2a96f"
+},
+{
+"names": [
+"ManifoldMorse.criticalPoints_isClosed"
+],
+"class": "keep",
+"lines": [
+459,
+479
+],
+"sha256": "6fb99a2f5bea6b0d487a1f1e96afa34d1bc8464e7a06956af4bac0ee5e91f332"
+},
+{
+"names": [
+"ManifoldMorse.criticalPoints_isDiscrete"
+],
+"class": "keep",
+"lines": [
+481,
+512
+],
+"sha256": "6ea320dfc9d5eb911f7f866f5fc2deec30a7bdbab062c14b9ca8bd067abea9c3"
+},
+{
+"names": [
+"ManifoldMorse.finite_criticalPoints"
+],
+"class": "keep",
+"lines": [
+514,
+519
+],
+"sha256": "7a40480eb6692520f3f36a00ae9cfaf24e7cdcf803b1f16bf2c23a5fb16e69d5"
+},
+{
+"names": [
+"FlowConstruction.chartDirection"
+],
+"class": "keep",
+"lines": [
+523,
+527
+],
+"sha256": "128bab387b9936b44bfffe70ae9e3fa834082385e898eb66a8d10bcaed84409b"
+},
+{
+"names": [
+"FlowConstruction.contMDiffOn_chartDirection"
+],
+"class": "keep",
+"lines": [
+529,
+547
+],
+"sha256": "e22f97bce81f055a1a82c4dc232c5485dcf429485b173a16d09f97c01c609267"
+},
+{
+"names": [
+"FlowConstruction.mvfderiv_chartDirection"
+],
+"class": "keep",
+"lines": [
+549,
+570
+],
+"sha256": "a8ffe5454882a240be2ed6b8b82467675906b46ba401eab586d9f088e2316f26"
+},
+{
+"names": [
+"FlowConstruction.exists_unitSpeedField_near_regular"
+],
+"class": "keep",
+"lines": [
+572,
+613
+],
+"sha256": "23ed89cf235b14abe0d7714bec957b5c58ca9d9010843491bb3dc6eda44ae7b3"
+},
+{
+"names": [
+"FlowConstruction.exists_prescribedDerivativeField"
+],
+"class": "keep",
+"lines": [
+615,
+651
+],
+"sha256": "113b4e47c7526fe2c4e77b26dbf41b97369c03f4773f49740ad78d6a58a28c82"
+},
+{
+"names": [
+"FlowConstruction.exists_gluedDescentField"
+],
+"class": "keep",
+"lines": [
+653,
+721
+],
+"sha256": "8e639da731fd021bcd886153f6045717d1d61a26c4545d681cc5f7b6dea8aab3"
+},
+{
+"names": [
+"MorseCancellation.exists_closed_patch_descent_field"
+],
+"class": "keep",
+"lines": [
+723,
+798
+],
+"sha256": "1be85918282432d077f6700094dfcf5357202b6a79bdc2cbc0ee378954e62e64"
+},
+{
+"names": [
+"FlowConstruction.partialChartField"
+],
+"class": "keep",
+"lines": [
+800,
+805
+],
+"sha256": "fcfdd63dab7bb3c6df5045e65c3aff1e776d641a43ff2bd08377688fa3de2116"
+},
+{
+"names": [
+"FlowConstruction.contMDiffOn_partialChartField"
+],
+"class": "keep",
+"lines": [
+807,
+827
+],
+"sha256": "b66a19546b1e539b5096ae341503ff8c4eb01f3bbe003722be197f478fa45893"
+},
+{
+"names": [
+"FlowConstruction.mvfderiv_partialChartField"
+],
+"class": "keep",
+"lines": [
+829,
+856
+],
+"sha256": "6b7c366d342511dceb7e23b37c94d50dd6266f362a677baf27163cea251813ce"
+},
+{
+"names": [
+"HolomorphicCousin.exists_smoothPartitionOfUnity_normalized_near_closed"
+],
+"class": "keep",
+"lines": [
+858,
+909
+],
+"sha256": "ba53991e46581e03661dd824b9582e30d4f83f5ba6eff2a0ea778306c744cb15"
+},
+{
+"names": [
+"HolomorphicCousin.exists_smoothPartitionOfUnity_eq_one_near_closed"
+],
+"class": "keep",
+"lines": [
+911,
+935
+],
+"sha256": "5035f8de3f6d1e8da805d58519b9b21f55ffa5923709712991cd0a1eaba2cb86"
+},
+{
+"names": [
+"LineBundleTransport.exists_smooth_cutoff_near_closed"
+],
+"class": "keep",
+"lines": [
+937,
+958
+],
+"sha256": "6695cb24b33e893b3099f5fdd22f2cbc5e108e2521aa62d48c90ad8f23d798d0"
+},
+{
+"names": [
+"LineBundleTransport.exists_smooth_extension_near_closed"
+],
+"class": "keep",
+"lines": [
+960,
+976
+],
+"sha256": "1e08cf0881259842d17d5bd30d8127101a5e7701f9fda188a93c40b508446df0"
+},
+{
+"names": [
+"LineBundleTransport.exists_interval_cutoff"
+],
+"class": "keep",
+"lines": [
+978,
+989
+],
+"sha256": "63aa7a68cb6aaf36abefc5d1d5d198aac58b1152de9b2a44b1d7c796a38eea78"
+},
+{
+"names": [
+"ManifoldMorse.exists_compact_plateau"
+],
+"class": "keep",
+"lines": [
+991,
+1005
+],
+"sha256": "b49c2856d7ca7f7a1613de5e972ab577797aef01863fe71cc03861c664d91526"
+},
+{
+"names": [
+"ManifoldMorse.perturb_inChart_eventuallyEq"
+],
+"class": "keep",
+"lines": [
+1007,
+1033
+],
+"sha256": "cbc2f528d1d52ba8d48008a0b37d31ce00d672484f9d4dafd120ac5a8cb56ed3"
+},
+{
+"names": [
+"ManifoldMorse.exists_morse_extension"
+],
+"class": "keep",
+"lines": [
+1035,
+1075
+],
+"sha256": "ee1a42f2cacf755318341afb2b14a198add462b9c28489bcd279641574709cdd"
+},
+{
+"names": [
+"ManifoldMorse.exists_morse_function_of_haar"
+],
+"class": "keep",
+"lines": [
+1077,
+1119
+],
+"sha256": "63891f838c8db641b5f7e21db4f04a2f878e334cd65aaaa82d93cb7569649aae"
+},
+{
+"names": [
+"ManifoldMorse.exists_morse_function"
+],
+"class": "keep",
+"lines": [
+1121,
+1128
+],
+"sha256": "f1ffef90dcf3640e5e7c14687ca6f532a6d8185ed63f61163694b1f7d1e3b06b"
+},
+{
+"names": [
+"SmoothMorseLemma.contDiff_parametric_intervalIntegral_of_le"
+],
+"class": "keep",
+"lines": [
+1132,
+1165
+],
+"sha256": "6c0edc039ef0e3339a214377172da5ce891f520d083603a775802dec9968cc41"
+},
+{
+"names": [
+"SmoothMorseLemma.contDiff_parametric_intervalIntegral"
+],
+"class": "keep",
+"lines": [
+1167,
+1176
+],
+"sha256": "78c35e2948ff52af20ac3d785176fb0ce1a4c73012bb4256ee65e72a2317dcd4"
+},
+{
+"names": [
+"SmoothMorseLemma.taylorHessianIntegrand"
+],
+"class": "keep",
+"lines": [
+1178,
+1181
+],
+"sha256": "f9867e6cf678ac0a359f4101fe096b0ef62a5284fbff2e4e7938d48d5b639d96"
+},
+{
+"names": [
+"SmoothMorseLemma.secondTaylorFactor"
+],
+"class": "keep",
+"lines": [
+1183,
+1186
+],
+"sha256": "e3b5dba0c9153a4d0e7b6d7c0f5d0837d5ee2d5065a2cb035083dd7d037f4bc2"
+},
+{
+"names": [
+"SmoothMorseLemma.contDiff_taylorHessianIntegrand"
+],
+"class": "keep",
+"lines": [
+1188,
+1195
+],
+"sha256": "447dc2d1ca241e8fe979d350c82b253e5de63ac5181930be219c65921053fbd8"
+},
+{
+"names": [
+"SmoothMorseLemma.contDiff_secondTaylorFactor"
+],
+"class": "keep",
+"lines": [
+1197,
+1202
+],
+"sha256": "ef2f1009e0711896a28170cd47f131ab3b719200378c54eb8f36935890ee8015"
+},
+{
+"names": [
+"SmoothMorseLemma.secondTaylorFactor_apply"
+],
+"class": "keep",
+"lines": [
+1204,
+1222
+],
+"sha256": "ccd08f63ccd37e9b06dd21cb9056e656c6545048becfb3c0a3e686e6a6b779b4"
+},
+{
+"names": [
+"SmoothMorseLemma.secondTaylorFactor_zero"
+],
+"class": "keep",
+"lines": [
+1224,
+1239
+],
+"sha256": "168331d275dda355e82d60ebe92e7216b4a30733e85de7348a4b53a7af5a622e"
+},
+{
+"names": [
+"SmoothMorseLemma.secondTaylorFactor_symmetric"
+],
+"class": "keep",
+"lines": [
+1241,
+1255
+],
+"sha256": "5379074d8f110053d6edaa09489437f434b4ca42f669bd9daf8752b6a391f29d"
+},
+{
+"names": [
+"SmoothMorseLemma.map_eq_add_linear_add_secondTaylorFactor"
+],
+"class": "keep",
+"lines": [
+1257,
+1274
+],
+"sha256": "ef36f6b61821dd33fa482b6670cc761edbc95ab601e82f90b82554735f223d13"
+},
+{
+"names": [
+"SmoothMorseLemma.Bilinear"
+],
+"class": "keep",
+"lines": [
+1278,
+1280
+],
+"sha256": "157065abeddabf1bc8c6ee157c4de76f11a0c8ba7439c7247b3cb1bb35f689bf"
+},
+{
+"names": [
+"SmoothMorseLemma.symmetricForms"
+],
+"class": "keep",
+"lines": [
+1282,
+1295
+],
+"sha256": "faeb7ba4cb96b6a9e6650ceb29d155eecf8c0fd5aebb3bf7e374ba26dcc1c141"
+},
+{
+"names": [
+"SmoothMorseLemma.SymmetricForm"
+],
+"class": "keep",
+"lines": [
+1297,
+1299
+],
+"sha256": "d45e3913eff441ad8ca1a6b8118c711cb58cbb6789a369405fc5d2c7470d07b3"
+},
+{
+"names": [
+"SmoothMorseLemma.symmetricForm_ext",
+"SmoothMorseLemma.symmetricForm_ext_iff"
+],
+"class": "keep",
+"lines": [
+1301,
+1305
+],
+"sha256": "cf83c146789e2a5f189dfe1b889af136ffcd8cfb9529cd21a7297fa6b4758307"
+},
+{
+"names": [
+"SmoothMorseLemma.flipBilinear"
+],
+"class": "keep",
+"lines": [
+1307,
+1310
+],
+"sha256": "e1a6bfa24138290b0ca47a5ef31bb5f80377f97fc8996b45ead395e38c7abb1c"
+},
+{
+"names": [
+"SmoothMorseLemma.symmetrize"
+],
+"class": "keep",
+"lines": [
+1312,
+1319
+],
+"sha256": "34eec86b265baad4923258925a375c60fb45efc69a157e4181641826238e6679"
+},
+{
+"names": [
+"SmoothMorseLemma.symmetrize_apply"
+],
+"class": "keep",
+"lines": [
+1321,
+1325
+],
+"sha256": "d4c5e7a30961988b3230a56908ae5ec0d1f7f0e55819090306d6699273d5690a"
+},
+{
+"names": [
+"SmoothMorseLemma.congruence"
+],
+"class": "keep",
+"lines": [
+1327,
+1330
+],
+"sha256": "cc62367b8a16ea3a158144d280e7d6459c5f1b9df95dff1ad507547d907dbac3"
+},
+{
+"names": [
+"SmoothMorseLemma.congruence_apply"
+],
+"class": "keep",
+"lines": [
+1332,
+1336
+],
+"sha256": "26a316ff4acfd77ce98b5bb634679abf2aab019329ba33adf4148aba2198fd03"
+},
+{
+"names": [
+"SmoothMorseLemma.congruence_zero"
+],
+"class": "keep",
+"lines": [
+1338,
+1343
+],
+"sha256": "c7665db6deb9d8358adc2c9d43633e889c28ad9a8dddfe03ca4172c8739136ad"
+},
+{
+"names": [
+"SmoothMorseLemma.contDiff_congruence"
+],
+"class": "keep",
+"lines": [
+1345,
+1351
+],
+"sha256": "4cd86ee09015aa555e842863c406c72272c84eaf8335688d8bc78d385433a7f3"
+},
+{
+"names": [
+"SmoothMorseLemma.raiseIndex"
+],
+"class": "keep",
+"lines": [
+1353,
+1356
+],
+"sha256": "97ac9deefb3f31829895e535467d85a0a07ad0e798787f3cd9db4a40430f7ef5"
+},
+{
+"names": [
+"SmoothMorseLemma.symmetricTaylorFactor"
+],
+"class": "keep",
+"lines": [
+1358,
+1361
+],
+"sha256": "a64d8e4c2058ff525e9915fde6b838551ecd33c595c2be7e604995cca4106b82"
+},
+{
+"names": [
+"SmoothMorseLemma.contDiff_symmetricTaylorFactor"
+],
+"class": "keep",
+"lines": [
+1363,
+1367
+],
+"sha256": "d2605eaac5feb4f5dff1a95af5df69d09948c133f02bb4eb7dd776ab481b1cb4"
+},
+{
+"names": [
+"SmoothMorseLemma.symmetricTaylorFactor_coe"
+],
+"class": "keep",
+"lines": [
+1369,
+1378
+],
+"sha256": "7001cdb32d9f77f4890cce7d34f94c19b0c2703ba667feb8e64e73ce35b405fd"
+},
+{
+"names": [
+"SmoothMorseLemma.symmetricTaylorFactor_zero"
+],
+"class": "keep",
+"lines": [
+1380,
+1384
+],
+"sha256": "83522b79ff1138d2421ddf8a5e5f1865a4b44346fc9e27dd97a53d1a5789e6a4"
+},
+{
+"names": [
+"SmoothMorseLemma.map_eq_add_symmetricTaylorFactor"
+],
+"class": "keep",
+"lines": [
+1386,
+1391
+],
+"sha256": "678dfd2793502ed33d78920d4dfaa02068139c40b1f724fa81c1f51ef2604597"
+},
+{
+"names": [
+"SmoothMorseLemma.exists_partialDiffeomorph_of_contDiffOn"
+],
+"class": "keep",
+"lines": [
+1393,
+1435
+],
+"sha256": "a3a81ad4b5b53da5e45d829f92ddd335272ea5beca53d2822ff3279633482c3d"
+},
+{
+"names": [
+"SmoothMorseLemma.exists_partialDiffeomorph_of_contDiff"
+],
+"class": "keep",
+"lines": [
+1437,
+1445
+],
+"sha256": "1070f39e68e447ab87306d9dc4f394541cb4343987070698f4451dfa5918962d"
+},
+{
+"names": [
+"SmoothMorseLemma.exists_quadratic_chart_of_smooth_congruence"
+],
+"class": "move",
+"lines": [
+1447,
+1492
+],
+"sha256": "8e690c1c9c04773c3c4263f8f989b612fc81d7dd86dafc5be23581fb0e2855af"
+},
+{
+"names": [
+"SmoothMorseLemma.raiseSymmetricIndex"
+],
+"class": "keep",
+"lines": [
+1494,
+1497
+],
+"sha256": "6db1a63356b57ea4bb3c4ffc1ede943078c651186e384916c0cfc04d08974606"
+},
+{
+"names": [
+"SmoothMorseLemma.raiseSymmetricIndex_apply"
+],
+"class": "keep",
+"lines": [
+1499,
+1504
+],
+"sha256": "627a68c0ee508012cb94f21e757174936b8f65455d29dd0d6524d8ae527b3944"
+},
+{
+"names": [
+"SmoothMorseLemma.hasFDerivAt_congruence_zero"
+],
+"class": "keep",
+"lines": [
+1506,
+1517
+],
+"sha256": "15d9ae6fbab74271fb7a3de3254473c3dde8ed7a53e0930f5a1983c15d0e6ddb"
+},
+{
+"names": [
+"SmoothMorseLemma.congruencePolynomial"
+],
+"class": "move",
+"lines": [
+1521,
+1524
+],
+"sha256": "e005d7721b21a2d10f46e2f87752ae031ab5ce518dee9e45cd6360128e2212e9"
+},
+{
+"names": [
+"SmoothMorseLemma.congruencePolynomial_zero"
+],
+"class": "move",
+"lines": [
+1526,
+1530
+],
+"sha256": "a757fb94370d4f7a06ea7ceb595017a4597f434dea8b010032418411931e078e"
+},
+{
+"names": [
+"SmoothMorseLemma.contDiff_congruencePolynomial"
+],
+"class": "move",
+"lines": [
+1532,
+1537
+],
+"sha256": "7246d05d1d8a65b6683d9ca982ad0ef21534b9deb51936979250542988306315"
+},
+{
+"names": [
+"SmoothMorseLemma.hasFDerivAt_congruencePolynomial_zero"
+],
+"class": "move",
+"lines": [
+1539,
+1554
+],
+"sha256": "6bd1f63a9ec7269a5c7f2fae5d904092859113a4ba65b305adf1c188d690f23f"
+},
+{
+"names": [
+"SmoothMorseLemma.referenceSymmetricForm"
+],
+"class": "move",
+"lines": [
+1556,
+1559
+],
+"sha256": "69d529516ad3afdcfd91986c96532e9d7b70bc999b5a13a463bacd7413b194ef"
+},
+{
+"names": [
+"SmoothMorseLemma.referenceSymmetricForm_apply"
+],
+"class": "move",
+"lines": [
+1561,
+1566
+],
+"sha256": "ed4048d5e2ab305c3edb4605a784e946ad108d07e931b69de986c22a40eeecdf"
+},
+{
+"names": [
+"SmoothMorseLemma.congruencePolynomial_add_reference"
+],
+"class": "move",
+"lines": [
+1568,
+1586
+],
+"sha256": "9eed042d7874f245aefbf198cf59962c6f980d27dcaa1fc91b718a9baf355585"
+},
+{
+"names": [
+"SmoothMorseLemma.congruenceDoubleEquiv"
+],
+"class": "move",
+"lines": [
+1588,
+1592
+],
+"sha256": "f54d83354f6b68317a8304bab3808384ed172b19e42eed9ea34a32ffe0a394aa"
+},
+{
+"names": [
+"SmoothMorseLemma.congruenceDoubleEquiv_toContinuousLinearMap"
+],
+"class": "move",
+"lines": [
+1594,
+1600
+],
+"sha256": "b48ac319ca4be8d65d6e1e5b3c8f1f178eeb1a9d14fedbbd979aa98bf6e235b4"
+},
+{
+"names": [
+"SmoothMorseLemma.exists_congruencePolynomial_partialDiffeomorph"
+],
+"class": "move",
+"lines": [
+1602,
+1613
+],
+"sha256": "89dc1377024343257d8c7cc556a6bf2fcdf2e178da1205d2e6c6f433618d9429"
+},
+{
+"names": [
+"SmoothMorseLemma.exists_smooth_congruence_factor"
+],
+"class": "move",
+"lines": [
+1615,
+1659
+],
+"sha256": "b01f1fde11246e9f53c4164916913f47051b3a1e40dc9df258d07380857abcc6"
+},
+{
+"names": [
+"SmoothMorseLemma.hessianEquiv"
+],
+"class": "keep",
+"lines": [
+1663,
+1667
+],
+"sha256": "46e62ae3cf05e911a810dd7a628ab165d0705d24607643f5d4f6ec1fb21bb972"
+},
+{
+"names": [
+"SmoothMorseLemma.exists_morse_chart_zero"
+],
+"class": "keep",
+"lines": [
+1669,
+1693
+],
+"sha256": "45dca3a3a8e25a9e0566e0132ebd731d02042bb044e8315adf18cabc38f02b54"
+},
+{
+"names": [
+"SmoothMorseLemma.exists_contDiff_compactlySupported_eqOn_closedBall"
+],
+"class": "keep",
+"lines": [
+1695,
+1730
+],
+"sha256": "657e9c4d2e0ca221954c0e830406770cab5eaeda71c5b184ecf4a650af243fd2"
+},
+{
+"names": [
+"SmoothMorseLemma.exists_contDiff_extension"
+],
+"class": "keep",
+"lines": [
+1732,
+1741
+],
+"sha256": "5f8359b063e68588c75be44b5b5e3cb6a5470b5eacbbc1596a4c1755fd8e8498"
+},
+{
+"names": [
+"SmoothMorseLemma.exists_contDiff_extension_preserving_derivatives"
+],
+"class": "keep",
+"lines": [
+1743,
+1757
+],
+"sha256": "d817c45602744e66941f0d64ec1fb106c557030f63f58a8aac1cb4a1f297a442"
+},
+{
+"names": [
+"SmoothMorseLemma.restrictChart"
+],
+"class": "keep",
+"lines": [
+1759,
+1766
+],
+"sha256": "6c730cbd2e50a37ca086d03e1695535396d6a54e4605c6fffd070df0c4b22274"
+},
+{
+"names": [
+"SmoothMorseLemma.restrictChart_apply"
+],
+"class": "keep",
+"lines": [
+1768,
+1774
+],
+"sha256": "7a78f76857f0a1ed8dbd3e697d15e84a7af9d8fb027959e77dcda94d1da0925c"
+},
+{
+"names": [
+"SmoothMorseLemma.translationToZero"
+],
+"class": "keep",
+"lines": [
+1776,
+1787
+],
+"sha256": "311a06217fd032ee1d8c791a1d5d7aad1d27b6801850a087f341c4ff546bf5f8"
+},
+{
+"names": [
+"SmoothMorseLemma.diffeomorphToPartialDiffeomorph"
+],
+"class": "keep",
+"lines": [
+1789,
+1799
+],
+"sha256": "13b1c2754318e69cd4f778b3d415b174ef61cee61722db4b2acf5686a6f6d0ca"
+},
+{
+"names": [
+"SmoothMorseLemma.translateChart"
+],
+"class": "keep",
+"lines": [
+1801,
+1805
+],
+"sha256": "55a1a96d19be28c3e5e7e851c51d1abe06c2fa3fed6e0d5e5f378d2596302b7c"
+},
+{
+"names": [
+"SmoothMorseLemma.translateChart_apply"
+],
+"class": "keep",
+"lines": [
+1807,
+1812
+],
+"sha256": "e55650c3d7ce2a50a6d57a3562aa815662810bbd2d6eb7c85bfe9a59ad8a8a03"
+},
+{
+"names": [
+"SmoothMorseLemma.mem_translateChart_source"
+],
+"class": "keep",
+"lines": [
+1814,
+1821
+],
+"sha256": "af0adf0c14bfacf21cc9b9d9af4b3df37ab0459deb25b308a7edfd73a3651928"
+},
+{
+"names": [
+"SmoothMorseLemma.hessian_comp_add_left"
+],
+"class": "keep",
+"lines": [
+1823,
+1829
+],
+"sha256": "4c56e501303cce8c24c4fed567a014527fc067229c0d3f93098f0cd35a0ecad5"
+},
+{
+"names": [
+"SmoothMorseLemma.exists_morse_chart"
+],
+"class": "keep",
+"lines": [
+1831,
+1873
+],
+"sha256": "e55c139340de73f2593cdd573525ad906bb64a066766ec15f53c742d1b575965"
+},
+{
+"names": [
+"SmoothMorseLemma.exists_morse_chart_of_contDiffOn"
+],
+"class": "keep",
+"lines": [
+1875,
+1906
+],
+"sha256": "d81c970cc9549064b0e2e80a077f235dff1ebe0008ea986d0fbef06fd8cdd4d7"
+},
+{
+"names": [
+"SmoothMorseLemma.halfHessianQuadratic"
+],
+"class": "keep",
+"lines": [
+1910,
+1913
+],
+"sha256": "974e923b5ab88582e57f171b4fc814140c93bed4fb8f2e1437e2a6db2eee809c"
+},
+{
+"names": [
+"SmoothMorseLemma.halfHessianQuadratic_apply"
+],
+"class": "keep",
+"lines": [
+1915,
+1919
+],
+"sha256": "5658efae442c44bb9536ea6009e136835ac8fb32af2d4a92a75485a622e544b6"
+},
+{
+"names": [
+"SmoothMorseLemma.halfHessianQuadratic_associated"
+],
+"class": "keep",
+"lines": [
+1921,
+1928
+],
+"sha256": "b389118817f1cfab19e3dfedd97b3be408729996f5e4512b7a4dcfeb474ffb1d"
+},
+{
+"names": [
+"SmoothMorseLemma.halfHessianQuadratic_separatingLeft"
+],
+"class": "keep",
+"lines": [
+1930,
+1941
+],
+"sha256": "2cdce5ea693ade6dc47668396f0e300ffa14d17276f19f3a6b0be2a3f3dae550"
+},
+{
+"names": [
+"SmoothMorseLemma.exists_signed_coordinates"
+],
+"class": "keep",
+"lines": [
+1943,
+1958
+],
+"sha256": "8ddbe266379472e252352b3d9e015b8328c7beaa73299f1166e051d1ab74e26d"
+},
+{
+"names": [
+"SmoothMorseLemma.exists_signed_diffeomorph"
+],
+"class": "keep",
+"lines": [
+1960,
+1969
+],
+"sha256": "3d962360b992a09ac8feccf0ff72d81811d0c35e2ea28f87c9c2b0dca7a54230"
+},
+{
+"names": [
+"SmoothMorseLemma.hessian_symmetric_of_contDiffOn"
+],
+"class": "keep",
+"lines": [
+1971,
+1981
+],
+"sha256": "4bbdf5e3930898eb6d84683675e0d4fd559d3783d86fe3416e816d1ca13b3c85"
+},
+{
+"names": [
+"SmoothMorseLemma.exists_signed_morse_chart_of_contDiffOn"
+],
+"class": "keep",
+"lines": [
+1983,
+2021
+],
+"sha256": "428a6b419406471b33701ae00f66d949aee595f9e44accb5568ed944e9618c9b"
+},
+{
+"names": [
+"ManifoldMorse.chartPartialDiffeomorph"
+],
+"class": "keep",
+"lines": [
+2025,
+2034
+],
+"sha256": "1fdf196d667f9aadb83c6465df233acf46d73d1fea3d0f7bf7dd2349bbfe1193"
+},
+{
+"names": [
+"ManifoldMorse.SignedMorseChart",
+"ManifoldMorse.SignedMorseChart.mk",
+"ManifoldMorse.SignedMorseChart.weights",
+"ManifoldMorse.SignedMorseChart.signs",
+"ManifoldMorse.SignedMorseChart.chart",
+"ManifoldMorse.SignedMorseChart.mem_source",
+"ManifoldMorse.SignedMorseChart.center",
+"ManifoldMorse.SignedMorseChart.equation",
+"ManifoldMorse.SignedMorseChart.inverse_equation"
+],
+"class": "keep",
+"lines": [
+2036,
+2047
+],
+"sha256": "48cb23d26612dbf4b94ce8839624eb3d2a46f161d5b37dfea55d64d921741a65"
+},
+{
+"names": [
+"ManifoldMorse.nonempty_signedMorseChart"
+],
+"class": "keep",
+"lines": [
+2049,
+2070
+],
+"sha256": "6d9be473a7e05562cf5678bc72c1a61a85a02f056ecceb53ee49f03645308c46"
+},
+{
+"names": [
+"MorseHandle.Negative"
+],
+"class": "keep",
+"lines": [
+2074,
+2076
+],
+"sha256": "ec33e782f25ee9e14af642ccc219bf9d02e5ef26ce0c779081f0def81f8f229a"
+},
+{
+"names": [
+"MorseHandle.Positive"
+],
+"class": "keep",
+"lines": [
+2078,
+2080
+],
+"sha256": "6bfd2066c661428e5978e5d29d91ec51c30347ad2930fcbf6774508a3a88ed4e"
+},
+{
+"names": [
+"MorseHandle.NegativeSpace"
+],
+"class": "keep",
+"lines": [
+2082,
+2084
+],
+"sha256": "57626eadad5d944f685958d3798d201d3deffb80c610319924b5d245fb1de21c"
+},
+{
+"names": [
+"MorseHandle.PositiveSpace"
+],
+"class": "keep",
+"lines": [
+2086,
+2088
+],
+"sha256": "53e6618cbb90566a54ed46ab84af037b9e710e978d251e30917235db2a54d7b6"
+},
+{
+"names": [
+"MorseHandle.splitLinearEquiv"
+],
+"class": "keep",
+"lines": [
+2090,
+2101
+],
+"sha256": "af7af5801d2087da572967b82f812c51cc77ea34966879ba1c93b89bf2fc12f4"
+},
+{
+"names": [
+"MorseHandle.splitCoordinates"
+],
+"class": "keep",
+"lines": [
+2103,
+2107
+],
+"sha256": "758687662c78193fac31f23a8c8b38a6e9774d4d39d9ef8648c5144266396b54"
+},
+{
+"names": [
+"MorseHandle.signedSum_eq_norms"
+],
+"class": "keep",
+"lines": [
+2109,
+2130
+],
+"sha256": "cfb837423f93068a769cbded002d839fa1f03c067e2f986210a0c85fc7faa459"
+},
+{
+"names": [
+"MorseHandle.signedSum_symm_eq_norms"
+],
+"class": "keep",
+"lines": [
+2132,
+2138
+],
+"sha256": "5b4a4642530b3e89fbdf4e1fc434369aeaa91a6e7b94fe03dc80a42f230e60cc"
+},
+{
+"names": [
+"ManifoldMorse.SignedMorseChart.NegativeCoordinates"
+],
+"class": "keep",
+"lines": [
+2140,
+2144
+],
+"sha256": "cf12468f71c8b9eedcbab3a1a2b05b73c628ccc9ae420d141d5b861354278fcd"
+},
+{
+"names": [
+"ManifoldMorse.SignedMorseChart.PositiveCoordinates"
+],
+"class": "keep",
+"lines": [
+2146,
+2150
+],
+"sha256": "e34f5ceaf4e9c45b062f17d868cc5898dd2fc81af3969b7335f26f1c70a7050f"
+},
+{
+"names": [
+"ManifoldMorse.SignedMorseChart.finrank_negative_add_positive"
+],
+"class": "keep",
+"lines": [
+2152,
+2160
+],
+"sha256": "b5aeac4943d3fd5d65fdb13d52ceb7da6b075e437451a3b396994a8ff08ed13c"
+},
+{
+"names": [
+"ManifoldMorse.SignedMorseChart.splitChart"
+],
+"class": "keep",
+"lines": [
+2162,
+2169
+],
+"sha256": "6b481976ddedc2e6a18c3b46d988323dbb697f647e97f10cd9bb2fbc27470bb8"
+},
+{
+"names": [
+"ManifoldMorse.SignedMorseChart.splitChart_mem_source"
+],
+"class": "keep",
+"lines": [
+2171,
+2176
+],
+"sha256": "cdbc6ffb62cd650229dc95d2930b15cfd64877be4136a9ead654d31c58cef50d"
+},
+{
+"names": [
+"ManifoldMorse.SignedMorseChart.splitChart_center"
+],
+"class": "keep",
+"lines": [
+2178,
+2185
+],
+"sha256": "a93997f0468c1f40d02b44cc43667b32278ce7320f7902fbbd3187666aae6a9d"
+},
+{
+"names": [
+"ManifoldMorse.SignedMorseChart.splitChart_equation"
+],
+"class": "keep",
+"lines": [
+2187,
+2196
+],
+"sha256": "572b35af67e062af27b759dc76199b05f17b3670a6697ef942fb26d4869c7c26"
+},
+{
+"names": [
+"ManifoldMorse.SignedMorseChart.splitChart_inverse_equation"
+],
+"class": "keep",
+"lines": [
+2198,
+2208
+],
+"sha256": "bf1d5cea3e85b764cb198fb832fba8f2f95b565854f86a76bc76170c770e5837"
+},
+{
+"names": [
+"ManifoldMorse.SignedMorseChart.exists_closed_productBlock"
+],
+"class": "keep",
+"lines": [
+2210,
+2226
+],
+"sha256": "39b2b9a15460594c3ce6e7c9a43ab2a354546a5c49f7db63e5ef60cf721c2805"
+},
+{
+"names": [
+"ManifoldMorse.SignedMorseChart.descentField"
+],
+"class": "keep",
+"lines": [
+2228,
+2233
+],
+"sha256": "029f824f9a90d6a5ccf4fe15a5ab1a9f04257e64be22cb671e14a4486eee9281"
+},
+{
+"names": [
+"ManifoldMorse.SignedMorseChart.contMDiffOn_descentField"
+],
+"class": "keep",
+"lines": [
+2235,
+2244
+],
+"sha256": "443c821a86fb134ad7d9acb2d44dff4cd537f67683478608e04b5080abee53ea"
+},
+{
+"names": [
+"ManifoldMorse.SignedMorseChart.descentField_center"
+],
+"class": "keep",
+"lines": [
+2246,
+2256
+],
+"sha256": "0c144d539d7033cefbb98288ec1848b9b30f109309588f34e04d2f56c04012e5"
+},
+{
+"names": [
+"ManifoldMorse.SignedMorseChart.mvfderiv_descentField"
+],
+"class": "keep",
+"lines": [
+2258,
+2277
+],
+"sha256": "eedfccecc931e4497718cd58a50caf84bc17d1d686c8598286c278343e8e3e41"
+},
+{
+"names": [
+"ManifoldMorse.SignedMorseChart.mvfderiv_descentField_neg"
+],
+"class": "keep",
+"lines": [
+2279,
+2294
+],
+"sha256": "26c737aae204c27db22990f1eac616a75119f9eae6b424acf12134ca48e7b83f"
+},
+{
+"names": [
+"ManifoldMorse.exists_adaptedDescentField"
+],
+"class": "keep",
+"lines": [
+2296,
+2344
+],
+"sha256": "46c026e76c012c84b1e452d21dfd990f6f98499c306bd247919ae39fc887293d"
+},
+{
+"names": [
+"MorseCancellation.morse_descentField_zero_at_critical"
+],
+"class": "keep",
+"lines": [
+2346,
+2363
+],
+"sha256": "8673e4a1d21d51563fbbe5a5f844ce56aa01a391de313eb88f29f812fd94829d"
+},
+{
+"names": [
+"MorseCancellation.exists_prescribed_morse_patch_field"
+],
+"class": "keep",
+"lines": [
+2365,
+2386
+],
+"sha256": "47568771b634a6dd6011e090ab7350faa7cffd6de4b2cb2e03ce93c714683b5a"
+},
+{
+"names": [
+"MorseCancellation.morseClosedBlock"
+],
+"class": "keep",
+"lines": [
+2388,
+2395
+],
+"sha256": "9c5cf815d6c519084101ff6e06a217370184c69f48e8b25feaae6e66fb1145cd"
+},
+{
+"names": [
+"MorseCancellation.morseClosedBlock_subset_source"
+],
+"class": "keep",
+"lines": [
+2397,
+2408
+],
+"sha256": "2dbc981722be663f9f6bad06ab3af02170f5afaa6631ba74991eeb707bb96f6a"
+},
+{
+"names": [
+"MorseCancellation.morseClosedBlock_height"
+],
+"class": "keep",
+"lines": [
+2410,
+2427
+],
+"sha256": "a9f3999bfa4091eab210a65d77a30b0eddf8864e5b7e5e6bd3a6d8ea857b718e"
+},
+{
+"names": [
+"MorseCancellation.morseClosedBlock_mem_nhds"
+],
+"class": "keep",
+"lines": [
+2429,
+2455
+],
+"sha256": "c1539303791173526d30b85663fb8451bb8bfd48287a78af8294f3724bde1288"
+},
+{
+"names": [
+"MorseCancellation.isCompact_morseClosedBlock"
+],
+"class": "keep",
+"lines": [
+2457,
+2469
+],
+"sha256": "d3613a4455a6886d9fa989b96e92f0b7549a8bda2889a25764d8682fccb91ec3"
+}
+]
+}

@@ -1,0 +1,12 @@
+visibility mesh_two_of_one private before/after (False, True)
+visibility coordinateNonconstant private before/after (False, True)
+visibility square_nonconstant_coordinates private before/after (False, True)
+moved parents: 36, same demangled name + typeHashPublic, now in Unused: 36
+private before: 33 private after: 36
+aux card_lattice._simp_1_2 head [('Lattice', 1391952266)] after [('CubeBoundaryThreeCells', 1391952266)]
+aux card_lattice._simp_1_3 head [('Lattice', 1911706618)] after [('CubeBoundaryThreeCells', 1911706618)]
+aux edgeMidpoint._proof_1 head None after [('CubeBoundaryThreeCells', 2547959801)]
+aux edgeMidpoint.eq_1 head [('Faces', 2710727690)] after [('CubeBoundaryThreeCells', 1973771108)]
+aux edge_endpoints_distinct._simp_1_1 head None after [('CubeBoundaryThreeCells', 2525783790)]
+aux edge_endpoints_distinct._simp_1_2 head [('Cells', 2525783790)] after None
+aux square_remaining_index_cases._proof_1_1 head [('Cells', 1358466148)] after [('CubeBoundaryThreeCells', 1358466148)]

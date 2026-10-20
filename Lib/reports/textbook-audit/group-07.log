@@ -1,0 +1,188 @@
+# group-07 — head f0e28a82 — 2026-09-20
+
+## Lib/Geometry/Manifold/Morse/SublevelSets.lean  (12 declarations, 210 lines)
+verdict: C (file mixes four unrelated topics; docstring promises a theorem the file does not contain)
+twin: Milnor, Morse Theory §3 Thm 3.1/3.2 (named as "Hatcher Cor 3.15 / Morse Theory §3" in docstring); no Mathlib twin (nearest: Mathlib/Analysis/Calculus/LocalExtr for `IsLocalMin.fderiv_eq_zero`)
+findings:
+- l.17–22 module docstring promises "the topology of `{x | f x ≤ c}` changes only when `c` crosses a critical value … by attachment of a handle": no such statement exists in the file (no `sublevel`/`handle` theorem; grep shows only `exists_small_sublevel_subset`), and no outline/`## Main results`/`## References`
+- l.47–94 `PuncturedBall.Space/toPunctured/fromSphere/blendVector` is a radial-blend topology helper (belongs next to `PuncturedRadial`), l.100 `HomologyTransport.exact_of_equivalences` is pure linear algebra (`LinearMap.range f = ker g` transported along `≃ₗ`; Mathlib has `LinearMap.exact_iff`-style API, `Function.Exact.of_ladder_linearEquiv_of_exact`), l.129–191 critical-point lemmas, l.193 a compact-space real-valued lemma: four subjects, none of them "sublevel sets of Morse functions"
+- l.129/141 `ManifoldMorse.mem_criticalPoints_of_localMin/Max`: general and correctly stated (any `E`, `ChartedSpace E M`, `∞`), but only for `𝓘(ℝ, E)` (no boundary/model-with-corners `I`); `ManifoldMorse` is a project namespace where Mathlib would say `ContMDiff.mem_criticalPoints_of_isLocalMin` or put it on `IsLocalMin`
+- l.153 `unique_extrema_of_two_critical_values` is the Reeb-lemma preliminary (exactly-two-critical-points ⇒ unique min/max); fine mathematics, name and namespace nonstandard
+- l.8–15 imports `SingularHomology.LocalDegree/MayerVietoris/Sphere`, `Flow.Compact`, `Flow.HeightTranslating`, `MorseLemma`: none used by the 12 declarations; l.27 `set_option maxSynthPendingDepth 3`, l.31–34 kitchen-sink `open scoped … Modular … UpperHalfPlane`, l.36 `universe u v` unused, l.41–43 `≫ₚ`/`SlashAction` local notations unused
+- 0 missing docstrings
+suggestion: split into `PuncturedBall` (→ Topology, beside `PuncturedRadial`), the exactness-transport lemma (→ Algebra, or replace by Mathlib's `Function.Exact` transport), and a `Morse/CriticalPoints.lean` with the three critical-point lemmas; rewrite the module docstring to describe what is there.
+
+## Lib/Geometry/Manifold/Morse/SurgeryCollapse.lean  (231 declarations, 5437 lines)
+verdict: D (a 5,400-line "moved verbatim from Hopf/SphereTopology.lean" dump: zero docstrings, dimension-6 hypotheses, `mo1973_` names, and a dozen unrelated topics; the reusable parts are buried in proof-specific glue)
+twin: Milnor, Lectures on the h-cobordism theorem §§4–8 (rearrangement, cancellation, first/second cancellation theorems) and Smale's minimal-Morse-function programme for the ordered/minimal-system results; Hatcher Ex. 2.2 / Prop 2.22 for the one-point-collapse and sphere-puncture homology; Mathlib nearest: `Mathlib/Geometry/Manifold/Instances/Sphere.lean` (`stereographic'`) for `OnePointCover.punctureHomeomorph`
+findings:
+- l.63–77 module docstring is a receipt ("Moved verbatim from `Hopf/SphereTopology.lean` (base `b78cfee8`, second pass); see `Lib/reports/integration-4/spheretop-moves.md`"), not a description of a theorem; names no textbook result; 0 of 231 declarations carry a docstring (`grep -c '^/--'` = 0)
+- l.545, 682, 865, 895, 1639, … twelve statements carry `(hdim : Module.finrank ℝ E = 6)`, and `Hemisphere.Sphere 2` appears 39 times: the middle-block/index-2/index-3 machinery (`AdaptedWindows.exists_middle_block_realization`, `SurgeryWindows.indexTwoBasis`, `middlePresentation`, `middleMatrix`) is the project's 6-manifold argument, not a textbook statement
+- l.3393 `private def OnePointCover.spherePunctureHomeomorph_mo1973_5327`, l.4417 `sign_factor_mo1973_5719`, l.4602 `identity_center_mo1973_5731`: Mathoverflow-1973-style names, forbidden vocabulary for library code
+- 69 statements bind `{E M : Type}` (universe 0) against 73 with `Type*`; the same file mixes both conventions for the same objects (`MorseSurgeryData`, `SurgeryWindows`)
+- topics mixed: `PuncturedBall` deformation (l.95–130), belt-tube meridian homotopies (l.132–236), `AdaptedWindows` level transports (l.238–1010, 2278–2440, 2536–2680, 2860–3180), `EmbeddedCellAttachment` long exact sequence (l.1065–1260), `MorseSurgeryData` homology exactness (l.1354–1600), cancellation/minimal Morse systems (l.1955–2530, 3182), sphere-filling/immersion extension (l.2684–2860), `DiskOnePointCollapse`/`ClosedHandleCore.collapseMap` (l.3242–3390), `OnePointCover` (l.3388–3460, a genuine small library: `punctureHomeomorph`, `oldPatch_contractible`), `SphereNormalCoordinates`/`SpherePoint` Jacobian-sign bookkeeping (l.3907–5110), index-2/3 presentations (l.5124–5437)
+- l.3182 `exists_outer_index_minimal_ordered_morse_system`, l.2440 `exists_index_ordered_morse_system_preserving_critical_points`, l.2493/2511 `minimal_excellent_morse_*_count_one`: these are the genuinely textbook targets (Milnor h-cobordism Thm 4.8 rearrangement, Smale's "one minimum, one maximum" for a connected closed manifold), stated for general `E`, `M`, but wrapped in `AdaptedWindows`/`nativeMorseIndex`/`nativeMorseCount` project data with no docstring
+- l.3388/4791 `instLocal1 : Fact (finrank (EuclideanSpace ℝ (Fin (n+1))) = n+1)` duplicated twice under two namespaces; `attribute [local instance] … in` repeated per declaration instead of one `section`
+- l.6–61 fifty-six imports including `Lib.Algebra.Module.IntegerPresentation` twice (l.42, l.50); l.79 `set_option maxSynthPendingDepth 3`, l.83–86 kitchen-sink `open scoped … Modular … UpperHalfPlane`, l.88 `universe u v` unused
+- reading stopped after sampling each namespace block and the closing 80 lines (l.5363–5437); proofs not read
+suggestion: this file cannot be upgraded in place; extract the three reusable islands (`OnePointCover.punctureHomeomorph`+`oldPatch_contractible` → Topology/OnePointCollapse, `PuncturedBall.sphereHomotopyEquiv` → beside `PuncturedRadial`, `EmbeddedCellAttachment.cell_exact_*` → AlgebraicTopology) with docstrings, and move the rest (everything with `hdim = 6`, `Hemisphere.Sphere 2`, `mo1973_`) to `Hopf/Proof`.
+
+## Lib/Geometry/Manifold/Morse/SurgeryHomology.lean  (80 declarations, 945 lines)
+verdict: D (verbatim move from `Hopf/SphereTopology.lean`; docstring names four declarations that live in another file; zero docstrings; the mathematics is ordered-window bookkeeping for the project's index-2/index-3 argument)
+twin: Milnor, Lectures on the h-cobordism theorem §4 (self-indexing/ordered Morse functions: `SurgeryWindows.point`, `first_globalMin`, `last_globalMax`, `first_index_zero`, `last_index_dimension`); Hatcher §2.2 for the exact sequences; no Mathlib twin (nearest: `isPathConnected_sphere` used at l.83)
+findings:
+- l.14–24 module docstring promises `morse_exact_at_lower`, `morseConnectingMap`, `middlePresentation`, `middleMatrix`; none is declared here (all four are in `SurgeryCollapse.lean`) — stale; closes with a move receipt ("Moved verbatim … base `304a0fea`") rather than a reference
+- 0 of 80 declarations carry a docstring
+- l.385–435 `FiniteSignedCancellation.*` (`sum_sdiff_pair`, `card_eq_natAbs_sum_of_no_opposite`) is pure `Finset`/`SignType` combinatorics; belongs in Algebra/BigOperators, not Morse theory
+- l.436–516 `RadialFilling.direction/radialTime/filling` is a radial null-homotopy of a sphere map on `Hemisphere.Sphere n` with hard-coded `1/4`, `3/4` cutoffs (l.465, 470): a Topology helper, not surgery homology
+- l.874–935 `indexTwoNormalModel`, `HasIndexTwoPrefix`, `HasIndexThreeBlock`, `indexThreeBoundaryEquiv`: hard-coded indices 2 and 3 are the project's 6-manifold argument (index-2 prefix followed by an index-3 block), no textbook counterpart
+- l.83–320 `SurgeryWindows.values/count/point/first/last` and the global min/max lemmas are correct textbook material (Milnor h-cob §4) stated for general `E`, `M`, but 18 statements pin `{E M : Type}` (universe 0) while 51 use `Type*` in the same file
+- l.644–715 `MorseHandle.beltCollapseCoordinate` and `hasFDerivAt_*` are chart-level calculus; l.321–384 `FlowConstruction.regularLevelHomeomorphOfFlow` a third topic
+- l.70 `set_option maxSynthPendingDepth 3`, l.74–77 kitchen-sink `open scoped … Modular … UpperHalfPlane`, l.79 `universe u v` unused; 55 imports
+suggestion: move `FiniteSignedCancellation` and `RadialFilling` out to their own small files, keep `SurgeryWindows.point/first/last/*_globalMin/*_index_*` as a documented `Morse/OrderedWindows.lean`, and send the index-2/3 block predicates to `Hopf/Proof`; rewrite the module docstring to list what is actually declared.
+
+## Lib/Geometry/Manifold/Morse/SurgeryWindows.lean  (119 declarations, 1980 lines)
+verdict: C (well-documented and general, but six unrelated toolkits precede the surgery structures, three Hausdorff-dimension lemmas are declared twice, and "simply connected" is spelled as an ad-hoc `circle_nullhomotopies` predicate)
+twin: Milnor, Lectures on the h-cobordism theorem §3–4 (named in docstring with `[milnor65]`, `[milnor63]` references); Mathlib nearest: Mathlib/Topology/MetricSpace/HausdorffDimension.lean (`dimH_image_le_of_locally_lipschitzOn`, `dense_compl_of_dimH_lt_finrank`) for §1, `SimplyConnectedSpace` for the nullhomotopy predicates
+findings:
+- l.13–55 module docstring is complete (statement, outline, main results, references, tags); 119/119 declarations carry docstrings; all statements are over general `E`, `M` with `Type*` — the best-documented file in the group
+- l.78/1097 `GeneralPosition.dimH_image_chart_le` vs root `dimH_image_chart_le`, l.119/1126 `dimH_image_manifold_le`, l.139/1146 `dense_compl_manifold_image`: each proved twice (once with `ContMDiffOn` on an open set, once with `[I.Boundaryless]`); one of each pair should go
+- l.765 `ImageComplement.circle_nullhomotopies`, l.780/811/877/1465/1484/1503/1689 `*_circle_nullhomotopies*`: the hypothesis `∀ f : C(Hemisphere.Sphere 1, X), ∃ c, f.Homotopic (const c)` is `SimplyConnectedSpace X` (Mathlib, `simply_connected_iff_paths_homotopic`); an ad-hoc spelling repeated in eight statements
+- l.609–735 `Hemisphere.Ambient/Ball/Sphere/point`: a hand-rolled model of `S^n` as two hemispheres; `Hemisphere.Sphere n` is `Metric.sphere (0 : EuclideanSpace ℝ (Fin (n+1))) 1` (Mathlib's sphere), so the namespace duplicates a Mathlib type with a nonstandard name that then leaks into every downstream file
+- l.30 docstring outline item 2 names a "`NoExotic` dimension cluster"; `NoExotic` occurs nowhere else in the file (stale name from the project's original file)
+- file has seven topics before its subject: Hausdorff dimension of smooth images (l.75–230, 1086–1160), avoidance patches (l.230–445), image complements (l.446–545, 737–907), disk double (l.546–605), hemisphere coordinates (l.606–735), homotopy extension off a closed set (l.1004–1085), zero-avoidance cutoffs (l.1224–1375); the surgery data structures start at l.1534 of 1980
+- l.1227–1360 `RealIntervalProgress.progress`, `ZeroAvoidanceCutoff.weight/blend/homotopy` are elementary real-analysis cutoffs; belong in Topology/UrysohnsLemma-style helper or Analysis, not Morse
+- l.59 `set_option maxSynthPendingDepth 3`, l.63–66 kitchen-sink `open scoped … Modular … UpperHalfPlane`, l.68 `universe u v` unused, l.72–73 `≫ₚ`/`SlashAction` local notations unused
+suggestion: split into `GeneralPosition.lean` (Hausdorff-dimension avoidance, deduplicated), `Hemisphere.lean` (or replace by Mathlib's sphere), and `Morse/SurgeryData.lean` (l.1534–1980 only), and replace every `circle_nullhomotopies` hypothesis by `[SimplyConnectedSpace _]`.
+
+## Lib/Geometry/Manifold/Quotient/Atlas.lean  (27 declarations, 359 lines)
+verdict: B (minor: 5 missing docstrings, three-line module docstring, unused preamble; mathematics general and correctly stated)
+twin: Forster, Lectures on Riemann Surfaces §1 (named in docstring, no theorem number; the branched-atlas construction is Forster Thm 1.? for orbit quotients / the Riemann sphere `OnePoint ℂ` atlas); Mathlib nearest: Mathlib/Geometry/Manifold/IsManifold/Basic.lean (`isManifold_of_contDiffOn`, used at l.339), Mathlib/Topology/Compactification/OnePoint
+findings:
+- l.6–12 module docstring is three lines: no outline, no `## Main results`, no `## References`, no Tags; names Forster §1 only
+- l.261, 286, 317, 333, 343 `project_localInverse_eventuallyEq`, `contDiffAt_transition_of_lift`, `Data.contDiffOn_transition`, `Data.isManifold`, `Data.contMDiff_project` (the file's main results) carry no docstring; 5 of 27 missing
+- l.40 `BranchedQuotientAtlas.Data` is stated over `NormedSpace ℂ E` and `ω` only; the argument (descend an atlas along a map with local-diffeomorphic lifts) is field- and smoothness-independent (`𝕜`, `n : WithTop ℕ∞`); the `ℂ`/`ω` specialisation is the Riemann-surface case but not necessary
+- l.101–256 `OnePointAtlas.*` (chart at `∞` on `OnePoint Q` for `ChartedSpace ℂ Q`) is a second, independent construction packaged as `BranchedQuotientAtlas.Data` via the identity `q = (↑)`; would be clearer as its own file `Quotient/OnePoint.lean`
+- names: `Data.chartedSpace` (`@[instance_reducible] def`), `Data.isManifold` (theorem returning a `letI`-scoped instance proposition) — Mathlib would make `isManifold` an `instance` under the `chartedSpace` local instance or a `theorem … : @IsManifold _ _ _ D.chartedSpace …`
+- l.20 `set_option maxSynthPendingDepth 3`, l.24–27 kitchen-sink `open scoped … Modular … UpperHalfPlane`, l.29 `universe u v` unused, l.33–35 `≫ₚ`/`SlashAction` local notations unused
+suggestion: add docstrings to the five transition/manifold theorems and expand the module docstring with an outline and Forster reference; optionally generalise `ℂ`/`ω` to `𝕜`/`n`.
+
+## Lib/Geometry/Manifold/Quotient/LocalOrbit.lean  (18 declarations, 189 lines)
+verdict: B (minor: one missing docstring, thin module docstring, unused preamble; statements are general and standard)
+twin: Forster, Lectures on Riemann Surfaces §1 (local structure of orbit quotients of properly discontinuous actions; named in docstring, no theorem number); Mathlib nearest: Mathlib/Topology/Algebra/MulAction (`MulAction.orbitRel`, `isOpenMap_quotient_mk'_mul`), Mathlib/Topology/Algebra/ProperAction
+findings:
+- l.181 `LocalOrbitQuotient.localHomeomorph` (the file's main result, `LocalQuotient H U hU ≃ₜ imageOpen U`) has no docstring; 1 of 18 missing
+- l.6–12 module docstring promises "modeled on the quotient by a finite group"; nothing in the file mentions finiteness of `H` (the statements are for any subgroup `H` with the return condition `hreturn` at l.169) — sentence overstated
+- l.41 `restrictedAction` and l.50 `LocalQuotient` thread the hypothesis `hU : ∀ h : H, MapsTo (h • ·) U U` through every signature; Mathlib would package this as a `SubMulAction`-style structure (`SubMulAction H X` with `carrier = U`) or use `MulAction.stabilizer`-invariance so the `hU` argument disappears
+- l.169 `hreturn : ∀ g, ((g • ·) '' U ∩ U).Nonempty → g ∈ H` is the textbook "`U` is `H`-precisely invariant" condition; naming it (`IsPreciselyInvariant`) would match Forster/Beardon vocabulary
+- placement: file is `Geometry/Manifold/Quotient/` but contains no manifold structure (pure topological group actions); belongs under `Topology/Algebra/MulAction/`
+- l.20 `set_option maxSynthPendingDepth 3`, l.24–27 kitchen-sink `open scoped … Modular … UpperHalfPlane`, l.29 `universe u v` unused, l.33–35 `≫ₚ`/`SlashAction` local notations unused
+suggestion: document `localHomeomorph`, move the file to `Topology/Algebra/`, and package `(U, hU)` as a `SubMulAction H X` so the invariance hypothesis stops recurring in every signature.
+
+## Lib/Geometry/Manifold/RegularLevel.lean  (20 declarations, 403 lines)
+verdict: B (minor: regularity spelled through a Morse-theory namespace, one project word in a name, a stale docstring sentence; the theorem itself is the textbook one and fully documented)
+twin: Lee, Introduction to Smooth Manifolds, Cor 5.14 (regular level set theorem; named in docstring with `[lee13]`); Mathlib: none for regular level sets (genuine gap; nearest Mathlib/Geometry/Manifold/LocalDiffeomorph and `isManifold_of_contDiffOn`)
+findings:
+- l.15–17 docstring sentence "carrying the `letI := …` charted-space idiom of the source verbatim" is a move receipt, not a description; module docstring otherwise complete (main results, references, tags); 20/20 docstrings present
+- l.108, 294, 306, 322 … regularity is stated as `x ∉ ManifoldMorse.criticalPoints E f` (a `Morse/` namespace, forcing `import Lib.Geometry.Manifold.Morse.Handle`); Lee's hypothesis is `mfderiv 𝓘(ℝ,E) 𝓘(ℝ,ℝ) f x ≠ 0`; the regular-level theorem should not depend on Morse theory
+- l.104 `RegularLevel.Model E := EuclideanSpace ℝ (Fin (finrank E - 1))` fixes the model of the level to a Euclidean space of the right dimension via `ContinuousLinearEquiv.ofFinrankEq`; textbook statement uses the kernel `ker (mfderiv f x)` or any `(n-1)`-dimensional model; acceptable but hides a choice
+- l.108 `exists_native_height_chart`: "native" is project vocabulary (no mathematical meaning); Mathlib would say `exists_partialDiffeomorph_fst_eq` or `exists_height_chart`
+- l.57 `surjective_of_ne_zero` (nonzero `E →L[ℝ] ℝ` is surjective) and l.68 `finrank_kernel_add_one` are linear algebra, not level sets; Mathlib has the rank–nullity API (`LinearMap.finrank_range_add_finrank_ker`) — check before keeping
+- l.294 `chartedSpace` as `@[instance_reducible] def` and l.306 `isManifold` as a `letI`-scoped theorem: same pattern as `Quotient/Atlas.lean`; Mathlib idiom would be a `def RegularLevel …` type synonym carrying instances
+- l.32 `set_option maxSynthPendingDepth 3`, l.36–39 kitchen-sink `open scoped … Modular … UpperHalfPlane`, l.41 `universe u v` unused, l.45–47 `≫ₚ`/`SlashAction` local notations unused; imports `Morse.Handle`, `Flow.Compact` for a pre-Morse theorem
+suggestion: replace `x ∉ ManifoldMorse.criticalPoints E f` by `mfderiv 𝓘(ℝ,E) 𝓘(ℝ,ℝ) f x ≠ 0` (dropping the Morse imports), rename `exists_native_height_chart`, and delete the "verbatim" sentence.
+
+## Lib/Geometry/Manifold/RestrictScalars.lean  (7 declarations, 99 lines)
+verdict: A (textbook-ready: specific imports, all docstrings, general `𝕜 → 𝕜'` scalar tower, Mathlib naming)
+twin: Mathlib/Analysis/Calculus/ContDiff/Basic (`ContDiffWithinAt.restrict_scalars`, which it lifts to manifolds); no manifold-level twin in Mathlib (genuine gap: `IsManifold.restrictScalars`, `ContMDiff.restrictScalars`, `Diffeomorph.restrictScalars`)
+findings:
+- l.7–8 imports are specific (`IsManifold.Basic`, `LocalDiffeomorph`), no `import Mathlib`, no kitchen-sink `open scoped`, no `set_option`
+- l.10–15 module docstring names the result; it lacks `## Main results`/`## References`, but the file is short enough for Mathlib to accept it as is
+- l.25 `IsManifold.restrictScalars`, l.54 `ContMDiffWithinAt.restrictScalars`, l.65/71/77 `ContMDiffAt/ContMDiff/ContMDiffOn.restrictScalars`, l.83 `Diffeomorph.restrictScalars`, l.92 `PartialDiffeomorph.restrictScalars`: names follow Mathlib's `restrictScalars` convention (Mathlib's calculus version is spelled `restrict_scalars`; either is accepted)
+- statements are for `𝓘(𝕜, E)` only (boundaryless self-model); a `ModelWithCorners` version would need `I.restrictScalars`, reasonable to leave out
+- 0 missing docstrings, no project vocabulary, `universe u v` at l.39 is used (`E : Type u`, `F : Type v`)
+suggestion: none needed; add a one-line `## Main results` list and propose upstream.
+
+## Lib/Geometry/Manifold/Transversality/Basic.lean  (135 declarations, 2903 lines)
+verdict: C (general statements but `Native*` vocabulary throughout, ~45 declarations of Morse belt-coordinate machinery in a transversality file, docstring promises four families that do not exist, 133 of 135 declarations undocumented)
+twin: Hirsch, Differential Topology Ch. 2–3 and Guillemin–Pollack Ch. 2 (named in docstring); Palais's disc theorem for `DiskShrinking.exists_embedded_disk_isotopy_of_same_center` (l.2792; Hirsch Thm 8.3.1); Mathlib nearest: Mathlib/Geometry/Manifold/LocalDiffeomorph, no transversality/isotopy API in Mathlib (genuine gap)
+findings:
+- l.16–48 module docstring promises `NativeTransversality.Patch`, `WeightedPerturbation`, `GeneralPosition` avoidance lemmas and a "`NoExotic` dimension cluster"; none is declared in this file (`Patch`, `WeightedPerturbation`, `NoExotic`, `GeneralPosition` each occur only in the docstring; the `GeneralPosition` lemmas live in `Morse/SurgeryWindows.lean`) — stale outline
+- only l.69 and l.93 (`Diffeomorph.toPartialDiffeomorph'`, `IsLocalDiffeomorph.diffeomorph'`, both "transparent variants" of Mathlib declarations) have docstrings; 133 of 135 missing
+- l.127 `NativeSubmersion.*`, l.363 `exists_null_exceptional_native_translations`, l.527 `NativeTransversality.At`, l.659 `TransverseGerms.native_transversality_partial_diffeomorph_iff`, l.1066 `NativeParametrization.*`, l.2273 `exists_native_disk_germ_alignment`: "native" is project vocabulary with no mathematical content; Mathlib would say `Submersion`, `IsTransverseAt`, `exists_transverse_translation`
+- l.527 `NativeTransversality.At f g x y : Prop := g y = f x → Surjective ((mfderiv f x).coprod (mfderiv g y))` is the textbook definition of `f ⋔ g` at `(x, y)` (Guillemin–Pollack §2.3); it deserves a Mathlib-style `IsTransverseAt` name and a docstring
+- l.703–1060 `MorseHandle.ambientMap_*`, `SignedMorseChart.belt*` (14 declarations), `MorseSurgeryData.beltNormal*` (11 declarations): Morse surgery belt-neighbourhood coordinates, forcing `import Lib.Geometry.Manifold.Morse.SurgeryWindows` into a transversality file (transversality is a prerequisite of Morse surgery, not the other way round); belongs in `Morse/`
+- l.1505–1570, 2048–2170 `LinearFramePaths.*` (path-connectedness of `SL_n(ℝ)`, diagonal/transvection paths): pure Lie-group topology, no transversality; Mathlib has `Matrix.SpecialLinearGroup` — check for an existing connectedness result before keeping
+- l.2324–2560 `SmoothRadial.*`, `DiskShrinking.scale/family` are the radial-diffeomorphism and disc-shrinking constructions; l.2792 `exists_embedded_disk_isotopy_of_same_center` (two embedded discs with the same centre are ambiently isotopic, `hE : 2 ≤ finrank E`, codimension `n > 0`) is the disc theorem — the file's real result, unnamed as such in docstring and undocumented
+- all statements are for `ℝ`, `∞`, general `E`, `M`, `ModelWithCorners` where relevant (`Type*` throughout, no dimension pins): the mathematics is general
+- l.56 `set_option maxSynthPendingDepth 3`, l.60–63 kitchen-sink `open scoped … Modular … UpperHalfPlane`, l.65 `universe u v` unused; l.8/15 imports both `Mathlib` and `Mathlib.Geometry.Manifold.LocalDiffeomorph`
+- reading stopped after the statement list and the main statements at l.127, 527, 2792, 2837; proofs not read
+suggestion: move the `MorseHandle`/`SignedMorseChart`/`MorseSurgeryData` block (l.703–1060) to `Morse/`, rename `NativeTransversality.At` → `IsTransverseAt` (and drop "native" everywhere), and rewrite the module docstring around the disc theorem and the transversality relation that the file actually proves.
+
+## Lib/Geometry/Manifold/VectorBundle/ProjectionBundle.lean  (31 declarations, 419 lines)
+verdict: B (minor: over `ℝ` only, one promised name absent, thirteen unused project imports; construction is textbook and fully documented)
+twin: Lee, Introduction to Smooth Manifolds, Thm 6.24 / Lemma 10.6 (subbundle from a smooth family of projections; named in docstring with `[lee13]`); Mathlib nearest: Mathlib/Geometry/Manifold/VectorBundle/Basic (`VectorPrebundle.IsContMDiff`, used at l.409) — no projection-bundle construction in Mathlib (genuine gap)
+findings:
+- l.28 docstring promises "`gramProjection` transport"; `gramProjection` is not declared here (it lives in `WhitneyEmbedding.lean`/`Collar.lean`) — one stale word
+- 31/31 declarations documented; names (`projectionIntertwiner`, `projectionTransportDomain`, `ProjectionBundle.pretrivialization`, `vectorPrebundle`, `vectorPrebundle_isContMDiff`) follow Mathlib conventions
+- l.70–90 `projectionIntertwiner P Q := Q * P + (1 - Q) * (1 - P)` and its two lemmas are stated for any `[Ring R]` with `IsIdempotentElem` — good; from l.93 on everything is `NormedSpace ℝ F`, `𝓘(ℝ, …)`, `∞` where `𝕜` (`RCLike` or any nontrivially normed field) and `n` would do
+- l.110 `invertibleOperatorEquiv` (an `IsInvertible` operator as `F ≃L[ℝ] F`) likely duplicates Mathlib's `ContinuousLinearMap.IsInvertible` API (`IsInvertible.toContinuousLinearEquiv`?) — verify before upstreaming
+- l.9–22 imports `MorseLemma`, `Morse.Handle`, `Flow.Compact`, `RegularLevel`, `HandleAttachment`, `HeightTranslating`, `Morse.Existence`, `SmoothFlow`, `ChartedSpace.Transport`, `CylinderHEP`, `HandleRetraction`, `SublevelSets`, `Morse.Index`, `WhitneyEmbedding`: none used (the file depends on Mathlib only); l.50 `set_option maxSynthPendingDepth 3`, l.54–57 kitchen-sink `open scoped … Modular … UpperHalfPlane`, l.59 `universe u v` unused, l.63–65 `≫ₚ`/`SlashAction` local notations unused
+suggestion: drop the thirteen `Lib.*` imports and the preamble, remove the `gramProjection` mention, and generalise `ℝ` → `𝕜` so the file can go upstream as `Mathlib/Geometry/Manifold/VectorBundle/Projection.lean`.
+
+## Lib/Geometry/Manifold/Whitney/AnnularExtension.lean  (60 declarations, 794 lines)
+verdict: C (five unrelated families in one file, `TubularBigon` with a default codimension `n := 4` and `circle_nullhomotopies` hypotheses are project residue; zero docstrings; general sphere-nullhomotopy results buried inside)
+twin: Milnor, Lectures on the h-cobordism theorem §§5–6 (named in docstring); the sphere-map results `sphereMap_nullhomotopic_of_omitted_point` (l.543), `sphereMap_nullhomotopic_of_dim_lt` (l.554), `sphere_sphere_nullhomotopic` (l.569) are Hatcher §4.1 / Milnor "Topology from the differentiable viewpoint" §7 (`π_m(S^n) = 0` for `m < n`); Mathlib: none (genuine gap; nearest `Mathlib/Topology/Homotopy/HomotopyGroup`)
+findings:
+- l.14–20 module docstring is a move receipt ("Moved verbatim from the project stock file `Hopf/SingularHomology.lean` … keep their historical dotted names"); it lists five families (`SphereCone`, `AnnularExtension`, `ClosedHemisphere`, `WhitneyPairModel`, `TubularBigon`) and says "the file order is the dependency order" — an admission that the file has no single subject
+- 0 of 60 declarations carry a docstring
+- l.412 `abbrev UnitSphere E := Metric.sphere (0:E) 1`, l.419 `abbrev Sphere n := Metric.sphere (0 : EuclideanSpace ℝ (Fin (n+1))) 1`: root-namespace aliases of Mathlib's sphere (a third spelling after `Hemisphere.Sphere` in `Morse/SurgeryWindows.lean` and Mathlib's own); they pollute the root namespace
+- l.543–573 `sphereMap_nullhomotopic_of_omitted_point`, `sphereMap_nullhomotopic_of_dim_lt`, `sphere_sphere_nullhomotopic`: correct, general, textbook statements (root namespace, no docstring) — the file's only upstreamable content, and it is not mentioned in the docstring's title
+- l.574, 695, 741 `*_of_circle_nullhomotopies`: hypothesis "every map `S¹ → M` is nullhomotopic" is `SimplyConnectedSpace M` (same finding as `Morse/SurgeryWindows.lean`)
+- l.768 `structure TubularBigon … (h : ℝ) (n : ℕ := 4)`: default codimension 4 and `EuclideanSpace ℝ (Fin n)` normal fibre are the project's 6-manifold Whitney disc (2 + 4 = 6); the textbook Whitney lemma is for any `n ≥ 5` with sheets of complementary dimension
+- l.46–170 `SphereCone.*` (cone on a sphere as quotient of the closed ball) and l.170–410 `AnnularExtension.clamp/exteriorVector/exists_continuous_annular_extension` are general topology of balls in a normed space; they belong under `Topology/`, not `Geometry/Manifold/Whitney/`
+- l.33 `set_option maxSynthPendingDepth 3`, l.37–40 kitchen-sink `open scoped … Modular … UpperHalfPlane`, l.42 `universe u v` unused
+suggestion: split out `SphereCone`+`AnnularExtension` (→ Topology) and the three sphere-nullhomotopy theorems (→ AlgebraicTopology, documented, replacing `Sphere n` by Mathlib's sphere), and keep only the bigon-neighbourhood extension and `TubularBigon` here with the codimension as an explicit parameter.
+
+## Lib/Geometry/Manifold/Whitney/BigonModel.lean  (52 declarations, 481 lines)
+verdict: C (the model is pinned to sheets `ℝ × ℝ²` in `(ℝ × ℝ) × (ℝ² × ℝ²)` — the project's two 3-folds in a 6-manifold — where Milnor's model is `ℝ² × ℝ^{k−1} × ℝ^{n−k−1}`; every declaration lacks a docstring)
+twin: Milnor, Lectures on the h-cobordism theorem §6, Thm 6.6 (the Whitney lemma; named in docstring); Mathlib: none (genuine gap)
+findings:
+- l.68–74 `WhitneyPairModel.Plane := EuclideanSpace ℝ (Fin 2)`, `Space := (ℝ × ℝ) × (Plane × Plane)`, `Sheet := ℝ × Plane`: the ambient model is 6-dimensional and the sheets 3-dimensional by construction; a textbook model takes the two normal factors as parameters (`ℝ^{k-1}`, `ℝ^{n-k-1}`), so the whole file is specialised to the project's dimensions
+- l.12–49 module docstring is complete (main results, references, tags) and every promised name exists (`bigon`, `isClosed_bigon`, `starConvex_bigon`, `mem_interior_bigon_iff`, `exists_bigon_boundary_cover`, `bigonReflection`, `cornerTransition`, `lowerStripCoordinates`, `StripCoordinates.reverse`) — but 0 of 52 declarations has its own docstring
+- l.83 `bigon h := {p | 0 ≤ p.2 ∧ h * p.1^2 + p.2 ≤ h}` (parabolic bigon), l.272–300 corner coordinates, l.341–400 `cornerTransition/cornerScale/cornerSign` are concrete real-analysis maps on `ℝ × ℝ` — fine as a model, independent of the 6-dimensional `Space`, and could stand alone
+- l.61 `StripCoordinates.hasDerivAt_verticalSlice` is a general `fderiv`/`HasDerivAt` composition lemma (partial derivative of `F : ℝ × ℝ → E` in the second variable); belongs in `Analysis/Calculus`, and Mathlib may already have it as `HasFDerivAt.comp_hasDerivAt` usage
+- preamble is clean (specific `open scoped ContDiff`, no kitchen-sink opens, no unused universes) apart from l.53 `set_option maxSynthPendingDepth 3`; imports only `Mathlib`
+suggestion: parametrise `Space` by the two normal factors (`Space F₁ F₂ := (ℝ × ℝ) × (F₁ × F₂)`, sheets `ℝ × F₁`, `ℝ × F₂`) so the model is Milnor's, and add one-line docstrings to the 52 declarations.
+
+## Lib/Geometry/Manifold/Whitney/CleanStrips.lean  (140 declarations, 2532 lines)
+verdict: C (general-dimension statements, but eleven "families" in one verbatim-moved file, `Native*`/`native_` names, a Morse belt-intersection block inside a Whitney file, and 0 of 140 docstrings)
+twin: Milnor, Lectures on the h-cobordism theorem §§5–6 (named in docstring); `finite_transverse_intersections` (l.567) and `isDiscrete_transverse_intersections` (l.546) are Guillemin–Pollack §1.5/§2.3 (transverse complementary compact submanifolds meet in finitely many points); Mathlib: none (genuine gap)
+findings:
+- l.14–20 module docstring is the same move receipt as `AnnularExtension.lean` ("Moved verbatim … the families here are `TransverseCoordinates`, `NativeEuclideanEmbedding.SmoothRetraction`, `SphereBoundary`, `SphereNormalCoordinates`, `ManifoldMorse.MorseSurgeryData`, `StripCoordinates`, `StripNormalData`, `CleanCornerPatch`, `CleanStripPatch`, `WhitneyPairModel`, `CleanBigonBoundary` … the file order is the dependency order"); no `## Main results`
+- 0 of 140 declarations carry a docstring
+- l.216 `exists_simultaneous_sheetChart`, l.274 `exists_clean_simultaneous_sheetChart`, l.466 `exists_clean_crossingChart`, l.546/567 `isDiscrete/finite_transverse_intersections`: correctly general (`hdim : finrank D + finrank Z = finrank E`, `Type*`, compact `M`), the textbook "transverse crossing chart" lemmas — the file's upstreamable core, in the root namespace without docstrings
+- l.767–905 `ManifoldMorse.MorseSurgeryData.beltNormalReference/beltIntersectionJacobian/beltIntersectionSign/beltIntersectionCount/finite_beltIntersectionPoints`: Morse-surgery belt-sphere intersection numbers (Milnor h-cob §6 intersection number, but bound to `MorseSurgeryData`); belongs in `Morse/`, not `Whitney/`
+- l.81–200 `NativeEuclideanEmbedding.SmoothRetraction.sheetCoordinates*`, l.1294 `StripNormalData.native_derivative_factor`, l.1674 `exists_native_clean_corner_of_parametrizations`, l.2218/2234 `injective_nativeDerivative_*`: "native" project vocabulary in names
+- l.982–1300, 1370–1620 `StripCoordinates.*`/`StripNormalData` (strip charts near a corner, `Space A B`, `blend`, `detector`, `sheetTransition`) are a self-contained corner-chart toolkit parametrised by `A`, `B` — general, but consumed only through `WhitneyPairModel` (123 references), whose ambient model is pinned to 6 dimensions in `BigonModel.lean`, so the generality is not usable downstream
+- l.1740 `CleanCornerPatch`, l.1782 `CleanStripPatch`, l.2399 `CleanBigonBoundary`: data structures with 10–15 fields each, no docstring, no field docs; a textbook would state these as "an embedded bigon with clean corners" in prose
+- l.33 `set_option maxSynthPendingDepth 3`, l.37–40 kitchen-sink `open scoped … Modular … UpperHalfPlane`, l.42 `universe u v` unused; imports `Morse/CircleGluing` (a Whitney file depending on Morse)
+- reading stopped after the statement list and the main statements at l.216, 546, 567, 2399; proofs not read
+suggestion: extract `exists_clean_crossingChart` + `finite_transverse_intersections` into a documented `Transversality/Crossing.lean`, move the `MorseSurgeryData.beltIntersection*` block to `Morse/`, and rename every `native`/`Native` identifier.
+
+## Lib/Geometry/Manifold/Whitney/EmbeddedArcs.lean  (88 declarations, 3299 lines)
+verdict: C (three statements carry `finrank ℝ E = 6` with `Hemisphere.Sphere 2`/`Ambient 3` and belong to the project proof; the remaining arc/strip lemmas are general but undocumented, `native`-named and split across thirteen families)
+twin: Milnor, Lectures on the h-cobordism theorem §6 (Whitney lemma preparation, embedded arcs joining intersection points; named in docstring); Whitney's "arcs avoiding a finite set in dimension ≥ 2" (`exists_embedded_connecting_arc_avoiding_finite_dim_two`, l.1527) is Hirsch Ch. 2/Milnor Top. from the diff. viewpoint; Mathlib: none (genuine gap)
+findings:
+- l.14–20 module docstring is the move receipt listing thirteen families (`SphereNormalCoordinates`, `WhitneyPairModel`, `CleanBigonBoundary`, `ManifoldImmersion`, `ChartMapPerturbation`, `CurveImmersion`, `TransverseCoordinates`, `NativeParametrization`, `StripCoordinates`, `CleanStripPatch`, `ManifoldMorse.MorseSurgeryData`, `FiberRestriction`, `SmallPerturbation`); no `## Main results`
+- 0 of 88 declarations carry a docstring
+- l.291 `MorseSurgeryData.opposite_beltIntersectionSigns_iff_Whitney_corners`, l.3018 `nonempty_belt_tubularBigon`, l.3050 `exists_belt_tubular_strip_pair`: hypotheses `(hdim : Module.finrank ℝ E = 6) (hindex : finrank NegativeCoordinates = 2)`, `Hemisphere.Sphere 2`, `Hemisphere.Ambient 3`, `StripNormalData (EuclideanSpace ℝ (Fin 2)) (EuclideanSpace ℝ (Fin 2))` — the project's 6-manifold index-2 belt argument; not library material (→ `Hopf/Proof`)
+- l.1466 `exists_short_embedded_arc`, l.1527 `exists_embedded_connecting_arc_avoiding_finite_dim_two` (`2 ≤ finrank G`, any boundaryless `J`), l.1593 `exists_tubular_connecting_arc_avoiding_finite_with_global_zero`, l.1740 `exists_clean_ambient_chart_along_embedded_arc`: correct general statements, textbook content, undocumented; the `_dim_two` suffix names the hypothesis rather than the result (Mathlib: `_of_two_le_finrank`)
+- l.1085–1400 `ManifoldImmersion.exists_*_derivative_repair*`, `ChartMapPerturbation.*`, `CurveImmersion.*`: immersion-repair perturbation lemmas (Hirsch Ch. 2 approximation), a fourth topic; l.3156–3210 `FiberRestriction.*` and l.3211–3299 `SmallPerturbation.composeFamily*` two more
+- l.1848 `NativeParametrization.line`, l.2168 `exists_native_clean_strip_matching_germs`, l.2801 `exists_native_shared_corner_strip_pair_dim_two`: "native" project vocabulary
+- l.401–540 `WhitneyPairModel.innerBigonMap/innerBigonDiffeomorph/innerBigonCollar`: tied to the 6-dimensional `WhitneyPairModel.Space` of `BigonModel.lean`
+- l.33 `set_option maxSynthPendingDepth 3`, l.37–40 kitchen-sink `open scoped … Modular … UpperHalfPlane`, l.42 `universe u v` unused
+- reading stopped after the statement list and the statements at l.291, 1527, 2801, 3018–3054; proofs not read
+suggestion: move the three `finrank ℝ E = 6` belt statements to `Hopf/Proof`, and regroup the rest into `Whitney/Arcs.lean` (embedded arcs avoiding finite sets, documented) and `Whitney/StripPairs.lean`, dropping `native` from every name.
+
+# done 14 files

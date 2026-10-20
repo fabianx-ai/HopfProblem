@@ -1,0 +1,13 @@
+EuclideanSphere.simplyConnectedSpace : ∀ (n : ℕ), SimplyConnectedSpace ↑((fun n => Metric.sphere 0 1) (n + 2))
+SphereHomology.unitSphere_homology_subsingleton : ∀ (n k : ℕ),
+  k ≠ 0 → k ≠ n + 1 → Subsingleton ↑(SingularMayerVietoris.SingularHomology (↑(SphereHomology.UnitSphere (n + 1))) k)
+@HigherHurewicz.hurewiczLinearEquivOfTwoLE : {X : Type} →
+  [inst : TopologicalSpace X] →
+    [SimplyConnectedSpace X] →
+      (x : X) →
+        (n : ℕ) →
+          (hn : 2 ≤ n) →
+            (∀ (j : ℕ), 2 ≤ j → j < n → Subsingleton (π_ j X x)) →
+              Additive (π_ n X x) ≃ₗ[ℤ] ↑(SingularMayerVietoris.SingularHomology X n)
+@Fin.nontrivial_iff_two_le : ∀ {n : ℕ}, Nontrivial (Fin n) ↔ 2 ≤ n
+exit=0

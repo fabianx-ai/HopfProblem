@@ -1,0 +1,120 @@
+constants before 38593 after 38254 (keys 38491 38152 )
+lost 1151 added 812 of which source declarations: 348 130 ; names with changed type 771 of which source: 477
+  LOST AlgebraicTopology.SingularCochains.homotopy_on_cocycle_succ {'Lib.AlgebraicTopology.SingularCochains.PositivePrimitives': 1}
+  LOST CategoryTheory.HomologicalComplex.shortCycleClass {'Lib.Algebra.Homology.HomologicalComplex.CycleLift': 1}
+  LOST CategoryTheory.HomologicalComplex.shortCycleClass_eq_zero_iff {'Lib.Algebra.Homology.HomologicalComplex.CycleLift': 1}
+  LOST CategoryTheory.HomologicalComplex.shortCycleClass_quotient {'Lib.Algebra.Homology.HomologicalComplex.CycleLift': 1}
+  LOST CategoryTheory.HomologicalComplex.shortCycleClass_surjective {'Lib.Algebra.Homology.HomologicalComplex.CycleLift': 1}
+  LOST CategoryTheory.HomologicalComplex.shortHomologyMap_cycleClass {'Lib.Algebra.Homology.HomologicalComplex.CycleLift': 1}
+  LOST CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.canonicalDerivedNeighborhoodSectionPositive {'Lib.CategoryTheory.Sites.Leray.CanonicalPositiveNeighborhoodSection': 1}
+  LOST CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.canonicalDerivedNeighborhoodSectionPositive_comp_germ {'Lib.CategoryTheory.Sites.Leray.CanonicalPositiveNeighborhoodSection': 1}
+  LOST CategoryTheory.Sheaf.Leray.derivedNeighborhoodGerm_eq_germ_of_localRepresentative {'Lib.CategoryTheory.Sites.Leray.SheafificationNeighborhoodGerm': 1}
+  LOST CategoryTheory.Sheaf.Leray.higherDirectImageResolutionSheafificationIso {'Lib.CategoryTheory.Sites.Leray.HigherDirectImageSheafification': 1}
+  LOST CategoryTheory.Sheaf.Leray.higherDirectImageResolutionSheafificationStalkIso {'Lib.CategoryTheory.Sites.Leray.SheafificationStalkCompatibility': 1}
+  LOST CategoryTheory.Sheaf.Leray.higherDirectImageResolutionSheafificationStalkIso_eq {'Lib.CategoryTheory.Sites.Leray.SheafificationStalkCompatibility': 1}
+  LOST CategoryTheory.Sheaf.Leray.integralCoyonedaPushforwardHomologyIso {'Lib.CategoryTheory.Sites.Leray.ResolutionAbutment': 1}
+  LOST CategoryTheory.Sheaf.Leray.integralCoyonedaPushforwardIso {'Lib.CategoryTheory.Sites.Leray.ResolutionAbutment': 1}
+  LOST CategoryTheory.Sheaf.Leray.integralDerivedObject {'Lib.CategoryTheory.Sites.Leray.ResolutionPostnikov': 1}
+  LOST CategoryTheory.Sheaf.Leray.integralDerivedObject_isLE {'Lib.CategoryTheory.Sites.Leray.ResolutionPostnikov': 1}
+  LOST CategoryTheory.Sheaf.Leray.integralSheaf {'Lib.CategoryTheory.Sites.Leray.ResolutionTransgression': 1}
+  LOST CategoryTheory.Sheaf.Leray.mapComplexHomologyIso_sheafification_stalk_comp {'Lib.CategoryTheory.Sites.Leray.SheafificationStalkCompatibility': 1}
+  LOST CategoryTheory.Sheaf.Leray.resolutionCohomologyIso_hom_apply {'Lib.CategoryTheory.Sites.Leray.ResolutionTransgression': 1}
+  LOST CategoryTheory.Sheaf.Leray.resolutionDerivedHomCohomologyEquiv {'Lib.CategoryTheory.Sites.Leray.ResolutionAbutment': 1}
+  ADDED CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.canonicalDerivedNeighborhoodSectionPositive {'Lib.CategoryTheory.Sites.Leray.CanonicalPositiveNeighborhoodSection': 1}
+  ADDED CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.canonicalDerivedNeighborhoodSectionPositive_comp_germ {'Lib.CategoryTheory.Sites.Leray.CanonicalPositiveNeighborhoodSection': 1}
+  ADDED CategoryTheory.Sheaf.Leray.derivedNeighborhoodGerm_eq_germ_of_localRepresentative {'Lib.CategoryTheory.Sites.Leray.SheafificationNeighborhoodGerm': 1}
+  ADDED CategoryTheory.Sheaf.Leray.higherDirectImageResolutionSheafificationIso {'Lib.CategoryTheory.Sites.Leray.HigherDirectImageSheafification': 1}
+  ADDED CategoryTheory.Sheaf.Leray.higherDirectImageResolutionSheafificationStalkIso {'Lib.CategoryTheory.Sites.Leray.SheafificationStalkCompatibility': 1}
+  ADDED CategoryTheory.Sheaf.Leray.higherDirectImageResolutionSheafificationStalkIso_eq {'Lib.CategoryTheory.Sites.Leray.SheafificationStalkCompatibility': 1}
+  ADDED CategoryTheory.Sheaf.Leray.integralCoyonedaPushforwardHomologyIso {'Lib.CategoryTheory.Sites.Leray.ResolutionAbutment': 1}
+  ADDED CategoryTheory.Sheaf.Leray.integralCoyonedaPushforwardIso {'Lib.CategoryTheory.Sites.Leray.ResolutionAbutment': 1}
+  ADDED CategoryTheory.Sheaf.Leray.integralDerivedObject {'Lib.CategoryTheory.Sites.Leray.ResolutionPostnikov': 1}
+  ADDED CategoryTheory.Sheaf.Leray.integralDerivedObject_isLE {'Lib.CategoryTheory.Sites.Leray.ResolutionPostnikov': 1}
+  ADDED CategoryTheory.Sheaf.Leray.mapComplexHomologyIso_sheafification_stalk_comp {'Lib.CategoryTheory.Sites.Leray.SheafificationStalkCompatibility': 1}
+  ADDED CategoryTheory.Sheaf.Leray.resolutionCohomologyIso_hom_apply {'Lib.CategoryTheory.Sites.Leray.ResolutionTransgression': 1}
+  ADDED CategoryTheory.Sheaf.Leray.resolutionDerivedHomCohomologyEquiv {'Lib.CategoryTheory.Sites.Leray.ResolutionAbutment': 1}
+  ADDED CategoryTheory.Sheaf.Leray.resolutionExtZeroIso {'Lib.CategoryTheory.Sites.Leray.ResolutionTransgression': 1}
+  ADDED CategoryTheory.Sheaf.Leray.resolutionExtZeroIso_hom_apply {'Lib.CategoryTheory.Sites.Leray.ResolutionTransgression': 1}
+  ADDED CategoryTheory.Sheaf.Leray.resolutionExtZeroIso_inv_apply {'Lib.CategoryTheory.Sites.Leray.ResolutionTransgression': 1}
+  ADDED CategoryTheory.Sheaf.Leray.resolutionPostnikovE₂AddEquiv_source_coordinate {'Lib.CategoryTheory.Sites.Leray.ResolutionPostnikovD2Coordinates': 1}
+  ADDED CategoryTheory.Sheaf.Leray.resolutionPostnikovE₂AddEquiv_target_coordinate {'Lib.CategoryTheory.Sites.Leray.ResolutionPostnikovD2Coordinates': 1}
+  ADDED CategoryTheory.Sheaf.Leray.resolutionPostnikovE₂Iso {'Lib.CategoryTheory.Sites.Leray.ResolutionPostnikov': 1}
+  ADDED CategoryTheory.Sheaf.Leray.resolutionPostnikovE₂_d₂_eq_transgression {'Lib.CategoryTheory.Sites.Leray.ResolutionPostnikovD2Transgression': 1}
+  CHANGED CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.canonicalDerivedNeighborhoodSectionPositive
+  CHANGED CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.canonicalDerivedNeighborhoodSectionPositive_comp_germ
+  CHANGED CategoryTheory.Sheaf.Leray.derivedNeighborhoodGerm_eq_germ_of_localRepresentative
+  CHANGED CategoryTheory.Sheaf.Leray.higherDirectImageResolutionSheafificationIso
+  CHANGED CategoryTheory.Sheaf.Leray.higherDirectImageResolutionSheafificationStalkIso
+  CHANGED CategoryTheory.Sheaf.Leray.higherDirectImageResolutionSheafificationStalkIso_eq
+  CHANGED CategoryTheory.Sheaf.Leray.integralCoyonedaPushforwardHomologyIso
+  CHANGED CategoryTheory.Sheaf.Leray.integralCoyonedaPushforwardIso
+  CHANGED CategoryTheory.Sheaf.Leray.integralDerivedObject
+  CHANGED CategoryTheory.Sheaf.Leray.integralDerivedObject_isLE
+  CHANGED CategoryTheory.Sheaf.Leray.mapComplexHomologyIso_sheafification_stalk_comp
+  CHANGED CategoryTheory.Sheaf.Leray.resolutionCohomologyIso_hom_apply
+  CHANGED CategoryTheory.Sheaf.Leray.resolutionDerivedHomCohomologyEquiv
+  CHANGED CategoryTheory.Sheaf.Leray.resolutionExtZeroIso
+  CHANGED CategoryTheory.Sheaf.Leray.resolutionExtZeroIso_hom_apply
+  CHANGED CategoryTheory.Sheaf.Leray.resolutionExtZeroIso_inv_apply
+  CHANGED CategoryTheory.Sheaf.Leray.resolutionPostnikovE₂AddEquiv_source_coordinate
+  CHANGED CategoryTheory.Sheaf.Leray.resolutionPostnikovE₂AddEquiv_target_coordinate
+  CHANGED CategoryTheory.Sheaf.Leray.resolutionPostnikovE₂Iso
+  CHANGED CategoryTheory.Sheaf.Leray.resolutionPostnikovE₂_d₂_eq_transgression
+  PROOF-NAMING CategoryTheory.Sheaf.Leray.ConstantFibreEvaluationNormalization.canonicalConstantEvaluation
+  PROOF-NAMING CategoryTheory.Sheaf.Leray.ConstantFibreEvaluationNormalization.canonicalConstantEvaluation_bijective_of_pullback_isIso
+  PROOF-NAMING CategoryTheory.Sheaf.Leray.ConstantFibreEvaluationNormalization.canonicalConstantEvaluation_eq_intrinsicConstantPullback
+  PROOF-NAMING CategoryTheory.Sheaf.Leray.ConstantFibreEvaluationNormalization.canonicalConstantEvaluation_forward
+  PROOF-NAMING CategoryTheory.Sheaf.Leray.ConstantFibreEvaluationNormalization.cohomologyEvaluation_forward_open
+  PROOF-NAMING CategoryTheory.Sheaf.Leray.ConstantFibreEvaluationNormalization.fibreCohomology_eq_of_forward_eq
+  PROOF-NAMING CategoryTheory.Sheaf.Leray.ConstantFibreEvaluationNormalization.intrinsicConstantPullback
+  PROOF-NAMING CategoryTheory.Sheaf.Leray.ConstantFibreEvaluationNormalization.intrinsicOpenClass
+  PROOF-NAMING CategoryTheory.Sheaf.Leray.ConstantFibreEvaluationNormalization.intrinsicOpenClass_bijective
+  PROOF-NAMING CategoryTheory.Sheaf.Leray.ConstantFibreEvaluationNormalization.intrinsicOpenClass_coefficient
+  PROOF-NAMING CategoryTheory.Sheaf.Leray.ConstantFibreEvaluationNormalization.openConstantRestrictionHom
+  PROOF-NAMING CategoryTheory.Sheaf.Leray.ConstantFibreEvaluationNormalization.openConstantRestrictionHom_isIso
+  PROOF-NAMING CategoryTheory.Sheaf.Leray.ConstantFibreEvaluationNormalization.openConstantRestriction_coefficient
+  PROOF-NAMING CategoryTheory.Sheaf.Leray.E₂
+  PROOF-NAMING CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.ConstantPointFibre.ConstantNormalization
+  PROOF-NAMING CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.ConstantPointFibre.Fibre
+  PROOF-NAMING CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.ConstantPointFibre.canonicalNeighborhoodGermPositive
+  PROOF-NAMING CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.ConstantPointFibre.canonicalNeighborhoodGermPositive_hom_ext_of_cofinal
+  PROOF-NAMING CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.ConstantPointFibre.canonicalStalkToFibrePositive
+  PROOF-NAMING CategoryTheory.Sheaf.Leray.FibreStalkEvaluation.ConstantPointFibre.canonicalStalkToFibrePositive_isIso_of_cofinal_bijective
+auxiliary lost/added/changed (not judged): 803 682 294
+module moves (source declarations, 1-to-1):
+      14  Lib.Algebra.Group.LatticeImageCollapse -> Hopf.Proof.Algebra.Group.LatticeImageCollapse
+       1  Lib.Algebra.Group.ResidualRelations -> Hopf.Proof.Algebra.Group.ResidualRelations
+       3  Lib.Algebra.Homology.DerivedCategory.Ext.InjectiveResolutionHomology -> Lib.Algebra.Homology.ShortComplex.AbCycleClass
+       5  Lib.Algebra.Homology.ThreeColumnPage.LowerTransfer -> Lib.Algebra.Homology.ThreeColumnPage.LowerDifferentials
+       1  Lib.AlgebraicTopology.FundamentalGroup.VanKampen.FiniteStarCharacter -> Hopf.Proof.AlgebraicTopology.FundamentalGroup.VanKampen.FiniteStarCharacter
+      21  Lib.AlgebraicTopology.Hurewicz.DegreeSix -> Hopf.Proof.AlgebraicTopology.Hurewicz.DegreeSix
+       2  Lib.AlgebraicTopology.Hurewicz.SphereGenerator -> Hopf.Proof.AlgebraicTopology.Hurewicz.SphereGenerator
+       5  Lib.AlgebraicTopology.SingularHomology.LocalDegreeNeighborhoods -> Lib.AlgebraicTopology.SingularHomology.LinearSphereAction
+       2  Lib.AlgebraicTopology.SingularHomology.LocalDegreeNeighborhoods -> Lib.Geometry.Manifold.Morse.Reeb
+      13  Lib.AlgebraicTopology.SingularHomology.OnePointCover -> Lib.AlgebraicTopology.SingularHomology.SpherePointTransport
+       1  Lib.AlgebraicTopology.SingularSmallChains.CochainHomotopy -> Lib.Algebra.Homology.Homotopy.CocycleEvaluation
+       1  Lib.Analysis.Real.MeshScale -> Lib.Topology.Dimension.CubeBoundaryThreeLebesgue
+       1  Lib.Data.Int.SignedResidual -> Hopf.Proof.Data.Int.SignedResidual
+      10  Lib.Geometry.Manifold.Morse.BeltCancellation -> Hopf.Proof.Geometry.Manifold.Morse.BeltCancellation
+       5  Lib.Geometry.Manifold.Morse.BeltCancellation -> Lib.AlgebraicTopology.SingularHomology.LinearSphereAction
+       2  Lib.Geometry.Manifold.Morse.BeltCancellation -> Lib.Geometry.Manifold.RegularLevel
+       1  Lib.Geometry.Manifold.Morse.BeltCancellation -> Lib.Geometry.Manifold.Transversality.Basic
+      36  Lib.Geometry.Manifold.Morse.CircleGluing -> Lib.Geometry.Manifold.Curve.CircleGluing
+      52  Lib.Geometry.Manifold.Morse.CutTransport -> Hopf.Proof.Geometry.Manifold.Morse.CutTransport
+      27  Lib.Geometry.Manifold.Morse.MiddleBlocks -> Hopf.Proof.Geometry.Manifold.Morse.MiddleBlocks
+       4  Lib.Geometry.Manifold.Morse.MiddleBlocks -> Lib.Geometry.Manifold.Morse.EqualRangeHomology
+       4  Lib.Geometry.Manifold.Morse.MinimalSystem -> Hopf.Proof.Geometry.Manifold.Morse.MinimalSystem
+      12  Lib.Geometry.Manifold.Morse.RearrangementAmbient -> Lib.Combinatorics.IndexDisorder
+       2  Lib.Geometry.Manifold.Morse.SurgeryHomology -> Hopf.Proof.Geometry.Manifold.Morse.SurgeryHomology
+       5  Lib.Geometry.Manifold.Morse.SurgeryHomology -> Lib.Algebra.BigOperators.SignedCancellation
+      12  Lib.Geometry.Manifold.Morse.SurgeryHomology -> Lib.Geometry.Manifold.Morse.RadialFilling
+      20  Lib.GroupTheory.PresentedGroup.CentralTwist -> Hopf.Proof.GroupTheory.PresentedGroup.CentralTwist
+       4  Lib.Topology.Sheaves.Cohomology.SphereTwo -> Hopf.Proof.Topology.Sheaves.Cohomology.SphereTwo
+       3  Lib.Topology.Sheaves.SingularCochainSheaf.GlobalUnitH1Criterion -> Lib.Topology.Sheaves.SingularCochainSheaf.GlobalUnitPredicates
+       1  Lib.Topology.Sheaves.SingularCochainSheaf.GlobalUnitPositive -> Lib.Topology.Sheaves.SingularCochainSheaf.GlobalKernelSmall
+       1  Lib.Topology.Sheaves.SingularCochainSheaf.GlobalUnitPositive -> Lib.Topology.Sheaves.SingularCochainSheaf.GlobalUnitPredicates
+       2  Lib.Topology.Sheaves.SingularCochainSheaf.LocalExactH1 -> Lib.Topology.Sheaves.SingularCochainSheaf.LocalExactPositive
+       2  Lib.Topology.Sheaves.SingularCochainSheaf.Sheaf -> Lib.Topology.Sheaves.Sheafification
+ambiguous module changes: 0
+auxiliary constants that changed module: 151
+VERDICT FAIL

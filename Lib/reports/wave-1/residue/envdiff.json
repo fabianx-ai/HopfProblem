@@ -1,0 +1,71 @@
+{
+ "before": "/home/goblin/.claude/jobs/06995e68/tmp/wave1/dump_head.jsonl",
+ "after": "/home/goblin/.claude/jobs/06995e68/tmp/wave1/residue/dump_after.jsonl",
+ "prefix": "",
+ "constants": [
+  38248,
+  38248
+ ],
+ "lost": [
+  [
+   "AlgebraicTopology.SingularCochains.dualHomotopyEquiv",
+   140768443,
+   {
+    "Lib.AlgebraicTopology.SingularCochains.PositivePrimitives": 1
+   }
+  ],
+  [
+   "AlgebraicTopology.SingularCochains.dualHomotopyEquiv._proof_1",
+   181655784,
+   {
+    "Lib.AlgebraicTopology.SingularCochains.PositivePrimitives": 1
+   }
+  ],
+  [
+   "AlgebraicTopology.SingularCochains.dualHomotopyEquiv._proof_2",
+   3654990933,
+   {
+    "Lib.AlgebraicTopology.SingularCochains.PositivePrimitives": 1
+   }
+  ]
+ ],
+ "added": [
+  [
+   "AlgebraicTopology.SingularCochains.dualHomotopyEquiv",
+   3481755636,
+   {
+    "Lib.AlgebraicTopology.SingularCochains.PositivePrimitives": 1
+   }
+  ],
+  [
+   "AlgebraicTopology.SingularCochains.dualHomotopyEquiv._proof_1",
+   2953461149,
+   {
+    "Lib.AlgebraicTopology.SingularCochains.PositivePrimitives": 1
+   }
+  ],
+  [
+   "AlgebraicTopology.SingularCochains.dualHomotopyEquiv._proof_2",
+   391043269,
+   {
+    "Lib.AlgebraicTopology.SingularCochains.PositivePrimitives": 1
+   }
+  ]
+ ],
+ "changed_type_source": [],
+ "changed_type_proof_naming": [
+  "AlgebraicTopology.SingularCochains.dualHomotopyEquiv"
+ ],
+ "changed_type_accepted": [],
+ "added_accepted": [],
+ "accept_without_effect": [],
+ "changed_type_all": [
+  "AlgebraicTopology.SingularCochains.dualHomotopyEquiv",
+  "AlgebraicTopology.SingularCochains.dualHomotopyEquiv._proof_1",
+  "AlgebraicTopology.SingularCochains.dualHomotopyEquiv._proof_2"
+ ],
+ "moves": [],
+ "ambiguous": [],
+ "auxiliary_moved": 0,
+ "verdict": "PASS"
+}

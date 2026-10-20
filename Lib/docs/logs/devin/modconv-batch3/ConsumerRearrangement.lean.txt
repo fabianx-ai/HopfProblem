@@ -1,0 +1,20 @@
+module
+
+public import Lib.Geometry.Manifold.Morse.Rearrangement
+
+open Mathoverflow1973
+
+#check AdaptedWindows
+#check MorseCancellation.nativeMorseIndex
+#check ManifoldImmersion.exists_immersion_on_compact_rel
+#check exists_tubularNeighborhood_in_open_of_embedded_closedBall
+#check AdaptedWindows.attaching_basin_iff
+#check MorseCancellation.nativeMorseIndex_eq_chart
+#check NativeEuclideanEmbedding.tangentNormalEquiv
+#check NativeEuclideanEmbedding.contMDiff_normalProjection
+#check ProjectionBundle.coordinateChange_apply
+#check NativeTransversality.exists_ambient_transverse_diffeomorph
+#check MorseRearrangement.exists_ambient_disjoint_diffeomorph_of_dimension
+#check exists_partialDiffeomorph_of_isLocalDiffeomorphAt
+#check partialDiffeomorphOfInjectiveLocal
+#check SmallPerturbation.bumpTranslation_apply

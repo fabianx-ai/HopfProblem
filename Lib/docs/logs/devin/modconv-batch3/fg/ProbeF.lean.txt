@@ -1,0 +1,12 @@
+module
+
+public import Lib.Geometry.Manifold.Whitney.BigonModel
+
+open Mathoverflow1973
+
+#check @WhitneyPairModel.firstSheet
+#check @WhitneyPairModel.bigon
+#check @WhitneyPairModel.mem_frontier_bigon_iff
+#check @WhitneyPairModel.cornerScale_pos
+#check @WhitneyPairModel.upperStripCoordinates_right
+#check @StripCoordinates.hasDerivAt_verticalSlice

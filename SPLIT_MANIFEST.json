@@ -1,0 +1,294 @@
+{
+  "upstream_commit": "9ac8a456b526527837d7082ff775213ca8bc9809",
+  "source_sha256": "fda66f602707b290cf7fba9111506b39d72b2f509f9ebb44a1901471c69dec49",
+  "body_ranges_are_one_based_inclusive": true,
+  "attribute_command_audit": {
+    "total_attribute_commands": 2543,
+    "command_scoped": 2543,
+    "persistent": 0,
+    "header_physical_lines": 4174,
+    "header_span_length_counts": {
+      "1": 1181,
+      "2": 1148,
+      "3": 176,
+      "4": 21,
+      "5": 17
+    },
+    "attribute_kind_counts": {
+      "local instance": 2135,
+      "local instance 100": 396,
+      "local irreducible": 12
+    },
+    "terminal_in_on_first_line": 1181,
+    "terminal_in_on_continuation": 1362,
+    "target_occurrences": 4312,
+    "distinct_targets": 83,
+    "distinct_normalized_commands": 103,
+    "immediately_wraps_another_attribute": 179,
+    "wrapper_chains": 2364,
+    "wrapper_chain_length_counts": {
+      "1": 2205,
+      "2": 139,
+      "3": 20
+    }
+  },
+  "generated_local_attribute_replays": {
+    "commands": 0,
+    "physical_lines": 0
+  },
+  "top_level_environment_state_audit": {
+    "commands": [
+      {
+        "kind": "import",
+        "first": 59,
+        "last": 59,
+        "normalized": "import Mathlib"
+      },
+      {
+        "kind": "set_option",
+        "first": 61,
+        "last": 61,
+        "normalized": "set_option maxSynthPendingDepth 3"
+      },
+      {
+        "kind": "open",
+        "first": 63,
+        "last": 63,
+        "normalized": "open Set Function Filter Manifold Topology"
+      },
+      {
+        "kind": "open scoped",
+        "first": 65,
+        "last": 68,
+        "normalized": "open scoped BigOperators CategoryTheory Complex.UnitDisc ComplexConjugate ContDiff ContinuousMap Convolution ENNReal EuclideanSpace Fin.NatCast InnerProductSpace Interval Matrix MatrixGroups Modular NNReal Pointwise RealInnerProductSpace TensorProduct UniformConvergence Uniformity UpperHalfPlane"
+      },
+      {
+        "kind": "universe",
+        "first": 70,
+        "last": 70,
+        "normalized": "universe u v"
+      },
+      {
+        "kind": "noncomputable section",
+        "first": 72,
+        "last": 72,
+        "normalized": "noncomputable section"
+      },
+      {
+        "kind": "namespace",
+        "first": 74,
+        "last": 74,
+        "normalized": "namespace Mathoverflow1973"
+      },
+      {
+        "kind": "local infix",
+        "first": 76,
+        "last": 76,
+        "normalized": "local infixr:80 \" \u226b\u209a \" => Path.trans"
+      },
+      {
+        "kind": "local notation",
+        "first": 78,
+        "last": 78,
+        "normalized": "local notation:100 f \" \u2223[\" k \"] \" a:100 => SlashAction.map k a f"
+      },
+      {
+        "kind": "#print",
+        "first": 248813,
+        "last": 248813,
+        "normalized": "#print axioms mathoverflow_1973"
+      },
+      {
+        "kind": "end",
+        "first": 248816,
+        "last": 248816,
+        "normalized": "end Mathoverflow1973"
+      },
+      {
+        "kind": "end",
+        "first": 248818,
+        "last": 248818,
+        "normalized": "end"
+      }
+    ],
+    "repeated_module_context_first": 61,
+    "repeated_module_context_last": 78,
+    "repeated_module_context_lines": 18,
+    "repeated_module_context_sha256": "ca20abc8c4e4b0283df6ce22f41bdb1a118b4e06d11e37b45f876e84326a6d57",
+    "environment_state_commands_after_line_78_before_diagnostic": 0,
+    "later_local_notation_macro_export_variable_commands": 0,
+    "attribute_commands_audited_separately": 2543
+  },
+  "parts": [
+    {
+      "module": "Hopf.DifferentialTopology",
+      "path": "Hopf/DifferentialTopology.lean",
+      "first": 80,
+      "last": 31127,
+      "body_sha256": "5fa05c0337eb7407a9ad4026cc9ff9b0c721c0e91c10d8fbb4313840d5d3703a",
+      "generated_sha256": "8c39ad7cd7f551aa29b14410402902f244185357cd0406b0d3bdefd7b127c922",
+      "persistent_local_attribute_commands_replayed": 0,
+      "persistent_local_attribute_lines_replayed": 0
+    },
+    {
+      "module": "Hopf.SingularHomology",
+      "path": "Hopf/SingularHomology.lean",
+      "first": 31128,
+      "last": 62391,
+      "body_sha256": "90147512be446e89989b2f940dd5895dcd6699290840a6087a94ef7d74affd0f",
+      "generated_sha256": "aeb93564943a02a093586d5ed8b39b2ca518e3d353e72757a1cde15482c28a16",
+      "persistent_local_attribute_commands_replayed": 0,
+      "persistent_local_attribute_lines_replayed": 0
+    },
+    {
+      "module": "Hopf.SphereTopology",
+      "path": "Hopf/SphereTopology.lean",
+      "first": 62392,
+      "last": 81182,
+      "body_sha256": "64c10ac65fef1a6502f6a22b4045494e82c797b534cc1a359ec7b187905dff3e",
+      "generated_sha256": "53994c834e931b04f17cf4bb8d516ee0bdf576d89fa8f0cac1f28d09f7130a1f",
+      "persistent_local_attribute_commands_replayed": 0,
+      "persistent_local_attribute_lines_replayed": 0
+    },
+    {
+      "module": "Hopf.Hurewicz",
+      "path": "Hopf/Hurewicz.lean",
+      "first": 81183,
+      "last": 104759,
+      "body_sha256": "84e94035bb7c2d3bd086e23b56e3a673543d72b1b8e45fcd632bf384bab096c7",
+      "generated_sha256": "fb194b3f5e5fd4247b3e282085eba680bc9b14b41cecc3e40babd203684ae35d",
+      "persistent_local_attribute_commands_replayed": 0,
+      "persistent_local_attribute_lines_replayed": 0
+    },
+    {
+      "module": "Hopf.FiniteCore",
+      "path": "Hopf/FiniteCore.lean",
+      "first": 104760,
+      "last": 105221,
+      "body_sha256": "462ec92edf25220b8a7d4e72097b46ca88869d4e15c91b7b8b13439cc28df39b",
+      "generated_sha256": "34bf3a36cb788afdacad34065c35a1594df1b8d454275d21d560c3f659ebf57e",
+      "persistent_local_attribute_commands_replayed": 0,
+      "persistent_local_attribute_lines_replayed": 0
+    },
+    {
+      "module": "Hopf.LCP.LocalModels",
+      "path": "Hopf/LCP/LocalModels.lean",
+      "first": 105222,
+      "last": 115134,
+      "body_sha256": "e86f3bba1544de09c77a548274a4e12d4b3e6288089ccbf79a99ffa24630bc51",
+      "generated_sha256": "f93d3e452afd5003dd7b09fcb585ebd3efd5a4fb87b6165140bdd007ea0e569a",
+      "persistent_local_attribute_commands_replayed": 0,
+      "persistent_local_attribute_lines_replayed": 0
+    },
+    {
+      "module": "Hopf.LCP.CuspFilling",
+      "path": "Hopf/LCP/CuspFilling.lean",
+      "first": 115135,
+      "last": 133801,
+      "body_sha256": "cbc7838017b7b35653e1d06f5147afbe4dedbbfb6e59d21915c61e868fe96fb8",
+      "generated_sha256": "91bdb09bb2a1361aa87602139a16682b59ae77f6654c40e04d3bb7f128359a11",
+      "persistent_local_attribute_commands_replayed": 0,
+      "persistent_local_attribute_lines_replayed": 0
+    },
+    {
+      "module": "Hopf.LCP.Specialization",
+      "path": "Hopf/LCP/Specialization.lean",
+      "first": 133802,
+      "last": 148196,
+      "body_sha256": "481c7c044467b5b4396b11d1ed3f84c11bdf097e3430b55551e1e575677262dc",
+      "generated_sha256": "925e2b49ce6644ddcedcd54e04b7a122bf9d948cbc145753291542b99cd2ca6a",
+      "persistent_local_attribute_commands_replayed": 0,
+      "persistent_local_attribute_lines_replayed": 0
+    },
+    {
+      "module": "Hopf.LCP.PeriodConstruction",
+      "path": "Hopf/LCP/PeriodConstruction.lean",
+      "first": 148197,
+      "last": 168788,
+      "body_sha256": "2f46a11e489a2e33847a0a31c8ca66b581b0236fcc24c83cf329c603296abe1d",
+      "generated_sha256": "c378614b97dc1c4debf070674850ea663a7683acb354205874755f28f3d46207",
+      "persistent_local_attribute_commands_replayed": 0,
+      "persistent_local_attribute_lines_replayed": 0
+    },
+    {
+      "module": "Hopf.LCP.AnalyticFillings",
+      "path": "Hopf/LCP/AnalyticFillings.lean",
+      "first": 168789,
+      "last": 182554,
+      "body_sha256": "84e1a271c8e5fb728238cb8d520466731ad41087e62ff1813387a04b141e4c28",
+      "generated_sha256": "627f2ab8ff5f003077d00e9e04655af4eafa0acedf3238ed8dd5ce8fc6199721",
+      "persistent_local_attribute_commands_replayed": 0,
+      "persistent_local_attribute_lines_replayed": 0
+    },
+    {
+      "module": "Hopf.LCP.GlobalAssembly",
+      "path": "Hopf/LCP/GlobalAssembly.lean",
+      "first": 182555,
+      "last": 187882,
+      "body_sha256": "c40eacf63fc371451c2a623bc8e4976e110e4501f7be1a7c1e681340ac5e7c75",
+      "generated_sha256": "d23810d02de5a29cd42e2fe23541a3c6c1f4e2267c1eb50d0f0877607bea759d",
+      "persistent_local_attribute_commands_replayed": 0,
+      "persistent_local_attribute_lines_replayed": 0
+    },
+    {
+      "module": "Hopf.LCP.BoundaryTopology",
+      "path": "Hopf/LCP/BoundaryTopology.lean",
+      "first": 187883,
+      "last": 211735,
+      "body_sha256": "61b876947a2ca2604a4a9a5b6a72a9c79d1f1f81a348052472d241bd53c0532e",
+      "generated_sha256": "f7b85cf9e4f59ae4b9b2b432c1903e128d10c52bf3fabc0566123787810148b4",
+      "persistent_local_attribute_commands_replayed": 0,
+      "persistent_local_attribute_lines_replayed": 0
+    },
+    {
+      "module": "Hopf.LCP.IntegralHomology",
+      "path": "Hopf/LCP/IntegralHomology.lean",
+      "first": 211736,
+      "last": 237524,
+      "body_sha256": "66d6b5aca5d7abba0e5e972fc718d5654a4973deb53eff75a739626972f6ec1e",
+      "generated_sha256": "16b31d6ff7fa6e4be546008d206f10fe4a01a28c848cd8abb20b57bd4f274ce2",
+      "persistent_local_attribute_commands_replayed": 0,
+      "persistent_local_attribute_lines_replayed": 0
+    },
+    {
+      "module": "Hopf.Recognition",
+      "path": "Hopf/Recognition.lean",
+      "first": 237525,
+      "last": 248758,
+      "body_sha256": "0ef4a396a3c069bcdff22236b937ffa320e0d41be39b91a13c8ead45f5354a62",
+      "generated_sha256": "b838dc050ba96186ce0e33fc958e928f15b9b4be4caf89d33dd955a4a069c6e8",
+      "persistent_local_attribute_commands_replayed": 0,
+      "persistent_local_attribute_lines_replayed": 0
+    },
+    {
+      "module": "Hopf.Final",
+      "path": "Hopf/Final.lean",
+      "first": 248759,
+      "last": 248811,
+      "body_sha256": "35f5fe001f9b933bb19887712fa99479d63ed5f7cea13d2d6c364a4e6b1f434b",
+      "generated_sha256": "728de3345426f7d6e2d10f2fb3207d86acdc1b05f415f185c9115f34316ba3f8",
+      "persistent_local_attribute_commands_replayed": 0,
+      "persistent_local_attribute_lines_replayed": 0
+    }
+  ],
+  "generated": {
+    "Hopf/DifferentialTopology.lean": "8c39ad7cd7f551aa29b14410402902f244185357cd0406b0d3bdefd7b127c922",
+    "Hopf/Final.lean": "728de3345426f7d6e2d10f2fb3207d86acdc1b05f415f185c9115f34316ba3f8",
+    "Hopf/FiniteCore.lean": "34bf3a36cb788afdacad34065c35a1594df1b8d454275d21d560c3f659ebf57e",
+    "Hopf/Hurewicz.lean": "fb194b3f5e5fd4247b3e282085eba680bc9b14b41cecc3e40babd203684ae35d",
+    "Hopf/LCP/AnalyticFillings.lean": "627f2ab8ff5f003077d00e9e04655af4eafa0acedf3238ed8dd5ce8fc6199721",
+    "Hopf/LCP/BoundaryTopology.lean": "f7b85cf9e4f59ae4b9b2b432c1903e128d10c52bf3fabc0566123787810148b4",
+    "Hopf/LCP/CuspFilling.lean": "91bdb09bb2a1361aa87602139a16682b59ae77f6654c40e04d3bb7f128359a11",
+    "Hopf/LCP/GlobalAssembly.lean": "d23810d02de5a29cd42e2fe23541a3c6c1f4e2267c1eb50d0f0877607bea759d",
+    "Hopf/LCP/IntegralHomology.lean": "16b31d6ff7fa6e4be546008d206f10fe4a01a28c848cd8abb20b57bd4f274ce2",
+    "Hopf/LCP/LocalModels.lean": "f93d3e452afd5003dd7b09fcb585ebd3efd5a4fb87b6165140bdd007ea0e569a",
+    "Hopf/LCP/PeriodConstruction.lean": "c378614b97dc1c4debf070674850ea663a7683acb354205874755f28f3d46207",
+    "Hopf/LCP/Specialization.lean": "925e2b49ce6644ddcedcd54e04b7a122bf9d948cbc145753291542b99cd2ca6a",
+    "Hopf/Recognition.lean": "b838dc050ba96186ce0e33fc958e928f15b9b4be4caf89d33dd955a4a069c6e8",
+    "Hopf/SingularHomology.lean": "aeb93564943a02a093586d5ed8b39b2ca518e3d353e72757a1cde15482c28a16",
+    "Hopf/SphereTopology.lean": "53994c834e931b04f17cf4bb8d516ee0bdf576d89fa8f0cac1f28d09f7130a1f",
+    "PROVENANCE.md": "a5e9c8e7090aa5c38e9391fdab80124ce59c9ba0c29578e317494b49610aa99b",
+    "Solution.lean": "384bee90125b548b4e4a521ea4bbc40bef26cb16ecd519c2b59c197a20973186",
+    "lakefile.toml": "632af117709008f93551f251d61994e35ef8a25b64cd146c99377dd97f7f7960"
+  }
+}

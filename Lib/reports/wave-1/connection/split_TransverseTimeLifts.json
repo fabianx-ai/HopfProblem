@@ -1,0 +1,2593 @@
+{
+"module": "Lib.Geometry.Manifold.Morse.Connection",
+"source": "/home/goblin/.claude/jobs/06995e68/tmp/wave1/connection/Connection.orig.lean",
+"source_sha256": "0a73bb0c89a9a135b0a39da8f7e701c0d497b4771cccb47ad94ba53e47eede5d",
+"units_kept": 223,
+"units_moved": 8,
+"units": [
+{
+"names": [
+"MorseCancellation.partialChartField_zero_iff"
+],
+"class": "keep",
+"lines": [
+41,
+59
+],
+"sha256": "6d933c9337864d7791b89bf99476b9a44a736b5d34e8310ff44184681eaa5ec2"
+},
+{
+"names": [
+"FlowSuspension.exists_native_vertical_field_replacement"
+],
+"class": "keep",
+"lines": [
+61,
+103
+],
+"sha256": "f9d6ba31729b8f571be3156a971f61a3a85c2eede4228155dfc20adba1bc8a41"
+},
+{
+"names": [
+"FlowSuspension.mvfderiv_native_height_field"
+],
+"class": "keep",
+"lines": [
+105,
+128
+],
+"sha256": "e53ffcd90b8b7dd24c8633907de846a29feff83fdc42afb66eb75a62cf35c253"
+},
+{
+"names": [
+"MorseCancellation.native_cubic_flow_between_box_points"
+],
+"class": "keep",
+"lines": [
+132,
+175
+],
+"sha256": "17252d6cf0a5d72be0de231aeeed788674b5e291710dceefadb33480b1bc6831"
+},
+{
+"names": [
+"MorseCancellation.exists_cubic_slice_in_axis_ball"
+],
+"class": "keep",
+"lines": [
+177,
+204
+],
+"sha256": "7d5b6293fad821681a1f4ae4a1b62150e61f5a28f8610d66efa45b6621d42aaf"
+},
+{
+"names": [
+"MorseCancellation.exists_native_cubic_endpoint_flow_coordinates"
+],
+"class": "keep",
+"lines": [
+206,
+240
+],
+"sha256": "280c6f65613d6c86e9e09b61a968a7e1ef6918405d3cfe7a6a2febbfc7acc303"
+},
+{
+"names": [
+"MorseCancellation.exists_endpoint_slice_on_actual_orbit"
+],
+"class": "keep",
+"lines": [
+242,
+287
+],
+"sha256": "7fbb29f6d9b3e82920892a3cc888758cf0b3bbe3fd366bbf7ea226bc721bb18a"
+},
+{
+"names": [
+"SmoothODE.flow_shifted_chart_source"
+],
+"class": "keep",
+"lines": [
+289,
+297
+],
+"sha256": "ec3ee223cc493894844c469888cc53f052d9484776f04560e25d8f7f4e7f4415"
+},
+{
+"names": [
+"MorseCancellation.exists_clock_normalized_cubic_endpoint"
+],
+"class": "keep",
+"lines": [
+299,
+357
+],
+"sha256": "ac94d982f366d3df55db32e8a7a19c768270914b9601ae0d8bb731dfe2f84522"
+},
+{
+"names": [
+"MorseCancellation.exists_basin_preserving_endpoint_clock"
+],
+"class": "keep",
+"lines": [
+361,
+397
+],
+"sha256": "eb2dd9e876e9ff26075b0ee56ead5b099beb9adebffeb39e9cbceca3ae4d47da"
+},
+{
+"names": [
+"AdaptedWindows.flow_belt_passage"
+],
+"class": "keep",
+"lines": [
+401,
+440
+],
+"sha256": "1c7750f68ef72bee3a7f29c35a8ae2ad9953a281603b4414ee1c1dce702e7a93"
+},
+{
+"names": [
+"AdaptedWindows.belt_passage_forward_limit_iff"
+],
+"class": "keep",
+"lines": [
+442,
+462
+],
+"sha256": "f90af61994aaf194b97a358dac2386af4166b6fda22e1353bd09a3795aea0d63"
+},
+{
+"names": [
+"MorseCancellation.compact_partial_chart_image_nowhereDense"
+],
+"class": "keep",
+"lines": [
+466,
+488
+],
+"sha256": "a60288bae4325281f4dbd9854b0b9bcc52072b8100c563b303fefdc1d832d1ba"
+},
+{
+"names": [
+"MorseCancellation.interior_zero_product_empty"
+],
+"class": "keep",
+"lines": [
+490,
+494
+],
+"sha256": "9568515105a5fe502fabb46b8795bc454daef253c7ff38fb440ea9ec19d96a5c"
+},
+{
+"names": [
+"MorseCancellation.native_positive_plane_piece_nowhereDense"
+],
+"class": "keep",
+"lines": [
+496,
+512
+],
+"sha256": "dd14611d228e63c225e9b9b86802227d6c3ec193690fe4fd5e1ec0334ee1ad7c"
+},
+{
+"names": [
+"AdaptedWindows.nonminimum_forward_basin_meagre"
+],
+"class": "keep",
+"lines": [
+516,
+565
+],
+"sha256": "5657cd9c78e79887a68300ff0ebd2e8a265d410b57011702e7fb5eb10fce59e7"
+},
+{
+"names": [
+"FlowCancellation.exists_uniform_flow_escape"
+],
+"class": "keep",
+"lines": [
+569,
+632
+],
+"sha256": "578ece34608f8edae4704357b42e5fe2e5f835d3f42c18ae637a9a7abbef95c1"
+},
+{
+"names": [
+"FlowCancellation.exists_flow_no_return_neighborhood"
+],
+"class": "keep",
+"lines": [
+634,
+692
+],
+"sha256": "5dbc52e9326d8ac8729b030bd69b1dc368622c226a605c9970a125f3b76bd149"
+},
+{
+"names": [
+"FlowCancellation.invariant_band_subset_connection"
+],
+"class": "keep",
+"lines": [
+694,
+732
+],
+"sha256": "b417b200ae3579611e595da3e71788b290e4f27911a8b3ea6dcbd88598473818"
+},
+{
+"names": [
+"FlowCancellation.exists_isolated_connection_no_return"
+],
+"class": "keep",
+"lines": [
+734,
+779
+],
+"sha256": "1272c8b304128f0809f2161eb709cf4ba35b387269840dac92e0dddbc4715f1a"
+},
+{
+"names": [
+"FlowCancellation.exists_native_connection_no_return"
+],
+"class": "keep",
+"lines": [
+781,
+816
+],
+"sha256": "08b35ab4c19b981339dec9eab3e9998d9aa308dece060a0d37819a471e0fc6f3"
+},
+{
+"names": [
+"AdaptedWindows.dense_minimum_forward_basins"
+],
+"class": "keep",
+"lines": [
+820,
+846
+],
+"sha256": "bcd4bf4f33885125a2ca76ac790d6627fa197dbfe1c6f5d8e4c361cde06288ec"
+},
+{
+"names": [
+"AdaptedWindows.exists_positive_belt_branch_in_minimum_basin"
+],
+"class": "keep",
+"lines": [
+848,
+906
+],
+"sha256": "2f4c7524506c95c26ce00674c07c737c1d33443386a892277632c57c659d64cb"
+},
+{
+"names": [
+"AdaptedWindows.exists_two_sided_belt_branch_in_minimum_basin"
+],
+"class": "keep",
+"lines": [
+908,
+955
+],
+"sha256": "7e376036f499edbd8557b1251c9bef932faa2f5749b4a5488879e8fb33caaa7a"
+},
+{
+"names": [
+"MorseCancellation.nativeBeltArc"
+],
+"class": "keep",
+"lines": [
+959,
+966
+],
+"sha256": "eda9c8526b24b4f13d07caf1730fe8a46ff5b8ad92323a397c8864fb406d16b9"
+},
+{
+"names": [
+"MorseCancellation.nativeBeltArc_coordinates_mem_target"
+],
+"class": "keep",
+"lines": [
+968,
+979
+],
+"sha256": "58157ddde252fe2e28168c3f84ebcdc4438adec3cdbe9b0092a582a760c59c18"
+},
+{
+"names": [
+"MorseCancellation.nativeBeltArc_height"
+],
+"class": "keep",
+"lines": [
+981,
+1000
+],
+"sha256": "cf54caf20a885606062306bf09fe2e3f2bdc8ae9b756cc13ab95de0f4b27ad4a"
+},
+{
+"names": [
+"MorseCancellation.nativeBeltArc_zero"
+],
+"class": "keep",
+"lines": [
+1002,
+1011
+],
+"sha256": "96a2c9aa266db5168da5f69840225a5895e4beb613021197db68ca7f9519cb37"
+},
+{
+"names": [
+"MorseCancellation.nativeBeltArc_belt_eq_iff"
+],
+"class": "keep",
+"lines": [
+1013,
+1043
+],
+"sha256": "2d691eca8a24370f0fef8bd196b140ec4d42f5d6890449b45b94ac9a62b345f3"
+},
+{
+"names": [
+"MorseCancellation.nativeBeltArc_injOn"
+],
+"class": "keep",
+"lines": [
+1045,
+1065
+],
+"sha256": "c3bdd450fa6f931ebe445775c5deabec420fbe9f0285a1dbc43eae43c5d0a286"
+},
+{
+"names": [
+"MorseCancellation.nativeBeltArc_contMDiffOn"
+],
+"class": "keep",
+"lines": [
+1067,
+1079
+],
+"sha256": "46ab699279a7cc85fe1a37683bfcf7e1d8fa6757bf88639e9039237a1c571dfb"
+},
+{
+"names": [
+"MorseCancellation.nativeLowerMeridian_coordinates_mem_target"
+],
+"class": "keep",
+"lines": [
+1081,
+1094
+],
+"sha256": "5f1844b7a73264e43b68d1d9a744aaed603268f354dbbe9eb713ca1c8bdb8bf7"
+},
+{
+"names": [
+"MorseCancellation.nativeLowerMeridian_height"
+],
+"class": "keep",
+"lines": [
+1096,
+1116
+],
+"sha256": "160c10bc2d13af13c3275b78a8031e3a684a0e4a1aa986ed7668c6c938d7e5fc"
+},
+{
+"names": [
+"MorseCancellation.nativeLowerMeridianFamily"
+],
+"class": "keep",
+"lines": [
+1118,
+1155
+],
+"sha256": "fae8531ebd5cefb8f6543eb8260d5426fb8f93f818fc9b899ff7acd24703394f"
+},
+{
+"names": [
+"MorseCancellation.nativeLowerMeridian"
+],
+"class": "keep",
+"lines": [
+1157,
+1163
+],
+"sha256": "011a6b00fe54496f72900d9cf2516f14c75c84c59a0d39379f7c8a1cfce48081"
+},
+{
+"names": [
+"MorseCancellation.nativeUpperMeridian"
+],
+"class": "keep",
+"lines": [
+1165,
+1202
+],
+"sha256": "e77aa3b33f8dcf7665770835d4c149d6603b1243db2cd9b15514c65a0db1e270"
+},
+{
+"names": [
+"MorseCancellation.nativeLowerMeridian_zero"
+],
+"class": "keep",
+"lines": [
+1204,
+1217
+],
+"sha256": "a2d8a067761eebf182885e37ffc8be2393cbf1e1d2677602b45c599a8aac289a"
+},
+{
+"names": [
+"MorseCancellation.nativeUpperMeridian_flow"
+],
+"class": "keep",
+"lines": [
+1219,
+1227
+],
+"sha256": "79958e575c84c4ae4f94a16473e6e2e274e6c8bcae0b0f94d7a7bb552d2556c6"
+},
+{
+"names": [
+"MorseCancellation.nativeLowerMeridian_homotopic_attaching"
+],
+"class": "keep",
+"lines": [
+1229,
+1258
+],
+"sha256": "d3bad597833dc209d1bed087d48d685f13700aa9af63bc7779d362aaf61e9856"
+},
+{
+"names": [
+"MorseCancellation.nativeUpperMeridian_avoids_belt"
+],
+"class": "keep",
+"lines": [
+1260,
+1272
+],
+"sha256": "70a89aedccbda9a298c4090bf5f931938a8e441fc661982f1be840a5d24009a2"
+},
+{
+"names": [
+"MorseCancellation.NativeEndpointSliceData",
+"MorseCancellation.NativeEndpointSliceData.mk",
+"MorseCancellation.NativeEndpointSliceData.labelDomain",
+"MorseCancellation.NativeEndpointSliceData.open_domain",
+"MorseCancellation.NativeEndpointSliceData.zero_domain",
+"MorseCancellation.NativeEndpointSliceData.source",
+"MorseCancellation.NativeEndpointSliceData.Q",
+"MorseCancellation.NativeEndpointSliceData.P",
+"MorseCancellation.NativeEndpointSliceData.H",
+"MorseCancellation.NativeEndpointSliceData.zero_source",
+"MorseCancellation.NativeEndpointSliceData.H_zero",
+"MorseCancellation.NativeEndpointSliceData.Q_zero",
+"MorseCancellation.NativeEndpointSliceData.P_zero",
+"MorseCancellation.NativeEndpointSliceData.Q_source",
+"MorseCancellation.NativeEndpointSliceData.P_source",
+"MorseCancellation.NativeEndpointSliceData.Q_target",
+"MorseCancellation.NativeEndpointSliceData.P_target",
+"MorseCancellation.NativeEndpointSliceData.diagram",
+"MorseCancellation.NativeEndpointSliceData.phaseQ",
+"MorseCancellation.NativeEndpointSliceData.phaseP",
+"MorseCancellation.NativeEndpointSliceData.smooth_phaseQ",
+"MorseCancellation.NativeEndpointSliceData.smooth_phaseP",
+"MorseCancellation.NativeEndpointSliceData.zero_phaseQ",
+"MorseCancellation.NativeEndpointSliceData.zero_phaseP",
+"MorseCancellation.NativeEndpointSliceData.sliceQ",
+"MorseCancellation.NativeEndpointSliceData.sliceP",
+"MorseCancellation.NativeEndpointSliceData.formulaQ",
+"MorseCancellation.NativeEndpointSliceData.formulaP"
+],
+"class": "keep",
+"lines": [
+1276,
+1329
+],
+"sha256": "a0b5b5138d634504681b324b29661095b431a78ba8056b2211ce1112842406aa"
+},
+{
+"context": "attribute [local instance] NativeEuclideanEmbedding.tangentSpaceT2",
+"lines": [
+1333,
+1333
+],
+"placed": "keep+move"
+},
+{
+"names": [
+"MorseCancellation.contMDiff_supported_division"
+],
+"class": "keep",
+"lines": [
+1337,
+1347
+],
+"sha256": "4a4dd76abe2510fd49ea851a8ca2d9b4c2c61d7bf309a9dedc46316d548eb57b"
+},
+{
+"names": [
+"FlowCancellation.exists_excursion_interval"
+],
+"class": "keep",
+"lines": [
+1349,
+1386
+],
+"sha256": "ef2f25bc39269c7bf2141936b80ebd0c2930d260e8b1b84a0f09c1aade1c6ee0"
+},
+{
+"names": [
+"FlowCancellation.native_curve_eq_flow_on_closed_interval"
+],
+"class": "keep",
+"lines": [
+1388,
+1407
+],
+"sha256": "9053fd953fe4fbab60359aba0020f11bbe1c2be9a6b824562aa2616a2f097f12"
+},
+{
+"names": [
+"FlowCancellation.native_no_return_of_supported_perturbation"
+],
+"class": "keep",
+"lines": [
+1409,
+1440
+],
+"sha256": "3a7fb88321532caa7682b59cc0c0b1814ae9f7e3452bf7ee6ce650c43f705df5"
+},
+{
+"names": [
+"TransverseCoordinates.surjective_coprod_swap"
+],
+"class": "keep",
+"lines": [
+1442,
+1452
+],
+"sha256": "764ae832398a098ed9cd988ef46c0cd870afdaff12d2aebf3ae6711d6cbab109"
+},
+{
+"names": [
+"MorseCancellation.exists_positive_height_rescaling"
+],
+"class": "keep",
+"lines": [
+1454,
+1502
+],
+"sha256": "77d9eed9be359b7ef28c911e72aca74c38dcb5aad3177c7832fa1360b8d11e1e"
+},
+{
+"names": [
+"MorseCancellation.exists_positive_band_normalization"
+],
+"class": "keep",
+"lines": [
+1504,
+1548
+],
+"sha256": "7da6677a354d09a1278ee53611eeef95911811f80a1beefc5155da9bffb4dc2b"
+},
+{
+"names": [
+"FlowTimeChange.local_affine_height_germ"
+],
+"class": "keep",
+"lines": [
+1554,
+1566
+],
+"sha256": "b3671f6603f74d9ec2c8167727b1f3404b8c81ebce7a36854edf83cb5394b4e5"
+},
+{
+"names": [
+"FlowTimeChange.scalar_local_height_translation"
+],
+"class": "keep",
+"lines": [
+1568,
+1604
+],
+"sha256": "f2a495954ad0527f788f782e0819fc0cbdcca6db90abd8835167273ba5da6103"
+},
+{
+"names": [
+"FlowTimeChange.native_local_height_translation"
+],
+"class": "keep",
+"lines": [
+1606,
+1621
+],
+"sha256": "5c6e352003809351d3d14836fec789b5ab81be75f44a6abc5a51e851d944441a"
+},
+{
+"names": [
+"FlowTimeChange.normalized_flow_level_image"
+],
+"class": "keep",
+"lines": [
+1623,
+1643
+],
+"sha256": "993ebba76565c17bdf781d5730f306b59a7967e7f4e40aa3e0274801098507b9"
+},
+{
+"names": [
+"FlowTimeChange.normalized_flow_sublevel_iff"
+],
+"class": "keep",
+"lines": [
+1645,
+1686
+],
+"sha256": "349fea44c9e358d7c94b7545637c5994601faee18a77d7ba55556ddad641b565"
+},
+{
+"names": [
+"FlowTimeChange.normalized_flow_sublevel_image"
+],
+"class": "keep",
+"lines": [
+1688,
+1703
+],
+"sha256": "c73e3a12ceb2ddc608c64f550ec059ec7b54b90a8ef3e23aa0f6d132319394c2"
+},
+{
+"names": [
+"FlowTimeChange.exists_positive_integral_clock"
+],
+"class": "keep",
+"lines": [
+1705,
+1746
+],
+"sha256": "185580411db241f984916094845c146bb30ea7be832d1c06d119ccfaa9aab7de"
+},
+{
+"names": [
+"FlowTimeChange.native_curve_positive_reparametrization"
+],
+"class": "keep",
+"lines": [
+1748,
+1765
+],
+"sha256": "bcb28cb0fbea8202c617d26c016868b885199f42dd04f2b65ebfe9c803d60904"
+},
+{
+"names": [
+"FlowTimeChange.exists_native_flow_time_change"
+],
+"class": "keep",
+"lines": [
+1767,
+1798
+],
+"sha256": "28f4d4a44625df81391e4206f298dd08352b7f324e181f9af99be32fc2c669ce"
+},
+{
+"names": [
+"FlowTimeChange.native_flow_time_change_orbits"
+],
+"class": "keep",
+"lines": [
+1800,
+1836
+],
+"sha256": "fd0d01521308e53e67e20a1bbc746701c81aa9b417707b7b6515c96abb0c5d15"
+},
+{
+"names": [
+"FlowTimeChange.exists_orbit_preserving_band_normalization"
+],
+"class": "keep",
+"lines": [
+1838,
+1881
+],
+"sha256": "e3a0bb65602c2fa8b661fd1ddb8fc5c75d57a48fd02090a716aa33e02eb73c8b"
+},
+{
+"names": [
+"FlowTimeChange.exists_orbit_preserving_ambient_band_bridge"
+],
+"class": "keep",
+"lines": [
+1883,
+1905
+],
+"sha256": "b91bbc23c6a50046d35bc48c28f0fa46e9f8642b55e76c7dbe5de02acd3e1ff6"
+},
+{
+"names": [
+"FlowTimeChange.exists_orbit_preserving_native_band_bridge"
+],
+"class": "keep",
+"lines": [
+1907,
+1931
+],
+"sha256": "5a18ec9bee5638e03b8fa061cfbe2ad5d05b956d2605deecc74961cc68ac8b15"
+},
+{
+"names": [
+"FlowSuspension.native_model_pullback_zero_iff"
+],
+"class": "keep",
+"lines": [
+1935,
+1954
+],
+"sha256": "42bcc9ae26a384d5c4102a4044a190aa90642ea420b2f0d34c54ac54d7e94607"
+},
+{
+"names": [
+"FlowSuspension.contMDiffOn_native_model_pullback"
+],
+"class": "keep",
+"lines": [
+1956,
+1974
+],
+"sha256": "bb36c21001eed933e4b18c3633394a517caa179b0140198a96610dd12ed67e95"
+},
+{
+"names": [
+"FlowSuspension.exists_native_model_field_replacement"
+],
+"class": "keep",
+"lines": [
+1976,
+2011
+],
+"sha256": "ee132f50a0ed10aff61b3119cbe96f033d86b2b968e5308af586bcfa9e7a0a72"
+},
+{
+"names": [
+"FlowSuspension.native_chart_flow_all_time"
+],
+"class": "keep",
+"lines": [
+2013,
+2038
+],
+"sha256": "a414fe5cfb72063d82e668845d5654959aac0f602d47c969c7617516e4d74b54"
+},
+{
+"names": [
+"FlowSuspension.native_chart_target_invariant"
+],
+"class": "keep",
+"lines": [
+2040,
+2055
+],
+"sha256": "bf73555b20e8cd75c52b77d3e033813006198fcfb327f8b94676fc04eaca8af8"
+},
+{
+"names": [
+"FlowSuspension.flow_complement_invariant"
+],
+"class": "keep",
+"lines": [
+2057,
+2063
+],
+"sha256": "77a8e59b102db912f9ac5b9012c0b4ea85692c95ae6d6dee64f10258e4e5cc1f"
+},
+{
+"names": [
+"FlowSuspension.native_model_pullback_eq_mfderiv_symm"
+],
+"class": "keep",
+"lines": [
+2065,
+2081
+],
+"sha256": "40ea945fba649c1a7eeaade3b86b72c69099069e94edb619a710eb36b2fcc31d"
+},
+{
+"names": [
+"FlowSuspension.hasMFDerivAt_lift_native_model_curve"
+],
+"class": "keep",
+"lines": [
+2083,
+2107
+],
+"sha256": "61cde5084ef88ee537c866cfb814192b81ffb54c1e9509371e4786417be5a83d"
+},
+{
+"names": [
+"FlowSuspension.native_model_flow_all_time"
+],
+"class": "keep",
+"lines": [
+2109,
+2133
+],
+"sha256": "ab66f1fef6b8002215f21f73de559f693ad7555ead472192a167e3fddabf5eab"
+},
+{
+"names": [
+"FlowSuspension.native_model_target_invariant"
+],
+"class": "keep",
+"lines": [
+2135,
+2151
+],
+"sha256": "b3bafcdffc630a0cd729fbec3350176fa2a34aa646f97c2eb1bdabae0c4aabc4"
+},
+{
+"names": [
+"FlowSuspension.exists_native_base_suspension"
+],
+"class": "keep",
+"lines": [
+2153,
+2185
+],
+"sha256": "5dbef42ce2cbb8280188b406fcf88d1cff670f56a98060c5ddf042b8bbeb018b"
+},
+{
+"names": [
+"FlowSuspension.nativeSuspensionFlow"
+],
+"class": "keep",
+"lines": [
+2187,
+2204
+],
+"sha256": "94b54a4e6fc7d6e1095e8807ae1c8a00de502845c380c74b107ffa0a1f6699ca"
+},
+{
+"names": [
+"FlowSuspension.nativeSuspensionFlow_chart"
+],
+"class": "keep",
+"lines": [
+2206,
+2213
+],
+"sha256": "b6d0a4c995a0f9c971052d105d1095bedfa6a122cfbe12feaf258c7d776cc434"
+},
+{
+"names": [
+"FlowSuspension.nativeVerticalField"
+],
+"class": "keep",
+"lines": [
+2215,
+2219
+],
+"sha256": "64df8b9f6f7a046ca4be446e08ba6769a08af0c1b6e9124f6741ecba8189dcd4"
+},
+{
+"names": [
+"FlowSuspension.contMDiff_nativeVerticalField"
+],
+"class": "keep",
+"lines": [
+2221,
+2245
+],
+"sha256": "883a252cbb9e7ae9a812484d90d9c79e28dec59164eb1e93d9090f9391343c1c"
+},
+{
+"names": [
+"FlowSuspension.nativeSuspensionField"
+],
+"class": "keep",
+"lines": [
+2247,
+2253
+],
+"sha256": "2e7b37b906de32b2a9eb9b6d051af8deed0afa80ba0c1baad00bde32d5468d74"
+},
+{
+"names": [
+"FlowSuspension.contMDiff_nativeSuspensionField"
+],
+"class": "keep",
+"lines": [
+2255,
+2269
+],
+"sha256": "8f018367bc4085058afb69634e54afa699616cdfc4907e5176f54ffee72bd833"
+},
+{
+"names": [
+"FlowSuspension.nativeVerticalField_integralCurve"
+],
+"class": "keep",
+"lines": [
+2271,
+2287
+],
+"sha256": "fd192b725dca2a87a1b8c5a69f34051661e503e2ba112a1ae0b8bbb176d3baa4"
+},
+{
+"names": [
+"FlowSuspension.nativeSuspensionFlow_integralCurve"
+],
+"class": "keep",
+"lines": [
+2289,
+2315
+],
+"sha256": "7b6dc1fe759e410c0fd696f7d21e4309b8a317d1d1d260c029aaf8f0babfc4df"
+},
+{
+"names": [
+"FlowSuspension.nativeSuspensionFlow_height"
+],
+"class": "keep",
+"lines": [
+2317,
+2329
+],
+"sha256": "a468affbec381daf876acfea1ca25307faa5eb4be408a520cc821ee9bbcaff6d"
+},
+{
+"names": [
+"FlowSuspension.native_level_flow_chart_vertical"
+],
+"class": "keep",
+"lines": [
+2331,
+2374
+],
+"sha256": "9a0ede26ce910b047a8231942e71997e7638343728bd8e22ab956eebdeaed2de"
+},
+{
+"names": [
+"FlowSuspension.exists_native_level_flow_cylinder_with_field"
+],
+"class": "keep",
+"lines": [
+2376,
+2402
+],
+"sha256": "2f34911fe06b65b978eba16262fe6d7ad4d4bde34f206bc84413018d8049ba89"
+},
+{
+"names": [
+"FlowTimeChange.mfderiv_height_div_const"
+],
+"class": "keep",
+"lines": [
+2406,
+2415
+],
+"sha256": "794107548f3d51cb5e8e0e3ae2ec3033a06e37f3ccfca89fd7fd37d9aa53c027"
+},
+{
+"names": [
+"FlowTimeChange.mvfderiv_height_div_const"
+],
+"class": "keep",
+"lines": [
+2417,
+2427
+],
+"sha256": "1656d78191768f9f2fd7b7d542df66ad852532133d9dee2296d041ed311ba476"
+},
+{
+"names": [
+"FlowTimeChange.criticalPoints_height_div_const"
+],
+"class": "keep",
+"lines": [
+2429,
+2438
+],
+"sha256": "c45d283607811d769039a551b1ef8450d2189abd9ac00dbcd488c30c55185943"
+},
+{
+"names": [
+"FlowTimeChange.descending_height_div_const_iff"
+],
+"class": "keep",
+"lines": [
+2440,
+2447
+],
+"sha256": "52570c542031acf272bd43b132260694c2660f498d697bd1bbdeb4d2d7fc4b6c"
+},
+{
+"names": [
+"FlowTimeChange.exists_normalized_whole_level_cylinder"
+],
+"class": "keep",
+"lines": [
+2449,
+2537
+],
+"sha256": "ea48122eb70f21a59707c4bbb58b6a4bfe8900e4b8bb956e04211f1dff2f66aa"
+},
+{
+"names": [
+"FlowSuspension.nativeSuspensionField_height"
+],
+"class": "keep",
+"lines": [
+2541,
+2557
+],
+"sha256": "f8b63e8f4bde57b69a7170f15a7d38e7d61eed3b6c755be8a558236f5dbf5d76"
+},
+{
+"names": [
+"FlowSuspension.nativeSuspensionField_ne_zero"
+],
+"class": "keep",
+"lines": [
+2559,
+2568
+],
+"sha256": "64a88113571224a0fb0e55db6ed24379289e4e6393569ef00023956b2ee31ce6"
+},
+{
+"names": [
+"FlowSuspension.nativeSuspensionField_eq_vertical_of_flow_germ"
+],
+"class": "keep",
+"lines": [
+2570,
+2588
+],
+"sha256": "3f299522ee816268cecb280efeb6b2af971703e172c9292fdb1292c59cbf972c"
+},
+{
+"names": [
+"FlowSuspension.nativeSuspensionField_eq_vertical_off_base"
+],
+"class": "keep",
+"lines": [
+2590,
+2606
+],
+"sha256": "1d8376ccbb5b20f18bda01cb83d0c922c3af6225d987a2b34cd0734b856fde35"
+},
+{
+"names": [
+"FlowSuspension.nativeSuspensionField_eq_vertical_below"
+],
+"class": "keep",
+"lines": [
+2608,
+2623
+],
+"sha256": "2efecf497d58b68f00704915bac30916b89de2c7149430f38f7d5822b32a8322"
+},
+{
+"names": [
+"FlowSuspension.nativeSuspensionField_eq_vertical_above"
+],
+"class": "keep",
+"lines": [
+2625,
+2642
+],
+"sha256": "339341d0f495e6ea8629e27ffe39c29939971e41e9c960b6216ae74c75ab2d80"
+},
+{
+"names": [
+"FlowSuspension.nativeSuspensionFlow_fixed_line"
+],
+"class": "keep",
+"lines": [
+2644,
+2657
+],
+"sha256": "403e0db4e9dd73eaab4d4f18feed46b9c30d6d096ac48d3e0c51ae5d08d875f4"
+},
+{
+"names": [
+"FlowSuspension.exists_compact_native_level_suspension"
+],
+"class": "keep",
+"lines": [
+2659,
+2715
+],
+"sha256": "632078c27e5c472be7701db9ee9373dfda16c4da63e94e4df11c6b71763c2d0a"
+},
+{
+"names": [
+"FlowSuspension.mvfderiv_native_model_pullback"
+],
+"class": "keep",
+"lines": [
+2717,
+2732
+],
+"sha256": "6f874933dfbc6d25ed9d7dfd07abec59d19fe138569153e40f2dbeae424cf7fb"
+},
+{
+"names": [
+"FlowSuspension.mvfderiv_native_level_height"
+],
+"class": "keep",
+"lines": [
+2734,
+2768
+],
+"sha256": "6e42582944b779901811f52a9a07ea1e86967e29f65d65479af263b8a2dba7e1"
+},
+{
+"names": [
+"FlowSuspension.exists_native_whole_level_holonomy"
+],
+"class": "keep",
+"lines": [
+2770,
+2880
+],
+"sha256": "25101af7abaa367ea4a4ab98d7c37113a295ab6ee0385756cdbfd2da2e35d55a"
+},
+{
+"names": [
+"FlowSuspension.native_whole_level_exterior_tails"
+],
+"class": "keep",
+"lines": [
+2882,
+2907
+],
+"sha256": "a7e696bd83653aeff8e9811e839799d69b2600074e9588906ef688fd52e8d3e7"
+},
+{
+"names": [
+"FlowSuspension.exists_native_regular_level_isotopy_realization"
+],
+"class": "keep",
+"lines": [
+2909,
+3011
+],
+"sha256": "f9f2dfb203e1d834f94173cb72ddb018fdfec60f7bea3ba8421f74f85e91ad14"
+},
+{
+"names": [
+"FlowSuspension.whole_level_basins_of_holonomy"
+],
+"class": "keep",
+"lines": [
+3013,
+3051
+],
+"sha256": "2ea9d175accfecb62f23b7e1bdb62d4468024e63f2a43018a0326583850d7a43"
+},
+{
+"names": [
+"FlowSuspension.unique_connection_of_level_basin_intersection"
+],
+"class": "keep",
+"lines": [
+3053,
+3088
+],
+"sha256": "c799f44340c02e1f9b9582bc8b6f39583c919a57148715d28daa134d4073c4ca"
+},
+{
+"names": [
+"TransverseGerms.timeLiftLinear"
+],
+"class": "move",
+"lines": [
+3092,
+3097
+],
+"sha256": "b6d80042d3cc40656aa605b08096a5ee4d4ec1071aef1bbe635ab0650e4f3b16"
+},
+{
+"names": [
+"TransverseGerms.surjective_time_lift_coprod"
+],
+"class": "move",
+"lines": [
+3099,
+3111
+],
+"sha256": "7df0cf7df59295668238be141aafe96326ded9bee27640bc538d461586b71002"
+},
+{
+"names": [
+"TransverseGerms.native_time_lift_derivative"
+],
+"class": "move",
+"lines": [
+3113,
+3126
+],
+"sha256": "8632a0f983798866c25b47842b51e226c7529da7c2d06f012602f0a589db5bcc"
+},
+{
+"names": [
+"TransverseGerms.native_transversality_time_lifts"
+],
+"class": "move",
+"lines": [
+3128,
+3144
+],
+"sha256": "3a9b3d2cca84da79d309f39c796aa625c42a1219800c617f5ca6fea6900f5310"
+},
+{
+"names": [
+"TransverseGerms.native_transverse_sheets_of_level_maps"
+],
+"class": "move",
+"lines": [
+3146,
+3174
+],
+"sha256": "097c2c49fe50c98b46587bfca713b56c8924a704a6f00ce22720065fb0d8f01a"
+},
+{
+"names": [
+"FlowSuspension.native_transverse_basin_tubes_of_level_maps"
+],
+"class": "move",
+"lines": [
+3176,
+3236
+],
+"sha256": "f0c266c801615393ea2f17a23c92e150d1a71f7850a2e9a00b7cb91ee7ec6255"
+},
+{
+"names": [
+"FlowSuspension.native_vertical_cylinder_flow"
+],
+"class": "move",
+"lines": [
+3238,
+3268
+],
+"sha256": "a1a40d426e491b951021c6aae522303ef677ec59c77ebbd6b2f0f4c798cbb7f6"
+},
+{
+"names": [
+"FlowSuspension.native_corrected_cylinder_tails"
+],
+"class": "move",
+"lines": [
+3270,
+3298
+],
+"sha256": "14b6967c4dcf78e7988c6e43ed9b334b9e0487427663d260e9874ae863b6809b"
+},
+{
+"names": [
+"FlowSuspension.phase_slice_flow_coordinates"
+],
+"class": "keep",
+"lines": [
+3302,
+3322
+],
+"sha256": "f8f1bc4eafc91316a01e063495b1a8ef8c622f1fd5548db3dd516759c2bf897c"
+},
+{
+"names": [
+"FlowSuspension.phase_flow_sheet_contMDiffAt"
+],
+"class": "keep",
+"lines": [
+3324,
+3353
+],
+"sha256": "cc7f8f58ace84ac192e0ae9b2d714c2546940b9739746f5fabcff880952b39c0"
+},
+{
+"names": [
+"FlowSuspension.phase_flow_subsheet_properties"
+],
+"class": "keep",
+"lines": [
+3355,
+3389
+],
+"sha256": "1e44d466ee79bee6edd8c82db80edf48d88ff42d0ec090073c7c592a4ca27def"
+},
+{
+"names": [
+"FlowSuspension.phaseCylinderChart"
+],
+"class": "keep",
+"lines": [
+3391,
+3425
+],
+"sha256": "d18d12b195ddbb5d1cdc9797790861dbc621fd89135efa0c428f014c3368bcb3"
+},
+{
+"names": [
+"FlowSuspension.phaseCylinderChart_target"
+],
+"class": "keep",
+"lines": [
+3427,
+3432
+],
+"sha256": "56c8b595b37ef3cbedea6232b64ec00e3653dae26679e399f646a57056163934"
+},
+{
+"names": [
+"FlowSuspension.phaseCylinderChart_vertical"
+],
+"class": "keep",
+"lines": [
+3434,
+3454
+],
+"sha256": "4159b38d48c8d476047040fbbef13977a0633785f703beb6600458bc5dd5fc9c"
+},
+{
+"names": [
+"FlowSuspension.exists_phase_flow_basin_chart"
+],
+"class": "keep",
+"lines": [
+3456,
+3497
+],
+"sha256": "a2faccaf14e8140a55aabfbc946ded2329fb65d19d9c543ccf3103d3d6277f69"
+},
+{
+"names": [
+"FlowSuspension.phase_flow_chart_subsheet_germ"
+],
+"class": "keep",
+"lines": [
+3499,
+3511
+],
+"sha256": "d15e23dd788dab0bb36e532752c9ada51adf8d0ab56bf4a335fc8b71a58e9f72"
+},
+{
+"names": [
+"FlowCancellation.native_flow_chart_vertical"
+],
+"class": "keep",
+"lines": [
+3513,
+3546
+],
+"sha256": "3eff7ee54e3f042bec1930e35c12f7b41ce500cd2ab4137f44ef64e51d8993ce"
+},
+{
+"names": [
+"FlowCancellation.exists_euclidean_level_flow_cylinder"
+],
+"class": "keep",
+"lines": [
+3548,
+3589
+],
+"sha256": "8a991f3753b37f714d271fc14e7c3dc72f170ee73710be904a3d4e3cadb6dd9c"
+},
+{
+"names": [
+"FlowSuspension.exists_native_phase_cylinder"
+],
+"class": "keep",
+"lines": [
+3591,
+3630
+],
+"sha256": "7c72e62e1da6da3e1c18443752c71e135068bcea82dd549a6f4a86e4da55c564"
+},
+{
+"names": [
+"FlowTimeChange.exists_arbitrary_gap_flow_cylinder"
+],
+"class": "keep",
+"lines": [
+3632,
+3742
+],
+"sha256": "aa67c703f95441aa38dea3c1a0da82b978bbd959510bc9b316466b0ce332a946"
+},
+{
+"names": [
+"FlowTimeChange.exists_normalized_connection_cylinder"
+],
+"class": "keep",
+"lines": [
+3744,
+3868
+],
+"sha256": "d834a9ff985641dc12d737a7782263c01682a9ecc79b48fe1fd64a4b75c033e3"
+},
+{
+"names": [
+"MorseCancellation.cubicFlowCylinder_pushforward_vertical"
+],
+"class": "keep",
+"lines": [
+3870,
+3879
+],
+"sha256": "0d39a08db62c2017b07579cdeb2588f31d9cdf0ba8811ecae239bc07285a5a1f"
+},
+{
+"names": [
+"FlowSuspension.native_field_transition_pushforward"
+],
+"class": "keep",
+"lines": [
+3881,
+3917
+],
+"sha256": "ddc3fa6fa19e83a8e96f8aa6e6f0251ea5f74648d2feb07b411ea97b3ca4c1dc"
+},
+{
+"names": [
+"FlowSuspension.native_vertical_transition_derivative"
+],
+"class": "keep",
+"lines": [
+3919,
+3932
+],
+"sha256": "39cf181593bb9b0f771f017d9a0b2a534649650fcded2a6561460403bbe6a904"
+},
+{
+"names": [
+"FlowSuspension.vertical_transition_formula"
+],
+"class": "keep",
+"lines": [
+3934,
+3960
+],
+"sha256": "feb4e8c13f4685bcd4b5422aa8e9b9ce7c7ee270665f3f7c3622d6bf0c339e64"
+},
+{
+"names": [
+"FlowSuspension.exists_vertical_transition_phase"
+],
+"class": "keep",
+"lines": [
+3964,
+4000
+],
+"sha256": "9847500361affdb6008a917a6caafde40df595fe991e5d3b501e977ba6803c54"
+},
+{
+"names": [
+"FlowSuspension.exists_transverse_transition_chart"
+],
+"class": "keep",
+"lines": [
+4002,
+4050
+],
+"sha256": "12a9e5137565134c60e836cd9459184b4eb901b5b50afadcc5a2ec8c98cb51fc"
+},
+{
+"names": [
+"FlowSuspension.exists_native_transition_phase"
+],
+"class": "keep",
+"lines": [
+4052,
+4099
+],
+"sha256": "334b070c0f18923da17dcc99c3f77d611dbc0fd25b8684da923fce1252a1725f"
+},
+{
+"names": [
+"FlowSuspension.exists_global_native_transition_phase"
+],
+"class": "keep",
+"lines": [
+4101,
+4139
+],
+"sha256": "63e1da3b7d5ea37ad91b7af80cb8100acf98c81280566983b0f59b60ee25e8a2"
+},
+{
+"names": [
+"FlowSuspension.exists_time_last_native_transition_phase"
+],
+"class": "keep",
+"lines": [
+4141,
+4191
+],
+"sha256": "4fa7d6632e094ece9e1c32e2dcf4edca51b401f8665d3319a3ff9dc25d9c9c6f"
+},
+{
+"names": [
+"FlowSuspension.exists_native_endpoint_slice_phase"
+],
+"class": "keep",
+"lines": [
+4193,
+4259
+],
+"sha256": "7bdc612ab9fdacd240856d099cf9f057925ec09d48a9669c2a7cd473a513b3d4"
+},
+{
+"names": [
+"TransverseGerms.compose_supported_isotopies"
+],
+"class": "keep",
+"lines": [
+4263,
+4287
+],
+"sha256": "20529af74b6d34faf1e8cd4a74a75e6b6c175e7cf1ebd666e3b783bf65387706"
+},
+{
+"names": [
+"TransverseGerms.exists_transported_transition_correction"
+],
+"class": "keep",
+"lines": [
+4289,
+4348
+],
+"sha256": "960e093591122a0de851e535dcde8cf57c1919b9bfb4b5bd4558eee0e240a7b2"
+},
+{
+"names": [
+"TransverseGerms.exists_common_transverse_range"
+],
+"class": "keep",
+"lines": [
+4350,
+4396
+],
+"sha256": "cc1a546d8a84267348a4a446511e59796e25327316c1cd6bd5d22954db4698cd"
+},
+{
+"names": [
+"TransverseGerms.exists_common_transverse_coordinates"
+],
+"class": "keep",
+"lines": [
+4398,
+4461
+],
+"sha256": "c388b36b59ccb2962b8b98aee69c4bdda7e1b9344fed6e9f53bb95731586dcb2"
+},
+{
+"names": [
+"TransverseGerms.exists_restricted_native_cylinder"
+],
+"class": "keep",
+"lines": [
+4463,
+4486
+],
+"sha256": "cacb13329d5bfd241701a281a114c82e4e61b7bcd89b2b84732235cb6e710653"
+},
+{
+"names": [
+"TransverseGerms.splitCoordinates_negative_zero_iff"
+],
+"class": "keep",
+"lines": [
+4488,
+4499
+],
+"sha256": "ac09542021fe71f5a37bc5de299c1b1f3f2f17ebae31fcdf8e7fd1feadfb9084"
+},
+{
+"names": [
+"TransverseGerms.splitCoordinates_positive_zero_iff"
+],
+"class": "keep",
+"lines": [
+4501,
+4513
+],
+"sha256": "0d06e1dc533e08dfb69293baf939effaa5e919e73f0cbe8e6fe7ed63facc176e"
+},
+{
+"names": [
+"MorseCancellation.exists_original_endpoint_slice_data"
+],
+"class": "keep",
+"lines": [
+4517,
+4598
+],
+"sha256": "e2385f2c2411b6480deba75c9c27fbe0719142b94cd0e010c77c6d76e14f47bb"
+},
+{
+"names": [
+"MorseCancellation.incoming_linear_stable_plane"
+],
+"class": "keep",
+"lines": [
+4600,
+4638
+],
+"sha256": "ad5b7da030dee609f52b6666a498ed43ef9d55509bf27850236041eea25821f3"
+},
+{
+"names": [
+"MorseCancellation.outgoing_linear_unstable_plane"
+],
+"class": "keep",
+"lines": [
+4640,
+4677
+],
+"sha256": "38ddb32bef23467f784b6183c11d0ec345b3baae8809fadee67628c4a008b584"
+},
+{
+"names": [
+"MorseCancellation.endpoint_axis_tail_of_restriction"
+],
+"class": "keep",
+"lines": [
+4679,
+4696
+],
+"sha256": "fdcbd4b75c80b28babbdac646aae536e1b0b4af120d3e7430e73dcef77802a08"
+},
+{
+"names": [
+"MorseCancellation.exists_cubic_endpoint_basin_restriction"
+],
+"class": "keep",
+"lines": [
+4698,
+4764
+],
+"sha256": "1daecb1080475db4311a86be130bc7dfc8717f1940a28ed770505e4a7dadab74"
+},
+{
+"names": [
+"MorseCancellation.exists_actual_incoming_cubic_basin"
+],
+"class": "keep",
+"lines": [
+4766,
+4798
+],
+"sha256": "56d12a84fd2672abf60662ad63db1793ac3c463f12a3acbe823cabcd05f9c1c9"
+},
+{
+"names": [
+"MorseCancellation.exists_actual_outgoing_cubic_basin"
+],
+"class": "keep",
+"lines": [
+4800,
+4836
+],
+"sha256": "28766e1573cd201d3f592baff24e2739f86dcc36c6199eb0431477748c521633"
+},
+{
+"names": [
+"SignedCoordinates.positive_of_not_negative"
+],
+"class": "keep",
+"lines": [
+4840,
+4843
+],
+"sha256": "356450c9a30566a343b963bd040647b375caeb5c0ddc9a84a3798a67e6c0f585"
+},
+{
+"names": [
+"SignedCoordinates.exists_equiv_of_negative_card_eq"
+],
+"class": "keep",
+"lines": [
+4845,
+4872
+],
+"sha256": "4b582ff1e01a0d984602564aba6040836edcbbedf0065a84f8eb49decef0c1a0"
+},
+{
+"names": [
+"MorseCancellation.exists_coordinate_enum"
+],
+"class": "keep",
+"lines": [
+4874,
+4878
+],
+"sha256": "85745dd331a900f995b7330134bd0fa86bcfc29099fe60a80057488dfd7998af"
+},
+{
+"names": [
+"SignedCoordinates.negative_card_split"
+],
+"class": "keep",
+"lines": [
+4880,
+4890
+],
+"sha256": "e9bf509dd927115f1f205f7f536c8425031325162d33025f81daca3ebc2793d6"
+},
+{
+"names": [
+"SignedCoordinates.exists_adjacent_sign_enumerations"
+],
+"class": "keep",
+"lines": [
+4892,
+4932
+],
+"sha256": "b4a6aca7ccedd174d785651e471907020e130403421171e1358bb03eb0d27749"
+},
+{
+"names": [
+"SignedCoordinates.exists_adjacent_sign_enumerations_of_dimension"
+],
+"class": "keep",
+"lines": [
+4934,
+4944
+],
+"sha256": "7a8e2dd1a7336e0d95b81d0e31e1aa5807b4a33ac8a5e959eb7c686e03fee97e"
+},
+{
+"names": [
+"MorseCancellation.exists_matched_connection_basin_endpoints"
+],
+"class": "keep",
+"lines": [
+4948,
+4997
+],
+"sha256": "3eac23895376808d282d7e7f68b3841ae1a93297ee5de045794c8df48aef741a"
+},
+{
+"names": [
+"MorseCancellation.exists_actual_connection_slice_data"
+],
+"class": "keep",
+"lines": [
+4999,
+5077
+],
+"sha256": "c61138e1a84cd5dbd65bc414a0fa0c5405f805c6e7b9dc8bf36d7bb2c6ef686b"
+},
+{
+"names": [
+"TransverseGerms.hasFDerivAt_scalar_displacement"
+],
+"class": "keep",
+"lines": [
+5081,
+5097
+],
+"sha256": "2bbd5afb1ee83fbb0058e60769c8862095178d347a45a87308e7df60effbe4dd"
+},
+{
+"names": [
+"TransverseGerms.exists_open_transverse_convex_blend"
+],
+"class": "keep",
+"lines": [
+5099,
+5181
+],
+"sha256": "09fbda72953a310c018e468019aac45410fcebefb6c64e59545c354a0b5f20dd"
+},
+{
+"names": [
+"TransverseGerms.exists_supported_transverse_germ_linearization"
+],
+"class": "keep",
+"lines": [
+5183,
+5286
+],
+"sha256": "e1eccee17f6765c23890d45675720dc71829e0d6722be429c9b5e467aa99dc3c"
+},
+{
+"names": [
+"TransverseGerms.transverseBlockMap"
+],
+"class": "keep",
+"lines": [
+5288,
+5295
+],
+"sha256": "59bcc3fc49cf85b55b8376fa6bb06ebdfe4de17f2625422cb0cf93147b0e1ea3"
+},
+{
+"names": [
+"TransverseGerms.exists_transverse_block_factorization"
+],
+"class": "keep",
+"lines": [
+5297,
+5355
+],
+"sha256": "817723db6049a370d6bcd9aed90f35f39e446981332d1d54a45916f3451ae98b"
+},
+{
+"names": [
+"TransverseGerms.exists_supported_lower_shear_isotopy"
+],
+"class": "keep",
+"lines": [
+5357,
+5415
+],
+"sha256": "2c930ca65cf6676fa6dc75befa788acb08b581d532e8bc62da67820c4e14d528"
+},
+{
+"names": [
+"TransverseGerms.exists_supported_transverse_block_reduction"
+],
+"class": "keep",
+"lines": [
+5417,
+5525
+],
+"sha256": "8f7c46a63b7d3127ffb080078e607a8f7979ce9245b51737f56470a18c316c47"
+},
+{
+"names": [
+"TransverseGerms.exists_projected_equiv_of_native_transverse"
+],
+"class": "keep",
+"lines": [
+5527,
+5561
+],
+"sha256": "4be404b782a52d1681f14610bbda99549966f8e04c33d6628de8fc7373478125"
+},
+{
+"names": [
+"TransverseGerms.exists_block_reduction_of_native_transverse"
+],
+"class": "keep",
+"lines": [
+5563,
+5594
+],
+"sha256": "2cbc7aa7c5f9fa4f45dec3dde0ed12e23262ed1f45fb8b9a73006ab1a2762a82"
+},
+{
+"names": [
+"TransverseGerms.label_sheets_transverse_in_incoming_chart"
+],
+"class": "keep",
+"lines": [
+5596,
+5627
+],
+"sha256": "3e072bf59f408df8b17ccc5a4cc4895aa80b41db72f5bdb9ef0d0ab925ef6640"
+},
+{
+"names": [
+"TransverseGerms.relative_label_sheet_germs"
+],
+"class": "keep",
+"lines": [
+5629,
+5649
+],
+"sha256": "7637ba0f545142e2e98edbb748fa109adc66af2335673db1a7175fc6420fce45"
+},
+{
+"names": [
+"TransverseGerms.relative_transverse_of_label_sheets"
+],
+"class": "keep",
+"lines": [
+5651,
+5671
+],
+"sha256": "2489ac83d2006c4a295e545bba1b6aaac4dbb1e18f19e0e2192b0b59bd7df61c"
+},
+{
+"names": [
+"FlowSuspension.relative_intersection_of_native_unique_connection"
+],
+"class": "keep",
+"lines": [
+5673,
+5721
+],
+"sha256": "bb9cd137f3062fd708179b7870685cceeb87eab9a1fd592683bd2d5303848bca"
+},
+{
+"names": [
+"TransverseGerms.exists_cylinder_block_correction"
+],
+"class": "keep",
+"lines": [
+5723,
+5767
+],
+"sha256": "8099b8acdf370631ba15300395d5af8813ae4b017c4215bab56f3880ae376453"
+},
+{
+"names": [
+"FlowSuspension.flow_preserves_base_region"
+],
+"class": "keep",
+"lines": [
+5771,
+5783
+],
+"sha256": "707dc6eb687f9adb0500d81abce950f1dd96d495ae3b8fe8a10d28ab4d5758e8"
+},
+{
+"names": [
+"FlowSuspension.exists_native_suspension_chart"
+],
+"class": "keep",
+"lines": [
+5785,
+5831
+],
+"sha256": "6d22eb44312f90d7327d40e87bec41380238c4292b30f61b6eafe457038109d4"
+},
+{
+"names": [
+"FlowSuspension.exists_full_cylinder_holonomy"
+],
+"class": "keep",
+"lines": [
+5833,
+5970
+],
+"sha256": "af608b0a958b296fda0ae94d938712b7cc63475f81257f1e37f26e401c3b29ef"
+},
+{
+"names": [
+"FlowSuspension.exists_native_block_holonomy"
+],
+"class": "keep",
+"lines": [
+5972,
+6068
+],
+"sha256": "dd49a12df050aa07ee7753b484593cd141d3a636ab3b7192dbc725a00fbcd514"
+},
+{
+"names": [
+"FlowSuspension.corrected_cylinder_unique_connection"
+],
+"class": "keep",
+"lines": [
+6070,
+6148
+],
+"sha256": "a01c5193264929759ac5cbc5a1faf33277e280932f53ca57f37ec234da485a71"
+},
+{
+"names": [
+"FlowTimeChange.exists_small_supported_scalar_germ"
+],
+"class": "keep",
+"lines": [
+6152,
+6193
+],
+"sha256": "15ce01631efb440f56e1256be2657b60a11cfa73b342920cda83ab8f40c383f9"
+},
+{
+"names": [
+"FlowTimeChange.exists_bounded_step_profile"
+],
+"class": "keep",
+"lines": [
+6195,
+6236
+],
+"sha256": "fa5f6cbbe4025077e1157d9123ab0024653124dcb27ebf4499bd97abe1a78c38"
+},
+{
+"names": [
+"FlowTimeChange.exists_supported_phase_clock"
+],
+"class": "keep",
+"lines": [
+6238,
+6314
+],
+"sha256": "58120a427e5c83f7680f377ecd30046205ca70a9f47f67fdab1c5599b5252996"
+},
+{
+"names": [
+"FlowTimeChange.phaseConjugatingDiffeomorph"
+],
+"class": "keep",
+"lines": [
+6316,
+6321
+],
+"sha256": "b5c100ff5cd31258889c48eaf8f3266da1a97b489853387e92e0853b2ac44b8a"
+},
+{
+"names": [
+"FlowTimeChange.phaseClockFlow_base"
+],
+"class": "keep",
+"lines": [
+6323,
+6335
+],
+"sha256": "c6df4b8544e5118f6ed6c3e638ffbfac9e26ec1d95b16e3c2c2650ecb305ed02"
+},
+{
+"names": [
+"FlowTimeChange.phaseClockField_base_zero"
+],
+"class": "keep",
+"lines": [
+6337,
+6352
+],
+"sha256": "f606ea1156a51a3e063771b992dbe0fe62593a1c3a3ca30fe110bd3f9d67d61c"
+},
+{
+"names": [
+"FlowTimeChange.phaseClockField_time_derivative"
+],
+"class": "keep",
+"lines": [
+6354,
+6373
+],
+"sha256": "b58e61ed34db4da2a36067b925cde57754cc30f2d54c4e2eab1660700dea0709"
+},
+{
+"names": [
+"FlowTimeChange.phaseClockField_time_positive"
+],
+"class": "keep",
+"lines": [
+6375,
+6381
+],
+"sha256": "e39bf1f7cc4bae84eca50eb33e9302227339711e70f0c27f8477be8b599ae3c1"
+},
+{
+"names": [
+"FlowTimeChange.phaseClockField_eq_vertical_of_translation_germ"
+],
+"class": "keep",
+"lines": [
+6383,
+6407
+],
+"sha256": "1b120c42b993947ff6a9fa347791a84129c2935a6039a18197cf8d2228d12e34"
+},
+{
+"names": [
+"FlowTimeChange.exists_compact_phase_field_support"
+],
+"class": "keep",
+"lines": [
+6409,
+6452
+],
+"sha256": "49d95e400954a937f810c3e1b1c02f8bb3b5bd326073edb1dd533ba398e9e6ed"
+},
+{
+"names": [
+"FlowTimeChange.PhaseFlowCoordinates",
+"FlowTimeChange.PhaseFlowCoordinates.mk",
+"FlowTimeChange.PhaseFlowCoordinates.chart",
+"FlowTimeChange.PhaseFlowCoordinates.field_eq",
+"FlowTimeChange.PhaseFlowCoordinates.flow_eq",
+"FlowTimeChange.PhaseFlowCoordinates.base",
+"FlowTimeChange.PhaseFlowCoordinates.lower",
+"FlowTimeChange.PhaseFlowCoordinates.upper",
+"FlowTimeChange.PhaseFlowCoordinates.axis"
+],
+"class": "keep",
+"lines": [
+6456,
+6465
+],
+"sha256": "46ccd9e2c476e72fc0332eacc586bb25e49a054ddbb9b34a73d8f41ceb7d33cb"
+},
+{
+"names": [
+"FlowTimeChange.exists_compact_phase_flow"
+],
+"class": "keep",
+"lines": [
+6467,
+6544
+],
+"sha256": "62241954514bf855d5c232e9e2aea856efc6aa03f3671c2c456b9e3df2b05f02"
+},
+{
+"names": [
+"FlowTimeChange.partialChartField_vertical_factor"
+],
+"class": "keep",
+"lines": [
+6546,
+6562
+],
+"sha256": "da59e1f4136979bf0d0d24701b22048885ea1b2b131f61674ebba5d70f5cf0fc"
+},
+{
+"names": [
+"FlowTimeChange.exists_native_positive_cylinder_rescaling"
+],
+"class": "keep",
+"lines": [
+6564,
+6616
+],
+"sha256": "55fae1f2ae227d36867c52b4e822195288afff20862be485f6a83215d769e739"
+},
+{
+"names": [
+"FlowSuspension.exists_native_cylinder_conjugacy"
+],
+"class": "keep",
+"lines": [
+6618,
+6655
+],
+"sha256": "21ecf1f39bc77d51f121934414a616f80780f1f1d04ccd077f09d1cd80c22e0c"
+},
+{
+"names": [
+"FlowTimeChange.exists_native_phase_realization"
+],
+"class": "keep",
+"lines": [
+6657,
+6775
+],
+"sha256": "08e4183e423cc67e84a7a3fd98d806c9b08155079a6c9b7cdd44fbac2765e30d"
+},
+{
+"names": [
+"FlowTimeChange.exists_native_matched_phase_cylinder"
+],
+"class": "keep",
+"lines": [
+6777,
+6854
+],
+"sha256": "722f6d96aaccab70151a6c8db78e6246dbe6cce017bfad7c192367984001a719"
+},
+{
+"names": [
+"FlowSuspension.exists_unique_phase_corrected_cylinder"
+],
+"class": "keep",
+"lines": [
+6856,
+6973
+],
+"sha256": "2cf13095e5737a7e45e2864a006ba77424387845321f7f6a3325914a2df35b85"
+},
+{
+"names": [
+"MorseCancellation.native_endpoint_phase_through_box"
+],
+"class": "keep",
+"lines": [
+6977,
+7006
+],
+"sha256": "2502409ba7e0e5ab190537e51cf6137651f146d5fa8abcaa1fa38e20bcb0c98a"
+},
+{
+"names": [
+"MorseCancellation.matched_cubic_time_formulas"
+],
+"class": "keep",
+"lines": [
+7008,
+7086
+],
+"sha256": "8368ac024e89fcfc872b1e10ce0313e6d2f344503b110651bdd0a62ac37dba2b"
+},
+{
+"names": [
+"FieldChartGluing.partialChartField_eq_of_forward_germ"
+],
+"class": "keep",
+"lines": [
+7090,
+7109
+],
+"sha256": "78980ccafd1c72b26fb46cecda485a5d2e85b05941de7d9e7187d6aefd9d51af"
+},
+{
+"names": [
+"FieldChartGluing.isLocalDiffeomorphAt_of_chart_germ"
+],
+"class": "keep",
+"lines": [
+7111,
+7119
+],
+"sha256": "c0c4e7ca0de98d3b421dbc9c3919e8622e3685bd2662675850bdbf6681eab67b"
+},
+{
+"names": [
+"FieldChartGluing.exists_native_field_chart_near_compact"
+],
+"class": "keep",
+"lines": [
+7121,
+7162
+],
+"sha256": "6174544332deed9acd26d8bf23d54221f4c9e40df8c91b8b4c7f553ad1b59973"
+},
+{
+"names": [
+"FieldChartGluing.exists_controlled_field_germ_chart"
+],
+"class": "keep",
+"lines": [
+7164,
+7188
+],
+"sha256": "3bf19bac502fe4749d4186d4071f2a5453a78b227b769920c09f57043dad9a8e"
+},
+{
+"names": [
+"MorseCancellation.signed_split_transverse_rate"
+],
+"class": "keep",
+"lines": [
+7190,
+7203
+],
+"sha256": "14a64d6b35accb3da2d4655dbd59a94be9e410d407b18f68d2917366086cadaa"
+},
+{
+"names": [
+"MorseCancellation.signed_split_transverse_exponential"
+],
+"class": "keep",
+"lines": [
+7205,
+7218
+],
+"sha256": "4e3ff3ed42e38b350501d19fe035f8190291efc5b3c8d51427c0399fad1e868e"
+},
+{
+"names": [
+"MorseCancellation.signed_block_change_cubic_cylinder"
+],
+"class": "keep",
+"lines": [
+7220,
+7236
+],
+"sha256": "e5379ec5855b1f151e3811e2918c90f45ced58b3d331141e470821ab247bb995"
+},
+{
+"names": [
+"MorseCancellation.exists_signed_block_changed_cubic_chart"
+],
+"class": "keep",
+"lines": [
+7238,
+7301
+],
+"sha256": "a90f6b13958fda445306e89220d11ff7f446a4357843aab2112eb2a979dceae4"
+},
+{
+"names": [
+"MorseCancellation.exists_native_regular_cubic_field_chart"
+],
+"class": "keep",
+"lines": [
+7303,
+7378
+],
+"sha256": "cf9abfb6297820a94bcecd6555dda9020e01eb76c47dd7e9d1204660adbf408e"
+},
+{
+"names": [
+"MorseCancellation.exists_regular_cubic_chart_of_native_vertical_field"
+],
+"class": "keep",
+"lines": [
+7380,
+7404
+],
+"sha256": "f907c640e8b229763f2fcf69e28a499bfb910d8882fb6b53b3472f802ea2301a"
+},
+{
+"names": [
+"FieldChartGluing.threeChartMap"
+],
+"class": "keep",
+"lines": [
+7408,
+7411
+],
+"sha256": "fb5f6f0047cc000a48e581e1ff93a8c4c8a6fe5080030fb02d03f9c580a86321"
+},
+{
+"names": [
+"FieldChartGluing.threeChartMap_left_germ"
+],
+"class": "keep",
+"lines": [
+7413,
+7418
+],
+"sha256": "87e6fd27961fb50c6cc9faec0690f58f49d4bfdb969118f0a71da281558a5b0c"
+},
+{
+"names": [
+"FieldChartGluing.threeChartMap_middle_germ"
+],
+"class": "keep",
+"lines": [
+7420,
+7426
+],
+"sha256": "a56aa5f98d2d2d674055cf74ecf0c6a8cb546206ebb867c8d0087eef6249dbbd"
+},
+{
+"names": [
+"FieldChartGluing.threeChartMap_right_germ"
+],
+"class": "keep",
+"lines": [
+7428,
+7433
+],
+"sha256": "1aa95f4dca39385af3881b4b964e13a7d28aad5bc4cb26aee7b9a07e79b0d455"
+},
+{
+"names": [
+"FieldChartGluing.threeChartMap_left_closed_germ"
+],
+"class": "keep",
+"lines": [
+7435,
+7446
+],
+"sha256": "58e84a608c174e87667faf00dc48044ecb614c08f5cf67545505dfbcb9b94254"
+},
+{
+"names": [
+"FieldChartGluing.threeChartMap_right_closed_germ"
+],
+"class": "keep",
+"lines": [
+7448,
+7459
+],
+"sha256": "80add28cc0324b1f7ac5fb4d66b701c7a0107262b186a7cf43b3c50e7559d24f"
+},
+{
+"names": [
+"FieldChartGluing.exists_glued_three_native_field_charts"
+],
+"class": "keep",
+"lines": [
+7461,
+7533
+],
+"sha256": "489eb563f0b72e7154fe8afe0bdab577800abcd7c15336d74781cbcb9c5e12db"
+},
+{
+"names": [
+"FieldChartGluing.injective_closed_axis_of_regular_chart"
+],
+"class": "keep",
+"lines": [
+7535,
+7578
+],
+"sha256": "ae6ee035fe1baecf00a4c5144d8c5fd133d854901fb57630287f5035951ede6c"
+},
+{
+"names": [
+"FieldChartGluing.exists_closed_axis_native_field_chart"
+],
+"class": "keep",
+"lines": [
+7580,
+7632
+],
+"sha256": "455df19a5dd424b50182121d832eb45388b45270ded32f6768a038e490db0bb8"
+},
+{
+"names": [
+"MorseCancellation.exists_cubic_spatial_overlap_germ"
+],
+"class": "keep",
+"lines": [
+7636,
+7672
+],
+"sha256": "321bf3b384b6344952c649a832aef4fc8e7fc89c9657aea5d37b2e0397edb761"
+},
+{
+"names": [
+"MorseCancellation.cubicFlowCylinder_forward_stays_box"
+],
+"class": "keep",
+"lines": [
+7674,
+7686
+],
+"sha256": "19aa14862361bc7e57c2e044dab88edd0be5002b322be86e50d1f64455d36269"
+},
+{
+"names": [
+"MorseCancellation.cubicFlowCylinder_backward_stays_box"
+],
+"class": "keep",
+"lines": [
+7688,
+7700
+],
+"sha256": "b28a050d47f8449c5308030fc58b90f369e935eb9f886ffe28ff8737f6775b84"
+},
+{
+"names": [
+"MorseCancellation.strictMono_cubicAxisParameter"
+],
+"class": "keep",
+"lines": [
+7702,
+7706
+],
+"sha256": "a63c5bb77b769035aae35a28dd89ac1954671dd3a7a9aab0208fd34c2802b7ae"
+},
+{
+"names": [
+"MorseCancellation.tendsto_cubicFlowCylinder_axis_atTop"
+],
+"class": "keep",
+"lines": [
+7708,
+7713
+],
+"sha256": "53e30e1cf106f4698db2b5288f6516862c23aa9b9db034f9679f1c5a24469809"
+},
+{
+"names": [
+"MorseCancellation.tendsto_cubicFlowCylinder_axis_atBot"
+],
+"class": "keep",
+"lines": [
+7715,
+7720
+],
+"sha256": "ab9b9a7bf163d270f1ee94376a2834cf2975f4125e6971717e5cd60650562afa"
+},
+{
+"names": [
+"MorseCancellation.cubicFlowCylinder_zero_clock"
+],
+"class": "keep",
+"lines": [
+7722,
+7728
+],
+"sha256": "eddeae11d88653e948b65f48ea7aa16ac9b77e6434c94530f55f14b65b251058"
+},
+{
+"names": [
+"MorseCancellation.incoming_axis_segment_in_box"
+],
+"class": "keep",
+"lines": [
+7730,
+7750
+],
+"sha256": "248c103aae1aa3ed34e732f7a9b20071815aadd5ad4ac78a0bab140f8ff19ce6"
+},
+{
+"names": [
+"MorseCancellation.outgoing_axis_segment_in_box"
+],
+"class": "keep",
+"lines": [
+7752,
+7772
+],
+"sha256": "27780a4bad6ba14daa51e31e0ddea94336c216ebf9633190898e730b06c3953b"
+},
+{
+"names": [
+"MorseCancellation.exists_matched_full_cubic_field_chart"
+],
+"class": "keep",
+"lines": [
+7774,
+7859
+],
+"sha256": "4cf21f1bbdc892f916994dbd71448bd0ee4a558b30f4ae3f3be9947a16ca51d6"
+},
+{
+"names": [
+"MorseCancellation.exists_full_cubic_chart_from_corrected_cylinder"
+],
+"class": "keep",
+"lines": [
+7861,
+8032
+],
+"sha256": "37a73af0aea1e9cc48306205f0ad574701bc8df3a76ad830e3bf2e974893ce05"
+},
+{
+"names": [
+"FlowSuspension.cylinder_phase_basin_coordinates"
+],
+"class": "keep",
+"lines": [
+8036,
+8057
+],
+"sha256": "d6344251ad1d0928e4fc0f0d6eea077b4d3be1d6a3f51aacf1a9f35b5d04f1e4"
+},
+{
+"names": [
+"FlowSuspension.cylinder_outgoing_basin_labels"
+],
+"class": "keep",
+"lines": [
+8059,
+8085
+],
+"sha256": "067c37d264fede706cc4ccdb0efa31cfb662213c408d3280d44229c00204d23e"
+},
+{
+"names": [
+"FlowSuspension.cylinder_incoming_basin_labels"
+],
+"class": "keep",
+"lines": [
+8087,
+8111
+],
+"sha256": "3deea6df4dd9f98804cd435ee6b0b9974a021808624046e871eed614c1def58a"
+},
+{
+"names": [
+"MorseCancellation.cubicFlowCylinder_transverse_zero_iff"
+],
+"class": "keep",
+"lines": [
+8113,
+8116
+],
+"sha256": "2aea56cc96a4bca642e1cd7022cd5b87715a3d548b98b4d9568baf05bc578912"
+},
+{
+"names": [
+"MorseCancellation.incoming_cubic_slice_basin"
+],
+"class": "keep",
+"lines": [
+8118,
+8141
+],
+"sha256": "b34aaf38eaa66e0eee45bddcd878336a64ac41b37b4c8bfcb0e47bfe2c560d0c"
+},
+{
+"names": [
+"MorseCancellation.outgoing_cubic_slice_basin"
+],
+"class": "keep",
+"lines": [
+8143,
+8167
+],
+"sha256": "ff6c2dd8e7039f4ddb8f0fd93bff66f9c1ab0c85123122211fdc65271c3b5e83"
+}
+]
+}

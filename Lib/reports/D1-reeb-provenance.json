@@ -1,0 +1,456 @@
+{
+ "source_revision": "53c0d47ab30b4cd0ed2d2f17b1746768d50a87f4",
+ "root": "Mathoverflow1973.ManifoldMorse.nonempty_homeomorphSphere_of_two_critical_points",
+ "declarations": [
+  {
+   "name": "Mathoverflow1973.negLevelHomeomorph",
+   "source": "Hopf/Recognition.lean",
+   "start": 7857,
+   "end": 7865,
+   "kind": "def",
+   "sha256": "9ab0c34278e91e10eaf52078b2c96b6dcfe690e257250f6c313556b54c2f0b18",
+   "target": "Lib/Geometry/Manifold/Morse/Reeb.lean"
+  },
+  {
+   "name": "Mathoverflow1973.twoDiskDecompositionOfSublevels",
+   "source": "Hopf/Recognition.lean",
+   "start": 7867,
+   "end": 7915,
+   "kind": "def",
+   "sha256": "30dfabcbe9a19a64684d474179fe8ac59dde36e09502879b64096b95fc62a262",
+   "target": "Lib/Geometry/Manifold/Morse/Reeb.lean"
+  },
+  {
+   "name": "Mathoverflow1973.homeomorphSphereOfSublevelDisks",
+   "source": "Hopf/Recognition.lean",
+   "start": 7917,
+   "end": 7920,
+   "kind": "def",
+   "sha256": "162896bf55b6cbc90d66a07bb06d41002d5921a994d9d32ebba6b1b7a1835a74",
+   "target": "Lib/Geometry/Manifold/Morse/Reeb.lean"
+  },
+  {
+   "name": "Mathoverflow1973.ManifoldMorse.nonempty_homeomorphSphere_of_two_critical_points",
+   "source": "Hopf/Recognition.lean",
+   "start": 7922,
+   "end": 7961,
+   "kind": "theorem",
+   "sha256": "b42270fcdba3e383b179e3643a18ae3c135a616b733fe5b97aa372c96b5511ff",
+   "target": "Lib/Geometry/Manifold/Morse/Reeb.lean"
+  },
+  {
+   "name": "Mathoverflow1973.ManifoldMorse.SignedMorseChart.negative_eq_zero_of_localMin",
+   "source": "Hopf/SphereTopology.lean",
+   "start": 3877,
+   "end": 3898,
+   "kind": "theorem",
+   "sha256": "0d11d7589a6ab9e91a39a335cb3468aec35e67b27cd19d7d734b622a2499e434",
+   "target": "Lib/Geometry/Manifold/Morse/Reeb.lean"
+  },
+  {
+   "name": "Mathoverflow1973.ManifoldMorse.SignedMorseChart.subsingleton_negative_of_localMin",
+   "source": "Hopf/SphereTopology.lean",
+   "start": 3900,
+   "end": 3906,
+   "kind": "theorem",
+   "sha256": "5320500bd2a6dfe2c27f838f7b1566cdc5bbdd5307d18a988e51fa05248a7d0c",
+   "target": "Lib/Geometry/Manifold/Morse/Reeb.lean"
+  },
+  {
+   "name": "Mathoverflow1973.ManifoldMorse.SignedMorseChart.exists_minimum_disk_sublevel_with_height",
+   "source": "Hopf/SphereTopology.lean",
+   "start": 3939,
+   "end": 4026,
+   "kind": "theorem",
+   "sha256": "b4d5aac176cfd43b2cd4bef76c96ede40138204e74588414ebe6739243494e52",
+   "target": "Lib/Geometry/Manifold/Morse/Reeb.lean"
+  },
+  {
+   "name": "Mathoverflow1973.ManifoldMorse.SignedMorseChart.finrank_positive_of_localMin",
+   "source": "Hopf/SphereTopology.lean",
+   "start": 4028,
+   "end": 4038,
+   "kind": "theorem",
+   "sha256": "4323e8b4859a08127b1b92c614ec4b469ea31ec19726bcbad3bbeca6878d2548",
+   "target": "Lib/Geometry/Manifold/Morse/Reeb.lean"
+  },
+  {
+   "name": "Mathoverflow1973.ManifoldMorse.SignedMorseChart.minimumPositiveIsometry",
+   "source": "Hopf/SphereTopology.lean",
+   "start": 4040,
+   "end": 4046,
+   "kind": "def",
+   "sha256": "a88bf16210cb8c8e7cf97430323f0b1aa4b26633b9cd127b0b8496c43d478cd5",
+   "target": "Lib/Geometry/Manifold/Morse/Reeb.lean"
+  },
+  {
+   "name": "Mathoverflow1973.ManifoldMorse.SignedMorseChart.minimumDiskHomeomorph",
+   "source": "Hopf/SphereTopology.lean",
+   "start": 4048,
+   "end": 4058,
+   "kind": "def",
+   "sha256": "794c5164d24e27091c6cc38d4e888fe9ec3eec7a26519ae27b843b90e273bf5e",
+   "target": "Lib/Geometry/Manifold/Morse/Reeb.lean"
+  },
+  {
+   "name": "Mathoverflow1973.ManifoldMorse.SignedMorseChart.norm_minimumDiskHomeomorph_symm",
+   "source": "Hopf/SphereTopology.lean",
+   "start": 4060,
+   "end": 4070,
+   "kind": "theorem",
+   "sha256": "aa140c03ef396512a2152059709e46d1fd9f4f7d8319c8df1f99a77df051a164",
+   "target": "Lib/Geometry/Manifold/Morse/Reeb.lean"
+  },
+  {
+   "name": "Mathoverflow1973.Hemisphere.tail",
+   "source": "Hopf/SphereTopology.lean",
+   "start": 4072,
+   "end": 4073,
+   "kind": "def",
+   "sha256": "7c825f19a16fd5a7a1326624130c246eaf98a6937ff5835a11076074405676af",
+   "target": "Lib/Geometry/Manifold/Morse/Reeb.lean"
+  },
+  {
+   "name": "Mathoverflow1973.Hemisphere.head_sq_add_tail_norm_sq",
+   "source": "Hopf/SphereTopology.lean",
+   "start": 4075,
+   "end": 4082,
+   "kind": "theorem",
+   "sha256": "8a607e04c53651d5730ca8c593a104d787fa8e08eba2487545a29599aba029b7",
+   "target": "Lib/Geometry/Manifold/Morse/Reeb.lean"
+  },
+  {
+   "name": "Mathoverflow1973.Hemisphere.tail_mem_ball",
+   "source": "Hopf/SphereTopology.lean",
+   "start": 4084,
+   "end": 4088,
+   "kind": "theorem",
+   "sha256": "2a02287e58818a043e9923a55dbf520bd443ea76557e0e617ef86498dad799a3",
+   "target": "Lib/Geometry/Manifold/Morse/Reeb.lean"
+  },
+  {
+   "name": "Mathoverflow1973.Hemisphere.disk",
+   "source": "Hopf/SphereTopology.lean",
+   "start": 4090,
+   "end": 4091,
+   "kind": "def",
+   "sha256": "1a481721c9f5383bdfd72dd808a2438e74f600f1156f5871e286fee467794011",
+   "target": "Lib/Geometry/Manifold/Morse/Reeb.lean"
+  },
+  {
+   "name": "Mathoverflow1973.Hemisphere.radius_disk",
+   "source": "Hopf/SphereTopology.lean",
+   "start": 4093,
+   "end": 4098,
+   "kind": "theorem",
+   "sha256": "63b1f30f1986ed9ab2c9afb9f511f75c3293e819e71f3859a504897780d02bda",
+   "target": "Lib/Geometry/Manifold/Morse/Reeb.lean"
+  },
+  {
+   "name": "Mathoverflow1973.Hemisphere.point_disk_of_nonneg",
+   "source": "Hopf/SphereTopology.lean",
+   "start": 4100,
+   "end": 4106,
+   "kind": "theorem",
+   "sha256": "34c5e3f61a98a11a367b7d642656e09258857259c7b445ad912e610581a5bf5f",
+   "target": "Lib/Geometry/Manifold/Morse/Reeb.lean"
+  },
+  {
+   "name": "Mathoverflow1973.Hemisphere.point_disk_of_nonpos",
+   "source": "Hopf/SphereTopology.lean",
+   "start": 4108,
+   "end": 4114,
+   "kind": "theorem",
+   "sha256": "deffd9d50af7424cd1904196f66398125a48ddd9eef98098fd70a410774b85e9",
+   "target": "Lib/Geometry/Manifold/Morse/Reeb.lean"
+  },
+  {
+   "name": "Mathoverflow1973.Hemisphere.point_jointly_surjective",
+   "source": "Hopf/SphereTopology.lean",
+   "start": 4116,
+   "end": 4120,
+   "kind": "theorem",
+   "sha256": "1e5d12f7793066f4f9a10dc819f7f31a68c9d1b18d5649fdc6d92ed054569015",
+   "target": "Lib/Geometry/Manifold/Morse/Reeb.lean"
+  },
+  {
+   "name": "Mathoverflow1973.DiskDouble.hemisphereMap",
+   "source": "Hopf/SphereTopology.lean",
+   "start": 4122,
+   "end": 4124,
+   "kind": "def",
+   "sha256": "c4ed17e091625f45cb82f22d60cfb4bc8b9b17eee7643d6f27c3175f3f902ce5",
+   "target": "Lib/Geometry/Manifold/Morse/Reeb.lean"
+  },
+  {
+   "name": "Mathoverflow1973.DiskDouble.continuous_hemisphereMap",
+   "source": "Hopf/SphereTopology.lean",
+   "start": 4126,
+   "end": 4128,
+   "kind": "theorem",
+   "sha256": "a290a5dacaddf34299907fc0ae6a6f356bb135da4dcf765c11c162a2dab3dade",
+   "target": "Lib/Geometry/Manifold/Morse/Reeb.lean"
+  },
+  {
+   "name": "Mathoverflow1973.DiskDouble.hemisphereMap_respects",
+   "source": "Hopf/SphereTopology.lean",
+   "start": 4130,
+   "end": 4141,
+   "kind": "theorem",
+   "sha256": "111d7e6bcc6ab6fb97b7481100e3aef0aeb21cbeffa3bedd72dc209614a45e13",
+   "target": "Lib/Geometry/Manifold/Morse/Reeb.lean"
+  },
+  {
+   "name": "Mathoverflow1973.DiskDouble.sphereMap",
+   "source": "Hopf/SphereTopology.lean",
+   "start": 4143,
+   "end": 4145,
+   "kind": "def",
+   "sha256": "147944e35fe6131284075f6b84392fac7af7eccdca6afce8bcc03f64d26e24be",
+   "target": "Lib/Geometry/Manifold/Morse/Reeb.lean"
+  },
+  {
+   "name": "Mathoverflow1973.DiskDouble.continuous_sphereMap",
+   "source": "Hopf/SphereTopology.lean",
+   "start": 4147,
+   "end": 4148,
+   "kind": "theorem",
+   "sha256": "7f835d5bf97a132e4af30b93ca20d0861d82bc6464c5d171c05c5900b1d67ce1",
+   "target": "Lib/Geometry/Manifold/Morse/Reeb.lean"
+  },
+  {
+   "name": "Mathoverflow1973.DiskDouble.sphereMap_injective",
+   "source": "Hopf/SphereTopology.lean",
+   "start": 4150,
+   "end": 4172,
+   "kind": "theorem",
+   "sha256": "e61b3f7ae6744a6a43e1fde1a15df8d805f5bc16425b178f61bdf208c3cd9434",
+   "target": "Lib/Geometry/Manifold/Morse/Reeb.lean"
+  },
+  {
+   "name": "Mathoverflow1973.DiskDouble.sphereMap_surjective",
+   "source": "Hopf/SphereTopology.lean",
+   "start": 4174,
+   "end": 4179,
+   "kind": "theorem",
+   "sha256": "e11a4f7ea425c2f49edb5be21edbe6cdcf4b6faf8baec2c71051244af79b8034",
+   "target": "Lib/Geometry/Manifold/Morse/Reeb.lean"
+  },
+  {
+   "name": "Mathoverflow1973.DiskDouble.homeomorphSphere",
+   "source": "Hopf/SphereTopology.lean",
+   "start": 4181,
+   "end": 4186,
+   "kind": "def",
+   "sha256": "d8d56842faf53687853656504698336db0cf72556835eaf83aa8968f01393ebf",
+   "target": "Lib/Geometry/Manifold/Morse/Reeb.lean"
+  },
+  {
+   "name": "Mathoverflow1973.DiskDouble.twistedHomeomorphSphere",
+   "source": "Hopf/SphereTopology.lean",
+   "start": 4188,
+   "end": 4191,
+   "kind": "def",
+   "sha256": "9b75d79dc7c6aa09ef879a30ef6f27eb0454a9d0783eab1566b15e106005701b",
+   "target": "Lib/Geometry/Manifold/Morse/Reeb.lean"
+  },
+  {
+   "name": "Mathoverflow1973.TwoDiskDecomposition",
+   "source": "Hopf/SphereTopology.lean",
+   "start": 4193,
+   "end": 4206,
+   "kind": "structure",
+   "sha256": "eea147f71113d9e4d423c39af4c201f165cf7ea5d325224b3239e2dfa65808be",
+   "target": "Lib/Geometry/Manifold/Morse/Reeb.lean"
+  },
+  {
+   "name": "Mathoverflow1973.TwoDiskDecomposition.sumMap",
+   "source": "Hopf/SphereTopology.lean",
+   "start": 4208,
+   "end": 4211,
+   "kind": "def",
+   "sha256": "c7e701ab1e8b112a02420e435b8a16aba05c24646ed86bb473f643a12104d67e",
+   "target": "Lib/Geometry/Manifold/Morse/Reeb.lean"
+  },
+  {
+   "name": "Mathoverflow1973.TwoDiskDecomposition.continuous_sumMap",
+   "source": "Hopf/SphereTopology.lean",
+   "start": 4213,
+   "end": 4215,
+   "kind": "theorem",
+   "sha256": "f61bbb3531c95965c50cb579093960cbf6e7591d8f2d9219bb4f58827e3392bd",
+   "target": "Lib/Geometry/Manifold/Morse/Reeb.lean"
+  },
+  {
+   "name": "Mathoverflow1973.TwoDiskDecomposition.sumMap_respects",
+   "source": "Hopf/SphereTopology.lean",
+   "start": 4217,
+   "end": 4225,
+   "kind": "theorem",
+   "sha256": "7d1d49fec2890dd037f3292926d16cc72431e4b62cc19444a2fb19f868567b72",
+   "target": "Lib/Geometry/Manifold/Morse/Reeb.lean"
+  },
+  {
+   "name": "Mathoverflow1973.TwoDiskDecomposition.quotientMap",
+   "source": "Hopf/SphereTopology.lean",
+   "start": 4227,
+   "end": 4229,
+   "kind": "def",
+   "sha256": "969a75702794ecbb8e0880fac1f739005d895037b7a598489bd2c78fbf412bec",
+   "target": "Lib/Geometry/Manifold/Morse/Reeb.lean"
+  },
+  {
+   "name": "Mathoverflow1973.TwoDiskDecomposition.continuous_quotientMap",
+   "source": "Hopf/SphereTopology.lean",
+   "start": 4231,
+   "end": 4233,
+   "kind": "theorem",
+   "sha256": "3a8ae13ab871c7ae8ea7612a275bdb14271e88e378efa6936d30a76ffd75c104",
+   "target": "Lib/Geometry/Manifold/Morse/Reeb.lean"
+  },
+  {
+   "name": "Mathoverflow1973.TwoDiskDecomposition.quotientMap_injective",
+   "source": "Hopf/SphereTopology.lean",
+   "start": 4235,
+   "end": 4257,
+   "kind": "theorem",
+   "sha256": "0103b5f99d875c061ff251726a024356fce0ffebb338b554dee260b1996e0a41",
+   "target": "Lib/Geometry/Manifold/Morse/Reeb.lean"
+  },
+  {
+   "name": "Mathoverflow1973.TwoDiskDecomposition.quotientMap_surjective",
+   "source": "Hopf/SphereTopology.lean",
+   "start": 4259,
+   "end": 4264,
+   "kind": "theorem",
+   "sha256": "0a7e812e3f7a649162a110b4b0435ed0f2b465994f11e1cc91ed5ab2fabdd243",
+   "target": "Lib/Geometry/Manifold/Morse/Reeb.lean"
+  },
+  {
+   "name": "Mathoverflow1973.TwoDiskDecomposition.quotientHomeomorph",
+   "source": "Hopf/SphereTopology.lean",
+   "start": 4266,
+   "end": 4271,
+   "kind": "def",
+   "sha256": "d0fd439caea54187b94279b2be275b09272d9af6c30dcb1cab69390892df8733",
+   "target": "Lib/Geometry/Manifold/Morse/Reeb.lean"
+  },
+  {
+   "name": "Mathoverflow1973.TwoDiskDecomposition.homeomorphSphere",
+   "source": "Hopf/SphereTopology.lean",
+   "start": 4273,
+   "end": 4275,
+   "kind": "def",
+   "sha256": "ff11d13c065bb65f5257cd279b657edc2657e9ebb65fe910ab2df225766ca8c2",
+   "target": "Lib/Geometry/Manifold/Morse/Reeb.lean"
+  },
+  {
+   "name": "Mathoverflow1973.SublevelDisk",
+   "source": "Hopf/SphereTopology.lean",
+   "start": 4277,
+   "end": 4279,
+   "kind": "structure",
+   "sha256": "e4eefbeb8e7d9961e23cda2e4a7966dbe4568d76bd25be6ae503d0a045b94901",
+   "target": "Lib/Geometry/Manifold/Morse/Reeb.lean"
+  },
+  {
+   "name": "Mathoverflow1973.SublevelDisk.map",
+   "source": "Hopf/SphereTopology.lean",
+   "start": 4281,
+   "end": 4285,
+   "kind": "def",
+   "sha256": "5aafa015c7c57aa5ad7835a84de8eae7067b122bc9328b2ae0f2d41f41354cc8",
+   "target": "Lib/Geometry/Manifold/Morse/Reeb.lean"
+  },
+  {
+   "name": "Mathoverflow1973.SublevelDisk.map_injective",
+   "source": "Hopf/SphereTopology.lean",
+   "start": 4287,
+   "end": 4290,
+   "kind": "theorem",
+   "sha256": "fde2812913c73e9100b37933c716427d9e4bc756f2379ba1af875d6b6b6eb3a1",
+   "target": "Lib/Geometry/Manifold/Morse/Reeb.lean"
+  },
+  {
+   "name": "Mathoverflow1973.SublevelDisk.boundaryMap",
+   "source": "Hopf/SphereTopology.lean",
+   "start": 4292,
+   "end": 4305,
+   "kind": "def",
+   "sha256": "cf00970ca0de5f265a057b0434c9a4663ee8e63c99cc8af5968384830332ee4c",
+   "target": "Lib/Geometry/Manifold/Morse/Reeb.lean"
+  },
+  {
+   "name": "Mathoverflow1973.SublevelDisk.boundaryMap_injective",
+   "source": "Hopf/SphereTopology.lean",
+   "start": 4307,
+   "end": 4314,
+   "kind": "theorem",
+   "sha256": "28b45bc85b41e7d4049a443ebf19e032c2c485c4c7400f006dbb930e9c7942b4",
+   "target": "Lib/Geometry/Manifold/Morse/Reeb.lean"
+  },
+  {
+   "name": "Mathoverflow1973.SublevelDisk.boundaryMap_surjective",
+   "source": "Hopf/SphereTopology.lean",
+   "start": 4316,
+   "end": 4327,
+   "kind": "theorem",
+   "sha256": "2dbb05c8f3d0a540a98c6fc02a4942b8eca62f08dc54cb92c56ae4715fcb44cc",
+   "target": "Lib/Geometry/Manifold/Morse/Reeb.lean"
+  },
+  {
+   "name": "Mathoverflow1973.SublevelDisk.boundaryHomeomorph",
+   "source": "Hopf/SphereTopology.lean",
+   "start": 4329,
+   "end": 4334,
+   "kind": "def",
+   "sha256": "6e69dc017266dcf840b95b42b030cb5a7e84c5b0fe2ce7f5818ffb84582b9146",
+   "target": "Lib/Geometry/Manifold/Morse/Reeb.lean"
+  },
+  {
+   "name": "Mathoverflow1973.ManifoldMorse.SignedMorseChart.exists_minimumSublevelDisk",
+   "source": "Hopf/SphereTopology.lean",
+   "start": 4336,
+   "end": 4364,
+   "kind": "theorem",
+   "sha256": "44bc014c508d44bf99a142302a2ea8006fb8fa7bd3e58b08f4a3d8e653d3559f",
+   "target": "Lib/Geometry/Manifold/Morse/Reeb.lean"
+  },
+  {
+   "name": "Mathoverflow1973.FlowConstruction.exists_regularSublevelHomeomorph_with_level",
+   "source": "Hopf/SphereTopology.lean",
+   "start": 4366,
+   "end": 4379,
+   "kind": "theorem",
+   "sha256": "b6f24d59692a45a2b1055b2a771a4cf6bac3e1f5d1b452454114c6ba98f45780",
+   "target": "Lib/Geometry/Manifold/Morse/Reeb.lean"
+  },
+  {
+   "name": "Mathoverflow1973.SublevelDisk.transport",
+   "source": "Hopf/SphereTopology.lean",
+   "start": 4381,
+   "end": 4386,
+   "kind": "def",
+   "sha256": "d5d65a90802552b5ea180fbf783f9890c32731a03eff4c543ceccdaa060a8a23",
+   "target": "Lib/Geometry/Manifold/Morse/Reeb.lean"
+  },
+  {
+   "name": "Mathoverflow1973.FlowConstruction.nonempty_regularSublevelDisk",
+   "source": "Hopf/SphereTopology.lean",
+   "start": 4388,
+   "end": 4395,
+   "kind": "theorem",
+   "sha256": "eb69b44f0d9e644ef29e2e2fb5fce5be5ff503c738159370c5809a1079aba64a",
+   "target": "Lib/Geometry/Manifold/Morse/Reeb.lean"
+  },
+  {
+   "name": "Mathoverflow1973.ManifoldMorse.SignedMorseChart.nonempty_sublevelDisk_before_next_critical",
+   "source": "Hopf/SphereTopology.lean",
+   "start": 4397,
+   "end": 4409,
+   "kind": "theorem",
+   "sha256": "d5f07e7f2a2396484f930c67acc1b008b375897dbbe01b89b68989f8454042ba",
+   "target": "Lib/Geometry/Manifold/Morse/Reeb.lean"
+  }
+ ]
+}

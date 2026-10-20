@@ -1,0 +1,169 @@
+{
+ "before": "dump_base.jsonl",
+ "after": "dump_after.jsonl",
+ "prefix": "",
+ "constants": [
+  39159,
+  39180
+ ],
+ "lost": [],
+ "added": [
+  [
+   "Hyperbolic.hyperboloidAxis_polarDirection_eq_iff",
+   839428746,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidAxis_polarDirection_exists",
+   1291755205,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidAxis_polarDirection_exists._simp_1_1",
+   1421000499,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidAxis_polarDirection_unit",
+   3090643196,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidAxis_polar_positive_coordinates",
+   1860467289,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidAxis_polar_reflection",
+   779540772,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidAxis_polar_reflection_formula",
+   21472157,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidAxis_polar_zero_coordinates",
+   1215343417,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidAxis_radial_tangent",
+   41853631,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidAxis_reflection_values",
+   3979107583,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidAxis_tangent_basis",
+   3397682884,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidAxis_tangent_reflection",
+   973925384,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidAxis_velocity_constraints",
+   603003105,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidAxis_velocity_iff",
+   132134523,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidReflection.congr_simp",
+   1681760714,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidReflection_length",
+   3235383361,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidReflection_lengthDist",
+   55104707,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidReflection_piecewiseC1EDist",
+   2896337110,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidReflection_piecewiseC1EDist_le",
+   2522528168,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidReflection_speed",
+   666721292,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ],
+  [
+   "Hyperbolic.hyperboloidReflection_speedWithin",
+   2484751189,
+   {
+    "Lib.Geometry.Hyperbolic.Models": 1
+   }
+  ]
+ ],
+ "changed_type_source": [],
+ "changed_type_proof_naming": [],
+ "changed_type_accepted": [],
+ "added_accepted": [],
+ "accept_without_effect": [],
+ "changed_type_all": [],
+ "moves": [],
+ "ambiguous": [],
+ "auxiliary_moved": 0,
+ "verdict": "FAIL"
+}

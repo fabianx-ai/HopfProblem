@@ -1,0 +1,3337 @@
+{
+  "source_revision": "ca8ed1f50ce29f702380211a0674e6e38da1c6e8",
+  "units": [
+    {
+      "root": "Mathoverflow1973.MorseCancellation.NativeConnectionCancellationData.cancel",
+      "declarations": [
+        {
+          "name": "Mathoverflow1973.FlowCancellation.exists_excursion_interval",
+          "source": "Hopf/DifferentialTopology.lean",
+          "start": 119,
+          "end": 155,
+          "kind": "theorem",
+          "sha256": "588f2411f4142ddc8199c7fab5d3789ed6111744aad9706a9cafc3a2c554d708",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.FlowCancellation.native_curve_eq_flow_on_closed_interval",
+          "source": "Hopf/DifferentialTopology.lean",
+          "start": 157,
+          "end": 175,
+          "kind": "theorem",
+          "sha256": "6f75151417ae1acb1397e4b7686e66cb0b326185036ecbec625a08ee52872ec5",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.FlowCancellation.native_no_return_of_supported_perturbation",
+          "source": "Hopf/DifferentialTopology.lean",
+          "start": 177,
+          "end": 207,
+          "kind": "theorem",
+          "sha256": "507951add96e1c5e17eb4ce62021839720bbf388b92e8375fb42d1622d466acb",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.TransverseCoordinates.surjective_coprod_swap",
+          "source": "Hopf/DifferentialTopology.lean",
+          "start": 218,
+          "end": 227,
+          "kind": "theorem",
+          "sha256": "1d82c68e528342ea6b6d8940d0058bdec90a1aa14972f3cf200551c119c81bce",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.FlowTimeChange.exists_positive_integral_clock",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 1433,
+          "end": 1473,
+          "kind": "theorem",
+          "sha256": "b49f449b4749f916572dd90aa4fa6dbd4065bbe89b6e4f408f37e5ebb8b5ee0c",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.FlowTimeChange.native_curve_positive_reparametrization",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 1475,
+          "end": 1491,
+          "kind": "theorem",
+          "sha256": "9c92bc4e5a07d0a079a98fe4435f15a5fc8390ab008195f09fcd1c34c174d5a1",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.FlowTimeChange.exists_native_flow_time_change",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 1493,
+          "end": 1523,
+          "kind": "theorem",
+          "sha256": "f8edd6d89b7397ad19aef374b0511b95a3c26cc77367bcf0ccc7111a8f0e40da",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.FlowTimeChange.native_flow_time_change_orbits",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 1525,
+          "end": 1560,
+          "kind": "theorem",
+          "sha256": "d243206efdeb50b8a2176c7a28ff56d0f28bb985c391ebb7617563a7e1dda4b1",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.FlowSuspension.native_chart_flow_all_time",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 1769,
+          "end": 1793,
+          "kind": "theorem",
+          "sha256": "28119a4c24c2b6943718fe4bb0e1875f284473d910d609049b36c7aaf9f52b2a",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.FlowSuspension.native_chart_target_invariant",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 1795,
+          "end": 1809,
+          "kind": "theorem",
+          "sha256": "bc7d2b09013f6040b2c4e2ef1de447a8da8836cbbcd1f321b04526c23de3f446",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.FlowSuspension.flow_complement_invariant",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 1811,
+          "end": 1816,
+          "kind": "theorem",
+          "sha256": "c958f855e1be1797d558bf96f52a13a512d99d6b34a2847b446c1475f662fa65",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.FlowTimeChange.mvfderiv_height_div_const",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 2151,
+          "end": 2160,
+          "kind": "theorem",
+          "sha256": "39e708fa25e8c657a2d6d02e4c614ae380304d8f6a05133126d6008e2da8c7a9",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.FlowTimeChange.descending_height_div_const_iff",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 2172,
+          "end": 2178,
+          "kind": "theorem",
+          "sha256": "8c5446999a43e4c038bfd78c6aaccb3c0702f8988e05d4adc2cd18429aa8f233",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.FlowSuspension.native_vertical_cylinder_flow",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 3009,
+          "end": 3038,
+          "kind": "theorem",
+          "sha256": "7d2c663dc09f5b1cee78dab6ff743cb7846d6c5ad09c265cdec2ec10ae04ead5",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.FlowSuspension.native_corrected_cylinder_tails",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 3040,
+          "end": 3067,
+          "kind": "theorem",
+          "sha256": "e53b85fcb4c5c2c5e5b6e34d4baf029477092fc84ec004560329f9d4447a32ed",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.FlowSuspension.phaseCylinderChart",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 3155,
+          "end": 3188,
+          "kind": "def",
+          "sha256": "9f9bfa73e73aff773dc4faad5f0fb9b723997142c0a0f2e30682d4983cc8be7d",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.FlowSuspension.phaseCylinderChart_target",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 3190,
+          "end": 3194,
+          "kind": "theorem",
+          "sha256": "cfaa1a4f3fbdacb8cacc0bad4cff774dc1a915828b5a22b6af1c8035bef830ef",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.FlowSuspension.phaseCylinderChart_vertical",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 3196,
+          "end": 3215,
+          "kind": "theorem",
+          "sha256": "be00794c69f05edad33748a7bfb108f0be7057fcb2f34f079bdc3f1775d50070",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.FlowSuspension.exists_native_phase_cylinder",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 3348,
+          "end": 3386,
+          "kind": "theorem",
+          "sha256": "4fc2a3967c7900ae8b19f519c56e589a2e6c1cd1cd813c3174ee584d4328cd4a",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.TransverseGerms.compose_supported_isotopies",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 4003,
+          "end": 4026,
+          "kind": "def",
+          "sha256": "0428ed66cfb79a0f88363a6721c7ea93ab3c3c83d01de8d471700ae50876a78f",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.TransverseGerms.exists_transported_transition_correction",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 4028,
+          "end": 4086,
+          "kind": "theorem",
+          "sha256": "ff819b4f188bff267fed530af73bc767383bc1a7cf74121b8315c78312fe3df9",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.TransverseGerms.splitCoordinates_negative_zero_iff",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 4223,
+          "end": 4233,
+          "kind": "theorem",
+          "sha256": "b9ef7f5b228595a3c762f4c23e9bd6de23edc766015e61c8fa9e7765663d754f",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.TransverseGerms.splitCoordinates_positive_zero_iff",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 4235,
+          "end": 4246,
+          "kind": "theorem",
+          "sha256": "35442e3f1695a0d1195b5b00ea30aea435989ea2b506dbdb0a11eb87d3fe3c27",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.TransverseGerms.hasFDerivAt_scalar_displacement",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 4792,
+          "end": 4807,
+          "kind": "theorem",
+          "sha256": "1a0be91b92b2b2d0ed421523f409a4756411ebda4fcba07fc7ad44b474815b3c",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.TransverseGerms.exists_open_transverse_convex_blend",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 4809,
+          "end": 4890,
+          "kind": "theorem",
+          "sha256": "a9a54fc921bfdfbed2ccb67b0fae6d593cd986a97db018d9473bd17f01c9d34e",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.TransverseGerms.exists_supported_transverse_germ_linearization",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 4892,
+          "end": 4994,
+          "kind": "theorem",
+          "sha256": "c01a921eb48ecab6514b734bb487701bd21e7f3ab64f40ccbe3289395310c409",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.TransverseGerms.transverseBlockMap",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 4996,
+          "end": 5002,
+          "kind": "def",
+          "sha256": "50cf2b4d741fd2a131fe06312d4cde53a16ed47bed147a56bd7cbb49bda6945d",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.TransverseGerms.exists_transverse_block_factorization",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 5004,
+          "end": 5061,
+          "kind": "theorem",
+          "sha256": "a8e00cf42ea5e1240a683c98d94a4152761c6a40e7768a332b8755c8a7c7ec7e",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.TransverseGerms.exists_supported_lower_shear_isotopy",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 5063,
+          "end": 5120,
+          "kind": "theorem",
+          "sha256": "a4142e645ef5edd2bd02d7595f087833b7265a045f45d1171feb5189b3f669a0",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.TransverseGerms.exists_supported_transverse_block_reduction",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 5122,
+          "end": 5229,
+          "kind": "theorem",
+          "sha256": "850d06a4cff47fc626800721f9297238bf15c8c708e82cfa78c7a87d6f9c3f64",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.TransverseGerms.exists_projected_equiv_of_native_transverse",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 5231,
+          "end": 5264,
+          "kind": "theorem",
+          "sha256": "a0c75f8796e57dd21040ca4f9db71ea81a1c99ef5a8a0610d72b26acacb4656a",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.TransverseGerms.exists_block_reduction_of_native_transverse",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 5266,
+          "end": 5296,
+          "kind": "theorem",
+          "sha256": "31d1f10bcc46150c125314be6a0bde7468144eaa8014af805a487eabdce38d8a",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.TransverseGerms.label_sheets_transverse_in_incoming_chart",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 5298,
+          "end": 5328,
+          "kind": "theorem",
+          "sha256": "b95c5c43a8af0af49a132ccbb59664847ce46eec9333c1ae1630e61d1fb51217",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.TransverseGerms.relative_label_sheet_germs",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 5330,
+          "end": 5349,
+          "kind": "theorem",
+          "sha256": "58ec31f927242041ddc3c25faf2f9c141943188a130e768bceb6b153dbd3009b",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.TransverseGerms.relative_transverse_of_label_sheets",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 5351,
+          "end": 5370,
+          "kind": "theorem",
+          "sha256": "16ee51db3bf2cf4d1d7916c8b39c244487fabba6b50a95c51f067512b1026e28",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.FlowSuspension.relative_intersection_of_native_unique_connection",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 5372,
+          "end": 5419,
+          "kind": "theorem",
+          "sha256": "3d0423c4bd51c3da1bc0ad49cdbacac6c4ba48add56b1327dfe949f95d26ea1d",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.TransverseGerms.exists_cylinder_block_correction",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 5421,
+          "end": 5464,
+          "kind": "theorem",
+          "sha256": "4567ae1443a125b472b475a55cc92e9c52ea5aab4f856bcb376a85b3df905993",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.FlowSuspension.flow_preserves_base_region",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 5466,
+          "end": 5477,
+          "kind": "theorem",
+          "sha256": "b18b723a1a230d03b19a3a8bbb98b2583c7bef104789b824e0d0a8ae25748e35",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.FlowSuspension.exists_native_suspension_chart",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 5479,
+          "end": 5524,
+          "kind": "theorem",
+          "sha256": "87e02c4c2e5de4ebb5e15c843fe994f7c222e2f2dea3cdc823c10e5758fa1b72",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.FlowSuspension.exists_full_cylinder_holonomy",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 5526,
+          "end": 5662,
+          "kind": "theorem",
+          "sha256": "0bdd6a5a6354714cf75fd831b69e2aa922e6dcc70890fe14bb4aa67ad656fef1",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.FlowSuspension.exists_native_block_holonomy",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 5664,
+          "end": 5759,
+          "kind": "theorem",
+          "sha256": "fd33dcb5472bddfc48eb5dccc893434c2aba997c186f848d3ee50a58fe1a8be8",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.FlowSuspension.corrected_cylinder_unique_connection",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 5761,
+          "end": 5838,
+          "kind": "theorem",
+          "sha256": "5f116fd7754f7b52dae7ce3943fd4de9a2cc12827e3698980a95fd38e973ea1d",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.FlowTimeChange.exists_small_supported_scalar_germ",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 5840,
+          "end": 5880,
+          "kind": "theorem",
+          "sha256": "d76d03eaba9862cfa783b9f8c48b102fe5b252b34194160a82ea75ab0d28bfb2",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.FlowTimeChange.exists_bounded_step_profile",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 5882,
+          "end": 5922,
+          "kind": "theorem",
+          "sha256": "7450a4f495a09ba95b33f8f9a69bef5ceaa950103c39d2bb90a9105b945ae9b7",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.FlowTimeChange.exists_supported_phase_clock",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 5924,
+          "end": 5999,
+          "kind": "theorem",
+          "sha256": "f23254984194261a5fa7cd1d6fc1dc9315d15d3e50caf676e25380d07e50fcb8",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.FlowTimeChange.phaseConjugatingDiffeomorph",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 6001,
+          "end": 6005,
+          "kind": "def",
+          "sha256": "0de3b2b21462a8c16bbbf3ff7998d23c86d4447db7a1db1ed0852dd6de116baa",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.FlowTimeChange.phaseClockFlow_base",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 6007,
+          "end": 6018,
+          "kind": "theorem",
+          "sha256": "d5c27efb46fa404dc38a8d6e2472dc57f75afc88393913d63d953abfce2d43dd",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.FlowTimeChange.phaseClockField_base_zero",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 6020,
+          "end": 6034,
+          "kind": "theorem",
+          "sha256": "f42a87befc2eaf87fa8e9923c2bd12a2fbdaa4906a47ed9c0d489ed7028d0344",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.FlowTimeChange.phaseClockField_time_derivative",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 6036,
+          "end": 6054,
+          "kind": "theorem",
+          "sha256": "55b90d4d571e84e2f69b6f25468b90a32d03bfa7d049ad04c497c2da4f0a8f94",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.FlowTimeChange.phaseClockField_time_positive",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 6056,
+          "end": 6061,
+          "kind": "theorem",
+          "sha256": "288530b2f7fe644abfd38402768c3cf4421db8ee97fb4f004dbad3b426b792a2",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.FlowTimeChange.phaseClockField_eq_vertical_of_translation_germ",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 6063,
+          "end": 6086,
+          "kind": "theorem",
+          "sha256": "157487cf2cf34899d00780aaf25387a3d97ad67c5c6552a1c1eb06a49416c255",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.FlowTimeChange.exists_compact_phase_field_support",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 6088,
+          "end": 6130,
+          "kind": "theorem",
+          "sha256": "913af2fde16546805420cde59365403221517d9d82fc3b3103f87f94a446b670",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.FlowTimeChange.PhaseFlowCoordinates",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 6132,
+          "end": 6140,
+          "kind": "structure",
+          "sha256": "f23d4798ff28aa1c7a94817e8d8afc2ad1573c1b51248fc20daeb9d6b68c60ce",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.FlowTimeChange.exists_compact_phase_flow",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 6142,
+          "end": 6218,
+          "kind": "theorem",
+          "sha256": "b40002d64f3016f84bf6daf5b4a9bc854e26bed99593d23428c6190a0c7978f0",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.FlowTimeChange.partialChartField_vertical_factor",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 6220,
+          "end": 6235,
+          "kind": "theorem",
+          "sha256": "a75235ca9edf26cad4285724c17a862fe4eb6d27e658cdb724c9e98047871169",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.FlowTimeChange.exists_native_positive_cylinder_rescaling",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 6237,
+          "end": 6288,
+          "kind": "theorem",
+          "sha256": "8999eb6277b796e6de2b0e611ae38a8790f8b4807174291e1f7a8a6e75e28b3f",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.FlowSuspension.exists_native_cylinder_conjugacy",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 6290,
+          "end": 6326,
+          "kind": "theorem",
+          "sha256": "3dd4795b1093a7d7b98fe9196bfb2935f0f2cbc7c1c25f7341e2f6dbe9e16a5f",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.FlowTimeChange.exists_native_phase_realization",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 6328,
+          "end": 6445,
+          "kind": "theorem",
+          "sha256": "f125048431c214e90e2c47548d8b571bf2b52165baaa193308bd9682b34d4ba7",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.FlowTimeChange.exists_native_matched_phase_cylinder",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 6447,
+          "end": 6523,
+          "kind": "theorem",
+          "sha256": "514000938c0063c627f7fb2c380fa3365a146ebdacc48b2b9aaca8159fc43467",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.FlowSuspension.exists_unique_phase_corrected_cylinder",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 6525,
+          "end": 6641,
+          "kind": "theorem",
+          "sha256": "fb55c0ca96aa02ef9d4246a91af84ac1b1954abeb66a67940e0592a6a0549a1c",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.MorseCancellation.native_endpoint_phase_through_box",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 6643,
+          "end": 6671,
+          "kind": "theorem",
+          "sha256": "391c78f2c76460a5575eaa1fd97069ad003705642d5664b2958df2708df971a4",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.MorseCancellation.matched_cubic_time_formulas",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 6673,
+          "end": 6750,
+          "kind": "theorem",
+          "sha256": "c2525383fa312326c1743e97cdae23c00fcbe6f94a303189dcee1ce42d826649",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.FieldChartGluing.partialChartField_eq_of_forward_germ",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 6752,
+          "end": 6770,
+          "kind": "theorem",
+          "sha256": "4bd35f953ee15690f4e72d42d0214c0dd3e3cf04f5ad1d2045c0c25d60d7c93a",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.FieldChartGluing.isLocalDiffeomorphAt_of_chart_germ",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 6772,
+          "end": 6779,
+          "kind": "theorem",
+          "sha256": "463af7769ebc890e14960f4681d187d8dcb713a9563ecf91325fe5b342a4b7b2",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.FieldChartGluing.exists_native_field_chart_near_compact",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 6781,
+          "end": 6821,
+          "kind": "theorem",
+          "sha256": "4d6ba9dd8790cd4a57a91188d2e4a4bc72751700e3fea8c7cd22ddfb04ca6383",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.FieldChartGluing.exists_controlled_field_germ_chart",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 6823,
+          "end": 6846,
+          "kind": "theorem",
+          "sha256": "1056d067781a50d18d8e68375c3ddc4ea798e9f1b32a09808bf0f4a5e01f0031",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.MorseCancellation.signed_split_transverse_rate",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 6848,
+          "end": 6860,
+          "kind": "theorem",
+          "sha256": "2472b5e8803304d1c34bdbf9286623131e820a3f2fc24cc45c23684707d5a49c",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.MorseCancellation.signed_split_transverse_exponential",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 6862,
+          "end": 6874,
+          "kind": "theorem",
+          "sha256": "0b2fd1b9c9045aa884ed5164be3ddd06a311d90e9c95ce8fb361714c512d847e",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.MorseCancellation.signed_block_change_cubic_cylinder",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 6876,
+          "end": 6891,
+          "kind": "theorem",
+          "sha256": "44353dbdfc153b750978f1c0eef34756b3da419bfb2d3b08d4ba8774396eeefe",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.MorseCancellation.exists_signed_block_changed_cubic_chart",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 6893,
+          "end": 6955,
+          "kind": "theorem",
+          "sha256": "dc1526cf6beb119b9d46fa972ff5ea1f8febbafbe43bfd7cf2f8db1ea242685f",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.MorseCancellation.exists_native_regular_cubic_field_chart",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 6957,
+          "end": 7031,
+          "kind": "theorem",
+          "sha256": "a3fc36b3e4bb86d4c947c0607cdfa488cce00a8468828971892cd88e5585f429",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.MorseCancellation.exists_regular_cubic_chart_of_native_vertical_field",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 7033,
+          "end": 7056,
+          "kind": "theorem",
+          "sha256": "8a455106b1a688ae19ef75cef0cf178b60e810f59029a34eef7b0e6b8e996639",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.FieldChartGluing.threeChartMap",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 7058,
+          "end": 7060,
+          "kind": "def",
+          "sha256": "67b3754ea38e81f7c5947b644a5a795b8cffa6818c46c0cd4383e9f5ac92c5bb",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.FieldChartGluing.threeChartMap_left_germ",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 7062,
+          "end": 7066,
+          "kind": "theorem",
+          "sha256": "b48a3227900098631e9c2a88fff380014caa3a2295f976e9e752921f3246897b",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.FieldChartGluing.threeChartMap_middle_germ",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 7068,
+          "end": 7073,
+          "kind": "theorem",
+          "sha256": "9fd1c32981e978a555c52cacfaa3b5cc9cb4232b80606d13bacecc8ab54476bd",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.FieldChartGluing.threeChartMap_right_germ",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 7075,
+          "end": 7079,
+          "kind": "theorem",
+          "sha256": "080d9818e38a2e60cb54a033d63c65bb9e122f737d54c3e6d99d37072a6b2fbc",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.FieldChartGluing.threeChartMap_left_closed_germ",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 7081,
+          "end": 7091,
+          "kind": "theorem",
+          "sha256": "112b009ef3e846675fde2fd13b1b0b0f7205c95bbb29cd58ef7024d5e8fc87f2",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.FieldChartGluing.threeChartMap_right_closed_germ",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 7093,
+          "end": 7103,
+          "kind": "theorem",
+          "sha256": "5a297346d143ebe8867c442f8b341d337e9dea5289978b92f6eb4e8cc32ba45a",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.FieldChartGluing.exists_glued_three_native_field_charts",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 7105,
+          "end": 7176,
+          "kind": "theorem",
+          "sha256": "834eaa8f432f39d547a08da619ac003fcb7ce2a203de1bb6eaffadcdee0f87cf",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.FieldChartGluing.injective_closed_axis_of_regular_chart",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 7178,
+          "end": 7220,
+          "kind": "theorem",
+          "sha256": "38a69570302211adb3d9e54e6ac05bb999d5268b47720016ab378aafa85bddbf",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.FieldChartGluing.exists_closed_axis_native_field_chart",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 7222,
+          "end": 7273,
+          "kind": "theorem",
+          "sha256": "280aa7ef9d1c698620d822d960ddaa4f19c0a720a9c90d3a5a80aa8dd1cac74a",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.MorseCancellation.exists_cubic_spatial_overlap_germ",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 7275,
+          "end": 7310,
+          "kind": "theorem",
+          "sha256": "eb357c84b3be1aeec1f21b572dce66d2fb2bc3c764175452226cbd8ac9d45bb0",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.MorseCancellation.cubicFlowCylinder_forward_stays_box",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 7312,
+          "end": 7323,
+          "kind": "theorem",
+          "sha256": "816799288eea90481eb6e30c5f729e465d285c9d615e0beae777bd07e9aed78b",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.MorseCancellation.cubicFlowCylinder_backward_stays_box",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 7325,
+          "end": 7336,
+          "kind": "theorem",
+          "sha256": "e5775fd56fe7438af3219b3a25846d81fbff96949839b61c2491029b0e30f59a",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.MorseCancellation.strictMono_cubicAxisParameter",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 7338,
+          "end": 7341,
+          "kind": "theorem",
+          "sha256": "f4b20c6c86b175e4a2f3be4b0d84accec44ea77ac50ea7abe6fb3be6459310f6",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.MorseCancellation.tendsto_cubicFlowCylinder_axis_atTop",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 7343,
+          "end": 7347,
+          "kind": "theorem",
+          "sha256": "60df58c73818da4612caf8186ab94e468f28e6df1c0cb8ab7994805120ee945a",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.MorseCancellation.tendsto_cubicFlowCylinder_axis_atBot",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 7349,
+          "end": 7353,
+          "kind": "theorem",
+          "sha256": "8799f2043db6226e840549c1833bcb716d6e83576c7eed9a485c2986e0e8cfd8",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.MorseCancellation.cubicFlowCylinder_zero_clock",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 7355,
+          "end": 7360,
+          "kind": "theorem",
+          "sha256": "19b6bc74edd55ba9bc398a440b88187e94206e04cba7e06ef7dbf475a72884a7",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.MorseCancellation.incoming_axis_segment_in_box",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 7362,
+          "end": 7381,
+          "kind": "theorem",
+          "sha256": "51669fd09d947bb2e92e84385e49e31b34f023d40f7b484551ab7ce347632ea2",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.MorseCancellation.outgoing_axis_segment_in_box",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 7383,
+          "end": 7402,
+          "kind": "theorem",
+          "sha256": "756b3dabb2c42fb9e4de44f12e3b383c94f5f4e3b84fd941a8d90e1b6819a760",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.MorseCancellation.exists_matched_full_cubic_field_chart",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 7404,
+          "end": 7488,
+          "kind": "theorem",
+          "sha256": "73bfade20e9e2ce38e6be6707b0d25d32043e2a1d02fc619fd791cae62e3bd73",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.MorseCancellation.exists_full_cubic_chart_from_corrected_cylinder",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 7490,
+          "end": 7660,
+          "kind": "theorem",
+          "sha256": "998c0dfa1decd0e0b5edda9e95982ab577f72a44e9503f775b7fecdb698e9772",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.FlowSuspension.cylinder_phase_basin_coordinates",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 7662,
+          "end": 7682,
+          "kind": "theorem",
+          "sha256": "a7aef9dfd0b1ed2eb39f63286a450807e1e486c4f1e2247437d286e071239407",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.FlowSuspension.cylinder_outgoing_basin_labels",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 7684,
+          "end": 7709,
+          "kind": "theorem",
+          "sha256": "668ecd376051259687733e50b86c6923e6fb782f0ef08686b3d0e4f50a56dd2a",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.FlowSuspension.cylinder_incoming_basin_labels",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 7711,
+          "end": 7734,
+          "kind": "theorem",
+          "sha256": "a0a14caa5c99ac100d4ec2a97bef09918b2a07ecbd32fb25f49d4fd5a534623b",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.MorseCancellation.cubicFlowCylinder_transverse_zero_iff",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 7736,
+          "end": 7738,
+          "kind": "theorem",
+          "sha256": "79899c2b9a4cbd83dde117fe3231bf3d1a6657605da3df7e3aa02d95b1df9091",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.MorseCancellation.incoming_cubic_slice_basin",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 7740,
+          "end": 7762,
+          "kind": "theorem",
+          "sha256": "4c0a21eeab41a58a4a0be0dba4e1be52d17cbef981614f1b699877092441b145",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.MorseCancellation.outgoing_cubic_slice_basin",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 7764,
+          "end": 7787,
+          "kind": "theorem",
+          "sha256": "b0cd2350ec4c2480ae16c9930b03333b56c25c962b248c1f6429b71cd746bf3d",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.FlowCancellation.exists_native_lyapunov_residence",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 7789,
+          "end": 7833,
+          "kind": "theorem",
+          "sha256": "faf271fbd8beb0da5b634711723af5cfa511a391a8c16837919d822de8b9978e",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.FlowCancellation.combine_native_residence_bounds",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 7835,
+          "end": 7863,
+          "kind": "theorem",
+          "sha256": "154094e0fc7763c3bd3a0de9dcb03c611b550704cc5cef4581da0ff4701599c1",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.FlowCancellation.exists_perturbed_band_residence",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 7865,
+          "end": 7892,
+          "kind": "theorem",
+          "sha256": "54244d37ea975ef9d083e7c6e34e7f3910f384d4ee482c61fb43f1fe2a977270",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.MorseCancellation.transverseEnergy",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 7894,
+          "end": 7895,
+          "kind": "def",
+          "sha256": "d29c419a69a9a5d174811cd67655278267b5be3762d2187620486e6559e94d23",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.MorseCancellation.transverseEnergy_nonneg",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 7897,
+          "end": 7899,
+          "kind": "theorem",
+          "sha256": "42757800e2e770e90105107ed1be6b636a88a09d427f9b248fab08e5673ecc8b",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.MorseCancellation.transverseEnergy_zero_iff",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 7901,
+          "end": 7911,
+          "kind": "theorem",
+          "sha256": "68d332287d0f873184b4de6f168d9c6eacf3b937b7d26c0b27ac79663787f77c",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.MorseCancellation.fieldLyapunov",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 7913,
+          "end": 7914,
+          "kind": "def",
+          "sha256": "034e5e31d99d84cbff7fe2b531ef7ea8c535779ae4ed18dee61641127a991c5d",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.MorseCancellation.contDiff_fieldLyapunov",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 7916,
+          "end": 7919,
+          "kind": "theorem",
+          "sha256": "40163e62e4a1b4a38bb2663ed347729574cfc8b4211520dc3d781cbfac991fa6",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.MorseCancellation.hasFDerivAt_fieldLyapunov",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 7921,
+          "end": 7937,
+          "kind": "theorem",
+          "sha256": "49e75f77bea01312ba8b15f3a1aa5c804cc8c58242264c26b06f9acc3f5b1fad",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.MorseCancellation.fieldLyapunov_speed",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 7939,
+          "end": 7956,
+          "kind": "theorem",
+          "sha256": "7344c6d1114ddf5c1ad41476b43024c1a488be33acc776da8792afef3dbbf00b",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.MorseCancellation.exists_compact_fieldLyapunov",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 7958,
+          "end": 8007,
+          "kind": "theorem",
+          "sha256": "5f297cc5c3b1a57e993039daebbfb8e65654c5d2f45cacdeb64e50980eb735a3",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.MorseCancellation.exists_compact_lyapunov_residence",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 8009,
+          "end": 8058,
+          "kind": "theorem",
+          "sha256": "119f8b355de291448ee05d6bae2b51380bad258f70932fc9e06972b4c7b991eb",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.MorseCancellation.hasDerivAt_partialChart_integralCurve",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 8060,
+          "end": 8083,
+          "kind": "theorem",
+          "sha256": "bde283628802d510ca0cd5aa4fcd391a3a861e975f2e4de709f535c98e9cc786",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.MorseCancellation.exists_native_compact_lyapunov_residence",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 8085,
+          "end": 8110,
+          "kind": "theorem",
+          "sha256": "838332db95acbce372e065cd0e20ecefd7f97c80e3a69ed700e54faad6a14ebe",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.MorseCancellation.exists_native_cancelledDescent_residence_bound",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 8112,
+          "end": 8126,
+          "kind": "theorem",
+          "sha256": "671cfb0cd47915a15c68a052a89c728c0cc4c613b0141d6e5c59e6077788cbee",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.MorseCancellation.exists_native_cubic_field_finite_passage",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 8128,
+          "end": 8173,
+          "kind": "theorem",
+          "sha256": "d9e7e203afd1e3329546046d49b259bb1d576e0bb2703ff8e598f529eee5789c",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.MorseCancellation.native_cubic_axis_flow",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 8175,
+          "end": 8204,
+          "kind": "theorem",
+          "sha256": "5f410061013ee74a5dba5412e1146c0a3c97761d907a0a86f40ebcfad717b14c",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.MorseCancellation.native_cubic_axis_orbit",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 8206,
+          "end": 8230,
+          "kind": "theorem",
+          "sha256": "1665274ef20b7ee06f3408a7982164cfaa83434cc4bb13ab4854c8a0cf8df2f4",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.MorseCancellation.native_cubic_closed_axis",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 8232,
+          "end": 8263,
+          "kind": "theorem",
+          "sha256": "975d9c98918ea7af1b10e95682daad2fdda397e8ba6bbb39bc22e8ea3d1b54a4",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.FlowCancellation.exists_uniform_directed_band_crossing",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 8265,
+          "end": 8289,
+          "kind": "theorem",
+          "sha256": "0b4d92e7ecc02447a1f1c8f59ab5abb19b724c0f88fbe56e0b49b655d4b94123",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.FlowCancellation.continuousOn_band_entryTime",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 8291,
+          "end": 8311,
+          "kind": "theorem",
+          "sha256": "55b1d0c8ce23bd6e99d129b837ff71a3015deecb1e9c016021f497b0fd011605",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.FlowCancellation.exists_native_flow_band_crossing",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 8313,
+          "end": 8341,
+          "kind": "theorem",
+          "sha256": "80c9d24bb0240e148a744bb5e0f81f9d3b24540e71c0ba3ba38ddd27fdbde154",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.MorseCancellation.exists_cubic_connection_finite_passage",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 8343,
+          "end": 8470,
+          "kind": "theorem",
+          "sha256": "1c8147afdaf7e3ed417639eef15b55441f430aef2b43241f039f1e522f4bdc6d",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.FlowCancellation.hasDerivAt_comp_native_integralCurve_at",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 8472,
+          "end": 8486,
+          "kind": "theorem",
+          "sha256": "cf0205a1a1e5e36e8cb6c81d1af8a1ebe41601af76877a4e569fdc715cc2cafa",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.FlowCancellation.mvfderiv_signedLevelTime",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 8488,
+          "end": 8509,
+          "kind": "theorem",
+          "sha256": "686cc390f8d06381df77c20bc755cdc9e0a174beabbf4196df3f9eb8b3fb0249",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.FlowCancellation.crossingBasin",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 8511,
+          "end": 8513,
+          "kind": "def",
+          "sha256": "fdbc9b16825ce08159885726e0c8448d7348a504c1d4e650e6d22f9360eb91ce",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.FlowCancellation.crossingDuration",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 8515,
+          "end": 8517,
+          "kind": "def",
+          "sha256": "7f26f5cc853a5fd05fa1b7794a7d2e9f1cae8a127b0bd949e7009837740b2cbd",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.FlowCancellation.flowBandHeight",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 8519,
+          "end": 8521,
+          "kind": "def",
+          "sha256": "245e3ae967c60f9854049b73f0c942d5cb1a8563fa5284c05f716b11ceaea56b",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.FlowCancellation.crossingDuration_pos",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 8523,
+          "end": 8536,
+          "kind": "theorem",
+          "sha256": "cf677df2e7668747727e04fbc348ba42e9c181e6b4e285d6fabc69dc33335264",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.FlowCancellation.crossingDuration_flow",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 8538,
+          "end": 8546,
+          "kind": "theorem",
+          "sha256": "c95a76a2d802ce504218f5a34348c23eb1795a04d8dafb464b5435d75f265ac3",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.FlowCancellation.flowBandHeight_flow",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 8548,
+          "end": 8557,
+          "kind": "theorem",
+          "sha256": "92e2c55b8c5467578a9964ccc254ed6a73ef545615fef9f094b2e54db63903ff",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.FlowCancellation.flowBandHeight_lower",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 8559,
+          "end": 8564,
+          "kind": "theorem",
+          "sha256": "574f5c496d2d95210e5a5172bc49f9030ef1af2b5c48b653911ab92ac13acfd1",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.FlowCancellation.flowBandHeight_upper",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 8566,
+          "end": 8576,
+          "kind": "theorem",
+          "sha256": "2305a412e1ddabe0ba66e4dafb97e0163af3fe2ad2322a3bbbbd4e02934062b2",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.FlowCancellation.smooth_flowBandHeight",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 8578,
+          "end": 8628,
+          "kind": "theorem",
+          "sha256": "da493211e07147ca94a772a2d4a266c046143806f60b2842e8f03cd0c157dc85",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.FlowCancellation.logarithmicCoordinate",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 8630,
+          "end": 8631,
+          "kind": "def",
+          "sha256": "224e1e403e55f86bc6a958d2887ec2161ed64a98fdfdd9b76bef466bd74c94e9",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.FlowCancellation.contDiff_logarithmicCoordinate",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 8633,
+          "end": 8639,
+          "kind": "theorem",
+          "sha256": "bb95a6539c9b4ff2644a2d28f246c057926994c6c96efee426d9dbbdaf9ecb28",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.FlowCancellation.hasDerivAt_logarithmicCoordinate",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 8641,
+          "end": 8648,
+          "kind": "theorem",
+          "sha256": "8ed465a9ae613de4ff34ee36ee6bddd9fc54b46f75f9c54a77e6f13e1925873f",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.FlowCancellation.logarithmicCoordinate_weighted_deriv_bound",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 8650,
+          "end": 8657,
+          "kind": "theorem",
+          "sha256": "7296bfdb5fe8aef6507474fcacf417b6a0e0809485d804a9118ad90b3dfcbd06",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.FlowCancellation.exists_logarithmic_cutoff",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 8659,
+          "end": 8734,
+          "kind": "theorem",
+          "sha256": "b6a2f74ccadbbbeaec07420c92605d1474ec9d4607aa23657960af36522263ef",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.FlowCancellation.deriv_eq_zero_of_nonneg_zero",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 8736,
+          "end": 8744,
+          "kind": "theorem",
+          "sha256": "057c91946d5e37a0286e10ecdf9ea74666b70af58bb1d9204c52401d91f1b80a",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.FlowCancellation.weighted_blend_neg",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 8746,
+          "end": 8758,
+          "kind": "theorem",
+          "sha256": "307c0e18d20a4f3f1f5d8f667689953b9fc6f0ba774d5300b2869675275d21df",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.FlowCancellation.hasDerivAt_flow_height_zero",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 8760,
+          "end": 8771,
+          "kind": "theorem",
+          "sha256": "204b74967305209cd6aa763191fb0589bb76498a44958def3e2854dfb4adc773",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.FlowCancellation.descentBlend",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 8773,
+          "end": 8774,
+          "kind": "def",
+          "sha256": "c8fefdac9a0e56dcd2b83af6e003431dda2bb724a6c3df067e614b1bdd6c3c07",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.FlowCancellation.mvfderiv_descentBlend",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 8776,
+          "end": 8798,
+          "kind": "theorem",
+          "sha256": "f9a022ecff677286a502fd44e317c620f7280473975d5d36d40d726f94a945d2",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.FlowCancellation.exists_native_descent_blend",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 8800,
+          "end": 8857,
+          "kind": "theorem",
+          "sha256": "4d75eff607eb580046846bd361b60c11680ef86669c938433795d335805e9f27",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.FlowCancellation.flowTube",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 8859,
+          "end": 8861,
+          "kind": "def",
+          "sha256": "4f1e41ed885c5d2e293a5c897eb42518d5c56bc687856e08d9f2718a536948ea",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.FlowCancellation.isCompact_flowTube",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 8863,
+          "end": 8865,
+          "kind": "theorem",
+          "sha256": "60097324fbbf48a74a5629ff4e879edf80d8efe9bdd4bed47ee57ae0e7817ade",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.FlowCancellation.exists_flowTube_subset",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 8867,
+          "end": 8881,
+          "kind": "theorem",
+          "sha256": "8af9557063469cbdad0cedcc16a4181a2f1b3e191168bc5687704f2f23466b99",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.FlowCancellation.mem_flowTube_of_signedTime",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 8883,
+          "end": 8890,
+          "kind": "theorem",
+          "sha256": "0871c89e39fbc86a4bb294ec86db0e9f6f7125320b835221ca8b353ae2d78202",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.FlowCancellation.exists_compact_negative_margin",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 8892,
+          "end": 8901,
+          "kind": "theorem",
+          "sha256": "cb5e23199235a8fd30a3b946ccf2747c572949a43388b320695e0cdfcafde533",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.FlowCancellation.contMDiffOn_directionalDerivative",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 8903,
+          "end": 8918,
+          "kind": "theorem",
+          "sha256": "dc7220a606b12ef621ecf9daacb9c252619afde7e4a0362c223322b0ae518120",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.FlowCancellation.exists_native_time_collar_bounds",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 8920,
+          "end": 8992,
+          "kind": "theorem",
+          "sha256": "fda57d2abebc9a591cbbc7472677a4337ad3342e6b9032223f8321c29229683d",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.FlowCancellation.exists_boundary_germ_correction",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 8994,
+          "end": 9027,
+          "kind": "theorem",
+          "sha256": "577aeced19972793071e6e2a3b337f85629a8ada9824d3e132e76e4fb7cc7d83",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.FlowCancellation.exists_signedTime_level_separation",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 9029,
+          "end": 9051,
+          "kind": "theorem",
+          "sha256": "005b9fb5f3c1c6917b218fb41a4729e64176f3b7ff3ba9406722bc6b378ec23a",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.FlowCancellation.exists_boundary_correction_preserving_level",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 9053,
+          "end": 9071,
+          "kind": "theorem",
+          "sha256": "d126fec88626a65129da97d1d18bd56edcffb61f65146e8307f96cf1e74ad6d0",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.FlowCancellation.band_subset_crossingBasin",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 9073,
+          "end": 9090,
+          "kind": "theorem",
+          "sha256": "44eda0e167df6d4a66bb3f1362d0ed34a9b589fe380944361618462e2c231bca",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.FlowCancellation.exists_smooth_band_height_germs",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 9092,
+          "end": 9135,
+          "kind": "theorem",
+          "sha256": "947bf67599f98deab018667f628d448ba3ec8278b7d4d27af6ed1e3259beffd3",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.FlowCancellation.bandReplacement",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 9137,
+          "end": 9138,
+          "kind": "def",
+          "sha256": "fbdd27777b5cbe31a57d5ea7e5670890e5b8f4da48d421e79880ca50d619a009",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.FlowCancellation.bandReplacement_germ_boundary",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 9140,
+          "end": 9146,
+          "kind": "theorem",
+          "sha256": "77e5d8bb31de22e3c86a70805052210525984f3159ad5a31a39da9abecda15e7",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.FlowCancellation.bandReplacement_germ_interior",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 9148,
+          "end": 9152,
+          "kind": "theorem",
+          "sha256": "4c23471e49b5542e41e9fef831a914b59f15d8c93c661d00c65618ddd6f4b673",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.FlowCancellation.bandReplacement_germ_exterior",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 9154,
+          "end": 9158,
+          "kind": "theorem",
+          "sha256": "c7d71de7cbf2abf43ebb23f0eb6eb59a38ddf1cfafbf2842a013d3c927cef17d",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.FlowCancellation.bandReplacement_germ_on_closed",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 9160,
+          "end": 9168,
+          "kind": "theorem",
+          "sha256": "4cb8f5be7d8e9d10b8306978cd55fb670e87a447a6c342cdc48ab213e3dc998f",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.FlowCancellation.bandReplacement_germ_off_open",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 9170,
+          "end": 9179,
+          "kind": "theorem",
+          "sha256": "53213f879be71c3b0077621e8463adab91ab13f4491f030909a83621a0d5aa8f",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.FlowCancellation.contMDiff_bandReplacement",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 9181,
+          "end": 9191,
+          "kind": "theorem",
+          "sha256": "f15e37d9065a3dc1d7e8db453d9d1d06b937d2ce10bb255b25214242146c3868",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.FlowCancellation.mvfderiv_eq_of_germ",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 9193,
+          "end": 9198,
+          "kind": "theorem",
+          "sha256": "806937b025953539b199c3561b90b3be1e368a2b414658cfd2b2a1aafda0b443",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.FlowCancellation.exists_global_band_lyapunov",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 9200,
+          "end": 9220,
+          "kind": "theorem",
+          "sha256": "25a3aaa51cbd1e711c4790f6d2b744d3bba29650896bafaf14521b5ebcd238f8",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.MorseCancellationPreservation.isMorseAt_of_same_germ",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 9310,
+          "end": 9322,
+          "kind": "theorem",
+          "sha256": "dbf6471e3600b0a3729cf551047d13d0226d08992017c49046a89d4b857af05b",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.MorseCancellationPreservation.isMorseAt_of_regular",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 9324,
+          "end": 9333,
+          "kind": "theorem",
+          "sha256": "a0da885457714eba95c03b2685010e7473572ff9e2a2b76a95d836f9f9087821",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.MorseCancellationPreservation.isMorse_of_critical_germs",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 9335,
+          "end": 9344,
+          "kind": "theorem",
+          "sha256": "91e48892daf2838b0a21cfbea2075d98c381383b00da99c817c1e15aab8c94ea",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.FlowCancellation.not_critical_of_directional_neg",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 9346,
+          "end": 9354,
+          "kind": "theorem",
+          "sha256": "0da548b5a3b97d636d1cbab297e004eece0a370b0102000d743ed952c4c2ba3d",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.FlowCancellation.remove_morse_band_pair",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 9356,
+          "end": 9415,
+          "kind": "theorem",
+          "sha256": "ad979af28bc64e561e61a6ba8ba8fbee5f965fae5e99c6fee44c3ce410956794",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.MorseCancellation.cancel_unique_native_cubic_connection",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 9417,
+          "end": 9481,
+          "kind": "theorem",
+          "sha256": "b3a519e1ffb0e100289b703ad19b535b123d4543711fc2f6488fb34bbd9387f8",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.MorseCancellation.cancel_unique_native_transverse_connection",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 9483,
+          "end": 9646,
+          "kind": "theorem",
+          "sha256": "7d4c15aa9b90c675e15c18a78f4e5b6dd1698c298366b5c35b1f5c68223ce187",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.MorseCancellation.cancel_native_endpoint_slice_data",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 9648,
+          "end": 9713,
+          "kind": "theorem",
+          "sha256": "8d4997d70b9ba8e18b04bc7b1d8f0b94e1f10fb56f1a923e3bbfeff2d9f6a4ab",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.MorseCancellation.NativeConnectionCancellationData.Transverse",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 9716,
+          "end": 9722,
+          "kind": "def",
+          "sha256": "b0f0db7d09a5f2f233206895a43ae44cbe23c36a9e26a9afe0b7a42dbb30740f",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.MorseCancellation.NativeConnectionCancellationData.cancel",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 9724,
+          "end": 9752,
+          "kind": "theorem",
+          "sha256": "81633d410afb9cfea65663c397d1aa4180b3a0e917207f160fc8083aeb261eae",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        }
+      ]
+    },
+    {
+      "root": "Mathoverflow1973.MorseCancellation.cancel_of_transverse_level_isotopy",
+      "declarations": [
+        {
+          "name": "Mathoverflow1973.MorseCancellation.contMDiff_supported_division",
+          "source": "Hopf/DifferentialTopology.lean",
+          "start": 108,
+          "end": 117,
+          "kind": "theorem",
+          "sha256": "091769a0398e713ae89e077f99c67639f8cae31d4b9162653c7f93d7aff5270f",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.MorseCancellation.exists_positive_height_rescaling",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 1194,
+          "end": 1241,
+          "kind": "theorem",
+          "sha256": "0ad493a19b5db2c3cce3a11b7c26256e305f2a4c7aecd7681dcb6b71abeb966e",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.MorseCancellation.exists_positive_band_normalization",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 1243,
+          "end": 1286,
+          "kind": "theorem",
+          "sha256": "2bb8dafed8517f3168e7f55892fe41e7a53604223c3ead738c666a2ce436ac95",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.FlowTimeChange.local_affine_height_germ",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 1288,
+          "end": 1299,
+          "kind": "theorem",
+          "sha256": "7147b86eb2f9289e652fec97dcbe1c5c7de19f6346aa5cc6221437b77da06982",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.FlowTimeChange.scalar_local_height_translation",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 1301,
+          "end": 1336,
+          "kind": "theorem",
+          "sha256": "b7de9f8379eb9eba06393f4842592392c3061a92ee0eb523a474ca12de053aee",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.FlowTimeChange.native_local_height_translation",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 1338,
+          "end": 1352,
+          "kind": "theorem",
+          "sha256": "110c011cb7c67a6fd944e56838e1f25e6ecf32a1811b9279c883abd3e5c02d34",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.FlowTimeChange.exists_orbit_preserving_band_normalization",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 1562,
+          "end": 1604,
+          "kind": "theorem",
+          "sha256": "3de9f4769b35f1c82e1b4031de329c8a55855e33fe5689d4732f39291f8f55ec",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.FlowSuspension.native_model_pullback_zero_iff",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 1694,
+          "end": 1712,
+          "kind": "theorem",
+          "sha256": "c822a011bf1d92fbc023d6129dcf7539f3c36d03f133b86307e370777ec52b68",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.FlowSuspension.contMDiffOn_native_model_pullback",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 1714,
+          "end": 1731,
+          "kind": "theorem",
+          "sha256": "5f3a4035f2ff6a9c8ebc0fd760310a83887f21aac17d7549988de5f31138cb30",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.FlowSuspension.exists_native_model_field_replacement",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 1733,
+          "end": 1767,
+          "kind": "theorem",
+          "sha256": "810a51de1a80bd9d348cdd69c6cce765f30ca0caf6e4126f7844e25f346c389b",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.FlowSuspension.native_model_pullback_eq_mfderiv_symm",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 1818,
+          "end": 1833,
+          "kind": "theorem",
+          "sha256": "e05ba20704b8ebf6a3aca5a7811a23dd3d434bd21abad7aeee375971788262d3",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.FlowSuspension.hasMFDerivAt_lift_native_model_curve",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 1835,
+          "end": 1858,
+          "kind": "theorem",
+          "sha256": "9b27bba8d0cddb6635f4fdbb085654454ddbde70d31e57a2f56de30906dd6c6a",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.FlowSuspension.native_model_flow_all_time",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 1860,
+          "end": 1883,
+          "kind": "theorem",
+          "sha256": "728dca4bd8e1a1450aea05166e5d2e3fd31e07d73ebe11d0bf71c1db5b81c315",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.FlowSuspension.native_model_target_invariant",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 1885,
+          "end": 1900,
+          "kind": "theorem",
+          "sha256": "a781a5968284ec6facfece3c298ecd5078be6143b44c9c3f2599af82c5eef821",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.FlowSuspension.exists_native_base_suspension",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 1902,
+          "end": 1933,
+          "kind": "theorem",
+          "sha256": "cc22733e77208380c1cd0a7eeea8eba963c8c862f55f0260cd670fd46db386d6",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.FlowSuspension.nativeSuspensionFlow",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 1935,
+          "end": 1951,
+          "kind": "def",
+          "sha256": "a3d59e23b64588057e1b46576dc1abee4a3e70693e19070dbbb001d3182ee92b",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.FlowSuspension.nativeSuspensionFlow_chart",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 1953,
+          "end": 1959,
+          "kind": "theorem",
+          "sha256": "79384f861fc9276ba7324790d04ae60a8473322434cefba7d4bd8de031fbb0b4",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.FlowSuspension.nativeVerticalField",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 1961,
+          "end": 1964,
+          "kind": "def",
+          "sha256": "472fc85358c4641055803052d598cb45f22c95a46285e6ec05f66206dcec590b",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.FlowSuspension.contMDiff_nativeVerticalField",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 1966,
+          "end": 1989,
+          "kind": "theorem",
+          "sha256": "97913a5cd62a7340e65c2576b66badb0f803cfd7a4b636e0d7a796168286a379",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.FlowSuspension.nativeSuspensionField",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 1991,
+          "end": 1996,
+          "kind": "def",
+          "sha256": "08d15a7d13fe7ba3cd719e7aecfef82dbbd725433a13d5bfe138b7c6443a4d1c",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.FlowSuspension.contMDiff_nativeSuspensionField",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 1998,
+          "end": 2011,
+          "kind": "theorem",
+          "sha256": "c1feacd468db284716c7d7d6700cdb9a6913102e19e55f15065453d05df55bd3",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.FlowSuspension.nativeVerticalField_integralCurve",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 2013,
+          "end": 2028,
+          "kind": "theorem",
+          "sha256": "2cf5e1b52928faa261725ebe2e8efea9853c937dd61625aaf8adac997a363716",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.FlowSuspension.nativeSuspensionFlow_integralCurve",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 2030,
+          "end": 2055,
+          "kind": "theorem",
+          "sha256": "958b3a9f9e90e9d2618205d3f54f5dc3a0e4551db9f2c28b2425b53e76d2b0f3",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.FlowSuspension.nativeSuspensionFlow_height",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 2057,
+          "end": 2068,
+          "kind": "theorem",
+          "sha256": "7a2d6c4fb6c0bd948b6569bff28e1cdc6c9f1fba1b6ffa3d470b02bb876c9bc0",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.FlowSuspension.native_level_flow_chart_vertical",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 2070,
+          "end": 2112,
+          "kind": "theorem",
+          "sha256": "8c9c27bf9a23db3bba48df2b04b58837b7cd27ec2614c0786340382b8912dc27",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.FlowSuspension.exists_native_level_flow_cylinder_with_field",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 2114,
+          "end": 2139,
+          "kind": "theorem",
+          "sha256": "f8574ae6dbfa2d4f5b762ba8dd990b8ae4f286485a7a2a764a1da5c2c4e96d22",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.FlowTimeChange.mfderiv_height_div_const",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 2141,
+          "end": 2149,
+          "kind": "theorem",
+          "sha256": "e3c32e27fa779abdabe094e33a406452d32422736ad0499fb25d0397776a6ca0",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.FlowTimeChange.criticalPoints_height_div_const",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 2162,
+          "end": 2170,
+          "kind": "theorem",
+          "sha256": "469951f2c84483d2ee6649b7aa06b992def5d56ebf6e7babe7e8dc61cf669a47",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.FlowTimeChange.exists_normalized_whole_level_cylinder",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 2180,
+          "end": 2267,
+          "kind": "theorem",
+          "sha256": "11138a99fdca512a32f12c9efdd604e1fb6b6cc998400fdb78acae3994d96cd6",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.FlowSuspension.nativeSuspensionField_height",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 2269,
+          "end": 2284,
+          "kind": "theorem",
+          "sha256": "e6180579970a5f59818a3b1bc842a38992dddceffaf1ad60e44c3bd8fbd3d621",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.FlowSuspension.nativeSuspensionField_ne_zero",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 2286,
+          "end": 2294,
+          "kind": "theorem",
+          "sha256": "e15db04a8b8d2a563586a7e5116f27f917ead9f348e0b9c964fb0bdda7cd3cdb",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.FlowSuspension.nativeSuspensionField_eq_vertical_of_flow_germ",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 2296,
+          "end": 2313,
+          "kind": "theorem",
+          "sha256": "f1402258d8d3bd45501a07ad432e5ff610024204db23cc5034104917174d4967",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.FlowSuspension.nativeSuspensionField_eq_vertical_off_base",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 2315,
+          "end": 2330,
+          "kind": "theorem",
+          "sha256": "37c20be9d1516a2b460339dfe03adadb30d10cf72f6665dd90f15732dbd8151b",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.FlowSuspension.nativeSuspensionField_eq_vertical_below",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 2332,
+          "end": 2346,
+          "kind": "theorem",
+          "sha256": "f5b50533b8d857e5ab1d73072a7361a21371c185d7381b5a02f600f594f11100",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.FlowSuspension.nativeSuspensionField_eq_vertical_above",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 2348,
+          "end": 2364,
+          "kind": "theorem",
+          "sha256": "0e188493c4d7a099bb5692f5d2a8c4285de8c4089e0af6c6fc9d57b39573a720",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.FlowSuspension.nativeSuspensionFlow_fixed_line",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 2366,
+          "end": 2378,
+          "kind": "theorem",
+          "sha256": "ae91d5b9e69de22e27ef294e92413091d62b54f609075fe340ce7c373fca8942",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.FlowSuspension.exists_compact_native_level_suspension",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 2380,
+          "end": 2435,
+          "kind": "theorem",
+          "sha256": "e64eaf68a843018beecad37ebaf6a1480e2a17f25416efa35c2f1b0ba8536285",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.FlowSuspension.mvfderiv_native_model_pullback",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 2437,
+          "end": 2451,
+          "kind": "theorem",
+          "sha256": "f56aa0b737291354627adc9299a6bd3525040dd982077ece024cde834398ef2b",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.FlowSuspension.mvfderiv_native_level_height",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 2453,
+          "end": 2486,
+          "kind": "theorem",
+          "sha256": "027580a9e6c7a57bf44f0158f019680015c1505d6b42ecdc5fbb0bc0749879dd",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.FlowSuspension.exists_native_whole_level_holonomy",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 2488,
+          "end": 2597,
+          "kind": "theorem",
+          "sha256": "6ae736d314cb195a11e87a907705576c513b89a57d27012e70902523561a0e44",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.FlowSuspension.native_whole_level_exterior_tails",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 2599,
+          "end": 2623,
+          "kind": "theorem",
+          "sha256": "f8825862eec744ef86ad328879538e996619aed5c9188beeaadaf0c19a1defd1",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.FlowSuspension.exists_native_regular_level_isotopy_realization",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 2625,
+          "end": 2726,
+          "kind": "theorem",
+          "sha256": "b5591199265566bce7722ae937a04c8939059ba40fa96b72f04924d9cf7c1e4e",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.FlowSuspension.whole_level_basins_of_holonomy",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 2728,
+          "end": 2765,
+          "kind": "theorem",
+          "sha256": "91de0b19f6cc744bb674fcb4c6b04507af94b6bb0409b29d4d5d8d9acf0dfb2d",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.FlowSuspension.unique_connection_of_level_basin_intersection",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 2767,
+          "end": 2801,
+          "kind": "theorem",
+          "sha256": "7e3bcf396a9aefd86295d6188bd9d8e00285da3f1ef8bb94099d5da9ae0ebaa6",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.TransverseGerms.timeLiftLinear",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 2869,
+          "end": 2873,
+          "kind": "def",
+          "sha256": "e792219f59288383bf815cc64aef3c2b37351c23df663dd5cb8d53baf3343927",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.TransverseGerms.surjective_time_lift_coprod",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 2875,
+          "end": 2886,
+          "kind": "theorem",
+          "sha256": "2fb8cc318c9d36b8594b39762982a40ff193994ad9c60d24d201944b93fc1264",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.TransverseGerms.native_time_lift_derivative",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 2888,
+          "end": 2900,
+          "kind": "theorem",
+          "sha256": "b2850e0b27f40dfa29d3ac2a7e8eb7566a79136858aa512cd63685b334519cd6",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.TransverseGerms.native_transversality_time_lifts",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 2902,
+          "end": 2917,
+          "kind": "theorem",
+          "sha256": "a3e0eb88080b83d206cc3413d4765f2c4a8c9874f2b662f96fb815ebea60fc04",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.TransverseGerms.native_transverse_sheets_of_level_maps",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 2919,
+          "end": 2946,
+          "kind": "theorem",
+          "sha256": "591f55e24029220997c42a2cdb63abcff9797d95e4f42ea11b3f4bf256eb7c2d",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.FlowSuspension.native_transverse_basin_tubes_of_level_maps",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 2948,
+          "end": 3007,
+          "kind": "theorem",
+          "sha256": "210efbcaa5fe1e983b1404f2c688201882ab714343c6cc2b1ef064fa20637e1f",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.FlowSuspension.phase_slice_flow_coordinates",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 3069,
+          "end": 3088,
+          "kind": "theorem",
+          "sha256": "5993e1f380e4207f2ca6356cd452cabfcd100703fb8c9df36886a78d253c492b",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.FlowSuspension.phase_flow_sheet_contMDiffAt",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 3090,
+          "end": 3118,
+          "kind": "theorem",
+          "sha256": "b530b764e25402e96e16bb791537214b5674c2e3eb2837762c8678972d38d904",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.FlowSuspension.phase_flow_subsheet_properties",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 3120,
+          "end": 3153,
+          "kind": "theorem",
+          "sha256": "0d585e121e5fc62a32974080fa0fce3f11d880e06b777a2cc2229da0e02d1f5a",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.FlowSuspension.exists_phase_flow_basin_chart",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 3217,
+          "end": 3257,
+          "kind": "theorem",
+          "sha256": "0bb7c6ac9a61ab7294083b1de2869d090a9f61cc7587a1e9946f801bbf7ba18b",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.FlowSuspension.phase_flow_chart_subsheet_germ",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 3259,
+          "end": 3270,
+          "kind": "theorem",
+          "sha256": "22dd8820f7466bd358b61eb08af8be3c93396297f96435ad09247136c7325b27",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.FlowCancellation.native_flow_chart_vertical",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 3272,
+          "end": 3304,
+          "kind": "theorem",
+          "sha256": "904ee5560107cef32f24df4f768f31a1d62d3f2cd6334bad1419527c34b4c50f",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.FlowCancellation.exists_euclidean_level_flow_cylinder",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 3306,
+          "end": 3346,
+          "kind": "theorem",
+          "sha256": "dd599f4b863726b370a91e5d17c0a392c6402415d2714f7c6fe3cf32e012a832",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.FlowTimeChange.exists_arbitrary_gap_flow_cylinder",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 3388,
+          "end": 3497,
+          "kind": "theorem",
+          "sha256": "cf9bf63cef1c2b1f85ffcd54bbc36fdd00de93e586edc87abe0d772af40c0321",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.FlowTimeChange.exists_normalized_connection_cylinder",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 3499,
+          "end": 3622,
+          "kind": "theorem",
+          "sha256": "ab3a5750dbda45bae169eaf6ba37d051b2ecb8d06cbf675fbb2db1b5da032404",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.MorseCancellation.cubicFlowCylinder_pushforward_vertical",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 3624,
+          "end": 3632,
+          "kind": "theorem",
+          "sha256": "9ed2e444cdc20c480ccb774d9fe76e74eadafdfd980c7d72ed156e3a3f88a334",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.FlowSuspension.native_field_transition_pushforward",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 3634,
+          "end": 3669,
+          "kind": "theorem",
+          "sha256": "4fd1f701d2c5eb3f7e3825068e604970b739e2697d73de6523c5ff422631fd55",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.FlowSuspension.native_vertical_transition_derivative",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 3671,
+          "end": 3683,
+          "kind": "theorem",
+          "sha256": "b0dc2a7ef581e995dca7ba3e30c52786292cfbffd5222473547db27de20a679d",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.FlowSuspension.vertical_transition_formula",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 3685,
+          "end": 3710,
+          "kind": "theorem",
+          "sha256": "1cc73a0728a5e35d17dd744250ca6769398d660f14d3171c1bcb828258b29062",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.FlowSuspension.exists_vertical_transition_phase",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 3712,
+          "end": 3747,
+          "kind": "theorem",
+          "sha256": "6984d2eb54b61381cdb80711f1edcff02152204d60be3cb8e19aca26bbbddc51",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.FlowSuspension.exists_transverse_transition_chart",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 3749,
+          "end": 3796,
+          "kind": "theorem",
+          "sha256": "544aedb21502e0f8ea8b70af4fc8e3e726619af3c40e5d337a51573830d22ed8",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.FlowSuspension.exists_native_transition_phase",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 3798,
+          "end": 3844,
+          "kind": "theorem",
+          "sha256": "322c571588de84860b3b824f8e0032a4f81eea13968463180d09981c0daaaf53",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.FlowSuspension.exists_global_native_transition_phase",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 3846,
+          "end": 3883,
+          "kind": "theorem",
+          "sha256": "3dd03953299ae5e53ed85d0fe7b4642573523b020b9e5400c34fe55da45b035c",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.FlowSuspension.exists_time_last_native_transition_phase",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 3885,
+          "end": 3934,
+          "kind": "theorem",
+          "sha256": "e46a1a05c32b297de6e734cb86d1431fc22028f63f136c17f56a4374fa8597ba",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.FlowSuspension.exists_native_endpoint_slice_phase",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 3936,
+          "end": 4001,
+          "kind": "theorem",
+          "sha256": "a2a9afd1982d32b47ad3f51ad96ab294b9fc6afb7dee4de7476ff8ad3082d0a0",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.TransverseGerms.exists_common_transverse_range",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 4088,
+          "end": 4133,
+          "kind": "theorem",
+          "sha256": "5a7ba7b9c0e9fb433715510d43850ebbe3edcc08ba10695e332bd36289baea19",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.TransverseGerms.exists_common_transverse_coordinates",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 4135,
+          "end": 4197,
+          "kind": "theorem",
+          "sha256": "2430cb1d23290ffebc4b6621b9d1eec3cef22dd1d9b76a906206e09bc6040638",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.TransverseGerms.exists_restricted_native_cylinder",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 4199,
+          "end": 4221,
+          "kind": "theorem",
+          "sha256": "bf2d291a9e82c4359c1046acb88e800558525664d69449702a655e7f5fabb8b5",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.MorseCancellation.exists_original_endpoint_slice_data",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 4249,
+          "end": 4329,
+          "kind": "theorem",
+          "sha256": "34bf4c0946208dedb575044dd5f04495f0ffd477298273d652985f52287efde0",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.MorseCancellation.incoming_linear_stable_plane",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 4331,
+          "end": 4368,
+          "kind": "theorem",
+          "sha256": "8410fe12601c0802dfc7dde37fcc42443d767709e8cbffce703732f6935a055d",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.MorseCancellation.outgoing_linear_unstable_plane",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 4370,
+          "end": 4406,
+          "kind": "theorem",
+          "sha256": "151cbb99546a9cd207cdcfc4cf286462768fd32cd888973f30cdbced8fb34b70",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.MorseCancellation.endpoint_axis_tail_of_restriction",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 4408,
+          "end": 4424,
+          "kind": "theorem",
+          "sha256": "aac05bc034b8bb97aea4cf19ff04bc6a6dabe101590e45241484ecb5e44e2722",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.MorseCancellation.exists_cubic_endpoint_basin_restriction",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 4426,
+          "end": 4491,
+          "kind": "theorem",
+          "sha256": "6896802d6fc5556e6d58e96ba64bc1e6e031a6de308ceb834e5ad41cf8176976",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.MorseCancellation.exists_actual_incoming_cubic_basin",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 4493,
+          "end": 4524,
+          "kind": "theorem",
+          "sha256": "f5bd62a9a13be6d90ccc132ff3457fa90436d43181faabcdb4676753b076a5b6",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.MorseCancellation.exists_actual_outgoing_cubic_basin",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 4526,
+          "end": 4561,
+          "kind": "theorem",
+          "sha256": "895bf24de31af9c111100e008362f01eb6798c40aec190f756a6ebb2563f6f31",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.SignedCoordinates.positive_of_not_negative",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 4563,
+          "end": 4565,
+          "kind": "theorem",
+          "sha256": "74705c70dd1ca1e26fe0d0aec2bc900f84b1c9c761a97b41e4c22187a8c117aa",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.SignedCoordinates.exists_equiv_of_negative_card_eq",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 4567,
+          "end": 4593,
+          "kind": "theorem",
+          "sha256": "44217e9643794f2e603008bcc3823d7431e86dac012d0b8ca98a029e901f399f",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.MorseCancellation.exists_coordinate_enum",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 4595,
+          "end": 4598,
+          "kind": "theorem",
+          "sha256": "e09767d7256229d13e732b84befd62f9b96bccdec490db34c784c2193a30bbb8",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.SignedCoordinates.negative_card_split",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 4600,
+          "end": 4609,
+          "kind": "theorem",
+          "sha256": "cc7572f79bfd2db7feba2a186209273b6ce31f2c3b8daed39116fb70808aa2cf",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.SignedCoordinates.exists_adjacent_sign_enumerations",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 4611,
+          "end": 4650,
+          "kind": "theorem",
+          "sha256": "d0e1911b845e6039f37d88b11da9999e193945818561e83ef045a744044cb3b7",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.SignedCoordinates.exists_adjacent_sign_enumerations_of_dimension",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 4652,
+          "end": 4661,
+          "kind": "theorem",
+          "sha256": "a1b6100e7e9f6f46a647ff179575a426aa95e387a3bffd2b3ce77fed84a8f202",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.MorseCancellation.exists_matched_connection_basin_endpoints",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 4663,
+          "end": 4711,
+          "kind": "theorem",
+          "sha256": "10f32e27ca5a67865c06c7bc0157b249d8b8dd3066d7a999a5a209023a24942f",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.MorseCancellation.exists_actual_connection_slice_data",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 4713,
+          "end": 4790,
+          "kind": "theorem",
+          "sha256": "a6e2e019c0ca0443dab7918331392f2b5debc6b30fc7b92966927ca518e8a08d",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.MorseCancellation.exists_native_connection_cancellation_data",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 9754,
+          "end": 9848,
+          "kind": "theorem",
+          "sha256": "b6c3014b0d171644a77042a583fe22eb1977dad8bc72f9b9c9564168ce6bacbc",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.TransverseGerms.derivative_first_of_time_independent_label",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 9850,
+          "end": 9865,
+          "kind": "theorem",
+          "sha256": "06c9e3b61dd08ea982b2069b8bd3f20c856230c6a8dd15c696824e0cdefed847",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.TransverseGerms.transverse_labels_of_time_independent_flow_sheets",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 9867,
+          "end": 9883,
+          "kind": "theorem",
+          "sha256": "e50517fdd837a37ebb668a5fddb89b56ddb49911bc01ed6617eccce5884f5c4d",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.TransverseGerms.transverse_labels_of_native_flow_sheets",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 9885,
+          "end": 9912,
+          "kind": "theorem",
+          "sha256": "3a2059e2bdeb9f3edd5b0e935590089e6b8762b0639d09e623645e8988504684",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.MorseCancellation.NativeConnectionCancellationData.outgoingSheet",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 9914,
+          "end": 9922,
+          "kind": "def",
+          "sha256": "d08c5b58b7c265fcdd2efdab18cf0a0b1992df4dd8f6ed4913dba319cbc09717",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.MorseCancellation.NativeConnectionCancellationData.incomingSheet",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 9924,
+          "end": 9932,
+          "kind": "def",
+          "sha256": "133267a34859487a3ab239e8819642130fef567d4b712d6b7a2bfd0905ce0e39",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.MorseCancellation.NativeConnectionCancellationData.outgoingSheet_properties",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 9934,
+          "end": 9959,
+          "kind": "theorem",
+          "sha256": "bf3eb1589cf517edcc84fe6a4b7ad8d965d31c0af728dbcd28497d8edee21eea",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.MorseCancellation.NativeConnectionCancellationData.incomingSheet_properties",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 9961,
+          "end": 9988,
+          "kind": "theorem",
+          "sha256": "71c5711359ca362590bb7de63e5d15bb8e079a70d8880c1dcb20599cd34d89e3",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.MorseCancellation.NativeConnectionCancellationData.transverse_of_native_sheets",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 9990,
+          "end": 10029,
+          "kind": "theorem",
+          "sha256": "6c9271114c21dbba17ce8437bc934be2d97760850f280c8f041ed2ff049b0c20",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.MorseCancellation.NativeConnectionCancellationData.outgoing_basin_chart",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 10031,
+          "end": 10074,
+          "kind": "theorem",
+          "sha256": "0e452bdf486d254cec4d9bef316db398a3303bb82df348561e1af2932f8e60c6",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.MorseCancellation.NativeConnectionCancellationData.incoming_basin_chart",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 10076,
+          "end": 10121,
+          "kind": "theorem",
+          "sha256": "33a396b7a4d7537fcfe4bcc8f36423e188c7093c7a4fdbf1f892eda6193b005c",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.TransverseGerms.native_transversality_of_sheet_factorizations",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 10123,
+          "end": 10153,
+          "kind": "theorem",
+          "sha256": "b91ea7c1291a5d7eac25d04b13039e9dfda649c05b38bf12ca13e7703c3cd63a",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.TransverseGerms.exists_native_plane_factorization",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 10155,
+          "end": 10178,
+          "kind": "theorem",
+          "sha256": "ef6ae4b6ef84f61a1c24f89e2a768d2f2cc7c744fc47a43c753ce3f74cdf913e",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.TransverseGerms.exists_native_plane_sheet_factorization",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 10180,
+          "end": 10194,
+          "kind": "theorem",
+          "sha256": "a7ef26e38d01ed2df2d6a1664da1c5529f43c3d604d01380ca0eb41d00f7d88e",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.TransverseGerms.exists_native_basin_sheet_factorization",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 10196,
+          "end": 10212,
+          "kind": "theorem",
+          "sha256": "11c314d9cd1d700dc1908565d056a7914c714d1000bc89a37bb718e9c448e5e1",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.MorseCancellation.NativeConnectionCancellationData.outgoing_basin_factorization",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 10214,
+          "end": 10244,
+          "kind": "theorem",
+          "sha256": "563cb253d8cdeffaa7bbf62146bcea385edaaca39c5d14db76ec267baaf8ca97",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.MorseCancellation.NativeConnectionCancellationData.incoming_basin_factorization",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 10246,
+          "end": 10276,
+          "kind": "theorem",
+          "sha256": "3cdf9bb85b8b76ec046156473ee2eddedf9aad9610ae1ad2807f139afe58f13c",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.MorseCancellation.NativeConnectionCancellationData.transverse_of_native_basin_sheets",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 10278,
+          "end": 10298,
+          "kind": "theorem",
+          "sha256": "5a92d1765b9f4b6e5dc5f605bb0ff771bf212cc2fdacbf5a35ce2e52f3646c72",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.MorseCancellation.NativeConnectionCancellationData.cancel_of_transverse_basin_sheets",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 10300,
+          "end": 10329,
+          "kind": "theorem",
+          "sha256": "d06120b55b3140c090f9fc39d057322276e3723adb9ff48d9d8e822acaf9fb7c",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.MorseCancellation.cancel_unique_connection_of_transverse_basin_sheets",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 10331,
+          "end": 10400,
+          "kind": "theorem",
+          "sha256": "a1e8689cfab5843254b18f11c5346cc87f66d9974f156b4be958a8c5203ca15e",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.MorseCancellation.cancel_of_transverse_level_isotopy",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 10402,
+          "end": 10511,
+          "kind": "theorem",
+          "sha256": "769d0d867ca3abd05a3b2efeeed85dd69ef4f63f3ad086afcd6b11657d9e5419",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        }
+      ]
+    },
+    {
+      "root": "Mathoverflow1973.MorseRearrangement.exists_morse_rearrangement_of_no_connection",
+      "declarations": [
+        {
+          "name": "Mathoverflow1973.FlowTimeChange.normalized_flow_level_image",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 1354,
+          "end": 1373,
+          "kind": "theorem",
+          "sha256": "2313340d0ff2478d1899397c19c7532295bd5dff888a4f02123bc0af36f0ec6d",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.FlowTimeChange.normalized_flow_sublevel_iff",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 1375,
+          "end": 1415,
+          "kind": "theorem",
+          "sha256": "ec4197472dedec10cca55f3f65e8e66630577a0a3de615b2a0e6c35938ddabbb",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.FlowTimeChange.normalized_flow_sublevel_image",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 1417,
+          "end": 1431,
+          "kind": "theorem",
+          "sha256": "96fdd8f619b96afd75b37c4a11bb05b8144d79105783f530696ce81785442187",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.FlowTimeChange.exists_orbit_preserving_ambient_band_bridge",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 1606,
+          "end": 1627,
+          "kind": "theorem",
+          "sha256": "d70e98f776fc48928936e92f2eeb57c8e929d926ef7ff6adc9e1d47ac3fa75b8",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.FlowTimeChange.exists_orbit_preserving_native_band_bridge",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 1629,
+          "end": 1652,
+          "kind": "theorem",
+          "sha256": "57e7ac2b8fa6a549215f663b202591b4b88778111544b722422ab4b298675f29",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.MorseCancellation.shiftedSignedMorseChart",
+          "source": "Hopf/SphereTopology.lean",
+          "start": 2543,
+          "end": 2554,
+          "kind": "def",
+          "sha256": "00c75a66f45bc549b11e0bf0c9dbc60544d521f3983e8d0356d4bca309186eb0",
+          "target": "Lib/Geometry/Manifold/Morse/RearrangementTheorem.lean"
+        },
+        {
+          "name": "Mathoverflow1973.MorseCancellation.isMorseAt_add_const",
+          "source": "Hopf/SphereTopology.lean",
+          "start": 2556,
+          "end": 2566,
+          "kind": "theorem",
+          "sha256": "9461a17b736d6a3e390377bd923fe9119ef626a370dbfd3089419f3167b7cb67",
+          "target": "Lib/Geometry/Manifold/Morse/RearrangementTheorem.lean"
+        },
+        {
+          "name": "Mathoverflow1973.MorseCancellation.isMorseAt_of_add_const_germ",
+          "source": "Hopf/SphereTopology.lean",
+          "start": 2568,
+          "end": 2572,
+          "kind": "theorem",
+          "sha256": "bbef50df23fa16d4704b15a570e74c68f0a4fa84e7c25c29e1de4594344e07a7",
+          "target": "Lib/Geometry/Manifold/Morse/RearrangementTheorem.lean"
+        },
+        {
+          "name": "Mathoverflow1973.MorseCancellation.nativeMorseIndex_add_const",
+          "source": "Hopf/SphereTopology.lean",
+          "start": 2574,
+          "end": 2579,
+          "kind": "theorem",
+          "sha256": "add9f0ed9772b1564eb6aa3fb15dc39d9e3e12408c1df9f6c4073933687ac65f",
+          "target": "Lib/Geometry/Manifold/Morse/RearrangementTheorem.lean"
+        },
+        {
+          "name": "Mathoverflow1973.MorseCancellation.nativeMorseIndex_of_add_const_germ",
+          "source": "Hopf/SphereTopology.lean",
+          "start": 2581,
+          "end": 2585,
+          "kind": "theorem",
+          "sha256": "b8023a7669364bcccf4af7ff79ea3541fa1eb0cb56fe6dc3da1b192491dd0d5a",
+          "target": "Lib/Geometry/Manifold/Morse/RearrangementTheorem.lean"
+        },
+        {
+          "name": "Mathoverflow1973.MorseCancellation.mfderiv_of_add_const_germ",
+          "source": "Hopf/SphereTopology.lean",
+          "start": 2587,
+          "end": 2596,
+          "kind": "theorem",
+          "sha256": "48df1042641ce43d5690c7d245b46ec88b5d153f36ff228c604f343ccf403a3c",
+          "target": "Lib/Geometry/Manifold/Morse/RearrangementTheorem.lean"
+        },
+        {
+          "name": "Mathoverflow1973.FlowCancellation.levelBasin_eq_of_orbit_level_bridge",
+          "source": "Hopf/SphereTopology.lean",
+          "start": 2634,
+          "end": 2655,
+          "kind": "theorem",
+          "sha256": "3d89673dba22554a57dc9875074287f32522ac89ad3369a9d3cccdbdf4c7819a",
+          "target": "Lib/Geometry/Manifold/Morse/RearrangementTheorem.lean"
+        },
+        {
+          "name": "Mathoverflow1973.FlowCancellation.levelBasin_eq_of_regular_band",
+          "source": "Hopf/SphereTopology.lean",
+          "start": 2657,
+          "end": 2668,
+          "kind": "theorem",
+          "sha256": "9d62780bf76f7af296bb8805634df5e5970daa34c69fa740a61869e601f74301",
+          "target": "Lib/Geometry/Manifold/Morse/RearrangementTheorem.lean"
+        },
+        {
+          "name": "Mathoverflow1973.MorseCancellation.image_flow_invariant_section",
+          "source": "Hopf/SphereTopology.lean",
+          "start": 2670,
+          "end": 2686,
+          "kind": "theorem",
+          "sha256": "260ed5d6c9c78ec31719ace190ad11f8f56b41a350ac9da982e996f4944ec3bb",
+          "target": "Lib/Geometry/Manifold/Morse/RearrangementTheorem.lean"
+        },
+        {
+          "name": "Mathoverflow1973.MorseCancellation.isCompact_flow_invariant_section_iff",
+          "source": "Hopf/SphereTopology.lean",
+          "start": 2688,
+          "end": 2693,
+          "kind": "theorem",
+          "sha256": "694046a34b7bc86f9a39f80ab937b9ad0b1709bf8ff6d93d21d119674c53765c",
+          "target": "Lib/Geometry/Manifold/Morse/RearrangementTheorem.lean"
+        },
+        {
+          "name": "Mathoverflow1973.MorseCancellation.isCompact_native_belt_basin",
+          "source": "Hopf/SphereTopology.lean",
+          "start": 2695,
+          "end": 2724,
+          "kind": "theorem",
+          "sha256": "b1085461ac3a3e2cec6799200a3e64f91b82fb924a8a501105aa0ad2960670cd",
+          "target": "Lib/Geometry/Manifold/Morse/RearrangementTheorem.lean"
+        },
+        {
+          "name": "Mathoverflow1973.MorseCancellation.isCompact_native_attaching_basin",
+          "source": "Hopf/SphereTopology.lean",
+          "start": 2726,
+          "end": 2755,
+          "kind": "theorem",
+          "sha256": "c7ce25994588757b05bc6a339560a75a40cb3db7030eef8033ccef084a54bb37",
+          "target": "Lib/Geometry/Manifold/Morse/RearrangementTheorem.lean"
+        },
+        {
+          "name": "Mathoverflow1973.FlowCancellation.isCompact_invariant_section_iff_of_regular_band",
+          "source": "Hopf/SphereTopology.lean",
+          "start": 2757,
+          "end": 2783,
+          "kind": "theorem",
+          "sha256": "00115b06a4d37a83e2d1f7c31b917e8bf4074a4174a49b53b4f53c1abef27a0e",
+          "target": "Lib/Geometry/Manifold/Morse/RearrangementTheorem.lean"
+        },
+        {
+          "name": "Mathoverflow1973.FlowCancellation.isCompact_forward_section_iff_of_regular_band",
+          "source": "Hopf/SphereTopology.lean",
+          "start": 2785,
+          "end": 2799,
+          "kind": "theorem",
+          "sha256": "450aa66505e249c270af65c9775c2c222568c6a43f3ab82ae4db5d39da74ba70",
+          "target": "Lib/Geometry/Manifold/Morse/RearrangementTheorem.lean"
+        },
+        {
+          "name": "Mathoverflow1973.FlowCancellation.isCompact_backward_section_iff_of_regular_band",
+          "source": "Hopf/SphereTopology.lean",
+          "start": 2801,
+          "end": 2815,
+          "kind": "theorem",
+          "sha256": "4b690ff1dfea73692a41f6d065a696a276f1f272bdc7815aa0ce3eaabd09e6ff",
+          "target": "Lib/Geometry/Manifold/Morse/RearrangementTheorem.lean"
+        },
+        {
+          "name": "Mathoverflow1973.MorseRearrangement.nativeCylinderWeight",
+          "source": "Hopf/SphereTopology.lean",
+          "start": 2817,
+          "end": 2822,
+          "kind": "def",
+          "sha256": "b49634a37d24f3c72a76c2f20eadd087353d3748df79f1810a2e0e7d7c01c0af",
+          "target": "Lib/Geometry/Manifold/Morse/RearrangementTheorem.lean"
+        },
+        {
+          "name": "Mathoverflow1973.MorseRearrangement.contMDiffOn_nativeCylinderWeight",
+          "source": "Hopf/SphereTopology.lean",
+          "start": 2824,
+          "end": 2831,
+          "kind": "theorem",
+          "sha256": "cdca0f0f9cc80d9b5172e7900351d282f890e453c38fa518247fa8f4da3a3abc",
+          "target": "Lib/Geometry/Manifold/Morse/RearrangementTheorem.lean"
+        },
+        {
+          "name": "Mathoverflow1973.MorseRearrangement.nativeCylinderWeight_mem_Icc",
+          "source": "Hopf/SphereTopology.lean",
+          "start": 2833,
+          "end": 2840,
+          "kind": "theorem",
+          "sha256": "463ae1c46a81d188c91be28e67cad63ac24cd67f5481826114b6d5228fd29e47",
+          "target": "Lib/Geometry/Manifold/Morse/RearrangementTheorem.lean"
+        },
+        {
+          "name": "Mathoverflow1973.MorseRearrangement.native_cylinder_flow_coordinates",
+          "source": "Hopf/SphereTopology.lean",
+          "start": 2842,
+          "end": 2856,
+          "kind": "theorem",
+          "sha256": "c8dbf475d37ae7afd3d152eda1f51862d0ca5fefec12ca0d0e6b44001947722d",
+          "target": "Lib/Geometry/Manifold/Morse/RearrangementTheorem.lean"
+        },
+        {
+          "name": "Mathoverflow1973.MorseRearrangement.nativeCylinderWeight_flow",
+          "source": "Hopf/SphereTopology.lean",
+          "start": 2858,
+          "end": 2867,
+          "kind": "theorem",
+          "sha256": "669786068cdcb0f7869ed17d6f8ea57455f27e5257bfe4eb0fbc9b2bc4528e2c",
+          "target": "Lib/Geometry/Manifold/Morse/RearrangementTheorem.lean"
+        },
+        {
+          "name": "Mathoverflow1973.MorseRearrangement.exists_native_cylinder_plateau_weight",
+          "source": "Hopf/SphereTopology.lean",
+          "start": 2869,
+          "end": 2898,
+          "kind": "theorem",
+          "sha256": "3b804a04b46ca11d2d9be67834d6af06fe5380398376ed78956c51ed7d7ee48f",
+          "target": "Lib/Geometry/Manifold/Morse/RearrangementTheorem.lean"
+        },
+        {
+          "name": "Mathoverflow1973.MorseCancellation.eventually_nonzero_positive_coordinate_on_upper_level_basin",
+          "source": "Hopf/SphereTopology.lean",
+          "start": 2900,
+          "end": 2919,
+          "kind": "theorem",
+          "sha256": "853137005dcf630823f1dd86e85de7a8a438813083bf45b73fba023435e3f4ef",
+          "target": "Lib/Geometry/Manifold/Morse/RearrangementTheorem.lean"
+        },
+        {
+          "name": "Mathoverflow1973.MorseCancellation.eventually_nonzero_negative_coordinate_on_lower_level_basin",
+          "source": "Hopf/SphereTopology.lean",
+          "start": 2921,
+          "end": 2940,
+          "kind": "theorem",
+          "sha256": "7ec308ad37d252400e7c65f36edbe6c393c7b40e19245898a207a03a565c2683",
+          "target": "Lib/Geometry/Manifold/Morse/RearrangementTheorem.lean"
+        },
+        {
+          "name": "Mathoverflow1973.MorseCancellation.eventually_constant_basin_weight_of_belt_neighborhood",
+          "source": "Hopf/SphereTopology.lean",
+          "start": 2942,
+          "end": 2982,
+          "kind": "theorem",
+          "sha256": "ad5bd4cfdf21743465499f2e5e36c4bdc0f2708f862c5405cd35409e0a218d66",
+          "target": "Lib/Geometry/Manifold/Morse/RearrangementTheorem.lean"
+        },
+        {
+          "name": "Mathoverflow1973.MorseCancellation.eventually_constant_basin_weight_of_attaching_neighborhood",
+          "source": "Hopf/SphereTopology.lean",
+          "start": 2984,
+          "end": 3024,
+          "kind": "theorem",
+          "sha256": "4fbf620ae8624cbe4afb746077eaa8c1872bce5e2610f41078bd7dc442a796ef",
+          "target": "Lib/Geometry/Manifold/Morse/RearrangementTheorem.lean"
+        },
+        {
+          "name": "Mathoverflow1973.MorseRearrangement.height_side_of_not_levelBasin",
+          "source": "Hopf/SphereTopology.lean",
+          "start": 3026,
+          "end": 3041,
+          "kind": "theorem",
+          "sha256": "69dd4e54af36e350a5c8e5ddb432edaeaaec8b4969946bc9442cedea8d89e965",
+          "target": "Lib/Geometry/Manifold/Morse/RearrangementTheorem.lean"
+        },
+        {
+          "name": "Mathoverflow1973.MorseRearrangement.extendedBasinWeight",
+          "source": "Hopf/SphereTopology.lean",
+          "start": 3043,
+          "end": 3046,
+          "kind": "def",
+          "sha256": "c26ea7059f213a3f33ce7d8b5a48afc85908ac517a124794e158ef940d2a3d6a",
+          "target": "Lib/Geometry/Manifold/Morse/RearrangementTheorem.lean"
+        },
+        {
+          "name": "Mathoverflow1973.MorseRearrangement.extendedBasinWeight_eq",
+          "source": "Hopf/SphereTopology.lean",
+          "start": 3048,
+          "end": 3051,
+          "kind": "theorem",
+          "sha256": "bf402ea27682cc0121886b634fda3a6d73d4c911969243d85edfdc5518dfd4b6",
+          "target": "Lib/Geometry/Manifold/Morse/RearrangementTheorem.lean"
+        },
+        {
+          "name": "Mathoverflow1973.MorseRearrangement.extendedBasinWeight_flow",
+          "source": "Hopf/SphereTopology.lean",
+          "start": 3053,
+          "end": 3066,
+          "kind": "theorem",
+          "sha256": "949ce94a9cfc35c8ccc79fd40e395b1062b5b706a0cce66f7021b9deb99d6be5",
+          "target": "Lib/Geometry/Manifold/Morse/RearrangementTheorem.lean"
+        },
+        {
+          "name": "Mathoverflow1973.MorseRearrangement.extendedBasinWeight_mem_Icc",
+          "source": "Hopf/SphereTopology.lean",
+          "start": 3068,
+          "end": 3077,
+          "kind": "theorem",
+          "sha256": "8a4a7672aab79f105eedf7750b3240e2d04b1f95c7392a173c928d758d7468d6",
+          "target": "Lib/Geometry/Manifold/Morse/RearrangementTheorem.lean"
+        },
+        {
+          "name": "Mathoverflow1973.MorseRearrangement.extendedBasinWeight_lower_germ",
+          "source": "Hopf/SphereTopology.lean",
+          "start": 3079,
+          "end": 3088,
+          "kind": "theorem",
+          "sha256": "dd2bce4e991fd3587d462d686e387b5b3365d97c765ab63fb975edc6a06a0358",
+          "target": "Lib/Geometry/Manifold/Morse/RearrangementTheorem.lean"
+        },
+        {
+          "name": "Mathoverflow1973.MorseRearrangement.extendedBasinWeight_upper_germ",
+          "source": "Hopf/SphereTopology.lean",
+          "start": 3090,
+          "end": 3099,
+          "kind": "theorem",
+          "sha256": "189c230e1d4fc4b8b9890bd578b74291f069b9de9bcf6430f2ab23cfd90ff59c",
+          "target": "Lib/Geometry/Manifold/Morse/RearrangementTheorem.lean"
+        },
+        {
+          "name": "Mathoverflow1973.MorseRearrangement.constant_germ_of_endpoint_limit",
+          "source": "Hopf/SphereTopology.lean",
+          "start": 3101,
+          "end": 3108,
+          "kind": "theorem",
+          "sha256": "3ba64f1671026161a2bab1e85a411d7c38cb4415d7989bc9afccc2e23331e1b2",
+          "target": "Lib/Geometry/Manifold/Morse/RearrangementTheorem.lean"
+        },
+        {
+          "name": "Mathoverflow1973.MorseRearrangement.pair_band_basin_complement",
+          "source": "Hopf/SphereTopology.lean",
+          "start": 3110,
+          "end": 3154,
+          "kind": "theorem",
+          "sha256": "0c0b2b1605971b3ab6200698a0e01828c406c778e48af980952371c12b3cd911",
+          "target": "Lib/Geometry/Manifold/Morse/RearrangementTheorem.lean"
+        },
+        {
+          "name": "Mathoverflow1973.MorseRearrangement.contMDiffOn_extendedBasinWeight_pair_band",
+          "source": "Hopf/SphereTopology.lean",
+          "start": 3156,
+          "end": 3184,
+          "kind": "theorem",
+          "sha256": "4647efca2d674b62b35f9de4066d780ac33d65ac223cf0014b65b7b87597ef65",
+          "target": "Lib/Geometry/Manifold/Morse/RearrangementTheorem.lean"
+        },
+        {
+          "name": "Mathoverflow1973.MorseRearrangement.exists_stationary_pair_weight",
+          "source": "Hopf/SphereTopology.lean",
+          "start": 3186,
+          "end": 3322,
+          "kind": "theorem",
+          "sha256": "f19e960d36411971c48423f8de575e8657b16455a2295dc02ad4bda42feceaf8",
+          "target": "Lib/Geometry/Manifold/Morse/RearrangementTheorem.lean"
+        },
+        {
+          "name": "Mathoverflow1973.MorseCancellation.exists_small_native_morse_field_block",
+          "source": "Hopf/SphereTopology.lean",
+          "start": 3324,
+          "end": 3354,
+          "kind": "theorem",
+          "sha256": "61aa18a7332f928af3679a5ee4af978925ce8600367baa0396874abfb6da7259",
+          "target": "Lib/Geometry/Manifold/Morse/RearrangementTheorem.lean"
+        },
+        {
+          "name": "Mathoverflow1973.MorseRearrangement.blended_height_exterior_germ",
+          "source": "Hopf/SphereTopology.lean",
+          "start": 3356,
+          "end": 3362,
+          "kind": "theorem",
+          "sha256": "e131dc75b7d78f4b143baf61ce0bcad2d58be11b9330901daf68827d1d4f7cb0",
+          "target": "Lib/Geometry/Manifold/Morse/RearrangementTheorem.lean"
+        },
+        {
+          "name": "Mathoverflow1973.MorseRearrangement.contMDiff_globally_blended_height",
+          "source": "Hopf/SphereTopology.lean",
+          "start": 3364,
+          "end": 3380,
+          "kind": "theorem",
+          "sha256": "e88301f7c40f4c2dd8c8995c4aa494ea141c919ee3bfbb990a47a148f15b94fc",
+          "target": "Lib/Geometry/Manifold/Morse/RearrangementTheorem.lean"
+        },
+        {
+          "name": "Mathoverflow1973.MorseRearrangement.blended_height_one_translation_germ",
+          "source": "Hopf/SphereTopology.lean",
+          "start": 3382,
+          "end": 3388,
+          "kind": "theorem",
+          "sha256": "c454fe52abca8a93d54005a4fce2d0daafbdb258fcc33bd1c9cbb77245af053f",
+          "target": "Lib/Geometry/Manifold/Morse/RearrangementTheorem.lean"
+        },
+        {
+          "name": "Mathoverflow1973.MorseRearrangement.blended_height_zero_translation_germ",
+          "source": "Hopf/SphereTopology.lean",
+          "start": 3390,
+          "end": 3396,
+          "kind": "theorem",
+          "sha256": "97dc85cb4aff30d9be36d04794d8bb8d24f0b26a90ecf30e60affcf8cf3da2f0",
+          "target": "Lib/Geometry/Manifold/Morse/RearrangementTheorem.lean"
+        },
+        {
+          "name": "Mathoverflow1973.MorseRearrangement.blended_height_directional_derivative",
+          "source": "Hopf/SphereTopology.lean",
+          "start": 3398,
+          "end": 3424,
+          "kind": "theorem",
+          "sha256": "ccf1c010c34d7a2910f3fbbc83c2b7857ea78c414f244940f7998cdccdde8b99",
+          "target": "Lib/Geometry/Manifold/Morse/RearrangementTheorem.lean"
+        },
+        {
+          "name": "Mathoverflow1973.MorseRearrangement.exists_rearranged_morse_function_of_stationary_weight",
+          "source": "Hopf/SphereTopology.lean",
+          "start": 3426,
+          "end": 3508,
+          "kind": "theorem",
+          "sha256": "e6c58fa3c8f69c7a47c41f84fd8628c2240f9279d101a408b0e3dab3802e2e90",
+          "target": "Lib/Geometry/Manifold/Morse/RearrangementTheorem.lean"
+        },
+        {
+          "name": "Mathoverflow1973.MorseRearrangement.exists_morse_rearrangement_of_no_connection",
+          "source": "Hopf/SphereTopology.lean",
+          "start": 3510,
+          "end": 3585,
+          "kind": "theorem",
+          "sha256": "bce9c9422d44e48fdd82794c3f77d4d38db28f2f05dc779ef87a806cac1b94ed",
+          "target": "Lib/Geometry/Manifold/Morse/RearrangementTheorem.lean"
+        }
+      ]
+    },
+    {
+      "root": "Mathoverflow1973.MorseCancellation.exists_excellent_indexed_morse_birth",
+      "declarations": [
+        {
+          "name": "Mathoverflow1973.MorseCancellation.hessian",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 9222,
+          "end": 9229,
+          "kind": "def",
+          "sha256": "351465ac62c1e41776207a37e64e0735844d83926d76d6598e3b89a340275505",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.MorseCancellation.hessian_apply",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 9231,
+          "end": 9233,
+          "kind": "theorem",
+          "sha256": "99c02bc9f33734e3c06a842f7a2196c256a3c1836dfe7b7c577e298814c8a3ec",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.MorseCancellation.hasFDerivAt_differential",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 9235,
+          "end": 9250,
+          "kind": "theorem",
+          "sha256": "f5a8f2c110c52cfd7de7741cc3771ffb72d2de248456d4ac2da1d548d3e208da",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.MorseCancellation.fderiv_cubic_hessian",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 9252,
+          "end": 9255,
+          "kind": "theorem",
+          "sha256": "08a28194a96766c59ff2f8574ce35421043742920d57ca9f1734ef3c5423510f",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.MorseCancellation.hessian_bijective",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 9257,
+          "end": 9279,
+          "kind": "theorem",
+          "sha256": "76e24cf0c77b6ae87dfb467abb356ed8e7614775752a221e193eacc968d7e829",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.MorseCancellation.cubic_isMorse",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 9281,
+          "end": 9288,
+          "kind": "theorem",
+          "sha256": "9d6481d1143c915e196d326835ed401137cf67a53781661bc09313b7c17bf4d6",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.NativeCubicCancellation.exists_cutoff",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 9290,
+          "end": 9308,
+          "kind": "theorem",
+          "sha256": "5f9473147b6a75defd992864cdf3b54465878efa18961e08f977abe9c96ecbbb",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.MorseCancellation.nativeMorseCount",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 23162,
+          "end": 23164,
+          "kind": "def",
+          "sha256": "9de40b69c7a4e0471667f4fb9c5351b85d81504816850e8e118347073e27c71c",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.MorseCancellation.indexed_criticalPoints_after_pair_removal",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 23166,
+          "end": 23185,
+          "kind": "theorem",
+          "sha256": "84ee1c9200139eb54c0f70ec2506d77dcd94b4e04220bdfd404cc96786a76716",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.MorseCancellation.nativeMorseCount_after_pair_removal",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 23187,
+          "end": 23230,
+          "kind": "theorem",
+          "sha256": "1bf813d40caf8961dc7d05ee75f06f10ef19f8ccfb70c6093fca4a60e1488ad1",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.MorseCancellation.nativeMorseCount_adjacent_pair",
+          "source": "Hopf/SingularHomology.lean",
+          "start": 23232,
+          "end": 23252,
+          "kind": "theorem",
+          "sha256": "f8bf031cbcd14acbeaf3f2b033cdb7281b245f31a04c03f40d84eec6133efdbc",
+          "target": "Lib/Geometry/Manifold/Morse/ConnectionCancellation.lean"
+        },
+        {
+          "name": "Mathoverflow1973.MorseCancellation.cancelled",
+          "source": "Hopf/SphereTopology.lean",
+          "start": 7860,
+          "end": 7861,
+          "kind": "def",
+          "sha256": "b7b820197f244aafed4f8a1d4f45d6d494e72e86ccc00b27d864617b5d1e4eb9",
+          "target": "Lib/Geometry/Manifold/Morse/Birth.lean"
+        },
+        {
+          "name": "Mathoverflow1973.MorseCancellation.contDiff_cancelled_family",
+          "source": "Hopf/SphereTopology.lean",
+          "start": 7863,
+          "end": 7867,
+          "kind": "theorem",
+          "sha256": "68e0fb8f401f26469e8005bc75004067c4595f6ace709a409bbc0475ea7f84b4",
+          "target": "Lib/Geometry/Manifold/Morse/Birth.lean"
+        },
+        {
+          "name": "Mathoverflow1973.MorseCancellation.cancelled_zero",
+          "source": "Hopf/SphereTopology.lean",
+          "start": 7869,
+          "end": 7872,
+          "kind": "theorem",
+          "sha256": "f6e51dc308bbf07f40c24c374ca8b4e9f79a43da1c2d25bd4eea95d8431d7376",
+          "target": "Lib/Geometry/Manifold/Morse/Birth.lean"
+        },
+        {
+          "name": "Mathoverflow1973.MorseCancellation.cancelled_germ_plateau",
+          "source": "Hopf/SphereTopology.lean",
+          "start": 7874,
+          "end": 7879,
+          "kind": "theorem",
+          "sha256": "1a5030882e1c05ccd0ffcd5a6d8cf804f125c191197a7b1f6d3e1c3dfb7dfc53",
+          "target": "Lib/Geometry/Manifold/Morse/Birth.lean"
+        },
+        {
+          "name": "Mathoverflow1973.MorseCancellation.cancelled_eq_off_support",
+          "source": "Hopf/SphereTopology.lean",
+          "start": 7881,
+          "end": 7883,
+          "kind": "theorem",
+          "sha256": "d12478fb733e8ea0d05519ec3357ab74c8e6e564638ed9bcfaafe517a25930f8",
+          "target": "Lib/Geometry/Manifold/Morse/Birth.lean"
+        },
+        {
+          "name": "Mathoverflow1973.MorseCancellation.cancelled_germ_off_support",
+          "source": "Hopf/SphereTopology.lean",
+          "start": 7885,
+          "end": 7888,
+          "kind": "theorem",
+          "sha256": "a385b4d3c97f29ad4b334d97f803eebbcf3df1be8383e1ad1e3f7f86deb943c3",
+          "target": "Lib/Geometry/Manifold/Morse/Birth.lean"
+        },
+        {
+          "name": "Mathoverflow1973.MorseCancellation.exists_exact_cubic_birth",
+          "source": "Hopf/SphereTopology.lean",
+          "start": 7890,
+          "end": 7947,
+          "kind": "theorem",
+          "sha256": "5952bdaa3bbc58d0db494019479806d326b8eb0cde6c542168088f82fc08d77d",
+          "target": "Lib/Geometry/Manifold/Morse/Birth.lean"
+        },
+        {
+          "name": "Mathoverflow1973.MorseCancellation.exists_positive_scalar_cubic_diffeomorph",
+          "source": "Hopf/SphereTopology.lean",
+          "start": 7949,
+          "end": 7992,
+          "kind": "theorem",
+          "sha256": "058df932fc59935754a602b063105150037cfc399fe12a1f6a859e20c5a038e7",
+          "target": "Lib/Geometry/Manifold/Morse/Birth.lean"
+        },
+        {
+          "name": "Mathoverflow1973.MorseCancellation.exists_positive_cubic_height_diffeomorph",
+          "source": "Hopf/SphereTopology.lean",
+          "start": 7994,
+          "end": 8014,
+          "kind": "theorem",
+          "sha256": "4ba97795ab90acab7e6ad418f3c5fc69aad805a0b1dd191bc9e0f481ed6f125a",
+          "target": "Lib/Geometry/Manifold/Morse/Birth.lean"
+        },
+        {
+          "name": "Mathoverflow1973.MorseCancellation.hessian_comp_linearEquiv",
+          "source": "Hopf/SphereTopology.lean",
+          "start": 8016,
+          "end": 8031,
+          "kind": "theorem",
+          "sha256": "ef897fd7b6e49bb1a59ebeaacceb7aa7f70f34e1845b95cfd4bdaa389e579c5e",
+          "target": "Lib/Geometry/Manifold/Morse/Birth.lean"
+        },
+        {
+          "name": "Mathoverflow1973.MorseCancellation.euclidean_isMorse_comp_linearEquiv",
+          "source": "Hopf/SphereTopology.lean",
+          "start": 8033,
+          "end": 8059,
+          "kind": "theorem",
+          "sha256": "76ef4b611650b4f41d2234b56233c7ee5fcf39a2fbd98225009225ba32694de0",
+          "target": "Lib/Geometry/Manifold/Morse/Birth.lean"
+        },
+        {
+          "name": "Mathoverflow1973.MorseCancellation.isMorseAt_of_native_model_germ",
+          "source": "Hopf/SphereTopology.lean",
+          "start": 8061,
+          "end": 8082,
+          "kind": "theorem",
+          "sha256": "860fe057e324e18d3fdd990949853d2791b2b05dbad3782d86eb4adefbe91383",
+          "target": "Lib/Geometry/Manifold/Morse/Birth.lean"
+        },
+        {
+          "name": "Mathoverflow1973.MorseCancellation.euclidean_isMorse_affine",
+          "source": "Hopf/SphereTopology.lean",
+          "start": 8084,
+          "end": 8096,
+          "kind": "theorem",
+          "sha256": "aca3c5fc5d65794610d321bb453f5fd3a45e38ad89bb1346c70957f8386c6093",
+          "target": "Lib/Geometry/Manifold/Morse/Birth.lean"
+        },
+        {
+          "name": "Mathoverflow1973.MorseCancellation.exists_pos_compact_smul_subset",
+          "source": "Hopf/SphereTopology.lean",
+          "start": 8098,
+          "end": 8116,
+          "kind": "theorem",
+          "sha256": "ec65a357d8c12b3d7c061b5b4711f21fbd2703315137b75ef977273d9021a863",
+          "target": "Lib/Geometry/Manifold/Morse/Birth.lean"
+        },
+        {
+          "name": "Mathoverflow1973.MorseCancellation.exists_centered_native_height_chart",
+          "source": "Hopf/SphereTopology.lean",
+          "start": 8118,
+          "end": 8164,
+          "kind": "theorem",
+          "sha256": "2eb14b41ea85ef207b7d6d06fc1e0d4440b4b9b12f345c8cdfcadb7fb7eeaa8e",
+          "target": "Lib/Geometry/Manifold/Morse/Birth.lean"
+        },
+        {
+          "name": "Mathoverflow1973.MorseCancellation.insert_morse_chart_pair",
+          "source": "Hopf/SphereTopology.lean",
+          "start": 8166,
+          "end": 8258,
+          "kind": "theorem",
+          "sha256": "9833b881b0edfbbe3135fe870370a8af94dc5a268caaf42d8ee3c9d5d350804a",
+          "target": "Lib/Geometry/Manifold/Morse/Birth.lean"
+        },
+        {
+          "name": "Mathoverflow1973.MorseCancellation.exists_native_morse_birth",
+          "source": "Hopf/SphereTopology.lean",
+          "start": 8260,
+          "end": 8369,
+          "kind": "theorem",
+          "sha256": "b7fd470f79f97f6dff4f1e3d34b7b946a0dd94e7bfbcc42c1d1f6fc579594041",
+          "target": "Lib/Geometry/Manifold/Morse/Birth.lean"
+        },
+        {
+          "name": "Mathoverflow1973.MorseCancellation.injOn_of_two_new_values",
+          "source": "Hopf/SphereTopology.lean",
+          "start": 8371,
+          "end": 8387,
+          "kind": "theorem",
+          "sha256": "459e45c864ebae6c4e384b3899342121958d397766fce4c98dd1d1b579ef00d4",
+          "target": "Lib/Geometry/Manifold/Morse/Birth.lean"
+        },
+        {
+          "name": "Mathoverflow1973.MorseCancellation.exists_excellent_native_morse_birth",
+          "source": "Hopf/SphereTopology.lean",
+          "start": 8389,
+          "end": 8475,
+          "kind": "theorem",
+          "sha256": "2284f075ef8267bb0344184aba2c1ba9ddd869a60ef8b05d1ec6545076d56e74",
+          "target": "Lib/Geometry/Manifold/Morse/Birth.lean"
+        },
+        {
+          "name": "Mathoverflow1973.MorseCancellation.exists_signed_chart_of_split_quadratic",
+          "source": "Hopf/SphereTopology.lean",
+          "start": 8477,
+          "end": 8519,
+          "kind": "theorem",
+          "sha256": "20e07cfa77adeacda72dcdd811f166e847de4f903aca4fa98ae5c1c23db89309",
+          "target": "Lib/Geometry/Manifold/Morse/Birth.lean"
+        },
+        {
+          "name": "Mathoverflow1973.MorseCancellation.exists_signed_chart_of_scaled_cubic_germ",
+          "source": "Hopf/SphereTopology.lean",
+          "start": 8521,
+          "end": 8572,
+          "kind": "theorem",
+          "sha256": "9de77d169b9fd32891eab39ef1c00b509e4b8934bb5b1337c3c2b7033edc0698",
+          "target": "Lib/Geometry/Manifold/Morse/Birth.lean"
+        },
+        {
+          "name": "Mathoverflow1973.MorseCancellation.negative_card_split",
+          "source": "Hopf/SphereTopology.lean",
+          "start": 8574,
+          "end": 8580,
+          "kind": "theorem",
+          "sha256": "f11094ac6232d77a1b7f04f836a547cdc82c74e3e7f968c6efea22a3834a2788",
+          "target": "Lib/Geometry/Manifold/Morse/Birth.lean"
+        },
+        {
+          "name": "Mathoverflow1973.MorseCancellation.native_index_of_scaled_cubic_germ",
+          "source": "Hopf/SphereTopology.lean",
+          "start": 8582,
+          "end": 8598,
+          "kind": "theorem",
+          "sha256": "7cca451b7aba5586f7da2e76884a017fa98d56a557a27472c9d456d8bbb8bacf",
+          "target": "Lib/Geometry/Manifold/Morse/Birth.lean"
+        },
+        {
+          "name": "Mathoverflow1973.MorseCancellation.native_indices_of_cubic_birth_germs",
+          "source": "Hopf/SphereTopology.lean",
+          "start": 8600,
+          "end": 8619,
+          "kind": "theorem",
+          "sha256": "a0ed944a5c761c03d047aa4fec7dcebd09bb1afc5d45e6bacddfa31b15190936",
+          "target": "Lib/Geometry/Manifold/Morse/Birth.lean"
+        },
+        {
+          "name": "Mathoverflow1973.MorseCancellation.exists_transverse_signs_of_count",
+          "source": "Hopf/SphereTopology.lean",
+          "start": 8621,
+          "end": 8635,
+          "kind": "theorem",
+          "sha256": "1e368e3fdf11c0d5c1889f2359cd50e92e8a66d04cf194bee44efc4a3a80d027",
+          "target": "Lib/Geometry/Manifold/Morse/Birth.lean"
+        },
+        {
+          "name": "Mathoverflow1973.MorseCancellation.exists_excellent_indexed_morse_birth",
+          "source": "Hopf/SphereTopology.lean",
+          "start": 8637,
+          "end": 8711,
+          "kind": "theorem",
+          "sha256": "64b0877c3954d81b900c35941064f5fb9b669f81446604f07b21511227b3c053",
+          "target": "Lib/Geometry/Manifold/Morse/Birth.lean"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,57 @@
+{
+ "before": "/home/goblin/.claude/jobs/06995e68/tmp/wave2/dump_head.jsonl",
+ "after": "/home/goblin/.claude/jobs/06995e68/tmp/wave2/height/dump_after.jsonl",
+ "prefix": "",
+ "constants": [
+  38301,
+  38301
+ ],
+ "lost": [],
+ "added": [],
+ "changed_type_source": [],
+ "changed_type_proof_naming": [],
+ "changed_type_accepted": [],
+ "added_accepted": [],
+ "accept_without_effect": [],
+ "changed_type_all": [],
+ "moves": [
+  [
+   "Lib.Geometry.Manifold.Flow.HeightTranslating",
+   "Lib.Geometry.Manifold.Flow.HeightTranslating.AbsorbingSublevel",
+   6
+  ],
+  [
+   "Lib.Geometry.Manifold.Flow.HeightTranslating",
+   "Lib.Geometry.Manifold.Flow.HeightTranslating.AttachingUnion",
+   4
+  ],
+  [
+   "Lib.Geometry.Manifold.Flow.HeightTranslating",
+   "Lib.Geometry.Manifold.Flow.HeightTranslating.DescentFlow",
+   9
+  ],
+  [
+   "Lib.Geometry.Manifold.Flow.HeightTranslating",
+   "Lib.Geometry.Manifold.Flow.HeightTranslating.DescentModel",
+   7
+  ],
+  [
+   "Lib.Geometry.Manifold.Flow.HeightTranslating",
+   "Lib.Geometry.Manifold.Flow.HeightTranslating.EntryTime",
+   20
+  ],
+  [
+   "Lib.Geometry.Manifold.Flow.HeightTranslating",
+   "Lib.Geometry.Manifold.Flow.HeightTranslating.FlowCollar",
+   62
+  ],
+  [
+   "Lib.Geometry.Manifold.Flow.HeightTranslating",
+   "Lib.Geometry.Manifold.Flow.HeightTranslating.HandleCoordinates",
+   9
+  ]
+ ],
+ "ambiguous": [],
+ "auxiliary_moved": 54,
+ "verdict": "PASS"
+}

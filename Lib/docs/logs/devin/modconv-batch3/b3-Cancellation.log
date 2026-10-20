@@ -1,0 +1,81 @@
+Lib/Geometry/Manifold/Morse/Cancellation.lean:1244:57: error: Invalid `⟨...⟩` notation: The expected type
+  IsLocalDiffeomorphAt I 𝓘(ℝ, E) ∞ (↑Φ.symm.toPartialEquiv) y
+is not an inductive type
+
+Note: This notation can only be used when the expected type is an inductive type with a single constructor
+Lib/Geometry/Manifold/Morse/Cancellation.lean:1810:4: error: 'change' tactic failed, pattern
+  0 ∈ univ ∧ L 0 ∈ c.splitChart.target
+is not definitionally equal to target
+  0 ∈ Q.source
+Lib/Geometry/Manifold/Morse/Cancellation.lean:1814:4: error: 'change' tactic failed, pattern
+  ↑c.splitChart.symm.toPartialEquiv (L 0) = x
+is not definitionally equal to target
+  ↑Q.toPartialEquiv 0 = x
+Lib/Geometry/Manifold/Morse/Cancellation.lean:1824:6: error: 'change' tactic failed, pattern
+  (fderiv ℝ (⇑L) p) (endpointLinearField σ (1 / 2) e p) = MorseHandle.descent (L p)
+is not definitionally equal to target
+  (fderiv ℝ (↑P.toPartialEquiv) p) (endpointLinearField σ (1 / 2) e p) = MorseHandle.descent (↑P.toPartialEquiv p)
+Lib/Geometry/Manifold/Morse/Cancellation.lean:1833:50: error: Application type mismatch: The argument
+  hmap
+has type
+  ↑Φ.toPartialEquiv = ↑Q.toPartialEquiv ∘ endpointFieldProduct (1 / 2) e
+but is expected to have type
+  ↑Φ.toPartialEquiv = ↑c.splitChart.symm.toPartialEquiv ∘ ⇑L ∘ endpointFieldProduct (1 / 2) e
+in the application
+  ⟨hf, hmap⟩
+
+Note: The following definitions were not unfolded because their definition is not exposed:
+  Diffeomorph.toPartialDiffeomorph ↦ 21
+Lib/Geometry/Manifold/Morse/Cancellation.lean:2911:4: error: Type mismatch
+  ContinuousLinearEquiv.bijective
+    (d.mfderivToContinuousLinearEquiv
+      (of_eq_true
+        (Eq.trans (congrArg Not (Eq.trans WithTop.coe_eq_zero._simp_1 ENat.top_ne_zero._simp_1)) not_false_eq_true))
+      p.1)
+has type
+  Bijective ⇑(d.mfderivToContinuousLinearEquiv ⋯ p.1)
+but is expected to have type
+  Bijective ⇑(mfderiv% ⇑d p.1)
+
+Note: The following definitions were not unfolded because their definition is not exposed:
+  Diffeomorph.mfderivToContinuousLinearEquiv ↦ 28
+Lib/Geometry/Manifold/Morse/Cancellation.lean:2981:44: error: Type mismatch
+  rfl
+has type
+  ?m.350 = ?m.350
+but is expected to have type
+  ((V.trans D).trans V.symm) p = (A (p.2, p.1), p.2)
+
+Note: The following definitions were not unfolded because their definition is not exposed:
+  IsLocalDiffeomorph.diffeomorphOfBijective ↦ 12
+Lib/Geometry/Manifold/Morse/Cancellation.lean:3758:4: error: Invalid `⟨...⟩` notation: The expected type
+  IsLocalDiffeomorphAt 𝓘(ℝ, D) 𝓘(ℝ, E) ∞ (↑Φ.toPartialEquiv) (↑Φ.symm.toPartialEquiv x)
+is not an inductive type
+
+Note: This notation can only be used when the expected type is an inductive type with a single constructor
+Lib/Geometry/Manifold/Morse/Cancellation.lean:4102:2: error: 'change' tactic failed, pattern
+  p ∈ Φ.source ∧ ↑Φ.toPartialEquiv p ∈ univ ↔ p ∈ Φ.source
+is not definitionally equal to target
+  p ∈ (Φ.trans (nativeFlowTimeDiffeomorph F hs t).toPartialDiffeomorph).source ↔ p ∈ Φ.source
+Lib/Geometry/Manifold/Morse/Cancellation.lean:4151:4: error: Type mismatch
+  FlowConstruction.flow_fixed_of_zero hV₁ F hF hzero (T - τ)
+has type
+  F.toFun (T - τ) (↑Φ.toPartialEquiv (c, 0)) = ↑Φ.toPartialEquiv (c, 0)
+but is expected to have type
+  ↑Ψ.toPartialEquiv (c, 0) = ↑Φ.toPartialEquiv (c, 0)
+
+Note: The following definitions were not unfolded because their definition is not exposed:
+  Diffeomorph.toPartialDiffeomorph ↦ 8
+Lib/Geometry/Manifold/Morse/Cancellation.lean:4154:4: error: 'change' tactic failed, pattern
+  F.toFun (T - τ) (↑Φ.toPartialEquiv (cubicFlowCylinder σ a (0, T))) = F.toFun T x
+is not definitionally equal to target
+  ↑Ψ.toPartialEquiv (cubicFlowCylinder σ a (0, T)) = F.toFun T x
+Lib/Geometry/Manifold/Morse/Cancellation.lean:4156:91: error: Type mismatch
+  rfl
+has type
+  ?m.1048 = ?m.1048
+but is expected to have type
+  ↑Ψ.toPartialEquiv x✝ = F.toFun (T - τ) (↑Φ.toPartialEquiv x✝)
+
+Note: The following definitions were not unfolded because their definition is not exposed:
+  Diffeomorph.toPartialDiffeomorph ↦ 8

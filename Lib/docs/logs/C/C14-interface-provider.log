@@ -1,0 +1,4 @@
+CMD: PATH=... lake env lean -o C14_InterfaceCheck.olean C14_InterfaceCheck.lean
+start 05:07:30 epoch 1789268850
+exit 0
+end 05:07:33 epoch 1789268853

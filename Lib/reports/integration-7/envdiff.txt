@@ -1,0 +1,27 @@
+constants before 38373 after 39175 (keys 38271 39073 )
+lost 0 added 802 of which source declarations: 0 463 ; names with changed type 0 of which source: 0
+  ADDED AbsolutelyContinuousOnInterval.const_of_monotone_subdivision_of_ae_hasDerivAt_zero {'Lib.Analysis.Calculus.CurveVariation': 1}
+  ADDED AbsolutelyContinuousOnInterval.eVariationOn_le_ofReal_integral_abs_deriv {'Lib.Analysis.Calculus.CurveVariation': 1}
+  ADDED AbsolutelyContinuousOnInterval.monotoneOn_of_integral_abs_deriv_eq_sub {'Lib.Analysis.Calculus.CurveVariation': 1}
+  ADDED AbsolutelyContinuousOnInterval.of_monotone_subdivision {'Lib.Analysis.Calculus.CurveVariation': 1}
+  ADDED AbsolutelyContinuousOnInterval.sum_abs_sub_le_integral_abs_deriv {'Lib.Analysis.Calculus.CurveVariation': 1}
+  ADDED AbsolutelyContinuousOnInterval.trans_of_le {'Lib.Analysis.Calculus.CurveVariation': 1}
+  ADDED AbsolutelyContinuousOnInterval.variation_bounds_integral_abs_deriv {'Lib.Analysis.Calculus.CurveVariation': 1}
+  ADDED AddMonoidHom.restrict_left_eq_zero_iff_of_signed_exact {'Lib.Algebra.Group.Prod': 1}
+  ADDED AddMonoidHom.surjective_restrict_left_of_signed_zero {'Lib.Algebra.Group.Prod': 1}
+  ADDED Bundle.smoothMetricOfPositive {'Lib.Geometry.Manifold.VectorBundle.Riemannian': 1}
+  ADDED Bundle.smoothMetricOfPositive_inner {'Lib.Geometry.Manifold.VectorBundle.Riemannian': 1}
+  ADDED Compactification.exists_homeomorph_of_paired_limits {'Lib.Topology.Compactification.BoundaryLimits': 1}
+  ADDED Complex.fractionalLinear_reverse_local {'Lib.Analysis.Complex.Mobius': 1}
+  ADDED ContinuousLinearMap.isVonNBounded_positiveBilinear_unitBall {'Lib.Analysis.InnerProductSpace.FiniteDimensional': 1}
+  ADDED Fin.commonCut {'Lib.Order.Fin.Refinement': 1}
+  ADDED Fin.commonCutCount {'Lib.Order.Fin.Refinement': 1}
+  ADDED Fin.commonCutCount_eq_zero {'Lib.Order.Fin.Refinement': 1}
+  ADDED Fin.commonCutRankLeft {'Lib.Order.Fin.Refinement': 1}
+  ADDED Fin.commonCutRankRight {'Lib.Order.Fin.Refinement': 1}
+  ADDED Fin.commonCutValues {'Lib.Order.Fin.Refinement': 1}
+auxiliary lost/added/changed (not judged): 0 339 0
+module moves (source declarations, 1-to-1):
+ambiguous module changes: 0
+auxiliary constants that changed module: 0
+VERDICT FAIL

@@ -1,0 +1,21 @@
+{
+ "before": "dump_base.jsonl",
+ "after": "dump_final.jsonl",
+ "prefix": "",
+ "constants": [
+  39475,
+  39475
+ ],
+ "lost": [],
+ "added": [],
+ "changed_type_source": [],
+ "changed_type_proof_naming": [],
+ "changed_type_accepted": [],
+ "added_accepted": [],
+ "accept_without_effect": [],
+ "changed_type_all": [],
+ "moves": [],
+ "ambiguous": [],
+ "auxiliary_moved": 0,
+ "verdict": "PASS"
+}

@@ -1,0 +1,13 @@
+# One line per renamed declaration: the name in THIS (post-change) environment,
+# then the name it had in the base environment.  `dump --rename` keys on the name
+# present in the environment being dumped, so the surviving spelling comes first.
+TopCat.Sheaf.globalSectionsFunctor TopCat.SheafH1.globalSectionsFunctor
+TopCat.Sheaf.globalSectionsFunctor_additive TopCat.SheafH1.globalSectionsFunctor_additive
+TopCat.Sheaf.sheafification TopCat.SingularCochainSheaf.sheafification
+TopCat.Sheaf.sheafification_additive TopCat.SingularCochainSheaf.sheafification_additive
+TopCat.Sheaf.integralSheafEquivImageIso TopCat.Sheaf.unitSheafEquivImageIso
+TopCat.Sheaf.integralSheaf_hasProjectiveDimensionLT_iff_cohomology_subsingleton TopCat.Sheaf.unitSheaf_hasProjectiveDimensionLT_iff_cohomology_subsingleton
+TopCat.Sheaf.integralSheaf_hasProjectiveDimensionLT_iff_of_iso TopCat.Sheaf.unitSheaf_hasProjectiveDimensionLT_iff_of_iso
+TopCat.Sheaf.OpenRestriction.integralSheaf_hasProjectiveDimensionLT_iff_freeOpen_top TopCat.Sheaf.OpenRestriction.unitSheaf_hasProjectiveDimensionLT_iff_freeOpen_top
+TopCat.Sheaf.OpenRestriction.integralSheaf_projective_of_discreteTopology TopCat.Sheaf.OpenRestriction.unitSheaf_projective_of_discreteTopology
+TopCat.Sheaf.OpenRestriction.integralSheafFreeTopIso TopCat.Sheaf.OpenRestriction.unitFreeTopIso

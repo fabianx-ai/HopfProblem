@@ -1,0 +1,81 @@
+{
+"module": "Hopf.DifferentialTopology",
+"source": "/home/goblin/hopf-lib-integration/Hopf/DifferentialTopology.lean",
+"source_sha256": "7582cf1d7b3d58662dfe6adece198d204954587cb3f52c939414f60d5c18dcd6",
+"units_kept": 2,
+"units_moved": 2,
+"units": [
+{
+"names": [
+"_private.Hopf.DifferentialTopology.0.Mathoverflow1973._aux_Hopf_DifferentialTopology___unexpand_Path_trans_1",
+"_private.Hopf.DifferentialTopology.0.Mathoverflow1973.\u00ab_aux_Hopf_DifferentialTopology___macroRules__private_Hopf_DifferentialTopology_0_Mathoverflow1973_term_\u226b\u209a__1\u00bb",
+"_private.Hopf.DifferentialTopology.0.Mathoverflow1973.\u00abterm_\u226b\u209a_\u00bb"
+],
+"class": "move",
+"lines": [
+99,
+99
+],
+"sha256": "8d095093345461faac1e010d0478941ed42e0e575ad161ca2a59316efc9b73f4"
+},
+{
+"names": [
+"_private.Hopf.DifferentialTopology.0.Mathoverflow1973._aux_Hopf_DifferentialTopology___unexpand_SlashAction_map_1",
+"_private.Hopf.DifferentialTopology.0.Mathoverflow1973.\u00ab_aux_Hopf_DifferentialTopology___macroRules__private_Hopf_DifferentialTopology_0_Mathoverflow1973_term_\u2223[_]__1\u00bb",
+"_private.Hopf.DifferentialTopology.0.Mathoverflow1973.\u00abterm_\u2223[_]_\u00bb"
+],
+"class": "move",
+"lines": [
+101,
+101
+],
+"sha256": "c826f8a48c119eec2c0f69fb208cac85a241ac194402fc2e0571c056e86b7351"
+},
+{
+"context": "attribute [local instance] NativeEuclideanEmbedding.tangentSpaceT2",
+"lines": [
+103,
+103
+],
+"placed": "keep+move"
+},
+{
+"context": "attribute [local instance] NativeEuclideanEmbedding.tangentSpaceT2",
+"lines": [
+105,
+105
+],
+"placed": "keep+move"
+},
+{
+"context": "attribute [local instance] NativeEuclideanEmbedding.tangentSpaceT2",
+"lines": [
+107,
+107
+],
+"placed": "keep+move"
+},
+{
+"names": [
+"Mathoverflow1973.MorseCancellation.surgery_pair_inner_band_regular"
+],
+"class": "keep",
+"lines": [
+109,
+116
+],
+"sha256": "bb658e2318fd15d5982be02353f4d6279c34ca69e835015085ba04b2d670b649"
+},
+{
+"names": [
+"Mathoverflow1973.FrameField.isInvertible_coprod_of_bijective"
+],
+"class": "keep",
+"lines": [
+118,
+123
+],
+"sha256": "2616696685f94999a28c5770f9b2b40b7490bd202bebf9dc55187b361ee76a68"
+}
+]
+}

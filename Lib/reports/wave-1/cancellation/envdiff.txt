@@ -1,0 +1,19 @@
+constants before 38248 after 38250 (keys 38146 38148 )
+lost 0 added 2 of which source declarations: 0 0 ; names with changed type 0 of which source: 0
+auxiliary lost/added/changed (not judged): 0 2 0
+module moves (source declarations, 1-to-1):
+      27  Lib.Geometry.Manifold.Morse.Cancellation -> Lib.Geometry.Manifold.Morse.Cancellation.BandHeight
+      11  Lib.Geometry.Manifold.Morse.Cancellation -> Lib.Geometry.Manifold.Morse.Cancellation.BandReplacement
+      11  Lib.Geometry.Manifold.Morse.Cancellation -> Lib.Geometry.Manifold.Morse.Cancellation.BasinSheets
+      39  Lib.Geometry.Manifold.Morse.Cancellation -> Lib.Geometry.Manifold.Morse.Cancellation.ConnectionData
+      16  Lib.Geometry.Manifold.Morse.Cancellation -> Lib.Geometry.Manifold.Morse.Cancellation.CriticalGerms
+       8  Lib.Geometry.Manifold.Morse.Cancellation -> Lib.Geometry.Manifold.Morse.Cancellation.CubicConnection
+      22  Lib.Geometry.Manifold.Morse.Cancellation -> Lib.Geometry.Manifold.Morse.Cancellation.CubicModel
+      11  Lib.Geometry.Manifold.Morse.Cancellation -> Lib.Geometry.Manifold.Morse.Cancellation.LevelExit
+       2  Lib.Geometry.Manifold.Morse.Cancellation -> Lib.Geometry.Manifold.Morse.Cancellation.LevelIsotopy
+       7  Lib.Geometry.Manifold.Morse.Cancellation -> Lib.Geometry.Manifold.Morse.Cancellation.LogarithmicCutoff
+       9  Lib.Geometry.Manifold.Morse.Cancellation -> Lib.Geometry.Manifold.Morse.Cancellation.LyapunovResidence
+       7  Lib.Geometry.Manifold.Morse.Cancellation -> Lib.Geometry.Manifold.Morse.Cancellation.TransverseGerms
+ambiguous module changes: 0
+auxiliary constants that changed module: 82
+VERDICT PASS

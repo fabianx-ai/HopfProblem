@@ -1,0 +1,2266 @@
+{
+ "before": "dump_int4_final_renamed.jsonl",
+ "after": "dump_int5_final_renamed.jsonl",
+ "prefix": "",
+ "constants": [
+  31465,
+  31524
+ ],
+ "lost": [
+  [
+   "Mathoverflow1973.AdaptedWindows.exists_ordered_middle_family._proof_1_1",
+   135267661,
+   {
+    "Hopf.SphereTopology": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.AdaptedWindows.exists_ordered_middle_family._proof_1_2",
+   29057860,
+   {
+    "Hopf.SphereTopology": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.AdaptedWindows.exists_ordered_middle_family._proof_1_3",
+   2229723714,
+   {
+    "Hopf.SphereTopology": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.AdaptedWindows.exists_ordered_middle_family._proof_1_4",
+   315486885,
+   {
+    "Hopf.SphereTopology": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.AdaptedWindows.exists_ordered_middle_family._proof_1_5",
+   1609867383,
+   {
+    "Hopf.SphereTopology": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.FirstHurewicz.singularH1EquivOfPi1._proof_1",
+   2096436044,
+   {
+    "Hopf.LCP.CuspFilling": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.FrameField.transportComplement.eq_1",
+   4132058187,
+   {
+    "Hopf.SingularHomology": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.IntersectionCoordinates.jointBlock._proof_1",
+   2826865264,
+   {
+    "Hopf.SingularHomology": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.LocalDegree.NeighborhoodData.innerBoundary._proof_1",
+   4029978216,
+   {
+    "Hopf.SphereTopology": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.LocalDegree.NeighborhoodData.innerBoundary._proof_2",
+   2994351856,
+   {
+    "Hopf.SphereTopology": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.LocalDegree.NeighborhoodData.innerBoundary._proof_3",
+   1458096430,
+   {
+    "Hopf.SphereTopology": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.LocalDegree.NeighborhoodData.innerBoundary._proof_4",
+   3037557110,
+   {
+    "Hopf.SphereTopology": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.LocalDegree.NeighborhoodData.innerBoundary._proof_5",
+   3758014961,
+   {
+    "Hopf.SphereTopology": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.LocalDegree.NeighborhoodData.innerBoundary._proof_6",
+   2083736254,
+   {
+    "Hopf.SphereTopology": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.LocalDegree.NeighborhoodData.restrictRadius._proof_3",
+   2329481637,
+   {
+    "Hopf.SphereTopology": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.ManifoldMorse.MorseSurgeryData.exists_belt_whitney_cancellation_of_opposite_signs",
+   162107330,
+   {
+    "Hopf.SingularHomology": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.ManifoldMorse.MorseSurgeryData.exists_signed_belt_cancellation_step",
+   1593149385,
+   {
+    "Hopf.SingularHomology": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.ManifoldMorse.SurgeryWindows.indexTwoBasis._proof_8",
+   2539997787,
+   {
+    "Hopf.SphereTopology": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.MappingTorusHomology.Covering.lowerSection._proof_1",
+   4182619523,
+   {
+    "Hopf.Proof.LCP.IntegralHomology": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.MappingTorusHomology.Covering.lowerSection._proof_2",
+   1144149508,
+   {
+    "Hopf.Proof.LCP.IntegralHomology": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.MappingTorusHomology.Covering.monodromyHomologyMonoidHom._proof_1",
+   1027903400,
+   {
+    "Hopf.Proof.LCP.IntegralHomology": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.MappingTorusHomology.Covering.quarterLift.eq_1",
+   2817012242,
+   {
+    "Hopf.Proof.LCP.IntegralHomology": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.MappingTorusHomology.Covering.uTime._proof_1",
+   4167248331,
+   {
+    "Hopf.Proof.LCP.IntegralHomology": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.MappingTorusHomology.Covering.upperSection._proof_1",
+   4008936279,
+   {
+    "Hopf.Proof.LCP.IntegralHomology": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.MappingTorusHomology.Covering.upperSection._proof_2",
+   3922785659,
+   {
+    "Hopf.Proof.LCP.IntegralHomology": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.MappingTorusHomology.Covering.vStrip._proof_1",
+   2554999522,
+   {
+    "Hopf.Proof.LCP.IntegralHomology": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.MappingTorusHomology.Covering.vTime._proof_1",
+   3419134381,
+   {
+    "Hopf.Proof.LCP.IntegralHomology": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.MorseCancellation.cancelledDescent.eq_1",
+   3587143267,
+   {
+    "Lib.Geometry.Manifold.Morse.Cancellation": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.MorseCancellation.euclideanTail._proof_1",
+   3208265401,
+   {
+    "Hopf.SingularHomology": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.MorseCancellation.euclideanTail._proof_2",
+   2531150510,
+   {
+    "Hopf.SingularHomology": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.MorseCancellation.euclideanTail._proof_3",
+   3789802823,
+   {
+    "Hopf.SingularHomology": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.MorseCancellation.euclideanTail._proof_4",
+   1263841828,
+   {
+    "Hopf.SingularHomology": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.MorseCancellation.euclideanTail._proof_5",
+   956350149,
+   {
+    "Hopf.SingularHomology": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.MorseCancellation.euclideanTail._proof_6",
+   3131595448,
+   {
+    "Hopf.SingularHomology": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.MorseCancellation.euclideanTail._proof_7",
+   1999201541,
+   {
+    "Hopf.SingularHomology": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.MorseCancellation.hessian._proof_1",
+   1751206130,
+   {
+    "Lib.Geometry.Manifold.Morse.ConnectionCancellation": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.MorseCancellation.hessian._proof_2",
+   1289510895,
+   {
+    "Lib.Geometry.Manifold.Morse.ConnectionCancellation": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.MorseCancellation.hessian._proof_3",
+   1385949371,
+   {
+    "Lib.Geometry.Manifold.Morse.ConnectionCancellation": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.MorseCancellation.hessian._proof_4",
+   3260972910,
+   {
+    "Lib.Geometry.Manifold.Morse.ConnectionCancellation": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.MorseCancellation.hessian._proof_5",
+   396682562,
+   {
+    "Lib.Geometry.Manifold.Morse.ConnectionCancellation": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.MorseCancellation.hessian._proof_6",
+   2547959801,
+   {
+    "Lib.Geometry.Manifold.Morse.ConnectionCancellation": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.MorseCancellation.hessian._proof_7",
+   108683050,
+   {
+    "Lib.Geometry.Manifold.Morse.ConnectionCancellation": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.MorseCancellation.hessian.eq_1",
+   2727527707,
+   {
+    "Lib.Geometry.Manifold.Morse.ConnectionCancellation": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.MorseCancellation.last_index_two_collapse_is_primitive",
+   1051964001,
+   {
+    "Hopf.Recognition": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.MorseCancellation.nativeBeltLevelArc._proof_2",
+   3016715753,
+   {
+    "Hopf.SingularHomology": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.MorseCancellation.nativeBeltLevelArc.eq_1",
+   2214094672,
+   {
+    "Hopf.SingularHomology": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.MorseCancellation.nativeLowerMeridianFamily._proof_1",
+   1637084626,
+   {
+    "Lib.Geometry.Manifold.Morse.Cancellation": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.MorseCancellation.nativeLowerMeridianFamily._proof_2",
+   2072089308,
+   {
+    "Lib.Geometry.Manifold.Morse.Cancellation": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.MorseCancellation.nativeUpperMeridian._proof_1",
+   579344040,
+   {
+    "Lib.Geometry.Manifold.Morse.Cancellation": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.MorseCancellation.nativeUpperMeridian._proof_2",
+   4230477863,
+   {
+    "Lib.Geometry.Manifold.Morse.Cancellation": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.MorseCancellation.nativeUpperMeridian._proof_3",
+   2167955646,
+   {
+    "Lib.Geometry.Manifold.Morse.Cancellation": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.MorseCancellation.nativeUpperMeridianInComplement._proof_1",
+   1546526584,
+   {
+    "Hopf.SingularHomology": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.PeriodTorusHigherHomology.coordinateCircleMap._proof_1",
+   3833443829,
+   {
+    "Hopf.Proof.LCP.Specialization": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.PeriodTorusHigherHomology.torusHeadCircleMap._proof_1",
+   1374387624,
+   {
+    "Hopf.Proof.LCP.Specialization": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.PeriodTorusHigherHomology.torusHeadCircleMap.eq_1",
+   1184111552,
+   {
+    "Hopf.Proof.LCP.Specialization": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.PeriodTorusHigherHomology.torusMatrixLinearMap._proof_1",
+   112954521,
+   {
+    "Hopf.Proof.LCP.Specialization": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.PeriodTorusHigherHomology.torusMatrixLinearMap._proof_2",
+   3279851867,
+   {
+    "Hopf.Proof.LCP.Specialization": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.RankThreeWhitneyModel.secondSheetDerivative.eq_1",
+   1614749545,
+   {
+    "Hopf.SingularHomology": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.RegularHeightCoordinates.longitudinalDiffeomorph._proof_2",
+   779578763,
+   {
+    "Lib.Geometry.Manifold.Morse.Rearrangement": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.SpherePoint.referenceNeighborhood._proof_1",
+   2475262464,
+   {
+    "Hopf.SphereTopology": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.SpherePoint.referenceNeighborhood._proof_2",
+   3196052045,
+   {
+    "Hopf.SphereTopology": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.SpherePoint.referenceNeighborhood._proof_3",
+   3101780409,
+   {
+    "Hopf.SphereTopology": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.SpherePoint.referenceNeighborhood._proof_4",
+   1841548382,
+   {
+    "Hopf.SphereTopology": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.SpherePoint.referenceNeighborhood._proof_5",
+   480155286,
+   {
+    "Hopf.SphereTopology": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.StripCoordinates.exists_clean_strip_neighborhood._simp_1_2",
+   956199473,
+   {
+    "Hopf.SingularHomology": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.WhitneyPairModel.innerBigonDiffeomorph._abel_2",
+   3000177011,
+   {
+    "Hopf.SingularHomology": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.WhitneyPairModel.innerBigonDiffeomorph._proof_1",
+   936593100,
+   {
+    "Hopf.SingularHomology": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.WhitneyPairModel.innerBigonDiffeomorph._proof_2",
+   1151267998,
+   {
+    "Hopf.SingularHomology": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.WhitneyPairModel.innerBigonDiffeomorph._proof_3",
+   2829908914,
+   {
+    "Hopf.SingularHomology": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.WhitneyPairModel.innerBigonDiffeomorph._proof_4",
+   4116064144,
+   {
+    "Hopf.SingularHomology": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.WhitneyPairModel.innerBigonMap.eq_1",
+   3110401626,
+   {
+    "Hopf.SingularHomology": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.WhitneyPairModel.inverseInnerBigonMap.eq_1",
+   3258386056,
+   {
+    "Hopf.SingularHomology": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.WhitneyPairModel.lowerBoundaryArc.eq_1",
+   1691893466,
+   {
+    "Hopf.SingularHomology": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.WhitneyPairModel.sheetTimeCoordinates.eq_1",
+   2685590432,
+   {
+    "Hopf.SingularHomology": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.WhitneyPairModel.upperBoundaryArc.eq_1",
+   1540440325,
+   {
+    "Hopf.SingularHomology": 1
+   }
+  ],
+  [
+   "Mathoverflow1973._aux_<M>___unexpand_Path_trans_1",
+   4242366553,
+   {
+    "Hopf.Proof.DifferentialTopology": 1,
+    "Hopf.Proof.Final": 1,
+    "Hopf.Proof.FiniteCore": 1,
+    "Hopf.Proof.Hurewicz": 1,
+    "Hopf.Proof.Recognition": 1,
+    "Hopf.Proof.SingularHomology": 1,
+    "Hopf.Proof.SphereTopology": 1,
+    "Lib.GroupTheory.SplitExtension": 1,
+    "Lib.Topology.OnePointCollapse": 1,
+    "Hopf.Proof.LCP.AnalyticFillings": 1,
+    "Hopf.Proof.LCP.BoundaryTopology": 1,
+    "Hopf.Proof.LCP.CuspFilling": 1,
+    "Hopf.Proof.LCP.GlobalAssembly": 1,
+    "Hopf.Proof.LCP.IntegralHomology": 1,
+    "Hopf.Proof.LCP.LocalModels": 1,
+    "Hopf.Proof.LCP.PeriodConstruction": 1,
+    "Hopf.Proof.LCP.Specialization": 1,
+    "Lib.Algebra.Homology.MayerVietorisShortExact": 1,
+    "Lib.AlgebraicTopology.FundamentalGroup.SimplyConnectedCover": 1,
+    "Lib.AlgebraicTopology.FundamentalGroup.TwoSimplyConnectedCover": 1,
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1,
+    "Lib.AlgebraicTopology.FundamentalGroupoid.SimplyConnectedSphere": 1,
+    "Lib.AlgebraicTopology.SingularHomology.Chains": 1,
+    "Lib.AlgebraicTopology.SingularHomology.CircleProduct": 1,
+    "Lib.AlgebraicTopology.SingularHomology.Coproduct": 1,
+    "Lib.AlgebraicTopology.SingularHomology.CrossInsert": 1,
+    "Lib.AlgebraicTopology.SingularHomology.HomotopyInvariance": 1,
+    "Lib.AlgebraicTopology.SingularHomology.LinearSphereAction": 1,
+    "Lib.AlgebraicTopology.SingularHomology.LocalContributions": 1,
+    "Lib.AlgebraicTopology.SingularHomology.LocalDegree": 1,
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris": 1,
+    "Lib.AlgebraicTopology.SingularHomology.ModuleHomology": 1,
+    "Lib.AlgebraicTopology.SingularHomology.Naturality": 1,
+    "Lib.AlgebraicTopology.SingularHomology.PathClass": 1,
+    "Lib.AlgebraicTopology.SingularHomology.Sphere": 1,
+    "Lib.AlgebraicTopology.SingularHomology.SphereHomology": 1,
+    "Lib.AlgebraicTopology.SingularHomology.Sum": 1,
+    "Lib.AlgebraicTopology.SingularHomology.Suspension": 1,
+    "Lib.Analysis.Calculus.MorseLemma": 1,
+    "Lib.Analysis.Complex.Cousin": 1,
+    "Lib.Analysis.Complex.Mobius": 1,
+    "Lib.Analysis.Complex.RiemannMapping": 1,
+    "Lib.Analysis.Complex.SchwarzReflection": 1,
+    "Lib.Analysis.Complex.SquareRoot": 1,
+    "Lib.Analysis.ODE.SmoothFlow": 1,
+    "Lib.Geometry.Manifold.Collar": 1,
+    "Lib.Geometry.Manifold.RegularLevel": 1,
+    "Lib.Geometry.Manifold.WhitneyEmbedding": 1,
+    "Lib.GroupTheory.PresentedGroup.CentralTwist": 1,
+    "Lib.Topology.Algebra.FreeActionLocus": 1,
+    "Lib.Topology.Covering.DiagonalQuotient": 1,
+    "Lib.Topology.Covering.InvariantSubset": 1,
+    "Lib.Topology.Covering.Quotient": 1,
+    "Lib.Topology.FiberBundle.TwoOpenTransition": 1,
+    "Lib.Topology.Homotopy.CellAttachment": 1,
+    "Lib.Topology.Homotopy.CylinderHEP": 1,
+    "Lib.Topology.Homotopy.HandleRetraction": 1,
+    "Lib.Topology.Homotopy.LocalCollapse": 1,
+    "Lib.Topology.Homotopy.LoopSubdivision": 1,
+    "Lib.Topology.Homotopy.SublevelRetraction": 1,
+    "Lib.Topology.Homotopy.Suspension": 1,
+    "Lib.Topology.MappingTorus.Basic": 1,
+    "Lib.Topology.MappingTorus.HomologyCover": 1,
+    "Lib.Analysis.Complex.RiemannMapping.Steps": 1,
+    "Lib.Geometry.Manifold.ChartedSpace.Transport": 1,
+    "Lib.Geometry.Manifold.Complex.Biholomorph": 1,
+    "Lib.Geometry.Manifold.Flow.Compact": 1,
+    "Lib.Geometry.Manifold.Flow.HeightTranslating": 1,
+    "Lib.Geometry.Manifold.Instances.RiemannSphere": 1,
+    "Lib.Geometry.Manifold.Morse.Birth": 1,
+    "Lib.Geometry.Manifold.Morse.CellStructure": 1,
+    "Lib.Geometry.Manifold.Morse.ConnectionCancellation": 1,
+    "Lib.Geometry.Manifold.Morse.Existence": 1,
+    "Lib.Geometry.Manifold.Morse.Handle": 1,
+    "Lib.Geometry.Manifold.Morse.HandleAttachment": 1,
+    "Lib.Geometry.Manifold.Morse.Index": 1,
+    "Lib.Geometry.Manifold.Morse.RearrangementTheorem": 1,
+    "Lib.Geometry.Manifold.Morse.Reeb": 1,
+    "Lib.Geometry.Manifold.Morse.SublevelSets": 1,
+    "Lib.Geometry.Manifold.Morse.SurgeryWindows": 1,
+    "Lib.Geometry.Manifold.Quotient.Atlas": 1,
+    "Lib.Geometry.Manifold.Quotient.LocalOrbit": 1,
+    "Lib.Geometry.Manifold.VectorBundle.ProjectionBundle": 1
+   }
+  ],
+  [
+   "Mathoverflow1973._aux_<M>___unexpand_SlashAction_map_1",
+   4242366553,
+   {
+    "Hopf.Proof.DifferentialTopology": 1,
+    "Hopf.Proof.Final": 1,
+    "Hopf.Proof.FiniteCore": 1,
+    "Hopf.Proof.Hurewicz": 1,
+    "Hopf.Proof.Recognition": 1,
+    "Hopf.Proof.SingularHomology": 1,
+    "Hopf.Proof.SphereTopology": 1,
+    "Lib.GroupTheory.SplitExtension": 1,
+    "Lib.Topology.OnePointCollapse": 1,
+    "Hopf.Proof.LCP.AnalyticFillings": 1,
+    "Hopf.Proof.LCP.BoundaryTopology": 1,
+    "Hopf.Proof.LCP.CuspFilling": 1,
+    "Hopf.Proof.LCP.GlobalAssembly": 1,
+    "Hopf.Proof.LCP.IntegralHomology": 1,
+    "Hopf.Proof.LCP.LocalModels": 1,
+    "Hopf.Proof.LCP.PeriodConstruction": 1,
+    "Hopf.Proof.LCP.Specialization": 1,
+    "Lib.Algebra.Homology.MayerVietorisShortExact": 1,
+    "Lib.AlgebraicTopology.FundamentalGroup.SimplyConnectedCover": 1,
+    "Lib.AlgebraicTopology.FundamentalGroup.TwoSimplyConnectedCover": 1,
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1,
+    "Lib.AlgebraicTopology.FundamentalGroupoid.SimplyConnectedSphere": 1,
+    "Lib.AlgebraicTopology.SingularHomology.Chains": 1,
+    "Lib.AlgebraicTopology.SingularHomology.CircleProduct": 1,
+    "Lib.AlgebraicTopology.SingularHomology.Coproduct": 1,
+    "Lib.AlgebraicTopology.SingularHomology.CrossInsert": 1,
+    "Lib.AlgebraicTopology.SingularHomology.HomotopyInvariance": 1,
+    "Lib.AlgebraicTopology.SingularHomology.LinearSphereAction": 1,
+    "Lib.AlgebraicTopology.SingularHomology.LocalContributions": 1,
+    "Lib.AlgebraicTopology.SingularHomology.LocalDegree": 1,
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris": 1,
+    "Lib.AlgebraicTopology.SingularHomology.ModuleHomology": 1,
+    "Lib.AlgebraicTopology.SingularHomology.Naturality": 1,
+    "Lib.AlgebraicTopology.SingularHomology.PathClass": 1,
+    "Lib.AlgebraicTopology.SingularHomology.Sphere": 1,
+    "Lib.AlgebraicTopology.SingularHomology.SphereHomology": 1,
+    "Lib.AlgebraicTopology.SingularHomology.Sum": 1,
+    "Lib.AlgebraicTopology.SingularHomology.Suspension": 1,
+    "Lib.Analysis.Calculus.MorseLemma": 1,
+    "Lib.Analysis.Complex.Cousin": 1,
+    "Lib.Analysis.Complex.Mobius": 1,
+    "Lib.Analysis.Complex.RiemannMapping": 1,
+    "Lib.Analysis.Complex.SchwarzReflection": 1,
+    "Lib.Analysis.Complex.SquareRoot": 1,
+    "Lib.Analysis.ODE.SmoothFlow": 1,
+    "Lib.Geometry.Manifold.Collar": 1,
+    "Lib.Geometry.Manifold.RegularLevel": 1,
+    "Lib.Geometry.Manifold.WhitneyEmbedding": 1,
+    "Lib.GroupTheory.PresentedGroup.CentralTwist": 1,
+    "Lib.Topology.Algebra.FreeActionLocus": 1,
+    "Lib.Topology.Covering.DiagonalQuotient": 1,
+    "Lib.Topology.Covering.InvariantSubset": 1,
+    "Lib.Topology.Covering.Quotient": 1,
+    "Lib.Topology.FiberBundle.TwoOpenTransition": 1,
+    "Lib.Topology.Homotopy.CellAttachment": 1,
+    "Lib.Topology.Homotopy.CylinderHEP": 1,
+    "Lib.Topology.Homotopy.HandleRetraction": 1,
+    "Lib.Topology.Homotopy.LocalCollapse": 1,
+    "Lib.Topology.Homotopy.LoopSubdivision": 1,
+    "Lib.Topology.Homotopy.SublevelRetraction": 1,
+    "Lib.Topology.Homotopy.Suspension": 1,
+    "Lib.Topology.MappingTorus.Basic": 1,
+    "Lib.Topology.MappingTorus.HomologyCover": 1,
+    "Lib.Analysis.Complex.RiemannMapping.Steps": 1,
+    "Lib.Geometry.Manifold.ChartedSpace.Transport": 1,
+    "Lib.Geometry.Manifold.Complex.Biholomorph": 1,
+    "Lib.Geometry.Manifold.Flow.Compact": 1,
+    "Lib.Geometry.Manifold.Flow.HeightTranslating": 1,
+    "Lib.Geometry.Manifold.Instances.RiemannSphere": 1,
+    "Lib.Geometry.Manifold.Morse.Birth": 1,
+    "Lib.Geometry.Manifold.Morse.CellStructure": 1,
+    "Lib.Geometry.Manifold.Morse.ConnectionCancellation": 1,
+    "Lib.Geometry.Manifold.Morse.Existence": 1,
+    "Lib.Geometry.Manifold.Morse.Handle": 1,
+    "Lib.Geometry.Manifold.Morse.HandleAttachment": 1,
+    "Lib.Geometry.Manifold.Morse.Index": 1,
+    "Lib.Geometry.Manifold.Morse.RearrangementTheorem": 1,
+    "Lib.Geometry.Manifold.Morse.Reeb": 1,
+    "Lib.Geometry.Manifold.Morse.SublevelSets": 1,
+    "Lib.Geometry.Manifold.Morse.SurgeryWindows": 1,
+    "Lib.Geometry.Manifold.Quotient.Atlas": 1,
+    "Lib.Geometry.Manifold.Quotient.LocalOrbit": 1,
+    "Lib.Geometry.Manifold.VectorBundle.ProjectionBundle": 1
+   }
+  ]
+ ],
+ "added": [
+  [
+   "AdaptedWindows.exists_ordered_middle_family._proof_1_6",
+   1609867383,
+   {
+    "Lib.Geometry.Manifold.Morse.SurgeryCollapse": 1
+   }
+  ],
+  [
+   "AnnularExtension.exteriorFactor._proof_1",
+   2547959801,
+   {
+    "Lib.Geometry.Manifold.Whitney.AnnularExtension": 1
+   }
+  ],
+  [
+   "Diffeomorph.toPartialDiffeomorphUniv",
+   3405130684,
+   {
+    "Lib.Geometry.Manifold.LocalDiffeomorph": 1
+   }
+  ],
+  [
+   "Diffeomorph.toPartialDiffeomorphUniv._proof_1",
+   2132998718,
+   {
+    "Lib.Geometry.Manifold.LocalDiffeomorph": 1
+   }
+  ],
+  [
+   "Diffeomorph.toPartialDiffeomorphUniv._proof_2",
+   3296554775,
+   {
+    "Lib.Geometry.Manifold.LocalDiffeomorph": 1
+   }
+  ],
+  [
+   "Diffeomorph.toPartialDiffeomorphUniv._proof_3",
+   2752224061,
+   {
+    "Lib.Geometry.Manifold.LocalDiffeomorph": 1
+   }
+  ],
+  [
+   "Diffeomorph.toPartialDiffeomorphUniv._proof_4",
+   802979557,
+   {
+    "Lib.Geometry.Manifold.LocalDiffeomorph": 1
+   }
+  ],
+  [
+   "Diffeomorph.toPartialDiffeomorphUniv._proof_5",
+   779602910,
+   {
+    "Lib.Geometry.Manifold.LocalDiffeomorph": 1
+   }
+  ],
+  [
+   "Diffeomorph.toPartialDiffeomorphUniv._proof_6",
+   1790367835,
+   {
+    "Lib.Geometry.Manifold.LocalDiffeomorph": 1
+   }
+  ],
+  [
+   "FrameField.transportComplement._proof_1",
+   2159798104,
+   {
+    "Lib.Geometry.Manifold.Whitney.FrameField": 1
+   }
+  ],
+  [
+   "IntersectionCoordinates.jointBlock._proof_2",
+   2826865264,
+   {
+    "Lib.Geometry.Manifold.Whitney.FrameField": 1
+   }
+  ],
+  [
+   "IsLocalDiffeomorph.diffeomorphOfBijective'",
+   3246880597,
+   {
+    "Lib.Geometry.Manifold.LocalDiffeomorph": 1
+   }
+  ],
+  [
+   "IsLocalDiffeomorph.diffeomorphOfBijective'._proof_1",
+   1587916273,
+   {
+    "Lib.Geometry.Manifold.LocalDiffeomorph": 1
+   }
+  ],
+  [
+   "IsLocalDiffeomorph.diffeomorphOfBijective'._proof_2",
+   65075672,
+   {
+    "Lib.Geometry.Manifold.LocalDiffeomorph": 1
+   }
+  ],
+  [
+   "IsLocalDiffeomorphAt.exists_partialDiffeomorph",
+   3322062104,
+   {
+    "Lib.Geometry.Manifold.LocalDiffeomorph": 1
+   }
+  ],
+  [
+   "IsLocalDiffeomorphAt.of_eqOn",
+   2297527342,
+   {
+    "Lib.Geometry.Manifold.LocalDiffeomorph": 1
+   }
+  ],
+  [
+   "LocalDegree.NeighborhoodData.innerBoundary._proof_7",
+   4268116068,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.LocalDegreeNeighborhoods": 1
+   }
+  ],
+  [
+   "ManifoldMorse.MorseSurgeryData.exists_belt_whitney_cancellation_of_opposite_signs._proof_1",
+   2370236555,
+   {
+    "Lib.Geometry.Manifold.Morse.BeltCancellation": 1
+   }
+  ],
+  [
+   "ManifoldMorse.MorseSurgeryData.indexThreeBoundaryEquiv._proof_3",
+   2096436044,
+   {
+    "Lib.Geometry.Manifold.Morse.SurgeryHomology": 1
+   }
+  ],
+  [
+   "ManifoldMorse.SurgeryWindows.indexTwoBasis._proof_9",
+   2660759440,
+   {
+    "Lib.Geometry.Manifold.Morse.SurgeryCollapse": 1
+   }
+  ],
+  [
+   "MappingTorusHomology.Covering.affineCircleArc._proof_1",
+   1180137574,
+   {
+    "Lib.Topology.MappingTorus.Wang": 1
+   }
+  ],
+  [
+   "MappingTorusHomology.Covering.affineCircleArc._proof_2",
+   79245397,
+   {
+    "Lib.Topology.MappingTorus.Wang": 1
+   }
+  ],
+  [
+   "MappingTorusHomology.Covering.lowerSection._proof_3",
+   2829513051,
+   {
+    "Lib.Topology.MappingTorus.Wang": 1
+   }
+  ],
+  [
+   "MappingTorusHomology.Covering.lowerSection._proof_4",
+   38011717,
+   {
+    "Lib.Topology.MappingTorus.Wang": 1
+   }
+  ],
+  [
+   "MappingTorusHomology.Covering.monodromyHomologyMonoidHom._proof_2",
+   789098520,
+   {
+    "Lib.Topology.MappingTorus.Wang": 1
+   }
+  ],
+  [
+   "MappingTorusHomology.Covering.upperSection._proof_3",
+   1291581919,
+   {
+    "Lib.Topology.MappingTorus.Wang": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.AdaptedWindows.exists_ordered_middle_family._proof_1_1",
+   3751548502,
+   {
+    "Lib.Geometry.Manifold.Morse.SurgeryCollapse": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.AdaptedWindows.exists_ordered_middle_family._proof_1_2",
+   135267661,
+   {
+    "Lib.Geometry.Manifold.Morse.SurgeryCollapse": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.AdaptedWindows.exists_ordered_middle_family._proof_1_3",
+   29057860,
+   {
+    "Lib.Geometry.Manifold.Morse.SurgeryCollapse": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.AdaptedWindows.exists_ordered_middle_family._proof_1_4",
+   2229723714,
+   {
+    "Lib.Geometry.Manifold.Morse.SurgeryCollapse": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.AdaptedWindows.exists_ordered_middle_family._proof_1_5",
+   315486885,
+   {
+    "Lib.Geometry.Manifold.Morse.SurgeryCollapse": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.FrameField.transportComplement.eq_1",
+   2879080414,
+   {
+    "Lib.Geometry.Manifold.Whitney.FrameField": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.IntersectionCoordinates.jointBlock._proof_1",
+   1158307750,
+   {
+    "Lib.Geometry.Manifold.Whitney.FrameField": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.LocalDegree.NeighborhoodData.innerBoundary._proof_1",
+   2547959801,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.LocalDegreeNeighborhoods": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.LocalDegree.NeighborhoodData.innerBoundary._proof_2",
+   4019557563,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.LocalDegreeNeighborhoods": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.LocalDegree.NeighborhoodData.innerBoundary._proof_3",
+   1399687952,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.LocalDegreeNeighborhoods": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.LocalDegree.NeighborhoodData.innerBoundary._proof_4",
+   2037598871,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.LocalDegreeNeighborhoods": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.LocalDegree.NeighborhoodData.innerBoundary._proof_5",
+   650425684,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.LocalDegreeNeighborhoods": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.LocalDegree.NeighborhoodData.innerBoundary._proof_6",
+   2444756761,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.LocalDegreeNeighborhoods": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.LocalDegree.NeighborhoodData.restrictRadius._proof_3",
+   906661864,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.LocalDegreeNeighborhoods": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.ManifoldMorse.MorseSurgeryData.exists_belt_whitney_cancellation_of_opposite_signs",
+   4035803380,
+   {
+    "Lib.Geometry.Manifold.Morse.BeltCancellation": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.ManifoldMorse.MorseSurgeryData.exists_signed_belt_cancellation_step",
+   1160563375,
+   {
+    "Lib.Geometry.Manifold.Morse.BeltCancellation": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.ManifoldMorse.SurgeryWindows.indexTwoBasis._proof_8",
+   1374387624,
+   {
+    "Lib.Geometry.Manifold.Morse.SurgeryCollapse": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.MappingTorusHomology.Covering.lowerSection._proof_1",
+   2547959801,
+   {
+    "Lib.Topology.MappingTorus.Wang": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.MappingTorusHomology.Covering.lowerSection._proof_2",
+   2205062316,
+   {
+    "Lib.Topology.MappingTorus.Wang": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.MappingTorusHomology.Covering.monodromyHomologyMonoidHom._proof_1",
+   2096436044,
+   {
+    "Lib.Topology.MappingTorus.Wang": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.MappingTorusHomology.Covering.quarterLift.eq_1",
+   240328536,
+   {
+    "Lib.Topology.MappingTorus.Wang": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.MappingTorusHomology.Covering.uTime._proof_1",
+   2848893005,
+   {
+    "Lib.Topology.MappingTorus.Wang": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.MappingTorusHomology.Covering.upperSection._proof_1",
+   1885022586,
+   {
+    "Lib.Topology.MappingTorus.Wang": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.MappingTorusHomology.Covering.upperSection._proof_2",
+   3095109027,
+   {
+    "Lib.Topology.MappingTorus.Wang": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.MappingTorusHomology.Covering.vStrip._proof_1",
+   311626162,
+   {
+    "Lib.Topology.MappingTorus.Wang": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.MappingTorusHomology.Covering.vTime._proof_1",
+   1657745740,
+   {
+    "Lib.Topology.MappingTorus.Wang": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.MorseCancellation.cancelledDescent.eq_1",
+   3197103588,
+   {
+    "Lib.Geometry.Manifold.Morse.Cancellation": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.MorseCancellation.euclideanTail._proof_1",
+   1422682179,
+   {
+    "Lib.Geometry.Manifold.Morse.BeltCancellation": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.MorseCancellation.euclideanTail._proof_2",
+   3208265401,
+   {
+    "Lib.Geometry.Manifold.Morse.BeltCancellation": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.MorseCancellation.euclideanTail._proof_3",
+   2531150510,
+   {
+    "Lib.Geometry.Manifold.Morse.BeltCancellation": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.MorseCancellation.euclideanTail._proof_4",
+   3789802823,
+   {
+    "Lib.Geometry.Manifold.Morse.BeltCancellation": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.MorseCancellation.euclideanTail._proof_5",
+   3442285054,
+   {
+    "Lib.Geometry.Manifold.Morse.BeltCancellation": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.MorseCancellation.euclideanTail._proof_6",
+   1768429995,
+   {
+    "Lib.Geometry.Manifold.Morse.BeltCancellation": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.MorseCancellation.euclideanTail._proof_7",
+   1263841828,
+   {
+    "Lib.Geometry.Manifold.Morse.BeltCancellation": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.MorseCancellation.hessian._proof_1",
+   213455248,
+   {
+    "Lib.Geometry.Manifold.Morse.Cancellation": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.MorseCancellation.hessian._proof_2",
+   1751206130,
+   {
+    "Lib.Geometry.Manifold.Morse.Cancellation": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.MorseCancellation.hessian._proof_3",
+   1289510895,
+   {
+    "Lib.Geometry.Manifold.Morse.Cancellation": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.MorseCancellation.hessian._proof_4",
+   1385949371,
+   {
+    "Lib.Geometry.Manifold.Morse.Cancellation": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.MorseCancellation.hessian._proof_5",
+   2505625037,
+   {
+    "Lib.Geometry.Manifold.Morse.Cancellation": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.MorseCancellation.hessian._proof_6",
+   2106555666,
+   {
+    "Lib.Geometry.Manifold.Morse.Cancellation": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.MorseCancellation.hessian._proof_7",
+   2917855500,
+   {
+    "Lib.Geometry.Manifold.Morse.Cancellation": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.MorseCancellation.hessian.eq_1",
+   2659107144,
+   {
+    "Lib.Geometry.Manifold.Morse.Cancellation": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.MorseCancellation.last_index_two_collapse_is_primitive",
+   431938612,
+   {
+    "Hopf.Recognition": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.MorseCancellation.nativeBeltLevelArc._proof_2",
+   2547959801,
+   {
+    "Lib.Geometry.Manifold.Morse.BeltCancellation": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.MorseCancellation.nativeBeltLevelArc.eq_1",
+   1300561420,
+   {
+    "Lib.Geometry.Manifold.Morse.BeltCancellation": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.MorseCancellation.nativeLowerMeridianFamily._proof_1",
+   2072089308,
+   {
+    "Lib.Geometry.Manifold.Morse.Connection": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.MorseCancellation.nativeLowerMeridianFamily._proof_2",
+   3668861310,
+   {
+    "Lib.Geometry.Manifold.Morse.Connection": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.MorseCancellation.nativeUpperMeridian._proof_1",
+   2167955646,
+   {
+    "Lib.Geometry.Manifold.Morse.Connection": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.MorseCancellation.nativeUpperMeridian._proof_2",
+   3040081993,
+   {
+    "Lib.Geometry.Manifold.Morse.Connection": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.MorseCancellation.nativeUpperMeridian._proof_3",
+   3563332233,
+   {
+    "Lib.Geometry.Manifold.Morse.Connection": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.MorseCancellation.nativeUpperMeridianInComplement._proof_1",
+   903909772,
+   {
+    "Lib.Geometry.Manifold.Morse.BeltCancellation": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.PeriodTorusHigherHomology.coordinateCircleMap._proof_1",
+   585530485,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.Torus": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.PeriodTorusHigherHomology.torusHeadCircleMap.eq_1",
+   331334849,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.Torus": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.PeriodTorusHigherHomology.torusMatrixLinearMap._proof_1",
+   1052702866,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.Torus": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.PeriodTorusHigherHomology.torusMatrixLinearMap._proof_2",
+   2577892026,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.Torus": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.RankThreeWhitneyModel.secondSheetDerivative.eq_1",
+   4018277123,
+   {
+    "Lib.Geometry.Manifold.Whitney.RankThreeModel": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.RegularHeightCoordinates.longitudinalDiffeomorph._proof_2",
+   615756058,
+   {
+    "Lib.Geometry.Manifold.Morse.Rearrangement": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.SpherePoint.referenceNeighborhood._proof_1",
+   1256185617,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.OnePointCover": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.SpherePoint.referenceNeighborhood._proof_2",
+   2475262464,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.OnePointCover": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.SpherePoint.referenceNeighborhood._proof_3",
+   69396974,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.OnePointCover": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.SpherePoint.referenceNeighborhood._proof_4",
+   3196052045,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.OnePointCover": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.SpherePoint.referenceNeighborhood._proof_5",
+   3101780409,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.OnePointCover": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.WhitneyPairModel.innerBigonDiffeomorph._abel_2",
+   2778194438,
+   {
+    "Lib.Geometry.Manifold.Whitney.EmbeddedArcs": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.WhitneyPairModel.innerBigonDiffeomorph._proof_1",
+   1938025862,
+   {
+    "Lib.Geometry.Manifold.Whitney.EmbeddedArcs": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.WhitneyPairModel.innerBigonDiffeomorph._proof_2",
+   3714354198,
+   {
+    "Lib.Geometry.Manifold.Whitney.EmbeddedArcs": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.WhitneyPairModel.innerBigonDiffeomorph._proof_3",
+   2111852883,
+   {
+    "Lib.Geometry.Manifold.Whitney.EmbeddedArcs": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.WhitneyPairModel.innerBigonDiffeomorph._proof_4",
+   484524380,
+   {
+    "Lib.Geometry.Manifold.Whitney.EmbeddedArcs": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.WhitneyPairModel.innerBigonMap.eq_1",
+   773706046,
+   {
+    "Lib.Geometry.Manifold.Whitney.EmbeddedArcs": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.WhitneyPairModel.inverseInnerBigonMap.eq_1",
+   2100918984,
+   {
+    "Lib.Geometry.Manifold.Whitney.EmbeddedArcs": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.WhitneyPairModel.lowerBoundaryArc.eq_1",
+   1438195524,
+   {
+    "Lib.Geometry.Manifold.Whitney.FrameField": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.WhitneyPairModel.sheetTimeCoordinates.eq_1",
+   1768687544,
+   {
+    "Lib.Geometry.Manifold.Whitney.RankThreeModel": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.WhitneyPairModel.upperBoundaryArc.eq_1",
+   369797603,
+   {
+    "Lib.Geometry.Manifold.Whitney.FrameField": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.\u00abterm_\u2223[_]_\u00bb",
+   3072947201,
+   {
+    "Hopf.Proof.DifferentialTopology": 1,
+    "Hopf.Proof.Final": 1,
+    "Hopf.Proof.FiniteCore": 1,
+    "Hopf.Proof.Hurewicz": 1,
+    "Hopf.Proof.Recognition": 1,
+    "Hopf.Proof.SingularHomology": 1,
+    "Hopf.Proof.SphereTopology": 1,
+    "Lib.GroupTheory.SplitExtension": 1,
+    "Lib.Topology.OnePointCollapse": 1,
+    "Hopf.Proof.LCP.AnalyticFillings": 1,
+    "Hopf.Proof.LCP.BoundaryTopology": 1,
+    "Hopf.Proof.LCP.CuspFilling": 1,
+    "Hopf.Proof.LCP.GlobalAssembly": 1,
+    "Hopf.Proof.LCP.IntegralHomology": 1,
+    "Hopf.Proof.LCP.LocalModels": 1,
+    "Hopf.Proof.LCP.PeriodConstruction": 1,
+    "Hopf.Proof.LCP.Specialization": 1,
+    "Lib.Algebra.Homology.MayerVietorisShortExact": 1,
+    "Lib.AlgebraicTopology.FundamentalGroup.SimplyConnectedCover": 1,
+    "Lib.AlgebraicTopology.FundamentalGroup.TwoSimplyConnectedCover": 1,
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1,
+    "Lib.AlgebraicTopology.FundamentalGroupoid.SimplyConnectedSphere": 1,
+    "Lib.AlgebraicTopology.SingularHomology.Chains": 1,
+    "Lib.AlgebraicTopology.SingularHomology.CircleProduct": 1,
+    "Lib.AlgebraicTopology.SingularHomology.Coproduct": 1,
+    "Lib.AlgebraicTopology.SingularHomology.CrossInsert": 1,
+    "Lib.AlgebraicTopology.SingularHomology.HomotopyInvariance": 1,
+    "Lib.AlgebraicTopology.SingularHomology.LinearSphereAction": 1,
+    "Lib.AlgebraicTopology.SingularHomology.LocalContributions": 1,
+    "Lib.AlgebraicTopology.SingularHomology.LocalDegree": 1,
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris": 1,
+    "Lib.AlgebraicTopology.SingularHomology.ModuleHomology": 1,
+    "Lib.AlgebraicTopology.SingularHomology.Naturality": 1,
+    "Lib.AlgebraicTopology.SingularHomology.PathClass": 1,
+    "Lib.AlgebraicTopology.SingularHomology.Sphere": 1,
+    "Lib.AlgebraicTopology.SingularHomology.SphereHomology": 1,
+    "Lib.AlgebraicTopology.SingularHomology.Sum": 1,
+    "Lib.AlgebraicTopology.SingularHomology.Suspension": 1,
+    "Lib.Analysis.Calculus.MorseLemma": 1,
+    "Lib.Analysis.Complex.Cousin": 1,
+    "Lib.Analysis.Complex.Mobius": 1,
+    "Lib.Analysis.Complex.RiemannMapping": 1,
+    "Lib.Analysis.Complex.SchwarzReflection": 1,
+    "Lib.Analysis.Complex.SquareRoot": 1,
+    "Lib.Analysis.ODE.SmoothFlow": 1,
+    "Lib.Geometry.Manifold.Collar": 1,
+    "Lib.Geometry.Manifold.RegularLevel": 1,
+    "Lib.Geometry.Manifold.WhitneyEmbedding": 1,
+    "Lib.GroupTheory.PresentedGroup.CentralTwist": 1,
+    "Lib.Topology.Algebra.FreeActionLocus": 1,
+    "Lib.Topology.Covering.DiagonalQuotient": 1,
+    "Lib.Topology.Covering.InvariantSubset": 1,
+    "Lib.Topology.Covering.Quotient": 1,
+    "Lib.Topology.FiberBundle.TwoOpenTransition": 1,
+    "Lib.Topology.Homotopy.CellAttachment": 1,
+    "Lib.Topology.Homotopy.CylinderHEP": 1,
+    "Lib.Topology.Homotopy.HandleRetraction": 1,
+    "Lib.Topology.Homotopy.LocalCollapse": 1,
+    "Lib.Topology.Homotopy.LoopSubdivision": 1,
+    "Lib.Topology.Homotopy.SublevelRetraction": 1,
+    "Lib.Topology.Homotopy.Suspension": 1,
+    "Lib.Topology.MappingTorus.Basic": 1,
+    "Lib.Topology.MappingTorus.HomologyCover": 1,
+    "Lib.Analysis.Complex.RiemannMapping.Steps": 1,
+    "Lib.Geometry.Manifold.ChartedSpace.Transport": 1,
+    "Lib.Geometry.Manifold.Complex.Biholomorph": 1,
+    "Lib.Geometry.Manifold.Flow.Compact": 1,
+    "Lib.Geometry.Manifold.Flow.HeightTranslating": 1,
+    "Lib.Geometry.Manifold.Instances.RiemannSphere": 1,
+    "Lib.Geometry.Manifold.Morse.Birth": 1,
+    "Lib.Geometry.Manifold.Morse.Cancellation": 1,
+    "Lib.Geometry.Manifold.Morse.CellStructure": 1,
+    "Lib.Geometry.Manifold.Morse.Connection": 1,
+    "Lib.Geometry.Manifold.Morse.Existence": 1,
+    "Lib.Geometry.Manifold.Morse.Handle": 1,
+    "Lib.Geometry.Manifold.Morse.HandleAttachment": 1,
+    "Lib.Geometry.Manifold.Morse.Index": 1,
+    "Lib.Geometry.Manifold.Morse.RearrangementTheorem": 1,
+    "Lib.Geometry.Manifold.Morse.Reeb": 1,
+    "Lib.Geometry.Manifold.Morse.SublevelSets": 1,
+    "Lib.Geometry.Manifold.Morse.SurgeryWindows": 1,
+    "Lib.Geometry.Manifold.Quotient.Atlas": 1,
+    "Lib.Geometry.Manifold.Quotient.LocalOrbit": 1,
+    "Lib.Geometry.Manifold.VectorBundle.ProjectionBundle": 1
+   }
+  ],
+  [
+   "Mathoverflow1973.\u00abterm_\u226b\u209a_\u00bb",
+   3072947201,
+   {
+    "Hopf.Proof.DifferentialTopology": 1,
+    "Hopf.Proof.Final": 1,
+    "Hopf.Proof.FiniteCore": 1,
+    "Hopf.Proof.Hurewicz": 1,
+    "Hopf.Proof.Recognition": 1,
+    "Hopf.Proof.SingularHomology": 1,
+    "Hopf.Proof.SphereTopology": 1,
+    "Lib.GroupTheory.SplitExtension": 1,
+    "Lib.Topology.OnePointCollapse": 1,
+    "Hopf.Proof.LCP.AnalyticFillings": 1,
+    "Hopf.Proof.LCP.BoundaryTopology": 1,
+    "Hopf.Proof.LCP.CuspFilling": 1,
+    "Hopf.Proof.LCP.GlobalAssembly": 1,
+    "Hopf.Proof.LCP.IntegralHomology": 1,
+    "Hopf.Proof.LCP.LocalModels": 1,
+    "Hopf.Proof.LCP.PeriodConstruction": 1,
+    "Hopf.Proof.LCP.Specialization": 1,
+    "Lib.Algebra.Homology.MayerVietorisShortExact": 1,
+    "Lib.AlgebraicTopology.FundamentalGroup.SimplyConnectedCover": 1,
+    "Lib.AlgebraicTopology.FundamentalGroup.TwoSimplyConnectedCover": 1,
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1,
+    "Lib.AlgebraicTopology.FundamentalGroupoid.SimplyConnectedSphere": 1,
+    "Lib.AlgebraicTopology.SingularHomology.Chains": 1,
+    "Lib.AlgebraicTopology.SingularHomology.CircleProduct": 1,
+    "Lib.AlgebraicTopology.SingularHomology.Coproduct": 1,
+    "Lib.AlgebraicTopology.SingularHomology.CrossInsert": 1,
+    "Lib.AlgebraicTopology.SingularHomology.HomotopyInvariance": 1,
+    "Lib.AlgebraicTopology.SingularHomology.LinearSphereAction": 1,
+    "Lib.AlgebraicTopology.SingularHomology.LocalContributions": 1,
+    "Lib.AlgebraicTopology.SingularHomology.LocalDegree": 1,
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris": 1,
+    "Lib.AlgebraicTopology.SingularHomology.ModuleHomology": 1,
+    "Lib.AlgebraicTopology.SingularHomology.Naturality": 1,
+    "Lib.AlgebraicTopology.SingularHomology.PathClass": 1,
+    "Lib.AlgebraicTopology.SingularHomology.Sphere": 1,
+    "Lib.AlgebraicTopology.SingularHomology.SphereHomology": 1,
+    "Lib.AlgebraicTopology.SingularHomology.Sum": 1,
+    "Lib.AlgebraicTopology.SingularHomology.Suspension": 1,
+    "Lib.Analysis.Calculus.MorseLemma": 1,
+    "Lib.Analysis.Complex.Cousin": 1,
+    "Lib.Analysis.Complex.Mobius": 1,
+    "Lib.Analysis.Complex.RiemannMapping": 1,
+    "Lib.Analysis.Complex.SchwarzReflection": 1,
+    "Lib.Analysis.Complex.SquareRoot": 1,
+    "Lib.Analysis.ODE.SmoothFlow": 1,
+    "Lib.Geometry.Manifold.Collar": 1,
+    "Lib.Geometry.Manifold.RegularLevel": 1,
+    "Lib.Geometry.Manifold.WhitneyEmbedding": 1,
+    "Lib.GroupTheory.PresentedGroup.CentralTwist": 1,
+    "Lib.Topology.Algebra.FreeActionLocus": 1,
+    "Lib.Topology.Covering.DiagonalQuotient": 1,
+    "Lib.Topology.Covering.InvariantSubset": 1,
+    "Lib.Topology.Covering.Quotient": 1,
+    "Lib.Topology.FiberBundle.TwoOpenTransition": 1,
+    "Lib.Topology.Homotopy.CellAttachment": 1,
+    "Lib.Topology.Homotopy.CylinderHEP": 1,
+    "Lib.Topology.Homotopy.HandleRetraction": 1,
+    "Lib.Topology.Homotopy.LocalCollapse": 1,
+    "Lib.Topology.Homotopy.LoopSubdivision": 1,
+    "Lib.Topology.Homotopy.SublevelRetraction": 1,
+    "Lib.Topology.Homotopy.Suspension": 1,
+    "Lib.Topology.MappingTorus.Basic": 1,
+    "Lib.Topology.MappingTorus.HomologyCover": 1,
+    "Lib.Analysis.Complex.RiemannMapping.Steps": 1,
+    "Lib.Geometry.Manifold.ChartedSpace.Transport": 1,
+    "Lib.Geometry.Manifold.Complex.Biholomorph": 1,
+    "Lib.Geometry.Manifold.Flow.Compact": 1,
+    "Lib.Geometry.Manifold.Flow.HeightTranslating": 1,
+    "Lib.Geometry.Manifold.Instances.RiemannSphere": 1,
+    "Lib.Geometry.Manifold.Morse.Birth": 1,
+    "Lib.Geometry.Manifold.Morse.Cancellation": 1,
+    "Lib.Geometry.Manifold.Morse.CellStructure": 1,
+    "Lib.Geometry.Manifold.Morse.Connection": 1,
+    "Lib.Geometry.Manifold.Morse.Existence": 1,
+    "Lib.Geometry.Manifold.Morse.Handle": 1,
+    "Lib.Geometry.Manifold.Morse.HandleAttachment": 1,
+    "Lib.Geometry.Manifold.Morse.Index": 1,
+    "Lib.Geometry.Manifold.Morse.RearrangementTheorem": 1,
+    "Lib.Geometry.Manifold.Morse.Reeb": 1,
+    "Lib.Geometry.Manifold.Morse.SublevelSets": 1,
+    "Lib.Geometry.Manifold.Morse.SurgeryWindows": 1,
+    "Lib.Geometry.Manifold.Quotient.Atlas": 1,
+    "Lib.Geometry.Manifold.Quotient.LocalOrbit": 1,
+    "Lib.Geometry.Manifold.VectorBundle.ProjectionBundle": 1
+   }
+  ],
+  [
+   "MorseCancellation.cancelledDescent._proof_1",
+   2547959801,
+   {
+    "Lib.Geometry.Manifold.Morse.Cancellation": 1
+   }
+  ],
+  [
+   "MorseCancellation.euclideanTail._proof_10",
+   2620607689,
+   {
+    "Lib.Geometry.Manifold.Morse.BeltCancellation": 1
+   }
+  ],
+  [
+   "MorseCancellation.euclideanTail._proof_11",
+   2874661341,
+   {
+    "Lib.Geometry.Manifold.Morse.BeltCancellation": 1
+   }
+  ],
+  [
+   "MorseCancellation.euclideanTail._proof_12",
+   3265087263,
+   {
+    "Lib.Geometry.Manifold.Morse.BeltCancellation": 1
+   }
+  ],
+  [
+   "MorseCancellation.euclideanTail._proof_8",
+   956350149,
+   {
+    "Lib.Geometry.Manifold.Morse.BeltCancellation": 1
+   }
+  ],
+  [
+   "MorseCancellation.euclideanTail._proof_9",
+   525044737,
+   {
+    "Lib.Geometry.Manifold.Morse.BeltCancellation": 1
+   }
+  ],
+  [
+   "MorseCancellation.hessian._proof_11",
+   1158307750,
+   {
+    "Lib.Geometry.Manifold.Morse.Cancellation": 1
+   }
+  ],
+  [
+   "MorseCancellation.last_index_two_collapse_is_primitive._proof_1",
+   4126350465,
+   {
+    "Hopf.Recognition": 1
+   }
+  ],
+  [
+   "MorseCancellation.linearTransverseChart._proof_1",
+   1323721240,
+   {
+    "Lib.Geometry.Manifold.Morse.Rearrangement": 1
+   }
+  ],
+  [
+   "MorseCancellation.nativeBeltLevelArc._proof_3",
+   2197934179,
+   {
+    "Lib.Geometry.Manifold.Morse.BeltCancellation": 1
+   }
+  ],
+  [
+   "MorseCancellation.nativeLowerMeridianFamily._proof_3",
+   2130765566,
+   {
+    "Lib.Geometry.Manifold.Morse.Connection": 1
+   }
+  ],
+  [
+   "MorseCancellation.ordered_middle_inclusion_relations._proof_1_1",
+   4126350465,
+   {
+    "Hopf.Recognition": 1
+   }
+  ],
+  [
+   "MorseCancellation.zeroChainClass._proof_2",
+   2096436044,
+   {
+    "Lib.Geometry.Manifold.Morse.OrderedCancellation": 1
+   }
+  ],
+  [
+   "NativeParametrization.line._proof_1",
+   103951026,
+   {
+    "Lib.Geometry.Manifold.Whitney.EmbeddedArcs": 1
+   }
+  ],
+  [
+   "NativeParametrization.line._proof_2",
+   1826931171,
+   {
+    "Lib.Geometry.Manifold.Whitney.EmbeddedArcs": 1
+   }
+  ],
+  [
+   "PeriodTorusHigherHomology.torusMatrixLinearMap._proof_3",
+   1180137574,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.Torus": 1
+   }
+  ],
+  [
+   "RadialFilling.contMDiffAt_direction._simp_1_1",
+   953334460,
+   {
+    "Lib.Geometry.Manifold.Morse.SurgeryCollapse": 1
+   }
+  ],
+  [
+   "RankThreeWhitneyModel.lowerInclude._proof_1",
+   1158307750,
+   {
+    "Lib.Geometry.Manifold.Whitney.RankThreeModel": 1
+   }
+  ],
+  [
+   "RankThreeWhitneyModel.secondSheetDerivative._proof_3",
+   2547959801,
+   {
+    "Lib.Geometry.Manifold.Whitney.RankThreeModel": 1
+   }
+  ],
+  [
+   "RegularHeightCoordinates.longitudinalDiffeomorph._proof_3",
+   779578763,
+   {
+    "Lib.Geometry.Manifold.Morse.Rearrangement": 1
+   }
+  ],
+  [
+   "SingularChains.singularH1EquivOfPi1._proof_1",
+   2096436044,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.FirstHurewicz": 1
+   }
+  ],
+  [
+   "SphereNormalCoordinates.radialFrame._proof_1",
+   2159798104,
+   {
+    "Lib.Geometry.Manifold.Whitney.EmbeddedArcs": 1
+   }
+  ],
+  [
+   "SphereNormalCoordinates.radialFrame._proof_2",
+   2016346591,
+   {
+    "Lib.Geometry.Manifold.Whitney.EmbeddedArcs": 1
+   }
+  ],
+  [
+   "SphereNormalCoordinates.radialFrame._proof_3",
+   1923693863,
+   {
+    "Lib.Geometry.Manifold.Whitney.EmbeddedArcs": 1
+   }
+  ],
+  [
+   "SphereNormalCoordinates.radialFrame._proof_4",
+   1158307750,
+   {
+    "Lib.Geometry.Manifold.Whitney.EmbeddedArcs": 1
+   }
+  ],
+  [
+   "SpherePoint.referenceNeighborhood._proof_6",
+   1841548382,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.OnePointCover": 1
+   }
+  ],
+  [
+   "SpherePoint.referenceNeighborhood._proof_7",
+   1846851645,
+   {
+    "Lib.AlgebraicTopology.SingularHomology.OnePointCover": 1
+   }
+  ],
+  [
+   "StripCoordinates.exists_clean_strip_neighborhood._simp_1_1",
+   956199473,
+   {
+    "Lib.Geometry.Manifold.Whitney.EmbeddedArcs": 1
+   }
+  ],
+  [
+   "WhitneyPairModel.innerBigonMap._proof_1",
+   2547959801,
+   {
+    "Lib.Geometry.Manifold.Whitney.EmbeddedArcs": 1
+   }
+  ],
+  [
+   "WhitneyPairModel.lowerBoundaryArc._proof_1",
+   2547959801,
+   {
+    "Lib.Geometry.Manifold.Whitney.FrameField": 1
+   }
+  ],
+  [
+   "_aux_<M>___unexpand_Path_trans_1",
+   4242366553,
+   {
+    "Lib.Geometry.Manifold.Morse.Cancellation": 1,
+    "Lib.Geometry.Manifold.Morse.Connection": 1
+   }
+  ],
+  [
+   "_aux_<M>___unexpand_SlashAction_map_1",
+   4242366553,
+   {
+    "Lib.Geometry.Manifold.Morse.Cancellation": 1,
+    "Lib.Geometry.Manifold.Morse.Connection": 1
+   }
+  ],
+  [
+   "\u00ab_aux_<M>___macroRules__private_<M>_0_term_\u2223[_]__1\u00bb",
+   407006920,
+   {
+    "Hopf.Proof.DifferentialTopology": 1,
+    "Hopf.Proof.Final": 1,
+    "Hopf.Proof.FiniteCore": 1,
+    "Hopf.Proof.Hurewicz": 1,
+    "Hopf.Proof.Recognition": 1,
+    "Hopf.Proof.SingularHomology": 1,
+    "Hopf.Proof.SphereTopology": 1,
+    "Lib.GroupTheory.SplitExtension": 1,
+    "Lib.Topology.OnePointCollapse": 1,
+    "Hopf.Proof.LCP.AnalyticFillings": 1,
+    "Hopf.Proof.LCP.BoundaryTopology": 1,
+    "Hopf.Proof.LCP.CuspFilling": 1,
+    "Hopf.Proof.LCP.GlobalAssembly": 1,
+    "Hopf.Proof.LCP.IntegralHomology": 1,
+    "Hopf.Proof.LCP.LocalModels": 1,
+    "Hopf.Proof.LCP.PeriodConstruction": 1,
+    "Hopf.Proof.LCP.Specialization": 1,
+    "Lib.Algebra.Homology.MayerVietorisShortExact": 1,
+    "Lib.AlgebraicTopology.FundamentalGroup.SimplyConnectedCover": 1,
+    "Lib.AlgebraicTopology.FundamentalGroup.TwoSimplyConnectedCover": 1,
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1,
+    "Lib.AlgebraicTopology.FundamentalGroupoid.SimplyConnectedSphere": 1,
+    "Lib.AlgebraicTopology.SingularHomology.Chains": 1,
+    "Lib.AlgebraicTopology.SingularHomology.CircleProduct": 1,
+    "Lib.AlgebraicTopology.SingularHomology.Coproduct": 1,
+    "Lib.AlgebraicTopology.SingularHomology.CrossInsert": 1,
+    "Lib.AlgebraicTopology.SingularHomology.HomotopyInvariance": 1,
+    "Lib.AlgebraicTopology.SingularHomology.LinearSphereAction": 1,
+    "Lib.AlgebraicTopology.SingularHomology.LocalContributions": 1,
+    "Lib.AlgebraicTopology.SingularHomology.LocalDegree": 1,
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris": 1,
+    "Lib.AlgebraicTopology.SingularHomology.ModuleHomology": 1,
+    "Lib.AlgebraicTopology.SingularHomology.Naturality": 1,
+    "Lib.AlgebraicTopology.SingularHomology.PathClass": 1,
+    "Lib.AlgebraicTopology.SingularHomology.Sphere": 1,
+    "Lib.AlgebraicTopology.SingularHomology.SphereHomology": 1,
+    "Lib.AlgebraicTopology.SingularHomology.Sum": 1,
+    "Lib.AlgebraicTopology.SingularHomology.Suspension": 1,
+    "Lib.Analysis.Calculus.MorseLemma": 1,
+    "Lib.Analysis.Complex.Cousin": 1,
+    "Lib.Analysis.Complex.Mobius": 1,
+    "Lib.Analysis.Complex.RiemannMapping": 1,
+    "Lib.Analysis.Complex.SchwarzReflection": 1,
+    "Lib.Analysis.Complex.SquareRoot": 1,
+    "Lib.Analysis.ODE.SmoothFlow": 1,
+    "Lib.Geometry.Manifold.Collar": 1,
+    "Lib.Geometry.Manifold.RegularLevel": 1,
+    "Lib.Geometry.Manifold.WhitneyEmbedding": 1,
+    "Lib.GroupTheory.PresentedGroup.CentralTwist": 1,
+    "Lib.Topology.Algebra.FreeActionLocus": 1,
+    "Lib.Topology.Covering.DiagonalQuotient": 1,
+    "Lib.Topology.Covering.InvariantSubset": 1,
+    "Lib.Topology.Covering.Quotient": 1,
+    "Lib.Topology.FiberBundle.TwoOpenTransition": 1,
+    "Lib.Topology.Homotopy.CellAttachment": 1,
+    "Lib.Topology.Homotopy.CylinderHEP": 1,
+    "Lib.Topology.Homotopy.HandleRetraction": 1,
+    "Lib.Topology.Homotopy.LocalCollapse": 1,
+    "Lib.Topology.Homotopy.LoopSubdivision": 1,
+    "Lib.Topology.Homotopy.SublevelRetraction": 1,
+    "Lib.Topology.Homotopy.Suspension": 1,
+    "Lib.Topology.MappingTorus.Basic": 1,
+    "Lib.Topology.MappingTorus.HomologyCover": 1,
+    "Lib.Analysis.Complex.RiemannMapping.Steps": 1,
+    "Lib.Geometry.Manifold.ChartedSpace.Transport": 1,
+    "Lib.Geometry.Manifold.Complex.Biholomorph": 1,
+    "Lib.Geometry.Manifold.Flow.Compact": 1,
+    "Lib.Geometry.Manifold.Flow.HeightTranslating": 1,
+    "Lib.Geometry.Manifold.Instances.RiemannSphere": 1,
+    "Lib.Geometry.Manifold.Morse.Birth": 1,
+    "Lib.Geometry.Manifold.Morse.Cancellation": 1,
+    "Lib.Geometry.Manifold.Morse.CellStructure": 1,
+    "Lib.Geometry.Manifold.Morse.Connection": 1,
+    "Lib.Geometry.Manifold.Morse.Existence": 1,
+    "Lib.Geometry.Manifold.Morse.Handle": 1,
+    "Lib.Geometry.Manifold.Morse.HandleAttachment": 1,
+    "Lib.Geometry.Manifold.Morse.Index": 1,
+    "Lib.Geometry.Manifold.Morse.RearrangementTheorem": 1,
+    "Lib.Geometry.Manifold.Morse.Reeb": 1,
+    "Lib.Geometry.Manifold.Morse.SublevelSets": 1,
+    "Lib.Geometry.Manifold.Morse.SurgeryWindows": 1,
+    "Lib.Geometry.Manifold.Quotient.Atlas": 1,
+    "Lib.Geometry.Manifold.Quotient.LocalOrbit": 1,
+    "Lib.Geometry.Manifold.VectorBundle.ProjectionBundle": 1
+   }
+  ],
+  [
+   "\u00ab_aux_<M>___macroRules__private_<M>_0_term_\u226b\u209a__1\u00bb",
+   407006920,
+   {
+    "Hopf.Proof.DifferentialTopology": 1,
+    "Hopf.Proof.Final": 1,
+    "Hopf.Proof.FiniteCore": 1,
+    "Hopf.Proof.Hurewicz": 1,
+    "Hopf.Proof.Recognition": 1,
+    "Hopf.Proof.SingularHomology": 1,
+    "Hopf.Proof.SphereTopology": 1,
+    "Lib.GroupTheory.SplitExtension": 1,
+    "Lib.Topology.OnePointCollapse": 1,
+    "Hopf.Proof.LCP.AnalyticFillings": 1,
+    "Hopf.Proof.LCP.BoundaryTopology": 1,
+    "Hopf.Proof.LCP.CuspFilling": 1,
+    "Hopf.Proof.LCP.GlobalAssembly": 1,
+    "Hopf.Proof.LCP.IntegralHomology": 1,
+    "Hopf.Proof.LCP.LocalModels": 1,
+    "Hopf.Proof.LCP.PeriodConstruction": 1,
+    "Hopf.Proof.LCP.Specialization": 1,
+    "Lib.Algebra.Homology.MayerVietorisShortExact": 1,
+    "Lib.AlgebraicTopology.FundamentalGroup.SimplyConnectedCover": 1,
+    "Lib.AlgebraicTopology.FundamentalGroup.TwoSimplyConnectedCover": 1,
+    "Lib.AlgebraicTopology.FundamentalGroup.VanKampen": 1,
+    "Lib.AlgebraicTopology.FundamentalGroupoid.SimplyConnectedSphere": 1,
+    "Lib.AlgebraicTopology.SingularHomology.Chains": 1,
+    "Lib.AlgebraicTopology.SingularHomology.CircleProduct": 1,
+    "Lib.AlgebraicTopology.SingularHomology.Coproduct": 1,
+    "Lib.AlgebraicTopology.SingularHomology.CrossInsert": 1,
+    "Lib.AlgebraicTopology.SingularHomology.HomotopyInvariance": 1,
+    "Lib.AlgebraicTopology.SingularHomology.LinearSphereAction": 1,
+    "Lib.AlgebraicTopology.SingularHomology.LocalContributions": 1,
+    "Lib.AlgebraicTopology.SingularHomology.LocalDegree": 1,
+    "Lib.AlgebraicTopology.SingularHomology.MayerVietoris": 1,
+    "Lib.AlgebraicTopology.SingularHomology.ModuleHomology": 1,
+    "Lib.AlgebraicTopology.SingularHomology.Naturality": 1,
+    "Lib.AlgebraicTopology.SingularHomology.PathClass": 1,
+    "Lib.AlgebraicTopology.SingularHomology.Sphere": 1,
+    "Lib.AlgebraicTopology.SingularHomology.SphereHomology": 1,
+    "Lib.AlgebraicTopology.SingularHomology.Sum": 1,
+    "Lib.AlgebraicTopology.SingularHomology.Suspension": 1,
+    "Lib.Analysis.Calculus.MorseLemma": 1,
+    "Lib.Analysis.Complex.Cousin": 1,
+    "Lib.Analysis.Complex.Mobius": 1,
+    "Lib.Analysis.Complex.RiemannMapping": 1,
+    "Lib.Analysis.Complex.SchwarzReflection": 1,
+    "Lib.Analysis.Complex.SquareRoot": 1,
+    "Lib.Analysis.ODE.SmoothFlow": 1,
+    "Lib.Geometry.Manifold.Collar": 1,
+    "Lib.Geometry.Manifold.RegularLevel": 1,
+    "Lib.Geometry.Manifold.WhitneyEmbedding": 1,
+    "Lib.GroupTheory.PresentedGroup.CentralTwist": 1,
+    "Lib.Topology.Algebra.FreeActionLocus": 1,
+    "Lib.Topology.Covering.DiagonalQuotient": 1,
+    "Lib.Topology.Covering.InvariantSubset": 1,
+    "Lib.Topology.Covering.Quotient": 1,
+    "Lib.Topology.FiberBundle.TwoOpenTransition": 1,
+    "Lib.Topology.Homotopy.CellAttachment": 1,
+    "Lib.Topology.Homotopy.CylinderHEP": 1,
+    "Lib.Topology.Homotopy.HandleRetraction": 1,
+    "Lib.Topology.Homotopy.LocalCollapse": 1,
+    "Lib.Topology.Homotopy.LoopSubdivision": 1,
+    "Lib.Topology.Homotopy.SublevelRetraction": 1,
+    "Lib.Topology.Homotopy.Suspension": 1,
+    "Lib.Topology.MappingTorus.Basic": 1,
+    "Lib.Topology.MappingTorus.HomologyCover": 1,
+    "Lib.Analysis.Complex.RiemannMapping.Steps": 1,
+    "Lib.Geometry.Manifold.ChartedSpace.Transport": 1,
+    "Lib.Geometry.Manifold.Complex.Biholomorph": 1,
+    "Lib.Geometry.Manifold.Flow.Compact": 1,
+    "Lib.Geometry.Manifold.Flow.HeightTranslating": 1,
+    "Lib.Geometry.Manifold.Instances.RiemannSphere": 1,
+    "Lib.Geometry.Manifold.Morse.Birth": 1,
+    "Lib.Geometry.Manifold.Morse.Cancellation": 1,
+    "Lib.Geometry.Manifold.Morse.CellStructure": 1,
+    "Lib.Geometry.Manifold.Morse.Connection": 1,
+    "Lib.Geometry.Manifold.Morse.Existence": 1,
+    "Lib.Geometry.Manifold.Morse.Handle": 1,
+    "Lib.Geometry.Manifold.Morse.HandleAttachment": 1,
+    "Lib.Geometry.Manifold.Morse.Index": 1,
+    "Lib.Geometry.Manifold.Morse.RearrangementTheorem": 1,
+    "Lib.Geometry.Manifold.Morse.Reeb": 1,
+    "Lib.Geometry.Manifold.Morse.SublevelSets": 1,
+    "Lib.Geometry.Manifold.Morse.SurgeryWindows": 1,
+    "Lib.Geometry.Manifold.Quotient.Atlas": 1,
+    "Lib.Geometry.Manifold.Quotient.LocalOrbit": 1,
+    "Lib.Geometry.Manifold.VectorBundle.ProjectionBundle": 1
+   }
+  ]
+ ],
+ "changed_type_source": [],
+ "changed_type_proof_naming": [
+  "Mathoverflow1973.ManifoldMorse.MorseSurgeryData.exists_belt_whitney_cancellation_of_opposite_signs",
+  "Mathoverflow1973.ManifoldMorse.MorseSurgeryData.exists_signed_belt_cancellation_step",
+  "Mathoverflow1973.MorseCancellation.last_index_two_collapse_is_primitive"
+ ],
+ "changed_type_accepted": [],
+ "added_accepted": [
+  "Diffeomorph.toPartialDiffeomorphUniv",
+  "IsLocalDiffeomorph.diffeomorphOfBijective'",
+  "IsLocalDiffeomorphAt.exists_partialDiffeomorph",
+  "IsLocalDiffeomorphAt.of_eqOn"
+ ],
+ "accept_without_effect": [],
+ "changed_type_all": [
+  "Mathoverflow1973.AdaptedWindows.exists_ordered_middle_family._proof_1_1",
+  "Mathoverflow1973.AdaptedWindows.exists_ordered_middle_family._proof_1_2",
+  "Mathoverflow1973.AdaptedWindows.exists_ordered_middle_family._proof_1_3",
+  "Mathoverflow1973.AdaptedWindows.exists_ordered_middle_family._proof_1_4",
+  "Mathoverflow1973.AdaptedWindows.exists_ordered_middle_family._proof_1_5",
+  "Mathoverflow1973.FrameField.transportComplement.eq_1",
+  "Mathoverflow1973.IntersectionCoordinates.jointBlock._proof_1",
+  "Mathoverflow1973.LocalDegree.NeighborhoodData.innerBoundary._proof_1",
+  "Mathoverflow1973.LocalDegree.NeighborhoodData.innerBoundary._proof_2",
+  "Mathoverflow1973.LocalDegree.NeighborhoodData.innerBoundary._proof_3",
+  "Mathoverflow1973.LocalDegree.NeighborhoodData.innerBoundary._proof_4",
+  "Mathoverflow1973.LocalDegree.NeighborhoodData.innerBoundary._proof_5",
+  "Mathoverflow1973.LocalDegree.NeighborhoodData.innerBoundary._proof_6",
+  "Mathoverflow1973.LocalDegree.NeighborhoodData.restrictRadius._proof_3",
+  "Mathoverflow1973.ManifoldMorse.MorseSurgeryData.exists_belt_whitney_cancellation_of_opposite_signs",
+  "Mathoverflow1973.ManifoldMorse.MorseSurgeryData.exists_signed_belt_cancellation_step",
+  "Mathoverflow1973.ManifoldMorse.SurgeryWindows.indexTwoBasis._proof_8",
+  "Mathoverflow1973.MappingTorusHomology.Covering.lowerSection._proof_1",
+  "Mathoverflow1973.MappingTorusHomology.Covering.lowerSection._proof_2",
+  "Mathoverflow1973.MappingTorusHomology.Covering.monodromyHomologyMonoidHom._proof_1",
+  "Mathoverflow1973.MappingTorusHomology.Covering.quarterLift.eq_1",
+  "Mathoverflow1973.MappingTorusHomology.Covering.uTime._proof_1",
+  "Mathoverflow1973.MappingTorusHomology.Covering.upperSection._proof_1",
+  "Mathoverflow1973.MappingTorusHomology.Covering.upperSection._proof_2",
+  "Mathoverflow1973.MappingTorusHomology.Covering.vStrip._proof_1",
+  "Mathoverflow1973.MappingTorusHomology.Covering.vTime._proof_1",
+  "Mathoverflow1973.MorseCancellation.cancelledDescent.eq_1",
+  "Mathoverflow1973.MorseCancellation.euclideanTail._proof_1",
+  "Mathoverflow1973.MorseCancellation.euclideanTail._proof_2",
+  "Mathoverflow1973.MorseCancellation.euclideanTail._proof_3",
+  "Mathoverflow1973.MorseCancellation.euclideanTail._proof_4",
+  "Mathoverflow1973.MorseCancellation.euclideanTail._proof_5",
+  "Mathoverflow1973.MorseCancellation.euclideanTail._proof_6",
+  "Mathoverflow1973.MorseCancellation.euclideanTail._proof_7",
+  "Mathoverflow1973.MorseCancellation.hessian._proof_1",
+  "Mathoverflow1973.MorseCancellation.hessian._proof_2",
+  "Mathoverflow1973.MorseCancellation.hessian._proof_3",
+  "Mathoverflow1973.MorseCancellation.hessian._proof_4",
+  "Mathoverflow1973.MorseCancellation.hessian._proof_5",
+  "Mathoverflow1973.MorseCancellation.hessian._proof_6",
+  "Mathoverflow1973.MorseCancellation.hessian._proof_7",
+  "Mathoverflow1973.MorseCancellation.hessian.eq_1",
+  "Mathoverflow1973.MorseCancellation.last_index_two_collapse_is_primitive",
+  "Mathoverflow1973.MorseCancellation.nativeBeltLevelArc._proof_2",
+  "Mathoverflow1973.MorseCancellation.nativeBeltLevelArc.eq_1",
+  "Mathoverflow1973.MorseCancellation.nativeLowerMeridianFamily._proof_1",
+  "Mathoverflow1973.MorseCancellation.nativeLowerMeridianFamily._proof_2",
+  "Mathoverflow1973.MorseCancellation.nativeUpperMeridian._proof_1",
+  "Mathoverflow1973.MorseCancellation.nativeUpperMeridian._proof_2",
+  "Mathoverflow1973.MorseCancellation.nativeUpperMeridian._proof_3",
+  "Mathoverflow1973.MorseCancellation.nativeUpperMeridianInComplement._proof_1",
+  "Mathoverflow1973.PeriodTorusHigherHomology.coordinateCircleMap._proof_1",
+  "Mathoverflow1973.PeriodTorusHigherHomology.torusHeadCircleMap.eq_1",
+  "Mathoverflow1973.PeriodTorusHigherHomology.torusMatrixLinearMap._proof_1",
+  "Mathoverflow1973.PeriodTorusHigherHomology.torusMatrixLinearMap._proof_2",
+  "Mathoverflow1973.RankThreeWhitneyModel.secondSheetDerivative.eq_1",
+  "Mathoverflow1973.RegularHeightCoordinates.longitudinalDiffeomorph._proof_2",
+  "Mathoverflow1973.SpherePoint.referenceNeighborhood._proof_1",
+  "Mathoverflow1973.SpherePoint.referenceNeighborhood._proof_2",
+  "Mathoverflow1973.SpherePoint.referenceNeighborhood._proof_3",
+  "Mathoverflow1973.SpherePoint.referenceNeighborhood._proof_4",
+  "Mathoverflow1973.SpherePoint.referenceNeighborhood._proof_5",
+  "Mathoverflow1973.WhitneyPairModel.innerBigonDiffeomorph._abel_2",
+  "Mathoverflow1973.WhitneyPairModel.innerBigonDiffeomorph._proof_1",
+  "Mathoverflow1973.WhitneyPairModel.innerBigonDiffeomorph._proof_2",
+  "Mathoverflow1973.WhitneyPairModel.innerBigonDiffeomorph._proof_3",
+  "Mathoverflow1973.WhitneyPairModel.innerBigonDiffeomorph._proof_4",
+  "Mathoverflow1973.WhitneyPairModel.innerBigonMap.eq_1",
+  "Mathoverflow1973.WhitneyPairModel.inverseInnerBigonMap.eq_1",
+  "Mathoverflow1973.WhitneyPairModel.lowerBoundaryArc.eq_1",
+  "Mathoverflow1973.WhitneyPairModel.sheetTimeCoordinates.eq_1",
+  "Mathoverflow1973.WhitneyPairModel.upperBoundaryArc.eq_1"
+ ],
+ "moves": [
+  [
+   "Hopf.DifferentialTopology",
+   "Lib.Geometry.Manifold.Immersion.Relative",
+   1
+  ],
+  [
+   "Hopf.DifferentialTopology",
+   "Lib.Geometry.Manifold.Morse.Cancellation",
+   1
+  ],
+  [
+   "Hopf.Hurewicz",
+   "Hopf.Proof.Hurewicz",
+   4
+  ],
+  [
+   "Hopf.LCP.BoundaryTopology",
+   "Lib.AlgebraicTopology.SingularHomology.TorusCoordinates",
+   5
+  ],
+  [
+   "Hopf.LCP.CuspFilling",
+   "Lib.AlgebraicTopology.SingularHomology.FirstHurewicz",
+   16
+  ],
+  [
+   "Hopf.LCP.CuspFilling",
+   "Lib.AlgebraicTopology.SingularHomology.TorusCoordinates",
+   7
+  ],
+  [
+   "Hopf.LCP.IntegralHomology",
+   "Lib.Topology.MappingTorus.Wang",
+   1
+  ],
+  [
+   "Hopf.LCP.PeriodConstruction",
+   "Lib.Geometry.Manifold.Quotient.Atlas",
+   3
+  ],
+  [
+   "Hopf.LCP.PeriodConstruction",
+   "Lib.Geometry.Manifold.Quotient.LocalOrbit",
+   1
+  ],
+  [
+   "Hopf.LCP.Specialization",
+   "Lib.AlgebraicTopology.SingularHomology.Pontryagin",
+   15
+  ],
+  [
+   "Hopf.LCP.Specialization",
+   "Lib.AlgebraicTopology.SingularHomology.TorusCoordinates",
+   42
+  ],
+  [
+   "Hopf.LCP.Specialization",
+   "Lib.Geometry.Manifold.Quotient.Atlas",
+   2
+  ],
+  [
+   "Hopf.Proof.LCP.IntegralHomology",
+   "Lib.Topology.MappingTorus.Wang",
+   73
+  ],
+  [
+   "Hopf.Proof.LCP.Specialization",
+   "Lib.AlgebraicTopology.SingularHomology.Torus",
+   16
+  ],
+  [
+   "Hopf.Recognition",
+   "Lib.AlgebraicTopology.Hurewicz.DegreeSix",
+   21
+  ],
+  [
+   "Hopf.Recognition",
+   "Lib.AlgebraicTopology.SingularHomology.LocalContributionsNaturality",
+   7
+  ],
+  [
+   "Hopf.Recognition",
+   "Lib.Geometry.Manifold.Morse.CutTransport",
+   69
+  ],
+  [
+   "Hopf.Recognition",
+   "Lib.Geometry.Manifold.Morse.MiddleBlocks",
+   31
+  ],
+  [
+   "Hopf.SingularHomology",
+   "Lib.Geometry.Manifold.Morse.BeltCancellation",
+   58
+  ],
+  [
+   "Hopf.SingularHomology",
+   "Lib.Geometry.Manifold.Morse.CircleGluing",
+   56
+  ],
+  [
+   "Hopf.SingularHomology",
+   "Lib.Geometry.Manifold.Whitney.AnnularExtension",
+   76
+  ],
+  [
+   "Hopf.SingularHomology",
+   "Lib.Geometry.Manifold.Whitney.CleanStrips",
+   193
+  ],
+  [
+   "Hopf.SingularHomology",
+   "Lib.Geometry.Manifold.Whitney.EmbeddedArcs",
+   88
+  ],
+  [
+   "Hopf.SingularHomology",
+   "Lib.Geometry.Manifold.Whitney.FrameField",
+   121
+  ],
+  [
+   "Hopf.SingularHomology",
+   "Lib.Geometry.Manifold.Whitney.RankThreeModel",
+   269
+  ],
+  [
+   "Hopf.SphereTopology",
+   "Lib.AlgebraicTopology.SingularHomology.LocalDegreeNeighborhoods",
+   77
+  ],
+  [
+   "Hopf.SphereTopology",
+   "Lib.AlgebraicTopology.SingularHomology.OnePointCover",
+   48
+  ],
+  [
+   "Hopf.SphereTopology",
+   "Lib.Geometry.Manifold.Morse.AdaptedWindows",
+   17
+  ],
+  [
+   "Hopf.SphereTopology",
+   "Lib.Geometry.Manifold.Morse.OrderedCancellation",
+   86
+  ],
+  [
+   "Hopf.SphereTopology",
+   "Lib.Geometry.Manifold.Morse.RearrangementAmbient",
+   35
+  ],
+  [
+   "Hopf.SphereTopology",
+   "Lib.Geometry.Manifold.Morse.SurgeryCollapse",
+   231
+  ],
+  [
+   "Hopf.SphereTopology",
+   "Lib.Geometry.Manifold.Morse.SurgeryHomology",
+   85
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.Cancellation",
+   "Lib.Geometry.Manifold.Morse.Connection",
+   68
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.Cancellation",
+   "Lib.Geometry.Manifold.Morse.Cubic",
+   143
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.Cancellation",
+   "Lib.Geometry.Manifold.Morse.CubicFlow",
+   107
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.ConnectionCancellation",
+   "Lib.Geometry.Manifold.Morse.Cancellation",
+   108
+  ],
+  [
+   "Lib.Geometry.Manifold.Morse.ConnectionCancellation",
+   "Lib.Geometry.Manifold.Morse.Connection",
+   198
+  ]
+ ],
+ "ambiguous": [],
+ "auxiliary_moved": 1209,
+ "verdict": "PASS"
+}

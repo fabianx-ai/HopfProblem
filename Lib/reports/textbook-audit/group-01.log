@@ -1,0 +1,807 @@
+# group-01 — head f0e28a82 — 2026-09-20
+
+## Lib/Algebra/Group/DeterminingFamily.lean  (2 declarations, 120 lines)
+verdict: C (project residue in the mathematics)
+twin: none found (first lemma is a folklore `MonoidHom.ext`-style centrality criterion; nearest Mathlib: `Subgroup.center`, `MulAut.conj`, `Mathlib/Algebra/Group/Commute/Basic.lean`)
+findings:
+- l.35 `commute_all_of_hom_ext`: generic and correct, `{ι} (s : ι → G)`, `[Group G]`; textbook-ready except its name (Mathlib would say `Commute.all_of_monoidHom_ext` or state `a ∈ Subgroup.center G`)
+- l.55 `commute_all_of_lattice_image_eq_zpow`: statement carries the project's data `Multiplicative (Fin 4 → ℤ)`, the vector `![1, 2, -4, 0]` and coordinate `z 0`; the argument works for any monoid hom from any type whose image lies in the powers of one element `c`; this is the `Center` proof step packaged as a lemma
+- l.25, l.34, l.52 docstrings cite `CENTER_NATIVE_GENERATION_TEXTBOOK.md`, "reviewed NG4–NG10" — project review vocabulary, not a textbook reference
+- l.29 `universe u v` used; namespace `DeterminingFamily` names no Mathlib object; 0 missing docstrings
+suggestion: replace the second lemma by a general `commute_all_of_range_le_zpowers (c x : G) (hs : ∀ i, s i ∈ Subgroup.zpowers c ∪ {x, x⁻¹})`-style statement and move the `Fin 4`/`![1,2,-4,0]` instance to `Hopf/Proof`; drop the NG-review citations.
+
+## Lib/Algebra/Group/Filtration.lean  (2 declarations, 38 lines)
+verdict: A (textbook-ready)
+twin: Mathlib `QuotientAddGroup.addSubgroup_eq_top_of_subsingleton` (Mathlib/GroupTheory/QuotientGroup/Basic.lean l.393) — these are two one-line corollaries of it
+findings:
+- l.22 `AddSubgroup.eq_of_le_of_quotient_subsingleton`, l.31 `AddSubgroup.eq_top_of_le_of_quotient_subsingleton`: generic `[AddCommGroup A]`, names follow `foo_of_bar`, docstrings present; only the additive version exists (no `@[to_additive]` from a `Subgroup` version, which is how Mathlib would ship it)
+- module docstring is two sentences, no reference, but the content is elementary enough that none is needed
+- 0 missing docstrings; no preamble residue
+suggestion: state the `Subgroup` version with `@[to_additive]` and propose both upstream next to `subgroup_eq_top_of_subsingleton`.
+
+## Lib/Algebra/Group/LatticeImageCollapse.lean  (14 declarations, 166 lines)
+verdict: D (not library material: the project's explicit monodromy data)
+twin: none: this is a computation with the project's two 4×4 integer matrices; no textbook statement
+findings:
+- l.35–49 `A1`, `A2`, `epsilon`, `epsilonPrime`, `gamma` are the project's explicit integer monodromy matrices and fixed vectors (`![1,2,-4,0]`, `![1,3,-3,0]`); every theorem is about these constants
+- l.51 `image_eq_one_of_gamma_eq_zero`, l.79 `image_eq_zpow_gamma`: hypotheses `x * φ v * x⁻¹ = φ (A1 *ᵥ v)` are the project's conjugation relations; conclusions are `decide`-driven facts about `Fin 4 → ℤ`
+- 6 of 9 theorems without docstring (l.51, 79, 108, 121, 136, 150); module docstring names no reference and describes proof steps ("kills w and d") rather than a result
+- l.13 title "cusp kernel and two matrix actions" and namespace `LatticeImageCollapse` are project vocabulary
+suggestion: move the file under `Hopf/Proof` (Center/Threefold computation); if anything is kept in `Lib`, it is only a generic "image of `ℤⁿ` lies in `zpowers c` when a character kernel is killed" lemma with `A1`, `epsilon` as variables.
+
+## Lib/Algebra/Group/Prod.lean  (1 declarations, 38 lines)
+verdict: B (minor: docs/names)
+twin: none found (elementary; nearest Mathlib: `AddMonoidHom.prod`, `AddMonoidHom.ker`, Mathlib/Algebra/Group/Subgroup/Ker.lean)
+findings:
+- l.20 `AddMonoidHom.surjective_signed_prod_of_surjective_ker`: generic over three `AddCommGroup`s, universes `u v w`, correct `foo_of_bar` name; the conclusion is stated for the raw function `fun e => (f e, -g e)` instead of `(f.prod (-g))`, so it cannot be used with `AddMonoidHom.range` API
+- l.19 docstring cites `CENTER_SIGNED_PAIR_SURJECTIVITY_TEXTBOOK.md`, "SP1–SP6" — project review vocabulary
+- l.1 no copyright header (the other files have one); file name `Prod.lean` promises a broader API than one lemma
+- 0 missing docstrings
+suggestion: restate as `Function.Surjective (f.prod (-g))` (or `f.prod g` — the sign is inessential), drop the SP-citation, add the licence header.
+
+## Lib/Algebra/Group/ResidualRelations.lean  (1 declarations, 46 lines)
+verdict: D (not library material: proof-specific relation elimination)
+twin: none: a one-off group-word computation (`x*y=1`, `x^3=d`, `y^4=d⁻¹` ⇒ all trivial)
+findings:
+- l.27 `ResidualRelations.eq_one_of_mul_eq_one_cube_fourth`: generic `[Group H]`, but the exponents 3 and 4 are the project's residual relations for the `Center` triviality step; there is no textbook statement with these specific relations
+- l.17, l.26 docstrings cite `CENTER_NATIVE_TRIVIALITY_TEXTBOOK.md`, "reviewed NT1"
+- namespace `ResidualRelations` names no mathematical object; 0 missing docstrings
+suggestion: move to `Hopf/Proof` next to the Center triviality argument; the reusable content (`x^m = x^(m+1) → x = 1`) is `pow_eq_pow_iff`/`mul_left_cancel` already in Mathlib.
+
+## Lib/Algebra/Group/SurjectiveDescent.lean  (3 declarations, 53 lines)
+verdict: D (Mathlib already has it: `MonoidHom.liftOfSurjective`)
+twin: Mathlib `MonoidHom.liftOfSurjective` / `MonoidHom.liftOfRightInverse` (+ `_comp`) in Mathlib/Algebra/Group/Subgroup/Basic.lean l.932; universal property of quotients (Lang, Algebra I §3)
+findings:
+- l.21 `descendHomOfSurjective f hf g hfg` is `f.liftOfSurjective hf ⟨g, hker⟩` with `Classical.choose` instead of `surjInv`; l.47 `descendHomOfSurjective_comp` is `liftOfRightInverse_comp`
+- l.35 `fibre_constant_of_ker_le` converts `f.ker ≤ g.ker` to the fibre condition, i.e. the direction Mathlib's subtype already packages; a Mathlib-style statement would be an `iff`
+- l.13 docstring: "strict helper is independent of the Hopf development … overlap character descends across a surjective filling map" — project vocabulary (overlap character, filling map)
+- top-level names (no namespace); Mathlib would put them under `MonoidHom`; 0 missing docstrings
+suggestion: delete and use `MonoidHom.liftOfSurjective` at the call sites (with `fibre_constant_of_ker_le` replaced by the `f.ker ≤ g.ker` hypothesis directly).
+
+## Lib/Algebra/Homology/DerivedCategory/AdjacentTwoSlice.lean  (16 declarations, 277 lines)
+verdict: B (minor: docs/names)
+twin: Mathlib/Algebra/Homology/Embedding/TruncGE.lean, TruncLE.lean (`CochainComplex.truncGE/truncLE`); Weibel 1.2.7 / Kashiwara–Schapira Prop. 1.3.x (good truncations); genuine gap for the two-term identification
+findings:
+- l.35–39 generic: `{C} [Category.{v} C] [Abelian C]`, integer-indexed cochain complexes; `GenericEndpoints` section (l.41–70) even works for an arbitrary `c.Embedding c'` with `[e.IsTruncGE]`
+- l.146 `adjacentTwoSlice K q := (K.truncLE (q+1)).truncGE q`, l.242 `shiftedAdjacentTwoSliceIsoTwoTerm`, l.269 `shiftedAdjacentTwoSliceIsoMappingCone`: standard statements, Mathlib names (`CochainComplex.…`), sign convention documented in the module docstring (l.20–23)
+- 4 missing docstrings: l.187 `shiftedAdjacentTwoSlice_isZero_X`, l.199 `shiftedTwoSlicePointIsoNegOne`, l.212 `shiftedTwoSlicePointIsoZero`, l.223 `shiftedTwoSlicePointIso`
+- l.28–29 `set_option warningAsError true`, `autoImplicit false`; eight `set_option backward.isDefEq.respectTransparency false in` (l.46–237) — Mathlib-tolerated but heavy
+- l.73–119 `πTruncGE_f_boundary`, `ιTruncLE_f_boundary`, `truncGE_d_fromOpcycles` are API lemmas Mathlib's TruncGE.lean lacks; they belong next to it (`Embedding/TruncGE.lean`) rather than in `DerivedCategory/`
+- module docstring has no `## Main definitions` / references section
+suggestion: add the four missing docstrings and split the `GenericEndpoints` + integer boundary lemmas into `Lib/Algebra/Homology/Embedding/TruncGEBoundary.lean` as an upstream candidate.
+
+## Lib/Algebra/Homology/DerivedCategory/Ext/AcyclicResolution.lean  (70 declarations, 773 lines)
+verdict: B (minor: docs/names)
+twin: Weibel, Homological Algebra Lemma 2.4.3 / Ex. 2.4.3 (acyclic resolutions compute derived functors), Hartshorne III Prop. 1.2A; nearest Mathlib: Mathlib/CategoryTheory/Abelian/Ext.lean, Mathlib/Algebra/Homology/DerivedCategory/Ext/*.lean (no acyclic-resolution comparison for the new `Ext` — genuine gap)
+findings:
+- l.40–46 fully generic: `[Abelian C] [HasExt.{w} C]`, arbitrary `P : C`; l.113 `AcyclicResolution` (tower of short exact sequences with explicit cycle objects) is a reasonable Mathlib-style structure; `Hom`, `id`, `comp`, `tail`, `complex` API (l.239–343) is complete
+- l.362 `IsAcyclicFor`, l.375 `shiftIso` (dimension shifting), l.707 `extIsoHomology : Ext P (Z 0) (n+1) ≅ H^{n+1}(Hom(P, X•))` and its naturality l.739 are the textbook statements
+- l.608–653 `finiteStaircaseHomZero/One/Two` + `localExtIso_hom_zero/one/two`: degree-0/1/2 unrolled instances of the general `localExtIso` — "staircase" is project vocabulary and these exist only to feed the H2/H3 files (residue, but not in the main statement)
+- 6 public declarations without docstring (l.166 `tail_Z` etc. simp lemmas, l.230 `trunc_F`, l.279/283 `id_z`/`comp_z`, l.365 `isAcyclicFor_tail`, l.391 `shiftIso_succ`)
+- naming: `AcyclicResolution` lives in `CategoryTheory.Abelian.Ext` namespace, but Mathlib would put the structure at `CategoryTheory.Abelian.AcyclicResolution` (it does not depend on `Ext`); `Z`/`X`/`i`/`p` field names are terse but Mathlib-like
+- module docstring lacks references; `set_option genSizeOf false in` (l.107, 237) is fine
+suggestion: add references (Weibel 2.4.3) and the six docstrings, and move the structure + `Hom` API out of the `Ext` namespace into an `AcyclicResolution/Basic.lean`, leaving only `IsAcyclicFor`/`extIsoHomology` here.
+
+## Lib/Algebra/Homology/DerivedCategory/Ext/AcyclicResolutionExactFunctor.lean  (20 declarations, 441 lines)
+verdict: B (minor: docs/names)
+twin: Weibel 2.4.3 + functoriality of derived functors under exact functors (Hartshorne III Prop. 1.2A / Ex. 1.2); nearest Mathlib: `ShortComplex.ShortExact.map_of_exact`, Mathlib/Algebra/Homology/DerivedCategory/Ext/ExactSequences.lean (no exact-functor comparison — genuine gap)
+findings:
+- l.33–35 generic: two abelian categories with `HasExt`, an additive `G` preserving finite limits and colimits; l.38 `AcyclicResolution.map G`, l.414 `extIsoHomology_naturality` are the natural statements
+- l.75 the comparison is parametrised by an arbitrary `eta : P ⟶ G.obj V` (a "comparison morphism at the source object") — a generality that is fine but unexplained in the docstring; the standard case `P = G.obj V`, `eta = 𝟙` is never stated as a corollary
+- l.93 `isAcyclicFor_map_of_surjective`: hypothesis is surjectivity of `ExactFunctorComparison.map G eta (R.X i) q` for all `i, q > 0`, which is a project-shaped condition (it is what the sheaf-cohomology application supplies); textbook would assume `G` preserves acyclics directly
+- 4 undocumented simp lemmas l.49–64 (`map_Z`, `map_X`, `map_i`, `map_p`); two `private` naturality lemmas (l.106, 388) duplicate `compThreeNaturality` from AcyclicResolution.lean
+- seven `set_option backward.isDefEq.respectTransparency false in`; module docstring names no reference
+suggestion: state the `eta = 𝟙 (G.obj V)` corollary with a textbook name (`extIsoHomology_map`), and dedupe `compThreeNaturality` into one shared lemma.
+
+## Lib/Algebra/Homology/DerivedCategory/Ext/AcyclicResolutionFiniteCompatibility.lean  (24 declarations, 376 lines)
+verdict: C (project residue in the mathematics: "legacy" bridge between two encodings)
+twin: none: an internal compatibility between the file's own `AcyclicResolutionH2/H3` (finite) and `AcyclicResolution` (indexed) encodings; no textbook counterpart
+findings:
+- l.14–17 docstring says it: the finite staircases use "Mathlib's chosen kernels", the indexed tower carries cycle objects; the whole file reconciles two library encodings of the same object
+- l.174 `legacyExtTwoHom`, l.190 `legacyExtThreeHom`, l.217/284 `legacy…_compatibility`, l.274/367 `localExtIso_one/two_legacy_compatibility`: "legacy" in a public name is not Mathlib style; these exist only so old call sites (H2/H3 files) can be rewired to the indexed comparison
+- l.40–153 `iIsKernel`, `nextCycleIso`, `kernelTrunc`, `stepToFirst`, `stepToKernelFirst` are legitimate API (the cycle object of a tower is the kernel of the next differential) and would survive a cleanup
+- 9 undocumented declarations (l.52, 126, 129, 149, 153, 157, 160, 163, 167), all `rfl`-lemmas; l.281 `set_option maxHeartbeats 800000 in`
+- generic type classes throughout (`[Abelian C] [HasExt.{w} C]`)
+suggestion: once `AcyclicResolutionH2H3.lean` consumers are moved to `extIsoHomology`, delete everything from l.170 on and keep only `nextCycleIso`/`kernelTrunc` in AcyclicResolution.lean.
+
+## Lib/Algebra/Homology/DerivedCategory/Ext/AcyclicResolutionH1.lean  (14 declarations, 172 lines)
+verdict: B (minor: docs/names)
+twin: Weibel 2.4.3 (degree-one case) / Hartshorne III Prop. 1.2A; Mathlib/Algebra/Homology/DerivedCategory/Ext/ExactSequences.lean (`covariant_sequence_exact₃'`, on which it is built)
+findings:
+- l.41–58 `Ext.connecting`, `connecting_apply`, `connecting_surjective`, `connecting_exact`: generic wrappers around Mathlib's `Ext.covariantSequence`; `connecting` is `Ext.extClass`-postcomposition and probably duplicates `Ext.postcomp` API (check `Ext.mk₀_comp`/`extClass` in Mathlib before upstreaming)
+- l.67 `AcyclicResolutionH1` ("augmented complex exact through degree one", fields `F`, `complex : ShortComplex`, `ι`, `mono_ι`): the name is a project coinage; Mathlib would call it something like `ShortComplex.AugmentedExact` — and the "H1" suffix denotes a proof-degree, not a mathematical object
+- l.166 `extOneIso : Ext P F 1 ≅ H(Ext⁰(P, K•))` under `[Subsingleton (Ext P K⁰ 1)]`: exactly the textbook statement, correct generality
+- 4 undocumented: l.46 `connecting_apply`, l.90 `toCycles_ι`, l.93 `augmentation_toCycles`, l.101 `first_shortExact`
+- l.10 imports `Lib/…/ShortComplex/LeftHomologyData.lean` for a bespoke `LeftHomologyData.ofExact`-style constructor; module docstring has no reference
+suggestion: rename `AcyclicResolutionH1` to a mathematical name (e.g. `AugmentedShortComplex`) and add the reference; then this file is upstream-ready.
+
+## Lib/Algebra/Homology/DerivedCategory/Ext/AcyclicResolutionH1ExactFunctor.lean  (13 declarations, 210 lines)
+verdict: B (minor: docs/names)
+twin: same as AcyclicResolutionExactFunctor.lean (Weibel 2.4.3 + exact functors); no Mathlib twin
+findings:
+- l.32–46 generic (`G` additive exact between abelian categories with `HasExt`, arbitrary `eta : P ⟶ G.obj V`); l.182 `extOneIso_naturality` is the one public theorem and is the correct statement
+- 8 of 13 declarations are `private` helpers (l.53–158), i.e. the file is one theorem plus its proof skeleton; the "H1-only form" (l.16) is subsumed by `AcyclicResolution.extIsoHomology_naturality` in the indexed file, so the file is a stepping stone
+- 6 undocumented (all private): l.53, 81, 87, 110, 126, 158; l.125 `set_option maxHeartbeats 800000 in`
+- name `comparisonHom` (l.49) is reused at three different levels (`AcyclicResolutionH1.comparisonHom`, `AcyclicResolution.comparisonHom`, `ExactFunctorComparison.map`) — confusing but namespaced
+suggestion: fold `extOneIso_naturality` into `AcyclicResolutionH1Naturality.lean` (or the indexed file) and delete this file once the H1-only consumers are gone.
+
+## Lib/Algebra/Homology/DerivedCategory/Ext/AcyclicResolutionH1Naturality.lean  (15 declarations, 211 lines)
+verdict: B (minor: docs/names)
+twin: naturality of the dimension-shifting isomorphism (Weibel 2.4.3 / Cartan–Eilenberg V.7); no Mathlib twin
+findings:
+- l.34 `Ext.connecting_naturality` (naturality of the connecting map in a map of short exact sequences) is a general lemma Mathlib's ExactSequences.lean lacks; upstream candidate on its own
+- l.49 `AcyclicResolutionH1.Hom` with `cyclesMap`, `firstMap`, `extZeroMap`; l.182 `Hom.extOneIso_naturality` — correct generic statements
+- l.167 `comparison_naturality_of_epi`: a pure category-theory lemma (cancel an epi across two commuting squares) parked in an `Ext` file and namespace; misplaced
+- 5 undocumented: l.65 `cyclesMap_ι`, l.70 `toCycles_naturality`, l.111 `extCycleMap_i`, l.116 `extOneHomologyData_cyclesIso_inv`, l.136 `extCycleMap_naturality`
+- generic throughout; module docstring without reference
+suggestion: move `comparison_naturality_of_epi` to a `CategoryTheory/` helper (or inline it) and add the five docstrings.
+
+## Lib/Algebra/Homology/DerivedCategory/Ext/AcyclicResolutionH2H3.lean  (6 declarations, 117 lines)
+verdict: C (project residue in the mathematics: fixed-degree unrollings superseded by the indexed file)
+twin: Weibel 2.4.3, degrees 2 and 3 only; superseded in-tree by `AcyclicResolution.extIsoHomology`
+findings:
+- l.37 `AcyclicResolutionH2` (an H1 datum plus one more exact step) and l.76 `AcyclicResolutionH3 extends AcyclicResolutionH2`: hand-unrolled length-3/4 exact augmented complexes; the names `H2`/`H3` encode the target Ext degree, not an object
+- l.61 `extTwoIso` takes three explicit `[Subsingleton (Ext P … k)]` instances, l.97 `extThreeIso` six; the indexed `IsAcyclicFor` hypothesis is the textbook form
+- l.14 docstring admits "These structures retain the original finite API" — kept for backwards compatibility with the project's sheaf-cohomology consumers (degrees 2 and 3 are the ones the project needs)
+- 0 undocumented; generic type classes
+suggestion: retire both structures in favour of `AcyclicResolution.extIsoHomology` and delete this file together with AcyclicResolutionFiniteCompatibility.lean.
+
+## Lib/Algebra/Homology/DerivedCategory/Ext/AdjacentTwoSliceSplice.lean  (4 declarations, 136 lines)
+verdict: B (minor: docs/names)
+twin: octahedral axiom applied to adjacent truncations (Beilinson–Bernstein–Deligne 1.3.x; Kashiwara–Schapira Prop. 1.3.x / t-structure truncation triangles); Mathlib/CategoryTheory/Triangulated/TStructure/*.lean (`triangleLTGE`); genuine gap for the identification with the splice
+findings:
+- l.41 generic `[Abelian C] [HasDerivedCategory.{w'} C]`; l.43 `attribute [local instance] HasDerivedCategory.standard` — a local choice that should be a `variable`/section assumption, not a fixed instance
+- l.47 `spliceObjTwoIsoShiftedAdjacentTwoSlice`, l.60 `shiftedAdjacentTwoSliceTriangleIsoSplice`, l.126 `_comm₃`: statements are the correct generic triangle identifications; names are long but descriptive
+- namespace `CategoryTheory.Abelian.ExtTransgression.TwoStepResolution` — "ExtTransgression" is a project coinage (the library's word for the d₂ of the Postnikov/hypercohomology spectral sequence); Mathlib would file this under `DerivedCategory.TStructure`
+- 0 undocumented; module docstring has no reference
+suggestion: rename the namespace to a Mathlib-recognisable one (e.g. `DerivedCategory.TStructure.AdjacentSlice`) and add the BBD/KS reference.
+
+## Lib/Algebra/Homology/DerivedCategory/Ext/CochainTransgression.lean  (17 declarations, 170 lines)
+verdict: B (minor: docs/names)
+twin: composite connecting map of the two canonical short exact sequences of a complex (Weibel Ex. 1.3.x / Cartan–Eilenberg V.7; the "transgression" of Hochschild–Serre); Mathlib `ShortComplex.ShortExact.extClass` in Mathlib/Algebra/Homology/DerivedCategory/Ext/ExactSequences.lean (no composite — genuine gap)
+findings:
+- l.40 `TwoStepResolution` (`0 → F → X₁ → X₂ → H → 0` as a short complex plus augmentation) is essentially `AcyclicResolutionH1` (AcyclicResolutionH1.lean l.67) with one extra field `epi_g`; two structures for the same four-term exact sequence in the same directory
+- l.102 `connectingTwo : Ext P X₃ 0 →+ Ext P F 2` is the Yoneda product of the two `extClass`es — the right definition; l.162 `cochainTransgression` specialises to `cyclesResolution K n` for `K : CochainComplex C ℕ`, general
+- l.99, 158 `[HasExt.{v} C]` pins the Ext universe to the morphism universe `v`, unlike Mathlib's free `HasExt.{w}`; needless specialisation
+- 8 undocumented: l.63 `toBoundary_ι`, 67 `ι_toBoundary`, 79 `first_shortExact`, 94 `second_shortExact`, 117 `cyclesComplex_exact`, 121 `cyclesComplex_epi_g`, 124 `iCycles_toCycles`, 129 `cyclesInitial_exact`
+- namespace `ExtTransgression` and the word "transgression" (l.12, 162) are the project's naming for this Yoneda composite; module docstring has no reference
+suggestion: merge `TwoStepResolution` with `AcyclicResolutionH1` (one structure, `epi_g` as a mixin/`Prop`) and free the Ext universe to `w`.
+
+## Lib/Algebra/Homology/DerivedCategory/Ext/CochainTransgressionHomology.lean  (7 declarations, 143 lines)
+verdict: B (minor: docs/names)
+twin: the canonical four-term sequence `0 → Hⁱ → Kⁱ/Bⁱ → Zʲ → Hʲ → 0` (Mathlib `HomologicalComplex.HomologySequence.composableArrows₃_exact`, Mathlib/Algebra/Homology/HomologySequence.lean); the Ext composite is a gap
+findings:
+- l.64 `homologyTwoStepResolutionOfRel` is stated for any `HomologicalComplex C c` and `c.Rel i j` — the correct generality; l.46 (`ℕ`-indexed) and l.83 (`ℤ`, adjacent degrees) are specialisations; l.126 `cochainTransgression_comp_homologyπ` is a genuine compatibility statement with a sign convention documented (l.21)
+- l.108 `[HasExt.{v} C]` universe pinned to `v` (as in CochainTransgression.lean)
+- l.110 `set_option backward.isDefEq.respectTransparency false` for the rest of the file (not `in`)
+- 0 undocumented; generic `[Abelian C]`; module docstring has no reference; namespace `ExtTransgression` is a project coinage
+suggestion: make `homologyTwoStepResolutionOfRel` the primary definition and derive the `ℕ` version from it (removing the duplicated `homologyCyclesComplex`), and free the universe.
+
+## Lib/Algebra/Homology/DerivedCategory/Ext/DegreeZero.lean  (2 declarations, 73 lines)
+verdict: A (textbook-ready: two API lemmas for Mathlib's `Ext.addEquiv₀`)
+twin: Mathlib/Algebra/Homology/DerivedCategory/Ext/Basic.lean (`Ext.addEquiv₀`, `Ext.mk₀`, `Ext.homAddEquiv`) — these lemmas belong right there
+findings:
+- l.40 `singleFunctor_map_addEquiv₀`, l.59 `singleFunctor_map_addEquiv₀_homAddEquiv_symm`: generic `[Abelian C]`, universe-polymorphic `Ext.{w}`, names follow Mathlib's `f_g` composition convention, docstrings present
+- l.36 `attribute [local instance] HasDerivedCategory.standard` is what Mathlib's own Ext/Basic.lean does; fine
+- l.13 title "Degree-zero Ext coordinates" — "coordinates" is project wording (elsewhere `PostnikovD2*Coordinates`), but the statements are ordinary
+suggestion: PR both lemmas to Mathlib's `Ext/Basic.lean` next to `mk₀_homEquiv₀_apply`.
+
+## Lib/Algebra/Homology/DerivedCategory/Ext/ExactAugmentedCochainComplex.lean  (20 declarations, 169 lines)
+verdict: B (minor: docs/names)
+twin: standard passage from a resolution to its tower of short exact sequences (Weibel §2.4, Hartshorne III.1); Mathlib `HomologicalComplex.ExactAt`, `CochainComplex` (no augmented-exact-complex structure — gap)
+findings:
+- l.44 `ExactAugmentedCochainComplex` (`F`, `complex : CochainComplex C ℕ`, `ι`, `mono_ι`, `initialExact`, `positiveExact`): standard object, generic `[Abelian C]`; docstring explains the literal three-term form
+- l.60–70 `Z`, `i`, `p` (kernels of outgoing differentials, recursive), l.138 `toAcyclicResolution`, l.161 `resolutionComplexIso`: the expected API
+- 10 undocumented: l.75 `p_i`, 79 `i_p`, 97 `unfactoredStep_exact`, 114 `step_exact`, 124 `mono_i`, 131 `epi_p`, 134 `step_shortExact`, 147/150/153 `toAcyclicResolution_*` rfl-lemmas
+- `positiveExact` would in Mathlib be stated as `∀ n, complex.ExactAt (n+1)` with the three-term form derived (docstring l.47–48 argues the opposite; acceptable but non-standard)
+- no reference in module docstring; namespace `CategoryTheory.Abelian.Ext` though the structure does not involve `Ext`
+suggestion: add the ten docstrings and a `positiveExact_iff_exactAt` bridge lemma so the structure can be built from Mathlib's `ExactAt`.
+
+## Lib/Algebra/Homology/DerivedCategory/Ext/ExactFunctorComparison.lean  (12 declarations, 209 lines)
+verdict: A (textbook-ready: Ext comparison along an exact functor, with the injective-preserving bijectivity criterion)
+twin: Weibel Ex. 2.4.x / Grothendieck Tôhoku 2.x (δ-functor comparison; `Ext` along an exact functor preserving injectives is an isomorphism); Mathlib/Algebra/Homology/DerivedCategory/Ext/Map.lean (`Ext.mapExactFunctor`, `Functor.mapExtAddHom`) — this extends it by the `η`-twisted comparison and the bijectivity theorem
+findings:
+- l.44 `map R η Y n : Ext V Y n →+ Ext A (R Y) n` (η : A ⟶ R V), l.101 `map_bijective` under `[EnoughInjectives C] [R.PreservesInjectiveObjects]` and a degree-0 representability hypothesis: exactly the textbook statement, proven by dimension shifting with the five lemma; three categories with independent universes
+- l.137–196 `precompose`, `comp`, `natTrans`, `comp_natTrans`, `natTrans_id` coherence laws; all documented; 0 undocumented
+- names are Mathlib-conforming (`map`, `map_mk₀`, `map_naturality`, `map_connecting`, `equiv`); namespace `Ext.ExactFunctorComparison` is a reasonable choice, though Mathlib might prefer `Functor.extComparison`
+- l.36 `attribute [local instance] comp_preservesFiniteLimits …` (Mathlib does the same in Map.lean)
+suggestion: PR to Mathlib on top of Ext/Map.lean, exposing `map_bijective` as the headline (`Functor.mapExt_bijective_of_preservesInjectiveObjects`).
+
+## Lib/Algebra/Homology/DerivedCategory/Ext/ExactFunctoriality.lean  (3 declarations, 149 lines)
+verdict: A (textbook-ready: three coherence laws for Mathlib's `Ext.mapExactFunctor`)
+twin: Mathlib/Algebra/Homology/DerivedCategory/Ext/Map.lean (`Ext.mapExactFunctor`, `mapExactFunctor_comp`, `mapExactFunctor_extClass`) — the composite/identity/natural-transformation laws are missing there
+findings:
+- l.43 `mapExactFunctor_compFunctor` (`(α.map F).map G = α.map (F ⋙ G)`), l.74 `mapExactFunctor_id`, l.99 `mapExactFunctor_natTrans`: generic, universe-polymorphic; proof by dimension shifting needs `[EnoughInjectives C]` only in the source — a Mathlib reviewer would ask whether the hypothesis can be dropped (via the derived-category definition) and the docstring should say why it is used
+- 0 undocumented; names follow the `mapExactFunctor_*` prefix of the Mathlib file
+- l.40, 72, 95 `set_option backward.isDefEq.respectTransparency.types false in` — Mathlib-tolerated
+suggestion: upstream to Ext/Map.lean; try to prove `mapExactFunctor_compFunctor` without `EnoughInjectives` via `DerivedCategory` functoriality, otherwise document the hypothesis.
+
+## Lib/Algebra/Homology/DerivedCategory/Ext/HomologyTwoStepResolutionExtend.lean  (5 declarations, 108 lines)
+verdict: B (minor: docs/names)
+twin: compatibility of the four-term homology sequence with extension of a complex along an embedding (Mathlib/Algebra/Homology/Embedding/ExtendHomology.lean `extendHomologyIso`); no textbook statement — bookkeeping between gradings
+findings:
+- l.43 `homologyTwoStepResolutionExtendHom` is stated for any `c.Embedding c'` with `[HasHomology]` instances — good generality; l.83/94 specialise to `ComplexShape.embeddingUpNat` (ℕ ↪ ℤ), a standard Mathlib object
+- l.94 `homologyTwoStepResolutionExtendUpNat_connectingTwo` docstring (l.91–93) is placed so the grep-style docstring check fails (the `-/` closes on l.93, the lemma line is l.94) — fine, 0 truly undocumented
+- l.21–23 docstring: "This is the grading bridge used when a cochain transgression is compared with the Postnikov tower of its derived object" — states the project's use case rather than a result
+- l.64 `[HasExt.{v} C]` universe pinned to `v`
+suggestion: drop the use-case sentence, free the universe, and consider moving the general `ExtendHom` into `Embedding/ExtendHomologySequence.lean` (Lib) where `Hom` between four-term sequences lives.
+
+## Lib/Algebra/Homology/DerivedCategory/Ext/InjectiveResolutionCoyoneda.lean  (1 declarations, 50 lines)
+verdict: A (textbook-ready: `Hⁿ(Hom(X, I•)) ≅ Extⁿ(X, F)` for the explicit Hom complex)
+twin: Weibel Thm 2.7.6 / Hartshorne III.1 (Ext via injective resolutions); Mathlib/CategoryTheory/Abelian/Injective/Ext.lean (`InjectiveResolution.extAddEquivCohomologyClass`, which lands in the homotopy category rather than the explicit Hom complex)
+findings:
+- l.41 `InjectiveResolution.coyonedaHomologyExtAddEquiv X n : (coyonedaComplex X I.cochainComplex).homology n ≃+ Ext X F n`: generic, universe-polymorphic `HasExt.{w}`, correct namespace, docstring present
+- depends on `Lib/…/HomotopyCategory/HomComplexSingle.lean` (`fromSingleHomologyIso`) — upstreaming needs that file first
+- module docstring says what is composed; no reference (Weibel 2.7.6 would do)
+suggestion: PR together with HomComplexSingle.lean into Mathlib's `Abelian/Injective/Ext.lean` and add the Weibel reference.
+
+## Lib/Algebra/Homology/DerivedCategory/Ext/InjectiveResolutionHomology.lean  (35 declarations, 444 lines)
+verdict: C (project residue in the mathematics: universe `0` everywhere)
+twin: Weibel Thm 2.7.6 / Hartshorne III.1 (`Extⁿ(A,F) = Hⁿ(Hom(A, I•))`); Mathlib/CategoryTheory/Abelian/Injective/Ext.lean (`InjectiveResolution.extMk`, `extMk_surjective`, `extMk_eq_zero_iff`, on which it is built); overlaps `InjectiveResolutionCoyoneda.lean` in this directory
+findings:
+- l.101 `variable {C : Type u} [Category.{0} C] [Abelian C] [HasExt.{0} C]` and `AddCommGrpCat.{0}` throughout (l.53, 105, 126): morphism and Ext universes pinned to `0` although the argument is universe-free — the specialisation the project's `ModuleCat ℤ`/sheaf categories need
+- l.315 `positiveHomologyExtIso`, l.436 `positiveHomologyExtNatIso` (natural in `A` on `Cᵒᵖ`): the textbook statement, positive degrees only (docstring l.24 says degree 0 is "deliberately separate"); the same result in all degrees is `coyonedaHomologyExtAddEquiv` in InjectiveResolutionCoyoneda.lean — two files prove one theorem twice with different encodings
+- l.44 `ShortComplex.ab_homologyπ_comp_abHomologyIso_hom`, l.53 `shortCycleClass`, l.78 `HomologicalComplex.homologyIsoSc'_hom_naturality`: generic `ShortComplex`/`HomologicalComplex` API misplaced in an `Ext` file (Mathlib home: ShortComplex/Ab.lean)
+- 11 undocumented: l.120, 152, 158, 165, 196, 264, 282, 289, 309, 359, 383
+- l.41–42 `set_option backward.defeqAttrib.useBackward true in`, `backward.isDefEq.respectTransparency false in`
+suggestion: generalise to `Category.{v}`/`HasExt.{w}`, then either derive `positiveHomologyExtIso` from `coyonedaHomologyExtAddEquiv` or delete one of the two files.
+
+## Lib/Algebra/Homology/DerivedCategory/Ext/PostnikovD2Normalized.lean  (2 declarations, 208 lines)
+verdict: C (project residue in the mathematics: bidegree `(0, q+1)` only, `K.IsGE 0`)
+twin: the d₂ of the hypercohomology/Postnikov spectral sequence `E₂^{p,q} = Extᵖ(P, Hᵠ K) ⇒ Hom(P, K[p+q])` is the Yoneda product with the class of `0 → Hᵠ → …` (Deligne, Théorie de Hodge II §1.4 décalage; Verdier, Des catégories dérivées III.4; Gelfand–Manin III.7); no Mathlib twin (Mathlib has `TStructure.SpectralObject` but no d₂ identification)
+findings:
+- l.129 `coyonedaPostnikovD₂TargetExt_d₂`: headline result — in normalized `Ext` coordinates, `d₂ : E₂^{0,q+1} → E₂^{2,q}` equals `connectingTwo` of the canonical two-step homology resolution; sign-free (docstring l.19–20)
+- stated only for source bidegree `(0, q+1)` with `q : ℕ` and `[K.IsGE 0]` — the textbook statement is for all `(p, q)`; the restriction is the project's (cohomology of a sheaf, column 0)
+- l.27 `set_option maxHeartbeats 1600000` for the whole file; l.41 `attribute [local instance] HasDerivedCategory.standard`; namespace `ExtTransgression.TwoStepResolution` (project coinage)
+- 0 undocumented; generic `[Abelian C]`; module docstring has no reference
+suggestion: restate for general column `p` (source `Extᵖ(P, H^{q+1})`, target `Ext^{p+2}(P, Hᵠ)`) via `Ext.comp` with the two-step class, deriving the `p = 0` case; add the Deligne/Verdier reference.
+
+## Lib/Algebra/Homology/DerivedCategory/Ext/PostnikovD2PageCoordinates.lean  (9 declarations, 324 lines)
+verdict: C (project residue in the mathematics: `(2, q)` page coordinates only; "coordinates" bookkeeping)
+twin: same as PostnikovD2Normalized (Deligne/Verdier d₂ of the Postnikov spectral sequence); no Mathlib twin
+findings:
+- l.44 `postnikovTargetExtIso`: `(τ≥q τ<q+1 K)[q+2] ≅ (H^q K)[2]` — a generic and reusable derived-category statement; l.306 `coyonedaPostnikovD₂TargetExt`: page element at `(2, q)` as an `Ext² P (H^q K)` class, again `[K.IsGE 0]`, `q : ℕ`
+- l.61–153 five `postnikovTargetSingleShiftIso_*` lemmas and l.249/275 `lowerTargetShift_*`: shift-associator coherence ("two generic coherence lemmas", l.19–21) — generic but parked here; Mathlib home is `CategoryTheory/Shift/SingleFunctors.lean`
+- seven `set_option backward.isDefEq.respectTransparency false in`; `attribute [local instance] HasDerivedCategory.standard`
+- 0 undocumented; namespace `ExtTransgression.TwoStepResolution`; no reference
+suggestion: move the shift-coherence lemmas to a `Shift/` helper and generalise the target coordinate to bidegree `(p+2, q)`.
+
+## Lib/Algebra/Homology/DerivedCategory/Ext/PostnikovD2PageSplice.lean  (2 declarations, 214 lines)
+verdict: C (project residue in the mathematics: bidegree `(0, q+1)` only)
+twin: same as PostnikovD2Normalized; no Mathlib twin
+findings:
+- l.48 `coyonedaPostnikovE₂_d₂_splice_apply`, l.164 `coyonedaPostnikovE₂_d₂_connectingTwo_apply`: the signed (`(q+1).negOnePow`) intermediate forms of the d₂ identification, with all transports explicit (l.20–22); each statement carries a 20-line `let` block — a Mathlib reviewer would demand named definitions for `T`, `e`, `s₁`, `s₃`, `z`
+- same restriction `[K.IsGE 0]`, `q : ℕ`, column 0; universe `w'` for the derived category is independent (docstring l.161–163) — good
+- two copies of the namespace/variable preamble (l.35–42 and l.150–156) in one file
+- 0 undocumented; no reference
+suggestion: name the `let`-bound transports as defs (in PostnikovD2Splice.lean) so the two statements become one-line equations.
+
+## Lib/Algebra/Homology/DerivedCategory/Ext/PostnikovD2SourceCoordinates.lean  (9 declarations, 283 lines)
+verdict: C (project residue in the mathematics: bidegree `(0, q+1)`, `K.IsGE 0`; sign bookkeeping)
+twin: same as PostnikovD2Normalized (Deligne/Verdier d₂); no Mathlib twin
+findings:
+- l.216 `coyonedaPostnikovD₂SourceHom`: page element at `(0, q+1)` as a morphism `P ⟶ H^{q+1} K` via `singleFunctor.preimage` — only the column-0 case where `E₂^{0,•}` is a Hom; l.153, 241 identify it with the splice-source coordinate up to `(q+1).negOnePow`
+- l.272 `connectingTwo_negOnePow_cancel`: a two-line sign lemma (`ε • φ(ε • f) = φ f`) that is really `smul_smul`/`Int.negOnePow_mul_self` for additive maps — Mathlib would inline it
+- two namespaces in one file (`DerivedCategory` l.33, `ExtTransgression.TwoStepResolution` l.205); four private lemmas (l.42–98) undocumented, of which l.42/50 are generic `eqToHom` facts
+- l.57–124 `set_option backward.isDefEq.respectTransparency true in` alternating with `false` (l.149) — fragile elaboration
+- no reference; `[HasExt.{v} C]` pinned to `v` (l.273)
+suggestion: generalise to column `p` (source `Extᵖ`) and fold the `negOnePow` cancellation into the general `Ext.comp` sign lemma.
+
+## Lib/Algebra/Homology/DerivedCategory/Ext/PostnikovD2Splice.lean  (1 declarations, 167 lines)
+verdict: B (minor: docs/names)
+twin: the connecting map of the adjacent Postnikov triangle is the Yoneda product of the two canonical short exact sequences (Verdier III.4; BBD 1.3.x); no Mathlib twin
+findings:
+- l.52 `postnikovAdjacent_homologySequenceδ_apply`: generic `q : ℤ`, arbitrary `K : CochainComplex C ℤ`, all transports and the sole sign `(q+1).negOnePow` explicit (docstring l.19–22 explains why) — the honest form of the statement
+- the statement is 30 lines with five `let`s (`T`, `e`, `s₁`, `s₃`) repeated verbatim in PostnikovD2PageSplice.lean; they should be named definitions
+- l.36 `universe w w' v u` — `w` unused (grep: only `w'` appears); namespace `ExtTransgression.TwoStepResolution`
+- 0 undocumented; no reference
+suggestion: define `postnikovSpliceSourceTransport K q` / `…TargetTransport` once and restate the lemma as a one-line equation.
+
+## Lib/Algebra/Homology/DerivedCategory/Ext/PostnikovLowerEndpointNormalization.lean  (21 declarations, 1326 lines)
+verdict: B (minor: docs/names — one public lemma, 1,250 lines of private proof)
+twin: identification of the lower endpoint `τ≥q τ≤q K[q+1] ≅ (H^q K)[-1]`-type normalisation in the Postnikov triangle (BBD 1.3.x); no Mathlib twin
+findings:
+- l.1301 `shiftedPostnikovAdjacentTriangleIsoSplice_hom_hom₁_lower`: generic `q : ℤ`, unsigned (docstring l.17–18); the only public declaration
+- 20 `private lemma child_*` (l.41–1272), all undocumented; the `child_` prefix is an agent-workflow artefact, not a Mathlib naming convention; `child_mappingCone_lower_homology` alone is l.503–890 (390 lines)
+- l.25 `set_option maxHeartbeats 1600000` file-wide; l.364–365 `backward.defeqAttrib.useBackward true`, `respectTransparency.types false`
+- l.41–54 `child_assoc_four`, `child_castIso_hom`, `child_eqToIso_hom_comp_family` are generic category lemmas
+- pattern clear after l.100; not read in full
+suggestion: rename the `child_*` lemmas, promote the reusable ones (`child_mappingCone_lower_homology`, `child_single_shift_source_normalization`) to documented public API, and split the file at l.500.
+
+## Lib/Algebra/Homology/DerivedCategory/Ext/PostnikovTwoSliceSplice.lean  (3 declarations, 78 lines)
+verdict: B (minor: docs/names)
+twin: composite of the two triangle comparisons (Postnikov ↔ concrete ↔ splice); BBD 1.3.x / Verdier III.4; no Mathlib twin
+findings:
+- l.41 `shiftedPostnikovAdjacentTriangleIsoSplice := …IsoConcrete ≪≫ …IsoSplice`, l.50 `_hom_hom₂`, l.65 `_comm₃_signed`: generic `q : ℤ`, documented, sign explicit
+- l.35 `[HasDerivedCategory.{w'} C]` as a variable **and** l.37 `attribute [local instance] HasDerivedCategory.standard` — the instance shadows the variable; one of the two should go
+- namespace `ExtTransgression.TwoStepResolution`; 0 undocumented; no reference
+suggestion: remove the redundant `HasDerivedCategory.standard` local instance (or the variable) and add the BBD reference.
+
+## Lib/Algebra/Homology/DerivedCategory/Ext/PostnikovUpperEndpointConcreteNormalization.lean  (4 declarations, 297 lines)
+verdict: B (minor: docs/names)
+twin: upper endpoint of the adjacent two-slice mapping cone is the homology quotient `X₂ → H^{q+1}` (BBD 1.3.x / Verdier III.4); no Mathlib twin
+findings:
+- l.44 `singleFunctorCompHomologyFunctorIso_inv_comp_homologyFunctorFactors_hom`: a generic `DerivedCategory` API lemma (relation between `singleFunctorCompHomologyFunctorIso` and `homologyFunctorFactors`) misplaced in this file; Mathlib home is `DerivedCategory/Basic.lean`
+- l.61, 84, 110: mapping-cone `inr` and upper-component computations, generic `q : ℤ`, unsigned (docstring l.18–19); l.110 statement is a 7-arrow composite with two `let`s — needs named transports
+- l.37 `[HasDerivedCategory.{w} C]` variable plus l.39 `attribute [local instance] HasDerivedCategory.standard` (the same redundancy as PostnikovTwoSliceSplice.lean); l.26 `maxHeartbeats 800000` file-wide
+- 0 undocumented; names are 60+ characters
+suggestion: move l.44 to a `DerivedCategory` API file and name the composite transport in l.110 as a def.
+
+## Lib/Algebra/Homology/DerivedCategory/Ext/PostnikovUpperEndpointNormalization.lean  (2 declarations, 484 lines)
+verdict: B (minor: docs/names — two lemmas with 350- and 80-line proofs)
+twin: as above (upper endpoint normalisation, BBD/Verdier); no Mathlib twin
+findings:
+- l.407 `shiftedPostnikovAdjacentTriangleIsoSplice_hom_hom₃_upper`: generic `q : ℤ`, the sign `(q+1).negOnePow` isolated and explained (docstring l.16–18); the right statement
+- l.45 `mappingConeCompositeTriangle_mor₂_comp_concreteUpperEndpoint`: 355-line proof (l.45–400) with no intermediate public lemma; a Mathlib reviewer would require it split
+- l.39–41, 401–403: `maxHeartbeats 800000`, `backward.defeqAttrib.useBackward true`, `respectTransparency false` on both lemmas
+- 0 undocumented; namespace `ExtTransgression.TwoStepResolution`; no reference
+suggestion: split the first proof into named lemmas (as PostnikovLowerEndpointNormalization.lean does, but public and documented).
+
+## Lib/Algebra/Homology/DerivedCategory/Ext/ShortExactAcyclicQuotient.lean  (3 declarations, 82 lines)
+verdict: C (project residue in the mathematics: degree 2 only where the argument is for every `n`)
+twin: long exact Ext sequence (Weibel Thm 2.7.6 / Hartshorne III.1.1A); Mathlib `Ext.covariant_sequence_exact₁/₂` in Mathlib/Algebra/Homology/DerivedCategory/Ext/ExactSequences.lean
+findings:
+- l.40 `postcomp_f_two_bijective_of_subsingleton_quotient`, l.64 `extTwoEquivMiddleOfSubsingletonQuotient : Ext P X₁ 2 ≃+ Ext P X₂ 2` under `Ext¹(P,X₃) = Ext²(P,X₃) = 0`: correct, generic `[Abelian C] [HasExt.{w} C]`, but the same proof gives `Ext P X₁ (n+1) ≃+ Ext P X₂ (n+1)` under vanishing in degrees `n` and `n+1`; degree 2 is what the sheaf application needs
+- l.72 `_apply` simp lemma undocumented (1 of 3)
+- names follow Mathlib `foo_of_bar` conventions; docstrings and module docstring present, no reference
+suggestion: generalise to `(n : ℕ)` (`postcomp_f_succ_bijective_of_subsingleton_quotient`) and keep the degree-2 form as an `abbrev`.
+
+## Lib/Algebra/Homology/DerivedCategory/Ext/ShortExactDegreeOne.lean  (9 declarations, 152 lines)
+verdict: B (minor: docs/names)
+twin: low-degree part of the long exact Ext sequence (`0 → Hom(P,F) → Hom(P,G) → Hom(P,Q) → Ext¹(P,F) → Ext¹(P,G)`; Weibel 2.7.6); Mathlib ExactSequences.lean
+findings:
+- l.45–142: `postcompFZeroToKerPostcompG`, `extZeroEquivKerPostcompG`, `range_postcomp_g_zero_eq_ker_connecting`, `quotientRangePostcompGEquivExtOne : Ext P Q 0 ⧸ range ≃+ Ext P F 1` (under `Ext¹(P,G) = 0`), `subsingleton_ext_one_iff_postcomp_g_zero_surjective`: all generic, correctly hypothesised, Mathlib-style names
+- l.19–25 module docstring: "useful for a constructible sheaf … skyscraper sheaves … This FREE owner proves only…" — project workflow and application vocabulary; l.138–140 docstring likewise ("constructible-sheaf page computations")
+- 1 undocumented (l.82 `_apply`); `noncomputable def` used inconsistently (l.74, 118) in a non-`noncomputable section`
+suggestion: delete the two application paragraphs; then upstream to ExactSequences.lean.
+
+## Lib/Algebra/Homology/DerivedCategory/Ext/TwoStepResolutionNaturality.lean  (6 declarations, 130 lines)
+verdict: B (minor: docs/names)
+twin: naturality of the Yoneda product in a map of four-term exact sequences (Mac Lane, Homology III.5; Weibel 3.4); Mathlib `ShortComplex.ShortExact.extClass` naturality (`mapExactFunctor_extClass`-style lemmas) — no four-term version
+findings:
+- l.39 `TwoStepResolution.Hom` (`τF, τ₁, τ₂, τ₃` with `cat_disch` autoparams), l.53 `boundary`, l.61/71 `first`/`second` (induced maps of short exact sequences), l.82 `connectingTwo_naturality`: generic and correctly stated; `TwoStepResolution.Hom` duplicates `AcyclicResolutionH1.Hom` (AcyclicResolutionH1Naturality.lean l.49) field-for-field
+- l.78 `[HasExt.{v} C]` universe pinned to `v`
+- 1 undocumented (l.57 `boundary_ι`); no reference
+suggestion: merge with `AcyclicResolutionH1.Hom` after merging the two structures; free the universe.
+
+## Lib/Algebra/Homology/DerivedCategory/Ext/TwoStepSplice.lean  (18 declarations, 218 lines)
+verdict: B (minor: docs/names)
+twin: octahedral axiom applied to `F → X₁ → X₂` (Verdier, Des catégories dérivées II.1.2; Neeman 1.4; Hartshorne RD I.1 TR4); Mathlib/CategoryTheory/Triangulated/Triangulated.lean (`Triangulated.octahedron`), `ShortExact.singleTriangle`; the Yoneda-product identification l.186 is a gap
+findings:
+- l.42 `compositeTriangle` (a chosen cocone triangle via `distinguished_cocone_triangle … .choose`), l.95 `spliceTriangle` (from an `Octahedron` instance), l.186 `spliceTriangle_homologySequenceδ_apply`: correct, generic `[Abelian C] [HasDerivedCategory.{w'} C] [HasExt.{w} C]` with independent universes — good
+- the `choose`-based `compositeTriangle` and `spliceTriangle` are non-canonical up to (non-unique) isomorphism; l.70 `compositeTriangleIsoMappingCone` pins one to the mapping cone, which is the choice Mathlib would make directly (define `compositeTriangle` *as* the mapping-cone triangle and skip the `choose`)
+- 2 undocumented (l.83, 88); l.66, 92 `set_option backward.isDefEq.respectTransparency false` file-wide from l.66
+- namespace `ExtTransgression.TwoStepResolution` (project coinage) — Mathlib home would be `CategoryTheory/Triangulated/` or `DerivedCategory/Ext/`
+suggestion: define `compositeTriangle := mappingConeCompositeTriangle` (drop the `choose`) and give the file a Mathlib namespace.
+
+## Lib/Algebra/Homology/DerivedCategory/Ext/TwoStepSpliceLowerNormalization.lean  (7 declarations, 245 lines)
+verdict: B (minor: docs/names)
+twin: sign of the mapping-cone inclusion vs the rotated triangle (Mathlib `CochainComplex.mappingCone.inr/lift`, Mathlib/Algebra/Homology/HomotopyCategory/MappingCone.lean; Verdier II.1); no textbook statement beyond sign conventions
+findings:
+- l.43 `mappingConeLowerLift`, l.64 `mappingConeLowerInclusion`, l.133 `spliceTriangle_mor₁_mappingCone`, l.203 `mappingConeLowerInclusion_f_negOne` (the `-1` component is `R.ι`, sign-free): generic, sign convention documented (l.17–20)
+- l.203 statement is a 5-arrow composite of `singleObjXSelf`/`shiftFunctorObjXIso` transports — Mathlib would state it with `mappingCone.inl_v`/`ext` lemmas
+- 2 undocumented (l.75, 112); l.71–73 `backward.defeqAttrib.useBackward`, `linter.unusedSimpArgs false`; l.40 `HasDerivedCategory.standard` local instance
+- no reference
+suggestion: restate `mappingConeLowerInclusion_f_negOne` via `mappingCone.ext_from_iff`/`inl_v` and document the two lemmas.
+
+## Lib/Algebra/Homology/DerivedCategory/KInjectiveCohomology.lean  (1 declarations, 59 lines)
+verdict: A (textbook-ready: `Hom_D(X[0], K[n]) ≃ Hⁿ(Hom(X, K•))` for K-injective `K`)
+twin: Spaltenstein 1988 / Weibel 10.4–10.7 (K-injective complexes compute derived Hom); Mathlib/Algebra/Homology/DerivedCategory/KInjective.lean (`CohomologyClass.equivOfIsKInjective`, `SmallShiftedHom.equiv`), composed with `fromSingleHomologyIso` (Lib HomComplexSingle.lean)
+findings:
+- l.41 `DerivedCategory.homEquivCoyonedaHomologyOfIsKInjective`: generic, universe-polymorphic, correct namespace and Mathlib-style hypotheses (`[K.IsKInjective] [HasSmallLocalizedShiftedHom …]`); docstring present
+- l.19–21 docstring explains why the result is an `Equiv` rather than `AddEquiv` (Mathlib API limitation) — honest, and a reviewer would ask for the additive upgrade once Mathlib's `equivOfIsKInjective` is additive
+- module docstring lacks a reference (Spaltenstein/Weibel 10.4)
+suggestion: PR to Mathlib's KInjective.lean after HomComplexSingle.lean, with the reference added.
+
+## Lib/Algebra/Homology/DerivedCategory/PostnikovSlice.lean  (5 declarations, 109 lines)
+verdict: B (minor: docs/names)
+twin: `τ_[n,n+1) K ≅ Hⁿ(K)[-n]` for the canonical t-structure (BBD Prop. 1.3.x, Kashiwara–Schapira 10.1.x); Mathlib/Algebra/Homology/DerivedCategory/TStructure.lean (`exists_iso_singleFunctor_obj_of_isGE_of_isLE`, on which it builds) — the object-level iso is a genuine gap
+findings:
+- l.46 `isoSingleFunctorHomology` (from Mathlib's existence theorem via `choose`, normalised to induce the identity on `Hⁿ`), l.58/73 `isIso_homologyFunctor_map_truncLTι/GEπ`, l.89 `postnikovSliceHomologyIso`, l.102 `postnikovSliceIso`: generic `[Abelian C] [HasDerivedCategory.{w} C]`, Mathlib names and namespace `DerivedCategory`; 0 undocumented
+- l.24–25, 45, 101 docstrings say "the downstream naturality owner proves…" — project workflow vocabulary ("owner") for "see PostnikovSliceNaturality.lean"
+- the `choose`-based construction is what Mathlib would do until `singleFunctor` essential-image API lands; acceptable
+suggestion: replace the "owner" sentences by cross-references and PR to Mathlib's TStructure.lean.
+
+## Lib/Algebra/Homology/DerivedCategory/PostnikovSliceNaturality.lean  (11 declarations, 556 lines)
+verdict: B (minor: docs/names)
+twin: naturality of the above (BBD 1.3); Mathlib DerivedCategory/TStructure.lean, `singleFunctorCompHomologyFunctorIso`, `Functor.shiftIso` — the shift/homology coherence lemmas l.42–238 are gaps in Mathlib's `DerivedCategory` API
+findings:
+- l.42, 66, 90, 238: coherence of `homologyFunctor`, `Q.commShiftIso`, `singleFunctors.shiftIso`, `singleFunctorCompHomologyFunctorIso` — generic, `@[reassoc]`, documented; l.90 has a 145-line proof and l.238 a 150-line one (one should follow from the other by specialisation `a = 0`; both proved from scratch)
+- l.432 `homologyFunctor_map_injective_singleFunctor`, l.469 `homologyFunctor_map_injective_of_isGE_of_isLE` ("degree-`n` homology detects morphisms between objects concentrated in degree `n`"): textbook lemma, upstream candidate on its own
+- l.482–532 naturality of `isoSingleFunctorHomology`, `postnikovSliceHomologyIso`, `postnikovSliceIso`: the promised results; 0 undocumented
+- l.84–86, 232–234 `backward.defeqAttrib.useBackward true`, `respectTransparency.types false`; l.34 `HasDerivedCategory.standard` local instance alongside the `[HasDerivedCategory.{w} C]` variable (l.32)
+- module docstring names no reference
+suggestion: derive `singleFunctorCompHomologyFunctorIso_shiftIso_hom` from `_of_indices` (drop 150 lines) and PR the file with PostnikovSlice.lean.
+
+## Lib/Algebra/Homology/DerivedCategory/PostnikovTwoSlice.lean  (3 declarations, 78 lines)
+verdict: A (textbook-ready: concrete model of the adjacent Postnikov interval)
+twin: `τ≥q τ<q+2 Q(K) ≅ Q((τ≤q+1 K)τ≥q)` (compatibility of t-structure truncation with good truncation of complexes; Kashiwara–Schapira 13.1 / BBD 1.3); Mathlib DerivedCategory/TStructure.lean (`truncLTIsoQTruncLE`, `truncGEIsoQTruncGE`), Triangulated/TStructure/SpectralObject.lean (`triangleω₁δObjIso`)
+findings:
+- l.45 `postnikovTwoSliceIso`, l.59 `triangleω₁δIsoAdjacentTwoSliceTriangle`, l.71 `_hom_hom₂`: generic, documented, Mathlib namespace `DerivedCategory`, names follow Mathlib's `fooIsoBar` pattern; 0 undocumented
+- l.39 `[HasDerivedCategory.{w} C]` variable and l.41 `attribute [local instance] HasDerivedCategory.standard` both present (redundant)
+- docstring l.20–23 explains the sign-deferral design; no reference
+suggestion: drop the redundant local instance and add the reference; then upstream.
+
+## Lib/Algebra/Homology/DerivedCategory/PostnikovTwoSliceEndpoints.lean  (7 declarations, 126 lines)
+verdict: B (minor: docs/names)
+twin: endpoints of the adjacent Postnikov triangle are `Hᵠ[-1]` and `H^{q+1}[0]` after shifting by `q+1` (BBD 1.3); no Mathlib twin
+findings:
+- l.44–89 five endpoint isomorphisms (`shiftedPostnikovLowerEndpointIso`, `postnikovUpperEndpointIso`, `shiftedPostnikovUpperEndpointIso`, `concreteLower/UpperEndpointPostnikovIso`) and l.100/115 the two composition equalities: generic, documented, `DerivedCategory` namespace
+- l.18, 21 docstring: "using the maintained normalized `postnikovSliceIso`", "exported composition equalities" — workflow wording
+- l.38/40 redundant `HasDerivedCategory` variable + local instance; two `respectTransparency false in`
+- 0 undocumented; no reference
+suggestion: tidy the docstring wording and merge with PostnikovTwoSliceShift.lean (the two files are one topic split by size).
+
+## Lib/Algebra/Homology/DerivedCategory/PostnikovTwoSliceShift.lean  (9 declarations, 191 lines)
+verdict: B (minor: docs/names)
+twin: shifting a truncation triangle (Mathlib `Triangle.shiftFunctor` sign convention, Mathlib/CategoryTheory/Triangulated/TriangleShift.lean); BBD 1.3; no textbook statement beyond sign bookkeeping
+findings:
+- l.43 `shiftedPostnikovTwoSliceIso`, l.54 `shiftedPostnikovAdjacentTriangle`, l.71/140 `…IsoConcrete`, l.177 `_comm₃_signed` (with `(q+1).negOnePow` and `shiftFunctorComm 1 (q+1)` explicit): generic, documented, `DerivedCategory` namespace; 0 undocumented
+- l.37/39 redundant `[HasDerivedCategory.{w} C]` variable + `HasDerivedCategory.standard` local instance (pattern repeated across the Postnikov files)
+- docstring l.18–21 explains the parity factor; no reference
+suggestion: merge with PostnikovTwoSliceEndpoints.lean into one `PostnikovAdjacentTriangle.lean` and drop the redundant instance.
+
+## Lib/Algebra/Homology/DerivedCategory/PostnikovUpperRouteHomology.lean  (6 declarations, 282 lines)
+verdict: B (minor: docs/names)
+twin: `H^{q+1}` of the upper truncation map is the good-truncation inclusion (Mathlib `CochainComplex.ιTruncLE`, Embedding/TruncLE.lean); no textbook statement
+findings:
+- l.102 `postnikovUpperRouteHomology`: an unsigned 6-arrow composite equal to `H^{q+1}(ιTruncLE)`; generic `q : ℤ`, documented; l.56 `postnikovUpperCutoffIso`, l.88 `adjacentTwoSliceUpperHomologyIso` are reusable
+- l.40 `castIso_hom`, l.47 `eqToIso_hom_comp_family`: private generic `eqToHom` lemmas (undocumented), the same pair reappears as `child_castIso_hom` in PostnikovLowerEndpointNormalization.lean and `castIso_hom_source` in PostnikovD2SourceCoordinates.lean — three copies
+- l.25 `maxHeartbeats 800000` file-wide; l.33 `universe w'` used only via `HasDerivedCategory.standard`
+- no reference
+suggestion: dedupe the `castIso`/`eqToIso` helpers into one `CategoryTheory/EqToHom` helper file and name the composite in l.102.
+
+## Lib/Algebra/Homology/DerivedCategory/TruncationTriangle.lean  (11 declarations, 241 lines)
+verdict: A (textbook-ready: concrete model of the canonical truncation triangle)
+twin: the truncation triangle `τ<n K → K → τ≥n K → τ<n K[1]` is the triangle of the short exact sequence of complexes (BBD 1.3.3; Kashiwara–Schapira 13.1); Mathlib/Algebra/Homology/DerivedCategory/TStructure.lean (`triangleLTGE`, `shortComplexTruncLE_shortExact`) — `truncLTIsoQTruncLE`/`truncGEIsoQTruncGE` are exactly the missing bridge
+findings:
+- l.107 `truncationTriangleIso` (middle component the identity, via `TStructure.t.triangle_iso_exists`), l.157/163 `truncLTIsoQTruncLE`, `truncGEIsoQTruncGE`, l.174 `concreteTruncationδ`, l.219 `concreteTruncationδ_eq`: generic, `DerivedCategory` namespace, Mathlib-conforming names; l.43/73 `CochainComplex.isIso_ιTruncLE_f_of_lt/πTruncGE_f_of_lt` belong in Mathlib's Embedding/TruncLE.lean
+- 1 undocumented (l.126 `_hom_hom₂`, a `@[simp]` lemma whose `@[simp]` sits above the docstring); l.179 `set_option backward.isDefEq.respectTransparency false` file-wide from there
+- l.100/102 redundant `HasDerivedCategory` variable + local instance
+suggestion: PR `truncLTIsoQTruncLE`/`truncGEIsoQTruncGE` to Mathlib's TStructure.lean (with the two `isIso_*` lemmas to TruncLE/TruncGE).
+
+## Lib/Algebra/Homology/Embedding/ExtendHomologySequence.lean  (1 declarations, 54 lines)
+verdict: A (textbook-ready: one API lemma for Mathlib's `extend`)
+twin: Mathlib/Algebra/Homology/Embedding/ExtendHomology.lean (`extendCyclesIso`, `extendOpcyclesIso`) — this is the missing `opcyclesToCycles` compatibility
+findings:
+- l.40 `HomologicalComplex.extend_opcyclesToCycles` (`@[reassoc]`): generic `[HasZeroMorphisms C] [HasZeroObject C]`, any `c.Embedding c'`, Mathlib naming, docstring present; 0 undocumented
+- module docstring adequate; file is placed where Mathlib would put it
+suggestion: PR to Mathlib's ExtendHomology.lean as is.
+
+## Lib/Algebra/Homology/FunctorCoherence.lean  (2 declarations, 99 lines)
+verdict: A (textbook-ready: coherence of `ShortComplex.mapHomologyIso`)
+twin: Mathlib/Algebra/Homology/ShortComplex/PreservesHomology.lean (`ShortComplex.mapHomologyIso`, l.455) — composition and natural-transformation coherence are missing there
+findings:
+- l.43 `ShortComplex.mapHomologyIso_comp` (`F ⋙ G`), l.87 `mapHomologyIso_hom_naturality_natTrans`: generic `[Abelian C] [F.Additive] [F.PreservesHomology]`, universe-polymorphic (`Type*`), Mathlib names; docstrings present
+- l.36 `[Abelian C] [Abelian D] [Abelian E]` is stronger than the twin's `[HasZeroMorphisms]`/`[Preadditive]`; a reviewer would weaken it
+- l.17–18 docstring "They neither construct a derived functor nor identify any geometric cohomology theory or spectral-sequence differential" — a disclaimer aimed at the project's reviewers, not a reader
+- l.39–40 `backward.defeqAttrib.useBackward true`, `respectTransparency false in`; file name `FunctorCoherence.lean` is vaguer than Mathlib's `ShortComplex/PreservesHomology.lean` placement
+suggestion: weaken `Abelian` to the twin's hypotheses, drop the disclaimer sentence, and PR into PreservesHomology.lean.
+
+## Lib/Algebra/Homology/HomologicalComplex/ChainCycleLift.lean  (24 declarations, 224 lines)
+verdict: C (project residue in the mathematics: `ChainComplex (ModuleCat.{0} ℤ) ℕ` throughout)
+twin: element-wise quasi-isomorphism criterion (Hatcher §2.1 / Weibel 1.1; folklore); Mathlib `HomologicalComplex.quasiIso_iff`, `quasiIsoAt_iff_isIso_homologyMap` (Mathlib/Algebra/Homology/QuasiIso.lean), `ShortComplex.ModuleCat` API
+findings:
+- l.33, 115 `variable (K : ChainComplex (ModuleCat.{0} ℤ) ℕ)`: every statement over `ℤ`-modules in universe 0 and `ℕ`-graded chain complexes; the argument works for `ModuleCat.{v} R` (any ring) and any complex shape with `c.next`/`c.prev` — the project's cellular-chain setting
+- l.198 `quasiIso_of_injective_chain_conditions`: the useful criterion (injective chain map + cycle lift mod boundaries + boundary lift ⇒ quasi-iso), stated element-wise; textbook-correct once generalised
+- l.36–109 `Cycle`, `mkCycle`, `cycleClass`, `cycleClass_surjective/eq_zero_iff/eq_iff`: reimplement `ShortComplex.ModuleCat` cycles/homology API (`ShortComplex.moduleCatHomologyIso`, `moduleCatCycles`) — duplicate of Mathlib
+- 17 of 24 declarations undocumented (l.40, 43, 56, 59, 62, 65, 69, 73, 78, 99, 102, 109, 117, 127, 150, 163, 179); namespace `ChainCycleLift` is a proof-step name; cochain twin `CycleLift.lean` in the same directory (docstring l.15) duplicates the pattern for `AddCommGrpCat`
+suggestion: generalise to `ModuleCat.{v} R` over any `c : ComplexShape ι`, reuse `ShortComplex.moduleCat*` for cycles/classes, and merge with CycleLift.lean into one criterion file.
+
+## Lib/Algebra/Homology/HomologicalComplex/CycleLift.lean  (10 declarations, 154 lines)
+verdict: C (project residue in the mathematics: `CochainComplex AddCommGrpCat.{0} ℕ`, positive degrees only)
+twin: same folklore criterion; Mathlib `ShortComplex.ab_exact_iff`, `ShortComplex.Ab` (Mathlib/Algebra/Homology/ShortComplex/Ab.lean)
+findings:
+- l.133 `isIso_homologyMap_succ_of_cycle_lifts`: the only public theorem — cycle lifts + boundary detection ⇒ `IsIso (homologyMap f (n+1))`; over `AddCommGrpCat.{0}` and `ℕ`-graded, degree `n+1` only (degree 0 needs nothing different once stated with `c.prev`)
+- 9 private helpers (l.31–123), all undocumented; l.31 `shortCycleClass`, l.49/70 `shortCycleClass_surjective/eq_zero_iff` duplicate `ShortComplex.ab_*` API and reappear as `ShortComplex.shortCycleClass` in InjectiveResolutionHomology.lean (l.53) — third copy in `Lib`
+- module docstring: two sentences, no reference; namespace `CategoryTheory.HomologicalComplex` fine
+suggestion: state once, in universe `w` and any complex shape, for `ModuleCat R` (with `AddCommGrpCat` as `R = ℤ`), and delete the duplicate short-complex helpers.
+
+## Lib/Algebra/Homology/HomologicalComplex/MapExtend.lean  (2 declarations, 104 lines)
+verdict: A (textbook-ready: additive functors commute with extension by zero)
+twin: Mathlib/Algebra/Homology/Embedding/Extend.lean (`HomologicalComplex.extend`) — `mapExtendIso` is the missing functoriality-in-`C` lemma; no textbook statement needed
+findings:
+- l.41 `mapExtendXIso`, l.61 `mapExtendIso : (F.mapHomologicalComplex c').obj (K.extend e) ≅ ((F.mapHomologicalComplex c).obj K).extend e`: generic `[Preadditive] [HasZeroObject] [F.Additive]`, independent universes for `C`, `D`, `ι`, `ι'`; Mathlib names and namespace; docstrings present
+- l.56–58 `backward.defeqAttrib.useBackward true`, `respectTransparency false`, `.types false in` for the second def
+- module docstring: clear, no reference required
+suggestion: PR to Mathlib's Embedding/Extend.lean as is (perhaps as `Functor.mapHomologicalComplexExtendIso`).
+
+## Lib/Algebra/Homology/HomotopyCategory/HomComplexSingle.lean  (4 declarations, 88 lines)
+verdict: A (textbook-ready: `Hom•(X[0], K) ≅ Hom(X, K•)` as complexes)
+twin: Mathlib/Algebra/Homology/HomotopyCategory/HomComplexSingle.lean (`Cochain.fromSingleEquiv`, degreewise) — this file adds the complex-level iso and the homology iso
+findings:
+- l.40 `coyonedaComplex X K` (`Hom(X, Kⁿ)` with postcomposition differential), l.59 `fromSingleXIso`, l.66 `fromSingleIso`, l.83 `fromSingleHomologyIso`: generic `[Preadditive C] [HasZeroObject C]`, `AddCommGrpCat.{v}`, namespace `CochainComplex.HomComplex` matching Mathlib's file; all documented
+- `coyonedaComplex` might be expressible as `(preadditiveCoyoneda.obj (op X)).mapHomologicalComplex _ |>.obj K`; a Mathlib reviewer would ask for that definition (or a `coyonedaComplexIso` bridge) so that existing functoriality applies
+- l.63–64 `backward.defeqAttrib.useBackward true`, `respectTransparency false in`
+suggestion: define `coyonedaComplex` via `Functor.mapHomologicalComplex` (or add the bridge) and PR into Mathlib's HomComplexSingle.lean.
+
+## Lib/Algebra/Homology/HomotopyCategory/TwoTermMappingCone.lean  (14 declarations, 167 lines)
+verdict: B (minor: docs/names)
+twin: the mapping cone of `f : X → Y` in degree 0 is the two-term complex `X → Y` in degrees `-1, 0` (Weibel 1.5.1; Gelfand–Manin III.3); Mathlib/Algebra/Homology/HomotopyCategory/MappingCone.lean, Embedding/Connect.lean (`ConnectData`) — genuine gap
+findings:
+- l.55 `twoTermData : ConnectData (chainSingleZero X) (cochainSingleZero Y)`, l.62 `twoTerm f`, l.149 `twoTermIsoMappingCone : twoTerm f ≅ mappingCone ((singleFunctor C 0).map f)` with sign convention stated (l.19, 146–147): generic, namespace `CochainComplex`
+- l.36 `[Abelian C]` where `[Preadditive C] [HasZeroObject C] [HasBinaryBiproducts C]` suffices (mapping cones need only that); over-strong hypothesis
+- 8 undocumented: l.39 `relNegOneZero`, 42 `relZeroOne`, 78 `mappingCone_single_isZero_X`, 87/96/105 `twoTermPointIso*`, 118/129 `_hom` lemmas; l.116 `respectTransparency false` file-wide from there
+- l.46/50 `chainSingleZero`/`cochainSingleZero` abbreviations for `(ChainComplex.single₀ C).obj X` — fine but should be `abbrev` with docstrings (they are)
+suggestion: weaken `Abelian` to `Preadditive + HasZeroObject + HasBinaryBiproducts`, add the eight docstrings, and PR next to `MappingCone.lean`.
+
+## Lib/Algebra/Homology/MayerVietorisShortExact.lean  (19 declarations, 321 lines)
+verdict: C (project residue in the mathematics: `ModuleCat.{0} ℤ` throughout; the earlier textbook.log entry rated this B, but the rubric's universe/ring criterion applies)
+twin: Hatcher Thm 2.20 (biproduct half of Mayer–Vietoris); nearest Mathlib: Mathlib/Algebra/Homology/ShortComplex/ModuleCat.lean, `ShortComplex.ShortExact` (no Mayer–Vietoris short exact sequence of complexes — gap)
+findings:
+- l.90–307 every statement is over `ModuleCat.{0} ℤ` / `ChainComplex (ModuleCat.{0} ℤ) ℕ`; the element calculus (`fst_lift_apply`, `desc_apply`, `element_ext`) and `shortExactOfComplexes` hold for `ModuleCat.{v} R` over any ring, and `shortExactOfComplexes` for any abelian category with the elementwise hypotheses replaced by `Mono`/`Epi`/exactness
+- namespace `SmallChainBiprod` (l.90–307) is a project label; Mathlib would use `ShortComplex.ofBiprod` / `ChainComplex.mayerVietorisShortComplex`
+- l.70 `set_option maxSynthPendingDepth 3`, l.72–77 `open … Manifold Topology … UpperHalfPlane`, l.83 `local infixr " ≫ₚ " => Path.trans`, l.85 `local notation … SlashAction.map`, l.79 `universe u v` unused: the project's kitchen-sink preamble copied verbatim
+- docstrings and module docstring with outline present; 0 undocumented
+suggestion: generalise to `ModuleCat.{v} R` (`[Ring R]`), rename the namespace, and delete the preamble (l.70–85).
+
+## Lib/Algebra/Homology/ShortComplex/LeftHomologyData.lean  (1 declarations, 57 lines)
+verdict: B (minor: docs/names)
+twin: Mathlib/Algebra/Homology/ShortComplex/LeftHomology.lean (`LeftHomologyData.ofIsLimitKernelFork` l.186, `LeftHomologyData.ofIsColimitCokernelCofork`) — this is their combination with `Exact` presentations
+findings:
+- l.32 `ShortComplex.leftHomologyDataOfExact S i a p … [Mono i] [Epi p] : S.LeftHomologyData`: generic `[Abelian C]`, correct namespace, docstring present; useful constructor (build homology data from an exact kernel presentation and an exact cokernel presentation)
+- l.12–14 module docstring is a bare title — no description, no pointer to the two Mathlib constructors it combines
+- the `hi : (mk i S.g).Exact` + `[Mono i]` pair is `ShortComplex.Exact.fIsKernel`; a Mathlib reviewer would ask for the name `LeftHomologyData.ofExact` and for `[Abelian C]` to be weakened to the twin's `[HasZeroMorphisms]` + kernel/cokernel existence
+suggestion: expand the module docstring and PR as `LeftHomologyData.ofExact` into LeftHomology.lean.
+
+## Lib/Algebra/Homology/SpectralObject/FinitePageStabilization.lean  (2 declarations, 101 lines)
+verdict: B (minor: docs/names)
+twin: first-quadrant spectral sequences stabilise at `E_r`, `r ≥ max(p,q)+2` (Weibel 5.2.x / McCleary 2.x); Mathlib/Algebra/Homology/SpectralObject/SpectralSequence.lean (`spectralSequencePageXIso`, `IsFirstQuadrant`) — the stabilisation iso is a gap
+findings:
+- l.45 `finiteEIsoStableE` (finite subquotient ≅ stable endpoint when the two omitted tails vanish), l.80 `firstQuadrantPageIsoStableE : (E₂SpectralSequenceNat.page r).X (p,q) ≅ stableE (p+q) q` for `r ≥ max p q + 2`: the textbook statement with the textbook bound; documented
+- l.41 `X : SpectralObject AddCommGrpCat EInt` — inherited from StableEndpoint.lean; the argument here is for any abelian category
+- l.32–33 `set_option backward.defeqAttrib.useBackward true` / `respectTransparency false` file-wide
+- module docstring good (states the bound, disclaims convergence); no reference
+suggestion: generalise `finiteEIsoStableE` to an arbitrary abelian target (only `stableE` needs `AddCommGrpCat`) and add the Weibel reference.
+
+## Lib/Algebra/Homology/SpectralObject/MapHomologicalFunctor.lean  (1 declarations, 79 lines)
+verdict: A (textbook-ready: a homological functor turns a triangulated spectral object into an abelian one)
+twin: Verdier / BBD 1.3 (exact couples from a homological functor on a filtered triangulated object); Mathlib/CategoryTheory/Triangulated/SpectralObject.lean, Mathlib/Algebra/Homology/SpectralObject/Basic.lean — the bridge functor is a gap
+findings:
+- l.39 `Triangulated.SpectralObject.mapHomologicalFunctor X F [F.IsHomological] [F.ShiftSequence ℤ] : Abelian.SpectralObject A ι`, `@[simps]`: generic in `C`, `ι`, `A`, universe-polymorphic; Mathlib namespace and naming; documented
+- l.34–35 `backward.defeqAttrib.useBackward true`, `respectTransparency false in`
+- module docstring adequate; no reference (none really needed)
+suggestion: PR to Mathlib's Triangulated/SpectralObject.lean as is.
+
+## Lib/Algebra/Homology/SpectralObject/Postnikov.lean  (6 declarations, 112 lines)
+verdict: A (textbook-ready: the Postnikov/t-structure spectral sequence `E₂^{p,q} = Hom(A, τ_[q,q+1)K[p+q]) ⇒ Hom(A, K[p+q])`)
+twin: BBD 1.3 / Gelfand–Manin IV.4 (hypercohomology spectral sequence from the t-structure filtration); Mathlib/CategoryTheory/Triangulated/TStructure/SpectralObject.lean (`t.spectralObject`), SpectralObject/FirstPage.lean
+findings:
+- l.45 `postnikovSpectralObject`, l.52 `postnikovTotalIso`, l.60 `coyonedaPostnikovSpectralObject`, l.66 `coyonedaPostnikovSpectralObject_isFirstQuadrant` (`[t.IsLE A 0] [t.IsGE K 0]`), l.92 `coyonedaPostnikovSpectralSequence`, l.100 `coyonedaPostnikovE₂PageIso`: generic in `t : TStructure C` and `F`, universe-polymorphic, Mathlib namespace `Triangulated.TStructure`; all documented
+- docstring l.22–24 honestly scopes what is not proved (convergence datum) — good
+- no reference in the module docstring
+suggestion: add the BBD/Gelfand–Manin reference and PR with MapHomologicalFunctor.lean.
+
+## Lib/Algebra/Homology/SpectralObject/PostnikovD2.lean  (7 declarations, 186 lines)
+verdict: A (textbook-ready: `d₂` of the Postnikov spectral sequence is the connecting map of the adjacent truncation triangle, all bidegrees)
+twin: BBD 1.3 / Deligne Hodge II 1.4 (d₂ of the t-structure spectral sequence); Mathlib SpectralObject/SpectralSequence.lean (`spectralSequence_first_page_d_eq`)
+findings:
+- l.151 `coyonedaPostnikovD₂δ_eq` (`rfl`), l.165 `coyonedaPostnikovE₂_d₂_eq` for arbitrary `(p, q)`: generic in `t`, `A`, `K`; l.88/103 `coyonedaPostnikovD₂SourcePageIso`/`TargetPageIso` with normalised integer cutoffs (docstring l.15–17 explains the `↑(q+1)` vs `↑q+1` transport issue)
+- all 7 documented; l.116 `maxHeartbeats 800000 in`, `respectTransparency false in`
+- this is the general-`p` statement that the `Ext/PostnikovD2*` files then specialise to `p = 0` — the specialisation happens downstream, not here
+suggestion: add the reference; upstream together with Postnikov.lean.
+
+## Lib/Algebra/Homology/SpectralObject/StableEndpoint.lean  (8 declarations, 304 lines)
+verdict: B (minor: docs/names)
+twin: `E_∞^{p,q} ≅ F^q H^n / F^{q+1} H^n` (Weibel 5.2.5 convergence definition, the "stable endpoint" `E(⊥→q, q→q+1, q+1→⊤)`); Mathlib SpectralObject/Page.lean (`X.E`) — convergence gap
+findings:
+- l.47 `stableE`, l.55 `stableEProjection`, l.71 `totalFiltrationToStableE`, l.164 `totalFiltrationToStableE_ker`, l.284 `totalFiltrationGradedEquiv : F_{q+1} ⧸ F_q ≃+ stableE n q`: the right statements; all documented
+- l.43 `X : SpectralObject AddCommGrpCat EInt` with element-wise proofs (`x`, `QuotientAddGroup`) — the textbook argument is in any abelian category via images/subobjects; the additive-group specialisation is a pragmatic choice, but "stable endpoint" is this file's coinage (Weibel: `E_∞`)
+- l.34–35 file-wide `backward.defeqAttrib.useBackward true` / `respectTransparency false`; proof of `totalFiltrationToStableE_ker` is l.164–283
+- no reference
+suggestion: name it `EInfty`/`eInfty` (Mathlib style) with the Weibel 5.2.5 reference; consider stating over any abelian category with `Subobject`.
+
+## Lib/Algebra/Homology/SpectralObject/TotalFiltration.lean  (7 declarations, 100 lines)
+verdict: B (minor: docs/names)
+twin: the filtration `F_q H^n = im(H^n[⊥,q] → H^n[⊥,⊤])` induced by a spectral object (Weibel 5.2.5 / 5.4; BBD 1.3); no Mathlib twin
+findings:
+- l.40–88 `totalFiltrationMap`, `totalFiltrationTransition`, `totalFiltration : AddSubgroup (…)`, `totalFiltration_mono/bot/top`: correct, documented, Mathlib-style names
+- l.37 `AddCommGrpCat`-valued only (ranges as `AddSubgroup`); Mathlib would use `Subobject`/`imageSubobject` for any abelian category
+- docstring l.22–23 scopes honestly; no reference
+suggestion: add the reference; if the abelian-category generalisation is wanted, restate with `imageSubobject` and derive the `AddSubgroup` form.
+
+## Lib/Algebra/Homology/SpectralSequence/NatLowerEdge.lean  (27 declarations, 506 lines)
+verdict: C (project residue in the mathematics: five hand-picked bidegrees where the argument is uniform in `(p,q)`)
+twin: local stabilisation of a first-quadrant spectral sequence (`E_r^{p,q} = E_{r+1}^{p,q}` when incoming and outgoing `d_r` vanish; Weibel 5.2.x, McCleary Ch. 1); Mathlib/Algebra/Homology/SpectralSequence/Basic.lean (`P.iso r r'`, `page`, `dTo`/`dFrom`) — no local-stabilisation lemma there
+findings:
+- l.100–498: separate statements for `(0,1)→(2,0)`, `(0,2)→(2,1)`, `(0,3)→(2,2)`, `(1,1)`, `(1,2)` (`mono_d₂_zeroOne_twoZero_of_isZero_pageFour`, `isIso_d₂_zeroThree_twoTwo_of_isZero_pageFour_pageFive` with six vanishing hypotheses, `pageTwoOneTwoIsoPageFour`, …); each is an instance of one lemma `page r (p,q) ≅ page (r+1) (p,q)` under `IsZero` of the two neighbours, which is never stated
+- 13 private helpers (l.53–344) undocumented, each proving that a specific `dTo`/`dFrom` is zero from the first-quadrant shape
+- generic `[Abelian C]` and Mathlib's `E₂CohomologicalSpectralSequenceNat`; namespace `SpectralSequence.NatLowerEdge` is a coinage; module docstring (l.11–35) reads as an application plan ("an application may use concrete cohomology calculations …")
+suggestion: prove the general `pageSuccIso_of_isZero_dTo_dFrom (r) (p q)` and `isZero_page_of_first_quadrant` lemmas once and derive the five bidegree corollaries (or move them to `Hopf/Proof`).
+
+## Lib/Algebra/Homology/ThreeColumnPage.lean  (29 declarations, 368 lines)
+verdict: C (project residue in the mathematics: `Fin 3 × Fin 4` page bookkeeping shaped by the project's calculation; two topics in one file)
+twin: `RankOneNormalization` half: a linear map between free rank-one modules is multiplication by a scalar (Mathlib `LinearMap.toMatrix`, `LinearEquiv.ofBijective`, `Module.Free.of_rank_eq_one` neighbourhood); `Data`/`FilteredAbutment` half: none (a three-column-page "spectral-sequence-shaped" algebra)
+findings:
+- l.32–139 `LinearMap.RankOneNormalization` (chosen `M ≃ₗ R`, `N ≃ₗ R`), `coefficient`, `injective_iff_coefficient_ne_zero [IsDomain R]`, `kernelEquiv`, `cokernelEquiv`, `bijective_iff_isUnit`: generic, documented, Mathlib-style — could be upstreamed on its own (though Mathlib would phrase it via `LinearMap.toMatrix` on `Fin 1`)
+- l.167 `ThreeColumnPage.Data` (`E : Fin 3 → Fin 4 → Type v`, three differentials `(0,b+1) → (2,b)`, `source/target : … ≃ₗ R`, middle column `Subsingleton`) and l.255 `FilteredAbutment` (three-step filtration with graded pieces): a hand-shaped model of the first four total degrees of the project's three-column spectral sequence; l.287 `all_subsingleton_iff`, l.352 `all_subsingleton_iff_isUnit_of_coefficients_eq` are the project's conclusions ("vanishing of `H¹..H³` ⇔ the coefficient `p` is a unit")
+- docstring l.15–18 disclaims spectral sequences; `FilteredAbutment` "is independent input asserting the relevant filtered-object identifications" — a project interface, not a textbook object
+- 2 private undocumented (l.273, 278); no reference; `attribute [instance]` on structure fields (l.176) fine
+suggestion: split `RankOneNormalization` into `Lib/LinearAlgebra/RankOneNormalization.lean` (upstream candidate) and move `Data`/`FilteredAbutment` under `Hopf/Proof`, replaced by `ThreeColumnSpectralSequence.Convergence`.
+
+## Lib/Algebra/Homology/ThreeColumnPage/LowerTransfer.lean  (5 declarations, 89 lines)
+verdict: D (not library material: the paper's "lower transfer condition")
+twin: none: a project-specific conjunction (`d₀`, `d₁` bijective, `d₂ ≠ 0`) and its reformulations
+findings:
+- l.36 `LowerTransferCondition` is documented as "the paper-facing lower transfer condition" — the condition of the project's paper, not a mathematical notion
+- l.46–81 four `lowerTransferCondition_iff_*` equivalences (coefficients are units, over a domain injective, ⇔ `FilteredAbutment` vanishing) are correct but only reformulate that condition
+- generic `[CommRing R]`; all documented; no reference
+suggestion: move to `Hopf/Proof` next to the theorem that consumes it.
+
+## Lib/Algebra/Homology/ThreeColumnSpectralSequence.lean  (22 declarations, 213 lines)
+verdict: B (minor: docs/names)
+twin: first-quadrant spectral sequence supported in three columns degenerates at `E₃` (Weibel 5.2.x exercises on two/three-column spectral sequences; McCleary 1.x); Mathlib/Algebra/Homology/SpectralSequence/Basic.lean (`E₂CohomologicalSpectralSequenceNat`) — convergence/abutment data is a Mathlib gap
+findings:
+- l.39 `Raw` (a Mathlib `E₂CohomologicalSpectralSequenceNat (ModuleCat.{v} R)` with `E₂` supported in columns 0–2), l.63 `Einf := E 3`, l.70–156 `isZero_offsetPage_of_three_le`, `middlePageIso`, `stablePageIso` (pages stabilise from 3 on): textbook content, correctly general in `R` and universes
+- l.164 `FiniteFiltration` (`Fin 4 →o Submodule R M` with `⊥`/`⊤` ends) and l.183 `Convergence` (`Einf p q ≃ₗ GradedPiece (filtration (p+q)) p`): a reasonable abutment structure for three columns (Weibel's definition of convergence for bounded spectral sequences)
+- `ModuleCat R` only where any abelian category works for `Raw`/page lemmas; the `Convergence` part needs submodules, so fine
+- l.17 false positive in the declaration count ("structure does not assume …" in the docstring) — 21 real declarations, all documented
+- no reference; top-level namespace `ThreeColumnSpectralSequence` (Mathlib would nest under `CategoryTheory.SpectralSequence`)
+suggestion: add the Weibel reference and generalise `Raw` and the page lemmas to an abelian `C`, keeping `Convergence` over `ModuleCat R`.
+
+## Lib/Algebra/Homology/ThreeColumnSpectralSequence/LowerTransfer.lean  (11 declarations, 191 lines)
+verdict: C (project residue in the mathematics: feeds the paper's lower transfer condition and its rank-one coordinates)
+twin: edge maps of a three-column spectral sequence: `E_∞^{0,q+1} = ker d₂`, `E_∞^{2,q} = coker d₂` (Weibel 5.2.x); no Mathlib twin
+findings:
+- l.40–125 `left_dTo_eq_zero`, `right_dFrom_eq_zero`, `d₂_injective_of_subsingleton_Einf`, `d₂_surjective_of_subsingleton_Einf`, `Convergence.d₂_injective/surjective/bijective_of_subsingleton`: textbook edge-map facts, generic in `R`; upstream-quality
+- l.133–152 `sourceNormalizationOfTarget`, `targetNormalizationOfSource`, `outerNormalizationOfAlternatingCoordinates` (transport of `≃ₗ R` coordinates across bijective `d₂` under four abutment vanishings `H¹..H⁴`) and l.173 `lowerTransferCondition`: project bookkeeping for the paper's condition
+- all documented; no reference; docstring l.19–22 talks about "the adapter's two middle-column fields"
+suggestion: keep l.40–125 in ThreeColumnSpectralSequence.lean (as `Convergence.d₂_*`) and move the normalisation/transfer part to `Hopf/Proof`.
+
+## Lib/Algebra/Homology/ThreeColumnSpectralSequence/ThreeColumnPage.lean  (6 declarations, 79 lines)
+verdict: C (project residue in the mathematics: adapter between two project encodings)
+twin: none: converts `ThreeColumnSpectralSequence.Convergence` + chosen coordinates into `ThreeColumnPage.Data`
+findings:
+- l.29 `OuterNormalization` (six chosen `≃ₗ R` on the outer `E₂` objects), l.39 `toThreeColumnPageData` (needs `Subsingleton (H 2)`, `Subsingleton (H 3)` to fill the `middle` field): exists only so `ThreeColumnPage.Data` consumers can run on a genuine spectral sequence
+- 4 undocumented `rfl` lemmas (l.54, 60, 66, 72); generic `[CommRing R]`; docstring l.14–15 describes the adapter role
+suggestion: delete together with `ThreeColumnPage.Data` once the consumers take `Convergence` directly.
+
+## Lib/Algebra/Module/FreeIntSubmodule.lean  (24 declarations, 236 lines)
+verdict: C (project residue in the mathematics: `ℤ` where the textbook theorem is over any PID)
+twin: submodules of free modules over a PID are free, arbitrary rank (Cartan–Eilenberg I.5.1; Rotman, Intro. Homological Algebra Thm 4.x; Lang III.7 for finite rank); Mathlib/LinearAlgebra/FreeModule/PID.lean has only the finite case (`Submodule.basisOfPid`, `Module.free_of_finite_type_torsion_free`) — the infinite-rank statement is a genuine gap
+findings:
+- l.37 `Submodule ℤ (ι →₀ ℤ)` with `[LinearOrder ι]`/`[WellFoundedLT ι]`: the triangular-basis proof (`leadingIdeal`, `leadingVector`, `leadingBasis`, l.40–191) uses only that `ℤ` is a PID (`Submodule.IsPrincipal.generator`) — should be `[CommRing R] [IsDomain R] [IsPrincipalIdealRing R]`
+- l.197 `finsupp_submodule_free_int`, l.205 `submodule_free_int : Module.Free ℤ N`, l.231 `submodule_projective_int`: headline results; l.217 `submodule_projective_int_with_module` takes an explicit module structure "definitionally different from `Submodule.module`" (docstring l.213–216) — a workaround for the project's instance mismatch, not library API
+- l.108 `triangular_linearIndependent` (a family with strictly ordered leading terms is linearly independent) is a general lemma worth its own name/place (`LinearIndependent.of_triangular`)
+- 10 undocumented (l.43, 52, 65, 69, 73, 90, 136, 180, and the two false positives 214–215 inside a docstring); namespace `Module.FreeIntSubmodule.FinsuppModel` is a coinage; no reference in the docstring
+suggestion: generalise to an arbitrary PID (`Submodule.free_of_isPrincipalIdealRing`), drop `_with_module`, and PR to Mathlib's FreeModule/PID.lean.
+
+## Lib/Algebra/Module/IntegerPresentation.lean  (23 declarations, 281 lines)
+verdict: C (project residue in the mathematics: two topics, `ℤ` where any ring works, provenance residue)
+twin: presentations of finitely generated modules and presentation matrices (Milnor, h-cobordism §7 Thm 7.6 as cited; Lang III.7); Mathlib `Module.Presentation` (Mathlib/Algebra/Module/Presentation/Basic.lean) — a general presentation API this file does not use
+findings:
+- l.56 `IntegerPresentation B r c` (`map : (Fin r → ℤ) →ₗ B` surjective with kernel spanned by `c` columns), `ofEquiv`, `transport`, `adjoin`, `matrix`, `matrix_surjective_of_subsingleton` (l.62–187): a special case of Mathlib's `Module.Presentation` over `ℤ` with `Fin`-indexed generators/relations; the ring `ℤ` is inessential everywhere
+- l.26, 209–276 `HomologyTransport.ker_comp_span_singleton`, `exists_split_rank_one_extension`, `integerCoordinateSplit`, `integerEquiv_one_natAbs`, `matrix_sizes_eq_of_bijective`: unrelated split-extension/rank lemmas under a project namespace (`HomologyTransport`); `matrix_sizes_eq_of_bijective` is `LinearEquiv.finrank_eq` in one line
+- l.3 `import Mathlib`; no copyright header; l.14–21 "## Provenance … Moved verbatim from `Hopf/SphereTopology.lean` (lane F0b) … lane F10" — project workflow text in the module docstring
+- 23 of 23 declarations undocumented
+suggestion: rebuild on `Module.Presentation` over a general `R` (or delete in favour of it), move the `HomologyTransport` lemmas to `Hopf/Proof`, and remove the provenance paragraph.
+
+## Lib/AlgebraicTopology/FundamentalGroup/HomotopyEquiv.lean  (2 declarations, 42 lines)
+verdict: A (textbook-ready: a homotopy equivalence induces `π₁(X,x) ≃* π₁(Y, e x)`)
+twin: Hatcher Prop. 1.18; Mathlib/AlgebraicTopology/FundamentalGroupoid/InducedMaps.lean (`FundamentalGroupoidFunctor.equivOfHomotopyEquiv`) — the vertex-group corollary is missing there
+findings:
+- l.30 `FundamentalGroup.map_bijective_of_homotopyEquiv`, l.37 `FundamentalGroup.mulEquivOfHomotopyEquiv (e : X ≃ₕ Y) (x : X) : FundamentalGroup X x ≃* FundamentalGroup Y (e x)`: generic, Mathlib namespace and naming, documented
+- module docstring adequate; no reference (Hatcher 1.18 would do)
+suggestion: PR to Mathlib's FundamentalGroupoid/InducedMaps.lean (or FundamentalGroup.lean) with the Hatcher reference.
+
+## Lib/AlgebraicTopology/FundamentalGroup/SimplyConnectedCover.lean  (10 declarations, 223 lines)
+verdict: B (minor: docs/names)
+twin: Hatcher Thm 1.20 corollary (a space covered by simply connected open sets with path-connected pairwise intersections containing a common point is simply connected) — named in the docstring; Mathlib `SimplyConnectedSpace` (Mathlib/AlgebraicTopology/FundamentalGroupoid/SimplyConnected.lean); no Mathlib van Kampen
+findings:
+- l.182 `simplyConnectedSpace_of_open_cover U hopen hcover hsimply o ho hinter : SimplyConnectedSpace X`: generic, correct statement (with the common-basepoint hypothesis `∀ i, o ∈ U i` that Hatcher 1.20 also uses); documented
+- l.41–130 helpers under `SimplyConnectedCover.` with proof-step names (`quotient_cast_trans`, `quotient_cast_section`, `section_subpath_zero_one`, `section_trans_of_open_cover`); all documented, but the namespace is a proof label
+- l.21 `set_option maxSynthPendingDepth 3`, l.23–28 `open … Manifold … UpperHalfPlane`, l.30 `universe u v` unused, l.34/36 `local infixr " ≫ₚ "`, `local notation … SlashAction.map`: project preamble copied verbatim; l.1 `import Mathlib`
+- no copyright header
+suggestion: delete the preamble (l.21–36) and `import` only `FundamentalGroupoid.SimplyConnected` + `Topology.Homotopy.Path`; then upstream-ready.
+
+## Lib/AlgebraicTopology/FundamentalGroup/TwoSimplyConnectedCover.lean  (29 declarations, 412 lines)
+verdict: C (project residue in the mathematics: `TriangleRegularBaseFundamentalGroup` namespace, proof-step lemma family)
+twin: Hatcher §1.3 (path lifting / sheets of a two-sheeted cover built from a two-open cover), cited in the docstring; no Mathlib twin (no covering-space construction from a cover)
+findings:
+- every declaration lives in `TriangleRegularBaseFundamentalGroup.` — the name of the project's `Threefold`/`Center` fundamental-group computation, not a mathematical object; l.154 `TwoSimplyConnectedCover` (two simply connected opens with common basepoint) duplicates `VanKampen/TwoSimplyConnectedCover.lean` (VanKampen namespace) and overlaps `VanKampen.Cocone.TwoOpenCover`
+- l.38–138 `pathClass_induction_of_open_cover`, `basedLoop`, `pathDifference`, `basedLoop_comparison`; l.212–399 `switchClass`, `basedSection`, `comparisonU_mem`, `basedLoop_mem_of_path_in_U/V`, `switchClass_eq_of_paths`: the sheet/section bookkeeping for one argument ("used to split the fundamental group action", l.12–13)
+- l.6 `import Mathlib`, l.18 `maxSynthPendingDepth 3`, l.20–25 `open … Manifold … UpperHalfPlane`, l.27 unused `universe u v`, l.33 `local notation … SlashAction.map`: project preamble; no copyright header
+- all documented (docstrings are good); 0 undocumented
+suggestion: move under `Hopf/Proof` (or, if the two-sheeted cover is wanted in `Lib`, rename the namespace to `FundamentalGroup.TwoSimplyConnectedCover` and merge with the VanKampen twin).
+
+## Lib/AlgebraicTopology/FundamentalGroup/VanKampen.lean  (165 declarations, 1823 lines)
+verdict: C (project residue in the mathematics: a superseded monolith duplicating `VanKampen/{Basic,PathValue,Pushout,Surjectivity}.lean`, tied to project namespaces)
+twin: Hatcher Thm 1.20 (named in docstring l.15–16, including the uniqueness half); no Mathlib twin (PR #28246 pending)
+findings:
+- l.47–1770: the same `LocalPathValue`, `PathValue`, `TwoOpenCover`, `pathIn`, `localValue`, `extension`, `rectangleBoundaryHomotopy`, `lift`, `pushoutEquiv`, `inclusionHomU_surjective_of_overlapHomV_surjective` as the split files, under `FundamentalGroup.VanKampen.` instead of `FundamentalGroup.VanKampen.Cocone.` — two complete copies of the van Kampen development live in `Lib` (this one 1823 lines, the split one 2221 lines)
+- l.447–478 the uniqueness argument calls `TriangleRegularBaseFundamentalGroup.basedLoop` (the project's `Threefold`-computation namespace, imported from `FundamentalGroup/TwoSimplyConnectedCover.lean` l.7); l.1799/1808 `SphereHomology.twoOpenCover_pathConnectedSpace`, `SphereHomology.twoOpenCover_fundamentalGroup_eq_one` — project namespace `SphereHomology` for generic corollaries
+- l.1670–1716 `pushoutToFundamentalGroup`, `fundamentalGroupToPushout` and l.1753 `pushoutEquiv` build the equivalence by hand where the split version uses `Monoid.PushoutI.equivOfCocone` — this copy states the uniqueness half explicitly (`fundamentalGroupToPushout`, docstring l.1704), which the split version lacks
+- l.6 `import Mathlib`, l.19 `maxSynthPendingDepth 3`, l.21–26 kitchen-sink `open`, l.28 unused `universe`, l.34 `local notation … SlashAction.map`; no copyright header
+- 0 undocumented (this copy is fully documented, unlike the split copy — the docstrings should be ported before deletion); pattern clear after l.500, not read in full
+suggestion: port the docstrings and the explicit uniqueness statement (`fundamentalGroupToPushout`) into `VanKampen/Pushout.lean`, then delete this file and the `TriangleRegularBase…` import chain.
+
+## Lib/AlgebraicTopology/FundamentalGroup/VanKampen/Basic.lean  (61 declarations, 548 lines)
+verdict: B (minor: docs/names)
+twin: Seifert–van Kampen for two open sets, path-factorisation proof (Hatcher Thm 1.20; tom Dieck 2.6); Mathlib PR #28246 (S. Kumar, credited l.21–22); no Mathlib twin merged
+findings:
+- l.44 `LocalPathValue` (chart-wise multiplicative path values with `refl`/`trans`/`subpath_mul`/`compatible`), l.75 `PathValue`, l.106 `TwoOpenCover` (two path-connected opens with path-connected overlap and common basepoint), l.222–275 `UGroup`, `overlapHomU`, `inclusionHomU`, `Compatible`: generic, the right abstractions for the pushout proof
+- 61 of 61 declarations undocumented; every one written with the 40-character prefix `FundamentalGroup.VanKampen.Cocone.` instead of a `namespace` block
+- l.30 `Path.trans_mem`, l.37 `subpath_mem_of_mem_Icc`, l.280–371 `pathIn`, `homotopyIn`, `subpathTransSubpathIn`: generic `Path` API that Mathlib's Topology/Homotopy/Path.lean lacks — upstream candidates on their own
+- l.383–455 `PathClass.pathClass_induction_of_open_cover`, `basedLoop`, `pathDifference`: duplicated verbatim in `FundamentalGroup/TwoSimplyConnectedCover.lean` (l.38–117, namespace `TriangleRegularBaseFundamentalGroup`)
+- no preamble residue; `Cocone` in the namespace is unexplained (nothing is a categorical cocone)
+suggestion: add docstrings and a `namespace FundamentalGroup.VanKampen` block, split the generic `Path`/`subpath` lemmas into `Topology/Homotopy/PathIn.lean`, and delete the `TriangleRegularBase…` copies.
+
+## Lib/AlgebraicTopology/FundamentalGroup/VanKampen/Character.lean  (4 declarations, 59 lines)
+verdict: C (project residue in the mathematics: a renamed `D.lift` that exists to feed one argument)
+twin: universal property of the pushout (Hatcher 1.20); in-tree `VanKampen.Cocone.TwoOpenCover.lift`
+findings:
+- l.25 `characterLift D fU fV hcompat := D.lift fU fV hcompat` — a definitional synonym; l.33/41 `characterLift_comp_inclusionHomU/V` restate `lift_comp_*`; l.49 `characterLift_surjective_of_left` is the one-line "surjective on one factor ⇒ surjective" fact
+- l.13–15 docstring: "needed by finite attachment arguments … Basepoint transport remains owned by `VanKampen.Surjectivity` … this module intentionally introduces no competing rebasing API" — workflow/ownership text
+- generic `[Group G]`; all documented
+suggestion: delete; use `D.lift` and prove `surjective_of_left` inline (or as `lift_surjective_of_left` in Basic.lean).
+
+## Lib/AlgebraicTopology/FundamentalGroup/VanKampen/FiniteStarCharacter.lean  (1 declarations, 42 lines)
+verdict: D (not library material: a `Finset.induction_on` wrapper for the project's star-attachment induction)
+twin: Mathlib `Finset.induction_on` (Mathlib/Data/Finset/Insert.lean) — the theorem is that lemma with a dependent predicate
+findings:
+- l.29 `exists_stageCharacter (Basepoint : Finset ι → Type*) (Character : ∀ s, Basepoint s → Prop) …`: a five-line induction with abstract `attach` step; nothing about fundamental groups, van Kampen, or characters occurs in the statement
+- docstring l.13–17: "used by a star-attachment argument … this owner contains no chart, centre-family, puncture, or residual-group data" — describes the project's proof, in the project's vocabulary
+- placed under `FundamentalGroup.VanKampen` although it imports only `Finset.Basic`
+suggestion: inline at the call site in `Hopf/Proof` as `Finset.induction_on`.
+
+## Lib/AlgebraicTopology/FundamentalGroup/VanKampen/PathValue.lean  (91 declarations, 1029 lines)
+verdict: B (minor: docs/names)
+twin: the universal property half of van Kampen (Hatcher 1.20, proof via subdivision of loops and homotopies into chart pieces; tom Dieck 2.6.2); Mathlib PR #28246 (credited); genuine Mathlib gap
+findings:
+- l.996 `TwoOpenCover.lift fU fV hf : FundamentalGroup X D.base →* G`, l.1010/1020 `lift_comp_inclusionU/V`: the universal property, generic in `X`, `G`; l.259 `PathValue.fundamentalGroupHom`, l.661 `LocalPathValue.extension` (local-to-global extension over an open cover, subdivision via Lebesgue number `exists_path_subdivision` l.298), l.777 `rectangleBoundaryHomotopy` (homotopy subdivision on squares): the textbook argument in full
+- 91 of 91 declarations undocumented; all fully-qualified names, no `namespace`; l.466 `intervalHalf`, l.678–734 `squareHorizontal`, `rectangleHorizontalVertical` are generic unit-square path API misplaced here
+- uniqueness of the lift (the other half of the universal property, needed for `pushoutEquiv`) is proved via `Lib/GroupTheory/Pushout/EquivOfCocone` + surjectivity rather than stated here as `lift_unique`
+- pattern clear after l.400; not read in full
+suggestion: add docstrings and a namespace block; state `lift_unique` explicitly; then this + Basic + Pushout is a Mathlib PR (coordinate with #28246).
+
+## Lib/AlgebraicTopology/FundamentalGroup/VanKampen/Pushout.lean  (8 declarations, 82 lines)
+verdict: B (minor: docs/names)
+twin: Seifert–van Kampen for two open sets as a group pushout (Hatcher Thm 1.20; tom Dieck 2.6.2); Mathlib `Monoid.PushoutI` (Mathlib/GroupTheory/PushoutI.lean) — no van Kampen in Mathlib (genuine gap)
+findings:
+- l.50 `TwoOpenCover.pushoutEquiv : D.Pushout ≃* FundamentalGroup X D.base` with `Pushout := Monoid.PushoutI D.overlapHom` over `Bool`: the textbook statement, generic in `X`; l.24–46 `ChartGroup`, `overlapHom`, `inclusionHom`, `Pushout` are the right bookkeeping
+- 8 of 8 declarations undocumented; every declaration written with the full name `FundamentalGroup.VanKampen.Cocone.TwoOpenCover.…` instead of a `namespace`
+- docstring l.15–16 "contains no proof-specific cover or relator data" — reviewer-facing disclaimer
+- depends on `Lib/GroupTheory/Pushout/EquivOfCocone.lean` (`Monoid.PushoutI.equivOfCocone`) which would need to go upstream first
+suggestion: add docstrings, open the namespace, and make this (with Basic/PathValue) the headline `vanKampen` PR.
+
+## Lib/AlgebraicTopology/FundamentalGroup/VanKampen/Surjectivity.lean  (10 declarations, 178 lines)
+verdict: B (minor: docs/names)
+twin: corollaries of van Kampen (Hatcher 1.20 + Prop. 1.5 basepoint change); Mathlib `FundamentalGroupoid`, `SimplyConnectedSpace` (no `FundamentalGroup`-level `basepointChange` naturality)
+findings:
+- l.28/58 `inclusionHomU_surjective_of_overlapHomV_surjective` (and V/U): the textbook corollary, proved from `pushoutEquiv` via `PushoutI.induction_on`; l.173 `TwoOpenCover.pathConnectedSpace`
+- l.87–167 `FundamentalGroup.basepointChange_naturality`, `map_surjective_at_of_path`, `map_surjective_at_of_pathConnected`, `eq_one_of_path`, `simplyConnectedSpace_iff_eq_one`, `simplyConnectedSpace_of_eq_one`: general `FundamentalGroup` API unrelated to van Kampen; belongs in a `FundamentalGroup/Basic.lean` and is upstream-ready
+- all documented; long fully-qualified names instead of `namespace`; docstring l.14–17 "used by an iterated attachment argument" (application wording)
+suggestion: split the six generic `FundamentalGroup.*` lemmas into their own file (Mathlib target: FundamentalGroupoid/FundamentalGroup.lean) and keep the two van Kampen corollaries here.
+
+## Lib/AlgebraicTopology/FundamentalGroup/VanKampen/TwoSimplyConnectedCover.lean  (22 declarations, 283 lines)
+verdict: B (minor: docs/names)
+twin: Hatcher 1.20 special case (two simply connected opens: `π₁` generated by "switch classes" of overlap points; cf. Hatcher Ex. 1.2.x); no Mathlib twin
+findings:
+- l.35 `TwoSimplyConnectedCover` (two simply connected opens, common basepoint — no overlap-connectedness assumed, so `π₁` need not be trivial), l.106 `switchClass x`, l.112 `switchClass_eq_of_joinedIn` (depends only on the overlap component), l.223 `subgroup_eq_top_of_switchClass_mem`, l.267 `switchClass_eq_of_paths`: a clean generic statement with a genuine mathematical content (generators of `π₁` from the overlap components)
+- l.20–22 docstring: "extracts and normalizes legacy copies that previously lived in application modules" — workflow text; the "legacy copy" `FundamentalGroup/TwoSimplyConnectedCover.lean` (namespace `TriangleRegularBaseFundamentalGroup`) still exists in `Lib`
+- 13 undocumented, of which 11 are `private` (l.147–209); public ones documented
+- proper `namespace` block, `warningAsError`, no preamble residue
+suggestion: delete the `TriangleRegularBase…` duplicate file and drop the "legacy copies" sentence; then upstream with the VanKampen bundle.
+
+## Lib/AlgebraicTopology/FundamentalGroupoid/SimplyConnectedSphere.lean  (14 declarations, 231 lines)
+verdict: B (minor: docs/names)
+twin: `Sⁿ` is simply connected for `n ≥ 2` (Hatcher Prop. 1.14), named in the docstring; Mathlib has `isPathConnected_sphere`, `stereographic'`, `ContractibleSpace` (Mathlib/Geometry/Manifold/Instances/Sphere.lean, Topology/Homotopy/Contractible.lean) but no `SimplyConnectedSpace (sphere …)` — genuine gap
+findings:
+- l.207 `EuclideanSphere.simplyConnectedSpace (n) : SimplyConnectedSpace (Metric.sphere (0 : EuclideanSpace ℝ (Fin (n+3))) 1)`: the textbook theorem, general `n`; l.178 `homotopic_refl_of_not_surjective` (a non-surjective loop is null-homotopic), l.82/96 path-connectedness of `Sⁿ ∖ {pt}` and of the two-chart overlap
+- instance names l.42–70 `instLocal1`, `instLocal2`, `instLocal3`, `instContractibleSpace1` and the type written as `(fun n => Metric.sphere … ) (n + 1)` (an unreduced beta-redex) throughout — Mathlib would write `Metric.sphere (0 : EuclideanSpace ℝ (Fin (n+2))) 1` and name the instances `EuclideanSphere.nonempty`, `.infinite`, `.pathConnectedSpace`, `.contractibleSpace_compl_singleton`
+- l.8 `import Mathlib`; l.21 `maxSynthPendingDepth 3`, l.23–28 kitchen-sink `open … UpperHalfPlane`, l.30 unused `universe u v`, l.36 `local notation … SlashAction.map`; `private abbrev c`, `hc₁`, `hc₂`, `hc₃`, `hx` (l.113–158) are proof-step names; 5 undocumented (all private)
+- placed under `FundamentalGroupoid/` while stating a `SimplyConnectedSpace` result about spheres (Mathlib would put it in `AlgebraicTopology/FundamentalGroupoid/SimplyConnected.lean` or `Geometry/Manifold/Instances/Sphere.lean`)
+suggestion: rename the instances, remove the beta-redex spelling and the preamble, then PR as `EuclideanSpace.simplyConnectedSpace_sphere`.
+
+## Lib/AlgebraicTopology/Hurewicz/CubeChainDecomposition.lean  (133 declarations, 2268 lines)
+verdict: C (project residue in the mathematics: `X : Type` (universe 0) throughout; project-internal references and names)
+twin: Kuhn/Freudenthal triangulation of the cube and the Hurewicz cycle of a based `n`-cube (Hatcher §3.B cross product, cited l.39; Hatcher 4.2 Hurewicz; Eilenberg–Steenrod for the prism operator); no Mathlib twin (Mathlib has no singular homology cross product) — genuine gap
+findings:
+- l.1077 `fundamentalCubeChain`, l.1089 `cubeChain`, l.2045 `cubeChain_eq_sum_simplices` (`[Πⁿ] = Σ_σ sign σ · σ_e`), l.2219 `cubeCycle`, l.2237 `cubeHomologyClass`, l.2244 `cubeHomologyClass_const`: the textbook construction, all `n`; module docstring is Mathlib-style with outline, main results, references, tags; 0 undocumented
+- `{X : Type}` (41 occurrences) — every topological space in universe 0, inherited from the project's `SingularChains` development; Mathlib would take `Type u`
+- l.780 `private theorem linearMap_zsmul_apply_mo1973_8057` — a `Mathoverflow1973`-derived name; l.38 reference "recorded in `Lib/docs/C.md`, §§3 and 10–11", l.2043 "of the lane's textbook (§9, L5)" — project-internal documents cited as the reference
+- l.47 `set_option maxSynthPendingDepth 3`, l.49 `open … Manifold …`; ten `attribute [local instance] SingularHomology.integerLinearMapModule` (l.286–1363) — an instance that should be global in the chains file
+- l.57–974 `CubeSubdivision.*` (prism realisation, bad prisms, shuffle vertices, permutation insertion signs): the combinatorial core, correct place, but `badPrism`/`prismDiscrepancy` are proof-step names; pattern clear after l.1100, not read in full
+suggestion: lift to `Type u` once `SingularChains` is universe-polymorphic, replace the `docs/C.md`/"lane's textbook" citations by Hatcher §3.B/4.2 and rename the `mo1973` lemma.
+
+# done 82 files

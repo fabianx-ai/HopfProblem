@@ -1,0 +1,14 @@
+Lib/Geometry/Manifold/Morse/SublevelSets.lean
+Lib/Geometry/Manifold/Morse/SurgeryCollapse.lean
+Lib/Geometry/Manifold/Morse/SurgeryHomology.lean
+Lib/Geometry/Manifold/Morse/SurgeryWindows.lean
+Lib/Geometry/Manifold/Quotient/Atlas.lean
+Lib/Geometry/Manifold/Quotient/LocalOrbit.lean
+Lib/Geometry/Manifold/RegularLevel.lean
+Lib/Geometry/Manifold/RestrictScalars.lean
+Lib/Geometry/Manifold/Transversality/Basic.lean
+Lib/Geometry/Manifold/VectorBundle/ProjectionBundle.lean
+Lib/Geometry/Manifold/Whitney/AnnularExtension.lean
+Lib/Geometry/Manifold/Whitney/BigonModel.lean
+Lib/Geometry/Manifold/Whitney/CleanStrips.lean
+Lib/Geometry/Manifold/Whitney/EmbeddedArcs.lean

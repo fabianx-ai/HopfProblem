@@ -1,0 +1,1862 @@
+{
+  "source_revision": "e5a00e920dad75a69b6a25779a738cd4d64f78f2",
+  "group": "WangFamilies",
+  "declarations": [
+    {
+      "name": "Mathoverflow1973.PeriodTorusHigherHomology.CirclePaths.circleTranslation",
+      "source": "Hopf/LCP/CuspFilling.lean",
+      "start": 13318,
+      "end": 13327,
+      "kind": "def",
+      "sha256": "58ba5e58b01ef018e9cda330ae9fc808012901ec66ed3a5a643cfae7dbece3cb"
+    },
+    {
+      "name": "Mathoverflow1973.PeriodTorusHigherHomology.CirclePaths.circleTranslationHomotopy",
+      "source": "Hopf/LCP/CuspFilling.lean",
+      "start": 13335,
+      "end": 13347,
+      "kind": "def",
+      "sha256": "bb7a3ff299bc75ac7ebd435ead68cd60ca4990b93614f2382717652811344481"
+    },
+    {
+      "name": "Mathoverflow1973.PeriodTorusHigherHomology.CirclePaths.circleTranslation_singularHomologyMap",
+      "source": "Hopf/LCP/CuspFilling.lean",
+      "start": 13349,
+      "end": 13353,
+      "kind": "theorem",
+      "sha256": "016f52a7ba4f55575d6f60fc3747752230cc9d2e9d3df392a391aa9fac338d08"
+    },
+    {
+      "name": "Mathoverflow1973.PeriodTorusHigherHomology.CirclePaths.circleTranslation_inducedHomology",
+      "source": "Hopf/LCP/CuspFilling.lean",
+      "start": 13355,
+      "end": 13358,
+      "kind": "theorem",
+      "sha256": "d83b1a8e0fa62bd18e017ba44fe056be0e880912f6e23df55a74a641e25254f8"
+    },
+    {
+      "name": "Mathoverflow1973.PeriodTorusHigherHomology.CirclePaths.loopHomologyClass_map_circleTranslation",
+      "source": "Hopf/LCP/CuspFilling.lean",
+      "start": 13360,
+      "end": 13366,
+      "kind": "theorem",
+      "sha256": "99e2f0b5870dd98fbf073ce8b2edeb3f2e605bda547d2acb2354688f26bc635f"
+    },
+    {
+      "name": "Mathoverflow1973.PeriodTorusHigherHomology.CirclePaths.quarterIntersection",
+      "source": "Hopf/LCP/CuspFilling.lean",
+      "start": 13368,
+      "end": 13372,
+      "kind": "def",
+      "sha256": "c0dbf8f52dd04ff1369612d8bd94c57fb1b86306b0943adda2a067cc217d7a8b"
+    },
+    {
+      "name": "Mathoverflow1973.PeriodTorusHigherHomology.CirclePaths.threeQuarterIntersection",
+      "source": "Hopf/LCP/CuspFilling.lean",
+      "start": 13374,
+      "end": 13378,
+      "kind": "def",
+      "sha256": "c14d411239135f5a28c482342770cbcab5be27da34de8de7f0bd923c706ac554"
+    },
+    {
+      "name": "Mathoverflow1973.PeriodTorusHigherHomology.CirclePaths.quarterPoint",
+      "source": "Hopf/LCP/CuspFilling.lean",
+      "start": 13380,
+      "end": 13382,
+      "kind": "def",
+      "sha256": "1d8a795ea8e330f0a3a762be45d24204e1658e5040753827f028fa8b3a1ba076"
+    },
+    {
+      "name": "Mathoverflow1973.PeriodTorusHigherHomology.CirclePaths.threeQuarterPoint",
+      "source": "Hopf/LCP/CuspFilling.lean",
+      "start": 13384,
+      "end": 13386,
+      "kind": "def",
+      "sha256": "3b509b3e239ad0b6e20edf054de9aad170375cc15a339dd0ddfdc70076c14494"
+    },
+    {
+      "name": "Mathoverflow1973.PeriodTorusHigherHomology.CirclePaths.quarterIntersection_component",
+      "source": "Hopf/LCP/CuspFilling.lean",
+      "start": 13393,
+      "end": 13397,
+      "kind": "theorem",
+      "sha256": "d8a14e0fdf628e4b885bc21fe8b7d9f3be18dd7d0d8743d748be8558a4d488e5"
+    },
+    {
+      "name": "Mathoverflow1973.PeriodTorusHigherHomology.CirclePaths.threeQuarterIntersection_component",
+      "source": "Hopf/LCP/CuspFilling.lean",
+      "start": 13399,
+      "end": 13403,
+      "kind": "theorem",
+      "sha256": "0e4b3fcb97ce07d8ed6e4225c960ebf7814e3834ad7f10394db259deb8c27912"
+    },
+    {
+      "name": "Mathoverflow1973.PeriodTorusHigherHomology.CirclePaths.quarterU",
+      "source": "Hopf/LCP/CuspFilling.lean",
+      "start": 13405,
+      "end": 13407,
+      "kind": "def",
+      "sha256": "32641661c1981b40f67f44d3752f0ad2fcef2df437000e4921ac96becece8c63"
+    },
+    {
+      "name": "Mathoverflow1973.PeriodTorusHigherHomology.CirclePaths.quarterV",
+      "source": "Hopf/LCP/CuspFilling.lean",
+      "start": 13409,
+      "end": 13411,
+      "kind": "def",
+      "sha256": "e2b47bfc97f992deb3f620cb2206b42d6841dbaf3661f6200bca0faaea05b2b6"
+    },
+    {
+      "name": "Mathoverflow1973.PeriodTorusHigherHomology.CirclePaths.threeQuarterU",
+      "source": "Hopf/LCP/CuspFilling.lean",
+      "start": 13413,
+      "end": 13415,
+      "kind": "def",
+      "sha256": "846321e19215f0c5f478ae09f478d92b535e07a9d5fb4ce6e9e35bd1abb5ab94"
+    },
+    {
+      "name": "Mathoverflow1973.PeriodTorusHigherHomology.CirclePaths.threeQuarterV",
+      "source": "Hopf/LCP/CuspFilling.lean",
+      "start": 13417,
+      "end": 13419,
+      "kind": "def",
+      "sha256": "7852165010d494459944b840f9580ffa79751a547d62d6a71748bdbf48c5c5f7"
+    },
+    {
+      "name": "Mathoverflow1973.PeriodTorusHigherHomology.CirclePaths.uPath",
+      "source": "Hopf/LCP/CuspFilling.lean",
+      "start": 13421,
+      "end": 13448,
+      "kind": "def",
+      "sha256": "8f845ad870e80551bbc365ae3d3147fa0bda28e1b99b6f5d17c7603f276aabfa"
+    },
+    {
+      "name": "Mathoverflow1973.PeriodTorusHigherHomology.CirclePaths.vPath",
+      "source": "Hopf/LCP/CuspFilling.lean",
+      "start": 13450,
+      "end": 13478,
+      "kind": "def",
+      "sha256": "de4922f011ed04192fcb03d72388dbcef3cb325e80fe16b01d2c75466be618e4"
+    },
+    {
+      "name": "Mathoverflow1973.PeriodTorusHigherHomology.CirclePaths.uCirclePath",
+      "source": "Hopf/LCP/CuspFilling.lean",
+      "start": 13480,
+      "end": 13481,
+      "kind": "def",
+      "sha256": "5a86e725f8686cb8f1ce15449719a3b1b01e4fe82be126dcdfff46391274cdb6"
+    },
+    {
+      "name": "Mathoverflow1973.PeriodTorusHigherHomology.CirclePaths.vCirclePath",
+      "source": "Hopf/LCP/CuspFilling.lean",
+      "start": 13483,
+      "end": 13484,
+      "kind": "def",
+      "sha256": "ebc06574a8767e2a00c6d521f0e0ffb4d757ad6fe092e45fe6257066e6a4ead4"
+    },
+    {
+      "name": "Mathoverflow1973.PeriodTorusHigherHomology.CirclePaths.quarterLoop",
+      "source": "Hopf/LCP/CuspFilling.lean",
+      "start": 13498,
+      "end": 13509,
+      "kind": "def",
+      "sha256": "e83ed4f568f578de2443c6ebdd6a4706759f7d07dc0a343850bb37e09dc6154e"
+    },
+    {
+      "name": "Mathoverflow1973.PeriodTorusHigherHomology.CirclePaths.uCirclePath_trans_vCirclePath",
+      "source": "Hopf/LCP/CuspFilling.lean",
+      "start": 13517,
+      "end": 13526,
+      "kind": "theorem",
+      "sha256": "900a9de529b69e84b25308c98978fdba8e3c32e109f9f2b085167479fefc5d96"
+    },
+    {
+      "name": "Mathoverflow1973.PeriodTorusHigherHomology.CirclePaths.positiveLoop",
+      "source": "Hopf/LCP/CuspFilling.lean",
+      "start": 13528,
+      "end": 13534,
+      "kind": "def",
+      "sha256": "cb616c8fbd4d11fc0b9d517a199186e0a80f40d7c9a52c77717d801c9ff9a912"
+    },
+    {
+      "name": "Mathoverflow1973.PeriodTorusHigherHomology.CirclePaths.quarterTranslation_zero",
+      "source": "Hopf/LCP/CuspFilling.lean",
+      "start": 13541,
+      "end": 13544,
+      "kind": "theorem",
+      "sha256": "97040f6c0e9fd194830a13264ab759a47bfb41c3cd7a2c819b423e6a5dbfe02b"
+    },
+    {
+      "name": "Mathoverflow1973.PeriodTorusHigherHomology.CirclePaths.quarterLoop_eq_translation",
+      "source": "Hopf/LCP/CuspFilling.lean",
+      "start": 13546,
+      "end": 13556,
+      "kind": "theorem",
+      "sha256": "8beae2cfa8eecb64fc1cb5744fe6ce0cda14750643d071293b7aaaaf7117e81f"
+    },
+    {
+      "name": "Mathoverflow1973.PeriodTorusHigherHomology.CirclePaths.quarterLoop_homologyClass",
+      "source": "Hopf/LCP/CuspFilling.lean",
+      "start": 13558,
+      "end": 13570,
+      "kind": "theorem",
+      "sha256": "206898fe9ed851c648bbad707544eb5c00b7a68944ffb4c8350e7a117bb7aadf"
+    },
+    {
+      "name": "Mathoverflow1973.PeriodTorusHigherHomology.CirclePaths.boundaryOne_arcSum",
+      "source": "Hopf/LCP/CuspFilling.lean",
+      "start": 13572,
+      "end": 13577,
+      "kind": "theorem",
+      "sha256": "8931e2d5aea7ada2dbcf25c6ba2e69c10bebc1a5edb97569f1eb2b9e34d81fee"
+    },
+    {
+      "name": "Mathoverflow1973.PeriodTorusHigherHomology.CirclePaths.arcSumCycle",
+      "source": "Hopf/LCP/CuspFilling.lean",
+      "start": 13579,
+      "end": 13582,
+      "kind": "def",
+      "sha256": "9bb077e51b80ea89b8ef8b70d7595d132ad3ba87f8eb4af6343ca288f93b7b77"
+    },
+    {
+      "name": "Mathoverflow1973.PeriodTorusHigherHomology.CirclePaths.arcSumCycle_class",
+      "source": "Hopf/LCP/CuspFilling.lean",
+      "start": 13584,
+      "end": 13596,
+      "kind": "theorem",
+      "sha256": "6917c96116bc1a18df3abdfa90a02754c6265c8599f489e0007b0841752afce9"
+    },
+    {
+      "name": "Mathoverflow1973.PeriodTorusHigherHomology.CirclePaths.arcSumCycle_positiveLoop_class",
+      "source": "Hopf/LCP/CuspFilling.lean",
+      "start": 13598,
+      "end": 13601,
+      "kind": "theorem",
+      "sha256": "df47f0ef4f2ec573cfd6d112629c25f9ea28b93f31263c7386f675a543ec0fde"
+    },
+    {
+      "name": "Mathoverflow1973.PeriodTorusHigherHomology.CirclePaths.quarterIntersectionSection",
+      "source": "Hopf/LCP/CuspFilling.lean",
+      "start": 13603,
+      "end": 13609,
+      "kind": "def",
+      "sha256": "a0eed9d3641cb423e1c1a7777c3f8681f892ed4b0b8614859d27d05bd24a5517"
+    },
+    {
+      "name": "Mathoverflow1973.PeriodTorusHigherHomology.CirclePaths.threeQuarterIntersectionSection",
+      "source": "Hopf/LCP/CuspFilling.lean",
+      "start": 13611,
+      "end": 13617,
+      "kind": "def",
+      "sha256": "dfdb5bb60c133d0009f00c9ff49eb788dc9dbc9638bb5dc5e452d7d4cbb0401e"
+    },
+    {
+      "name": "Mathoverflow1973.PeriodTorusHigherHomology.CirclePaths.quarterIntersectionSection_component",
+      "source": "Hopf/LCP/CuspFilling.lean",
+      "start": 13619,
+      "end": 13633,
+      "kind": "theorem",
+      "sha256": "2a3f1ed8f3fd53833805a66b41501bacb5f591ca8f02ee42eb4a6b00d845dad7"
+    },
+    {
+      "name": "Mathoverflow1973.PeriodTorusHigherHomology.CirclePaths.quarterIntersectionSection_comp",
+      "source": "Hopf/LCP/CuspFilling.lean",
+      "start": 13635,
+      "end": 13642,
+      "kind": "theorem",
+      "sha256": "ef6d23d0a40af27381fd6887690e3ac262862ec7b29583e70e4f8b6e7ea5473f"
+    },
+    {
+      "name": "Mathoverflow1973.PeriodTorusHigherHomology.CirclePaths.threeQuarterIntersectionSection_component",
+      "source": "Hopf/LCP/CuspFilling.lean",
+      "start": 13644,
+      "end": 13659,
+      "kind": "theorem",
+      "sha256": "581ac0e7ede51f4b4c9da0a1d3b65a874a50bbda170747cfa6b8b6b1052829a2"
+    },
+    {
+      "name": "Mathoverflow1973.PeriodTorusHigherHomology.CirclePaths.threeQuarterIntersectionSection_comp",
+      "source": "Hopf/LCP/CuspFilling.lean",
+      "start": 13661,
+      "end": 13668,
+      "kind": "theorem",
+      "sha256": "a46bdd2a50b55da6a8be2980f34307cecd02caa0f33e7efeb23c875cb9cb8cfd"
+    },
+    {
+      "name": "Mathoverflow1973.PeriodTorusHigherHomology.positiveCircleCross",
+      "source": "Hopf/LCP/CuspFilling.lean",
+      "start": 13670,
+      "end": 13675,
+      "kind": "def",
+      "sha256": "2850f02fbe9d60f390c376bd22b4e105f96dcedbf145287cb9812bb2adfa5dbc"
+    },
+    {
+      "name": "Mathoverflow1973.PeriodTorusHigherHomology.positiveCircleCross_arcSum_cycleClass",
+      "source": "Hopf/LCP/CuspFilling.lean",
+      "start": 13677,
+      "end": 13701,
+      "kind": "theorem",
+      "sha256": "c109978e539a1743df0ae6884b46f8ec0c33ca9bed3c51a9505c1bbc52faef40"
+    },
+    {
+      "name": "Mathoverflow1973.PeriodTorusHigherHomology.quarterIntersectionHomology_coordinates",
+      "source": "Hopf/LCP/CuspFilling.lean",
+      "start": 13703,
+      "end": 13711,
+      "kind": "theorem",
+      "sha256": "2d9f9bbf21cd132cb63672de354100e3152885a6e7f2c19e85af42b2abf1f548"
+    },
+    {
+      "name": "Mathoverflow1973.PeriodTorusHigherHomology.threeQuarterIntersectionHomology_coordinates",
+      "source": "Hopf/LCP/CuspFilling.lean",
+      "start": 13713,
+      "end": 13721,
+      "kind": "theorem",
+      "sha256": "fa5124bc029cbca2c796f4c27bfcdd934fe4e970d8903d9dde123403daa76ef7"
+    },
+    {
+      "name": "Mathoverflow1973.PeriodTorusHigherHomology.intersectionDifferenceCycle",
+      "source": "Hopf/LCP/CuspFilling.lean",
+      "start": 13723,
+      "end": 13733,
+      "kind": "def",
+      "sha256": "30864f4ee7ba973d9512ad3fd8a79edbf1a28b739b2f6d90b2dec5d122e2bbd6"
+    },
+    {
+      "name": "Mathoverflow1973.PeriodTorusHigherHomology.intersectionDifferenceCycle_val",
+      "source": "Hopf/LCP/CuspFilling.lean",
+      "start": 13735,
+      "end": 13749,
+      "kind": "theorem",
+      "sha256": "d4fdccb4441c1f5376a0b3342303f82a60d7a5f3e0fa2d074555e8b813b049da"
+    },
+    {
+      "name": "Mathoverflow1973.PeriodTorusHigherHomology.intersectionDifferenceCycle_class_coordinates",
+      "source": "Hopf/LCP/CuspFilling.lean",
+      "start": 13751,
+      "end": 13777,
+      "kind": "theorem",
+      "sha256": "50580dd596f9741c3611970612523bbd2a774927263ce5349de26c16e2f506db"
+    },
+    {
+      "name": "Mathoverflow1973.PeriodTorusHigherHomology.quarterIntersectionSection_toU",
+      "source": "Hopf/LCP/CuspFilling.lean",
+      "start": 13779,
+      "end": 13784,
+      "kind": "theorem",
+      "sha256": "df5698e1dba081504c215b55f70a5a0e3723f439ac6d5c07c0c299da621510d3"
+    },
+    {
+      "name": "Mathoverflow1973.PeriodTorusHigherHomology.quarterIntersectionSection_toV",
+      "source": "Hopf/LCP/CuspFilling.lean",
+      "start": 13786,
+      "end": 13791,
+      "kind": "theorem",
+      "sha256": "033f11e59bd3ef16113ddd03e649a9f2d6477c836c9a6c0b6e491fadcadb2974"
+    },
+    {
+      "name": "Mathoverflow1973.PeriodTorusHigherHomology.threeQuarterIntersectionSection_toU",
+      "source": "Hopf/LCP/CuspFilling.lean",
+      "start": 13793,
+      "end": 13800,
+      "kind": "theorem",
+      "sha256": "5af0aee2324859256b6063e0b7426e8c26c431b103dc03a109aeca99c66515df"
+    },
+    {
+      "name": "Mathoverflow1973.PeriodTorusHigherHomology.threeQuarterIntersectionSection_toV",
+      "source": "Hopf/LCP/CuspFilling.lean",
+      "start": 13802,
+      "end": 13809,
+      "kind": "theorem",
+      "sha256": "4d068404a028ac61c727e2b2ea56bbd93f8304abaeeb9a656152ced0d657cca2"
+    },
+    {
+      "name": "Mathoverflow1973.PeriodTorusHigherHomology.crossProductEdge_boundary_of_right_cycle",
+      "source": "Hopf/LCP/CuspFilling.lean",
+      "start": 13811,
+      "end": 13824,
+      "kind": "theorem",
+      "sha256": "90dbe700e129221aeeb9990d6228d166e5ff7fa20c16da9958b0ab95eda76073"
+    },
+    {
+      "name": "Mathoverflow1973.PeriodTorusHigherHomology.crossProductEdge_path_boundary",
+      "source": "Hopf/LCP/CuspFilling.lean",
+      "start": 13826,
+      "end": 13838,
+      "kind": "theorem",
+      "sha256": "3931d03ff2db516dcd24d8c6f00db606ad1b1506ec9fd9c7bbf4f3041a01460c"
+    },
+    {
+      "name": "Mathoverflow1973.PeriodTorusHigherHomology.uCrossChain",
+      "source": "Hopf/LCP/CuspFilling.lean",
+      "start": 13847,
+      "end": 13854,
+      "kind": "def",
+      "sha256": "b07f5d813d160167043086978a735d4252c75387a2779ee408a7137a217bc827"
+    },
+    {
+      "name": "Mathoverflow1973.PeriodTorusHigherHomology.vCrossChain",
+      "source": "Hopf/LCP/CuspFilling.lean",
+      "start": 13856,
+      "end": 13863,
+      "kind": "def",
+      "sha256": "a0d4261ec53581d42c285fa06c9c2ff8e0f54f5fc8ebf3baf11227b2d12d5164"
+    },
+    {
+      "name": "Mathoverflow1973.PeriodTorusHigherHomology.uCrossChain_boundary",
+      "source": "Hopf/LCP/CuspFilling.lean",
+      "start": 13865,
+      "end": 13883,
+      "kind": "theorem",
+      "sha256": "6afc48e98458a0f61662833da86438c35fed653f7cfd35096b7e0bb0ab9062e4"
+    },
+    {
+      "name": "Mathoverflow1973.PeriodTorusHigherHomology.vCrossChain_boundary",
+      "source": "Hopf/LCP/CuspFilling.lean",
+      "start": 13885,
+      "end": 13903,
+      "kind": "theorem",
+      "sha256": "9526900b935e2dfa725d80b065e087d999c2906652a4c78c7230841f736d206a"
+    },
+    {
+      "name": "Mathoverflow1973.PeriodTorusHigherHomology.uCrossChain_inclusion",
+      "source": "Hopf/LCP/CuspFilling.lean",
+      "start": 13905,
+      "end": 13921,
+      "kind": "theorem",
+      "sha256": "9ab47119b0010809f89d7c069ae5fe9346dcaa1447eb5dc408065d84bb11f87a"
+    },
+    {
+      "name": "Mathoverflow1973.PeriodTorusHigherHomology.vCrossChain_inclusion",
+      "source": "Hopf/LCP/CuspFilling.lean",
+      "start": 13923,
+      "end": 13939,
+      "kind": "theorem",
+      "sha256": "6aae87209f8506906707d1e044fc4015d55e1b47acae395c83d0388cb71ee8bb"
+    },
+    {
+      "name": "Mathoverflow1973.PeriodTorusHigherHomology.arcCrossChains_inclusion_sum",
+      "source": "Hopf/LCP/CuspFilling.lean",
+      "start": 13941,
+      "end": 13949,
+      "kind": "theorem",
+      "sha256": "c692cfa1d61bb37263e605c39b73100ae3ce143cf45b7fda02d87ed0aa5c077e"
+    },
+    {
+      "name": "Mathoverflow1973.PeriodTorusHigherHomology.twoChainMiddle",
+      "source": "Hopf/LCP/CuspFilling.lean",
+      "start": 14031,
+      "end": 14035,
+      "kind": "def",
+      "sha256": "0dae60fb74433a6b5ce6491c90ca172a978c710ac9c56d6981be97428916572a"
+    },
+    {
+      "name": "Mathoverflow1973.PeriodTorusHigherHomology.twoChainMiddle_rightMap",
+      "source": "Hopf/LCP/CuspFilling.lean",
+      "start": 14037,
+      "end": 14044,
+      "kind": "theorem",
+      "sha256": "9cffa57e87aafec5fd389ac244da998deb9f8b7522f853d38a29a5595fe799a9"
+    },
+    {
+      "name": "Mathoverflow1973.PeriodTorusHigherHomology.twoChainMiddle_boundary",
+      "source": "Hopf/LCP/CuspFilling.lean",
+      "start": 14046,
+      "end": 14063,
+      "kind": "theorem",
+      "sha256": "c9bb808b650692230f17774f70cc2fad507e1b7c7b231e1d96ed03518d1195f9"
+    },
+    {
+      "name": "Mathoverflow1973.PeriodTorusHigherHomology.twoChainSmallCycle_condition",
+      "source": "Hopf/LCP/CuspFilling.lean",
+      "start": 14065,
+      "end": 14097,
+      "kind": "theorem",
+      "sha256": "bd2fcb9e7548a3e97e98b055eb217fa7459247d0598e6e991a11cf9a4f159bfc"
+    },
+    {
+      "name": "Mathoverflow1973.PeriodTorusHigherHomology.twoChainSmallCycle",
+      "source": "Hopf/LCP/CuspFilling.lean",
+      "start": 14099,
+      "end": 14117,
+      "kind": "def",
+      "sha256": "1ffa37e47e8cd055b193a7f81747865072402cffae93c1c1039551e71660eaa8"
+    },
+    {
+      "name": "Mathoverflow1973.PeriodTorusHigherHomology.twoChainSmallCycle_val",
+      "source": "Hopf/LCP/CuspFilling.lean",
+      "start": 14119,
+      "end": 14136,
+      "kind": "theorem",
+      "sha256": "05ac20b5ee370e16ef93a7caf22099f6a0b114b7ed6ce11b0abddc26a12e24b3"
+    },
+    {
+      "name": "Mathoverflow1973.PeriodTorusHigherHomology.twoChainSmallCycle_ambient_val",
+      "source": "Hopf/LCP/CuspFilling.lean",
+      "start": 14138,
+      "end": 14162,
+      "kind": "theorem",
+      "sha256": "5b65ece73043394b250e174d5af256bca439ca8357ab81e8a4a62489aa971435"
+    },
+    {
+      "name": "Mathoverflow1973.PeriodTorusHigherHomology.connectingHomomorphism_twoChain",
+      "source": "Hopf/LCP/CuspFilling.lean",
+      "start": 14164,
+      "end": 14186,
+      "kind": "theorem",
+      "sha256": "39e21e4499fb6eb8a5a39034e65a5fa31b4eae9a49691294146e867935fd2ff5"
+    },
+    {
+      "name": "Mathoverflow1973.PeriodTorusHigherHomology.positiveCircleSmallCycle",
+      "source": "Hopf/LCP/CuspFilling.lean",
+      "start": 14188,
+      "end": 14195,
+      "kind": "def",
+      "sha256": "42e225751b70c10878028bd5d6cc4b370a4f73e7a39d80c709f3e942cd9f4e83"
+    },
+    {
+      "name": "Mathoverflow1973.PeriodTorusHigherHomology.positiveCircleSmallCycle_ambient_val",
+      "source": "Hopf/LCP/CuspFilling.lean",
+      "start": 14197,
+      "end": 14211,
+      "kind": "theorem",
+      "sha256": "d0108fb436cf570c3b9e8bada06697c56d2cfee2e7940f7c251deedf2e1db2af"
+    },
+    {
+      "name": "Mathoverflow1973.PeriodTorusHigherHomology.positiveCircleSmallCycle_ambient_eq",
+      "source": "Hopf/LCP/CuspFilling.lean",
+      "start": 14213,
+      "end": 14223,
+      "kind": "theorem",
+      "sha256": "a66c2d80a7b108c8c9edd21644174b57b56b359afef19e180f7f9d00b3706ea6"
+    },
+    {
+      "name": "Mathoverflow1973.PeriodTorusHigherHomology.positiveCircleSmallCycle_ambient_class",
+      "source": "Hopf/LCP/CuspFilling.lean",
+      "start": 14225,
+      "end": 14239,
+      "kind": "theorem",
+      "sha256": "3d11025f74250ce194626f0dfdb13456e768c24a77439a3660534acfcc6ff62e"
+    },
+    {
+      "name": "Mathoverflow1973.PeriodTorusHigherHomology.circleConnecting_positiveCircleCross_cycleClass",
+      "source": "Hopf/LCP/CuspFilling.lean",
+      "start": 14241,
+      "end": 14259,
+      "kind": "theorem",
+      "sha256": "1c9071ba1a536c940735f742e8d41a5fbdade12914cd5b41391de4756af37677"
+    },
+    {
+      "name": "Mathoverflow1973.PeriodTorusHigherHomology.circleBoundaryCoordinates_positiveCircleCross_cycleClass",
+      "source": "Hopf/LCP/CuspFilling.lean",
+      "start": 14261,
+      "end": 14278,
+      "kind": "theorem",
+      "sha256": "5ed84dfc375f26fd6fb7fb55c6599ba631714b3deed29c9b8c28002af69d0008"
+    },
+    {
+      "name": "Mathoverflow1973.PeriodTorusHigherHomology.circleBoundaryCoordinates_positiveCircleCross",
+      "source": "Hopf/LCP/CuspFilling.lean",
+      "start": 14280,
+      "end": 14286,
+      "kind": "theorem",
+      "sha256": "51855653ad6f394b5aefe4586e253ffa0df04974201b08557ae8f0843cfadf78"
+    },
+    {
+      "name": "Mathoverflow1973.PeriodTorusHigherHomology.circleBoundary_positiveCircleCross",
+      "source": "Hopf/LCP/CuspFilling.lean",
+      "start": 14288,
+      "end": 14293,
+      "kind": "theorem",
+      "sha256": "7b8e3021ff70946caee5cab83640f1130faf73c7485ecdfee8277331cf4d7e7d"
+    },
+    {
+      "name": "Mathoverflow1973.MappingTorusHomology.Covering.lowerSection",
+      "source": "Hopf/LCP/IntegralHomology.lean",
+      "start": 7579,
+      "end": 7588,
+      "kind": "def",
+      "sha256": "07f350460e5ae12c19ffbf318512aec725f39798733d12180192799cdb810129"
+    },
+    {
+      "name": "Mathoverflow1973.MappingTorusHomology.Covering.upperSection",
+      "source": "Hopf/LCP/IntegralHomology.lean",
+      "start": 7590,
+      "end": 7599,
+      "kind": "def",
+      "sha256": "63ad2f1fe95265afefc2b9cad0c7ba0aac92a8f011af75fe43ae9fdfd2484a0e"
+    },
+    {
+      "name": "Mathoverflow1973.MappingTorusHomology.Covering.lowerSection_val",
+      "source": "Hopf/LCP/IntegralHomology.lean",
+      "start": 7601,
+      "end": 7605,
+      "kind": "theorem",
+      "sha256": "a5128630034b9acd778ade34aeb66f8ead898663ee54dfba1791da56fe1ca5ef"
+    },
+    {
+      "name": "Mathoverflow1973.MappingTorusHomology.Covering.upperSection_val",
+      "source": "Hopf/LCP/IntegralHomology.lean",
+      "start": 7607,
+      "end": 7611,
+      "kind": "theorem",
+      "sha256": "9968ba87e3513f7d953ddd0d9f8661015e461d2f3449d00180062748414ccfa8"
+    },
+    {
+      "name": "Mathoverflow1973.MappingTorusHomology.Covering.uTime",
+      "source": "Hopf/LCP/IntegralHomology.lean",
+      "start": 7613,
+      "end": 7614,
+      "kind": "def",
+      "sha256": "33cd0124ccd98a66e2d21e293c3a9458de73f0ff84244b12a6f860f930f4963b"
+    },
+    {
+      "name": "Mathoverflow1973.MappingTorusHomology.Covering.uTime_continuous",
+      "source": "Hopf/LCP/IntegralHomology.lean",
+      "start": 7616,
+      "end": 7617,
+      "kind": "theorem",
+      "sha256": "7801eb39244f72b745286df0defe48baefab5f7823fd99e5d2b05001737a079d"
+    },
+    {
+      "name": "Mathoverflow1973.MappingTorusHomology.Covering.vTime",
+      "source": "Hopf/LCP/IntegralHomology.lean",
+      "start": 7619,
+      "end": 7620,
+      "kind": "def",
+      "sha256": "6a7ae2518cf53645eba0dc3c705005a7b3307530a1775bd1c96d3ebaf8f6494f"
+    },
+    {
+      "name": "Mathoverflow1973.MappingTorusHomology.Covering.vTime_continuous",
+      "source": "Hopf/LCP/IntegralHomology.lean",
+      "start": 7622,
+      "end": 7623,
+      "kind": "theorem",
+      "sha256": "93db4420a84ca31039f2e32cd908d4a8de32b8729a2f1720e539aad9949ef8f7"
+    },
+    {
+      "name": "Mathoverflow1973.MappingTorusHomology.Covering.uStrip",
+      "source": "Hopf/LCP/IntegralHomology.lean",
+      "start": 7625,
+      "end": 7631,
+      "kind": "def",
+      "sha256": "614b697aefadfd587fb412b24e1bf28cc056b6a3471b405ba45eb168edc23925"
+    },
+    {
+      "name": "Mathoverflow1973.MappingTorusHomology.Covering.vStrip",
+      "source": "Hopf/LCP/IntegralHomology.lean",
+      "start": 7633,
+      "end": 7640,
+      "kind": "def",
+      "sha256": "8bd0e3d598dab955a4400cdfb6d03425257f245c0becd4b05f859123b48eb253"
+    },
+    {
+      "name": "Mathoverflow1973.MappingTorusHomology.Covering.uStrip_val",
+      "source": "Hopf/LCP/IntegralHomology.lean",
+      "start": 7642,
+      "end": 7647,
+      "kind": "theorem",
+      "sha256": "b424f806feb2bca5af90abaab40594ef9443b29fac1b164fb93a80c6aac965d2"
+    },
+    {
+      "name": "Mathoverflow1973.MappingTorusHomology.Covering.vStrip_val",
+      "source": "Hopf/LCP/IntegralHomology.lean",
+      "start": 7649,
+      "end": 7654,
+      "kind": "theorem",
+      "sha256": "ef213388905a27aae05f55e1f060fb7aa703aaa42b2f68e43a07dd2a24e3758e"
+    },
+    {
+      "name": "Mathoverflow1973.MappingTorusHomology.Covering.uStrip_zero",
+      "source": "Hopf/LCP/IntegralHomology.lean",
+      "start": 7656,
+      "end": 7665,
+      "kind": "theorem",
+      "sha256": "180ecc88ad1e2338125411dd591628e3baff4eb83733012b618137c8cbe2a04e"
+    },
+    {
+      "name": "Mathoverflow1973.MappingTorusHomology.Covering.uStrip_one",
+      "source": "Hopf/LCP/IntegralHomology.lean",
+      "start": 7667,
+      "end": 7676,
+      "kind": "theorem",
+      "sha256": "8baeec455006c9116e33eab4be98a3b7a2bc6ee01cf815be848e7375facc5e15"
+    },
+    {
+      "name": "Mathoverflow1973.MappingTorusHomology.Covering.vStrip_zero",
+      "source": "Hopf/LCP/IntegralHomology.lean",
+      "start": 7678,
+      "end": 7690,
+      "kind": "theorem",
+      "sha256": "6ef2e08e74f7c58cba7af40e517fef5c866dffac044c7aaa5273de1cc57d2c9b"
+    },
+    {
+      "name": "Mathoverflow1973.MappingTorusHomology.Covering.vStrip_one",
+      "source": "Hopf/LCP/IntegralHomology.lean",
+      "start": 7692,
+      "end": 7702,
+      "kind": "theorem",
+      "sha256": "c06a4900be2b97c7b1c8f31846cf5c8b09faf42d71126889de2c5cd778804169"
+    },
+    {
+      "name": "Mathoverflow1973.MappingTorusHomology.Covering.lowerSection_period",
+      "source": "Hopf/LCP/IntegralHomology.lean",
+      "start": 7704,
+      "end": 7711,
+      "kind": "theorem",
+      "sha256": "129737d5eeab7b4d0548f98ad481dc57e6560f709989862a19d3389cc14100df"
+    },
+    {
+      "name": "Mathoverflow1973.MappingTorusHomology.Covering.lowerSection_component",
+      "source": "Hopf/LCP/IntegralHomology.lean",
+      "start": 7713,
+      "end": 7719,
+      "kind": "theorem",
+      "sha256": "00d79ab6be6ab05c9ea53b3774305f8cd573deec71e37f6c49073366aa6e2d86"
+    },
+    {
+      "name": "Mathoverflow1973.MappingTorusHomology.Covering.upperSection_component",
+      "source": "Hopf/LCP/IntegralHomology.lean",
+      "start": 7721,
+      "end": 7727,
+      "kind": "theorem",
+      "sha256": "15923ff8f2ca0b2e37260dca71840d34b02a600b1bd59727471d5e0464e18b73"
+    },
+    {
+      "name": "Mathoverflow1973.MappingTorusHomology.Covering.lowerSection_homology_coordinates",
+      "source": "Hopf/LCP/IntegralHomology.lean",
+      "start": 7729,
+      "end": 7737,
+      "kind": "theorem",
+      "sha256": "38c19c53caea8107e8cd4ab09c2fbf63508af22816373062082a677ec9a8d1c9"
+    },
+    {
+      "name": "Mathoverflow1973.MappingTorusHomology.Covering.upperSection_homology_coordinates",
+      "source": "Hopf/LCP/IntegralHomology.lean",
+      "start": 7739,
+      "end": 7747,
+      "kind": "theorem",
+      "sha256": "9a3851db5f2d5c81e59bd49be3bac850a3b12398240b4df24cc5facaa176c504"
+    },
+    {
+      "name": "Mathoverflow1973.MappingTorusHomology.Covering.mk_add_int",
+      "source": "Hopf/LCP/IntegralHomology.lean",
+      "start": 7749,
+      "end": 7753,
+      "kind": "theorem",
+      "sha256": "b202760b18a6de6a2dd5dac3e75e4b5dfdeef1eac4040783d5fc6e56212cae05"
+    },
+    {
+      "name": "Mathoverflow1973.MappingTorusHomology.Covering.productCover",
+      "source": "Hopf/LCP/IntegralHomology.lean",
+      "start": 7755,
+      "end": 7764,
+      "kind": "def",
+      "sha256": "b7789105ee73cd5d9555dcff44a370ccf7debce65c0d0d7233fbe129343ead76"
+    },
+    {
+      "name": "Mathoverflow1973.MappingTorusHomology.Covering.productCover_real_apply",
+      "source": "Hopf/LCP/IntegralHomology.lean",
+      "start": 7766,
+      "end": 7770,
+      "kind": "theorem",
+      "sha256": "7e02110d2fb547482d5ef7ae03dcf28e0a20fc39d69aa6c93a06dc8ba20e171f"
+    },
+    {
+      "name": "Mathoverflow1973.MappingTorusHomology.Covering.productCover_zero_apply",
+      "source": "Hopf/LCP/IntegralHomology.lean",
+      "start": 7772,
+      "end": 7776,
+      "kind": "theorem",
+      "sha256": "325dc1d040a5d41e6926c68080afc4c608e5d14ebe11f483db4c147bbfa54783"
+    },
+    {
+      "name": "Mathoverflow1973.MappingTorusHomology.Covering.productCover_comp_productSection",
+      "source": "Hopf/LCP/IntegralHomology.lean",
+      "start": 7778,
+      "end": 7786,
+      "kind": "theorem",
+      "sha256": "6c6bf6551251c526f77088f2f78d3fe36c1e34280d16ed422691802fbf8eb85e"
+    },
+    {
+      "name": "Mathoverflow1973.MappingTorusHomology.Covering.productCoverHomology",
+      "source": "Hopf/LCP/IntegralHomology.lean",
+      "start": 7788,
+      "end": 7792,
+      "kind": "abbrev",
+      "sha256": "bdb8861902a7126e4205caf6f27d513c1f83e8f34ca7287ed4fa43083449823d"
+    },
+    {
+      "name": "Mathoverflow1973.MappingTorusHomology.Covering.productCoverHomology_comp_circleSection",
+      "source": "Hopf/LCP/IntegralHomology.lean",
+      "start": 7794,
+      "end": 7804,
+      "kind": "theorem",
+      "sha256": "93ec49f3ab8e5bc23e27d08a4d229c56ad0af80fd1a4c3eec0d863a623f970f7"
+    },
+    {
+      "name": "Mathoverflow1973.MappingTorusHomology.Covering.productCoverHomology_circleSection_apply",
+      "source": "Hopf/LCP/IntegralHomology.lean",
+      "start": 7806,
+      "end": 7812,
+      "kind": "theorem",
+      "sha256": "3888650ede190cdc7ef0963bb139e68f306e6bf211f7b2104d075d1044f663cf"
+    },
+    {
+      "name": "Mathoverflow1973.MappingTorusHomology.Covering.wangBoundary_productCover_circleSection",
+      "source": "Hopf/LCP/IntegralHomology.lean",
+      "start": 7814,
+      "end": 7832,
+      "kind": "theorem",
+      "sha256": "f5b824c8b254a211fd1d67cc5c9e4475f9a8eb4f07dda714d126844baacc4a84"
+    },
+    {
+      "name": "Mathoverflow1973.MappingTorusHomology.Covering.wangBoundary_productCover_circleSection_apply",
+      "source": "Hopf/LCP/IntegralHomology.lean",
+      "start": 7834,
+      "end": 7842,
+      "kind": "theorem",
+      "sha256": "fbbacba1d527ee04615e7f6f4a9a5b656bc23146033ffddd75f17efc9f2074cf"
+    },
+    {
+      "name": "Mathoverflow1973.MappingTorusHomology.Covering.affineRealArc",
+      "source": "Hopf/LCP/IntegralHomology.lean",
+      "start": 7844,
+      "end": 7849,
+      "kind": "def",
+      "sha256": "306bbbe4a626d2ede31e852270a0b7bf34a0c3144c6beb708f2269f42cac6012"
+    },
+    {
+      "name": "Mathoverflow1973.MappingTorusHomology.Covering.affineCircleArc",
+      "source": "Hopf/LCP/IntegralHomology.lean",
+      "start": 7851,
+      "end": 7854,
+      "kind": "def",
+      "sha256": "c5f251224c7a8eb75a40a2006f31342f0ddeece5ce914a62cc257bdebe8a2115"
+    },
+    {
+      "name": "Mathoverflow1973.MappingTorusHomology.Covering.affineCircleArc_apply",
+      "source": "Hopf/LCP/IntegralHomology.lean",
+      "start": 7856,
+      "end": 7860,
+      "kind": "theorem",
+      "sha256": "b268c42c6cbc00f951c740292d8ae1ea67091c23d925bbb4f0542a3bf3333002"
+    },
+    {
+      "name": "Mathoverflow1973.MappingTorusHomology.Covering.affineCircleArc_self",
+      "source": "Hopf/LCP/IntegralHomology.lean",
+      "start": 7862,
+      "end": 7867,
+      "kind": "theorem",
+      "sha256": "302c63b608629a0769970b152095c7965b7d76f75ad97218a16880aea6bd296e"
+    },
+    {
+      "name": "Mathoverflow1973.MappingTorusHomology.Covering.affineCircleArc_trans_homotopic",
+      "source": "Hopf/LCP/IntegralHomology.lean",
+      "start": 7869,
+      "end": 7880,
+      "kind": "theorem",
+      "sha256": "21a09cb1d29e9926b88a216ba8542349f9c4fa8c92b761f9f8ad51a9f10d2877"
+    },
+    {
+      "name": "Mathoverflow1973.MappingTorusHomology.Covering.pathClass_affineCircleArc_add",
+      "source": "Hopf/LCP/IntegralHomology.lean",
+      "start": 7882,
+      "end": 7887,
+      "kind": "theorem",
+      "sha256": "deddb95c25a0cdc47c17c03cf2f977e0da8a9b0ec91ea57d424379e11d8f0b33"
+    },
+    {
+      "name": "Mathoverflow1973.MappingTorusHomology.Covering.quarterLift",
+      "source": "Hopf/LCP/IntegralHomology.lean",
+      "start": 7889,
+      "end": 7890,
+      "kind": "def",
+      "sha256": "5d23ca562298ab68e5ac34d47c62ee1ac984521c79849c7939c6d26b7cf5c943"
+    },
+    {
+      "name": "Mathoverflow1973.MappingTorusHomology.Covering.threeQuarterLift",
+      "source": "Hopf/LCP/IntegralHomology.lean",
+      "start": 7892,
+      "end": 7893,
+      "kind": "def",
+      "sha256": "0ec92871794389f1f5a500e3fb27dfac61f7c982e1aac71bbb61587edb39b267"
+    },
+    {
+      "name": "Mathoverflow1973.MappingTorusHomology.Covering.uPath",
+      "source": "Hopf/LCP/IntegralHomology.lean",
+      "start": 7895,
+      "end": 7898,
+      "kind": "def",
+      "sha256": "6bfd0d6bd7ce13b857505d3dce2c6e359abdf416872b562e741679790450c7af"
+    },
+    {
+      "name": "Mathoverflow1973.MappingTorusHomology.Covering.vPath",
+      "source": "Hopf/LCP/IntegralHomology.lean",
+      "start": 7900,
+      "end": 7903,
+      "kind": "def",
+      "sha256": "cdc0ee540e73f67e201ede1bed9430e691ed723857e09799c8afb1c4e0129b21"
+    },
+    {
+      "name": "Mathoverflow1973.MappingTorusHomology.Covering.uPath_apply",
+      "source": "Hopf/LCP/IntegralHomology.lean",
+      "start": 7905,
+      "end": 7916,
+      "kind": "theorem",
+      "sha256": "a7cf37461b26a03d960a3dca43ef11e710da19c8b1bf52135f65d46242173964"
+    },
+    {
+      "name": "Mathoverflow1973.MappingTorusHomology.Covering.vPath_apply",
+      "source": "Hopf/LCP/IntegralHomology.lean",
+      "start": 7918,
+      "end": 7930,
+      "kind": "theorem",
+      "sha256": "2aa7b72ca76130fd42f13ae39715829fb538f8f85dbc1f10dece75e655d1e708"
+    },
+    {
+      "name": "Mathoverflow1973.MappingTorusHomology.Covering.pathClass_uPath_add_vPath",
+      "source": "Hopf/LCP/IntegralHomology.lean",
+      "start": 7932,
+      "end": 7935,
+      "kind": "theorem",
+      "sha256": "11dbee5088286050087a4b7bcd523a1ec2b7387262f4bb4097e5e1c43cc50b97"
+    },
+    {
+      "name": "Mathoverflow1973.MappingTorusHomology.Covering.quarterLift_period",
+      "source": "Hopf/LCP/IntegralHomology.lean",
+      "start": 7937,
+      "end": 7942,
+      "kind": "theorem",
+      "sha256": "83a730ff200dd720a3db9d0c6f827d48567b1a3c427d132217fb649561bb068c"
+    },
+    {
+      "name": "Mathoverflow1973.MappingTorusHomology.Covering.quarterLift_circle_period",
+      "source": "Hopf/LCP/IntegralHomology.lean",
+      "start": 7944,
+      "end": 7948,
+      "kind": "theorem",
+      "sha256": "b89425cb05084dbb867c51af2ebe84bdcc9e1043bd730229b07125ab83e65131"
+    },
+    {
+      "name": "Mathoverflow1973.MappingTorusHomology.Covering.boundaryOne_arcPrefix",
+      "source": "Hopf/LCP/IntegralHomology.lean",
+      "start": 7950,
+      "end": 7964,
+      "kind": "theorem",
+      "sha256": "1bab545ffc340439e4009e678567f5408c95641c2558411a019d1c31492f22b7"
+    },
+    {
+      "name": "Mathoverflow1973.MappingTorusHomology.Covering.chainClass_arcPrefix",
+      "source": "Hopf/LCP/IntegralHomology.lean",
+      "start": 7966,
+      "end": 7979,
+      "kind": "theorem",
+      "sha256": "c65ca39645d19ea7d7224c70d95ec52bff4c0a6a34c3094bf6b6da2b9e5b0896"
+    },
+    {
+      "name": "Mathoverflow1973.MappingTorusHomology.Covering.arcSumChain",
+      "source": "Hopf/LCP/IntegralHomology.lean",
+      "start": 7981,
+      "end": 7984,
+      "kind": "def",
+      "sha256": "fbced05f70a87bfab8f9592495a18d041707fae89dd848b0cb061f42d295d1c1"
+    },
+    {
+      "name": "Mathoverflow1973.MappingTorusHomology.Covering.boundaryOne_arcSumChain",
+      "source": "Hopf/LCP/IntegralHomology.lean",
+      "start": 7986,
+      "end": 7988,
+      "kind": "theorem",
+      "sha256": "dbe3341d7a667f96b9ab9950c115d35c0cda1378aa1494f06ce2cf9c4c22df81"
+    },
+    {
+      "name": "Mathoverflow1973.MappingTorusHomology.Covering.arcSumCycle",
+      "source": "Hopf/LCP/IntegralHomology.lean",
+      "start": 7990,
+      "end": 7993,
+      "kind": "def",
+      "sha256": "6be8fa2c9bf28e8ce32340a921a1c8bb0f49c2fa5e00a7c113c2fb997e62e7cd"
+    },
+    {
+      "name": "Mathoverflow1973.MappingTorusHomology.Covering.arcSumCycle_val",
+      "source": "Hopf/LCP/IntegralHomology.lean",
+      "start": 7995,
+      "end": 7998,
+      "kind": "theorem",
+      "sha256": "1eee865f044bb9d864136a43b5e5471a0fe67ee1635f04fbb1ef563a34e6f0b0"
+    },
+    {
+      "name": "Mathoverflow1973.MappingTorusHomology.Covering.chainClass_arcSumChain",
+      "source": "Hopf/LCP/IntegralHomology.lean",
+      "start": 8000,
+      "end": 8003,
+      "kind": "theorem",
+      "sha256": "fe8b94aa4c0b69d8726d3abe6d61c485113ce019cbc7d72e2a8a72f1d156af4f"
+    },
+    {
+      "name": "Mathoverflow1973.MappingTorusHomology.Covering.translatedPositiveLoop",
+      "source": "Hopf/LCP/IntegralHomology.lean",
+      "start": 8005,
+      "end": 8010,
+      "kind": "def",
+      "sha256": "48f5fac79423016fcf03fe85f6ac7967e71bdf15c09616b3e96acba013c62241"
+    },
+    {
+      "name": "Mathoverflow1973.MappingTorusHomology.Covering.translatedPositiveLoop_apply",
+      "source": "Hopf/LCP/IntegralHomology.lean",
+      "start": 8012,
+      "end": 8020,
+      "kind": "theorem",
+      "sha256": "80d57d7ef73c24995c938ae403cf00c60a2f2579f5216bbfa6b09502738aa2fd"
+    },
+    {
+      "name": "Mathoverflow1973.MappingTorusHomology.Covering.pathClass_affineCircleArc_period",
+      "source": "Hopf/LCP/IntegralHomology.lean",
+      "start": 8022,
+      "end": 8033,
+      "kind": "theorem",
+      "sha256": "82a12ef41297b32b9efbc14ae541a4093512b5f21f8c87102ca355e33ad144ca"
+    },
+    {
+      "name": "Mathoverflow1973.MappingTorusHomology.Covering.translatedPositiveLoop_class",
+      "source": "Hopf/LCP/IntegralHomology.lean",
+      "start": 8035,
+      "end": 8050,
+      "kind": "theorem",
+      "sha256": "3262dc493ef7d774bdd5ca57d5df1fb3c2a3ad75938eb10e2768f2eca6f97241"
+    },
+    {
+      "name": "Mathoverflow1973.MappingTorusHomology.Covering.arcSumCycle_positiveLoop_class",
+      "source": "Hopf/LCP/IntegralHomology.lean",
+      "start": 8052,
+      "end": 8060,
+      "kind": "theorem",
+      "sha256": "d83e65c2ab84d67ff1dc70eb92209e40a36a34ee4b278a18dbc1bda07739dad7"
+    },
+    {
+      "name": "Mathoverflow1973.MappingTorusHomology.Covering.uCircleMap",
+      "source": "Hopf/LCP/IntegralHomology.lean",
+      "start": 8062,
+      "end": 8063,
+      "kind": "def",
+      "sha256": "da2b22794a42ad396b21588fcb7ddef9647a6139ea503aa115b0137b2cc02fe3"
+    },
+    {
+      "name": "Mathoverflow1973.MappingTorusHomology.Covering.vCircleMap",
+      "source": "Hopf/LCP/IntegralHomology.lean",
+      "start": 8065,
+      "end": 8066,
+      "kind": "def",
+      "sha256": "1b8c73da5cdfcef42d24974ccae40888c7c6f2d2a6391ff5d87c3700a51dcbff"
+    },
+    {
+      "name": "Mathoverflow1973.MappingTorusHomology.Covering.uCircleMap_pathChain",
+      "source": "Hopf/LCP/IntegralHomology.lean",
+      "start": 8068,
+      "end": 8073,
+      "kind": "theorem",
+      "sha256": "83a36c265f985bdc9fc1d9b9af69c4ce73c0f254fcfc32baaab1ea201074b5e9"
+    },
+    {
+      "name": "Mathoverflow1973.MappingTorusHomology.Covering.vCircleMap_pathChain",
+      "source": "Hopf/LCP/IntegralHomology.lean",
+      "start": 8075,
+      "end": 8080,
+      "kind": "theorem",
+      "sha256": "5fe9ba9e1635a20a09386227c4cc2301974dfca5e718ab2b4cc2aba5a6733aab"
+    },
+    {
+      "name": "Mathoverflow1973.MappingTorusHomology.Covering.productCover_uCircleMap",
+      "source": "Hopf/LCP/IntegralHomology.lean",
+      "start": 8082,
+      "end": 8097,
+      "kind": "theorem",
+      "sha256": "9eabf3741228690c0e8d4eefcb3be3a1ea9f0ab07276f2a7733c310e7d8712fe"
+    },
+    {
+      "name": "Mathoverflow1973.MappingTorusHomology.Covering.productCover_vCircleMap",
+      "source": "Hopf/LCP/IntegralHomology.lean",
+      "start": 8099,
+      "end": 8115,
+      "kind": "theorem",
+      "sha256": "9886a8a9d31eb9939479ee2dfbe565cd466ef29fe27d604acc2d7e9cacd6f653"
+    },
+    {
+      "name": "Mathoverflow1973.MappingTorusHomology.Covering.uStrip_inclusion_crossProduct",
+      "source": "Hopf/LCP/IntegralHomology.lean",
+      "start": 8117,
+      "end": 8137,
+      "kind": "theorem",
+      "sha256": "ccfc7f1e25973316b98617526947a52ac97fbf526784d96992d63188ef06b681"
+    },
+    {
+      "name": "Mathoverflow1973.MappingTorusHomology.Covering.vStrip_inclusion_crossProduct",
+      "source": "Hopf/LCP/IntegralHomology.lean",
+      "start": 8139,
+      "end": 8159,
+      "kind": "theorem",
+      "sha256": "ed99c54f1880fe7102fa2d26ceb6587c6892bb5ead0a14929b70e62ae394ffc6"
+    },
+    {
+      "name": "Mathoverflow1973.MappingTorusHomology.Covering.positiveCircleCross_subdivision_cycleClass",
+      "source": "Hopf/LCP/IntegralHomology.lean",
+      "start": 8161,
+      "end": 8183,
+      "kind": "theorem",
+      "sha256": "bdffd51a3561835b504e8def4b294e012bcc6e9f8670216d6d546df7f90a0048"
+    },
+    {
+      "name": "Mathoverflow1973.MappingTorusHomology.Covering.monodromyHomologyMonoidHom",
+      "source": "Hopf/LCP/IntegralHomology.lean",
+      "start": 8185,
+      "end": 8190,
+      "kind": "def",
+      "sha256": "26f1356c08e8ec3ba1a15a168834956d82e485ae168ffc07782966a2686167c8"
+    },
+    {
+      "name": "Mathoverflow1973.MappingTorusHomology.Covering.monodromyHomologyMap_pow",
+      "source": "Hopf/LCP/IntegralHomology.lean",
+      "start": 8192,
+      "end": 8197,
+      "kind": "theorem",
+      "sha256": "1ab8d528564b96ce8adf00bdd37d4a9eef8b8c87054f65c3faf528d2e263da05"
+    },
+    {
+      "name": "Mathoverflow1973.MappingTorusHomology.Covering.homologyNorm",
+      "source": "Hopf/LCP/IntegralHomology.lean",
+      "start": 8199,
+      "end": 8202,
+      "kind": "def",
+      "sha256": "bbcbcb8b9837a3abb1b4d32fad11acc5b6aae9856262ae95b33f947a53d481b0"
+    },
+    {
+      "name": "Mathoverflow1973.MappingTorusHomology.Covering.homologyNorm_apply",
+      "source": "Hopf/LCP/IntegralHomology.lean",
+      "start": 8204,
+      "end": 8210,
+      "kind": "theorem",
+      "sha256": "c991d8c5c78fc571c89540aa0dfa74b41331dc3763238de19afaafaa94727639"
+    },
+    {
+      "name": "Mathoverflow1973.MappingTorusHomology.Covering.homologyNorm_eq_sum_powers",
+      "source": "Hopf/LCP/IntegralHomology.lean",
+      "start": 8212,
+      "end": 8218,
+      "kind": "theorem",
+      "sha256": "7381ed87651138b18d2ac0c18e72db4c2c2fbb33927d07f9717afa3b21f60cee"
+    },
+    {
+      "name": "Mathoverflow1973.MappingTorusHomology.Covering.homeomorph_symm_pow_eq",
+      "source": "Hopf/LCP/IntegralHomology.lean",
+      "start": 8229,
+      "end": 8232,
+      "kind": "theorem",
+      "sha256": "540be8d69221756df3a5118a4b5c1cf438a693e9d4e4b0778fec5755e136637c"
+    },
+    {
+      "name": "Mathoverflow1973.MappingTorusHomology.Covering.homologyNorm_symm",
+      "source": "Hopf/LCP/IntegralHomology.lean",
+      "start": 8234,
+      "end": 8260,
+      "kind": "theorem",
+      "sha256": "2e1580cb0b1e63892109f46c5a5d18a899791195cab2c5a823b24774bdddc8a0"
+    },
+    {
+      "name": "Mathoverflow1973.MappingTorusHomology.Covering.uCrossChain",
+      "source": "Hopf/LCP/IntegralHomology.lean",
+      "start": 8262,
+      "end": 8268,
+      "kind": "def",
+      "sha256": "713626d85496be01c02f8ff13a683680688cda4782fb5e216d34bf5c099288f7"
+    },
+    {
+      "name": "Mathoverflow1973.MappingTorusHomology.Covering.vCrossChain",
+      "source": "Hopf/LCP/IntegralHomology.lean",
+      "start": 8270,
+      "end": 8276,
+      "kind": "def",
+      "sha256": "e120da736f911d8bc4c5e64a8b1e1e454d751cbeac928848caa5b6eac10f4181"
+    },
+    {
+      "name": "Mathoverflow1973.MappingTorusHomology.Covering.uCrossChain_boundary",
+      "source": "Hopf/LCP/IntegralHomology.lean",
+      "start": 8278,
+      "end": 8292,
+      "kind": "theorem",
+      "sha256": "819b86abfebe4c33f2c6e5849e6e0bdab8dfcdd887be8c64cccd5e9e14bff991"
+    },
+    {
+      "name": "Mathoverflow1973.MappingTorusHomology.Covering.vCrossChain_boundary",
+      "source": "Hopf/LCP/IntegralHomology.lean",
+      "start": 8294,
+      "end": 8308,
+      "kind": "theorem",
+      "sha256": "8bca014351fb2419db54caa1e191625a04c15692c4db35ee1bf10a49446081e1"
+    },
+    {
+      "name": "Mathoverflow1973.MappingTorusHomology.Covering.uCrossChainSum",
+      "source": "Hopf/LCP/IntegralHomology.lean",
+      "start": 8310,
+      "end": 8314,
+      "kind": "def",
+      "sha256": "45d49bf3b58199f5156c625780e2e075410a72ddeb07c281aabd583739a99fa5"
+    },
+    {
+      "name": "Mathoverflow1973.MappingTorusHomology.Covering.vCrossChainSum",
+      "source": "Hopf/LCP/IntegralHomology.lean",
+      "start": 8316,
+      "end": 8320,
+      "kind": "def",
+      "sha256": "afaf432c0509f0d91eb83730825cdbdb47a951026bf7efd66fc9857ef486e6b8"
+    },
+    {
+      "name": "Mathoverflow1973.MappingTorusHomology.Covering.differenceCycle",
+      "source": "Hopf/LCP/IntegralHomology.lean",
+      "start": 8322,
+      "end": 8334,
+      "kind": "def",
+      "sha256": "0e0c1e48f960001b3464348834304433eb43ecc14b999c2b05d96b7b16b9e838"
+    },
+    {
+      "name": "Mathoverflow1973.MappingTorusHomology.Covering.differenceCycle_val",
+      "source": "Hopf/LCP/IntegralHomology.lean",
+      "start": 8336,
+      "end": 8345,
+      "kind": "theorem",
+      "sha256": "e7fc737cfeee36db33b9155193060c79de5b512b340d509efb4e54bc36badf42"
+    },
+    {
+      "name": "Mathoverflow1973.MappingTorusHomology.Covering.lowerSection_chain_sum_shift",
+      "source": "Hopf/LCP/IntegralHomology.lean",
+      "start": 8347,
+      "end": 8357,
+      "kind": "theorem",
+      "sha256": "cb73a395f90100e205713d2e9442708b240db04f5157fefc719f457e7cd89aa5"
+    },
+    {
+      "name": "Mathoverflow1973.MappingTorusHomology.Covering.uCrossChainSum_boundary",
+      "source": "Hopf/LCP/IntegralHomology.lean",
+      "start": 8359,
+      "end": 8366,
+      "kind": "theorem",
+      "sha256": "7b86f5b67ed65957e6e77cf2361532a8aea9ccd00ec69107469a809d7c46a1ce"
+    },
+    {
+      "name": "Mathoverflow1973.MappingTorusHomology.Covering.vCrossChainSum_boundary",
+      "source": "Hopf/LCP/IntegralHomology.lean",
+      "start": 8368,
+      "end": 8387,
+      "kind": "theorem",
+      "sha256": "8f4af10131ae9d0c49c13be559e51c1186a69566709475a3025733386609cf85"
+    },
+    {
+      "name": "Mathoverflow1973.MappingTorusHomology.Covering.differenceCycle_class",
+      "source": "Hopf/LCP/IntegralHomology.lean",
+      "start": 8389,
+      "end": 8405,
+      "kind": "theorem",
+      "sha256": "e914374d10cfacd64760f0564647e156cbd26fe7c90f55b9f3e73b5c349cb739"
+    },
+    {
+      "name": "Mathoverflow1973.MappingTorusHomology.Covering.differenceCycle_class_coordinates",
+      "source": "Hopf/LCP/IntegralHomology.lean",
+      "start": 8407,
+      "end": 8424,
+      "kind": "theorem",
+      "sha256": "c4497adb7f9ff62f64212b440e415d9c3c2bbdb99e38c9d0ffd6cc6563c7cf6b"
+    },
+    {
+      "name": "Mathoverflow1973.MappingTorusHomology.Covering.coverSmallCycle",
+      "source": "Hopf/LCP/IntegralHomology.lean",
+      "start": 8426,
+      "end": 8436,
+      "kind": "def",
+      "sha256": "172b775c01baf09b20467e01447ee692e251f94f51aa3e29e8bbf6b6c536fc71"
+    },
+    {
+      "name": "Mathoverflow1973.MappingTorusHomology.Covering.coverSmallCycle_ambient_val",
+      "source": "Hopf/LCP/IntegralHomology.lean",
+      "start": 8438,
+      "end": 8452,
+      "kind": "theorem",
+      "sha256": "7a7b2ce05eb2c995f053d9f3bb58de6afc82e73647d217bae575390d514cfb52"
+    },
+    {
+      "name": "Mathoverflow1973.MappingTorusHomology.Covering.coverSmallCycle_ambient_sum_val",
+      "source": "Hopf/LCP/IntegralHomology.lean",
+      "start": 8454,
+      "end": 8467,
+      "kind": "theorem",
+      "sha256": "19ae4819711242f374e759b96d9dc9e119392052c3d2ee85004e6ea2a0af5ad6"
+    },
+    {
+      "name": "Mathoverflow1973.MappingTorusHomology.Covering.coverSmallCycle_connecting",
+      "source": "Hopf/LCP/IntegralHomology.lean",
+      "start": 8469,
+      "end": 8488,
+      "kind": "theorem",
+      "sha256": "66096af74edf8bfba4d153975bdf27b6df3fa94d8f060289345cf4653e9b37b2"
+    },
+    {
+      "name": "Mathoverflow1973.MappingTorusHomology.Covering.coverSmallCycle_boundaryCoordinates",
+      "source": "Hopf/LCP/IntegralHomology.lean",
+      "start": 8490,
+      "end": 8507,
+      "kind": "theorem",
+      "sha256": "bee985e331b70824ad71450274af08df1a4ff22ec44db10d8253f677f9763244"
+    },
+    {
+      "name": "Mathoverflow1973.MappingTorusHomology.Covering.sub_cross_boundary_mem_range_circleSection",
+      "source": "Hopf/LCP/IntegralHomology.lean",
+      "start": 8509,
+      "end": 8525,
+      "kind": "theorem",
+      "sha256": "3ba95a33cd875b46bb6debb1fc96055fab6f98fa6bfafbf16da370d9fcd24141"
+    },
+    {
+      "name": "Mathoverflow1973.MappingTorusHomology.Covering.eq_comp_circleBoundary_of_section_cross_apply",
+      "source": "Hopf/LCP/IntegralHomology.lean",
+      "start": 8527,
+      "end": 8543,
+      "kind": "theorem",
+      "sha256": "269706c485b69ceed229b06d5dc99fcd93c7df0110ebf69c430f600d7be3e79e"
+    },
+    {
+      "name": "Mathoverflow1973.MappingTorusHomology.Covering.eq_comp_circleBoundary_of_section_cross",
+      "source": "Hopf/LCP/IntegralHomology.lean",
+      "start": 8545,
+      "end": 8556,
+      "kind": "theorem",
+      "sha256": "f2a3ebc5d2bee6959d6e182f322862b62d427b69dda6c166828adfb69ca35cdb"
+    },
+    {
+      "name": "Mathoverflow1973.MappingTorusHomology.Covering.wangBoundary_productCover_eq_of_cross",
+      "source": "Hopf/LCP/IntegralHomology.lean",
+      "start": 8558,
+      "end": 8574,
+      "kind": "theorem",
+      "sha256": "fc734db1a719783b70a45c8e7d6ad60d790f1ff8beac28eb28b0a9abef74e1ac"
+    },
+    {
+      "name": "Mathoverflow1973.MappingTorusHomology.Covering.coverSmallCycle_productCover_eq",
+      "source": "Hopf/LCP/IntegralHomology.lean",
+      "start": 8580,
+      "end": 8607,
+      "kind": "theorem",
+      "sha256": "2fe44383f1f757ed30d53c16a8767b5ad0433d98f2e54de7d8970f0be740b053"
+    },
+    {
+      "name": "Mathoverflow1973.MappingTorusHomology.Covering.coverSmallCycle_productCover_class",
+      "source": "Hopf/LCP/IntegralHomology.lean",
+      "start": 8609,
+      "end": 8628,
+      "kind": "theorem",
+      "sha256": "c4c84b07cd447977eace7b95f894282ba167c514a565530c70b650c2327fd04a"
+    },
+    {
+      "name": "Mathoverflow1973.MappingTorusHomology.Covering.boundaryCoordinates_productCover_cross_cycleClass",
+      "source": "Hopf/LCP/IntegralHomology.lean",
+      "start": 8630,
+      "end": 8647,
+      "kind": "theorem",
+      "sha256": "8301190557b05ff39b7a8f054615700276f0d71901028744e2ddde111f6fee77"
+    },
+    {
+      "name": "Mathoverflow1973.MappingTorusHomology.Covering.wangBoundary_productCover_cross_cycleClass",
+      "source": "Hopf/LCP/IntegralHomology.lean",
+      "start": 8649,
+      "end": 8663,
+      "kind": "theorem",
+      "sha256": "5ab9748ff730afcdec3862a370442b6cff90f299ebee14e16c7a475ab3167174"
+    },
+    {
+      "name": "Mathoverflow1973.MappingTorusHomology.Covering.wangBoundary_productCover_positiveCircleCross",
+      "source": "Hopf/LCP/IntegralHomology.lean",
+      "start": 8665,
+      "end": 8675,
+      "kind": "theorem",
+      "sha256": "03e40dff28bc3dca6d2450bf2a6c85e38c04b0c7e9d2279957af2097774cb645"
+    },
+    {
+      "name": "Mathoverflow1973.MappingTorusHomology.Covering.wangBoundary_productCover",
+      "source": "Hopf/LCP/IntegralHomology.lean",
+      "start": 8677,
+      "end": 8682,
+      "kind": "theorem",
+      "sha256": "b7876c0ede08e83a3a487f3e36cd7802ae6ae72c2c4c4e97b1f5337aad8c04b3"
+    },
+    {
+      "name": "Mathoverflow1973.MappingTorusHomology.Covering.wangBoundary_productCover_apply",
+      "source": "Hopf/LCP/IntegralHomology.lean",
+      "start": 8684,
+      "end": 8690,
+      "kind": "theorem",
+      "sha256": "f9a676e384c1a4935ccd9cc7227375acec3f02016ad9d3540f226af9c8604b80"
+    },
+    {
+      "name": "Mathoverflow1973.Elliptic.CyclicAction.action",
+      "source": "Hopf/LCP/Specialization.lean",
+      "start": 10551,
+      "end": 10564,
+      "kind": "def",
+      "sha256": "acb6237da7a7c80288f32647b894e9ce8e1aa86a080e3aa7c5a739a3c6e1ac03"
+    },
+    {
+      "name": "Mathoverflow1973.Elliptic.CyclicAction.smul_eq_iterate",
+      "source": "Hopf/LCP/Specialization.lean",
+      "start": 10569,
+      "end": 10574,
+      "kind": "theorem",
+      "sha256": "0d6c723b0b3aeb223e9220c6bc2027ee0b53b2aa6d62269a20a1a7ce0374cd2b"
+    },
+    {
+      "name": "Mathoverflow1973.Elliptic.CyclicAction.continuousConstSMul",
+      "source": "Hopf/LCP/Specialization.lean",
+      "start": 10621,
+      "end": 10627,
+      "kind": "theorem",
+      "sha256": "fe3ebbf94eb57f047a7eeb983e68a9e2cef6c6bece8fb80b33d23dd9dc5921a0"
+    },
+    {
+      "name": "Mathoverflow1973.Elliptic.FiniteQuotient.Space",
+      "source": "Hopf/LCP/Specialization.lean",
+      "start": 10639,
+      "end": 10640,
+      "kind": "abbrev",
+      "sha256": "e4fc699b17ffff0316ace11a4aa94c8392e98ba56bbd876ad13a5cdc46c4fac0"
+    },
+    {
+      "name": "Mathoverflow1973.Elliptic.FiniteQuotient.project",
+      "source": "Hopf/LCP/Specialization.lean",
+      "start": 10642,
+      "end": 10643,
+      "kind": "def",
+      "sha256": "e408158ca71c4fd43c23951445d4d4d7b93482d637c6f04d981fdc52270dd637"
+    },
+    {
+      "name": "Mathoverflow1973.Elliptic.FiniteQuotient.project_surjective",
+      "source": "Hopf/LCP/Specialization.lean",
+      "start": 10645,
+      "end": 10647,
+      "kind": "theorem",
+      "sha256": "a1753de973afe486762951fe55e5ee2c8495c286af0e9d2c38905ce65ea74bc4"
+    },
+    {
+      "name": "Mathoverflow1973.Elliptic.FiniteQuotient.project_eq_iff_mem_orbit",
+      "source": "Hopf/LCP/Specialization.lean",
+      "start": 10649,
+      "end": 10651,
+      "kind": "theorem",
+      "sha256": "5339db02be5117aead058a8e96d2dfeda2bf55412b12490f4d257a5c714fa7a8"
+    },
+    {
+      "name": "Mathoverflow1973.Elliptic.FiniteQuotient.project_isQuotientMap",
+      "source": "Hopf/LCP/Specialization.lean",
+      "start": 10658,
+      "end": 10660,
+      "kind": "theorem",
+      "sha256": "2e0918608b49a5243e3aba3eed95c9b9153559304bf64dc2e88544036fbb6402"
+    },
+    {
+      "name": "Mathoverflow1973.Elliptic.FiniteQuotient.project_continuous",
+      "source": "Hopf/LCP/Specialization.lean",
+      "start": 10662,
+      "end": 10664,
+      "kind": "theorem",
+      "sha256": "8edd90e4430f8db22da51391f773fcd0c223aeb22cfc8b6f604dff3e714f8c26"
+    },
+    {
+      "name": "Mathoverflow1973.Elliptic.FiniteQuotient.spaceT2Space",
+      "source": "Hopf/LCP/Specialization.lean",
+      "start": 10679,
+      "end": 10682,
+      "kind": "theorem",
+      "sha256": "9d976c534483f460eaa40cb2003e54f30ba192ae7c888cb3873399a17684fedb"
+    },
+    {
+      "name": "Mathoverflow1973.Elliptic.HigherHomology.MappingTorusQuotient.Circle",
+      "source": "Hopf/LCP/Specialization.lean",
+      "start": 11117,
+      "end": 11118,
+      "kind": "abbrev",
+      "sha256": "b6ab880cf8cba0e6bf91e450ed87dc372a0f45b55d430a6c5ee9ed461d0df484"
+    },
+    {
+      "name": "Mathoverflow1973.Elliptic.HigherHomology.MappingTorusQuotient.twist",
+      "source": "Hopf/LCP/Specialization.lean",
+      "start": 11120,
+      "end": 11126,
+      "kind": "def",
+      "sha256": "a69ae6f29cfb5f3a0797337b6fd754ccf4c9e2614c8855f3bc2c5a79ba42b790"
+    },
+    {
+      "name": "Mathoverflow1973.Elliptic.HigherHomology.MappingTorusQuotient.twist_apply",
+      "source": "Hopf/LCP/Specialization.lean",
+      "start": 11128,
+      "end": 11133,
+      "kind": "theorem",
+      "sha256": "24991fe63a4c9d5452e9f54145f85ba8b1f142637a44f433ba9ef8bbe57f8d72"
+    },
+    {
+      "name": "Mathoverflow1973.Elliptic.HigherHomology.MappingTorusQuotient.twist_pow_apply",
+      "source": "Hopf/LCP/Specialization.lean",
+      "start": 11135,
+      "end": 11154,
+      "kind": "theorem",
+      "sha256": "b0846ae553d00436bbd94a18f787ba238f53eca0c039f5b9ec83009d0d04e839"
+    },
+    {
+      "name": "Mathoverflow1973.Elliptic.HigherHomology.MappingTorusQuotient.twist_zpow_apply",
+      "source": "Hopf/LCP/Specialization.lean",
+      "start": 11156,
+      "end": 11187,
+      "kind": "theorem",
+      "sha256": "96a918e001b1a4bbe7019472be9a4bfc91bbb21b0f8de237e4dca26137abb9c2"
+    },
+    {
+      "name": "Mathoverflow1973.Elliptic.HigherHomology.MappingTorusQuotient.twist_pow_order",
+      "source": "Hopf/LCP/Specialization.lean",
+      "start": 11196,
+      "end": 11204,
+      "kind": "theorem",
+      "sha256": "8c871fc3ce36011d8dbef356c7d19f422d3224ea81ca419a3381b62b2576439a"
+    },
+    {
+      "name": "Mathoverflow1973.Elliptic.HigherHomology.MappingTorusQuotient.twistPerm_pow_order",
+      "source": "Hopf/LCP/Specialization.lean",
+      "start": 11206,
+      "end": 11210,
+      "kind": "theorem",
+      "sha256": "a4d2a75aa31faf6c926b37753240c9271e79d2ffd9ff31113852af62c2046fb8"
+    },
+    {
+      "name": "Mathoverflow1973.Elliptic.HigherHomology.MappingTorusQuotient.productAction",
+      "source": "Hopf/LCP/Specialization.lean",
+      "start": 11212,
+      "end": 11217,
+      "kind": "def",
+      "sha256": "c3a83c385aeef40750737e5cf52df43862d07c99c846b709cd155b26b10322f3"
+    },
+    {
+      "name": "Mathoverflow1973.Elliptic.HigherHomology.MappingTorusQuotient.productAction_continuousConstSMul",
+      "source": "Hopf/LCP/Specialization.lean",
+      "start": 11219,
+      "end": 11226,
+      "kind": "theorem",
+      "sha256": "ce106bb96a5fc67ef326e79991e9c6cf906a8433566fd8aefc50da6735caab98"
+    },
+    {
+      "name": "Mathoverflow1973.Elliptic.HigherHomology.MappingTorusQuotient.ofAdd_intCast_smul",
+      "source": "Hopf/LCP/Specialization.lean",
+      "start": 11235,
+      "end": 11247,
+      "kind": "theorem",
+      "sha256": "020db5708460c9f717b40ac8a17322c7124ebe6bd88d1ccd6e315cc7dafd0859"
+    },
+    {
+      "name": "Mathoverflow1973.Elliptic.HigherHomology.MappingTorusQuotient.fibre_zpow_add_mul_period",
+      "source": "Hopf/LCP/Specialization.lean",
+      "start": 11249,
+      "end": 11252,
+      "kind": "theorem",
+      "sha256": "54adab966815cded9df3754062cdd651372aab9b74938b62dbaaa1ad9330341c"
+    },
+    {
+      "name": "Mathoverflow1973.MappingTorus.mk_unitCylinder_surjective",
+      "source": "Hopf/LCP/Specialization.lean",
+      "start": 11254,
+      "end": 11262,
+      "kind": "theorem",
+      "sha256": "5d772905622e69b2beee77159587af76d1d623c05c13cab673cfa17fc848ac6e"
+    },
+    {
+      "name": "Mathoverflow1973.MappingTorus.compactSpace",
+      "source": "Hopf/LCP/Specialization.lean",
+      "start": 11264,
+      "end": 11268,
+      "kind": "instance",
+      "sha256": "af5ad21f6361e2f012a4577330545d194356ca2efa479628f70856aa4fea7956"
+    },
+    {
+      "name": "Mathoverflow1973.Elliptic.HigherHomology.MappingTorusQuotient.circle_scaled_eq_iff",
+      "source": "Hopf/LCP/Specialization.lean",
+      "start": 11270,
+      "end": 11294,
+      "kind": "theorem",
+      "sha256": "96856225f2b157033582e973f52c855bbdf5a8bcdff644409379cf03af989ddf"
+    },
+    {
+      "name": "Mathoverflow1973.Elliptic.HigherHomology.MappingTorusQuotient.symm_zpow_neg",
+      "source": "Hopf/LCP/Specialization.lean",
+      "start": 11296,
+      "end": 11299,
+      "kind": "theorem",
+      "sha256": "8ca1dd0089e75b10a6a22850225ff93cfcb465e277c614514ef420d227ca1499"
+    },
+    {
+      "name": "Mathoverflow1973.Elliptic.HigherHomology.MappingTorusQuotient.ProductQuotient",
+      "source": "Hopf/LCP/Specialization.lean",
+      "start": 11354,
+      "end": 11358,
+      "kind": "abbrev",
+      "sha256": "a2f1c7f9bff27d9afe2f53deade5d1f948f57d8fce18d03c1ec2cadde9290c7c"
+    },
+    {
+      "name": "Mathoverflow1973.Elliptic.HigherHomology.MappingTorusQuotient.project",
+      "source": "Hopf/LCP/Specialization.lean",
+      "start": 11360,
+      "end": 11366,
+      "kind": "def",
+      "sha256": "d98a275d4effc493cbf456cf6e51f7c0213bbf7d1a802e94b4779538d2563f67"
+    },
+    {
+      "name": "Mathoverflow1973.Elliptic.HigherHomology.MappingTorusQuotient.project_surjective",
+      "source": "Hopf/LCP/Specialization.lean",
+      "start": 11368,
+      "end": 11374,
+      "kind": "theorem",
+      "sha256": "15ebfa2f4541a3921979b26119d2f020fc699a134e67040e5fe09ca2eab7c662"
+    },
+    {
+      "name": "Mathoverflow1973.Elliptic.HigherHomology.MappingTorusQuotient.project_continuous",
+      "source": "Hopf/LCP/Specialization.lean",
+      "start": 11376,
+      "end": 11382,
+      "kind": "theorem",
+      "sha256": "837533728dd5749c3b052da1389fccc11b4a6c8146fa35ad3c7bf78c325ef9bf"
+    },
+    {
+      "name": "Mathoverflow1973.Elliptic.HigherHomology.MappingTorusQuotient.project_eq_iff",
+      "source": "Hopf/LCP/Specialization.lean",
+      "start": 11384,
+      "end": 11412,
+      "kind": "theorem",
+      "sha256": "5a35478db98be7367312d3646c043a6bcd71210a52b427d7f1b4c93d2a439595"
+    },
+    {
+      "name": "Mathoverflow1973.Elliptic.HigherHomology.MappingTorusQuotient.cylinderMap",
+      "source": "Hopf/LCP/Specialization.lean",
+      "start": 11414,
+      "end": 11416,
+      "kind": "def",
+      "sha256": "18582e807db2d656c9db6955adaafb681b1ed3b2efe329a93ec2e2543490676c"
+    },
+    {
+      "name": "Mathoverflow1973.Elliptic.HigherHomology.MappingTorusQuotient.cylinderMap_continuous",
+      "source": "Hopf/LCP/Specialization.lean",
+      "start": 11418,
+      "end": 11423,
+      "kind": "theorem",
+      "sha256": "6b66bedf72163e689002c766d2a2358a2bc4123f438aee9948fcbb81f97f881f"
+    },
+    {
+      "name": "Mathoverflow1973.Elliptic.HigherHomology.MappingTorusQuotient.cylinderMap_deck",
+      "source": "Hopf/LCP/Specialization.lean",
+      "start": 11425,
+      "end": 11437,
+      "kind": "theorem",
+      "sha256": "d2ad1d1625968351b350869a126ed9266e4e88f55462e1e7844e3a569907c0bd"
+    },
+    {
+      "name": "Mathoverflow1973.Elliptic.HigherHomology.MappingTorusQuotient.mappingTorusMap",
+      "source": "Hopf/LCP/Specialization.lean",
+      "start": 11439,
+      "end": 11445,
+      "kind": "def",
+      "sha256": "f85fd4c50f0d7939e3ce5ca2ae0d95ca29c598801bfcb1bc9fa1e59ab7dfc6a1"
+    },
+    {
+      "name": "Mathoverflow1973.Elliptic.HigherHomology.MappingTorusQuotient.mappingTorusMap_mk",
+      "source": "Hopf/LCP/Specialization.lean",
+      "start": 11447,
+      "end": 11452,
+      "kind": "theorem",
+      "sha256": "8b1621ca694f01afe260efe484a57eeea4dff423bba20293be43e0523901c588"
+    },
+    {
+      "name": "Mathoverflow1973.Elliptic.HigherHomology.MappingTorusQuotient.mappingTorusMap_continuous",
+      "source": "Hopf/LCP/Specialization.lean",
+      "start": 11454,
+      "end": 11457,
+      "kind": "theorem",
+      "sha256": "51285d0ad7aca361f8c1521682f04c8cffe3137aca4ef4c13f7b12a9c23f75f3"
+    },
+    {
+      "name": "Mathoverflow1973.Elliptic.HigherHomology.MappingTorusQuotient.mappingTorusMap_injective",
+      "source": "Hopf/LCP/Specialization.lean",
+      "start": 11459,
+      "end": 11481,
+      "kind": "theorem",
+      "sha256": "c55ab411200586175b1d93d9d07fe3c7fbdccdd12e9e248aec7715fee4ab433d"
+    },
+    {
+      "name": "Mathoverflow1973.Elliptic.HigherHomology.MappingTorusQuotient.mappingTorusMap_surjective",
+      "source": "Hopf/LCP/Specialization.lean",
+      "start": 11483,
+      "end": 11492,
+      "kind": "theorem",
+      "sha256": "da3ab001917c09ff7158ac7dab30fd37deb81367ebe2185d038d35b456cede0a"
+    },
+    {
+      "name": "Mathoverflow1973.Elliptic.HigherHomology.MappingTorusQuotient.productQuotient_t2",
+      "source": "Hopf/LCP/Specialization.lean",
+      "start": 11494,
+      "end": 11501,
+      "kind": "instance",
+      "sha256": "60feb7b6edf8f77a19809eefbbb35b6dc8623f248acea270b7362d275392854b"
+    },
+    {
+      "name": "Mathoverflow1973.Elliptic.HigherHomology.MappingTorusQuotient.toProductHomeomorph",
+      "source": "Hopf/LCP/Specialization.lean",
+      "start": 11503,
+      "end": 11509,
+      "kind": "def",
+      "sha256": "50591fa0ff4f5ea1fc9ee98b9a4001255e30ea497ed324e86b825f300494ef0c"
+    },
+    {
+      "name": "Mathoverflow1973.Elliptic.HigherHomology.MappingTorusQuotient.mappingTorusHomeomorph",
+      "source": "Hopf/LCP/Specialization.lean",
+      "start": 11511,
+      "end": 11514,
+      "kind": "def",
+      "sha256": "f70c759b16fc0aabee6164c932fcd884b63663560a690c272b6ec011388c43f1"
+    },
+    {
+      "name": "Mathoverflow1973.Elliptic.HigherHomology.MappingTorusQuotient.mappingTorusHomeomorph_symm_mk",
+      "source": "Hopf/LCP/Specialization.lean",
+      "start": 11516,
+      "end": 11522,
+      "kind": "theorem",
+      "sha256": "df3940a0ea7e32bafdac9cee06f8f7c398069aabe7e0a1ac6ecaf153481de96c"
+    },
+    {
+      "name": "Mathoverflow1973.Elliptic.HigherHomology.MappingTorusQuotient.mappingTorusHomeomorph_project",
+      "source": "Hopf/LCP/Specialization.lean",
+      "start": 11524,
+      "end": 11533,
+      "kind": "theorem",
+      "sha256": "1796e7f3dc4a01737fb81e0df4d055a79b75fe0beafb00bd765aea63989b1a83"
+    },
+    {
+      "name": "Mathoverflow1973.PassageHomology.radialCylinderHomeomorph",
+      "source": "Hopf/SingularHomology.lean",
+      "start": 97,
+      "end": 102,
+      "kind": "def",
+      "sha256": "ff7eb934f71e07e5cfaafab2cc8fdd113d11bad0abbb8df927ed398467446dd4"
+    },
+    {
+      "name": "Mathoverflow1973.PassageHomology.puncturedCylinderHomeomorph",
+      "source": "Hopf/SingularHomology.lean",
+      "start": 104,
+      "end": 149,
+      "kind": "def",
+      "sha256": "9786f12c81eccfe8872c66222fa88a49c2831ad67510c71c864cfa5c7600bb42"
+    },
+    {
+      "name": "Mathoverflow1973.PassageHomology.cylinderLink",
+      "source": "Hopf/SingularHomology.lean",
+      "start": 151,
+      "end": 155,
+      "kind": "def",
+      "sha256": "577275d581b8fc8b07da90ff0d65358dfca977cc10c069aadafb2d0c25dcb253"
+    },
+    {
+      "name": "Mathoverflow1973.PassageHomology.punctured_cylinder_endpoint_relation",
+      "source": "Hopf/SingularHomology.lean",
+      "start": 157,
+      "end": 209,
+      "kind": "theorem",
+      "sha256": "012cb2192a5aea8baffc596934bebdd2fe6ab383de515cb4fa31fa06e3194de0"
+    },
+    {
+      "name": "Mathoverflow1973.PassageHomology.punctured_cylinder_trace_relation",
+      "source": "Hopf/SingularHomology.lean",
+      "start": 211,
+      "end": 221,
+      "kind": "theorem",
+      "sha256": "a0e150780775dd33e5845045b092a235f24985bcfddc80d9d3df315d0028be9d"
+    },
+    {
+      "name": "Mathoverflow1973.PartialChart.openInclusion",
+      "source": "Hopf/SingularHomology.lean",
+      "start": 15287,
+      "end": 15301,
+      "kind": "def",
+      "sha256": "8a2dbb241725cd433acf9781186ffa61abdf29ae558a03857521e6cf9e7a5c0d"
+    },
+    {
+      "name": "Mathoverflow1973.PartialChart.openInclusion_target",
+      "source": "Hopf/SingularHomology.lean",
+      "start": 15303,
+      "end": 15309,
+      "kind": "theorem",
+      "sha256": "af9acdaad4b37ea46aa40a4fd7d8f6b33284c75f6d6bbde914e24e9258060e4e"
+    },
+    {
+      "name": "Mathoverflow1973.PartialChart.openInclusion_symm_coe",
+      "source": "Hopf/SingularHomology.lean",
+      "start": 15311,
+      "end": 15318,
+      "kind": "theorem",
+      "sha256": "4ed95ff248cf43b771b2026ef8a642b41f9cfb536b4a5c53b01d1cf728670766"
+    },
+    {
+      "name": "Mathoverflow1973.PassageHomology.radialCylinderHomeomorph_symm_fst",
+      "source": "Hopf/SingularHomology.lean",
+      "start": 15320,
+      "end": 15328,
+      "kind": "theorem",
+      "sha256": "0fd830f7df3315b6f862a22480effb872707c7c9b40600a3a2b12f7c76c942bd"
+    },
+    {
+      "name": "Mathoverflow1973.PassageHomology.radialCylinderHomeomorph_symm_snd_coe",
+      "source": "Hopf/SingularHomology.lean",
+      "start": 15330,
+      "end": 15334,
+      "kind": "theorem",
+      "sha256": "0badbdf3db18d0ac67c7509d98e5e1c31938f085fe3f03ffaea70f68bc4910c0"
+    },
+    {
+      "name": "Mathoverflow1973.PassageHomology.radialCylinderDiffeomorph",
+      "source": "Hopf/SingularHomology.lean",
+      "start": 15336,
+      "end": 15384,
+      "kind": "def",
+      "sha256": "d5a83bd1ef4cd54c4c5ac61d307a43ab84d659ce6f11d8b4397d1322eaa5781e"
+    },
+    {
+      "name": "Mathoverflow1973.PassageHomology.radialCylinderChart",
+      "source": "Hopf/SingularHomology.lean",
+      "start": 15386,
+      "end": 15394,
+      "kind": "def",
+      "sha256": "2134eb323b507474a7483c78539d1c952fe4781e8e100a82142eee4f4691d244"
+    },
+    {
+      "name": "Mathoverflow1973.PassageHomology.radialCylinderChart_mem_source",
+      "source": "Hopf/SingularHomology.lean",
+      "start": 15396,
+      "end": 15400,
+      "kind": "theorem",
+      "sha256": "3ba960cb11efbfaa7eb727db8d7898cc3b337ae400809595b31951707ea03a55"
+    },
+    {
+      "name": "Mathoverflow1973.PassageHomology.radialCylinderChart_mem_target",
+      "source": "Hopf/SingularHomology.lean",
+      "start": 15402,
+      "end": 15413,
+      "kind": "theorem",
+      "sha256": "e06581c2d5f9603c881ddc4c356a6d6db774343b3d277dc2759cb49465566635"
+    },
+    {
+      "name": "Mathoverflow1973.PassageHomology.radialCylinderChart_symm_eq",
+      "source": "Hopf/SingularHomology.lean",
+      "start": 15415,
+      "end": 15431,
+      "kind": "theorem",
+      "sha256": "7aa0b4ec17b657863a866bf9977174728078698a77f1c0f7058a12428d14fb0d"
+    }
+  ]
+}
