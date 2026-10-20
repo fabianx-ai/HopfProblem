@@ -203,8 +203,8 @@ def localHomologyChartEquiv {n : ℕ} [ChartedSpace (EuclideanSpace ℝ (Fin n))
 
 /-- The image of the trace of `D ⊆ e.target` under the inverse chart homeomorphism is the trace of
 `e.symm '' D` on the source. -/
-theorem symm_image_trace {n : ℕ} (e : OpenPartialHomeomorph M (EuclideanSpace ℝ (Fin n)))
-    {D : Set (EuclideanSpace ℝ (Fin n))} (hD : D ⊆ e.target) :
+theorem symm_image_trace {E : Type} [TopologicalSpace E] (e : OpenPartialHomeomorph M E)
+    {D : Set E} (hD : D ⊆ e.target) :
     e.toHomeomorphSourceTarget.symm '' trace D e.target = trace (e.symm '' D) e.source := by
   ext v
   constructor
