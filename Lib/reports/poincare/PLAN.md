@@ -216,3 +216,60 @@ structure, never an axiom.
 finishing `lake build Solution S6Shortcuts S6 Challenge`, `lake build Shared Center`,
 `python3 scripts/lib_stock_census.py --check` (123), the isolation greps of `NEXT_STEPS.md`.
 Guarded wrapper `/home/goblin/.claude/jobs/06995e68/tmp/poincare/lake.sh` (`taskset -c 0-7`).
+
+## 6. Comparison with the independent plan (2026-10-20, at the M0 boundary)
+
+Read: `/home/goblin/s6-notes/S6-W1-W4/LIB_POINCARE_DUALITY_TEXTBOOK_DRAFT.md` (P01–P50) and
+`LIB_POINCARE_DUALITY_DECOMPOSITION.md` (N01–N27), written by a Codex seat without seeing this
+plan. M0 was already built when I read them; nothing in M0 contradicts them.
+
+**Agreement (same route, independently).**
+* Hatcher §3.3 throughout; local homology, orientation cover, Lemma 3.27, fundamental class, cap,
+  compactly supported duality (P09–P35 ≙ my M1–M4).
+* P10 is exactly my `ConvexComplement` lemma, down to the radial flow
+  `y ↦ x + ((1−t)+t·r/‖y−x‖)(y−x)` and the convexity argument for outward rays; built
+  (`Orientation/ConvexComplement.lean`) before I read P10.
+* P17 replaces Hatcher's cubes by closed balls around points of `K` missing the boundary support
+  `F` of the representative — my adjustment 2, and `Relative/Support.lean` is its chain-level form.
+  P17's remark that only the *boundary* support must miss `L` is what `restriction_relativeHomologyClass`
+  states.
+* P18 (finite cover of `K` by compact pieces in charts, induction with the relative Mayer–Vietoris
+  sequence P15/P07) is my M2 plan; the relative Mayer–Vietoris sequence of P07 is
+  `Relative/MayerVietoris.lean` (my convention `(a, −b)`/`sum` instead of their diagonal/difference;
+  a sign convention only).
+* (c) needs no cap product (P42, P48): my M2 serves (c) as planned.
+* P37/P38: `χ = 0` plays no part in torsion-freeness, only in the Betti numbers — as in my M4d.
+* N08: "simply connected ⇒ orientable" from Mathlib's lifting criterion — as in my M1.
+
+**Adopted from the independent plan.**
+* P14's stronger uniqueness ("a class in `H_n(M | K)` vanishing at every point of `K` is zero",
+  proved simultaneously) — this is the form I will state in M2.
+* P44: (a) and (b) need *integral orientability* as an explicit hypothesis (the mapping torus of a
+  reflection of `S³` has `H₁ = ℤ`, `χ = 0`, `H⁴ = ℤ/2`). My M4d statement already assumed "closed
+  oriented"; I record here that orientability of `S = T⁴/C_m` is CHARGED (P43: the deck
+  transformations are orientation-preserving affine maps) and is the center seat's to supply.
+* P36: finite generation of `H_*(M; ℤ)` for closed oriented `M` from a finite fundamental cycle —
+  needed for unimodularity of the form on `H²/torsion` (P39); added to M4d.
+* N02/N03: for *cohomological* excision (M4a) use `SingularSmallChains.Barycentric.smallChainHomotopyEquiv`
+  (an arbitrary-open-cover chain homotopy equivalence already in `Lib`, whose underlying complex is
+  definitionally `SingularChains.singularComplex`, checked by `rfl`) rather than the UCT-naturality
+  route of my M4a: dualizing a chain homotopy equivalence is formal. What is missing (their N02) is
+  the support property of the homotopy inverse; I will check whether `HomotopySupport.lean` has it
+  before choosing.
+
+**Where I differ, and why.**
+* P06 states excision in the general form `cl Z ⊆ int A`; M0 proves the open-cover form only
+  (`excisionEquiv`), which is the only one the manifold theory uses once supports are compact
+  (`(M, M ∖ K)`, `K` compact, `M ∖ K` open). I keep the open-cover form; the general one is an
+  open item of M0.md.
+* P33 normalizes the Euclidean base case by the identity simplex of `Δⁿ` and a cone computation. I
+  plan the base case through the Kronecker evaluation (`H^n(E, E ∖ K) ≅ Hom(H_n(E, E ∖ K), ℤ)` by
+  the projective-UCT half already in `Lib`) and the formula `c ⌢ φ = φ(c)·[v_n]` in degree `n`; no
+  explicit generator of `H_n(Δⁿ, ∂Δⁿ)` is needed. P33 is the fallback if the cap–evaluation
+  identity is harder than expected.
+* P26–P28 build `H_c` as an explicit filtered colimit; my adjustment 3 states the duality property
+  elementwise (jointly surjective, eventually injective), which is what P31/P32 use anyway. Same
+  mathematics, less API.
+* The draft is over a general ring `R`; `Lib`'s singular framework is `ℤ`-pinned, and I keep `ℤ`.
+* P41 (covering transfer, `p_*[N] = d[M]`) is outside my milestones; it is the center seat's tool
+  for Lemma 4.5 and can be built on M2 later.
