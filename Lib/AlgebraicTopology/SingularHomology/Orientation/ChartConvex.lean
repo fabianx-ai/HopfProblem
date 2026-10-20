@@ -53,20 +53,21 @@ variable {M : Type} [TopologicalSpace M] {n : ℕ}
 /-! ### Unions of lists of sets -/
 
 /-- The union of a list of sets. -/
-def listUnion (l : List (Set M)) : Set M := l.foldr (· ∪ ·) ∅
+def listUnion {X : Type*} (l : List (Set X)) : Set X := l.foldr (· ∪ ·) ∅
 
-@[simp] theorem listUnion_nil : listUnion ([] : List (Set M)) = ∅ := rfl
+@[simp] theorem listUnion_nil {X : Type*} : listUnion ([] : List (Set X)) = ∅ := rfl
 
-@[simp] theorem listUnion_cons (Q : Set M) (l : List (Set M)) :
+@[simp] theorem listUnion_cons {X : Type*} (Q : Set X) (l : List (Set X)) :
     listUnion (Q :: l) = Q ∪ listUnion l := rfl
 
-theorem listUnion_inter (l : List (Set M)) (Q : Set M) :
+theorem listUnion_inter {X : Type*} (l : List (Set X)) (Q : Set X) :
     listUnion l ∩ Q = listUnion (l.map (· ∩ Q)) := by
   induction l with
   | nil => simp
   | cons P l ih => simp [union_inter_distrib_right, ih]
 
-theorem subset_listUnion_of_mem {l : List (Set M)} {Q : Set M} (hQ : Q ∈ l) : Q ⊆ listUnion l := by
+theorem subset_listUnion_of_mem {X : Type*} {l : List (Set X)} {Q : Set X} (hQ : Q ∈ l) :
+    Q ⊆ listUnion l := by
   induction l with
   | nil => simp at hQ
   | cons P l ih =>
@@ -74,7 +75,8 @@ theorem subset_listUnion_of_mem {l : List (Set M)} {Q : Set M} (hQ : Q ∈ l) : 
     · exact subset_union_left
     · exact ih hQ |>.trans subset_union_right
 
-theorem listUnion_subset {l : List (Set M)} {W : Set M} (h : ∀ Q ∈ l, Q ⊆ W) : listUnion l ⊆ W := by
+theorem listUnion_subset {X : Type*} {l : List (Set X)} {W : Set X} (h : ∀ Q ∈ l, Q ⊆ W) :
+    listUnion l ⊆ W := by
   induction l with
   | nil => simp
   | cons P l ih =>
@@ -140,19 +142,23 @@ def IsChartConvex (e : OpenPartialHomeomorph M E) (Q : Set M) : Prop :=
 
 variable {e : OpenPartialHomeomorph M E}
 
+omit [ProperSpace E] in
 theorem IsChartConvex.isCompact {Q : Set M} (hQ : IsChartConvex e Q) : IsCompact Q := by
   obtain ⟨Q', _, hQ'c, hQ't, rfl⟩ := hQ
   exact hQ'c.image_of_continuousOn (e.continuousOn_symm.mono hQ't)
 
+omit [ProperSpace E] in
 theorem IsChartConvex.subset_source {Q : Set M} (hQ : IsChartConvex e Q) : Q ⊆ e.source := by
   obtain ⟨Q', _, _, hQ't, rfl⟩ := hQ
   rintro _ ⟨y, hy, rfl⟩
   exact e.map_target (hQ't hy)
 
+omit [ProperSpace E] in
 theorem IsChartConvex.isPreconnected {Q : Set M} (hQ : IsChartConvex e Q) : IsPreconnected Q := by
   obtain ⟨Q', hQ'conv, _, hQ't, rfl⟩ := hQ
   exact hQ'conv.isPreconnected.image _ (e.continuousOn_symm.mono hQ't)
 
+omit [ProperSpace E] in
 theorem IsChartConvex.inter {Q₁ Q₂ : Set M} (h₁ : IsChartConvex e Q₁) (h₂ : IsChartConvex e Q₂) :
     IsChartConvex e (Q₁ ∩ Q₂) := by
   obtain ⟨Q₁', hc₁, hk₁, ht₁, rfl⟩ := h₁
@@ -194,6 +200,7 @@ theorem exists_chartBall {x : M} (hx : x ∈ e.source) {W : Set M} (hW : W ∈ �
     rw [hopen.interior_eq]
     exact ⟨e x, Metric.mem_ball_self (by linarith), e.left_inv hx⟩
 
+omit [ProperSpace E] in
 /-- A chart-convex set is a homology ball in every degree. -/
 theorem IsChartConvex.isHomologyBall [T2Space M] {Q : Set M} (hQ : IsChartConvex e Q) (i : ℕ) :
     IsHomologyBall M i Q := by
